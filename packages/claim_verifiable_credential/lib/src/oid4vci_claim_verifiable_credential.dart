@@ -43,7 +43,7 @@ import 'oid4vci_claim_verifiable_credential_interface.dart';
 class OID4VCIClaimVerifiableCredentialService
     implements OID4VCIClaimVerifiableCredentialServiceInterface {
   final OID4VCIClaimVerifiableCredentialApiServiceInterface
-      _claimVerifiableCredentialApiService;
+  _claimVerifiableCredentialApiService;
   final ConsumerAuthProvider _consumerAuthProvider;
   final Logger _logger;
   static const _componentName = 'OID4VCIClaimService';
@@ -64,15 +64,16 @@ class OID4VCIClaimVerifiableCredentialService
     required DidSigner didSigner,
     Dio? client,
     OID4VCIClaimVerifiableCredentialApiServiceInterface?
-        claimVerifiableCredentialApiService,
+    claimVerifiableCredentialApiService,
     ConsumerAuthProvider? consumerAuthProvider,
     Logger? logger,
-  })  : _claimVerifiableCredentialApiService =
-            claimVerifiableCredentialApiService ??
-                OID4VCIClaimVerifiableCredentialApiService(client: client),
-        _consumerAuthProvider = consumerAuthProvider ??
-            ConsumerAuthProvider(signer: didSigner, client: client),
-        _logger = logger ?? Logger.instance;
+  }) : _claimVerifiableCredentialApiService =
+           claimVerifiableCredentialApiService ??
+           OID4VCIClaimVerifiableCredentialApiService(client: client),
+       _consumerAuthProvider =
+           consumerAuthProvider ??
+           ConsumerAuthProvider(signer: didSigner, client: client),
+       _logger = logger ?? Logger.instance;
 
   /// Loads a credential offer from the given [uri] and returns a [OID4VCIClaimContext]
   /// containing both the credential offer and the issuer metadata.
@@ -103,12 +104,15 @@ class OID4VCIClaimVerifiableCredentialService
         offerPayload[_OfferPayloadParams.credentialOfferUri];
 
     if (credentialOfferUri == null || credentialOfferUri.isEmpty) {
-      _logger.error('Failed loading credential offer',
-          component: _componentName);
+      _logger.error(
+        'Failed loading credential offer',
+        component: _componentName,
+      );
       Error.throwWithStackTrace(
         TdkException(
-            message: 'Credential offer uri is missing',
-            code: TdkExceptionType.missingUri.code),
+          message: 'Credential offer uri is missing',
+          code: TdkExceptionType.missingUri.code,
+        ),
         StackTrace.current,
       );
     }
@@ -117,22 +121,31 @@ class OID4VCIClaimVerifiableCredentialService
       final issuerMetadataResponse = await _claimVerifiableCredentialApiService
           .getIssuerMetadata(offerUri: credentialOfferUri);
       final issuerMetadata = OID4VCIIssuerMetadata.fromJson(
-          issuerMetadataResponse.data as Map<String, dynamic>);
+        issuerMetadataResponse.data as Map<String, dynamic>,
+      );
 
-      final credentialOfferResponse =
-          await _getCredentialsOfferResponse(credentialOfferUri);
+      final credentialOfferResponse = await _getCredentialsOfferResponse(
+        credentialOfferUri,
+      );
       final credentialOffer = OID4VCICredentialOffer.fromJson(
-          credentialOfferResponse.data as Map<String, dynamic>);
+        credentialOfferResponse.data as Map<String, dynamic>,
+      );
 
-      _logger.info('Completed loading credential offer',
-          component: _componentName);
+      _logger.info(
+        'Completed loading credential offer',
+        component: _componentName,
+      );
       return OID4VCIClaimContext(
         issuerMetadata: issuerMetadata,
         credentialOffer: credentialOffer,
       );
     } catch (e, stackTrace) {
-      _logger.error('Failed loading credential offer',
-          component: _componentName, error: e, stackTrace: stackTrace);
+      _logger.error(
+        'Failed loading credential offer',
+        component: _componentName,
+        error: e,
+        stackTrace: stackTrace,
+      );
       if (e is TdkException) {
         rethrow;
       }
@@ -154,19 +167,23 @@ class OID4VCIClaimVerifiableCredentialService
   }
 
   Future<Response> _getCredentialsOfferResponse(
-      String credentialOfferUri) async {
+    String credentialOfferUri,
+  ) async {
     final credentialOfferResponse = await _claimVerifiableCredentialApiService
         .getCredentialOffer(offerUri: credentialOfferUri);
 
     if (credentialOfferResponse.statusCode != 200) {
       _logger.error(
-          'Failed loading credential offer - ${credentialOfferResponse.data}',
-          component: _componentName);
+        'Failed loading credential offer - ${credentialOfferResponse.data}',
+        component: _componentName,
+      );
       final errorResponse = ErrorResponse.fromJson(
-          credentialOfferResponse.data as Map<String, dynamic>);
+        credentialOfferResponse.data as Map<String, dynamic>,
+      );
       Error.throwWithStackTrace(
-          TdkExceptionExtension.fromErrorResponse(errorResponse),
-          StackTrace.current);
+        TdkExceptionExtension.fromErrorResponse(errorResponse),
+        StackTrace.current,
+      );
     }
 
     return credentialOfferResponse;
@@ -207,18 +224,20 @@ class OID4VCIClaimVerifiableCredentialService
     try {
       final accessTokenResponse = await _claimVerifiableCredentialApiService
           .getClaimCredentialAccessToken(
-        offer: claimContext.credentialOffer,
-        tokenEndpoint: claimContext.issuerMetadata.tokenEndpoint,
-        transactionCode: txCode,
-      );
+            offer: claimContext.credentialOffer,
+            tokenEndpoint: claimContext.issuerMetadata.tokenEndpoint,
+            transactionCode: txCode,
+          );
 
       if (accessTokenResponse.statusCode != 200) {
         _logger.error(
-            'Failed loading credential offer - ${accessTokenResponse.data}',
-            component: _componentName);
+          'Failed loading credential offer - ${accessTokenResponse.data}',
+          component: _componentName,
+        );
         Error.throwWithStackTrace(
           TdkExceptionExtension.fromError(
-              accessTokenResponse.data as Map<String, dynamic>),
+            accessTokenResponse.data as Map<String, dynamic>,
+          ),
           StackTrace.current,
         );
       }
@@ -227,21 +246,23 @@ class OID4VCIClaimVerifiableCredentialService
           accessTokenResponse.data as Map<String, dynamic>;
 
       final jwt = await _consumerAuthProvider.fetchCisToken();
-      final credentialResponse =
-          await _claimVerifiableCredentialApiService.claimCredential(
-        accessToken: accessTokenResponseJson['access_token'] as String,
-        offer: claimContext.credentialOffer,
-        credentialEndpoint: claimContext.issuerMetadata.credentialEndpoint,
-        jwt: jwt,
-      );
+      final credentialResponse = await _claimVerifiableCredentialApiService
+          .claimCredential(
+            accessToken: accessTokenResponseJson['access_token'] as String,
+            offer: claimContext.credentialOffer,
+            credentialEndpoint: claimContext.issuerMetadata.credentialEndpoint,
+            jwt: jwt,
+          );
 
       if (credentialResponse.statusCode != 200) {
         _logger.error(
-            'Failed claiming credential offer - ${credentialResponse.data}',
-            component: _componentName);
+          'Failed claiming credential offer - ${credentialResponse.data}',
+          component: _componentName,
+        );
         Error.throwWithStackTrace(
           TdkExceptionExtension.fromError(
-              credentialResponse.data as Map<String, dynamic>),
+            credentialResponse.data as Map<String, dynamic>,
+          ),
           StackTrace.current,
         );
       }
@@ -258,8 +279,12 @@ class OID4VCIClaimVerifiableCredentialService
 
       return vc;
     } catch (e, stackTrace) {
-      _logger.error('Failed claiming credential offer',
-          component: _componentName, error: e, stackTrace: stackTrace);
+      _logger.error(
+        'Failed claiming credential offer',
+        component: _componentName,
+        error: e,
+        stackTrace: stackTrace,
+      );
       if (e is TdkException) {
         rethrow;
       }

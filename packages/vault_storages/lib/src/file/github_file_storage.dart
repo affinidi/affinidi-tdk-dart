@@ -11,16 +11,14 @@ class GithubFileStorage implements FileStorage {
   /// The [id] parameter is used to identify this storage instance.
   /// The [personalAccessToken] parameter is used for GitHub authentication.
   GithubFileStorage({required String id, required String personalAccessToken})
-      : _id = id;
+    : _id = id;
 
   final String _id;
   @override
   String get id => _id;
 
   @override
-  Future<List<Item>> getFolder({
-    String? folderId,
-  }) {
+  Future<List<Item>> getFolder({String? folderId}) {
     throw UnimplementedError();
   }
 
@@ -33,9 +31,7 @@ class GithubFileStorage implements FileStorage {
   }
 
   @override
-  Future<void> deleteFolder({
-    required String folderId,
-  }) {
+  Future<void> deleteFolder({required String folderId}) {
     throw UnimplementedError();
   }
 
@@ -48,9 +44,7 @@ class GithubFileStorage implements FileStorage {
   }
 
   @override
-  Future<File> getFile({
-    required String fileId,
-  }) {
+  Future<File> getFile({required String fileId}) {
     throw UnimplementedError();
   }
 
@@ -69,17 +63,12 @@ class GithubFileStorage implements FileStorage {
   }
 
   @override
-  Future<void> deleteFile({
-    required String fileId,
-  }) {
+  Future<void> deleteFile({required String fileId}) {
     throw UnimplementedError();
   }
 
   @override
-  Future<void> renameFile({
-    required String fileId,
-    required String newName,
-  }) {
+  Future<void> renameFile({required String fileId, required String newName}) {
     throw UnimplementedError();
   }
 }

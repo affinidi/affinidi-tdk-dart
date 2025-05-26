@@ -18,9 +18,7 @@ Future<void> main() async {
     final wallet = await Bip32Wallet.fromSeed(seed, keyStore);
 
     final keyDerivationPath = "m/44'/60'/0'/0/0";
-    final keyPair = await wallet.deriveKey(
-      derivationPath: keyDerivationPath,
-    );
+    final keyPair = await wallet.deriveKey(derivationPath: keyDerivationPath);
 
     final didDocument = DidKey.generateDocument(keyPair.publicKey);
     final signer = DidSigner(
@@ -32,21 +30,21 @@ Future<void> main() async {
 
     // Create a new instance of ClaimVerifiableCredentialService
     final claimVerifiableCredentialService =
-        OID4VCIClaimVerifiableCredentialService(
-      didSigner: signer,
-    );
+        OID4VCIClaimVerifiableCredentialService(didSigner: signer);
 
     final uri = Uri.parse(
       'https://example.com/callback?credential_offer_uri=https://issuer.example.com/offer/123',
     );
 
     print('Loading credential offer...');
-    final context =
-        await claimVerifiableCredentialService.loadCredentialOffer(uri);
+    final context = await claimVerifiableCredentialService.loadCredentialOffer(
+      uri,
+    );
 
     if (context.credentialOffer.isTxCodeRequired) {
       print(
-          'This credential requires a transaction code. Use claimCredentialWithTxCode instead.');
+        'This credential requires a transaction code. Use claimCredentialWithTxCode instead.',
+      );
       return;
     }
 

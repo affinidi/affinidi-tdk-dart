@@ -14,8 +14,9 @@ abstract class CredentialStorage {
 
   /// Allows saving verifiable credential data to claimed credentials
   /// Throws for network connectivity
-  Future<void> saveCredential(
-      {required VerifiableCredential verifiableCredential});
+  Future<void> saveCredential({
+    required VerifiableCredential verifiableCredential,
+  });
 
   /// Allows deleting a verifiableCredential
   /// Throws if the id does not match any credentials
@@ -25,8 +26,9 @@ abstract class CredentialStorage {
   /// Retrieves a DigitalCredential credential content from its id
   /// Throws if the id does not match any stored credentials
   /// Throws for network connectivity
-  Future<DigitalCredential> getCredential(
-      {required String digitalCredentialId});
+  Future<DigitalCredential> getCredential({
+    required String digitalCredentialId,
+  });
 
   /// Queries credentials using a PEX query.
   ///

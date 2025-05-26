@@ -108,8 +108,10 @@ class Environment {
       LogLevel.off;
 
   /// The list of available environments with their respective configurations.
-  static Environment getEnvironmentConfig(EnvironmentType envType,
-      [ElementsRegion region = _defaultRegion]) {
+  static Environment getEnvironmentConfig(
+    EnvironmentType envType, [
+    ElementsRegion region = _defaultRegion,
+  ]) {
     final _region = region.regionCode;
 
     switch (envType) {
@@ -163,7 +165,8 @@ class Environment {
     EnvironmentType? envType,
     ElementsRegion region = _defaultRegion,
   }) {
-    final resolvedEnvType = envType ??
+    final resolvedEnvType =
+        envType ??
         EnvironmentType.values.firstWhere(
           (e) =>
               e.value == const String.fromEnvironment(enviromentVariableName),

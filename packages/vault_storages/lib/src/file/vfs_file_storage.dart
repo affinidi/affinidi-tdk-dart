@@ -16,8 +16,8 @@ class VFSFileStorage implements FileStorage {
   VFSFileStorage({
     required String id,
     required VaultDataManagerService dataManagerService,
-  })  : _id = id,
-        _vaultDataManagerService = dataManagerService;
+  }) : _id = id,
+       _vaultDataManagerService = dataManagerService;
 
   final String _id;
 
@@ -30,13 +30,16 @@ class VFSFileStorage implements FileStorage {
   Future<List<Item>> getFolder({String? folderId}) async {
     if (folderId == null) {
       Error.throwWithStackTrace(
-          TdkException(
-              message: 'Missing folderId',
-              code: TdkExceptionType.folderNotFound.code),
-          StackTrace.current);
+        TdkException(
+          message: 'Missing folderId',
+          code: TdkExceptionType.folderNotFound.code,
+        ),
+        StackTrace.current,
+      );
     }
-    final items =
-        await _vaultDataManagerService.getChildNodes(nodeId: folderId);
+    final items = await _vaultDataManagerService.getChildNodes(
+      nodeId: folderId,
+    );
 
     if (items == null) {
       return [];
@@ -81,8 +84,9 @@ class VFSFileStorage implements FileStorage {
       parentNodeId: parentFolderId,
     );
 
-    final items =
-        await _vaultDataManagerService.getChildNodes(nodeId: parentFolderId);
+    final items = await _vaultDataManagerService.getChildNodes(
+      nodeId: parentFolderId,
+    );
     final folder = items?.firstWhere(
       (node) => node.name == folderName && node.type == NodeType.FOLDER,
       orElse: () => Error.throwWithStackTrace(
@@ -168,9 +172,6 @@ class VFSFileStorage implements FileStorage {
     required String fileId,
     required String newName,
   }) async {
-    await _vaultDataManagerService.renameFile(
-      nodeId: fileId,
-      newName: newName,
-    );
+    await _vaultDataManagerService.renameFile(nodeId: fileId, newName: newName);
   }
 }

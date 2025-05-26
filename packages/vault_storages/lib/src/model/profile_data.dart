@@ -17,25 +17,20 @@ class ProfileData {
   /// Creates a new profile data instance.
   ///
   /// Requires both [categories] and [person] data points.
-  ProfileData({
-    required this.categories,
-    required this.person,
-  });
+  ProfileData({required this.categories, required this.person});
 
   /// Creates a [ProfileData] from a JSON map.
   factory ProfileData.fromJson(Map<String, dynamic> json) {
     return ProfileData(
-      categories:
-          ProfileDatapoint.fromJson(json['categories'] as Map<String, dynamic>),
+      categories: ProfileDatapoint.fromJson(
+        json['categories'] as Map<String, dynamic>,
+      ),
       person: ProfileDatapoint.fromJson(json['person'] as Map<String, dynamic>),
     );
   }
 
   /// Converts this [ProfileData] to a JSON map.
   Map<String, dynamic> toJson() {
-    return {
-      'categories': categories.toJson(),
-      'person': person.toJson(),
-    };
+    return {'categories': categories.toJson(), 'person': person.toJson()};
   }
 }

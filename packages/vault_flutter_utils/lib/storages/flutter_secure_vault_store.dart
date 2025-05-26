@@ -34,9 +34,7 @@ class FlutterSecureVaultStore extends VaultStore {
   /// Returns any pre-saved seed or null
   @override
   Future<Uint8List?> getSeed() async {
-    final data = await _secureStorage.read(
-      key: _Key.seed.key(_vaultId),
-    );
+    final data = await _secureStorage.read(key: _Key.seed.key(_vaultId));
 
     if (data == null) {
       return null;
@@ -59,17 +57,12 @@ class FlutterSecureVaultStore extends VaultStore {
     if (_Key.values.any((k) => k.key(_vaultId) == key)) {
       throw ArgumentError('Cannot use reserved key: $key');
     }
-    await _secureStorage.write(
-      key: key,
-      value: jsonEncode(value.toJson()),
-    );
+    await _secureStorage.write(key: key, value: jsonEncode(value.toJson()));
   }
 
   @override
   Future<StoredKey?> get(String key) async {
-    final data = await _secureStorage.read(
-      key: key,
-    );
+    final data = await _secureStorage.read(key: key);
     if (data == null) {
       return null;
     }

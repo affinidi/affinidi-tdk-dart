@@ -22,29 +22,30 @@ void main() {
     });
 
     test(
-        'decrypt legacy seed from JS SDK via Affinidi Vault, then encrypt seed',
-        () async {
-      final walletEncryptedSeed =
-          "b90c475ad00b935012095ebbd896e4fea14eb5f1e40f75cafa710ab5894a0dd695d8ec3b041259ac70460d8a3bf1dd3eb06513f4fcfca491a9a2a9ffe2bba7f7019348f623c3edd5eb2a71c96e28d6a975bf49b2710a45aad264697ee54ea54b";
-      final walletEncryptionKey =
-          "685bec30c54bffcf54bf57f34876b4e103c6c93641f80a08a479e0e10eed6b18";
-      final passphrase = 'passphrase';
+      'decrypt legacy seed from JS SDK via Affinidi Vault, then encrypt seed',
+      () async {
+        final walletEncryptedSeed =
+            "b90c475ad00b935012095ebbd896e4fea14eb5f1e40f75cafa710ab5894a0dd695d8ec3b041259ac70460d8a3bf1dd3eb06513f4fcfca491a9a2a9ffe2bba7f7019348f623c3edd5eb2a71c96e28d6a975bf49b2710a45aad264697ee54ea54b";
+        final walletEncryptionKey =
+            "685bec30c54bffcf54bf57f34876b4e103c6c93641f80a08a479e0e10eed6b18";
+        final passphrase = 'passphrase';
 
-      final decryptedSeed = await SeedCryptography.decryptSeed(
-        encryptedSeedHex: walletEncryptedSeed,
-        encryptionKeyHex: walletEncryptionKey,
-      );
-      final walletMaterials = await SeedCryptography.encryptSeed(
-        seed: decryptedSeed,
-        passphrase: passphrase,
-      );
-      final decryptedSeed2 = await SeedCryptography.decryptSeed(
-        encryptedSeedHex: walletMaterials.encryptedSeed,
-        encryptionKeyHex: walletMaterials.encryptionKey,
-      );
+        final decryptedSeed = await SeedCryptography.decryptSeed(
+          encryptedSeedHex: walletEncryptedSeed,
+          encryptionKeyHex: walletEncryptionKey,
+        );
+        final walletMaterials = await SeedCryptography.encryptSeed(
+          seed: decryptedSeed,
+          passphrase: passphrase,
+        );
+        final decryptedSeed2 = await SeedCryptography.decryptSeed(
+          encryptedSeedHex: walletMaterials.encryptedSeed,
+          encryptionKeyHex: walletMaterials.encryptionKey,
+        );
 
-      expect(decryptedSeed2, decryptedSeed);
-    });
+        expect(decryptedSeed2, decryptedSeed);
+      },
+    );
 
     test('decrypt seed created from Vault package', () async {
       final vaultEncryptedSeed =

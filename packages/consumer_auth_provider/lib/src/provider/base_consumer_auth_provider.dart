@@ -19,11 +19,15 @@ class BaseConsumerAuthProvider implements ConsumerAuthProviderInterface {
 
   /// Constructor for [BaseConsumerAuthProvider] using the [signer] and optional [Dio] http client.
   BaseConsumerAuthProvider({required DidSigner signer, Dio? client}) {
-    _consumerTokenProvider =
-        ConsumerTokenProvider(signer: signer, client: client);
+    _consumerTokenProvider = ConsumerTokenProvider(
+      signer: signer,
+      client: client,
+    );
     _cisTokenProvider = CisTokenProvider(signer: signer, client: client);
-    _delegatedTokenProvider =
-        DelegatedTokenProvider(signer: signer, client: client);
+    _delegatedTokenProvider = DelegatedTokenProvider(
+      signer: signer,
+      client: client,
+    );
   }
 
   @override
@@ -41,8 +45,9 @@ class BaseConsumerAuthProvider implements ConsumerAuthProviderInterface {
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
         TdkException(
-            message: 'Failed to fetch consumer token',
-            code: TdkExceptionType.failedToFetchConsumerToken.code),
+          message: 'Failed to fetch consumer token',
+          code: TdkExceptionType.failedToFetchConsumerToken.code,
+        ),
         stackTrace,
       );
     }
@@ -64,7 +69,7 @@ class BaseConsumerAuthProvider implements ConsumerAuthProviderInterface {
 
   @override
   Future<({String accessToken, List? authorizationDetails})>
-      exchangePreAuthCodeForToken({
+  exchangePreAuthCodeForToken({
     required String tokenEndpoint,
     required String preAuthCode,
     String? txCode,

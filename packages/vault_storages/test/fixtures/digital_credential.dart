@@ -25,13 +25,15 @@ final Node credentialNode = Node.fromJson({
   'type': 'VC',
   'nodeId': 'node_id',
   'edekInfo': {'dekekId': 'test_dekek_id', 'edek': 'test_edek'},
-  'getUrl': 'test_url'
+  'getUrl': 'test_url',
 });
 
 final List<DigitalCredential> digitalCredentials = List.from(
   List.generate(
     5,
     (index) => DigitalCredential(
-        id: credentialNode.nodeId, verifiableCredential: credentials[index]),
+      id: credentialNode.nodeId,
+      verifiableCredential: credentials[index],
+    ),
   ),
 );

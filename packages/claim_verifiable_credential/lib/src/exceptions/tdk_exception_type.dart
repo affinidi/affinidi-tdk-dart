@@ -21,33 +21,45 @@
 enum TdkExceptionType {
   /// Indicates that the credential offer has already been claimed.
   credentialOfferClaimed(
-      'CredentialOfferClaimedError', 'credential_offer_claimed'),
+    'CredentialOfferClaimedError',
+    'credential_offer_claimed',
+  ),
 
   /// Indicates that the credential offer has expired.
   credentialOfferExpired(
-      'CredentialOfferExpiredError', 'credential_offer_expired'),
+    'CredentialOfferExpiredError',
+    'credential_offer_expired',
+  ),
 
   /// Indicates the proof in the credential request is invalid.
   invalidCredentialProof('InvalidCredentialProof', 'invalid_credential_proof'),
 
   /// Represents an invalid credential request error.
   invalidCredentialRequest(
-      'InvalidCredentialRequestError', 'invalid_credential_request'),
+    'InvalidCredentialRequestError',
+    'invalid_credential_request',
+  ),
 
   /// Indicates that the access token has expired.
   expiredToken('ExpiredTokenError', 'expired_token'),
 
   /// Represents a failure to claim a credential.
   failedToClaimCredential(
-      'FailedToClaimCredential', 'failed_to_claim_credential'),
+    'FailedToClaimCredential',
+    'failed_to_claim_credential',
+  ),
 
   /// Indicates a failure to load the credential offer.
   failedToLoadCredentialOffer(
-      'FailedToLoadCredentialOffer', 'failed_to_load_credential_offer'),
+    'FailedToLoadCredentialOffer',
+    'failed_to_load_credential_offer',
+  ),
 
   /// Represents a failure to load issuer metadata.
   failedToLoadIssuerMetadata(
-      'FailedToLoadIssuerMetadata', 'failed_to_load_issuer_metadata'),
+    'FailedToLoadIssuerMetadata',
+    'failed_to_load_issuer_metadata',
+  ),
 
   /// Indicates an invalid parameter error.
   invalidParameter('InvalidParameterError', 'invalid_parameter'),
@@ -65,8 +77,7 @@ enum TdkExceptionType {
   serverError('serverError', 'server_error'),
 
   /// Represents an unmatched transaction code error.
-  unmatchedTxCode('UnmatchedTxCode', 'unmatched_tx_code'),
-  ;
+  unmatchedTxCode('UnmatchedTxCode', 'unmatched_tx_code');
 
   const TdkExceptionType(this.jsonValue, this.code);
 

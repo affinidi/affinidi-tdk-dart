@@ -13,8 +13,9 @@ class VaultDataManagerApiServiceMocks {
       mockVaultDataManagerApiService.uploadVerifiableCredential(
         profileId: any(named: 'profileId'),
         dekEncryptedByVfsPublicKey: any(named: 'dekEncryptedByVfsPublicKey'),
-        dekEncryptedByWalletCryptoMaterial:
-            any(named: 'dekEncryptedByWalletCryptoMaterial'),
+        dekEncryptedByWalletCryptoMaterial: any(
+          named: 'dekEncryptedByWalletCryptoMaterial',
+        ),
         walletCryptoMaterialHash: any(named: 'walletCryptoMaterialHash'),
         verifiableCredentialName: any(named: 'verifiableCredentialName'),
         verifiableCredentialBlob: any(named: 'verifiableCredentialBlob'),
@@ -26,8 +27,9 @@ class VaultDataManagerApiServiceMocks {
         fileName: any(named: 'fileName'),
         file: any(named: 'file'),
         dekEncryptedByVfsPublicKey: any(named: 'dekEncryptedByVfsPublicKey'),
-        dekEncryptedByWalletCryptoMaterial:
-            any(named: 'dekEncryptedByWalletCryptoMaterial'),
+        dekEncryptedByWalletCryptoMaterial: any(
+          named: 'dekEncryptedByWalletCryptoMaterial',
+        ),
         walletCryptoMaterialHash: any(named: 'walletCryptoMaterialHash'),
       );
 
@@ -41,8 +43,9 @@ class VaultDataManagerApiServiceMocks {
       mockVaultDataManagerApiService.createProfile(
         profileName: any(named: 'profileName'),
         dekEncryptedByVfsPublicKey: any(named: 'dekEncryptedByVfsPublicKey'),
-        dekEncryptedByWalletCryptoMaterial:
-            any(named: 'dekEncryptedByWalletCryptoMaterial'),
+        dekEncryptedByWalletCryptoMaterial: any(
+          named: 'dekEncryptedByWalletCryptoMaterial',
+        ),
         walletCryptoMaterialHash: any(named: 'walletCryptoMaterialHash'),
       );
 
@@ -57,9 +60,7 @@ class VaultDataManagerApiServiceMocks {
       );
 
   Future<Response<GetDetailedNodeInfoOK>> getNodeInfoWithoutDek() =>
-      mockVaultDataManagerApiService.getNodeInfo(
-        nodeId: any(named: 'nodeId'),
-      );
+      mockVaultDataManagerApiService.getNodeInfo(nodeId: any(named: 'nodeId'));
 
   Future<Response<GetDetailedNodeInfoOK>> getNodeInfoWithDek() =>
       mockVaultDataManagerApiService.getNodeInfo(

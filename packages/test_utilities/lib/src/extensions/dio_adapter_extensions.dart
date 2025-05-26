@@ -19,12 +19,9 @@ enum HttpMethod {
 
   /// PUT method
   put,
-  ;
 }
 
-const _defaultHeaders = {
-  'content-type': 'application/json',
-};
+const _defaultHeaders = {'content-type': 'application/json'};
 
 /// Extension methods for DioAdapter to simplify mocking HTTP requests.
 extension DioAdapterExtensions on DioAdapter {
@@ -47,36 +44,22 @@ extension DioAdapterExtensions on DioAdapter {
     if (statusCode == null && exception == null) {
       throw ArgumentError('Either statusCode or exception must be provided');
     }
-    final dioException = exception ??
+    final dioException =
+        exception ??
         DioExceptionFixtures.withStatusCode(statusCode!, url: url, data: data);
     final responseStatus = statusCode ?? 0;
 
     switch (httpMethod) {
       case HttpMethod.delete:
-        onDelete(
-          url,
-          (server) => server.throws(responseStatus, dioException),
-        );
+        onDelete(url, (server) => server.throws(responseStatus, dioException));
       case HttpMethod.get:
-        onGet(
-          url,
-          (server) => server.throws(responseStatus, dioException),
-        );
+        onGet(url, (server) => server.throws(responseStatus, dioException));
       case HttpMethod.patch:
-        onPatch(
-          url,
-          (server) => server.throws(responseStatus, dioException),
-        );
+        onPatch(url, (server) => server.throws(responseStatus, dioException));
       case HttpMethod.post:
-        onPost(
-          url,
-          (server) => server.throws(responseStatus, dioException),
-        );
+        onPost(url, (server) => server.throws(responseStatus, dioException));
       case HttpMethod.put:
-        onPut(
-          url,
-          (server) => server.throws(responseStatus, dioException),
-        );
+        onPut(url, (server) => server.throws(responseStatus, dioException));
     }
   }
 

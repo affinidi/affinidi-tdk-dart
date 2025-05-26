@@ -16,9 +16,9 @@ class VFSCredentialStorage implements CredentialStorage {
     required String id,
     required vfs_storage.VaultDataManagerService dataManagerService,
     required String profileId,
-  })  : _id = id,
-        _vaultDataManagerService = dataManagerService,
-        _profileId = profileId;
+  }) : _id = id,
+       _vaultDataManagerService = dataManagerService,
+       _profileId = profileId;
 
   final String _id;
   @override
@@ -33,8 +33,9 @@ class VFSCredentialStorage implements CredentialStorage {
   }
 
   @override
-  Future<void> saveCredential(
-      {required VerifiableCredential verifiableCredential}) async {
+  Future<void> saveCredential({
+    required VerifiableCredential verifiableCredential,
+  }) async {
     await _vaultDataManagerService.addVerifiableCredentialToProfile(
       verifiableCredential: verifiableCredential,
       profileId: _profileId,
@@ -49,10 +50,11 @@ class VFSCredentialStorage implements CredentialStorage {
   }
 
   @override
-  Future<DigitalCredential> getCredential(
-      {required String digitalCredentialId}) async {
-    final digitalCredentials =
-        await _vaultDataManagerService.getDigitalCredentials(_profileId);
+  Future<DigitalCredential> getCredential({
+    required String digitalCredentialId,
+  }) async {
+    final digitalCredentials = await _vaultDataManagerService
+        .getDigitalCredentials(_profileId);
     final existingCredential = digitalCredentials
         .where(
           (digitalCredential) => digitalCredential.id == digitalCredentialId,

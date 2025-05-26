@@ -6,7 +6,7 @@ class CredentialFixtures {
       'id': 'test-vc-id',
       'issuer': 'test-issuer',
       'issuanceDate': DateTime.now().toIso8601String(),
-      'credentialSubject': {'id': 'test-subject', 'name': 'Test User'}
+      'credentialSubject': {'id': 'test-subject', 'name': 'Test User'},
     };
   }
 }

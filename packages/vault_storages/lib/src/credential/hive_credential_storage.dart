@@ -23,8 +23,9 @@ class HiveCredentialStorage implements CredentialStorage {
 
   /// Saves a verifiable credential to storage.
   @override
-  Future<void> saveCredential(
-      {required VerifiableCredential verifiableCredential}) {
+  Future<void> saveCredential({
+    required VerifiableCredential verifiableCredential,
+  }) {
     throw UnimplementedError();
   }
 
@@ -36,8 +37,9 @@ class HiveCredentialStorage implements CredentialStorage {
 
   /// Retrieves a specific verifiable credential by its ID.
   @override
-  Future<DigitalCredential> getCredential(
-      {required String digitalCredentialId}) {
+  Future<DigitalCredential> getCredential({
+    required String digitalCredentialId,
+  }) {
     throw UnimplementedError();
   }
 

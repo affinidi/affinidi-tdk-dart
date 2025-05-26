@@ -5,10 +5,11 @@ import 'mocks.dart';
 
 class VaultDataManagerEncryptionServiceMocks {
   VaultDataManagerEncryptionServiceMocks(
-      this.mockVaultDataManagerEncryptionService);
+    this.mockVaultDataManagerEncryptionService,
+  );
 
   final MockVaultDataManagerEncryptionService
-      mockVaultDataManagerEncryptionService;
+  mockVaultDataManagerEncryptionService;
 
   Future<DataEncryptionMaterial> generateDataEncryptionMaterial() =>
       mockVaultDataManagerEncryptionService.generateDataEncryptionMaterial();

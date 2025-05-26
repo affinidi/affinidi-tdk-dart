@@ -20,10 +20,7 @@ abstract class ProfileRepository {
   ///
   /// [name] - The name of the new profile.
   /// [description] - Optional description of the profile.
-  Future<void> createProfile({
-    required String name,
-    String? description,
-  });
+  Future<void> createProfile({required String name, String? description});
 
   /// Updates an existing profile.
   ///

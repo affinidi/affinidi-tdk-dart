@@ -45,9 +45,7 @@ abstract interface class VaultDataManagerApiServiceInterface {
   });
 
   /// Gets all the children nodes for a given [nodeId]
-  Future<Response<ListNodeChildrenOK>> getChildrenByNodeId(
-    String nodeId,
-  );
+  Future<Response<ListNodeChildrenOK>> getChildrenByNodeId(String nodeId);
 
   /// Gets detailed information for a given [nodeId]
   Future<Response<GetDetailedNodeInfoOK>> getNodeInfo({
@@ -116,9 +114,7 @@ abstract interface class VaultDataManagerApiServiceInterface {
   });
 
   /// Deletes a node by a given [nodeId]
-  Future<Response<DeleteNodeDto>> deleteNodeById({
-    required String nodeId,
-  });
+  Future<Response<DeleteNodeDto>> deleteNodeById({required String nodeId});
 
   /// Gets the profile template. Default to https://schema.affinidi.io/profile-template/template.json.
   Future<Response> getProfileTemplate();

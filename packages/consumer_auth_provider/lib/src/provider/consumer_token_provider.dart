@@ -17,11 +17,9 @@ class ConsumerTokenProvider extends TokenProvider with JwtTokenDidChecker {
   static final int _consumerTokenExpiration = 5 * 60; // 5 minutes
 
   /// Constructor for [ConsumerTokenProvider] using the [signer] and optional [Dio] http client.
-  ConsumerTokenProvider({
-    required DidSigner signer,
-    Dio? client,
-  })  : _signer = signer,
-        _dioInstance = client ?? Dio();
+  ConsumerTokenProvider({required DidSigner signer, Dio? client})
+    : _signer = signer,
+      _dioInstance = client ?? Dio();
 
   /// Method to retrieve a consumer token.
   ///
@@ -33,15 +31,18 @@ class ConsumerTokenProvider extends TokenProvider with JwtTokenDidChecker {
       audience: _tokenEndpoint,
     );
     final did = _signer.did;
-    final consumerToken =
-        await _fetchConsumerToken(clientAssertion: token, did: did);
+    final consumerToken = await _fetchConsumerToken(
+      clientAssertion: token,
+      did: did,
+    );
 
     final decodedToken = JwtDecoder.decode(consumerToken);
     if (!hasMatchingDid(decodedToken: decodedToken, did: did)) {
       Error.throwWithStackTrace(
         TdkException(
-            message: 'Consumer token DID does not match user DID',
-            code: TdkExceptionType.consumerTokenDidMismatch.code),
+          message: 'Consumer token DID does not match user DID',
+          code: TdkExceptionType.consumerTokenDidMismatch.code,
+        ),
         StackTrace.current,
       );
     }

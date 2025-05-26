@@ -21,17 +21,17 @@ class VfsSharedStorage implements vault.SharedStorage {
     required String id,
     required VaultDataManagerService dataManagerService,
     required String sharedProfileId, // nodePath
-  })  : _id = id,
-        _sharedProfileId = sharedProfileId,
-        _credentialStorage = VFSCredentialStorage(
-          id: id,
-          dataManagerService: dataManagerService,
-          profileId: sharedProfileId,
-        ),
-        _fileStorage = VFSFileStorage(
-          id: id,
-          dataManagerService: dataManagerService,
-        );
+  }) : _id = id,
+       _sharedProfileId = sharedProfileId,
+       _credentialStorage = VFSCredentialStorage(
+         id: id,
+         dataManagerService: dataManagerService,
+         profileId: sharedProfileId,
+       ),
+       _fileStorage = VFSFileStorage(
+         id: id,
+         dataManagerService: dataManagerService,
+       );
 
   final String _id;
   final String _sharedProfileId;
@@ -51,10 +51,11 @@ class VfsSharedStorage implements vault.SharedStorage {
   }
 
   @override
-  Future<void> createFile(
-      {required String fileName,
-      required Uint8List data,
-      String? parentFolderId}) async {
+  Future<void> createFile({
+    required String fileName,
+    required Uint8List data,
+    String? parentFolderId,
+  }) async {
     await _fileStorage.createFile(
       fileName: fileName,
       data: data,
@@ -63,10 +64,14 @@ class VfsSharedStorage implements vault.SharedStorage {
   }
 
   @override
-  Future<vault.Folder> createFolder(
-      {required String folderName, required String parentFolderId}) async {
+  Future<vault.Folder> createFolder({
+    required String folderName,
+    required String parentFolderId,
+  }) async {
     return _fileStorage.createFolder(
-        folderName: folderName, parentFolderId: parentFolderId);
+      folderName: folderName,
+      parentFolderId: parentFolderId,
+    );
   }
 
   @override
@@ -90,14 +95,18 @@ class VfsSharedStorage implements vault.SharedStorage {
   }
 
   @override
-  Future<void> renameFile(
-      {required String fileId, required String newName}) async {
+  Future<void> renameFile({
+    required String fileId,
+    required String newName,
+  }) async {
     await _fileStorage.renameFile(fileId: fileId, newName: newName);
   }
 
   @override
-  Future<void> renameFolder(
-      {required String folderId, required String newName}) async {
+  Future<void> renameFolder({
+    required String folderId,
+    required String newName,
+  }) async {
     await _fileStorage.renameFolder(folderId: folderId, newName: newName);
   }
 
@@ -106,14 +115,17 @@ class VfsSharedStorage implements vault.SharedStorage {
   @override
   Future<void> deleteCredential({required String digitalCredentialId}) async {
     await _credentialStorage.deleteCredential(
-        digitalCredentialId: digitalCredentialId);
+      digitalCredentialId: digitalCredentialId,
+    );
   }
 
   @override
-  Future<vault.DigitalCredential> getCredential(
-      {required String digitalCredentialId}) async {
+  Future<vault.DigitalCredential> getCredential({
+    required String digitalCredentialId,
+  }) async {
     return await _credentialStorage.getCredential(
-        digitalCredentialId: digitalCredentialId);
+      digitalCredentialId: digitalCredentialId,
+    );
   }
 
   @override
@@ -122,10 +134,12 @@ class VfsSharedStorage implements vault.SharedStorage {
   }
 
   @override
-  Future<void> saveCredential(
-      {required VerifiableCredential verifiableCredential}) async {
+  Future<void> saveCredential({
+    required VerifiableCredential verifiableCredential,
+  }) async {
     await _credentialStorage.saveCredential(
-        verifiableCredential: verifiableCredential);
+      verifiableCredential: verifiableCredential,
+    );
   }
 
   @override

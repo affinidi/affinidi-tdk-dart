@@ -2,10 +2,7 @@ class WalletMaterials {
   String encryptedSeed;
   String encryptionKey;
 
-  WalletMaterials({
-    required this.encryptedSeed,
-    required this.encryptionKey,
-  });
+  WalletMaterials({required this.encryptedSeed, required this.encryptionKey});
 
   factory WalletMaterials.fromJson(Map<String, dynamic> json) {
     return WalletMaterials(
@@ -15,9 +12,6 @@ class WalletMaterials {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'encryptedSeed': encryptedSeed,
-      'encryptionKey': encryptionKey,
-    };
+    return {'encryptedSeed': encryptedSeed, 'encryptionKey': encryptionKey};
   }
 }

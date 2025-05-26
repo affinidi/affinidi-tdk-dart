@@ -64,8 +64,7 @@ enum TdkExceptionType {
   unsupportedNodeType('unsupported_node_type'),
 
   /// Exception thrown when the profile repository is incorrect.
-  wrongProfileRepository('wrong_profile_repository'),
-  ;
+  wrongProfileRepository('wrong_profile_repository');
 
   /// Creates a new instance of [TdkExceptionType].
   ///

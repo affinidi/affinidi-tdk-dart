@@ -19,8 +19,9 @@ abstract interface class CredentialsServiceInterface {
   /// ```dart
   /// final digitalCredentials = await credentialsService.listNodes();
   /// ```
-  Future<List<DigitalCredential>> listNodes(
-      [bool Function(DigitalCredential digitalCredential)? predicate]);
+  Future<List<DigitalCredential>> listNodes([
+    bool Function(DigitalCredential digitalCredential)? predicate,
+  ]);
 
   /// Lists all verifiable credentials stored in the profile.
   ///
@@ -32,8 +33,9 @@ abstract interface class CredentialsServiceInterface {
   /// ```dart
   /// final credentials = await credentialsService.list();
   /// ```
-  Future<List<DigitalCredential>> list(
-      [bool Function(DigitalCredential digitalCredential) predicate]);
+  Future<List<DigitalCredential>> list([
+    bool Function(DigitalCredential digitalCredential) predicate,
+  ]);
 
   /// Saves a new verifiable credential to the profile's storage.
   ///
@@ -43,9 +45,7 @@ abstract interface class CredentialsServiceInterface {
   /// ```dart
   /// await credentialsService.save(verifiableCredential: credentialToBeSaved);
   /// ```
-  Future<void> save({
-    required VerifiableCredential verifiableCredential,
-  });
+  Future<void> save({required VerifiableCredential verifiableCredential});
 
   /// Deletes a stored credential from the profile.
   ///
@@ -55,7 +55,5 @@ abstract interface class CredentialsServiceInterface {
   /// ```dart
   /// await credentialsService.delete(digitalCredentialId: 'your_digital_credential_id');
   /// ```
-  Future<void> delete({
-    required String digitalCredentialId,
-  });
+  Future<void> delete({required String digitalCredentialId});
 }

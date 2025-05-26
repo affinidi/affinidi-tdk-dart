@@ -22,8 +22,10 @@ void main() {
 
     setUp(() async {
       mockService = MockVaultDataManagerService();
-      vfsFileStorage =
-          VFSFileStorage(id: 'test-id', dataManagerService: mockService);
+      vfsFileStorage = VFSFileStorage(
+        id: 'test-id',
+        dataManagerService: mockService,
+      );
 
       stubFileService(mockService);
     });
@@ -31,18 +33,21 @@ void main() {
     group('When performing create operations', () {
       test('it should create a folder successfully', () async {
         final mockFolder = NodeFixtures.mockFolderNode(testProfileId);
-        when(() => mockService.getChildNodes(nodeId: any(named: 'nodeId')))
-            .thenAnswer((_) async => [mockFolder]);
+        when(
+          () => mockService.getChildNodes(nodeId: any(named: 'nodeId')),
+        ).thenAnswer((_) async => [mockFolder]);
 
         await vfsFileStorage.createFolder(
           folderName: 'test-folder',
           parentFolderId: 'parent-id',
         );
 
-        verify(() => mockService.createFolder(
-              parentNodeId: 'parent-id',
-              folderName: 'test-folder',
-            )).called(1);
+        verify(
+          () => mockService.createFolder(
+            parentNodeId: 'parent-id',
+            folderName: 'test-folder',
+          ),
+        ).called(1);
       });
 
       test('it should create a file successfully', () async {
@@ -54,11 +59,13 @@ void main() {
           parentFolderId: 'parent-id',
         );
 
-        verify(() => mockService.createFile(
-              parentFolderNodeId: 'parent-id',
-              fileName: 'test.txt',
-              data: testData,
-            )).called(1);
+        verify(
+          () => mockService.createFile(
+            parentFolderNodeId: 'parent-id',
+            fileName: 'test.txt',
+            data: testData,
+          ),
+        ).called(1);
       });
     });
 
@@ -67,8 +74,9 @@ void main() {
         final mockFile = NodeFixtures.mockFileNode(testProfileId);
         final mockFolder = NodeFixtures.mockFolderNode(testProfileId);
 
-        when(() => mockService.getChildNodes(nodeId: 'folder-id'))
-            .thenAnswer((_) async => [mockFile, mockFolder]);
+        when(
+          () => mockService.getChildNodes(nodeId: 'folder-id'),
+        ).thenAnswer((_) async => [mockFile, mockFolder]);
 
         final items = await vfsFileStorage.getFolder(folderId: 'folder-id');
 
@@ -79,8 +87,9 @@ void main() {
 
       test('it should retrieve a file by ID', () async {
         final mockNode = NodeFixtures.mockFileNode(testProfileId);
-        when(() => mockService.getNodeInfo('file-id'))
-            .thenAnswer((_) async => mockNode);
+        when(
+          () => mockService.getNodeInfo('file-id'),
+        ).thenAnswer((_) async => mockNode);
 
         final file = await vfsFileStorage.getFile(fileId: 'file-id');
 
@@ -90,8 +99,9 @@ void main() {
 
       test('it should retrieve file content', () async {
         final content = Uint8List.fromList([1, 2, 3]);
-        when(() => mockService.downloadFile(nodeId: 'file-id'))
-            .thenAnswer((_) async => content);
+        when(
+          () => mockService.downloadFile(nodeId: 'file-id'),
+        ).thenAnswer((_) async => content);
 
         final result = await vfsFileStorage.getFileContent(fileId: 'file-id');
 
@@ -106,22 +116,20 @@ void main() {
           newName: 'new-name',
         );
 
-        verify(() => mockService.renameFolder(
-              nodeId: 'folder-id',
-              newName: 'new-name',
-            )).called(1);
+        verify(
+          () => mockService.renameFolder(
+            nodeId: 'folder-id',
+            newName: 'new-name',
+          ),
+        ).called(1);
       });
 
       test('it should rename a file', () async {
-        await vfsFileStorage.renameFile(
-          fileId: 'file-id',
-          newName: 'new-name',
-        );
+        await vfsFileStorage.renameFile(fileId: 'file-id', newName: 'new-name');
 
-        verify(() => mockService.renameFile(
-              nodeId: 'file-id',
-              newName: 'new-name',
-            )).called(1);
+        verify(
+          () => mockService.renameFile(nodeId: 'file-id', newName: 'new-name'),
+        ).called(1);
       });
     });
 
@@ -139,17 +147,19 @@ void main() {
 
     group('When handling errors', () {
       test(
-          'it should throw an error if getFile is called with folder node type',
-          () async {
-        final mockFolderNode = NodeFixtures.mockFolderNode(testProfileId);
-        when(() => mockService.getNodeInfo('folder-id'))
-            .thenAnswer((_) async => mockFolderNode);
+        'it should throw an error if getFile is called with folder node type',
+        () async {
+          final mockFolderNode = NodeFixtures.mockFolderNode(testProfileId);
+          when(
+            () => mockService.getNodeInfo('folder-id'),
+          ).thenAnswer((_) async => mockFolderNode);
 
-        expect(
-          () => vfsFileStorage.getFile(fileId: 'folder-id'),
-          throwsA(isA<TdkException>()),
-        );
-      });
+          expect(
+            () => vfsFileStorage.getFile(fileId: 'folder-id'),
+            throwsA(isA<TdkException>()),
+          );
+        },
+      );
     });
   });
 }

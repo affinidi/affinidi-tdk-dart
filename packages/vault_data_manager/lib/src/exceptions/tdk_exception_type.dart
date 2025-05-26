@@ -28,12 +28,15 @@
 enum TdkExceptionType {
   ///Indicates that an account already exists.
   accountAlreadyExists(
-      jsonValue: 'AlreadyExistsError', code: 'account_already_exists'),
+    jsonValue: 'AlreadyExistsError',
+    code: 'account_already_exists',
+  ),
 
   /// Indicates that the maximum number of accounts has been exceeded.
   exceededMaximumAccountAmount(
-      jsonValue: 'ResourceLimitExceededError',
-      code: 'exceeded_maximum_account_amount'),
+    jsonValue: 'ResourceLimitExceededError',
+    code: 'exceeded_maximum_account_amount',
+  ),
 
   /// Indicates a failure in decrypting data.
   failedToDecrypt(code: 'failed_to_decrypt'),
@@ -73,11 +76,13 @@ enum TdkExceptionType {
 
   /// Indicates a failure in initializing the Vault Data Manager system.
   unableToInitVaultDataManagerSystem(
-      code: 'unable_to_init_vault_data_manager_system'),
+    code: 'unable_to_init_vault_data_manager_system',
+  ),
 
   /// Indicates a failure in retrieving the Vault Data Manager public key.
   unableToGetVaultDataManagerPublicKey(
-      code: 'unable_to_get_vault_data_manager_public_key'),
+    code: 'unable_to_get_vault_data_manager_public_key',
+  ),
 
   /// Indicates missing properties required for file upload.
   missingPropertiesForFileUpload(code: 'missing_properties_for_file_upload'),
@@ -104,8 +109,7 @@ enum TdkExceptionType {
   unableToDeleteAccount(code: 'unable_to_delete_account'),
 
   /// Represents an unknown or unspecified error.
-  other(code: 'unknown_error'),
-  ;
+  other(code: 'unknown_error');
 
   const TdkExceptionType({required this.code, this.jsonValue});
 

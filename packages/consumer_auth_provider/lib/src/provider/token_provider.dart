@@ -32,10 +32,7 @@ abstract class TokenProvider {
     final did = signer.did;
     final kid = signer.didKeyId;
 
-    final header = getHeader(
-      alg: alg,
-      kid: kid,
-    );
+    final header = getHeader(alg: alg, kid: kid);
     final jwt = await _getSignedJwtToken(
       signer: signer,
       did: did,
@@ -51,10 +48,7 @@ abstract class TokenProvider {
   /// Retrieves the header as a map of key-value pairs.
   ///
   /// Returns `Map<String, dynamic>` representing the header.
-  Map<String, dynamic> getHeader({
-    required String alg,
-    required String kid,
-  }) {
+  Map<String, dynamic> getHeader({required String alg, required String kid}) {
     return {'alg': alg, 'kid': kid};
   }
 
@@ -76,17 +70,17 @@ abstract class TokenProvider {
         exp: expiration,
       ),
     );
-    final b64header =
-        _getBase64Unpadded(base64UrlEncode(utf8.encode(jsonHeader)));
-    final b64payload =
-        _getBase64Unpadded(base64UrlEncode(utf8.encode(payload)));
+    final b64header = _getBase64Unpadded(
+      base64UrlEncode(utf8.encode(jsonHeader)),
+    );
+    final b64payload = _getBase64Unpadded(
+      base64UrlEncode(utf8.encode(payload)),
+    );
     final msgHashHex = utf8.encode('$b64header.$b64payload');
 
     final signedDigest = await signer.sign(Uint8List.fromList(msgHashHex));
 
-    return '$b64header.$b64payload.${_getBase64Unpadded(
-      base64UrlEncode(Uint8List.fromList(signedDigest)),
-    )}';
+    return '$b64header.$b64payload.${_getBase64Unpadded(base64UrlEncode(Uint8List.fromList(signedDigest)))}';
   }
 
   /// Retrieves the payload from a token.
@@ -98,8 +92,8 @@ abstract class TokenProvider {
     required String aud,
     required int exp,
   }) {
-    final issueTimeS =
-        (DateTime.timestamp().millisecondsSinceEpoch / 1000).floor();
+    final issueTimeS = (DateTime.timestamp().millisecondsSinceEpoch / 1000)
+        .floor();
     final payload = {
       'iss': iss,
       'sub': sub,

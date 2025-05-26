@@ -15,14 +15,14 @@ enum TdkExceptionType {
 
   /// Indicates the retrieved delegated token DID does not match the grantee DID
   delegatedTokenGranteeDidMismatch(
-      code: 'delegated_token_grantee_did_mismatch'),
+    code: 'delegated_token_grantee_did_mismatch',
+  ),
 
   /// Indicates a failure to fetch the consumer authentication token
   failedToFetchConsumerToken(code: 'failed_to_fetch_consumer_auth_token'),
 
   /// Indicates an inability to retrieve the signature scheme
-  unableToGetSignatureScheme(code: 'unable_to_get_signature_scheme'),
-  ;
+  unableToGetSignatureScheme(code: 'unable_to_get_signature_scheme');
 
   const TdkExceptionType({required this.code});
 

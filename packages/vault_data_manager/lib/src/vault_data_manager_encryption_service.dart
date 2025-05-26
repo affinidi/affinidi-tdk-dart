@@ -50,9 +50,9 @@ class VaultDataManagerEncryptionService
     required CryptographyServiceInterface cryptographyService,
     required Map<String, dynamic> jwk,
     required Uint8List kek,
-  })  : _jwk = jwk,
-        _encryptionKey = kek,
-        _cryptographyService = cryptographyService;
+  }) : _jwk = jwk,
+       _encryptionKey = kek,
+       _cryptographyService = cryptographyService;
 
   /// Encrypts the provided DEK using wallet-based encryption key.
   @override
@@ -69,9 +69,7 @@ class VaultDataManagerEncryptionService
 
   /// Decrypts the provided encrypted DEK using wallet-based encryption key.
   @override
-  Future<List<int>> decryptDek({
-    required List<int> encryptedDek,
-  }) async {
+  Future<List<int>> decryptDek({required List<int> encryptedDek}) async {
     final decrypted = _cryptographyService.decryptFromBytes(
       Uint8List.fromList(_encryptionKey),
       Uint8List.fromList(encryptedDek),
@@ -92,9 +90,7 @@ class VaultDataManagerEncryptionService
 
   /// Encrypts the provided DEK using API public key.
   @override
-  Future<List<int>> encryptDekByApiPublicKey({
-    required List<int> dek,
-  }) async {
+  Future<List<int>> encryptDekByApiPublicKey({required List<int> dek}) async {
     final encrypted = _cryptographyService.encryptWithRsaPublicKeyFromJwk(
       jwk: _jwk,
       data: dek,
@@ -120,9 +116,7 @@ class VaultDataManagerEncryptionService
       encryptedDek: base64.decode(encryptedDekBase64),
     );
 
-    final encryptedDek = await encryptDekByApiPublicKey(
-      dek: dek,
-    );
+    final encryptedDek = await encryptDekByApiPublicKey(dek: dek);
     return encryptedDek;
   }
 
@@ -130,14 +124,10 @@ class VaultDataManagerEncryptionService
   Future<DataEncryptionMaterial> generateDataEncryptionMaterial() async {
     final dek = _cryptographyService.getRandomBytes(nonceSize);
 
-    final dekEncryptedByVfsPublicKey = await encryptDekByApiPublicKey(
-      dek: dek,
-    );
+    final dekEncryptedByVfsPublicKey = await encryptDekByApiPublicKey(dek: dek);
 
     final dekEncryptedByWalletCryptoMaterial =
-        await encryptDekByWalletCryptoMaterial(
-      dek: dek,
-    );
+        await encryptDekByWalletCryptoMaterial(dek: dek);
 
     final walletCryptoMaterialHash = await getWalletCryptoMaterialKeyHash();
 

@@ -32,9 +32,7 @@ abstract interface class SharedStorage {
   /// Throws if id does not match a folder
   /// Throws if folder is not empty
   /// Throws for network connectivity
-  Future<void> deleteFolder({
-    required String folderId,
-  });
+  Future<void> deleteFolder({required String folderId});
 
   /// Allows renaming a folder
   /// Throws if folder does not exists
@@ -53,9 +51,7 @@ abstract interface class SharedStorage {
   /// Throws if the file does not exist
   /// Throws if the file is not a file
   /// Throws for network connectivity
-  Future<File> getFile({
-    required String fileId,
-  });
+  Future<File> getFile({required String fileId});
 
   /// Allows retrieving file content
   /// Throws if the file does not exist
@@ -78,18 +74,13 @@ abstract interface class SharedStorage {
   /// Throws if the file does not exist
   /// Throws if the file is not a file
   /// Throws for network connectivity
-  Future<void> deleteFile({
-    required String fileId,
-  });
+  Future<void> deleteFile({required String fileId});
 
   /// Allows renaming a file
   /// Throws if there is another file with same name
   /// Throws if the nodeId does not match a file, IE is a folder.
   /// Throws for network connectivity
-  Future<void> renameFile({
-    required String fileId,
-    required String newName,
-  });
+  Future<void> renameFile({required String fileId, required String newName});
 
   /// Allows retrieving a list of claimed credentials
   /// Throws for network connectivity
@@ -97,8 +88,9 @@ abstract interface class SharedStorage {
 
   /// Allows saving verifiable credential data to claimed credentials
   /// Throws for network connectivity
-  Future<void> saveCredential(
-      {required VerifiableCredential verifiableCredential});
+  Future<void> saveCredential({
+    required VerifiableCredential verifiableCredential,
+  });
 
   /// Allows deleting a verifiableCredential
   /// Throws if the id does not match any credentials
@@ -108,8 +100,9 @@ abstract interface class SharedStorage {
   /// Retrieves a DigitalCredential content based on the id
   /// Throws if the id does not match any credentials
   /// Throws for network connectivity
-  Future<DigitalCredential> getCredential(
-      {required String digitalCredentialId});
+  Future<DigitalCredential> getCredential({
+    required String digitalCredentialId,
+  });
 
   /// Queries credentials using a PEX query.
   ///

@@ -16,15 +16,16 @@ abstract interface class IamApiServiceInterface {
   /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
-  Future<void> grantAccessVfs(
-      {required String granteeDid,
-      required Permissions permissions,
-      CancelToken? cancelToken,
-      Map<String, dynamic>? headers,
-      Map<String, dynamic>? extra,
-      ValidateStatus? validateStatus,
-      ProgressCallback? onSendProgress,
-      ProgressCallback? onReceiveProgress});
+  Future<void> grantAccessVfs({
+    required String granteeDid,
+    required Permissions permissions,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  });
 
   // Update access to the virtual file system
   /// Updates access rights to a subject for the virtual file system

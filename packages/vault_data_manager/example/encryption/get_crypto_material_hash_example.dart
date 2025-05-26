@@ -13,7 +13,7 @@ Future<void> main() async {
     jwk: jwk,
   );
 
-  final dekDecryptedByApiPrivateKey =
-      await vaultDataManagerEncryptionService.getWalletCryptoMaterialKeyHash();
+  final dekDecryptedByApiPrivateKey = await vaultDataManagerEncryptionService
+      .getWalletCryptoMaterialKeyHash();
   print('Wallet Crypto Material Key Hash: $dekDecryptedByApiPrivateKey');
 }

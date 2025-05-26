@@ -33,9 +33,7 @@ abstract interface class VaultDataManagerServiceInterface {
   Future<List<VaultDataManagerProfile>> getProfiles();
 
   /// Gets child nodes for the specified node
-  Future<List<Node>?> getChildNodes({
-    required String nodeId,
-  });
+  Future<List<Node>?> getChildNodes({required String nodeId});
 
   /// Creates a new profile
   ///
@@ -171,21 +169,13 @@ abstract interface class VaultDataManagerServiceInterface {
   ///
   /// Throws [TdkException] if cannot find file info
   /// Throws [TdkException] if cannot get data encryption key
-  Future<List<int>> downloadFile({
-    required String nodeId,
-  });
+  Future<List<int>> downloadFile({required String nodeId});
 
   /// Renames a file
-  Future<void> renameFile({
-    required String nodeId,
-    required String newName,
-  });
+  Future<void> renameFile({required String nodeId, required String newName});
 
   /// Renames a folder
-  Future<void> renameFolder({
-    required String nodeId,
-    required String newName,
-  });
+  Future<void> renameFolder({required String nodeId, required String newName});
 
   /// Deletes a folder and its contents
   Future<void> deleteFolder(String nodeId);
@@ -198,7 +188,8 @@ abstract interface class VaultDataManagerServiceInterface {
 
   /// Gets all verifiable credentials for a profile
   Future<List<DigitalCredential>> getClaimedCredentialsByProfile(
-      String profileId);
+    String profileId,
+  );
 
   /// Gets all digital credentials with their nodes for a profile
   ///
@@ -216,9 +207,7 @@ abstract interface class VaultDataManagerServiceInterface {
   });
 
   /// Deletes a claimed credential
-  Future<void> deleteClaimedCredential({
-    required String nodeId,
-  });
+  Future<void> deleteClaimedCredential({required String nodeId});
 
   /// Gets storage consumption information
   ///
@@ -235,10 +224,7 @@ abstract interface class VaultDataManagerServiceInterface {
   /// Gets accounts of associated profiles. Optionally provide [limit] and [exclusiveStartKey].
   /// [exclusiveStartKey] - is primary key of the first item that this operation will evaluate.
   /// Use the value that was returned for lastEvaluatedKey in the previous operation.
-  Future<List<Account>> getAccounts({
-    int? limit,
-    String? exclusiveStartKey,
-  });
+  Future<List<Account>> getAccounts({int? limit, String? exclusiveStartKey});
 
   /// Creates account. With given [accountIndex], [accountDid], [didProof].
   /// [accountIndex] - positive integer used to identify account.
@@ -252,9 +238,7 @@ abstract interface class VaultDataManagerServiceInterface {
   });
 
   /// Deletes an account for a given [accountIndex].
-  Future<void> deleteAccount({
-    required int accountIndex,
-  });
+  Future<void> deleteAccount({required int accountIndex});
 
   /// Updates an account for a given [accountIndex].
   Future<void> updateAccount({

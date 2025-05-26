@@ -13,9 +13,7 @@ void main() {
 
   setUpAll(() {
     vaultDataManagerApiService = VaultDataManagerApiService(
-      apiClient: AffinidiTdkVaultDataManagerClient(
-        dio: client,
-      ),
+      apiClient: AffinidiTdkVaultDataManagerClient(dio: client),
     );
   });
 
@@ -31,11 +29,12 @@ void main() {
     group('and there are profiles available', () {
       test('it finds a list of profiles', () async {
         dioAdapter.mockRequestWithReply(
-            url: '/v1/nodes',
-            statusCode: 200,
-            data: NodeResponseFixtures.profileList);
-        final profilesResponse =
-            await vaultDataManagerApiService.getListOfProfiles();
+          url: '/v1/nodes',
+          statusCode: 200,
+          data: NodeResponseFixtures.profileList,
+        );
+        final profilesResponse = await vaultDataManagerApiService
+            .getListOfProfiles();
         expect(profilesResponse.data?.nodes?.toList().first.name, 'My profile');
       });
     });
@@ -46,8 +45,8 @@ void main() {
           statusCode: 200,
           data: NodeResponseFixtures.emptyList,
         );
-        final profilesResponse =
-            await vaultDataManagerApiService.getListOfProfiles();
+        final profilesResponse = await vaultDataManagerApiService
+            .getListOfProfiles();
         expect(profilesResponse.data?.nodes, isEmpty);
       });
     });
@@ -63,7 +62,8 @@ void main() {
         );
 
         final nodeInfoResponse = await vaultDataManagerApiService.getNodeInfo(
-            nodeId: 'NzY3ZjYjV2dFR2U=');
+          nodeId: 'NzY3ZjYjV2dFR2U=',
+        );
         expect(nodeInfoResponse.data?.nodeId, equals('NzY3ZjYjV2dFR2U='));
       });
     });
@@ -95,9 +95,11 @@ void main() {
         );
 
         expect(
-            () => vaultDataManagerApiService.deleteNodeById(
-                nodeId: 'NzY3ZjYjV2dFR2U='),
-            throwsException);
+          () => vaultDataManagerApiService.deleteNodeById(
+            nodeId: 'NzY3ZjYjV2dFR2U=',
+          ),
+          throwsException,
+        );
       });
     });
   });
@@ -113,12 +115,15 @@ void main() {
         );
 
         final scanFileResponse = await vaultDataManagerApiService.startFileScan(
-            nodeId: 'NzY3ZjYjV2dFR2UjMGxVV1U=',
-            dekEncryptedByVfsPublicKey: List.generate(32, (index) => 1));
+          nodeId: 'NzY3ZjYjV2dFR2UjMGxVV1U=',
+          dekEncryptedByVfsPublicKey: List.generate(32, (index) => 1),
+        );
         expect(
-            scanFileResponse.data?.jobId,
-            equals(
-                'ff61913ffb889000a8fd8bfcb7a94c3f1fdef272c9f5aff93c4aeabda4e7c038'));
+          scanFileResponse.data?.jobId,
+          equals(
+            'ff61913ffb889000a8fd8bfcb7a94c3f1fdef272c9f5aff93c4aeabda4e7c038',
+          ),
+        );
         expect(scanFileResponse.data?.status.toString(), equals('STARTED'));
       });
     });
@@ -131,10 +136,12 @@ void main() {
         );
 
         expect(
-            () => vaultDataManagerApiService.startFileScan(
-                nodeId: 'NzY3ZjYjV2dFR2UjMGxVV1U=',
-                dekEncryptedByVfsPublicKey: List.generate(32, (index) => 1)),
-            throwsException);
+          () => vaultDataManagerApiService.startFileScan(
+            nodeId: 'NzY3ZjYjV2dFR2UjMGxVV1U=',
+            dekEncryptedByVfsPublicKey: List.generate(32, (index) => 1),
+          ),
+          throwsException,
+        );
       });
     });
   });
@@ -148,10 +155,12 @@ void main() {
           data: FileResponseFixtures.scannedFilesList,
         );
 
-        final scannedFilesResponse =
-            await vaultDataManagerApiService.getAllScannedFiles();
-        expect(scannedFilesResponse.data?.scannedFiles.first.status,
-            equals('COMPLETED'));
+        final scannedFilesResponse = await vaultDataManagerApiService
+            .getAllScannedFiles();
+        expect(
+          scannedFilesResponse.data?.scannedFiles.first.status,
+          equals('COMPLETED'),
+        );
       });
     });
 
@@ -163,8 +172,8 @@ void main() {
           data: FileResponseFixtures.emptyScannedFilesList,
         );
 
-        final scannedFilesResponse =
-            await vaultDataManagerApiService.getAllScannedFiles();
+        final scannedFilesResponse = await vaultDataManagerApiService
+            .getAllScannedFiles();
         expect(scannedFilesResponse.data?.scannedFiles, isEmpty);
       });
     });

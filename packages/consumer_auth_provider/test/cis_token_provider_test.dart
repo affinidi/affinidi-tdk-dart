@@ -8,24 +8,34 @@ import 'fixtures/did_signer_fixture.dart';
 void main() {
   group('When retrieving a CIS token', () {
     group('and uses a DidSigner with an invalid algorithm', () {
-      test('it throws an exception with code unableToGetSignatureScheme',
-          () async {
-        final didSigner = await DidSignerFixture.withInvalidAlgorithm(
-            'a1772b144344781f2a55fc4d5e49f3767bb0967205ad08454a09c76d96fd2ccd');
+      test(
+        'it throws an exception with code unableToGetSignatureScheme',
+        () async {
+          final didSigner = await DidSignerFixture.withInvalidAlgorithm(
+            'a1772b144344781f2a55fc4d5e49f3767bb0967205ad08454a09c76d96fd2ccd',
+          );
 
-        final provider = ConsumerAuthProvider(signer: didSigner);
+          final provider = ConsumerAuthProvider(signer: didSigner);
 
-        await expectLater(
+          await expectLater(
             provider.fetchCisToken(),
-            throwsA(isA<TdkException>().having((error) => error.code, 'code',
-                TdkExceptionType.unableToGetSignatureScheme.code)));
-      });
+            throwsA(
+              isA<TdkException>().having(
+                (error) => error.code,
+                'code',
+                TdkExceptionType.unableToGetSignatureScheme.code,
+              ),
+            ),
+          );
+        },
+      );
     });
 
     group('and a token is returned', () {
       test('it contains all the required fields', () async {
         final didSigner = await DidSignerFixture.withSeed(
-            'a1772b144344781f2a55fc4d5e49f3767bb0967205ad08454a09c76d96fd2ccd');
+          'a1772b144344781f2a55fc4d5e49f3767bb0967205ad08454a09c76d96fd2ccd',
+        );
 
         final provider = ConsumerAuthProvider(signer: didSigner);
 

@@ -29,5 +29,4 @@ enum LogLevel {
 
   /// No messages will be logged.
   off,
-  ;
 }

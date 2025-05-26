@@ -31,20 +31,25 @@ void main() {
 
       stubCredentialService(mockService, mockVC, profileId: testProfileId);
 
-      final mockDigitalCredential =
-          MockDigitalCredential(mockVC, id: 'test node Id');
+      final mockDigitalCredential = MockDigitalCredential(
+        mockVC,
+        id: 'test node Id',
+      );
 
-      when(() => mockService.getDigitalCredentials(any()))
-          .thenAnswer((_) async => [mockDigitalCredential]);
+      when(
+        () => mockService.getDigitalCredentials(any()),
+      ).thenAnswer((_) async => [mockDigitalCredential]);
 
-      when(() => mockService.addVerifiableCredentialToProfile(
-            profileId: any(named: 'profileId'),
-            verifiableCredential: any(named: 'verifiableCredential'),
-          )).thenAnswer((_) async => {});
+      when(
+        () => mockService.addVerifiableCredentialToProfile(
+          profileId: any(named: 'profileId'),
+          verifiableCredential: any(named: 'verifiableCredential'),
+        ),
+      ).thenAnswer((_) async => {});
 
-      when(() => mockService.deleteClaimedCredential(
-            nodeId: any(named: 'nodeId'),
-          )).thenAnswer((_) async => {});
+      when(
+        () => mockService.deleteClaimedCredential(nodeId: any(named: 'nodeId')),
+      ).thenAnswer((_) async => {});
     });
 
     group('When listing credentials', () {
@@ -52,28 +57,32 @@ void main() {
         final credentials = await credentialStorage.listCredentials();
         expect(credentials, isNotEmpty);
         expect(credentials.first, isA<DigitalCredential>());
-        verify(() => mockService.getDigitalCredentials(testProfileId))
-            .called(1);
+        verify(
+          () => mockService.getDigitalCredentials(testProfileId),
+        ).called(1);
       });
     });
 
     group('When saving credentials', () {
       test('it should save a credential successfully', () async {
         await credentialStorage.saveCredential(verifiableCredential: mockVC);
-        verify(() => mockService.addVerifiableCredentialToProfile(
-              profileId: testProfileId,
-              verifiableCredential: mockVC,
-            )).called(1);
+        verify(
+          () => mockService.addVerifiableCredentialToProfile(
+            profileId: testProfileId,
+            verifiableCredential: mockVC,
+          ),
+        ).called(1);
       });
     });
 
     group('When deleting credentials', () {
       test('it should delete a credential successfully', () async {
         await credentialStorage.deleteCredential(
-            digitalCredentialId: 'test node Id');
-        verify(() => mockService.deleteClaimedCredential(
-              nodeId: 'test node Id',
-            )).called(1);
+          digitalCredentialId: 'test node Id',
+        );
+        verify(
+          () => mockService.deleteClaimedCredential(nodeId: 'test node Id'),
+        ).called(1);
       });
     });
 
@@ -83,8 +92,9 @@ void main() {
           digitalCredentialId: 'test node Id',
         );
         expect(credential, isA<DigitalCredential>());
-        verify(() => mockService.getDigitalCredentials(testProfileId))
-            .called(1);
+        verify(
+          () => mockService.getDigitalCredentials(testProfileId),
+        ).called(1);
       });
     });
   });

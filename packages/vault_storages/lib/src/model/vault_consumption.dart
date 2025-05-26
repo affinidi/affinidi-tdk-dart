@@ -7,30 +7,22 @@ class VaultFileConsumption {
   final double sizeInMB;
 
   /// Creates a new vault consumption instance with the specified size in MB.
-  VaultFileConsumption({
-    required this.sizeInMB,
-  });
+  VaultFileConsumption({required this.sizeInMB});
 
   /// Creates a new vault consumption instance from a size in bytes.
   ///
   /// Converts the provided bytes to megabytes automatically.
   factory VaultFileConsumption.fromBytes(int bytes) {
-    return VaultFileConsumption(
-      sizeInMB: bytes / (1024 * 1024),
-    );
+    return VaultFileConsumption(sizeInMB: bytes / (1024 * 1024));
   }
 
   /// Converts the vault consumption data to a JSON map.
   Map<String, dynamic> toJson() {
-    return {
-      'sizeInMB': sizeInMB,
-    };
+    return {'sizeInMB': sizeInMB};
   }
 
   /// Creates a new vault consumption instance from a JSON map.
   factory VaultFileConsumption.fromJson(Map<String, dynamic> json) {
-    return VaultFileConsumption(
-      sizeInMB: json['sizeInMB'] as double,
-    );
+    return VaultFileConsumption(sizeInMB: json['sizeInMB'] as double);
   }
 }

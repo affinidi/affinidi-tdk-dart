@@ -8,10 +8,7 @@ class RepositoryConfiguration {
   ///
   /// [wallet] - The deterministic wallet to use for cryptographic operations.
   /// [keyStorage] - Optional storage for cryptographic keys.
-  RepositoryConfiguration({
-    required this.wallet,
-    required this.keyStorage,
-  });
+  RepositoryConfiguration({required this.wallet, required this.keyStorage});
 
   /// Storage for cryptographic keys.
   final VaultStore? keyStorage;

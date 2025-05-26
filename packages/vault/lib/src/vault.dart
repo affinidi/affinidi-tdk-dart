@@ -27,8 +27,9 @@ class Vault {
     if (!_initialized) {
       Error.throwWithStackTrace(
         TdkException(
-            message: 'Must initialize vault by calling ensureInitialized',
-            code: TdkExceptionType.vaultNotInitialized.code),
+          message: 'Must initialize vault by calling ensureInitialized',
+          code: TdkExceptionType.vaultNotInitialized.code,
+        ),
         StackTrace.current,
       );
     }
@@ -44,8 +45,9 @@ class Vault {
     if (!_initialized) {
       Error.throwWithStackTrace(
         TdkException(
-            message: 'Must initialize vault by calling ensureInitialized',
-            code: TdkExceptionType.vaultNotInitialized.code),
+          message: 'Must initialize vault by calling ensureInitialized',
+          code: TdkExceptionType.vaultNotInitialized.code,
+        ),
         StackTrace.current,
       );
     }
@@ -73,14 +75,15 @@ class Vault {
     required VaultStore vaultStore,
     required Map<String, ProfileRepository> profileRepositories,
     String? defaultProfileRepositoryId,
-  })  : _wallet = wallet,
-        _vaultStore = vaultStore,
-        _profileRepositories = Map.unmodifiable(profileRepositories) {
+  }) : _wallet = wallet,
+       _vaultStore = vaultStore,
+       _profileRepositories = Map.unmodifiable(profileRepositories) {
     if (_profileRepositories.entries.isEmpty) {
       Error.throwWithStackTrace(
         TdkException(
-            message: 'Must provide at least one profile repository',
-            code: TdkExceptionType.missingProfileRepository.code),
+          message: 'Must provide at least one profile repository',
+          code: TdkExceptionType.missingProfileRepository.code,
+        ),
         StackTrace.current,
       );
     }
@@ -89,8 +92,9 @@ class Vault {
       if (!profileRepositories.containsKey(defaultProfileRepositoryId)) {
         Error.throwWithStackTrace(
           TdkException(
-              message: 'Invalid profile repository identifier',
-              code: TdkExceptionType.invalidProfileRepositoryIdentifier.code),
+            message: 'Invalid profile repository identifier',
+            code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
+          ),
           StackTrace.current,
         );
       }
@@ -106,8 +110,9 @@ class Vault {
     if (!_profileRepositories.containsKey(value)) {
       Error.throwWithStackTrace(
         TdkException(
-            message: 'Invalid profile repository identifier',
-            code: TdkExceptionType.invalidProfileRepositoryIdentifier.code),
+          message: 'Invalid profile repository identifier',
+          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
+        ),
         StackTrace.current,
       );
     }
@@ -175,11 +180,13 @@ class Vault {
 
   Future<void> _configureAllProfileRepositories() async {
     await Future.wait(
-        _profileRepositories.values.map(_configureProfileRepositoryIfNeeded));
+      _profileRepositories.values.map(_configureProfileRepositoryIfNeeded),
+    );
   }
 
   Future<void> _configureProfileRepositoryIfNeeded(
-      ProfileRepository profileRepository) async {
+    ProfileRepository profileRepository,
+  ) async {
     if (await profileRepository.isConfigured()) return;
 
     await profileRepository.configure(
@@ -197,14 +204,18 @@ class Vault {
     if (!_initialized) {
       Error.throwWithStackTrace(
         TdkException(
-            message: 'Must initialize vault by calling ensureInitialized',
-            code: TdkExceptionType.vaultNotInitialized.code),
+          message: 'Must initialize vault by calling ensureInitialized',
+          code: TdkExceptionType.vaultNotInitialized.code,
+        ),
         StackTrace.current,
       );
     }
 
-    final profiles = await Future.wait(_profileRepositories.values
-        .map((repository) => repository.listProfiles()));
+    final profiles = await Future.wait(
+      _profileRepositories.values.map(
+        (repository) => repository.listProfiles(),
+      ),
+    );
     return profiles.expand((profiles) => profiles).toList();
   }
 
@@ -227,8 +238,9 @@ class Vault {
     if (profile == null) {
       Error.throwWithStackTrace(
         TdkException(
-            message: 'Can not find profile with id $profileId',
-            code: TdkExceptionType.invalidProfileIdentifier.code),
+          message: 'Can not find profile with id $profileId',
+          code: TdkExceptionType.invalidProfileIdentifier.code,
+        ),
         StackTrace.current,
       );
     }
@@ -238,9 +250,10 @@ class Vault {
     if (profileRepository == null) {
       Error.throwWithStackTrace(
         TdkException(
-            message:
-                'Can not find profile repository ${profile.profileRepositoryId}',
-            code: TdkExceptionType.invalidProfileRepositoryIdentifier.code),
+          message:
+              'Can not find profile repository ${profile.profileRepositoryId}',
+          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
+        ),
         StackTrace.current,
       );
     }
@@ -265,14 +278,16 @@ class Vault {
     required SharedProfileDto sharedProfile,
   }) async {
     final profiles = await listProfiles();
-    final profile =
-        profiles.where((profile) => profile.id == profileId).firstOrNull;
+    final profile = profiles
+        .where((profile) => profile.id == profileId)
+        .firstOrNull;
 
     if (profile == null) {
       Error.throwWithStackTrace(
         TdkException(
-            message: 'Can not find profile $profileId',
-            code: TdkExceptionType.invalidProfileIdentifier.code),
+          message: 'Can not find profile $profileId',
+          code: TdkExceptionType.invalidProfileIdentifier.code,
+        ),
         StackTrace.current,
       );
     }
@@ -282,9 +297,10 @@ class Vault {
     if (profileRepository == null) {
       Error.throwWithStackTrace(
         TdkException(
-            message:
-                'Can not find profile repository ${profile.profileRepositoryId}',
-            code: TdkExceptionType.invalidProfileRepositoryIdentifier.code),
+          message:
+              'Can not find profile repository ${profile.profileRepositoryId}',
+          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
+        ),
         StackTrace.current,
       );
     }
@@ -314,8 +330,9 @@ class Vault {
     if (profile == null) {
       Error.throwWithStackTrace(
         TdkException(
-            message: 'Can not find profile $profileId',
-            code: TdkExceptionType.invalidProfileIdentifier.code),
+          message: 'Can not find profile $profileId',
+          code: TdkExceptionType.invalidProfileIdentifier.code,
+        ),
         StackTrace.current,
       );
     }
@@ -325,9 +342,10 @@ class Vault {
     if (profileRepository == null) {
       Error.throwWithStackTrace(
         TdkException(
-            message:
-                'Can not find profile repository ${profile.profileRepositoryId}',
-            code: TdkExceptionType.invalidProfileRepositoryIdentifier.code),
+          message:
+              'Can not find profile repository ${profile.profileRepositoryId}',
+          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
+        ),
         StackTrace.current,
       );
     }

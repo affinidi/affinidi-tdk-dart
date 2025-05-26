@@ -18,9 +18,7 @@ abstract interface class StorageServiceInterface {
   /// final items = await storageService.listItems(nodeId: 'your_node_id');
   /// final itemsUnderProfile = await storageService.listItems();
   /// ```
-  Future<List<Item>?> listItems({
-    String? nodeId,
-  });
+  Future<List<Item>?> listItems({String? nodeId});
 
   /// Creates a new folder in the storage system.
   ///
@@ -32,10 +30,7 @@ abstract interface class StorageServiceInterface {
   /// await storageService.createFolder(folderName: 'your_folder_name');
   /// await storageService.createFolder(folderName: 'your_folder_name', parentNodeId: "your_parent_folder_id");
   /// ```
-  Future<void> createFolder({
-    required String folderName,
-    String? parentNodeId,
-  });
+  Future<void> createFolder({required String folderName, String? parentNodeId});
 
   /// Renames an existing folder.
   ///
@@ -49,10 +44,7 @@ abstract interface class StorageServiceInterface {
   ///   newName: 'your_new_folder_name',
   /// );
   /// ```
-  Future<void> renameFolder({
-    required String nodeId,
-    required String newName,
-  });
+  Future<void> renameFolder({required String nodeId, required String newName});
 
   /// Deletes a folder and all its contents.
   ///
@@ -92,10 +84,7 @@ abstract interface class StorageServiceInterface {
   ///   newName: 'your_new_file_name.pdf',
   /// );
   /// ```
-  Future<void> renameFile({
-    required String nodeId,
-    required String newName,
-  });
+  Future<void> renameFile({required String nodeId, required String newName});
 
   /// Retrieves the content of a file.
   ///
@@ -105,9 +94,7 @@ abstract interface class StorageServiceInterface {
   /// ```dart
   /// final fileContent = await storageService.getFileContent(nodeId: 'your_file_node_id');
   /// ```
-  Future<List<int>> getFileContent({
-    required String nodeId,
-  });
+  Future<List<int>> getFileContent({required String nodeId});
 
   /// Deletes a file from storage.
   ///

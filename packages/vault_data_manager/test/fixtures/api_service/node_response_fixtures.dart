@@ -23,9 +23,9 @@ class NodeResponseFixtures {
       'dekekId':
           '784c56d02c07485b17e294a251abe9477c01f3df07a3a4fdf87cc813341eab7e',
       'edek':
-          'ydDNrwc7IUO5i8CeUHGNd5dUJDKZLSoAKxuwc5MfAknf0Bmmx8TNYyoumPSoUjXg6A0dqULRaUpg5ocQKWNHkg=='
+          'ydDNrwc7IUO5i8CeUHGNd5dUJDKZLSoAKxuwc5MfAknf0Bmmx8TNYyoumPSoUjXg6A0dqULRaUpg5ocQKWNHkg==',
     },
-    'metadata': '{"pictureURI":""}'
+    'metadata': '{"pictureURI":""}',
   };
 
   static const unableToHardDelete = {
@@ -36,9 +36,9 @@ class NodeResponseFixtures {
       {
         'issue': 'Node with children cannot be operated for HARD_DELETE',
         'field': 'fileCount',
-        'value': '1'
-      }
-    ]
+        'value': '1',
+      },
+    ],
   };
 
   static const profileList = {
@@ -68,14 +68,12 @@ class NodeResponseFixtures {
           'dekekId':
               '78074741dbb0dfd22bf767e53f78c2a4144223c45d303d1da49dc98ccdfb65e0',
           'edek':
-              'gslUIJZNIT4wS3HJhRELPtj1oemXzKk0XW/p1C5idaYZKS6Chj3GtTDwItdVnD/x3q2b0jrkoEN5TLrTVQGibw=='
+              'gslUIJZNIT4wS3HJhRELPtj1oemXzKk0XW/p1C5idaYZKS6Chj3GtTDwItdVnD/x3q2b0jrkoEN5TLrTVQGibw==',
         },
-        'metadata': '{"pictureURI":""}'
-      }
-    ]
+        'metadata': '{"pictureURI":""}',
+      },
+    ],
   };
 
-  static const emptyList = {
-    'nodes': [],
-  };
+  static const emptyList = {'nodes': []};
 }

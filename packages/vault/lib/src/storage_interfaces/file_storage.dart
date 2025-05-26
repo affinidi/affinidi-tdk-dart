@@ -13,9 +13,7 @@ abstract class FileStorage {
   /// Throws if the folder does not exist
   /// Throws if the folderId does not match a folder
   /// Throws for network connectivity
-  Future<List<Item>> getFolder({
-    String? folderId,
-  });
+  Future<List<Item>> getFolder({String? folderId});
 
   /// Allows creating a folder
   /// Throws if parentFolderId does not exist
@@ -32,9 +30,7 @@ abstract class FileStorage {
   /// Throws if id does not match a folder
   /// Throws if folder is not empty
   /// Throws for network connectivity
-  Future<void> deleteFolder({
-    required String folderId,
-  });
+  Future<void> deleteFolder({required String folderId});
 
   /// Allows renaming a folder
   /// Throws if folder does not exists
@@ -53,9 +49,7 @@ abstract class FileStorage {
   /// Throws if the file does not exist
   /// Throws if the file is not a file
   /// Throws for network connectivity
-  Future<File> getFile({
-    required String fileId,
-  });
+  Future<File> getFile({required String fileId});
 
   /// Allows retrieving file content
   /// Throws if the file does not exist
@@ -78,16 +72,11 @@ abstract class FileStorage {
   /// Throws if the file does not exist
   /// Throws if the file is not a file
   /// Throws for network connectivity
-  Future<void> deleteFile({
-    required String fileId,
-  });
+  Future<void> deleteFile({required String fileId});
 
   /// Allows renaming a file
   /// Throws if there is another file with same name
   /// Throws if the nodeId does not match a file, IE is a folder.
   /// Throws for network connectivity
-  Future<void> renameFile({
-    required String fileId,
-    required String newName,
-  });
+  Future<void> renameFile({required String fileId, required String newName});
 }

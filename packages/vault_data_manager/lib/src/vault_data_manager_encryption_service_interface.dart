@@ -22,27 +22,21 @@ abstract interface class VaultDataManagerEncryptionServiceInterface {
   /// [dek] - The raw DEK to be encrypted
   ///
   /// Returns the encrypted DEK as an array of bytes.
-  Future<List<int>> encryptDekByWalletCryptoMaterial({
-    required List<int> dek,
-  });
+  Future<List<int>> encryptDekByWalletCryptoMaterial({required List<int> dek});
 
   /// Method to decrypt a data encryption key [encryptedDek] using the wallet crypto material.
   ///
   /// [encryptedDek] - The encrypted DEK to be decrypted
   ///
   /// Returns the decrypted DEK as an array of bytes.
-  Future<List<int>> decryptDek({
-    required List<int> encryptedDek,
-  });
+  Future<List<int>> decryptDek({required List<int> encryptedDek});
 
   /// Method to encrypt a data encryption key [dek] using the VFS public key.
   ///
   /// [dek] - The raw DEK to be encrypted
   ///
   /// Returns the encrypted DEK as an array of bytes.
-  Future<List<int>> encryptDekByApiPublicKey({
-    required List<int> dek,
-  });
+  Future<List<int>> encryptDekByApiPublicKey({required List<int> dek});
 
   /// Method to get a data encryption key [encryptedDekBase64] encrypted by the API public key.
   ///

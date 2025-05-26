@@ -18,8 +18,8 @@ class StorageService implements StorageServiceInterface {
   StorageService({
     required VaultDataManagerServiceInterface vaultDataManagerService,
     required String profileId,
-  })  : _vaultDataManagerService = vaultDataManagerService,
-        _profileId = profileId;
+  }) : _vaultDataManagerService = vaultDataManagerService,
+       _profileId = profileId;
 
   @override
   Future<void> addFile({
@@ -56,9 +56,7 @@ class StorageService implements StorageServiceInterface {
   }
 
   @override
-  Future<List<int>> getFileContent({
-    required String nodeId,
-  }) async {
+  Future<List<int>> getFileContent({required String nodeId}) async {
     return await _vaultDataManagerService.downloadFile(nodeId: nodeId);
   }
 
@@ -76,15 +74,16 @@ class StorageService implements StorageServiceInterface {
     required String newName,
   }) async {
     await _vaultDataManagerService.renameFolder(
-        nodeId: nodeId, newName: newName);
+      nodeId: nodeId,
+      newName: newName,
+    );
   }
 
   @override
-  Future<List<Item>?> listItems({
-    String? nodeId,
-  }) async {
+  Future<List<Item>?> listItems({String? nodeId}) async {
     final childNodes = await _vaultDataManagerService.getChildNodes(
-        nodeId: nodeId ?? _profileId);
+      nodeId: nodeId ?? _profileId,
+    );
 
     if (childNodes == null) {
       Error.throwWithStackTrace(
@@ -99,19 +98,21 @@ class StorageService implements StorageServiceInterface {
     if (childNodes.isEmpty) return [];
     final items = childNodes
         .where((node) => node.status != NodeStatus.HIDDEN)
-        .map((node) => Item(
-              id: node.nodeId,
-              description: node.description,
-              name: node.name,
-              createdAt: DateTime.parse(node.createdAt),
-              modifiedAt: DateTime.parse(node.modifiedAt),
-              createdBy: node.createdBy,
-              modifiedBy: node.modifiedBy,
-              fileCount: node.fileCount,
-              folderCount: node.folderCount,
-              parentNodeId: node.parentNodeId,
-              type: NodeType.values.byName(node.type.name),
-            ))
+        .map(
+          (node) => Item(
+            id: node.nodeId,
+            description: node.description,
+            name: node.name,
+            createdAt: DateTime.parse(node.createdAt),
+            modifiedAt: DateTime.parse(node.modifiedAt),
+            createdBy: node.createdBy,
+            modifiedBy: node.modifiedBy,
+            fileCount: node.fileCount,
+            folderCount: node.folderCount,
+            parentNodeId: node.parentNodeId,
+            type: NodeType.values.byName(node.type.name),
+          ),
+        )
         .toList();
 
     return items;

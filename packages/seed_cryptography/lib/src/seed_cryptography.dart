@@ -94,9 +94,9 @@ class SeedCryptography {
         case DART_ENCRYPTED_SEED_LENGTH:
           final decryptedSeed =
               await _cryptographyService.Aes256DecryptStringFromHex(
-            key: hex.decode(encryptionKeyHex),
-            encryptedData: encryptedSeedHex,
-          );
+                key: hex.decode(encryptionKeyHex),
+                encryptedData: encryptedSeedHex,
+              );
           if (decryptedSeed == null) {
             throw Exception('Decryption failed');
           }
@@ -141,9 +141,7 @@ class SeedCryptography {
 
     final decryptedSeedEncoded = utf8.decode(decryptedSeed);
 
-    final [seed, ...didMethod] = decryptedSeedEncoded.split(
-      didMethodSeparator,
-    );
+    final [seed, ...didMethod] = decryptedSeedEncoded.split(didMethodSeparator);
 
     print('Completed decrypting legacy seed');
     return Uint8List.fromList(hex.decode(seed));
