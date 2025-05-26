@@ -29,11 +29,13 @@ dev_dependencies:
 
 melos:
   scripts:
+    analyze:
+      exec: dart analyze .
     test:
       run: |
         melos run execute-tests
         melos run coverage-report
-  
+
     execute-tests:
       run: |
         if [ -d "test" ]; then 
@@ -49,7 +51,7 @@ melos:
       exec:
         concurrency: 4
         failFast: true
-    
+
     coverage-report:
       run: |
         mkdir -p coverage
