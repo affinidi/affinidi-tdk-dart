@@ -2,7 +2,7 @@ name: affinidi_tdk_dart
 description: Dart Packages for Affinidi TDK
 publish_to: "none"
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.8.0
 workspace:
   - packages/auth_provider
   - packages/claim_verifiable_credential
@@ -24,5 +24,33 @@ workspace:
 dev_dependencies:
   coverage: ^1.11.1
   dart_flutter_team_lints: ^3.2.1
-  melos: ^6.3.2
+  melos: ^7.0.0-dev.9
   test: ^1.24.0
+
+melos:
+  scripts:
+    test:
+      run: |
+        melos run execute-tests
+        melos run coverage-report
+  
+    execute-tests:
+      run: |
+        if [ -d "test" ]; then 
+          if [ -f "pubspec.yaml" ] && grep -q "sdk: flutter" pubspec.yaml; then
+            flutter test --coverage
+          else
+            dart run coverage:test_with_coverage
+          fi
+        else
+          echo "No tests in $(pwd), skipping."
+        fi
+      description: Run tests in each package
+      exec:
+        concurrency: 4
+        failFast: true
+    
+    coverage-report:
+      run: |
+        mkdir -p coverage
+        find ./packages -name "lcov.info" -path "*/coverage/lcov.info" -exec cat {} + > coverage/lcov.info

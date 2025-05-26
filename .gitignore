@@ -25,6 +25,12 @@ vendor
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# IntelliJ related
+**/*.iml
+*.ipr
+*.iws
+.idea/
+
 # misc
 /.sass-cache
 /connect.lock

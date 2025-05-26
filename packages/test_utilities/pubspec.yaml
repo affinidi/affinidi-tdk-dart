@@ -3,7 +3,7 @@ description: The Affinidi TDK - Utilities package provides the libraries to mock
 version: 1.0.0-dev.2
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.8.0
 
 resolution: workspace
 
