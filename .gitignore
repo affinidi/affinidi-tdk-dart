@@ -28,7 +28,7 @@ vendor
 # misc
 /.sass-cache
 /connect.lock
-/coverage
+**/coverage
 /libpeerconnection.log
 npm-debug.log
 yarn-error.log
@@ -57,3 +57,7 @@ pubspec.lock
 
 # FVM Version Cache
 .fvm/
+
+# Flutter dependencies
+**/.flutter-plugins
+**/.flutter-plugins-dependencies

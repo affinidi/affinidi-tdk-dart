@@ -1,0 +1,28 @@
+name: affinidi_tdk_dart
+description: Dart Packages for Affinidi TDK
+publish_to: "none"
+environment:
+  sdk: ^3.6.0
+workspace:
+  - packages/auth_provider
+  - packages/claim_verifiable_credential
+  - packages/common
+  - packages/common/example
+  - packages/consumer_auth_provider
+  - packages/consumer_auth_provider/example
+  - packages/cryptography
+  - packages/iota_core
+  - packages/seed_cryptography
+  - packages/test_utilities
+  - packages/vault
+  - packages/vault/example
+  - packages/vault_data_manager
+  - packages/vault_flutter_utils
+  - packages/vault_storages
+  - packages/vault_flutter_utils/example/flutter_secure_storage
+
+dev_dependencies:
+  coverage: ^1.11.1
+  dart_flutter_team_lints: ^3.2.1
+  melos: ^6.3.2
+  test: ^1.24.0
