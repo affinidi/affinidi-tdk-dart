@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:affinidi_tdk_claim_verifiable_credential/oid4vci_claim_verifiable_credential.dart';
+import 'package:affinidi_tdk_claim_verifiable_credential/affinidi_tdk_claim_verifiable_credential.dart';
 import 'package:ssi/ssi.dart';
 
 /// This example demonstrates how to claim a credential that requires
