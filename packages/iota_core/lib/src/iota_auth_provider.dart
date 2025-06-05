@@ -57,12 +57,13 @@ class IotaAuthProvider {
   late final String region;
   late final String apiGW;
 
-  IotaAuthProvider({ Map<String, dynamic>? params }) {
+  IotaAuthProvider({Map<String, dynamic>? params}) {
     region = params?['region'] ?? 'ap-southeast-1';
     apiGW = params?['apiGW'] ?? Environment.fetchApiGwUrl();
   }
 
-  Future<IotaCredentials> limitedTokenToIotaCredentials(String limitedToken) async {
+  Future<IotaCredentials> limitedTokenToIotaCredentials(
+      String limitedToken) async {
     final response = await http.post(
       Uri.parse('$apiGW/ais/v1/aws-exchange-credentials'),
       headers: {'Content-Type': 'application/json'},
@@ -76,7 +77,8 @@ class IotaAuthProvider {
     final Map<String, dynamic> data = jsonDecode(response.body);
     final connectionClientId = data['connectionClientId'] as String;
 
-    final identityCredentials = IdentityCredentials.fromJson(data['credentials']);
+    final identityCredentials =
+        IdentityCredentials.fromJson(data['credentials']);
 
     final credentials = await exchangeIdentityCredentials(identityCredentials);
 
@@ -86,26 +88,27 @@ class IotaAuthProvider {
     );
   }
 
-  Future<Credentials> exchangeIdentityCredentials(IdentityCredentials identityCredentials) async {
+  Future<Credentials> exchangeIdentityCredentials(
+      IdentityCredentials identityCredentials) async {
     final cognitoResponse = await fetchCognitoCredentials(identityCredentials);
     final creds = cognitoResponse['Credentials'];
     if (creds == null) {
       throw Exception('Error fetching credentials');
     }
     final expirationSeconds = creds['Expiration'] as double;
-    final expirationDate = DateTime.fromMillisecondsSinceEpoch((expirationSeconds * 1000).toInt());
+    final expirationDate =
+        DateTime.fromMillisecondsSinceEpoch((expirationSeconds * 1000).toInt());
 
     return Credentials(
       accessKeyId: creds['AccessKeyId'],
       secretKey: creds['SecretKey'],
       sessionToken: creds['SessionToken'],
-      expiration: creds['Expiration'] != null
-          ? expirationDate
-          : null,
+      expiration: creds['Expiration'] != null ? expirationDate : null,
     );
   }
 
-  Future<Map<String, dynamic>> fetchCognitoCredentials(IdentityCredentials identityCredentials) async {
+  Future<Map<String, dynamic>> fetchCognitoCredentials(
+      IdentityCredentials identityCredentials) async {
     final url = 'https://cognito-identity.$region.amazonaws.com/';
     final payload = jsonEncode({
       'IdentityId': identityCredentials.identityId,
