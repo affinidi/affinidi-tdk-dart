@@ -13,8 +13,8 @@ dependencies:
   affinidi_tdk_consumer_auth_provider: ^4.4.0
   affinidi_tdk_cryptography: ^2.3.2
   affinidi_tdk_iam_client: ^1.9.0
-  affinidi_tdk_vault: 1.1.0-dev.10
-  affinidi_tdk_vault_data_manager: 1.1.0-dev.9
+  affinidi_tdk_vault: ^1.1.0-dev.10
+  affinidi_tdk_vault_data_manager: ^1.1.0-dev.9
   affinidi_tdk_vault_data_manager_client: ^1.11.1
   built_collection: ^5.1.1
   convert: ^3.1.2
