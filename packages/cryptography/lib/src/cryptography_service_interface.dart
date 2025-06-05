@@ -56,7 +56,10 @@ abstract interface class CryptographyServiceInterface {
   Map<String, dynamic> decodeJwtToken({required String token});
 
   /// Verifies the given JWT token using the provided DID key.
-  VerifyJwtResult verifyJwt({required String jwtToken, required String didKey});
+  VerifyJwtResult verifyJwt({
+    required String jwtToken,
+    required String didKey,
+  });
 
   /// Creates a hash from the given source string.
   String createHash({required String hashSource});

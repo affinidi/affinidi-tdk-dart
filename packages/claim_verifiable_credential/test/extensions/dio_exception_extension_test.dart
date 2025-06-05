@@ -16,14 +16,11 @@ void main() {
     for (final variant in variants) {
       group('and the error is \'$variant\'', () {
         test('it converts to a network error', () {
-          final exception = DioExceptionFixtures.socketExceptionWithMessage(
-            message: variant,
-          );
+          final exception =
+              DioExceptionFixtures.socketExceptionWithMessage(message: variant);
 
-          expect(
-            exception.asTdkException()?.code,
-            TdkExceptionType.networkError.code,
-          );
+          expect(exception.asTdkException()?.code,
+              TdkExceptionType.networkError.code);
         });
       });
     }
@@ -46,14 +43,11 @@ void main() {
     for (final variant in variants) {
       group('and the error is \'$variant\'', () {
         test('it converts to a network error', () {
-          final exception = DioExceptionFixtures.httpExceptionWithMessage(
-            message: variant,
-          );
+          final exception =
+              DioExceptionFixtures.httpExceptionWithMessage(message: variant);
 
-          expect(
-            exception.asTdkException()?.code,
-            TdkExceptionType.networkError.code,
-          );
+          expect(exception.asTdkException()?.code,
+              TdkExceptionType.networkError.code);
         });
       });
     }
@@ -61,29 +55,21 @@ void main() {
 
   group('When receiving a connectivity error with a status code 504', () {
     test('it converts to a network error', () {
-      final exception = DioExceptionFixtures.withStatusCode(
-        504,
-        url: 'http://example.affinidi.com',
-      );
+      final exception = DioExceptionFixtures.withStatusCode(504,
+          url: 'http://example.affinidi.com');
 
       expect(
-        exception.asTdkException()?.code,
-        TdkExceptionType.networkError.code,
-      );
+          exception.asTdkException()?.code, TdkExceptionType.networkError.code);
     });
   });
 
   group('When receiving a server error', () {
     test('it converts to a server error', () {
-      final exception = DioExceptionFixtures.withStatusCode(
-        500,
-        url: 'http://example.affinidi.com',
-      );
+      final exception = DioExceptionFixtures.withStatusCode(500,
+          url: 'http://example.affinidi.com');
 
       expect(
-        exception.asTdkException()?.code,
-        TdkExceptionType.serverError.code,
-      );
+          exception.asTdkException()?.code, TdkExceptionType.serverError.code);
     });
   });
 }

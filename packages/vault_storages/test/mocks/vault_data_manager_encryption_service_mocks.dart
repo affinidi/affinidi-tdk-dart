@@ -5,22 +5,25 @@ import 'mocks.dart';
 
 class VaultDataManagerEncryptionServiceMocks {
   VaultDataManagerEncryptionServiceMocks(
-    this.mockVaultDataManagerEncryptionService,
-  );
+      this.mockVaultDataManagerEncryptionService);
 
   final MockVaultDataManagerEncryptionService
-  mockVaultDataManagerEncryptionService;
+      mockVaultDataManagerEncryptionService;
 
   Future<DataEncryptionMaterial> generateDataEncryptionMaterial() =>
-      mockVaultDataManagerEncryptionService.generateDataEncryptionMaterial();
+      mockVaultDataManagerEncryptionService.generateDataEncryptionMaterial(
+        encryptionKey: any(named: 'encryptionKey'),
+      );
 
   Future<List<int>> getDekEncryptedByApiPublicKey() =>
       mockVaultDataManagerEncryptionService.getDekEncryptedByApiPublicKey(
         encryptedDekBase64: any(named: 'encryptedDekBase64'),
+        encryptionKey: any(named: 'encryptionKey'),
       );
 
   Future<List<int>> decryptDekByWalletCryptoMaterial() =>
       mockVaultDataManagerEncryptionService.decryptDek(
+        encryptionKey: any(named: 'encryptionKey'),
         encryptedDek: any(named: 'encryptedDek'),
       );
 }

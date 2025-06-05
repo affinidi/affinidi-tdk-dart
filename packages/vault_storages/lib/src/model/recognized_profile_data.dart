@@ -42,12 +42,12 @@ class RecognizedDatapoint {
           .toList(),
       properties: (json['properties'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(
-          k,
-          RecognizedDatapoint.fromJson(e as Map<String, dynamic>),
-        ),
+            k, RecognizedDatapoint.fromJson(e as Map<String, dynamic>)),
       ),
       items: (json['items'] as List<dynamic>?)
-          ?.map((e) => RecognizedDatapoint.fromJson(e as Map<String, dynamic>))
+          ?.map(
+            (e) => RecognizedDatapoint.fromJson(e as Map<String, dynamic>),
+          )
           .toList(),
     );
   }
@@ -77,9 +77,7 @@ class RecognizedCategoryData {
     return RecognizedCategoryData(
       properties: (json['properties'] as Map<String, dynamic>).map(
         (k, e) => MapEntry(
-          k,
-          RecognizedDatapoint.fromJson(e as Map<String, dynamic>),
-        ),
+            k, RecognizedDatapoint.fromJson(e as Map<String, dynamic>)),
       ),
     );
   }
@@ -128,9 +126,8 @@ class RecognizedProfileData {
   Map<String, dynamic> toJson() {
     return {
       'person': person?.properties.map((k, e) => MapEntry(k, e.toJson())),
-      'categories': categories?.properties.map(
-        (k, e) => MapEntry(k, e.toJson()),
-      ),
+      'categories':
+          categories?.properties.map((k, e) => MapEntry(k, e.toJson())),
     };
   }
 

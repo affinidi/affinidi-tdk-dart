@@ -42,8 +42,8 @@ class AuthProvider {
     required this.privateKey,
     this.keyId,
     this.passphrase,
-  }) : apiGatewayUrl = Environment.fetchApiGwUrl(),
-       tokenEndpoint = Environment.fetchElementsAuthTokenUrl();
+  })  : apiGatewayUrl = Environment.fetchApiGwUrl(),
+        tokenEndpoint = Environment.fetchElementsAuthTokenUrl();
 
   /// Constructor for internal use only. Allows for custom API Gateway and
   /// token endpoint.
@@ -80,9 +80,8 @@ class AuthProvider {
   /// to authenticate their requests, allowing for token refresh after expiration.
   Future<String> fetchProjectScopedToken() async {
     if (await _shouldFetchToken()) {
-      _projectScopedToken = await _getProjectScopedToken(
-        audience: tokenEndpoint,
-      );
+      _projectScopedToken =
+          await _getProjectScopedToken(audience: tokenEndpoint);
     }
     return _projectScopedToken!;
   }
@@ -117,7 +116,9 @@ class AuthProvider {
     return data['access_token'];
   }
 
-  Future<String> _getProjectScopedToken({required String audience}) async {
+  Future<String> _getProjectScopedToken({
+    required String audience,
+  }) async {
     final userAccessToken = await _getUserAccessToken(audience: audience);
 
     final response = await http.post(

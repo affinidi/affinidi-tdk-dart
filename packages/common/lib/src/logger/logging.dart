@@ -20,11 +20,6 @@ abstract interface class Logging {
   /// The [message] is the main content to be logged.
   /// Optionally, an [error] object and [stackTrace] can be provided for error logging.
   /// The [zone] parameter can be used to specify the zone in which the logging occurred.
-  void log(
-    LogLevel logLevel,
-    Object? message, [
-    Object? error,
-    StackTrace? stackTrace,
-    Zone? zone,
-  ]);
+  void log(LogLevel logLevel, Object? message,
+      [Object? error, StackTrace? stackTrace, Zone? zone]);
 }

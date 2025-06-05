@@ -5,8 +5,7 @@ void main() async {
   var env = DotEnv()..load();
   if (!env.isEveryDefined(['PROJECT_ID', 'TOKEN_ID', 'PRIVATE_KEY'])) {
     print(
-      'Missing variables. Please provide PROJECT_ID, TOKEN_ID and PRIVATE_KEY',
-    );
+        'Missing variables. Please provide PROJECT_ID, TOKEN_ID and PRIVATE_KEY');
     return;
   }
   // Workaround for dotenv multiline limitations
@@ -38,9 +37,7 @@ void main() async {
   }
   try {
     final iotaToken = provider.createIotaToken(
-      iotaConfigId: env['IOTA_CONFIG_ID']!,
-      did: env['DID']!,
-    );
+        iotaConfigId: env['IOTA_CONFIG_ID']!, did: env['DID']!);
     print('Successfully obtained iota token:');
     print(iotaToken);
   } catch (e) {

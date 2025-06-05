@@ -1,7 +1,7 @@
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
+import 'package:affinidi_tdk_vault_flutter_utils/vault_flutter_utils.dart';
 import 'package:affinidi_tdk_vault_storages/affinidi_tdk_vault_storages.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:affinidi_tdk_vault_flutter_utils/vault_flutter_utils.dart';
 
 import 'vault_service_state.dart';
 
@@ -32,6 +32,7 @@ class VaultService extends _$VaultService {
         keyStorage,
         profileRepositories: profileRepositories,
       );
+      await vault.ensureInitialized();
       state = state.copyWith(vault: vault);
     } on TdkException catch (error) {
       state = state.copyWith(error: error.code);

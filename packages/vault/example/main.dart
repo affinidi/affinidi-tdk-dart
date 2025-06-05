@@ -2,17 +2,17 @@ import 'dart:typed_data';
 
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_storages/affinidi_tdk_vault_storages.dart';
-import 'package:ssi/ssi.dart';
 
 void main() async {
   print('[Demo] Initializing Vault ...');
   // KeyStorage
-  final accountIndex = 42;
   final vaultStore = InMemoryVaultStore();
+  var accountIndex = 42;
   await vaultStore.writeAccountIndex(accountIndex);
 
   // seed storage
   final seed = Uint8List.fromList(List.generate(32, (idx) => idx + 1));
+  await vaultStore.setSeed(seed);
 
   // initialization
   const vfsRepositoryId = 'vfs';
@@ -20,25 +20,9 @@ void main() async {
     vfsRepositoryId: VfsProfileRepository(vfsRepositoryId),
   };
 
-  // from seed
-  // final vault = await Vault.fromSeed(
-  //   seed: seed,
-  //   vaultStore: vaultStore,
-  //   profileRepositories: profileRepositories,
-  // );
-
-  // from keyStorage
-  // await vaultStore.setSeed(seed);
-  // final vault = await Vault.fromVaultStore(
-  //   vaultStore,
-  //   profileRepositories: profileRepositories,
-  // );
-
-  // from wallet
-  final wallet = await Bip32Wallet.fromSeed(seed, vaultStore);
-  final vault = Vault(
-    wallet: wallet,
-    vaultStore: vaultStore,
+  // Create vault from vault store
+  final vault = await Vault.fromVaultStore(
+    vaultStore,
     profileRepositories: profileRepositories,
     defaultProfileRepositoryId: vfsRepositoryId,
   );
@@ -54,8 +38,7 @@ void main() async {
 
   var profiles = await vault.listProfiles();
   print(
-    '[Demo] ${profiles.isEmpty ? 'No profiles found' : 'Available profiles: ${profiles.length}'}',
-  );
+      '[Demo] ${profiles.isEmpty ? 'No profiles found' : 'Available profiles: ${profiles.length}'}');
   _listProfileNames(profiles, label: 'Initial profile names');
 
   print('[Demo] Adding new profile ...');
@@ -76,9 +59,8 @@ void main() async {
     // final ProfileRepository profileRepository = vault.profileRepositories[vfsRepositoryId];
     await profileRepository.createProfile(name: 'Test ${accountIndex + 1}');
   } on TdkException catch (error) {
-    print(
-      [error.code, '[Demo] ${error.message}', error.originalMessage].join('\n'),
-    );
+    print([error.code, '[Demo] ${error.message}', error.originalMessage]
+        .join('\n'));
     rethrow;
   }
 
@@ -86,8 +68,7 @@ void main() async {
 
   profiles = await vault.listProfiles();
   print(
-    '[Demo] ${profiles.isEmpty ? 'No profiles found' : 'Available profiles: ${profiles.length}'}',
-  );
+      '[Demo] ${profiles.isEmpty ? 'No profiles found' : 'Available profiles: ${profiles.length}'}');
   _listProfileNames(profiles, label: 'Initial profile names');
 
   //
@@ -142,9 +123,8 @@ void main() async {
   //
 
   // Option 1
-  final files = await profile.defaultFileStorage?.getFolder(
-    folderId: rootFolderId,
-  );
+  final files =
+      await profile.defaultFileStorage?.getFolder(folderId: rootFolderId);
   // Option 2
   // final files = await profile.fileStorages['vfs']!.getFolder(folderId: rootFolderId);
   print('[Demo] Files available on profile: ${files?.length ?? 0}');
@@ -153,9 +133,8 @@ void main() async {
 
   final fileToDownload = files?.firstOrNull;
   if (fileToDownload != null) {
-    final retrievedFileData = await profile.defaultFileStorage?.getFileContent(
-      fileId: fileToDownload.id,
-    );
+    final retrievedFileData = await profile.defaultFileStorage
+        ?.getFileContent(fileId: fileToDownload.id);
     print('[Demo] File: \n$retrievedFileData\n$fileContent');
 
     //
@@ -163,9 +142,8 @@ void main() async {
     //
 
     await profile.defaultFileStorage?.deleteFile(fileId: fileToDownload.id);
-    final remainingFiles = await profile.defaultFileStorage?.getFolder(
-      folderId: rootFolderId,
-    );
+    final remainingFiles =
+        await profile.defaultFileStorage?.getFolder(folderId: rootFolderId);
     print('Files: ${remainingFiles?.length ?? 0}');
   } else {
     print('[Demo] Could not find any files');
@@ -201,7 +179,10 @@ String _makeNewName(Profile profile) {
   return '$originalName$separator${changeCount + 1}';
 }
 
-void _listProfileNames(List<Profile> profiles, {required String label}) {
+void _listProfileNames(
+  List<Profile> profiles, {
+  required String label,
+}) {
   if (profiles.isEmpty) {
     print('[Demo] List of profiles is empty');
     return;
@@ -218,13 +199,8 @@ Future<void> _deleteProfile(Vault vault, Profile profile) async {
   // Check if profile has credentials...
   final credentials = await profile.defaultCredentialStorage!.listCredentials();
   // and delete them
-  await Future.wait(
-    credentials.map(
-      (item) => profile.defaultCredentialStorage!.deleteCredential(
-        digitalCredentialId: item.id,
-      ),
-    ),
-  );
+  await Future.wait(credentials.map((item) => profile.defaultCredentialStorage!
+      .deleteCredential(digitalCredentialId: item.id)));
 
   await vault.defaultProfileRepository.deleteProfile(profile);
 }

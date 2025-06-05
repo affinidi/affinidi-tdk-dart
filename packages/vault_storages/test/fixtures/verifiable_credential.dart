@@ -12,28 +12,30 @@ final List<VerifiableCredential> credentials = List.from(
   List.generate(
     5,
     (index) => UniversalParser.parse(
-      jsonEncode({
-        '@context': [
-          'https://www.w3.org/2018/credentials/v1',
-          'https://schema.affinidi.io/HITContactsV1R0.jsonld',
-        ],
-        'id': "$credentialId${index > 0 ? index : ''}",
-        'type': ['VerifiableCredential', credentialName],
-        'issuer': 'test_issuer',
-        'issuanceDate': '2024-01-01T00:00:00Z',
-        'credentialSubject': {},
-        'credentialSchema': {
-          'id': 'test_schema_id',
-          'type': 'JsonSchemaValidator2018',
+      jsonEncode(
+        {
+          '@context': [
+            'https://www.w3.org/2018/credentials/v1',
+            'https://schema.affinidi.io/HITContactsV1R0.jsonld'
+          ],
+          'id': "$credentialId${index > 0 ? index : ''}",
+          'type': ['VerifiableCredential', credentialName],
+          'issuer': 'test_issuer',
+          'issuanceDate': '2024-01-01T00:00:00Z',
+          'credentialSubject': {},
+          'credentialSchema': {
+            'id': 'test_schema_id',
+            'type': 'JsonSchemaValidator2018'
+          },
+          'proof': {
+            'type': 'test_proof_type',
+            'created': '2024-01-01T00:00:00Z',
+            'proofPurpose': 'assertionMethod',
+            'verificationMethod': 'test_verification_method',
+            'proofValue': 'test_proof_value'
+          }
         },
-        'proof': {
-          'type': 'test_proof_type',
-          'created': '2024-01-01T00:00:00Z',
-          'proofPurpose': 'assertionMethod',
-          'verificationMethod': 'test_verification_method',
-          'proofValue': 'test_proof_value',
-        },
-      }),
+      ),
     ),
   ),
 );
@@ -41,7 +43,7 @@ final List<VerifiableCredential> credentials = List.from(
 final credentialJson = {
   '@context': [
     'https://www.w3.org/2018/credentials/v1',
-    'https://schema.affinidi.io/HITContactsV1R0.jsonld',
+    'https://schema.affinidi.io/HITContactsV1R0.jsonld'
   ],
   'id': credentialId,
   'type': ['VerifiableCredential', credentialName],
@@ -50,17 +52,16 @@ final credentialJson = {
   'credentialSubject': {},
   'credentialSchema': {
     'id': 'test_schema_id',
-    'type': 'JsonSchemaValidator2018',
+    'type': 'JsonSchemaValidator2018'
   },
   'proof': {
     'type': 'test_proof_type',
     'created': '2024-01-01T00:00:00Z',
     'proofPurpose': 'assertionMethod',
     'verificationMethod': 'test_verification_method',
-    'proofValue': 'test_proof_value',
-  },
+    'proofValue': 'test_proof_value'
+  }
 };
 
-final VerifiableCredential credential = UniversalParser.parse(
-  jsonEncode(credentialJson),
-);
+final VerifiableCredential credential =
+    UniversalParser.parse(jsonEncode(credentialJson));

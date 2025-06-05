@@ -30,9 +30,9 @@ class Profile {
     required Map<String, FileStorage> fileStorages,
     required Map<String, CredentialStorage> credentialStorages,
     required Map<String, SharedStorage> sharedStorages,
-  }) : _fileStorages = Map.unmodifiable(fileStorages),
-       _credentialStorages = Map.unmodifiable(credentialStorages),
-       _sharedStorages = sharedStorages;
+  })  : _fileStorages = Map.unmodifiable(fileStorages),
+        _credentialStorages = Map.unmodifiable(credentialStorages),
+        _sharedStorages = sharedStorages;
 
   /// ID of the profile repository
   final String profileRepositoryId;
@@ -70,9 +70,8 @@ class Profile {
     if (!fileStorages.containsKey(value)) {
       Error.throwWithStackTrace(
         TdkException(
-          message: 'File storage with id $value does not exist',
-          code: TdkExceptionType.invalidFileStorageIdentifier.code,
-        ),
+            message: 'File storage with id $value does not exist',
+            code: TdkExceptionType.invalidFileStorageIdentifier.code),
         StackTrace.current,
       );
     }
@@ -109,9 +108,8 @@ class Profile {
     if (!credentialStorages.containsKey(value)) {
       Error.throwWithStackTrace(
         TdkException(
-          message: 'Credential storage with id $value does not exist',
-          code: TdkExceptionType.invalidCredentialStorageIdentifier.code,
-        ),
+            message: 'Credential storage with id $value does not exist',
+            code: TdkExceptionType.invalidCredentialStorageIdentifier.code),
         StackTrace.current,
       );
     }
@@ -139,9 +137,8 @@ class Profile {
     if (!_sharedStorages.containsKey(id)) {
       Error.throwWithStackTrace(
         TdkException(
-          message: 'Shared storage with id $id does not exist',
-          code: TdkExceptionType.invalidSharedStorageIdentifier.code,
-        ),
+            message: 'Shared storage with id $id does not exist',
+            code: TdkExceptionType.invalidSharedStorageIdentifier.code),
         StackTrace.current,
       );
     }
@@ -152,16 +149,13 @@ class Profile {
   ///
   /// Throws:
   /// - [TdkException] if a shared storage with the given ID already exists
-  void addSharedStorage({
-    required String id,
-    required SharedStorage sharedStorage,
-  }) {
+  void addSharedStorage(
+      {required String id, required SharedStorage sharedStorage}) {
     if (_sharedStorages.containsKey(id)) {
       Error.throwWithStackTrace(
         TdkException(
-          message: 'Shared storage with id $id already exists',
-          code: TdkExceptionType.invalidSharedStorageIdentifier.code,
-        ),
+            message: 'Shared storage with id $id already exists',
+            code: TdkExceptionType.invalidSharedStorageIdentifier.code),
         StackTrace.current,
       );
     }
@@ -176,9 +170,8 @@ class Profile {
     if (!_sharedStorages.containsKey(id)) {
       Error.throwWithStackTrace(
         TdkException(
-          message: 'Shared storage with id $id does not exist',
-          code: TdkExceptionType.invalidSharedStorageIdentifier.code,
-        ),
+            message: 'Shared storage with id $id does not exist',
+            code: TdkExceptionType.invalidSharedStorageIdentifier.code),
         StackTrace.current,
       );
     }

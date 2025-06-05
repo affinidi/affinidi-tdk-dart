@@ -14,11 +14,23 @@ class DelegatedTokenProvider extends TokenProvider with JwtTokenDidChecker {
 
   static final String _tokenEndpoint = Environment.fetchConsumerAudienceUrl();
   static final int _delegatedTokenExpiration = 5 * 60; // 5 minutes
+  static final int? _apiTimeOutInMilliseconds =
+      Environment.apiTimeOutInMilliseconds;
 
   /// Constructor for [DelegatedTokenProvider] using the [signer] and optional [Dio] http client.
-  DelegatedTokenProvider({required DidSigner signer, Dio? client})
-    : _signer = signer,
-      _dioInstance = client ?? Dio();
+  DelegatedTokenProvider({
+    required DidSigner signer,
+    Dio? client,
+  })  : _signer = signer,
+        _dioInstance = client ??
+            ((_apiTimeOutInMilliseconds != null)
+                ? Dio(BaseOptions(
+                    connectTimeout:
+                        Duration(milliseconds: _apiTimeOutInMilliseconds!),
+                    receiveTimeout:
+                        Duration(milliseconds: _apiTimeOutInMilliseconds!),
+                  ))
+                : Dio());
 
   /// Retrieves a token for the specified profile DID.
   ///
@@ -33,18 +45,18 @@ class DelegatedTokenProvider extends TokenProvider with JwtTokenDidChecker {
       subject: profileDid,
     );
     final did = _signer.did;
-    final delegatedToken = await _fetchDelegatedToken(
-      clientAssertion: token,
-      did: did,
-    );
+    final delegatedToken =
+        await _fetchDelegatedToken(clientAssertion: token, did: did);
 
     final decodedToken = JwtDecoder.decode(delegatedToken);
-    if (!hasMatchingDid(decodedToken: decodedToken, did: profileDid)) {
+    if (!hasMatchingDid(
+      decodedToken: decodedToken,
+      did: profileDid,
+    )) {
       Error.throwWithStackTrace(
         TdkException(
-          message: 'Delegated token DID does not match profile DID',
-          code: TdkExceptionType.delegatedTokenDidMismatch.code,
-        ),
+            message: 'Delegated token DID does not match profile DID',
+            code: TdkExceptionType.delegatedTokenDidMismatch.code),
         StackTrace.current,
       );
     }
@@ -55,9 +67,8 @@ class DelegatedTokenProvider extends TokenProvider with JwtTokenDidChecker {
     )) {
       Error.throwWithStackTrace(
         TdkException(
-          message: 'Delegated token DID does not match grantee DID',
-          code: TdkExceptionType.delegatedTokenGranteeDidMismatch.code,
-        ),
+            message: 'Delegated token DID does not match grantee DID',
+            code: TdkExceptionType.delegatedTokenGranteeDidMismatch.code),
         StackTrace.current,
       );
     }

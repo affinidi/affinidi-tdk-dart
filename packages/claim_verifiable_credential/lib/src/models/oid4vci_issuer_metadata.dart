@@ -50,10 +50,9 @@ class OID4VCIIssuerMetadata {
     if (tokenEndpoint == null) {
       Error.throwWithStackTrace(
         TdkException(
-          message:
-              'Failed to parse issuer metadata, missing required tokenEndpoint',
-          code: TdkExceptionType.failedToLoadIssuerMetadata.code,
-        ),
+            message:
+                'Failed to parse issuer metadata, missing required tokenEndpoint',
+            code: TdkExceptionType.failedToLoadIssuerMetadata.code),
         StackTrace.current,
       );
     }
@@ -61,10 +60,9 @@ class OID4VCIIssuerMetadata {
     if (credentialEndpoint == null) {
       Error.throwWithStackTrace(
         TdkException(
-          message:
-              'Failed to parse issuer metadata, missing required credentialEndpoint',
-          code: TdkExceptionType.failedToLoadIssuerMetadata.code,
-        ),
+            message:
+                'Failed to parse issuer metadata, missing required credentialEndpoint',
+            code: TdkExceptionType.failedToLoadIssuerMetadata.code),
         StackTrace.current,
       );
     }
@@ -82,7 +80,8 @@ class OID4VCIIssuerMetadata {
 enum _IssuerMetadataKey {
   tokenEndpoint('token_endpoint'),
   credentialEndpoint('credential_endpoint'),
-  returnUris('return_uris');
+  returnUris('return_uris'),
+  ;
 
   const _IssuerMetadataKey(this.value);
 

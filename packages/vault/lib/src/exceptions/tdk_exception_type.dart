@@ -19,7 +19,11 @@ enum TdkExceptionType {
   missingProfileRepository('missing_profile_repository'),
 
   /// Exception thrown when the vault has not been initialized.
-  vaultNotInitialized('vault_not_initialized');
+  vaultNotInitialized('vault_not_initialized'),
+
+  /// Exception thrown when the request has been cancelled.
+  requestCancelled('request_cancelled'),
+  ;
 
   /// Creates a new instance of [TdkExceptionType].
   ///

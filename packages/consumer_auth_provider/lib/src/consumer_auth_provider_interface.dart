@@ -14,7 +14,7 @@ abstract interface class ConsumerAuthProviderInterface {
 
   /// Exchanges a pre-authorization code for an access token and authorization details.
   Future<({String accessToken, List<dynamic>? authorizationDetails})>
-  exchangePreAuthCodeForToken({
+      exchangePreAuthCodeForToken({
     required String tokenEndpoint,
     required String preAuthCode,
     String? txCode,

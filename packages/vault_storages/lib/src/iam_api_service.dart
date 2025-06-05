@@ -39,19 +39,17 @@ class IamApiService implements IamApiServiceInterface {
 
       final grantAccessInput = grantAccessInputBuilder.build();
 
-      final grantAccessVfsResponse = await _authzApi.grantAccessVfs(
-        grantAccessInput: grantAccessInput,
-      );
+      final grantAccessVfsResponse =
+          await _authzApi.grantAccessVfs(grantAccessInput: grantAccessInput);
       final isAccessGranted = grantAccessVfsResponse.data!.success == true;
 
       if (!isAccessGranted) {
         Error.throwWithStackTrace(
-          TdkException(
-            message: 'Failed to grant access to $granteeDid',
-            code: TdkExceptionType.unableToGrantAccess.code,
-          ),
-          StackTrace.current,
-        );
+            TdkException(
+              message: 'Failed to grant access to $granteeDid',
+              code: TdkExceptionType.unableToGrantAccess.code,
+            ),
+            StackTrace.current);
       }
     } on DioException catch (e, stackTrace) {
       final errorResponse = e.response;
@@ -59,33 +57,30 @@ class IamApiService implements IamApiServiceInterface {
         rethrow;
       }
 
-      final isAlreadyGranted =
-          errorResponse.statusCode == 409 &&
+      final isAlreadyGranted = errorResponse.statusCode == 409 &&
           errorResponse.data != null &&
           (errorResponse.data as Map<String, dynamic>)['name'] ==
               'AlreadyExistsError';
 
       if (isAlreadyGranted) {
         Error.throwWithStackTrace(
-          TdkException(
-            message: 'Failed to grant access to $granteeDid',
-            code: TdkExceptionType.unableToGrantAccessAlreadyGranted.code,
-            originalMessage: e.toString(),
-          ),
-          stackTrace,
-        );
+            TdkException(
+              message: 'Failed to grant access to $granteeDid',
+              code: TdkExceptionType.unableToGrantAccessAlreadyGranted.code,
+              originalMessage: e.toString(),
+            ),
+            stackTrace);
       }
     } on TdkException catch (_) {
       rethrow;
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
-        TdkException(
-          message: 'Failed to grant access to $granteeDid',
-          code: TdkExceptionType.unableToGrantAccess.code,
-          originalMessage: e.toString(),
-        ),
-        stackTrace,
-      );
+          TdkException(
+            message: 'Failed to grant access to $granteeDid',
+            code: TdkExceptionType.unableToGrantAccess.code,
+            originalMessage: e.toString(),
+          ),
+          stackTrace);
     }
   }
 
@@ -103,13 +98,12 @@ class IamApiService implements IamApiServiceInterface {
       await _authzApi.deleteAccessVfs(granteeDid: granteeDid);
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
-        TdkException(
-          message: 'Failed to revoke access from $granteeDid',
-          code: TdkExceptionType.unableToRevokeAccess.code,
-          originalMessage: e.toString(),
-        ),
-        stackTrace,
-      );
+          TdkException(
+            message: 'Failed to revoke access from $granteeDid',
+            code: TdkExceptionType.unableToRevokeAccess.code,
+            originalMessage: e.toString(),
+          ),
+          stackTrace);
     }
   }
 
@@ -136,12 +130,11 @@ class IamApiService implements IamApiServiceInterface {
       return response;
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
-        TdkException(
-          message: 'Failed to update access for $granteeDid',
-          code: TdkExceptionType.unableToUpdateAccess.code,
-        ),
-        stackTrace,
-      );
+          TdkException(
+            message: 'Failed to update access for $granteeDid',
+            code: TdkExceptionType.unableToUpdateAccess.code,
+          ),
+          stackTrace);
     }
   }
 }

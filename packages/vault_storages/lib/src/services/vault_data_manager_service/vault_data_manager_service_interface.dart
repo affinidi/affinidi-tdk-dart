@@ -30,10 +30,15 @@ abstract interface class VaultDataManagerServiceInterface {
   /// ```dart
   /// final profiles = await vaultDataManagerService.getProfiles();
   /// ```
-  Future<List<VaultDataManagerProfile>> getProfiles();
+  Future<List<VaultDataManagerProfile>> getProfiles({
+    VaultCancelToken? cancelToken,
+  });
 
   /// Gets child nodes for the specified node
-  Future<List<Node>?> getChildNodes({required String nodeId});
+  Future<List<Node>?> getChildNodes({
+    required String nodeId,
+    VaultCancelToken? cancelToken,
+  });
 
   /// Creates a new profile
   ///
@@ -51,8 +56,9 @@ abstract interface class VaultDataManagerServiceInterface {
   /// ```
   Future<Response<CreateNodeOK>> createProfile({
     required String name,
-    required String description,
+    String? description,
     String? profilePictureURI,
+    VaultCancelToken? cancelToken,
   });
 
   /// Updates profile metadata
@@ -76,6 +82,7 @@ abstract interface class VaultDataManagerServiceInterface {
     String? name,
     String? description,
     String? profilePictureURI,
+    VaultCancelToken? cancelToken,
   });
 
   /// Deletes a profile and all its contents
@@ -86,7 +93,10 @@ abstract interface class VaultDataManagerServiceInterface {
   /// ```dart
   /// await vaultDataManagerService.deleteProfile('your_profile_id');
   /// ```
-  Future<void> deleteProfile(String profileId);
+  Future<void> deleteProfile(
+    String profileId, {
+    VaultCancelToken? cancelToken,
+  });
 
   /// Retrieves structured data associated with a profile
   ///
@@ -98,7 +108,10 @@ abstract interface class VaultDataManagerServiceInterface {
   /// ```dart
   /// final profileData = await vaultDataManagerService.getProfileData('your_profile_id');
   /// ```
-  Future<ProfileData> getProfileData(String profileId);
+  Future<ProfileData> getProfileData(
+    String profileId, {
+    VaultCancelToken? cancelToken,
+  });
 
   /// Updates structured data for a profile
   ///
@@ -115,6 +128,7 @@ abstract interface class VaultDataManagerServiceInterface {
   Future<void> updateProfileData({
     required String profileId,
     required ProfileData profileData,
+    VaultCancelToken? cancelToken,
   });
 
   /// Initiates document scanning for a file
@@ -125,7 +139,10 @@ abstract interface class VaultDataManagerServiceInterface {
   /// ```dart
   /// await vaultDataManagerService.scanFile('your_file_node_id');
   /// ```
-  Future<void> scanFile(String nodeId);
+  Future<void> scanFile(
+    String nodeId, {
+    VaultCancelToken? cancelToken,
+  });
 
   /// Retrieves list of scanned files
   ///
@@ -135,7 +152,9 @@ abstract interface class VaultDataManagerServiceInterface {
   /// ```dart
   /// final scannedFiles = await vaultDataManagerService.getScannedFiles();
   /// ```
-  Future<List<ScannedFile>> getScannedFiles();
+  Future<List<ScannedFile>> getScannedFiles({
+    VaultCancelToken? cancelToken,
+  });
 
   /// Gets recognized data from a scanned file
   ///
@@ -148,12 +167,16 @@ abstract interface class VaultDataManagerServiceInterface {
   /// ```dart
   /// final scannedFileInfo = await vaultDataManagerService.getScannedFileInfo('your_file_token');
   /// ```
-  Future<RecognizedProfileData> getScannedFileInfo(String fileToken);
+  Future<RecognizedProfileData> getScannedFileInfo(
+    String fileToken, {
+    VaultCancelToken? cancelToken,
+  });
 
   /// Creates a new folder
   Future<void> createFolder({
     required String folderName,
     required String parentNodeId,
+    VaultCancelToken? cancelToken,
   });
 
   /// Creates a new file with encrypted content
@@ -161,6 +184,7 @@ abstract interface class VaultDataManagerServiceInterface {
     required String fileName,
     required String parentFolderNodeId,
     required Uint8List data,
+    VaultCancelToken? cancelToken,
   });
 
   /// Downloads and decrypts file content
@@ -169,27 +193,48 @@ abstract interface class VaultDataManagerServiceInterface {
   ///
   /// Throws [TdkException] if cannot find file info
   /// Throws [TdkException] if cannot get data encryption key
-  Future<List<int>> downloadFile({required String nodeId});
+  Future<List<int>> downloadFile({
+    required String nodeId,
+    VaultCancelToken? cancelToken,
+  });
 
   /// Renames a file
-  Future<void> renameFile({required String nodeId, required String newName});
+  Future<void> renameFile({
+    required String nodeId,
+    required String newName,
+    VaultCancelToken? cancelToken,
+  });
 
   /// Renames a folder
-  Future<void> renameFolder({required String nodeId, required String newName});
+  Future<void> renameFolder({
+    required String nodeId,
+    required String newName,
+    VaultCancelToken? cancelToken,
+  });
 
   /// Deletes a folder and its contents
-  Future<void> deleteFolder(String nodeId);
+  Future<void> deleteFolder(
+    String nodeId, {
+    VaultCancelToken? cancelToken,
+  });
 
   /// Deletes a file
-  Future<void> deleteFile(String nodeId);
+  Future<void> deleteFile(
+    String nodeId, {
+    VaultCancelToken? cancelToken,
+  });
 
   /// Retrieves node information
-  Future<Node> getNodeInfo(String nodeId);
+  Future<Node> getNodeInfo(
+    String nodeId, {
+    VaultCancelToken? cancelToken,
+  });
 
   /// Gets all verifiable credentials for a profile
   Future<List<DigitalCredential>> getClaimedCredentialsByProfile(
-    String profileId,
-  );
+    String profileId, {
+    VaultCancelToken? cancelToken,
+  });
 
   /// Gets all digital credentials with their nodes for a profile
   ///
@@ -198,16 +243,23 @@ abstract interface class VaultDataManagerServiceInterface {
   /// Return list of [DigitalCredential]
   ///
   /// Throws [TdkException] when cannot get verifiable credentials
-  Future<List<DigitalCredential>> getDigitalCredentials(String profileId);
+  Future<List<DigitalCredential>> getDigitalCredentials(
+    String profileId, {
+    VaultCancelToken? cancelToken,
+  });
 
   /// Adds a verifiable credential to a profile
   Future<void> addVerifiableCredentialToProfile({
     required String profileId,
     required VerifiableCredential verifiableCredential,
+    VaultCancelToken? cancelToken,
   });
 
   /// Deletes a claimed credential
-  Future<void> deleteClaimedCredential({required String nodeId});
+  Future<void> deleteClaimedCredential({
+    required String nodeId,
+    VaultCancelToken? cancelToken,
+  });
 
   /// Gets storage consumption information
   ///
@@ -219,12 +271,18 @@ abstract interface class VaultDataManagerServiceInterface {
   /// ```dart
   /// final fileConsumption = await vaultDataManagerService.getVaultDataFileConsumption();
   /// ```
-  Future<VaultFileConsumption> getVaultDataFileConsumption();
+  Future<VaultFileConsumption> getVaultDataFileConsumption({
+    VaultCancelToken? cancelToken,
+  });
 
   /// Gets accounts of associated profiles. Optionally provide [limit] and [exclusiveStartKey].
   /// [exclusiveStartKey] - is primary key of the first item that this operation will evaluate.
   /// Use the value that was returned for lastEvaluatedKey in the previous operation.
-  Future<List<Account>> getAccounts({int? limit, String? exclusiveStartKey});
+  Future<List<Account>> getAccounts({
+    int? limit,
+    String? exclusiveStartKey,
+    VaultCancelToken? cancelToken,
+  });
 
   /// Creates account. With given [accountIndex], [accountDid], [didProof].
   /// [accountIndex] - positive integer used to identify account.
@@ -235,10 +293,14 @@ abstract interface class VaultDataManagerServiceInterface {
     required String accountDid,
     required String didProof,
     required AccountMetadata metadata,
+    VaultCancelToken? cancelToken,
   });
 
   /// Deletes an account for a given [accountIndex].
-  Future<void> deleteAccount({required int accountIndex});
+  Future<void> deleteAccount({
+    required int accountIndex,
+    VaultCancelToken? cancelToken,
+  });
 
   /// Updates an account for a given [accountIndex].
   Future<void> updateAccount({
@@ -246,5 +308,6 @@ abstract interface class VaultDataManagerServiceInterface {
     required String accountDid,
     required String didProof,
     required AccountMetadata metadata,
+    VaultCancelToken? cancelToken,
   });
 }

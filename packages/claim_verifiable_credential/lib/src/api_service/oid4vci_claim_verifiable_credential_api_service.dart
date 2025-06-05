@@ -1,3 +1,4 @@
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:dio/dio.dart';
 import '../models/oid4vci_credential_offer.dart';
 
@@ -6,12 +7,16 @@ abstract class OID4VCIClaimVerifiableCredentialApiServiceInterface {
   /// Gets credential offer (new version)
   ///
   /// - [offerUri] (required) - URI of the credential offer
-  Future<Response<dynamic>> getCredentialOffer({required String offerUri});
+  Future<Response<dynamic>> getCredentialOffer({
+    required String offerUri,
+  });
 
   /// Retrieves metadata for a credential issuer.
   ///
   /// - [offerUri] (required) - URI of the credential offer
-  Future<Response<dynamic>> getIssuerMetadata({required String offerUri});
+  Future<Response<dynamic>> getIssuerMetadata({
+    required String offerUri,
+  });
 
   /// Retrieves an access token to claim a credential.
   ///
@@ -42,17 +47,24 @@ abstract class OID4VCIClaimVerifiableCredentialApiServiceInterface {
 /// verifiable credential API calls.
 class OID4VCIClaimVerifiableCredentialApiService
     implements OID4VCIClaimVerifiableCredentialApiServiceInterface {
+  static final int? _apiTimeOutInMilliseconds =
+      Environment.apiTimeOutInMilliseconds;
+
   /// Constructor to create an instance of [OID4VCIClaimVerifiableCredentialApiService].
-  OID4VCIClaimVerifiableCredentialApiService({Dio? client})
-    : _client = client ?? _createDioClient();
+  OID4VCIClaimVerifiableCredentialApiService({
+    Dio? client,
+  }) : _client = client ?? _createDioClient();
 
   final Dio _client;
 
   static Dio _createDioClient() {
+    final timeoutDuration = _apiTimeOutInMilliseconds != null
+        ? const Duration(milliseconds: 15000)
+        : Duration(milliseconds: _apiTimeOutInMilliseconds!);
     return Dio(
       BaseOptions(
-        connectTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(seconds: 30),
+        connectTimeout: timeoutDuration,
+        receiveTimeout: timeoutDuration,
         headers: {'Accept': 'application/json'},
       ),
     );
@@ -98,7 +110,9 @@ class OID4VCIClaimVerifiableCredentialApiService
   }) {
     return _client.post(
       credentialEndpoint,
-      options: Options(headers: {'Authorization': 'Bearer $accessToken'}),
+      options: Options(
+        headers: {'Authorization': 'Bearer $accessToken'},
+      ),
       data: {
         'credential_identifier': offer.credentialIdentifier,
         'proof': {'proof_type': 'jwt', 'jwt': jwt},

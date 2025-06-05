@@ -2,7 +2,6 @@ import 'package:affinidi_tdk_claim_verifiable_credential/oid4vci_claim_verifiabl
 import 'package:affinidi_tdk_claim_verifiable_credential/src/exceptions/tdk_exception_type.dart';
 import 'package:affinidi_tdk_test_utilities/affinidi_tdk_test_utilities.dart';
 import 'package:dio/dio.dart';
-import 'package:ssi/src/wallet/key_store/in_memory_key_store.dart';
 import 'package:ssi/ssi.dart';
 import 'package:test/test.dart';
 
@@ -29,21 +28,17 @@ void main() async {
     tokenEndpoint: testTokenEndpoint,
     credentialEndpoint: testCredentialEndpoint,
   );
-  final client = Dio(
-    BaseOptions(
-      validateStatus: (status) => true,
-      contentType: 'application/json',
-      responseType: ResponseType.json,
-    ),
-  );
+  final client = Dio(BaseOptions(
+    validateStatus: (status) => true,
+    contentType: 'application/json',
+    responseType: ResponseType.json,
+  ));
   final seed = EnvironmentFixtures.testEnvironment.seed;
 
   // WARNING: Don't use this seed in production! Generate a secure one instead.
-  final keyStore = InMemoryKeyStore();
-  final wallet = await Bip32Wallet.fromSeed(seed, keyStore);
-
-  final keyDerivationPath = "m/44'/60'/0'/0/0";
-  final keyPair = await wallet.deriveKey(derivationPath: keyDerivationPath);
+  final wallet = Bip32Wallet.fromSeed(seed);
+  final keyId = "m/44'/0'/0'/0/0";
+  final keyPair = await wallet.generateKey(keyId: keyId);
 
   final didDocument = DidKey.generateDocument(keyPair.publicKey);
   final signer = DidSigner(
@@ -56,9 +51,9 @@ void main() async {
   // Create a new instance of ClaimVerifiableCredentialService
   final claimVerifiableCredentialService =
       OID4VCIClaimVerifiableCredentialService(
-        didSigner: signer,
-        client: client,
-      );
+    didSigner: signer,
+    client: client,
+  );
 
   late DioAdapter dioAdapter;
 
@@ -77,15 +72,9 @@ void main() async {
         final uri = Uri.parse(nullCredentialOfferUrl);
 
         expect(
-          () => claimVerifiableCredentialService.loadCredentialOffer(uri),
-          throwsA(
-            isA<TdkException>().having(
-              (error) => error.code,
-              'code',
-              TdkExceptionType.missingUri.code,
-            ),
-          ),
-        );
+            () => claimVerifiableCredentialService.loadCredentialOffer(uri),
+            throwsA(isA<TdkException>().having((error) => error.code, 'code',
+                TdkExceptionType.missingUri.code)));
       });
     });
 
@@ -95,50 +84,36 @@ void main() async {
         final uri = Uri.parse(emptyCredentialOfferUrl);
 
         expect(
-          () => claimVerifiableCredentialService.loadCredentialOffer(uri),
-          throwsA(
-            isA<TdkException>().having(
-              (error) => error.code,
-              'code',
-              TdkExceptionType.missingUri.code,
-            ),
-          ),
-        );
+            () => claimVerifiableCredentialService.loadCredentialOffer(uri),
+            throwsA(isA<TdkException>().having((error) => error.code, 'code',
+                TdkExceptionType.missingUri.code)));
       });
     });
 
     group('and metadata is invalid', () {
-      test(
-        'it throws an exception with code failed_to_load_issuer_metadata',
-        () async {
-          dioAdapter.mockRequestWithReply(
-            url:
-                '${Uri.parse(testOfferUrl).origin}/.well-known/openid-credential-issuer',
-            statusCode: 200,
-            data: {'id1': 'one', 'id2': 'two'},
-            httpMethod: HttpMethod.get,
-          );
+      test('it throws an exception with code failed_to_load_issuer_metadata',
+          () async {
+        dioAdapter.mockRequestWithReply(
+          url:
+              '${Uri.parse(testOfferUrl).origin}/.well-known/openid-credential-issuer',
+          statusCode: 200,
+          data: {'id1': 'one', 'id2': 'two'},
+          httpMethod: HttpMethod.get,
+        );
 
-          dioAdapter.mockRequestWithReply(
-            url: testOfferUrl,
-            statusCode: 200,
-            data: ResponseFixtures.credentialOffer,
-            httpMethod: HttpMethod.get,
-          );
+        dioAdapter.mockRequestWithReply(
+          url: testOfferUrl,
+          statusCode: 200,
+          data: ResponseFixtures.credentialOffer,
+          httpMethod: HttpMethod.get,
+        );
 
-          final uri = Uri.parse(validCredentialOfferUrl);
-          expect(
+        final uri = Uri.parse(validCredentialOfferUrl);
+        expect(
             () => claimVerifiableCredentialService.loadCredentialOffer(uri),
-            throwsA(
-              isA<TdkException>().having(
-                (error) => error.code,
-                'code',
-                TdkExceptionType.failedToLoadIssuerMetadata.code,
-              ),
-            ),
-          );
-        },
-      );
+            throwsA(isA<TdkException>().having((error) => error.code, 'code',
+                TdkExceptionType.failedToLoadIssuerMetadata.code)));
+      });
     });
 
     group('and metadata is valid', () {
@@ -165,48 +140,36 @@ void main() async {
           );
 
           final uri = Uri.parse(validCredentialOfferUrl);
-          final result = await claimVerifiableCredentialService
-              .loadCredentialOffer(uri);
+          final result =
+              await claimVerifiableCredentialService.loadCredentialOffer(uri);
 
           expect(result, isA<OID4VCIClaimContext>());
           expect(result.issuerMetadata.tokenEndpoint, testTokenEndpoint);
           expect(
-            result.issuerMetadata.credentialEndpoint,
-            testCredentialEndpoint,
-          );
+              result.issuerMetadata.credentialEndpoint, testCredentialEndpoint);
           expect(result.issuerMetadata.returnUris, isEmpty);
-          expect(
-            result.credentialOffer.credentialIdentifier,
-            'test_credential_id',
-          );
+          expect(result.credentialOffer.credentialIdentifier,
+              'test_credential_id');
           expect(result.credentialOffer.preAuthCode, 'test_pre_auth_code');
           expect(result.credentialOffer.isTxCodeRequired, true);
         });
       });
 
       group('and offer does not exists', () {
-        test(
-          'it throws an exception with code failed_to_load_credential_offer',
-          () async {
-            dioAdapter.mockRequestWithReply(
-              url: testOfferUrl,
-              statusCode: 400,
-              data: ResponseFixtures.invalidIssuanceId,
-            );
+        test('it throws an exception with code failed_to_load_credential_offer',
+            () async {
+          dioAdapter.mockRequestWithReply(
+            url: testOfferUrl,
+            statusCode: 400,
+            data: ResponseFixtures.invalidIssuanceId,
+          );
 
-            final uri = Uri.parse(validCredentialOfferUrl);
-            expect(
+          final uri = Uri.parse(validCredentialOfferUrl);
+          expect(
               () => claimVerifiableCredentialService.loadCredentialOffer(uri),
-              throwsA(
-                isA<TdkException>().having(
-                  (error) => error.code,
-                  'code',
-                  TdkExceptionType.failedToLoadCredentialOffer.code,
-                ),
-              ),
-            );
-          },
-        );
+              throwsA(isA<TdkException>().having((error) => error.code, 'code',
+                  TdkExceptionType.failedToLoadCredentialOffer.code)));
+        });
       });
 
       group('and there is a server error', () {
@@ -221,13 +184,8 @@ void main() async {
           final uri = Uri.parse(validCredentialOfferUrl);
           expect(
             () => claimVerifiableCredentialService.loadCredentialOffer(uri),
-            throwsA(
-              isA<TdkException>().having(
-                (error) => error.code,
-                'code',
-                TdkExceptionType.serverError.code,
-              ),
-            ),
+            throwsA(isA<TdkException>().having((error) => error.code, 'code',
+                TdkExceptionType.serverError.code)),
           );
         });
       });
@@ -243,103 +201,78 @@ void main() async {
           final uri = Uri.parse(validCredentialOfferUrl);
           expect(
             () => claimVerifiableCredentialService.loadCredentialOffer(uri),
-            throwsA(
-              isA<TdkException>().having(
-                (error) => error.code,
-                'code',
-                TdkExceptionType.networkError.code,
-              ),
-            ),
+            throwsA(isA<TdkException>().having((error) => error.code, 'code',
+                TdkExceptionType.networkError.code)),
           );
         });
       });
 
       group('and there are unknown errors', () {
-        test(
-          'it throws an exception with code failed_to_load_credential_offer',
-          () async {
-            dioAdapter.mockRequestWithException(
-              url: testOfferUrl,
-              exception: DioExceptionFixtures.httpExceptionWithMessage(
-                message: 'unkwnon',
-              ),
-            );
+        test('it throws an exception with code failed_to_load_credential_offer',
+            () async {
+          dioAdapter.mockRequestWithException(
+            url: testOfferUrl,
+            exception: DioExceptionFixtures.httpExceptionWithMessage(
+                message: 'unkwnon'),
+          );
 
-            final uri = Uri.parse(validCredentialOfferUrl);
-            expect(
-              () => claimVerifiableCredentialService.loadCredentialOffer(uri),
-              throwsA(
-                isA<TdkException>().having(
-                  (error) => error.code,
-                  'code',
-                  TdkExceptionType.failedToLoadCredentialOffer.code,
-                ),
-              ),
-            );
-          },
-        );
+          final uri = Uri.parse(validCredentialOfferUrl);
+          expect(
+            () => claimVerifiableCredentialService.loadCredentialOffer(uri),
+            throwsA(isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              TdkExceptionType.failedToLoadCredentialOffer.code,
+            )),
+          );
+        });
       });
 
       group('and the reponse has an empty body', () {
-        test(
-          'it throws an exception with code failed_to_load_credential_offer',
-          () async {
-            dioAdapter.mockRequestWithReply(
-              url: testOfferUrl,
-              statusCode: 200,
-              data: ResponseFixtures.empty,
-            );
+        test('it throws an exception with code failed_to_load_credential_offer',
+            () async {
+          dioAdapter.mockRequestWithReply(
+            url: testOfferUrl,
+            statusCode: 200,
+            data: ResponseFixtures.empty,
+          );
 
-            final uri = Uri.parse(validCredentialOfferUrl);
-            expect(
+          final uri = Uri.parse(validCredentialOfferUrl);
+          expect(
               () => claimVerifiableCredentialService.loadCredentialOffer(uri),
-              throwsA(
-                isA<TdkException>().having(
-                  (error) => error.code,
-                  'code',
-                  TdkExceptionType.failedToLoadCredentialOffer.code,
-                ),
-              ),
-            );
-          },
-        );
+              throwsA(isA<TdkException>().having((error) => error.code, 'code',
+                  TdkExceptionType.failedToLoadCredentialOffer.code)));
+        });
       });
 
       group('and the credential offer has expired', () {
-        test(
-          'it throws an exception with code credential_offer_expired',
-          () async {
-            dioAdapter.mockRequestWithReply(
-              url:
-                  '${Uri.parse(testOfferUrl).origin}/.well-known/openid-credential-issuer',
-              statusCode: 200,
-              data: ResponseFixtures.issuerMetaData(
-                tokenEndpoint: testTokenEndpoint,
-                credentialEndpoint: testCredentialEndpoint,
-              ),
-              httpMethod: HttpMethod.get,
-            );
+        test('it throws an exception with code credential_offer_expired',
+            () async {
+          dioAdapter.mockRequestWithReply(
+            url:
+                '${Uri.parse(testOfferUrl).origin}/.well-known/openid-credential-issuer',
+            statusCode: 200,
+            data: ResponseFixtures.issuerMetaData(
+              tokenEndpoint: testTokenEndpoint,
+              credentialEndpoint: testCredentialEndpoint,
+            ),
+            httpMethod: HttpMethod.get,
+          );
 
-            dioAdapter.mockRequestWithReply(
-              url: testOfferUrl,
-              statusCode: 400,
-              data: ResponseFixtures.loadExpiredCredentialOffer,
-              httpMethod: HttpMethod.get,
-            );
+          dioAdapter.mockRequestWithReply(
+            url: testOfferUrl,
+            statusCode: 400,
+            data: ResponseFixtures.loadExpiredCredentialOffer,
+            httpMethod: HttpMethod.get,
+          );
 
-            final uri = Uri.parse(validCredentialOfferUrl);
-            expect(
-              () => claimVerifiableCredentialService.loadCredentialOffer(uri),
-              throwsA(
-                isA<TdkException>().having(
-                  (error) => error.code,
-                  'code',
-                  TdkExceptionType.credentialOfferExpired.code,
-                ),
-              ),
-            );
-          },
-        );
+          final uri = Uri.parse(validCredentialOfferUrl);
+          expect(
+            () => claimVerifiableCredentialService.loadCredentialOffer(uri),
+            throwsA(isA<TdkException>().having((error) => error.code, 'code',
+                TdkExceptionType.credentialOfferExpired.code)),
+          );
+        });
       });
     });
   });
@@ -356,15 +289,9 @@ void main() async {
 
         expect(
           () => claimVerifiableCredentialService.claimCredential(
-            claimContext: credentialClaimContext,
-          ),
-          throwsA(
-            isA<TdkException>().having(
-              (error) => error.code,
-              'code',
-              TdkExceptionType.serverError.code,
-            ),
-          ),
+              claimContext: credentialClaimContext),
+          throwsA(isA<TdkException>().having((error) => error.code, 'code',
+              TdkExceptionType.serverError.code)),
         );
       });
     });
@@ -379,70 +306,49 @@ void main() async {
 
         expect(
           () => claimVerifiableCredentialService.claimCredential(
-            claimContext: credentialClaimContext,
-          ),
-          throwsA(
-            isA<TdkException>().having(
-              (error) => error.code,
-              'code',
-              TdkExceptionType.networkError.code,
-            ),
-          ),
+              claimContext: credentialClaimContext),
+          throwsA(isA<TdkException>().having((error) => error.code, 'code',
+              TdkExceptionType.networkError.code)),
         );
       });
     });
 
     group('and there are unknown errors', () {
-      test(
-        'it throws an exception with code failed_to_load_credential_offer',
-        () async {
-          dioAdapter.mockRequestWithException(
-            url: testOfferUrl,
-            exception: DioExceptionFixtures.httpExceptionWithMessage(
-              message: 'unkwnon',
-            ),
-          );
+      test('it throws an exception with code failed_to_load_credential_offer',
+          () async {
+        dioAdapter.mockRequestWithException(
+          url: testOfferUrl,
+          exception:
+              DioExceptionFixtures.httpExceptionWithMessage(message: 'unkwnon'),
+        );
 
-          expect(
-            () => claimVerifiableCredentialService.claimCredential(
-              claimContext: credentialClaimContext,
-            ),
-            throwsA(
-              isA<TdkException>().having(
-                (error) => error.code,
-                'code',
-                TdkExceptionType.failedToClaimCredential.code,
-              ),
-            ),
-          );
-        },
-      );
+        expect(
+          () => claimVerifiableCredentialService.claimCredential(
+              claimContext: credentialClaimContext),
+          throwsA(isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            TdkExceptionType.failedToClaimCredential.code,
+          )),
+        );
+      });
     });
 
     group('and its missing the access token', () {
-      test(
-        'it throws an exception with code failed_to_load_credential_offer',
-        () async {
-          dioAdapter.mockRequestWithReply(
-            url: makeOfferUrl(credentialOfferUrl: testOfferUrl),
-            statusCode: 200,
-            data: ResponseFixtures.empty,
-          );
+      test('it throws an exception with code failed_to_load_credential_offer',
+          () async {
+        dioAdapter.mockRequestWithReply(
+          url: makeOfferUrl(credentialOfferUrl: testOfferUrl),
+          statusCode: 200,
+          data: ResponseFixtures.empty,
+        );
 
-          expect(
+        expect(
             () => claimVerifiableCredentialService.claimCredential(
-              claimContext: credentialClaimContext,
-            ),
-            throwsA(
-              isA<TdkException>().having(
-                (error) => error.code,
-                'code',
-                TdkExceptionType.failedToClaimCredential.code,
-              ),
-            ),
-          );
-        },
-      );
+                claimContext: credentialClaimContext),
+            throwsA(isA<TdkException>().having((error) => error.code, 'code',
+                TdkExceptionType.failedToClaimCredential.code)));
+      });
     });
 
     group('and providing the wrong transaction code', () {
@@ -458,16 +364,9 @@ void main() async {
 
         expect(
           () => claimVerifiableCredentialService.claimCredential(
-            claimContext: credentialClaimContext,
-            txCode: wrongTxCode,
-          ),
-          throwsA(
-            isA<TdkException>().having(
-              (error) => error.code,
-              'code',
-              TdkExceptionType.unmatchedTxCode.code,
-            ),
-          ),
+              claimContext: credentialClaimContext, txCode: wrongTxCode),
+          throwsA(isA<TdkException>().having((error) => error.code, 'code',
+              TdkExceptionType.unmatchedTxCode.code)),
         );
       });
     });
@@ -489,15 +388,9 @@ void main() async {
 
         expect(
           () => claimVerifiableCredentialService.claimCredential(
-            claimContext: credentialClaimContext,
-          ),
-          throwsA(
-            isA<TdkException>().having(
-              (error) => error.code,
-              'code',
-              TdkExceptionType.credentialOfferExpired.code,
-            ),
-          ),
+              claimContext: credentialClaimContext),
+          throwsA(isA<TdkException>().having((error) => error.code, 'code',
+              TdkExceptionType.credentialOfferExpired.code)),
         );
       });
     });
@@ -519,15 +412,9 @@ void main() async {
 
         expect(
           () => claimVerifiableCredentialService.claimCredential(
-            claimContext: credentialClaimContext,
-          ),
-          throwsA(
-            isA<TdkException>().having(
-              (error) => error.code,
-              'code',
-              TdkExceptionType.other.code,
-            ),
-          ),
+              claimContext: credentialClaimContext),
+          throwsA(isA<TdkException>().having(
+              (error) => error.code, 'code', TdkExceptionType.other.code)),
         );
       });
     });
@@ -543,15 +430,9 @@ void main() async {
 
         expect(
           () => claimVerifiableCredentialService.claimCredential(
-            claimContext: credentialClaimContext,
-          ),
-          throwsA(
-            isA<TdkException>().having(
-              (error) => error.code,
-              'code',
-              TdkExceptionType.credentialOfferClaimed.code,
-            ),
-          ),
+              claimContext: credentialClaimContext),
+          throwsA(isA<TdkException>().having((error) => error.code, 'code',
+              TdkExceptionType.credentialOfferClaimed.code)),
         );
       });
     });
@@ -572,132 +453,99 @@ void main() async {
         );
 
         final result = await claimVerifiableCredentialService.claimCredential(
-          claimContext: credentialClaimContext,
-        );
+            claimContext: credentialClaimContext);
 
         expect(result, isA<VerifiableCredential>());
         expect(result.id.toString(), equals('claimid:02-aaaaaa-aaaaaaaaaaa'));
         expect(result.type, contains('VerifiableCredential'));
         expect(
-          result.issuer.id.toString(),
-          equals('did:key:aaaabaaaabaaaabaaaabaaaabaaaabaaaabaaaabaaaabaaaa'),
-        );
+            result.issuer.id.toString(),
+            equals(
+                'did:key:aaaabaaaabaaaabaaaabaaaabaaaabaaaabaaaabaaaabaaaa'));
       });
     });
 
     group('and the access token request fails', () {
-      test(
-        'it throws an exception with invalid_proof when proof is invalid',
-        () async {
-          dioAdapter.mockRequestWithReply(
-            url: testTokenEndpoint,
-            statusCode: 400,
-            data: {
-              'error': 'invalid_proof',
-              'error_description':
-                  'The proof in the Credential Request is invalid',
-            },
-            httpMethod: HttpMethod.post,
-          );
+      test('it throws an exception with invalid_proof when proof is invalid',
+          () async {
+        dioAdapter.mockRequestWithReply(
+          url: testTokenEndpoint,
+          statusCode: 400,
+          data: {
+            'error': 'invalid_proof',
+            'error_description':
+                'The proof in the Credential Request is invalid'
+          },
+          httpMethod: HttpMethod.post,
+        );
 
-          expect(
-            () => claimVerifiableCredentialService.claimCredential(
-              claimContext: credentialClaimContext,
-            ),
-            throwsA(
-              isA<TdkException>().having(
-                (error) => error.code,
-                'code',
-                TdkExceptionType.invalidCredentialProof.code,
-              ),
-            ),
-          );
-        },
-      );
+        expect(
+          () => claimVerifiableCredentialService.claimCredential(
+              claimContext: credentialClaimContext),
+          throwsA(isA<TdkException>().having((error) => error.code, 'code',
+              TdkExceptionType.invalidCredentialProof.code)),
+        );
+      });
 
-      test(
-        'it throws an exception with expired_token when token is expired',
-        () async {
-          dioAdapter.mockRequestWithReply(
-            url: testTokenEndpoint,
-            statusCode: 400,
-            data: {
-              'error': 'expired_token',
-              'error_description': 'The access token has expired',
-            },
-            httpMethod: HttpMethod.post,
-          );
+      test('it throws an exception with expired_token when token is expired',
+          () async {
+        dioAdapter.mockRequestWithReply(
+          url: testTokenEndpoint,
+          statusCode: 400,
+          data: {
+            'error': 'expired_token',
+            'error_description': 'The access token has expired'
+          },
+          httpMethod: HttpMethod.post,
+        );
 
-          expect(
-            () => claimVerifiableCredentialService.claimCredential(
-              claimContext: credentialClaimContext,
-            ),
-            throwsA(
-              isA<TdkException>().having(
-                (error) => error.code,
-                'code',
-                TdkExceptionType.expiredToken.code,
-              ),
-            ),
-          );
-        },
-      );
+        expect(
+          () => claimVerifiableCredentialService.claimCredential(
+              claimContext: credentialClaimContext),
+          throwsA(isA<TdkException>().having((error) => error.code, 'code',
+              TdkExceptionType.expiredToken.code)),
+        );
+      });
 
-      test(
-        'it throws an exception with serverError when server error occurs',
-        () async {
-          dioAdapter.mockRequestWithReply(
-            url: testTokenEndpoint,
-            statusCode: 400,
-            data: {
-              'error': 'serverError',
-              'error_description': 'Internal server error',
-            },
-            httpMethod: HttpMethod.post,
-          );
+      test('it throws an exception with serverError when server error occurs',
+          () async {
+        dioAdapter.mockRequestWithReply(
+          url: testTokenEndpoint,
+          statusCode: 400,
+          data: {
+            'error': 'serverError',
+            'error_description': 'Internal server error'
+          },
+          httpMethod: HttpMethod.post,
+        );
 
-          expect(
-            () => claimVerifiableCredentialService.claimCredential(
-              claimContext: credentialClaimContext,
-            ),
-            throwsA(
-              isA<TdkException>().having(
-                (error) => error.code,
-                'code',
-                TdkExceptionType.serverError.code,
-              ),
-            ),
-          );
-        },
-      );
+        expect(
+          () => claimVerifiableCredentialService.claimCredential(
+              claimContext: credentialClaimContext),
+          throwsA(isA<TdkException>().having((error) => error.code, 'code',
+              TdkExceptionType.serverError.code)),
+        );
+      });
 
-      test(
-        'it throws an exception with other when unknown error occurs',
-        () async {
-          dioAdapter.mockRequestWithReply(
-            url: testTokenEndpoint,
-            statusCode: 400,
-            data: {
-              'error': 'unknown_error',
-              'error_description': 'An unknown error occurred',
-            },
-            httpMethod: HttpMethod.post,
-          );
+      test('it throws an exception with other when unknown error occurs',
+          () async {
+        dioAdapter.mockRequestWithReply(
+          url: testTokenEndpoint,
+          statusCode: 400,
+          data: {
+            'error': 'unknown_error',
+            'error_description': 'An unknown error occurred'
+          },
+          httpMethod: HttpMethod.post,
+        );
 
-          expect(
-            () => claimVerifiableCredentialService.claimCredential(
-              claimContext: credentialClaimContext,
-            ),
-            throwsA(
-              isA<TdkException>().having(
-                (error) => error.code,
-                'code',
-                TdkExceptionType.other.code,
-              ),
-            ),
-          );
-        },
-      );
+        expect(
+          () => claimVerifiableCredentialService.claimCredential(
+              claimContext: credentialClaimContext),
+          throwsA(isA<TdkException>().having(
+              (error) => error.code, 'code', TdkExceptionType.other.code)),
+        );
+      });
     });
   });
 }

@@ -5,7 +5,8 @@ import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_consumer_auth_provider/affinidi_tdk_consumer_auth_provider.dart';
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
-import 'package:affinidi_tdk_vault_data_manager/affinidi_tdk_vault_data_manager.dart';
+import 'package:affinidi_tdk_vault_data_manager/affinidi_tdk_vault_data_manager.dart'
+    as vdm;
 import 'package:affinidi_tdk_vault_data_manager_client/affinidi_tdk_vault_data_manager_client.dart'
     hide NodeStatus, NodeType;
 import 'package:dio/dio.dart';
@@ -13,6 +14,7 @@ import 'package:meta/meta.dart';
 import 'package:ssi/ssi.dart';
 
 import '../../exceptions/tdk_exception_type.dart';
+import '../../helpers/dio_cancel_token_adapter.dart';
 import '../../model/account.dart';
 import '../../model/node.dart';
 import '../../model/node_status.dart';
@@ -28,94 +30,109 @@ import 'vault_data_manager_service_interface.dart';
 /// operations using vault data manager services.
 class VaultDataManagerService implements VaultDataManagerServiceInterface {
   /// Service for handling encryption operations
-  late final VaultDataManagerEncryptionServiceInterface
-  _vaultDataManagerEncryptionService;
+  late final vdm.VaultDataManagerEncryptionServiceInterface
+      _vaultDataManagerEncryptionService;
 
   /// Service for API operations with the vault
-  late final VaultDataManagerApiServiceInterface _vaultDataManagerApiService;
+  late final vdm.VaultDataManagerApiServiceInterface
+      _vaultDataManagerApiService;
 
   /// Logger instance for error handling
   final Logger _logger;
+
+  final Uint8List _encryptedKey;
+  final KeyPair _keyPair;
 
   VaultDataManagerService._(
     this._vaultDataManagerEncryptionService,
     this._vaultDataManagerApiService, {
     Logger? logger,
-  }) : _logger = logger ?? Logger.instance;
+    required Uint8List encryptedDekek,
+    required KeyPair keyPair,
+  })  : _logger = logger ?? Logger.instance,
+        _encryptedKey = encryptedDekek,
+        _keyPair = keyPair;
 
   /// Creates a new instance of [VaultDataManagerService] for testing purposes.
   @visibleForTesting
   VaultDataManagerService(
-    VaultDataManagerEncryptionServiceInterface
-    vaultDataManagerEncryptionService,
-    VaultDataManagerApiServiceInterface vaultDataManagerApiService, {
+    vdm.VaultDataManagerEncryptionServiceInterface
+        vaultDataManagerEncryptionService,
+    vdm.VaultDataManagerApiServiceInterface vaultDataManagerApiService, {
     Logger? logger,
-  }) : this._(vaultDataManagerEncryptionService, vaultDataManagerApiService);
+    required Uint8List encryptedKey,
+    required KeyPair keyPair,
+  }) : this._(
+          vaultDataManagerEncryptionService,
+          vaultDataManagerApiService,
+          encryptedDekek: encryptedKey,
+          keyPair: keyPair,
+        );
 
   /// Creates a new vault file system service instance with encryption.
   ///
-  /// - [didSigner] - A signer that uses a key pair associated with a DID document to sign data.
+  /// - [encryptedDekek] - encrypted kek of delegated profile
+  /// - [keyPair] - keyPair of delegated profile
   static Future<VaultDataManagerService> create({
-    required DidSigner didSigner,
-    required Uint8List encryptionKey,
+    required Uint8List encryptedDekek,
+    required KeyPair keyPair,
   }) async {
-    final consumerAuthProvider = ConsumerAuthProvider(signer: didSigner);
-    final elementsVaultApiUrl =
-        Environment.fetchEnvironment().elementsVaultApiUrl;
-    final vaultDataManagerApiService = VaultDataManagerApiService(
-      apiClient: AffinidiTdkVaultDataManagerClient(
-        authTokenHook: consumerAuthProvider.fetchConsumerToken,
-        basePathOverride: '$elementsVaultApiUrl/vfs',
-      ),
+    final consumerAuthProvider =
+        ConsumerAuthProvider(signer: keyPair.didSigner());
+    return _create(
+      encryptedDekek: encryptedDekek,
+      keyPair: keyPair,
+      authTokenHook: consumerAuthProvider.fetchConsumerToken,
     );
-
-    final vfsPublicKey = await vaultDataManagerApiService
-        .getVaultDataManagerPublicKey();
-
-    final vaultDataManagerEncryptionService = VaultDataManagerEncryptionService(
-      cryptographyService: CryptographyService(),
-      jwk: vfsPublicKey,
-      kek: encryptionKey,
-    );
-
-    final instance = VaultDataManagerService._(
-      vaultDataManagerEncryptionService,
-      vaultDataManagerApiService,
-    );
-
-    return instance;
   }
 
   /// Creates a new vault file system service instance to access deletegated profile
   ///
-  /// - [didSigner] - A signer that uses a key pair associated with a DID document to sign data.
   /// - [profileDid] - did of profile that grantee is accessing
-  /// - [encryptionKey] - dekek of delegated profile
+  /// - [encryptedDekek] - encrypted kek of delegated profile
+  /// - [keyPair] - keyPair of delegated profile
   static Future<VaultDataManagerService> createDelegated({
-    required DidSigner didSigner,
     required String profileDid,
-    required Uint8List encryptionKey,
+    required Uint8List encryptedDekek,
+    required KeyPair keyPair,
   }) async {
-    final consumerAuthProvider = ConsumerAuthProvider(signer: didSigner);
-    final vaultDataManagerApiService = VaultDataManagerApiService(
-      apiClient: AffinidiTdkVaultDataManagerClient(
-        authTokenHook: () =>
-            consumerAuthProvider.fetchDelegatedToken(profileDid: profileDid),
-      ),
+    final consumerAuthProvider =
+        ConsumerAuthProvider(signer: keyPair.didSigner());
+    return _create(
+      encryptedDekek: encryptedDekek,
+      keyPair: keyPair,
+      authTokenHook: () =>
+          consumerAuthProvider.fetchDelegatedToken(profileDid: profileDid),
     );
+  }
 
-    final vfsPublicKey = await vaultDataManagerApiService
-        .getVaultDataManagerPublicKey();
+  static Future<VaultDataManagerService> _create({
+    required Uint8List encryptedDekek,
+    required KeyPair keyPair,
+    required Future<String?> Function() authTokenHook,
+  }) async {
+    final elementsVaultApiUrl =
+        Environment.fetchEnvironment().elementsVaultApiUrl;
+    final vaultDataManagerApiService = vdm.VaultDataManagerApiService(
+        apiClient: AffinidiTdkVaultDataManagerClient(
+      authTokenHook: authTokenHook,
+      basePathOverride: '$elementsVaultApiUrl/vfs',
+    ));
 
-    final vaultDataManagerEncryptionService = VaultDataManagerEncryptionService(
+    final vfsPublicKey =
+        await vaultDataManagerApiService.getVaultDataManagerPublicKey();
+
+    final vaultDataManagerEncryptionService =
+        vdm.VaultDataManagerEncryptionService(
       cryptographyService: CryptographyService(),
       jwk: vfsPublicKey,
-      kek: encryptionKey,
     );
 
     final instance = VaultDataManagerService._(
       vaultDataManagerEncryptionService,
       vaultDataManagerApiService,
+      encryptedDekek: encryptedDekek,
+      keyPair: keyPair,
     );
 
     return instance;
@@ -125,15 +142,16 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   Future<void> addVerifiableCredentialToProfile({
     required String profileId,
     required VerifiableCredential verifiableCredential,
+    VaultCancelToken? cancelToken,
   }) async {
-    final verifiableCredentialBlob = utf8.encode(
-      jsonEncode(verifiableCredential),
+    final verifiableCredentialBlob =
+        utf8.encode(jsonEncode(verifiableCredential));
+    final dekGenerateModel =
+        await _vaultDataManagerEncryptionService.generateDataEncryptionMaterial(
+      encryptionKey: await _keyPair.decrypt(_encryptedKey),
     );
-    final dekGenerateModel = await _vaultDataManagerEncryptionService
-        .generateDataEncryptionMaterial();
-    final verifiableCredentialName = _getVerifiableCredentialName(
-      verifiableCredential,
-    );
+    final verifiableCredentialName =
+        _getVerifiableCredentialName(verifiableCredential);
 
     await _vaultDataManagerApiService.uploadVerifiableCredential(
       profileId: profileId,
@@ -143,6 +161,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
       dekEncryptedByWalletCryptoMaterial:
           dekGenerateModel.dekEncryptedByWalletCryptoMaterial,
       walletCryptoMaterialHash: dekGenerateModel.walletCryptoMaterialHash,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
     );
   }
 
@@ -151,9 +171,12 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     required String fileName,
     required String parentFolderNodeId,
     required Uint8List data,
+    VaultCancelToken? cancelToken,
   }) async {
-    final dekGenerateModel = await _vaultDataManagerEncryptionService
-        .generateDataEncryptionMaterial();
+    final dekGenerateModel =
+        await _vaultDataManagerEncryptionService.generateDataEncryptionMaterial(
+      encryptionKey: await _keyPair.decrypt(_encryptedKey),
+    );
 
     await _vaultDataManagerApiService.createFile(
       parentFolderId: parentFolderNodeId,
@@ -163,6 +186,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
       dekEncryptedByWalletCryptoMaterial:
           dekGenerateModel.dekEncryptedByWalletCryptoMaterial,
       walletCryptoMaterialHash: dekGenerateModel.walletCryptoMaterialHash,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
     );
   }
 
@@ -170,10 +195,13 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   Future<void> createFolder({
     required String folderName,
     required String parentNodeId,
+    VaultCancelToken? cancelToken,
   }) async {
     await _vaultDataManagerApiService.createFolder(
       name: folderName,
       parentNodeId: parentNodeId,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
     );
   }
 
@@ -182,12 +210,12 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     required String name,
     String? description,
     String? profilePictureURI,
+    VaultCancelToken? cancelToken,
   }) async {
-    // List all profiles before creating new one so the root node has been created
-    await _vaultDataManagerApiService.getListOfProfiles();
-
-    final dekGenerateModel = await _vaultDataManagerEncryptionService
-        .generateDataEncryptionMaterial();
+    final dekGenerateModel =
+        await _vaultDataManagerEncryptionService.generateDataEncryptionMaterial(
+      encryptionKey: await _keyPair.decrypt(_encryptedKey),
+    );
 
     return await _vaultDataManagerApiService.createProfile(
       profileName: name,
@@ -197,184 +225,286 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
       dekEncryptedByWalletCryptoMaterial:
           dekGenerateModel.dekEncryptedByWalletCryptoMaterial,
       walletCryptoMaterialHash: dekGenerateModel.walletCryptoMaterialHash,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
     );
   }
 
   @override
-  Future<void> deleteClaimedCredential({required String nodeId}) async {
-    await _vaultDataManagerApiService.deleteNodeById(nodeId: nodeId);
+  Future<void> deleteClaimedCredential({
+    required String nodeId,
+    VaultCancelToken? cancelToken,
+  }) async {
+    await _vaultDataManagerApiService.deleteNodeById(
+      nodeId: nodeId,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
+    );
   }
 
   @override
-  Future<void> deleteFile(String nodeId) async {
-    await _vaultDataManagerApiService.deleteNodeById(nodeId: nodeId);
+  Future<void> deleteFile(
+    String nodeId, {
+    VaultCancelToken? cancelToken,
+  }) async {
+    try {
+      await _vaultDataManagerApiService.deleteNodeById(
+        nodeId: nodeId,
+        cancelToken: cancelToken != null
+            ? DioCancelTokenAdapter.from(cancelToken)
+            : null,
+      );
+    } on TdkException catch (e, stackTrace) {
+      if (e.code == vdm.TdkExceptionType.unableToDeleteNode.code) {
+        Error.throwWithStackTrace(
+          TdkException(
+            message: 'Failed to delete $nodeId file',
+            code: TdkExceptionType.unableToDeleteFile.code,
+          ),
+          stackTrace,
+        );
+      }
+      rethrow;
+    }
   }
 
   @override
-  Future<void> deleteFolder(String nodeId) async {
-    await _vaultDataManagerApiService.deleteNodeById(nodeId: nodeId);
+  Future<void> deleteFolder(
+    String nodeId, {
+    VaultCancelToken? cancelToken,
+  }) async {
+    try {
+      await _vaultDataManagerApiService.deleteNodeById(
+        nodeId: nodeId,
+        cancelToken: cancelToken != null
+            ? DioCancelTokenAdapter.from(cancelToken)
+            : null,
+      );
+    } on TdkException catch (e, stackTrace) {
+      if (e.code == vdm.TdkExceptionType.unableToDeleteNode.code) {
+        Error.throwWithStackTrace(
+          TdkException(
+            message: 'Failed to delete $nodeId folder',
+            code: TdkExceptionType.unableToDeleteFolder.code,
+          ),
+          stackTrace,
+        );
+      }
+      rethrow;
+    }
   }
 
   @override
-  Future<void> deleteProfile(String profileId) async {
-    await _vaultDataManagerApiService.deleteNodeById(nodeId: profileId);
+  Future<void> deleteProfile(
+    String profileId, {
+    VaultCancelToken? cancelToken,
+  }) async {
+    try {
+      await _vaultDataManagerApiService.deleteNodeById(
+        nodeId: profileId,
+        cancelToken: cancelToken != null
+            ? DioCancelTokenAdapter.from(cancelToken)
+            : null,
+      );
+    } on TdkException catch (e, stackTrace) {
+      if (e.code == vdm.TdkExceptionType.unableToDeleteNode.code) {
+        Error.throwWithStackTrace(
+          TdkException(
+            message: 'Failed to delete $profileId profile',
+            code: TdkExceptionType.unableToDeleteProfile.code,
+          ),
+          stackTrace,
+        );
+      }
+      rethrow;
+    }
   }
 
   @override
   Future<List<DigitalCredential>> getClaimedCredentialsByProfile(
-    String profileId,
-  ) async {
-    final verifiableCredentialNodesResponse = await _vaultDataManagerApiService
-        .getVerifiableCredentialsNodes(profileId: profileId);
+    String profileId, {
+    VaultCancelToken? cancelToken,
+  }) async {
+    final verifiableCredentialNodesResponse =
+        await _vaultDataManagerApiService.getVerifiableCredentialsNodes(
+      profileId: profileId,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
+    );
 
-    final nodesResponse = verifiableCredentialNodesResponse.data?.nodes
-        ?.toList();
+    final nodesResponse =
+        verifiableCredentialNodesResponse.data?.nodes?.toList();
 
     final nodes = nodesResponse!
-        .map<Node>(
-          (nodeResponse) => Node(
-            name: nodeResponse.name,
-            nodeId: nodeResponse.nodeId,
-            status: NodeStatus.values.byName(nodeResponse.status.name),
-            metadata: nodeResponse.metadata != null
-                ? Metadata.fromJson(
-                    jsonDecode(nodeResponse.metadata!) as Map<String, dynamic>,
-                  )
-                : null,
-            description: nodeResponse.description,
-            createdAt: nodeResponse.createdAt,
-            modifiedAt: nodeResponse.modifiedAt,
-            createdBy: nodeResponse.createdBy,
-            modifiedBy: nodeResponse.modifiedBy,
-            consumerId: nodeResponse.consumerId,
-            fileCount: nodeResponse.fileCount,
-            profileCount: nodeResponse.profileCount,
-            folderCount: nodeResponse.folderCount,
-            profileId: nodeResponse.profileId,
-            type: NodeType.values.byName(nodeResponse.type.name),
-          ),
-        )
+        .map<Node>((nodeResponse) => Node(
+              name: nodeResponse.name,
+              nodeId: nodeResponse.nodeId,
+              status: NodeStatus.values.byName(
+                nodeResponse.status.name,
+              ),
+              metadata: nodeResponse.metadata != null
+                  ? Metadata.fromJson(jsonDecode(nodeResponse.metadata!)
+                      as Map<String, dynamic>)
+                  : null,
+              description: nodeResponse.description,
+              createdAt: nodeResponse.createdAt,
+              modifiedAt: nodeResponse.modifiedAt,
+              createdBy: nodeResponse.createdBy,
+              modifiedBy: nodeResponse.modifiedBy,
+              consumerId: nodeResponse.consumerId,
+              fileCount: nodeResponse.fileCount,
+              profileCount: nodeResponse.profileCount,
+              folderCount: nodeResponse.folderCount,
+              profileId: nodeResponse.profileId,
+              type: NodeType.values.byName(nodeResponse.type.name),
+            ))
         .where((node) => node.status == NodeStatus.CREATED)
         .toList();
 
-    final verifiableCredentials =
-        await Future.wait(
-          nodes.map<Future<DigitalCredential>>((node) async {
-            final verifiableCredential =
-                await _getVerifiableCredentialByNodeIdFromCloud(
-                  nodeId: node.nodeId,
-                );
-            return DigitalCredential(
-              verifiableCredential: verifiableCredential,
-              id: node.nodeId,
-            );
-          }),
-        ).catchError((Object error) {
-          _logger.log(LogLevel.severe, error);
-          return <DigitalCredential>[];
-        });
+    final verifiableCredentials = await Future.wait(
+      nodes.map<Future<DigitalCredential>>((node) async {
+        final verifiableCredential =
+            await _getVerifiableCredentialByNodeIdFromCloud(
+          nodeId: node.nodeId,
+          cancelToken: cancelToken,
+        );
+        return DigitalCredential(
+            verifiableCredential: verifiableCredential, id: node.nodeId);
+      }),
+      eagerError: cancelToken != null,
+    ).catchError((Object error) {
+      _logger.log(LogLevel.severe, error);
+      return <DigitalCredential>[];
+    });
 
     return verifiableCredentials;
   }
 
   Future<VerifiableCredential> _getVerifiableCredentialByNodeIdFromCloud({
     required String nodeId,
+    VaultCancelToken? cancelToken,
   }) async {
-    final verifiableCredentialRawData = await downloadFile(nodeId: nodeId);
-    final verifiableCredential = UniversalParser.parse(
-      utf8.decode(verifiableCredentialRawData) as Object,
+    final verifiableCredentialRawData = await downloadFile(
+      nodeId: nodeId,
+      cancelToken: cancelToken,
     );
+    final verifiableCredential = UniversalParser.parse(
+        utf8.decode(verifiableCredentialRawData) as Object);
 
     return verifiableCredential;
   }
 
   @override
-  Future<ProfileData> getProfileData(String profileId) async {
+  Future<ProfileData> getProfileData(
+    String profileId, {
+    VaultCancelToken? cancelToken,
+  }) async {
     final nodeInfoResponse = await _vaultDataManagerApiService.getNodeInfo(
       nodeId: profileId,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
     );
 
     final encryptedDekBase64 = nodeInfoResponse.data?.edekInfo?.edek;
 
-    final dekEncryptedByVfsPublicKey = await _vaultDataManagerEncryptionService
-        .getDekEncryptedByApiPublicKey(encryptedDekBase64: encryptedDekBase64!);
-    final profileDataResponse = await _vaultDataManagerApiService
-        .getProfileData(
-          profileNodeId: profileId,
-          dekEncryptedByVfsPublicKey: dekEncryptedByVfsPublicKey,
-        );
+    final dekEncryptedByVfsPublicKey =
+        await _vaultDataManagerEncryptionService.getDekEncryptedByApiPublicKey(
+            encryptedDekBase64: encryptedDekBase64!,
+            encryptionKey: await _keyPair.decrypt(_encryptedKey));
+    final profileDataResponse =
+        await _vaultDataManagerApiService.getProfileData(
+      profileNodeId: profileId,
+      dekEncryptedByVfsPublicKey: dekEncryptedByVfsPublicKey,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
+    );
 
     final profilePerson = profileDataResponse.data?.data;
 
     return ProfileData.fromJson(
-      jsonDecode(profilePerson.toString()) as Map<String, dynamic>,
-    );
+        jsonDecode(profilePerson.toString()) as Map<String, dynamic>);
   }
 
   @override
-  Future<List<VaultDataManagerProfile>> getProfiles() async {
-    final profilesResponse = await _vaultDataManagerApiService
-        .getListOfProfiles();
+  Future<List<VaultDataManagerProfile>> getProfiles({
+    VaultCancelToken? cancelToken,
+  }) async {
+    final profilesResponse =
+        await _vaultDataManagerApiService.getListOfProfiles(
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
+    );
 
     final profileNodes = profilesResponse.data?.nodes?.toList() ?? [];
 
     final profiles = profileNodes
-        .map<VaultDataManagerProfile>(
-          (nodeResponse) => VaultDataManagerProfile(
-            id: nodeResponse.nodeId,
-            name: nodeResponse.name,
-            description: nodeResponse.description,
-            pictureURI: nodeResponse.metadata != null
-                ? Metadata.fromJson(
-                    jsonDecode(nodeResponse.metadata!) as Map<String, dynamic>,
-                  ).pictureURI
-                : '',
-          ),
-        )
+        .map<VaultDataManagerProfile>((nodeResponse) => VaultDataManagerProfile(
+              id: nodeResponse.nodeId,
+              name: nodeResponse.name,
+              description: nodeResponse.description,
+              pictureURI: nodeResponse.metadata != null
+                  ? Metadata.fromJson(jsonDecode(nodeResponse.metadata!)
+                          as Map<String, dynamic>)
+                      .pictureURI
+                  : '',
+            ))
         .toList();
 
     return profiles;
   }
 
   @override
-  Future<RecognizedProfileData> getScannedFileInfo(String fileToken) async {
-    final scannedFileInfoResponse = await _vaultDataManagerApiService
-        .getScannedFileInfo(scannedFileJobId: fileToken);
+  Future<RecognizedProfileData> getScannedFileInfo(
+    String fileToken, {
+    VaultCancelToken? cancelToken,
+  }) async {
+    final scannedFileInfoResponse =
+        await _vaultDataManagerApiService.getScannedFileInfo(
+      scannedFileJobId: fileToken,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
+    );
 
     final scannedFileInfo = scannedFileInfoResponse.data?.data;
 
     return RecognizedProfileData.fromJson(
-      jsonDecode(scannedFileInfo.toString()) as Map<String, dynamic>,
-    );
+        jsonDecode(scannedFileInfo.toString()) as Map<String, dynamic>);
   }
 
   @override
-  Future<List<ScannedFile>> getScannedFiles() async {
-    final scannedFilesResponse = await _vaultDataManagerApiService
-        .getAllScannedFiles();
+  Future<List<ScannedFile>> getScannedFiles({
+    VaultCancelToken? cancelToken,
+  }) async {
+    final scannedFilesResponse =
+        await _vaultDataManagerApiService.getAllScannedFiles(
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
+    );
 
     final scannedFilesData = scannedFilesResponse.data?.scannedFiles;
 
     final scannedFiles = scannedFilesData!
-        .map<ScannedFile>(
-          (scannedFile) => ScannedFile(
-            name: scannedFile.name,
-            status: scannedFile.status,
-            createdAt: scannedFile.createdAt,
-            jobId: scannedFile.jobId,
-            profileId: scannedFile.profileId,
-            nodeId: scannedFile.nodeId,
-          ),
-        )
+        .map<ScannedFile>((scannedFile) => ScannedFile(
+              name: scannedFile.name,
+              status: scannedFile.status,
+              createdAt: scannedFile.createdAt,
+              jobId: scannedFile.jobId,
+              profileId: scannedFile.profileId,
+              nodeId: scannedFile.nodeId,
+            ))
         .toList();
 
     return scannedFiles;
   }
 
   @override
-  Future<VaultFileConsumption> getVaultDataFileConsumption() async {
-    final nodeInfoResponse = await _vaultDataManagerApiService
-        .getRootNodeInfo();
+  Future<VaultFileConsumption> getVaultDataFileConsumption({
+    VaultCancelToken? cancelToken,
+  }) async {
+    final nodeInfoResponse = await _vaultDataManagerApiService.getRootNodeInfo(
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
+    );
 
     final consumedFileStorage = nodeInfoResponse.data?.consumedFileStorage;
 
@@ -396,10 +526,13 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   Future<void> renameFile({
     required String nodeId,
     required String newName,
+    VaultCancelToken? cancelToken,
   }) async {
     await _vaultDataManagerApiService.renameNode(
       nodeId: nodeId,
       newName: newName,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
     );
   }
 
@@ -407,26 +540,38 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   Future<void> renameFolder({
     required String nodeId,
     required String newName,
+    VaultCancelToken? cancelToken,
   }) async {
     await _vaultDataManagerApiService.renameNode(
       nodeId: nodeId,
       newName: newName,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
     );
   }
 
   @override
-  Future<void> scanFile(String nodeId) async {
+  Future<void> scanFile(
+    String nodeId, {
+    VaultCancelToken? cancelToken,
+  }) async {
     final nodeInfo = await _vaultDataManagerApiService.getNodeInfo(
       nodeId: nodeId,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
     );
 
     final encryptedDekBase64 = nodeInfo.data?.edekInfo?.edek;
-    final dekEncryptedByVfsPublicKey = await _vaultDataManagerEncryptionService
-        .getDekEncryptedByApiPublicKey(encryptedDekBase64: encryptedDekBase64!);
+    final dekEncryptedByVfsPublicKey =
+        await _vaultDataManagerEncryptionService.getDekEncryptedByApiPublicKey(
+            encryptedDekBase64: encryptedDekBase64!,
+            encryptionKey: await _keyPair.decrypt(_encryptedKey));
 
     await _vaultDataManagerApiService.startFileScan(
       nodeId: nodeId,
       dekEncryptedByVfsPublicKey: dekEncryptedByVfsPublicKey,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
     );
   }
 
@@ -434,14 +579,19 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   Future<void> updateProfileData({
     required String profileId,
     required ProfileData profileData,
+    VaultCancelToken? cancelToken,
   }) async {
-    final dekGenerateModel = await _vaultDataManagerEncryptionService
-        .generateDataEncryptionMaterial();
+    final dekGenerateModel =
+        await _vaultDataManagerEncryptionService.generateDataEncryptionMaterial(
+      encryptionKey: await _keyPair.decrypt(_encryptedKey),
+    );
 
     await _vaultDataManagerApiService.updateProfileData(
       profileNodeId: profileId,
       profileData: profileData.toJson(),
       dekEncryptedByVfsPublicKey: dekGenerateModel.dekEncryptedByApiPublicKey,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
     );
   }
 
@@ -451,26 +601,51 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     String? name,
     String? description,
     String? profilePictureURI,
+    VaultCancelToken? cancelToken,
   }) async {
     await _vaultDataManagerApiService.renameNode(
       nodeId: id,
       newName: name,
       newDescription: description,
       newPictureURI: profilePictureURI,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
     );
   }
 
   @override
-  Future<List<int>> downloadFile({required String nodeId}) async {
-    final commonNodeInfoResponse = await _vaultDataManagerApiService
-        .getNodeInfo(nodeId: nodeId);
+  Future<List<int>> downloadFile({
+    required String nodeId,
+    VaultCancelToken? cancelToken,
+  }) async {
+    final commonNodeInfoResponse =
+        await _vaultDataManagerApiService.getNodeInfo(
+            nodeId: nodeId,
+            cancelToken: cancelToken != null
+                ? DioCancelTokenAdapter.from(cancelToken)
+                : null);
     final commonNodeEdek = commonNodeInfoResponse.data?.edekInfo?.edek;
-    final dekEncryptedByVfsPublicKey = await _vaultDataManagerEncryptionService
-        .getDekEncryptedByApiPublicKey(encryptedDekBase64: commonNodeEdek!);
+    if (commonNodeEdek == null) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Failed to get file Edek',
+          code: TdkExceptionType.missingFileEdek.code,
+        ),
+        StackTrace.current,
+      );
+    }
+
+    final dekEncryptedByVfsPublicKey =
+        await _vaultDataManagerEncryptionService.getDekEncryptedByApiPublicKey(
+      encryptedDekBase64: commonNodeEdek,
+      encryptionKey: await _keyPair.decrypt(_encryptedKey),
+    );
 
     final nodeInfoResponse = await _vaultDataManagerApiService.getNodeInfo(
       nodeId: nodeId,
       dekEncryptedByVfsPublicKey: dekEncryptedByVfsPublicKey,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
     );
 
     final nodeInfo = nodeInfoResponse.data;
@@ -509,11 +684,14 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
 
     final dek = await _vaultDataManagerEncryptionService.decryptDek(
       encryptedDek: base64.decode(encryptedDekBase64),
+      encryptionKey: await _keyPair.decrypt(_encryptedKey),
     );
 
     final fileResponse = await _vaultDataManagerApiService.downloadNodeContents(
       downloadUrl: downloadUrl,
       dek: dek,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
     );
 
     final file = fileResponse.data as List<int>;
@@ -528,16 +706,18 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   }
 
   String _getVerifiableCredentialName(
-    VerifiableCredential verifiableCredential,
-  ) {
+      VerifiableCredential verifiableCredential) {
     return verifiableCredential.type.last;
   }
 
   @override
-  Future<List<Node>?> getChildNodes({required String nodeId}) async {
+  Future<List<Node>?> getChildNodes({
+    required String nodeId,
+    VaultCancelToken? cancelToken,
+  }) async {
     final nodesResponse = await _vaultDataManagerApiService.getChildrenByNodeId(
-      nodeId,
-    );
+        nodeId,
+        cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null);
     final nodesDto = nodesResponse.data?.nodes?.toList();
 
     final childNodes = nodesDto?.map((nodesDto) {
@@ -564,70 +744,78 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
 
   @override
   Future<List<DigitalCredential>> getDigitalCredentials(
-    String profileId,
-  ) async {
-    final verifiableCredentialNodesResponse = await _vaultDataManagerApiService
-        .getVerifiableCredentialsNodes(profileId: profileId);
+    String profileId, {
+    VaultCancelToken? cancelToken,
+  }) async {
+    final verifiableCredentialNodesResponse =
+        await _vaultDataManagerApiService.getVerifiableCredentialsNodes(
+      profileId: profileId,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
+    );
 
-    final nodesResponse = verifiableCredentialNodesResponse.data?.nodes
-        ?.toList();
+    final nodesResponse =
+        verifiableCredentialNodesResponse.data?.nodes?.toList();
 
     final nodes = nodesResponse!
-        .map<Node>(
-          (nodeResponse) => Node(
-            name: nodeResponse.name,
-            nodeId: nodeResponse.nodeId,
-            status: NodeStatus.values.byName(nodeResponse.status.name),
-            metadata: nodeResponse.metadata != null
-                ? Metadata.fromJson(
-                    jsonDecode(nodeResponse.metadata!) as Map<String, dynamic>,
-                  )
-                : null,
-            description: nodeResponse.description,
-            createdAt: nodeResponse.createdAt,
-            modifiedAt: nodeResponse.modifiedAt,
-            createdBy: nodeResponse.createdBy,
-            modifiedBy: nodeResponse.modifiedBy,
-            consumerId: nodeResponse.consumerId,
-            fileCount: nodeResponse.fileCount,
-            profileCount: nodeResponse.profileCount,
-            folderCount: nodeResponse.folderCount,
-            profileId: nodeResponse.profileId,
-            type: NodeType.values.byName(nodeResponse.type.name),
-          ),
-        )
+        .map<Node>((nodeResponse) => Node(
+              name: nodeResponse.name,
+              nodeId: nodeResponse.nodeId,
+              status: NodeStatus.values.byName(
+                nodeResponse.status.name,
+              ),
+              metadata: nodeResponse.metadata != null
+                  ? Metadata.fromJson(jsonDecode(nodeResponse.metadata!)
+                      as Map<String, dynamic>)
+                  : null,
+              description: nodeResponse.description,
+              createdAt: nodeResponse.createdAt,
+              modifiedAt: nodeResponse.modifiedAt,
+              createdBy: nodeResponse.createdBy,
+              modifiedBy: nodeResponse.modifiedBy,
+              consumerId: nodeResponse.consumerId,
+              fileCount: nodeResponse.fileCount,
+              profileCount: nodeResponse.profileCount,
+              folderCount: nodeResponse.folderCount,
+              profileId: nodeResponse.profileId,
+              type: NodeType.values.byName(nodeResponse.type.name),
+            ))
         .where((node) => node.status == NodeStatus.CREATED)
         .toList();
 
-    final verifiableCredentials =
-        await Future.wait(
-          nodes.map<Future<DigitalCredential>>((node) async {
-            return DigitalCredential(
-              id: node.nodeId,
-              verifiableCredential:
-                  await _getVerifiableCredentialByNodeIdFromCloud(
-                    nodeId: node.nodeId,
-                  ),
-            );
-          }),
-        ).catchError((error) {
-          Error.throwWithStackTrace(
-            TdkException(
-              message: 'Failed to get verifiable credentials',
-              code: TdkExceptionType.failedToGetVerifiableCredentials.code,
-            ),
-            StackTrace.current,
-          );
-        });
+    final verifiableCredentials = await Future.wait(
+      nodes.map<Future<DigitalCredential>>((node) async {
+        return DigitalCredential(
+          id: node.nodeId,
+          verifiableCredential: await _getVerifiableCredentialByNodeIdFromCloud(
+            nodeId: node.nodeId,
+          ),
+        );
+      }),
+      eagerError: cancelToken != null,
+    ).catchError((error) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Failed to get verifiable credentials',
+          code: TdkExceptionType.failedToGetVerifiableCredentials.code,
+        ),
+        StackTrace.current,
+      );
+    });
 
     return verifiableCredentials;
   }
 
   @override
-  Future<Node> getNodeInfo(String nodeId) async {
+  Future<Node> getNodeInfo(
+    String nodeId, {
+    VaultCancelToken? cancelToken,
+  }) async {
     final nodeInfoResponse = await _vaultDataManagerApiService.getNodeInfo(
-      nodeId: nodeId,
-    );
+        nodeId: nodeId,
+        cancelToken: cancelToken != null
+            ? DioCancelTokenAdapter.from(cancelToken)
+            : null);
 
     final nodeInfoData = nodeInfoResponse.data!;
 
@@ -637,8 +825,7 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
       status: NodeStatus.values.byName(nodeInfoData.status.name),
       metadata: nodeInfoData.metadata != null
           ? Metadata.fromJson(
-              jsonDecode(nodeInfoData.metadata!) as Map<String, dynamic>,
-            )
+              jsonDecode(nodeInfoData.metadata!) as Map<String, dynamic>)
           : null,
       description: nodeInfoData.description,
       createdAt: nodeInfoData.createdAt,
@@ -662,28 +849,41 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     required String accountDid,
     required String didProof,
     required AccountMetadata metadata,
+    VaultCancelToken? cancelToken,
   }) async {
     await _vaultDataManagerApiService.createAccount(
       accountIndex: accountIndex,
       accountDid: accountDid,
       didProof: didProof,
       metadata: metadata.toJson(),
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
     );
   }
 
   @override
-  Future<void> deleteAccount({required int accountIndex}) async {
-    await _vaultDataManagerApiService.deleteAccount(accountIndex: accountIndex);
+  Future<void> deleteAccount({
+    required int accountIndex,
+    VaultCancelToken? cancelToken,
+  }) async {
+    await _vaultDataManagerApiService.deleteAccount(
+      accountIndex: accountIndex,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
+    );
   }
 
   @override
   Future<List<Account>> getAccounts({
     int? limit,
     String? exclusiveStartKey,
+    VaultCancelToken? cancelToken,
   }) async {
     final accountsResponse = await _vaultDataManagerApiService.getAccounts(
       limit: limit,
       exclusiveStartKey: exclusiveStartKey,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
     );
 
     final records = accountsResponse.data?.records;
@@ -694,12 +894,10 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     final accounts = records
         .map(
           (record) => Account(
-            accountIndex: record.accountIndex,
-            accountDid: record.accountDid,
-            accountMetadata: AccountMetadata.fromJson(
-              record.metadata!.asMap as Map<String, dynamic>,
-            ),
-          ),
+              accountIndex: record.accountIndex,
+              accountDid: record.accountDid,
+              accountMetadata: AccountMetadata.fromJson(
+                  record.metadata!.asMap as Map<String, dynamic>)),
         )
         .toList();
 
@@ -712,12 +910,34 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     required String accountDid,
     required String didProof,
     required AccountMetadata metadata,
+    VaultCancelToken? cancelToken,
   }) async {
     await _vaultDataManagerApiService.updateAccount(
       accountIndex: accountIndex,
       accountDid: accountDid,
       didProof: didProof,
       metadata: metadata.toJson(),
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
+    );
+  }
+}
+
+/// Extension methods for helping generating a DidSigner from a KeyPair.
+extension _KeyPairDidSigner on KeyPair {
+  /// Returns a DidSigner constructed using the KeyPair
+  ///
+  /// [signatureScheme] defaults to [SignatureScheme.ecdsa_secp256k1_sha256]
+  ///
+  DidSigner didSigner({
+    SignatureScheme signatureScheme = SignatureScheme.ecdsa_secp256k1_sha256,
+  }) {
+    final didDocument = DidKey.generateDocument(publicKey);
+    return DidSigner(
+      didDocument: didDocument,
+      didKeyId: didDocument.verificationMethod.first.id,
+      keyPair: this,
+      signatureScheme: signatureScheme,
     );
   }
 }

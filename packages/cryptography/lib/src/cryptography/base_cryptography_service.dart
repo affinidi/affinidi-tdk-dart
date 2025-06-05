@@ -438,8 +438,7 @@ class BaseCryptographyService implements CryptographyServiceInterface {
     pce.AsymmetricBlockCipher engine,
     Uint8List input,
   ) {
-    final numBlocks =
-        input.length ~/ engine.inputBlockSize +
+    final numBlocks = input.length ~/ engine.inputBlockSize +
         ((input.length % engine.inputBlockSize != 0) ? 1 : 0);
 
     final output = Uint8List(numBlocks * engine.outputBlockSize);
@@ -535,10 +534,8 @@ class BaseCryptographyService implements CryptographyServiceInterface {
   }
 
   Uint8List _unpad(Uint8List padded) {
-    final unpadded = padded.sublist(
-      0,
-      padded.length - pce.PKCS7Padding().padCount(padded),
-    );
+    final unpadded =
+        padded.sublist(0, padded.length - pce.PKCS7Padding().padCount(padded));
     return unpadded;
   }
 }

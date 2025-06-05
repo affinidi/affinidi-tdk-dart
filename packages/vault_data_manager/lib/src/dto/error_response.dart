@@ -13,7 +13,10 @@ class ErrorResponse {
   ///   Defaults to [TdkExceptionType.other].
   /// - [message] (required) - error message providing additional details about
   ///   the error.
-  ErrorResponse({this.type = TdkExceptionType.other, required this.message});
+  ErrorResponse({
+    this.type = TdkExceptionType.other,
+    required this.message,
+  });
 
   /// Type of the exception, represented by [TdkExceptionType]
   final TdkExceptionType type;

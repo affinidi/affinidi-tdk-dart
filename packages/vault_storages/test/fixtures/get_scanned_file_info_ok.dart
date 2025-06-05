@@ -4,52 +4,54 @@ import 'package:affinidi_tdk_vault_data_manager_client/affinidi_tdk_vault_data_m
 import 'package:built_value/json_object.dart';
 
 final JsonObject scannedDataJson = JsonObject(
-  jsonEncode({
-    'person': {
-      'properties': {
-        'givenName': {
-          'name': 'givenName',
-          'type': 'string',
-          'alternatives': ['John'],
-        },
-        'familyName': {
-          'name': 'familyName',
-          'type': 'string',
-          'alternatives': ['Doe'],
-        },
-      },
-      'name': 'person',
-      'type': 'object',
-    },
-    'categories': {
-      'properties': {
-        'music': {
-          'properties': {
-            'playlists': {
-              'name': 'playlists',
-              'type': 'array',
-              'items': [
-                {
-                  'properties': {
-                    'name': {
-                      'name': 'name',
-                      'type': 'string',
-                      'alternatives': ['something'],
-                    },
-                  },
-                  'type': 'object',
-                },
-              ],
-            },
+  jsonEncode(
+    {
+      'person': {
+        'properties': {
+          'givenName': {
+            'name': 'givenName',
+            'type': 'string',
+            'alternatives': ['John']
           },
-          'name': 'music',
-          'type': 'object',
+          'familyName': {
+            'name': 'familyName',
+            'type': 'string',
+            'alternatives': ['Doe']
+          }
         },
+        'name': 'person',
+        'type': 'object'
       },
-      'name': 'categories',
-      'type': 'object',
+      'categories': {
+        'properties': {
+          'music': {
+            'properties': {
+              'playlists': {
+                'name': 'playlists',
+                'type': 'array',
+                'items': [
+                  {
+                    'properties': {
+                      'name': {
+                        'name': 'name',
+                        'type': 'string',
+                        'alternatives': ['something']
+                      }
+                    },
+                    'type': 'object'
+                  }
+                ]
+              }
+            },
+            'name': 'music',
+            'type': 'object'
+          }
+        },
+        'name': 'categories',
+        'type': 'object'
+      }
     },
-  }),
+  ),
 );
 
 final getScannedFileInfoOKBuilder = GetScannedFileInfoOKBuilder()

@@ -13,8 +13,8 @@ final profileDataJson = {
       'picture': {
         'properties': {
           'url': {'value': null, 'source': 'file:some-id', 'vlock': 1},
-          'caption': {'value': null, 'source': 'file:some-id', 'vlock': 1},
-        },
+          'caption': {'value': null, 'source': 'file:some-id', 'vlock': 1}
+        }
       },
       'birthdate': {'value': null, 'source': 'file:some-id', 'vlock': 1},
       'gender': {'value': null, 'source': 'file:some-id', 'vlock': 1},
@@ -23,7 +23,7 @@ final profileDataJson = {
       'highestEducationLevel': {
         'value': null,
         'source': 'file:some-id',
-        'vlock': 1,
+        'vlock': 1
       },
       'addresses': {
         'items': [
@@ -33,15 +33,15 @@ final profileDataJson = {
               'addressType': {
                 'name': 'Test cloud',
                 'value': 'home',
-                'vlock': 1,
+                'vlock': 1
               },
-              'postalCode': {'name': 'Test cloud', 'value': 'code', 'vlock': 1},
+              'postalCode': {'name': 'Test cloud', 'value': 'code', 'vlock': 1}
             },
-            'vlock': 1,
-          },
+            'vlock': 1
+          }
         ],
-        'vlock': 3,
-      },
+        'vlock': 3
+      }
     },
   },
   'categories': {
@@ -56,20 +56,20 @@ final profileDataJson = {
                   'interest': {
                     'name': 'Test cloud',
                     'value': 'travel',
-                    'vlock': 1,
-                  },
+                    'vlock': 1
+                  }
                 },
-                'vlock': 1,
-              },
+                'vlock': 1
+              }
             ],
-            'vlock': 2,
-          },
-        },
+            'vlock': 2
+          }
+        }
       },
       'identityDocuments': {
         'properties': {
-          'paperIdentityDocuments': {'items': [], 'vlock': 1},
-        },
+          'paperIdentityDocuments': {'items': [], 'vlock': 1}
+        }
       },
       'fashion': {
         'properties': {
@@ -82,54 +82,54 @@ final profileDataJson = {
                   'favoriteBrand': {
                     'name': 'Test cloud',
                     'value': 'brand name',
-                    'vlock': 16,
-                  },
+                    'vlock': 16
+                  }
                 },
-                'vlock': 1,
-              },
+                'vlock': 1
+              }
             ],
-            'vlock': 17,
-          },
-        },
+            'vlock': 17
+          }
+        }
       },
       'travel': {
         'properties': {
           'frequentDestinations': {'items': [], 'vlock': 1},
-          'travelStyle': {'value': null, 'source': 'file:some-id', 'vlock': 1},
-        },
+          'travelStyle': {'value': null, 'source': 'file:some-id', 'vlock': 1}
+        }
       },
       'movies': {
         'properties': {
           'favoriteGenres': {'items': [], 'vlock': 1},
           'favoriteActors': {'items': [], 'vlock': 1},
-          'moodStates': {'items': [], 'vlock': 1},
-        },
+          'moodStates': {'items': [], 'vlock': 1}
+        }
       },
       'music': {
         'properties': {
           'favoriteGenres': {'items': [], 'vlock': 1},
           'moodStates': {'items': [], 'vlock': 1},
-          'playlists': {'items': [], 'vlock': 1},
-        },
+          'playlists': {'items': [], 'vlock': 1}
+        }
       },
       'fitness': {
         'properties': {
           'activities': {'items': [], 'vlock': 1},
-          'fitnessGoals': {'items': [], 'vlock': 1},
-        },
+          'fitnessGoals': {'items': [], 'vlock': 1}
+        }
       },
       'sports': {
         'properties': {
-          'interests': {'items': [], 'vlock': 1},
-        },
+          'interests': {'items': [], 'vlock': 1}
+        }
       },
       'memberOf': {
         'properties': {
-          'membership': {'items': [], 'vlock': 1},
-        },
-      },
-    },
-  },
+          'membership': {'items': [], 'vlock': 1}
+        }
+      }
+    }
+  }
 };
 
 final profileData = ProfileData.fromJson(profileDataJson);

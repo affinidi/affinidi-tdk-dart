@@ -23,10 +23,8 @@ class ClaimCredentialAccessTokenErrorResponse {
   ///   errorDescription: 'Invalid request parameters',
   /// );
   /// ```
-  ClaimCredentialAccessTokenErrorResponse({
-    required this.error,
-    this.errorDescription,
-  });
+  ClaimCredentialAccessTokenErrorResponse(
+      {required this.error, this.errorDescription});
 
   /// error type that occurred
   final String error;
@@ -36,8 +34,7 @@ class ClaimCredentialAccessTokenErrorResponse {
 
   /// Creates an instance of [ClaimCredentialAccessTokenErrorResponse] from a JSON object.
   factory ClaimCredentialAccessTokenErrorResponse.fromJson(
-    Map<String, dynamic> json,
-  ) {
+      Map<String, dynamic> json) {
     return ClaimCredentialAccessTokenErrorResponse(
       error: json['error'] as String,
       errorDescription: json['error_description'] as String?,

@@ -49,31 +49,24 @@ class OID4VCICredentialOffer {
   factory OID4VCICredentialOffer.fromJson(Map<String, dynamic> json) {
     final credentialIdentifier =
         (json[_CredentialOfferKey.configurationIds.value] as List<dynamic>?)
-                ?.firstOrNull
-            as String?;
+            ?.firstOrNull as String?;
 
-    final grant =
-        (json[_CredentialOfferKey.grants.value]
-                as Map<String, dynamic>?)?[_CredentialOfferKey
-                .preAuthorizationCodeUrn
-                .value]
-            as Map<String, dynamic>?;
+    final grant = (json[_CredentialOfferKey.grants.value] as Map<String,
+            dynamic>?)?[_CredentialOfferKey.preAuthorizationCodeUrn.value]
+        as Map<String, dynamic>?;
     final preAuthCode =
         grant?[_CredentialOfferKey.preAuthorizationCode.value] as String?;
-    final transactionCode =
-        grant?[_CredentialOfferKey.transactionCode.value]
-            as Map<String, dynamic>?;
-    final isTxCodeRequired =
-        transactionCode != null &&
+    final transactionCode = grant?[_CredentialOfferKey.transactionCode.value]
+        as Map<String, dynamic>?;
+    final isTxCodeRequired = transactionCode != null &&
         Map<String, dynamic>.from(transactionCode).isNotEmpty;
 
     if (credentialIdentifier == null) {
       Error.throwWithStackTrace(
         TdkException(
-          message:
-              'Failed to parse credential offer, missing required credential identifier',
-          code: TdkExceptionType.failedToLoadCredentialOffer.code,
-        ),
+            message:
+                'Failed to parse credential offer, missing required credential identifier',
+            code: TdkExceptionType.failedToLoadCredentialOffer.code),
         StackTrace.current,
       );
     }
@@ -81,10 +74,9 @@ class OID4VCICredentialOffer {
     if (preAuthCode == null) {
       Error.throwWithStackTrace(
         TdkException(
-          message:
-              'Failed to parse credential offer, missing required pre authorization code',
-          code: TdkExceptionType.failedToLoadCredentialOffer.code,
-        ),
+            message:
+                'Failed to parse credential offer, missing required pre authorization code',
+            code: TdkExceptionType.failedToLoadCredentialOffer.code),
         StackTrace.current,
       );
     }
@@ -101,10 +93,10 @@ enum _CredentialOfferKey {
   grants('grants'),
   configurationIds('credential_configuration_ids'),
   preAuthorizationCodeUrn(
-    'urn:ietf:params:oauth:grant-type:pre-authorized_code',
-  ),
+      'urn:ietf:params:oauth:grant-type:pre-authorized_code'),
   preAuthorizationCode('pre-authorized_code'),
-  transactionCode('tx_code');
+  transactionCode('tx_code'),
+  ;
 
   const _CredentialOfferKey(this.value);
 

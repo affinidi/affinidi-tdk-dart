@@ -9,22 +9,18 @@ import '../../test/fixtures/encryption/jwk.dart';
 /// of the wallet crypto material.
 Future<void> main() async {
   final vaultDataManagerEncryptionService = VaultDataManagerEncryptionService(
-    kek: encryptionKey,
     cryptographyService: CryptographyService(),
     jwk: jwk,
   );
 
   final dataEncryptionMaterial = await vaultDataManagerEncryptionService
-      .generateDataEncryptionMaterial();
+      .generateDataEncryptionMaterial(encryptionKey: encryptionKey);
 
   print('Raw DEK: ${dataEncryptionMaterial.dek}');
   print(
-    'Encrypted by API Public Key: ${dataEncryptionMaterial.dekEncryptedByApiPublicKey}',
-  );
+      'Encrypted by API Public Key: ${dataEncryptionMaterial.dekEncryptedByApiPublicKey}');
   print(
-    'Encrypted by Wallet: ${dataEncryptionMaterial.dekEncryptedByWalletCryptoMaterial}',
-  );
+      'Encrypted by Wallet: ${dataEncryptionMaterial.dekEncryptedByWalletCryptoMaterial}');
   print(
-    'Wallet Crypto Material Hash: ${dataEncryptionMaterial.walletCryptoMaterialHash}',
-  );
+      'Wallet Crypto Material Hash: ${dataEncryptionMaterial.walletCryptoMaterialHash}');
 }

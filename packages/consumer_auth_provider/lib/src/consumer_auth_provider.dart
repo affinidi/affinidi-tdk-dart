@@ -19,8 +19,7 @@ class ConsumerAuthProvider implements ConsumerAuthProviderInterface {
   ///   a default client will be used.
   factory ConsumerAuthProvider({required DidSigner signer, Dio? client}) {
     return ConsumerAuthProvider._(
-      BaseConsumerAuthProvider(signer: signer, client: client),
-    );
+        BaseConsumerAuthProvider(signer: signer, client: client));
   }
 
   @override
@@ -50,12 +49,10 @@ class ConsumerAuthProvider implements ConsumerAuthProviderInterface {
   /// Throws an Exception if the exchange request fails
   @override
   Future<({String accessToken, List<dynamic>? authorizationDetails})>
-  exchangePreAuthCodeForToken({
-    required String tokenEndpoint,
-    required String preAuthCode,
-    String? txCode,
-  }) => _implementation.exchangePreAuthCodeForToken(
-    tokenEndpoint: tokenEndpoint,
-    preAuthCode: preAuthCode,
-  );
+      exchangePreAuthCodeForToken(
+              {required String tokenEndpoint,
+              required String preAuthCode,
+              String? txCode}) =>
+          _implementation.exchangePreAuthCodeForToken(
+              tokenEndpoint: tokenEndpoint, preAuthCode: preAuthCode);
 }

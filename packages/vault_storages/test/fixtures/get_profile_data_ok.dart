@@ -5,9 +5,8 @@ import 'package:built_value/json_object.dart';
 
 import 'profile_data.dart';
 
-final JsonObject profileDataJsonObject = JsonObject(
-  jsonEncode(profileDataJson),
-);
+final JsonObject profileDataJsonObject =
+    JsonObject(jsonEncode(profileDataJson));
 
 final profileDataOKBuilder = QueryProfileDataOKBuilder()
   ..data = profileDataJsonObject;

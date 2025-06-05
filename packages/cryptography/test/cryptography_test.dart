@@ -27,9 +27,9 @@ void main() {
       // Decrypt the data
       final decryptedData =
           await cryptographyService.Aes256DecryptStringFromHex(
-            key: encryptionKey,
-            encryptedData: encryptedData,
-          );
+        key: encryptionKey,
+        encryptedData: encryptedData,
+      );
 
       expect(decryptedData, dataToEncrypt);
     });
