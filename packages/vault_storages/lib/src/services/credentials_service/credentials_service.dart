@@ -13,8 +13,8 @@ class CredentialsService implements CredentialsServiceInterface {
   CredentialsService({
     required VaultDataManagerServiceInterface vaultDataManagerService,
     required String profileId,
-  }) : _vaultDataManagerService = vaultDataManagerService,
-       _profileId = profileId;
+  })  : _vaultDataManagerService = vaultDataManagerService,
+        _profileId = profileId;
 
   @override
   Future<void> delete({required String digitalCredentialId}) async {
@@ -49,8 +49,8 @@ class CredentialsService implements CredentialsServiceInterface {
   Future<List<DigitalCredential>> listNodes([
     bool Function(DigitalCredential digitalCredential)? predicate,
   ]) async {
-    final digitalCredentials = await _vaultDataManagerService
-        .getDigitalCredentials(_profileId);
+    final digitalCredentials =
+        await _vaultDataManagerService.getDigitalCredentials(_profileId);
 
     return predicate != null
         ? digitalCredentials.where(predicate).toList()

@@ -18,8 +18,8 @@ class StorageService implements StorageServiceInterface {
   StorageService({
     required VaultDataManagerServiceInterface vaultDataManagerService,
     required String profileId,
-  }) : _vaultDataManagerService = vaultDataManagerService,
-       _profileId = profileId;
+  })  : _vaultDataManagerService = vaultDataManagerService,
+        _profileId = profileId;
 
   @override
   Future<void> addFile({
