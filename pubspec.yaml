@@ -12,7 +12,6 @@ workspace:
   - packages/consumer_auth_provider/example
   - packages/cryptography
   - packages/iota_core
-  - packages/seed_cryptography
   - packages/test_utilities
   - packages/vault
   - packages/vault/example
