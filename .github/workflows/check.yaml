@@ -1,39 +1,9 @@
-# name: checks
+name: checks
 
-# on: 
-#   pull_request:
-     
-# jobs:
-#   dart-pipeline:
-#     uses: affinidi/pipeline-dart/.github/workflows/check.yaml@main
-#     secrets: inherit
-
-name: check
-on:
+on: 
   pull_request:
+     
 jobs:
-  wiz-scan:
-    uses: affinidi/pipeline-security/.github/workflows/wizcli-dirscan.yml@main
+  dart-pipeline:
+    uses: affinidi/pipeline-dart/.github/workflows/check.yaml@feat/flutter-dependant-workflows
     secrets: inherit
-  build:
-    runs-on: ubuntu-latest
-    services:
-      localstack:
-        image: localstack/localstack:latest
-        ports:
-          - 4566:4566
-        options: --env KMS=true
-
-    steps:
-      - uses: actions/checkout@v4
-      # Note: This workflow uses the latest stable version of the Dart SDK.
-      # You can specify other versions if desired, see documentation here:
-      # https://github.com/dart-lang/setup-dart/blob/main/README.md
-      - uses: flutter-actions/setup-flutter@v3
-      - uses: bluefireteam/melos-action@v3
-      - run: melos format --output=none --set-exit-if-changed .
-      - run: melos analyze
-      - run: melos test
-      - uses: romeovs/lcov-reporter-action@v0.3.1
-        with:
-          lcov-file: ./coverage/lcov.info
