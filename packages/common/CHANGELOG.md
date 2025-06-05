@@ -1,3 +1,8 @@
+## 1.7.0
+
+ - **FEAT**: add melos config, workspace pub config, PR checks, update code (#2).
+ - **FEAT**: add initial directory structure (#1).
+
 # [1.1.0](https://github.com/affinidi/affinidi-tdk/compare/affinidi_tdk_common_dart-v1.0.13...affinidi_tdk_common_dart-v1.1.0) (2025-04-25)
 
 
