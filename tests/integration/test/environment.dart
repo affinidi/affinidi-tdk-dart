@@ -57,9 +57,7 @@ class IotaEnvironment {
 class CredentialIssuanceEnvironment {
   final String credentialIssuanceData;
 
-  CredentialIssuanceEnvironment({
-    required this.credentialIssuanceData,
-  });
+  CredentialIssuanceEnvironment({required this.credentialIssuanceData});
 }
 
 IotaEnvironment getIotaEnvironment() {
@@ -73,7 +71,7 @@ IotaEnvironment getIotaEnvironment() {
     'PRESENTATION_SUBMISSION',
     'VP_TOKEN',
     'WALLET_ARI',
-    'VP_DEFINITION'
+    'VP_DEFINITION',
   ])) {
     throw Exception(
       'Missing environment variables. Please provide IOTA_CONFIG_ID, QUERY_ID, REDIRECT_URI, DID, PRESENTATION_SUBMISSION, VP_TOKEN, WALLET_ARI, VP_DEFINITION',
@@ -104,8 +102,13 @@ IotaEnvironment getIotaEnvironment() {
 ProjectEnvironment getProjectEnvironment() {
   final env = DotEnv()..load(['../../.env']);
 
-  if (!env.isEveryDefined(
-      ['PROJECT_ID', 'TOKEN_ID', 'PRIVATE_KEY', 'DID', 'WALLET_ID'])) {
+  if (!env.isEveryDefined([
+    'PROJECT_ID',
+    'TOKEN_ID',
+    'PRIVATE_KEY',
+    'DID',
+    'WALLET_ID',
+  ])) {
     throw Exception(
       'Missing environment variables. Please provide PROJECT_ID, TOKEN_ID, PRIVATE_KEY, DID, WALLET_ID',
     );

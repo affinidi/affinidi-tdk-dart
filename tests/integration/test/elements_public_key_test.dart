@@ -28,8 +28,9 @@ void main() {
     });
 
     test('throws exception on invalid JWKS endpoint', () {
-      final invalidIamClient =
-          IamClient(apiGatewayUrl: 'https://invalid-endpoint.example.com');
+      final invalidIamClient = IamClient(
+        apiGatewayUrl: 'https://invalid-endpoint.example.com',
+      );
       expect(
         () => JWTHelper.fetchPublicKey(invalidIamClient),
         throwsA(isA<Exception>()),

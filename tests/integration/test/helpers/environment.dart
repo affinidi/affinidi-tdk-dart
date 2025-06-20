@@ -31,9 +31,7 @@ class VaultEnvironment {
 class CredentialIssuanceEnvironment {
   final String credentialIssuanceData;
 
-  CredentialIssuanceEnvironment({
-    required this.credentialIssuanceData,
-  });
+  CredentialIssuanceEnvironment({required this.credentialIssuanceData});
 }
 
 ProjectEnvironment getProjectEnvironment() {

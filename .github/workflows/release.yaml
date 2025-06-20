@@ -5,5 +5,7 @@ on:
       - main
 jobs:
   dart-pipeline:
-    uses: affinidi/pipeline-dart/.github/workflows/release.yaml@feat/flutter-dependant-workflows
+    uses: affinidi/pipeline-dart/.github/workflows/release.yaml@main
     secrets: inherit
+    with:
+      flutter-version: '3.32.4'
