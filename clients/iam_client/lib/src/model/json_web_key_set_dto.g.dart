@@ -10,9 +10,9 @@ class _$JsonWebKeySetDto extends JsonWebKeySetDto {
   @override
   final BuiltList<JsonWebKeyDto> keys;
 
-  factory _$JsonWebKeySetDto(
-          [void Function(JsonWebKeySetDtoBuilder)? updates]) =>
-      (JsonWebKeySetDtoBuilder()..update(updates))._build();
+  factory _$JsonWebKeySetDto([
+    void Function(JsonWebKeySetDtoBuilder)? updates,
+  ]) => (JsonWebKeySetDtoBuilder()..update(updates))._build();
 
   _$JsonWebKeySetDto._({required this.keys}) : super._();
   @override
@@ -39,8 +39,9 @@ class _$JsonWebKeySetDto extends JsonWebKeySetDto {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'JsonWebKeySetDto')..add('keys', keys))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'JsonWebKeySetDto',
+    )..add('keys', keys)).toString();
   }
 }
 
@@ -82,10 +83,7 @@ class JsonWebKeySetDtoBuilder
   _$JsonWebKeySetDto _build() {
     _$JsonWebKeySetDto _$result;
     try {
-      _$result = _$v ??
-          _$JsonWebKeySetDto._(
-            keys: keys.build(),
-          );
+      _$result = _$v ?? _$JsonWebKeySetDto._(keys: keys.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -93,7 +91,10 @@ class JsonWebKeySetDtoBuilder
         keys.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'JsonWebKeySetDto', _$failedField, e.toString());
+          r'JsonWebKeySetDto',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

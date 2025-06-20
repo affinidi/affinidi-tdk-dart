@@ -19,7 +19,8 @@ part 'create_account_input.g.dart';
 /// * [metadata] - Metadata of account
 /// * [description] - Description of account
 @BuiltValue()
-abstract class CreateAccountInput implements Built<CreateAccountInput, CreateAccountInputBuilder> {
+abstract class CreateAccountInput
+    implements Built<CreateAccountInput, CreateAccountInputBuilder> {
   /// number that is used for profile DID derivation
   @BuiltValueField(wireName: r'accountIndex')
   int get accountIndex;
@@ -46,16 +47,19 @@ abstract class CreateAccountInput implements Built<CreateAccountInput, CreateAcc
 
   CreateAccountInput._();
 
-  factory CreateAccountInput([void updates(CreateAccountInputBuilder b)]) = _$CreateAccountInput;
+  factory CreateAccountInput([void updates(CreateAccountInputBuilder b)]) =
+      _$CreateAccountInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateAccountInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateAccountInput> get serializer => _$CreateAccountInputSerializer();
+  static Serializer<CreateAccountInput> get serializer =>
+      _$CreateAccountInputSerializer();
 }
 
-class _$CreateAccountInputSerializer implements PrimitiveSerializer<CreateAccountInput> {
+class _$CreateAccountInputSerializer
+    implements PrimitiveSerializer<CreateAccountInput> {
   @override
   final Iterable<Type> types = const [CreateAccountInput, _$CreateAccountInput];
 
@@ -111,7 +115,11 @@ class _$CreateAccountInputSerializer implements PrimitiveSerializer<CreateAccoun
     CreateAccountInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -127,45 +135,54 @@ class _$CreateAccountInputSerializer implements PrimitiveSerializer<CreateAccoun
       final value = serializedList[i + 1];
       switch (key) {
         case r'accountIndex':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.accountIndex = valueDes;
           break;
         case r'accountDid':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.accountDid = valueDes;
           break;
         case r'didProof':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.didProof = valueDes;
           break;
         case r'alias':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.alias = valueDes;
           break;
         case r'metadata':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JsonObject),
+                  )
+                  as JsonObject;
           result.metadata = valueDes;
           break;
         case r'description':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.description = valueDes;
           break;
         default:
@@ -196,4 +213,3 @@ class _$CreateAccountInputSerializer implements PrimitiveSerializer<CreateAccoun
     return result.build();
   }
 }
-

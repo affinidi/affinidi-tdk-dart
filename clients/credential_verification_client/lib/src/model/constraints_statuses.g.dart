@@ -14,16 +14,16 @@ class _$ConstraintsStatuses extends ConstraintsStatuses {
   @override
   final PdStatus? revoked;
 
-  factory _$ConstraintsStatuses(
-          [void Function(ConstraintsStatusesBuilder)? updates]) =>
-      (ConstraintsStatusesBuilder()..update(updates))._build();
+  factory _$ConstraintsStatuses([
+    void Function(ConstraintsStatusesBuilder)? updates,
+  ]) => (ConstraintsStatusesBuilder()..update(updates))._build();
 
   _$ConstraintsStatuses._({this.active, this.suspended, this.revoked})
-      : super._();
+    : super._();
   @override
   ConstraintsStatuses rebuild(
-          void Function(ConstraintsStatusesBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ConstraintsStatusesBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ConstraintsStatusesBuilder toBuilder() =>
@@ -105,7 +105,8 @@ class ConstraintsStatusesBuilder
   _$ConstraintsStatuses _build() {
     _$ConstraintsStatuses _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$ConstraintsStatuses._(
             active: _active?.build(),
             suspended: _suspended?.build(),
@@ -122,7 +123,10 @@ class ConstraintsStatusesBuilder
         _revoked?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'ConstraintsStatuses', _$failedField, e.toString());
+          r'ConstraintsStatuses',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

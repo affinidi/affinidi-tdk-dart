@@ -23,14 +23,14 @@ class _$InputDescriptor extends InputDescriptor {
   factory _$InputDescriptor([void Function(InputDescriptorBuilder)? updates]) =>
       (InputDescriptorBuilder()..update(updates))._build();
 
-  _$InputDescriptor._(
-      {required this.id,
-      required this.constraints,
-      this.name,
-      this.purpose,
-      this.format,
-      this.group})
-      : super._();
+  _$InputDescriptor._({
+    required this.id,
+    required this.constraints,
+    this.name,
+    this.purpose,
+    this.format,
+    this.group,
+  }) : super._();
   @override
   InputDescriptor rebuild(void Function(InputDescriptorBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -140,10 +140,14 @@ class InputDescriptorBuilder
   _$InputDescriptor _build() {
     _$InputDescriptor _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$InputDescriptor._(
             id: BuiltValueNullFieldError.checkNotNull(
-                id, r'InputDescriptor', 'id'),
+              id,
+              r'InputDescriptor',
+              'id',
+            ),
             constraints: constraints.build(),
             name: name,
             purpose: purpose,
@@ -162,7 +166,10 @@ class InputDescriptorBuilder
         _group?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'InputDescriptor', _$failedField, e.toString());
+          r'InputDescriptor',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

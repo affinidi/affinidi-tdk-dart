@@ -16,20 +16,20 @@ class _$W3cCredentialStatus extends W3cCredentialStatus {
   @override
   final String revocationListCredential;
 
-  factory _$W3cCredentialStatus(
-          [void Function(W3cCredentialStatusBuilder)? updates]) =>
-      (W3cCredentialStatusBuilder()..update(updates))._build();
+  factory _$W3cCredentialStatus([
+    void Function(W3cCredentialStatusBuilder)? updates,
+  ]) => (W3cCredentialStatusBuilder()..update(updates))._build();
 
-  _$W3cCredentialStatus._(
-      {required this.id,
-      required this.type,
-      required this.revocationListIndex,
-      required this.revocationListCredential})
-      : super._();
+  _$W3cCredentialStatus._({
+    required this.id,
+    required this.type,
+    required this.revocationListIndex,
+    required this.revocationListCredential,
+  }) : super._();
   @override
   W3cCredentialStatus rebuild(
-          void Function(W3cCredentialStatusBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(W3cCredentialStatusBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   W3cCredentialStatusBuilder toBuilder() =>
@@ -119,20 +119,29 @@ class W3cCredentialStatusBuilder
   W3cCredentialStatus build() => _build();
 
   _$W3cCredentialStatus _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$W3cCredentialStatus._(
           id: BuiltValueNullFieldError.checkNotNull(
-              id, r'W3cCredentialStatus', 'id'),
+            id,
+            r'W3cCredentialStatus',
+            'id',
+          ),
           type: BuiltValueNullFieldError.checkNotNull(
-              type, r'W3cCredentialStatus', 'type'),
+            type,
+            r'W3cCredentialStatus',
+            'type',
+          ),
           revocationListIndex: BuiltValueNullFieldError.checkNotNull(
-              revocationListIndex,
-              r'W3cCredentialStatus',
-              'revocationListIndex'),
+            revocationListIndex,
+            r'W3cCredentialStatus',
+            'revocationListIndex',
+          ),
           revocationListCredential: BuiltValueNullFieldError.checkNotNull(
-              revocationListCredential,
-              r'W3cCredentialStatus',
-              'revocationListCredential'),
+            revocationListCredential,
+            r'W3cCredentialStatus',
+            'revocationListCredential',
+          ),
         );
     replace(_$result);
     return _$result;

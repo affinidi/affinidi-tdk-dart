@@ -11,13 +11,13 @@ part 'w3c_proof.g.dart';
 /// W3cProof
 ///
 /// Properties:
-/// * [type] 
-/// * [created] 
-/// * [verificationMethod] 
-/// * [proofPurpose] 
-/// * [jws] 
-/// * [proofValue] 
-/// * [nonce] 
+/// * [type]
+/// * [created]
+/// * [verificationMethod]
+/// * [proofPurpose]
+/// * [jws]
+/// * [proofValue]
+/// * [nonce]
 @BuiltValue()
 abstract class W3cProof implements Built<W3cProof, W3cProofBuilder> {
   @BuiltValueField(wireName: r'type')
@@ -117,7 +117,11 @@ class _$W3cProofSerializer implements PrimitiveSerializer<W3cProof> {
     W3cProof object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -133,56 +137,70 @@ class _$W3cProofSerializer implements PrimitiveSerializer<W3cProof> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(String),
-          ) as String?;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType.nullable(String),
+                  )
+                  as String?;
           if (valueDes == null) continue;
           result.type = valueDes;
           break;
         case r'created':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(String),
-          ) as String?;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType.nullable(String),
+                  )
+                  as String?;
           if (valueDes == null) continue;
           result.created = valueDes;
           break;
         case r'verificationMethod':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.verificationMethod = valueDes;
           break;
         case r'proofPurpose':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.proofPurpose = valueDes;
           break;
         case r'jws':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(String),
-          ) as String?;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType.nullable(String),
+                  )
+                  as String?;
           if (valueDes == null) continue;
           result.jws = valueDes;
           break;
         case r'proofValue':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(String),
-          ) as String?;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType.nullable(String),
+                  )
+                  as String?;
           if (valueDes == null) continue;
           result.proofValue = valueDes;
           break;
         case r'nonce':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType.nullable(String),
-          ) as String?;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType.nullable(String),
+                  )
+                  as String?;
           if (valueDes == null) continue;
           result.nonce = valueDes;
           break;
@@ -214,4 +232,3 @@ class _$W3cProofSerializer implements PrimitiveSerializer<W3cProof> {
     return result.build();
   }
 }
-

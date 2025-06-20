@@ -12,16 +12,16 @@ class _$ProjectWithPolicyList extends ProjectWithPolicyList {
   @override
   final String? lastEvaluatedKey;
 
-  factory _$ProjectWithPolicyList(
-          [void Function(ProjectWithPolicyListBuilder)? updates]) =>
-      (ProjectWithPolicyListBuilder()..update(updates))._build();
+  factory _$ProjectWithPolicyList([
+    void Function(ProjectWithPolicyListBuilder)? updates,
+  ]) => (ProjectWithPolicyListBuilder()..update(updates))._build();
 
   _$ProjectWithPolicyList._({required this.projects, this.lastEvaluatedKey})
-      : super._();
+    : super._();
   @override
   ProjectWithPolicyList rebuild(
-          void Function(ProjectWithPolicyListBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ProjectWithPolicyListBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ProjectWithPolicyListBuilder toBuilder() =>
@@ -98,7 +98,8 @@ class ProjectWithPolicyListBuilder
   _$ProjectWithPolicyList _build() {
     _$ProjectWithPolicyList _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$ProjectWithPolicyList._(
             projects: projects.build(),
             lastEvaluatedKey: lastEvaluatedKey,
@@ -110,7 +111,10 @@ class ProjectWithPolicyListBuilder
         projects.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'ProjectWithPolicyList', _$failedField, e.toString());
+          r'ProjectWithPolicyList',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

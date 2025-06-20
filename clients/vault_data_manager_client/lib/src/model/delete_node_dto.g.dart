@@ -37,9 +37,9 @@ class _$DeleteNodeDto extends DeleteNodeDto {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'DeleteNodeDto')
-          ..add('newNodeId', newNodeId))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'DeleteNodeDto',
+    )..add('newNodeId', newNodeId)).toString();
   }
 }
 
@@ -78,10 +78,7 @@ class DeleteNodeDtoBuilder
   DeleteNodeDto build() => _build();
 
   _$DeleteNodeDto _build() {
-    final _$result = _$v ??
-        _$DeleteNodeDto._(
-          newNodeId: newNodeId,
-        );
+    final _$result = _$v ?? _$DeleteNodeDto._(newNodeId: newNodeId);
     replace(_$result);
     return _$result;
   }

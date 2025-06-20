@@ -21,13 +21,13 @@ class _$PrepareRequest extends PrepareRequest {
   factory _$PrepareRequest([void Function(PrepareRequestBuilder)? updates]) =>
       (PrepareRequestBuilder()..update(updates))._build();
 
-  _$PrepareRequest._(
-      {required this.connectionClientId,
-      required this.queryId,
-      required this.correlationId,
-      this.tokenMaxAge,
-      this.audience})
-      : super._();
+  _$PrepareRequest._({
+    required this.connectionClientId,
+    required this.queryId,
+    required this.correlationId,
+    this.tokenMaxAge,
+    this.audience,
+  }) : super._();
   @override
   PrepareRequest rebuild(void Function(PrepareRequestBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -127,14 +127,24 @@ class PrepareRequestBuilder
   PrepareRequest build() => _build();
 
   _$PrepareRequest _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$PrepareRequest._(
           connectionClientId: BuiltValueNullFieldError.checkNotNull(
-              connectionClientId, r'PrepareRequest', 'connectionClientId'),
+            connectionClientId,
+            r'PrepareRequest',
+            'connectionClientId',
+          ),
           queryId: BuiltValueNullFieldError.checkNotNull(
-              queryId, r'PrepareRequest', 'queryId'),
+            queryId,
+            r'PrepareRequest',
+            'queryId',
+          ),
           correlationId: BuiltValueNullFieldError.checkNotNull(
-              correlationId, r'PrepareRequest', 'correlationId'),
+            correlationId,
+            r'PrepareRequest',
+            'correlationId',
+          ),
           tokenMaxAge: tokenMaxAge,
           audience: audience,
         );

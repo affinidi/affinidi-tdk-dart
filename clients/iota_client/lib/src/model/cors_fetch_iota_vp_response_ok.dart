@@ -11,26 +11,35 @@ part 'cors_fetch_iota_vp_response_ok.g.dart';
 /// CorsFetchIotaVpResponseOK
 ///
 /// Properties:
-/// * [corsFetchIotaVpResponseOk] 
+/// * [corsFetchIotaVpResponseOk]
 @BuiltValue()
-abstract class CorsFetchIotaVpResponseOK implements Built<CorsFetchIotaVpResponseOK, CorsFetchIotaVpResponseOKBuilder> {
+abstract class CorsFetchIotaVpResponseOK
+    implements
+        Built<CorsFetchIotaVpResponseOK, CorsFetchIotaVpResponseOKBuilder> {
   @BuiltValueField(wireName: r'corsFetchIotaVpResponseOk')
   String? get corsFetchIotaVpResponseOk;
 
   CorsFetchIotaVpResponseOK._();
 
-  factory CorsFetchIotaVpResponseOK([void updates(CorsFetchIotaVpResponseOKBuilder b)]) = _$CorsFetchIotaVpResponseOK;
+  factory CorsFetchIotaVpResponseOK([
+    void updates(CorsFetchIotaVpResponseOKBuilder b),
+  ]) = _$CorsFetchIotaVpResponseOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsFetchIotaVpResponseOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CorsFetchIotaVpResponseOK> get serializer => _$CorsFetchIotaVpResponseOKSerializer();
+  static Serializer<CorsFetchIotaVpResponseOK> get serializer =>
+      _$CorsFetchIotaVpResponseOKSerializer();
 }
 
-class _$CorsFetchIotaVpResponseOKSerializer implements PrimitiveSerializer<CorsFetchIotaVpResponseOK> {
+class _$CorsFetchIotaVpResponseOKSerializer
+    implements PrimitiveSerializer<CorsFetchIotaVpResponseOK> {
   @override
-  final Iterable<Type> types = const [CorsFetchIotaVpResponseOK, _$CorsFetchIotaVpResponseOK];
+  final Iterable<Type> types = const [
+    CorsFetchIotaVpResponseOK,
+    _$CorsFetchIotaVpResponseOK,
+  ];
 
   @override
   final String wireName = r'CorsFetchIotaVpResponseOK';
@@ -55,7 +64,11 @@ class _$CorsFetchIotaVpResponseOKSerializer implements PrimitiveSerializer<CorsF
     CorsFetchIotaVpResponseOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -71,10 +84,12 @@ class _$CorsFetchIotaVpResponseOKSerializer implements PrimitiveSerializer<CorsF
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsFetchIotaVpResponseOk':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.corsFetchIotaVpResponseOk = valueDes;
           break;
         default:
@@ -105,4 +120,3 @@ class _$CorsFetchIotaVpResponseOKSerializer implements PrimitiveSerializer<CorsF
     return result.build();
   }
 }
-

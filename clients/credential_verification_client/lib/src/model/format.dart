@@ -13,12 +13,12 @@ part 'format.g.dart';
 /// Format
 ///
 /// Properties:
-/// * [jwt] 
-/// * [jwtVc] 
-/// * [jwtVp] 
-/// * [ldp] 
-/// * [ldpVc] 
-/// * [ldpVp] 
+/// * [jwt]
+/// * [jwtVc]
+/// * [jwtVp]
+/// * [ldp]
+/// * [ldpVc]
+/// * [ldpVp]
 @BuiltValue()
 abstract class Format implements Built<Format, FormatBuilder> {
   @BuiltValueField(wireName: r'jwt')
@@ -112,7 +112,11 @@ class _$FormatSerializer implements PrimitiveSerializer<Format> {
     Format object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -128,45 +132,57 @@ class _$FormatSerializer implements PrimitiveSerializer<Format> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'jwt':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JwtObject),
-          ) as JwtObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JwtObject),
+                  )
+                  as JwtObject;
           result.jwt.replace(valueDes);
           break;
         case r'jwt_vc':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JwtObject),
-          ) as JwtObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JwtObject),
+                  )
+                  as JwtObject;
           result.jwtVc.replace(valueDes);
           break;
         case r'jwt_vp':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JwtObject),
-          ) as JwtObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JwtObject),
+                  )
+                  as JwtObject;
           result.jwtVp.replace(valueDes);
           break;
         case r'ldp':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(LdpObject),
-          ) as LdpObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(LdpObject),
+                  )
+                  as LdpObject;
           result.ldp.replace(valueDes);
           break;
         case r'ldp_vc':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(LdpObject),
-          ) as LdpObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(LdpObject),
+                  )
+                  as LdpObject;
           result.ldpVc.replace(valueDes);
           break;
         case r'ldp_vp':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(LdpObject),
-          ) as LdpObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(LdpObject),
+                  )
+                  as LdpObject;
           result.ldpVp.replace(valueDes);
           break;
         default:
@@ -197,4 +213,3 @@ class _$FormatSerializer implements PrimitiveSerializer<Format> {
     return result.build();
   }
 }
-

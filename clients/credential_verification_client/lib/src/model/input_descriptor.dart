@@ -14,14 +14,15 @@ part 'input_descriptor.g.dart';
 /// InputDescriptor
 ///
 /// Properties:
-/// * [id] 
-/// * [constraints] 
-/// * [name] 
-/// * [purpose] 
-/// * [format] 
-/// * [group] 
+/// * [id]
+/// * [constraints]
+/// * [name]
+/// * [purpose]
+/// * [format]
+/// * [group]
 @BuiltValue()
-abstract class InputDescriptor implements Built<InputDescriptor, InputDescriptorBuilder> {
+abstract class InputDescriptor
+    implements Built<InputDescriptor, InputDescriptorBuilder> {
   @BuiltValueField(wireName: r'id')
   String get id;
 
@@ -42,16 +43,19 @@ abstract class InputDescriptor implements Built<InputDescriptor, InputDescriptor
 
   InputDescriptor._();
 
-  factory InputDescriptor([void updates(InputDescriptorBuilder b)]) = _$InputDescriptor;
+  factory InputDescriptor([void updates(InputDescriptorBuilder b)]) =
+      _$InputDescriptor;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(InputDescriptorBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<InputDescriptor> get serializer => _$InputDescriptorSerializer();
+  static Serializer<InputDescriptor> get serializer =>
+      _$InputDescriptorSerializer();
 }
 
-class _$InputDescriptorSerializer implements PrimitiveSerializer<InputDescriptor> {
+class _$InputDescriptorSerializer
+    implements PrimitiveSerializer<InputDescriptor> {
   @override
   final Iterable<Type> types = const [InputDescriptor, _$InputDescriptor];
 
@@ -109,7 +113,11 @@ class _$InputDescriptorSerializer implements PrimitiveSerializer<InputDescriptor
     InputDescriptor object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -125,45 +133,59 @@ class _$InputDescriptorSerializer implements PrimitiveSerializer<InputDescriptor
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'constraints':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(Constraints),
-          ) as Constraints;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(Constraints),
+                  )
+                  as Constraints;
           result.constraints.replace(valueDes);
           break;
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'purpose':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.purpose = valueDes;
           break;
         case r'format':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(Format),
-          ) as Format;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(Format),
+                  )
+                  as Format;
           result.format.replace(valueDes);
           break;
         case r'group':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.group.replace(valueDes);
           break;
         default:
@@ -194,4 +216,3 @@ class _$InputDescriptorSerializer implements PrimitiveSerializer<InputDescriptor
     return result.build();
   }
 }
-

@@ -11,12 +11,17 @@ part 'invalid_parameter_error_details_inner.g.dart';
 /// InvalidParameterErrorDetailsInner
 ///
 /// Properties:
-/// * [issue] 
-/// * [field] 
-/// * [value] 
-/// * [location] 
+/// * [issue]
+/// * [field]
+/// * [value]
+/// * [location]
 @BuiltValue()
-abstract class InvalidParameterErrorDetailsInner implements Built<InvalidParameterErrorDetailsInner, InvalidParameterErrorDetailsInnerBuilder> {
+abstract class InvalidParameterErrorDetailsInner
+    implements
+        Built<
+          InvalidParameterErrorDetailsInner,
+          InvalidParameterErrorDetailsInnerBuilder
+        > {
   @BuiltValueField(wireName: r'issue')
   String get issue;
 
@@ -31,18 +36,25 @@ abstract class InvalidParameterErrorDetailsInner implements Built<InvalidParamet
 
   InvalidParameterErrorDetailsInner._();
 
-  factory InvalidParameterErrorDetailsInner([void updates(InvalidParameterErrorDetailsInnerBuilder b)]) = _$InvalidParameterErrorDetailsInner;
+  factory InvalidParameterErrorDetailsInner([
+    void updates(InvalidParameterErrorDetailsInnerBuilder b),
+  ]) = _$InvalidParameterErrorDetailsInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(InvalidParameterErrorDetailsInnerBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<InvalidParameterErrorDetailsInner> get serializer => _$InvalidParameterErrorDetailsInnerSerializer();
+  static Serializer<InvalidParameterErrorDetailsInner> get serializer =>
+      _$InvalidParameterErrorDetailsInnerSerializer();
 }
 
-class _$InvalidParameterErrorDetailsInnerSerializer implements PrimitiveSerializer<InvalidParameterErrorDetailsInner> {
+class _$InvalidParameterErrorDetailsInnerSerializer
+    implements PrimitiveSerializer<InvalidParameterErrorDetailsInner> {
   @override
-  final Iterable<Type> types = const [InvalidParameterErrorDetailsInner, _$InvalidParameterErrorDetailsInner];
+  final Iterable<Type> types = const [
+    InvalidParameterErrorDetailsInner,
+    _$InvalidParameterErrorDetailsInner,
+  ];
 
   @override
   final String wireName = r'InvalidParameterErrorDetailsInner';
@@ -86,7 +98,11 @@ class _$InvalidParameterErrorDetailsInnerSerializer implements PrimitiveSerializ
     InvalidParameterErrorDetailsInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -102,31 +118,39 @@ class _$InvalidParameterErrorDetailsInnerSerializer implements PrimitiveSerializ
       final value = serializedList[i + 1];
       switch (key) {
         case r'issue':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.issue = valueDes;
           break;
         case r'field':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.field = valueDes;
           break;
         case r'value':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.value = valueDes;
           break;
         case r'location':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.location = valueDes;
           break;
         default:
@@ -157,4 +181,3 @@ class _$InvalidParameterErrorDetailsInnerSerializer implements PrimitiveSerializ
     return result.build();
   }
 }
-

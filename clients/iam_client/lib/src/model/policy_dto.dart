@@ -13,12 +13,12 @@ part 'policy_dto.g.dart';
 /// PolicyDto
 ///
 /// Properties:
-/// * [name] 
-/// * [description] 
-/// * [principalId] 
-/// * [projectId] 
-/// * [version] 
-/// * [statement] 
+/// * [name]
+/// * [description]
+/// * [principalId]
+/// * [projectId]
+/// * [version]
+/// * [statement]
 @BuiltValue()
 abstract class PolicyDto implements Built<PolicyDto, PolicyDtoBuilder> {
   @BuiltValueField(wireName: r'name')
@@ -108,7 +108,11 @@ class _$PolicyDtoSerializer implements PrimitiveSerializer<PolicyDto> {
     PolicyDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -124,45 +128,59 @@ class _$PolicyDtoSerializer implements PrimitiveSerializer<PolicyDto> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.description = valueDes;
           break;
         case r'principalId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.principalId = valueDes;
           break;
         case r'projectId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.projectId = valueDes;
           break;
         case r'version':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.version = valueDes;
           break;
         case r'statement':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(PolicyStatementDto)]),
-          ) as BuiltList<PolicyStatementDto>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(PolicyStatementDto),
+                    ]),
+                  )
+                  as BuiltList<PolicyStatementDto>;
           result.statement.replace(valueDes);
           break;
         default:
@@ -193,4 +211,3 @@ class _$PolicyDtoSerializer implements PrimitiveSerializer<PolicyDto> {
     return result.build();
   }
 }
-

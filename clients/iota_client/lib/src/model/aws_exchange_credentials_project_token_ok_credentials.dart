@@ -11,10 +11,15 @@ part 'aws_exchange_credentials_project_token_ok_credentials.g.dart';
 /// AwsExchangeCredentialsProjectTokenOKCredentials
 ///
 /// Properties:
-/// * [identityId] 
-/// * [token] 
+/// * [identityId]
+/// * [token]
 @BuiltValue()
-abstract class AwsExchangeCredentialsProjectTokenOKCredentials implements Built<AwsExchangeCredentialsProjectTokenOKCredentials, AwsExchangeCredentialsProjectTokenOKCredentialsBuilder> {
+abstract class AwsExchangeCredentialsProjectTokenOKCredentials
+    implements
+        Built<
+          AwsExchangeCredentialsProjectTokenOKCredentials,
+          AwsExchangeCredentialsProjectTokenOKCredentialsBuilder
+        > {
   @BuiltValueField(wireName: r'identityId')
   String get identityId;
 
@@ -23,18 +28,29 @@ abstract class AwsExchangeCredentialsProjectTokenOKCredentials implements Built<
 
   AwsExchangeCredentialsProjectTokenOKCredentials._();
 
-  factory AwsExchangeCredentialsProjectTokenOKCredentials([void updates(AwsExchangeCredentialsProjectTokenOKCredentialsBuilder b)]) = _$AwsExchangeCredentialsProjectTokenOKCredentials;
+  factory AwsExchangeCredentialsProjectTokenOKCredentials([
+    void updates(AwsExchangeCredentialsProjectTokenOKCredentialsBuilder b),
+  ]) = _$AwsExchangeCredentialsProjectTokenOKCredentials;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(AwsExchangeCredentialsProjectTokenOKCredentialsBuilder b) => b;
+  static void _defaults(
+    AwsExchangeCredentialsProjectTokenOKCredentialsBuilder b,
+  ) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<AwsExchangeCredentialsProjectTokenOKCredentials> get serializer => _$AwsExchangeCredentialsProjectTokenOKCredentialsSerializer();
+  static Serializer<AwsExchangeCredentialsProjectTokenOKCredentials>
+  get serializer =>
+      _$AwsExchangeCredentialsProjectTokenOKCredentialsSerializer();
 }
 
-class _$AwsExchangeCredentialsProjectTokenOKCredentialsSerializer implements PrimitiveSerializer<AwsExchangeCredentialsProjectTokenOKCredentials> {
+class _$AwsExchangeCredentialsProjectTokenOKCredentialsSerializer
+    implements
+        PrimitiveSerializer<AwsExchangeCredentialsProjectTokenOKCredentials> {
   @override
-  final Iterable<Type> types = const [AwsExchangeCredentialsProjectTokenOKCredentials, _$AwsExchangeCredentialsProjectTokenOKCredentials];
+  final Iterable<Type> types = const [
+    AwsExchangeCredentialsProjectTokenOKCredentials,
+    _$AwsExchangeCredentialsProjectTokenOKCredentials,
+  ];
 
   @override
   final String wireName = r'AwsExchangeCredentialsProjectTokenOKCredentials';
@@ -62,7 +78,11 @@ class _$AwsExchangeCredentialsProjectTokenOKCredentialsSerializer implements Pri
     AwsExchangeCredentialsProjectTokenOKCredentials object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -78,17 +98,21 @@ class _$AwsExchangeCredentialsProjectTokenOKCredentialsSerializer implements Pri
       final value = serializedList[i + 1];
       switch (key) {
         case r'identityId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.identityId = valueDes;
           break;
         case r'token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.token = valueDes;
           break;
         default:
@@ -119,4 +143,3 @@ class _$AwsExchangeCredentialsProjectTokenOKCredentialsSerializer implements Pri
     return result.build();
   }
 }
-

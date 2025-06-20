@@ -11,24 +11,28 @@ part 'cors_get_config_ok.g.dart';
 /// CorsGetConfigOK
 ///
 /// Properties:
-/// * [corsGetConfigOk] 
+/// * [corsGetConfigOk]
 @BuiltValue()
-abstract class CorsGetConfigOK implements Built<CorsGetConfigOK, CorsGetConfigOKBuilder> {
+abstract class CorsGetConfigOK
+    implements Built<CorsGetConfigOK, CorsGetConfigOKBuilder> {
   @BuiltValueField(wireName: r'corsGetConfigOk')
   String? get corsGetConfigOk;
 
   CorsGetConfigOK._();
 
-  factory CorsGetConfigOK([void updates(CorsGetConfigOKBuilder b)]) = _$CorsGetConfigOK;
+  factory CorsGetConfigOK([void updates(CorsGetConfigOKBuilder b)]) =
+      _$CorsGetConfigOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsGetConfigOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CorsGetConfigOK> get serializer => _$CorsGetConfigOKSerializer();
+  static Serializer<CorsGetConfigOK> get serializer =>
+      _$CorsGetConfigOKSerializer();
 }
 
-class _$CorsGetConfigOKSerializer implements PrimitiveSerializer<CorsGetConfigOK> {
+class _$CorsGetConfigOKSerializer
+    implements PrimitiveSerializer<CorsGetConfigOK> {
   @override
   final Iterable<Type> types = const [CorsGetConfigOK, _$CorsGetConfigOK];
 
@@ -55,7 +59,11 @@ class _$CorsGetConfigOKSerializer implements PrimitiveSerializer<CorsGetConfigOK
     CorsGetConfigOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -71,10 +79,12 @@ class _$CorsGetConfigOKSerializer implements PrimitiveSerializer<CorsGetConfigOK
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsGetConfigOk':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.corsGetConfigOk = valueDes;
           break;
         default:
@@ -105,4 +115,3 @@ class _$CorsGetConfigOKSerializer implements PrimitiveSerializer<CorsGetConfigOK
     return result.build();
   }
 }
-

@@ -1,7 +1,6 @@
 import 'package:test/test.dart';
 import 'package:affinidi_tdk_iam_client/affinidi_tdk_iam_client.dart';
 
-
 /// tests for PoliciesApi
 void main() {
   final instance = AffinidiTdkIamClient().getPoliciesApi();
@@ -16,6 +15,5 @@ void main() {
     test('test updatePolicies', () async {
       // TODO
     });
-
   });
 }

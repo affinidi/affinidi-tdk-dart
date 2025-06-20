@@ -13,10 +13,15 @@ part 'supported_credential_metadata_item_logo.g.dart';
 /// SupportedCredentialMetadataItemLogo
 ///
 /// Properties:
-/// * [url] 
-/// * [altText] 
+/// * [url]
+/// * [altText]
 @BuiltValue()
-abstract class SupportedCredentialMetadataItemLogo implements Built<SupportedCredentialMetadataItemLogo, SupportedCredentialMetadataItemLogoBuilder> {
+abstract class SupportedCredentialMetadataItemLogo
+    implements
+        Built<
+          SupportedCredentialMetadataItemLogo,
+          SupportedCredentialMetadataItemLogoBuilder
+        > {
   @BuiltValueField(wireName: r'url')
   String get url;
 
@@ -25,18 +30,25 @@ abstract class SupportedCredentialMetadataItemLogo implements Built<SupportedCre
 
   SupportedCredentialMetadataItemLogo._();
 
-  factory SupportedCredentialMetadataItemLogo([void updates(SupportedCredentialMetadataItemLogoBuilder b)]) = _$SupportedCredentialMetadataItemLogo;
+  factory SupportedCredentialMetadataItemLogo([
+    void updates(SupportedCredentialMetadataItemLogoBuilder b),
+  ]) = _$SupportedCredentialMetadataItemLogo;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SupportedCredentialMetadataItemLogoBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<SupportedCredentialMetadataItemLogo> get serializer => _$SupportedCredentialMetadataItemLogoSerializer();
+  static Serializer<SupportedCredentialMetadataItemLogo> get serializer =>
+      _$SupportedCredentialMetadataItemLogoSerializer();
 }
 
-class _$SupportedCredentialMetadataItemLogoSerializer implements PrimitiveSerializer<SupportedCredentialMetadataItemLogo> {
+class _$SupportedCredentialMetadataItemLogoSerializer
+    implements PrimitiveSerializer<SupportedCredentialMetadataItemLogo> {
   @override
-  final Iterable<Type> types = const [SupportedCredentialMetadataItemLogo, _$SupportedCredentialMetadataItemLogo];
+  final Iterable<Type> types = const [
+    SupportedCredentialMetadataItemLogo,
+    _$SupportedCredentialMetadataItemLogo,
+  ];
 
   @override
   final String wireName = r'SupportedCredentialMetadataItemLogo';
@@ -66,7 +78,11 @@ class _$SupportedCredentialMetadataItemLogoSerializer implements PrimitiveSerial
     SupportedCredentialMetadataItemLogo object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -82,17 +98,21 @@ class _$SupportedCredentialMetadataItemLogoSerializer implements PrimitiveSerial
       final value = serializedList[i + 1];
       switch (key) {
         case r'url':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.url = valueDes;
           break;
         case r'altText':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.altText = valueDes;
           break;
         default:
@@ -123,4 +143,3 @@ class _$SupportedCredentialMetadataItemLogoSerializer implements PrimitiveSerial
     return result.build();
   }
 }
-

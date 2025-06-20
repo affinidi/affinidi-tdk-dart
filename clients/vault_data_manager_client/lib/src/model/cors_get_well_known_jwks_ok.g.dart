@@ -10,15 +10,15 @@ class _$CorsGetWellKnownJwksOK extends CorsGetWellKnownJwksOK {
   @override
   final String? corsGetWellKnownJwksOk;
 
-  factory _$CorsGetWellKnownJwksOK(
-          [void Function(CorsGetWellKnownJwksOKBuilder)? updates]) =>
-      (CorsGetWellKnownJwksOKBuilder()..update(updates))._build();
+  factory _$CorsGetWellKnownJwksOK([
+    void Function(CorsGetWellKnownJwksOKBuilder)? updates,
+  ]) => (CorsGetWellKnownJwksOKBuilder()..update(updates))._build();
 
   _$CorsGetWellKnownJwksOK._({this.corsGetWellKnownJwksOk}) : super._();
   @override
   CorsGetWellKnownJwksOK rebuild(
-          void Function(CorsGetWellKnownJwksOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CorsGetWellKnownJwksOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CorsGetWellKnownJwksOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$CorsGetWellKnownJwksOK extends CorsGetWellKnownJwksOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'CorsGetWellKnownJwksOK')
-          ..add('corsGetWellKnownJwksOk', corsGetWellKnownJwksOk))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'CorsGetWellKnownJwksOK',
+    )..add('corsGetWellKnownJwksOk', corsGetWellKnownJwksOk)).toString();
   }
 }
 
@@ -83,7 +83,8 @@ class CorsGetWellKnownJwksOKBuilder
   CorsGetWellKnownJwksOK build() => _build();
 
   _$CorsGetWellKnownJwksOK _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CorsGetWellKnownJwksOK._(
           corsGetWellKnownJwksOk: corsGetWellKnownJwksOk,
         );

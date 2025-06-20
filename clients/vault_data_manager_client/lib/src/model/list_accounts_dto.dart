@@ -13,10 +13,11 @@ part 'list_accounts_dto.g.dart';
 /// ListAccountsDto
 ///
 /// Properties:
-/// * [records] 
-/// * [lastEvaluatedKey] 
+/// * [records]
+/// * [lastEvaluatedKey]
 @BuiltValue()
-abstract class ListAccountsDto implements Built<ListAccountsDto, ListAccountsDtoBuilder> {
+abstract class ListAccountsDto
+    implements Built<ListAccountsDto, ListAccountsDtoBuilder> {
   @BuiltValueField(wireName: r'records')
   BuiltList<AccountDto> get records;
 
@@ -25,16 +26,19 @@ abstract class ListAccountsDto implements Built<ListAccountsDto, ListAccountsDto
 
   ListAccountsDto._();
 
-  factory ListAccountsDto([void updates(ListAccountsDtoBuilder b)]) = _$ListAccountsDto;
+  factory ListAccountsDto([void updates(ListAccountsDtoBuilder b)]) =
+      _$ListAccountsDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ListAccountsDtoBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ListAccountsDto> get serializer => _$ListAccountsDtoSerializer();
+  static Serializer<ListAccountsDto> get serializer =>
+      _$ListAccountsDtoSerializer();
 }
 
-class _$ListAccountsDtoSerializer implements PrimitiveSerializer<ListAccountsDto> {
+class _$ListAccountsDtoSerializer
+    implements PrimitiveSerializer<ListAccountsDto> {
   @override
   final Iterable<Type> types = const [ListAccountsDto, _$ListAccountsDto];
 
@@ -66,7 +70,11 @@ class _$ListAccountsDtoSerializer implements PrimitiveSerializer<ListAccountsDto
     ListAccountsDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -82,17 +90,23 @@ class _$ListAccountsDtoSerializer implements PrimitiveSerializer<ListAccountsDto
       final value = serializedList[i + 1];
       switch (key) {
         case r'records':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(AccountDto)]),
-          ) as BuiltList<AccountDto>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(AccountDto),
+                    ]),
+                  )
+                  as BuiltList<AccountDto>;
           result.records.replace(valueDes);
           break;
         case r'lastEvaluatedKey':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.lastEvaluatedKey = valueDes;
           break;
         default:
@@ -123,4 +137,3 @@ class _$ListAccountsDtoSerializer implements PrimitiveSerializer<ListAccountsDto
     return result.build();
   }
 }
-

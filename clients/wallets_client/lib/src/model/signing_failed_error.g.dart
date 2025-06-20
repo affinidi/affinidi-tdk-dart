@@ -7,7 +7,7 @@ part of 'signing_failed_error.dart';
 // **************************************************************************
 
 const SigningFailedErrorNameEnum
-    _$signingFailedErrorNameEnum_signingFailedError =
+_$signingFailedErrorNameEnum_signingFailedError =
     const SigningFailedErrorNameEnum._('signingFailedError');
 
 SigningFailedErrorNameEnum _$signingFailedErrorNameEnumValueOf(String name) {
@@ -21,15 +21,16 @@ SigningFailedErrorNameEnum _$signingFailedErrorNameEnumValueOf(String name) {
 
 final BuiltSet<SigningFailedErrorNameEnum> _$signingFailedErrorNameEnumValues =
     BuiltSet<SigningFailedErrorNameEnum>(const <SigningFailedErrorNameEnum>[
-  _$signingFailedErrorNameEnum_signingFailedError,
-]);
+      _$signingFailedErrorNameEnum_signingFailedError,
+    ]);
 
 const SigningFailedErrorMessageEnum
-    _$signingFailedErrorMessageEnum_signingFailedPeriod =
+_$signingFailedErrorMessageEnum_signingFailedPeriod =
     const SigningFailedErrorMessageEnum._('signingFailedPeriod');
 
 SigningFailedErrorMessageEnum _$signingFailedErrorMessageEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'signingFailedPeriod':
       return _$signingFailedErrorMessageEnum_signingFailedPeriod;
@@ -39,17 +40,18 @@ SigningFailedErrorMessageEnum _$signingFailedErrorMessageEnumValueOf(
 }
 
 final BuiltSet<SigningFailedErrorMessageEnum>
-    _$signingFailedErrorMessageEnumValues = BuiltSet<
-        SigningFailedErrorMessageEnum>(const <SigningFailedErrorMessageEnum>[
-  _$signingFailedErrorMessageEnum_signingFailedPeriod,
-]);
+_$signingFailedErrorMessageEnumValues = BuiltSet<SigningFailedErrorMessageEnum>(
+  const <SigningFailedErrorMessageEnum>[
+    _$signingFailedErrorMessageEnum_signingFailedPeriod,
+  ],
+);
 
 const SigningFailedErrorHttpStatusCodeEnum
-    _$signingFailedErrorHttpStatusCodeEnum_number400 =
+_$signingFailedErrorHttpStatusCodeEnum_number400 =
     const SigningFailedErrorHttpStatusCodeEnum._('number400');
 
 SigningFailedErrorHttpStatusCodeEnum
-    _$signingFailedErrorHttpStatusCodeEnumValueOf(String name) {
+_$signingFailedErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$signingFailedErrorHttpStatusCodeEnum_number400;
@@ -59,18 +61,20 @@ SigningFailedErrorHttpStatusCodeEnum
 }
 
 final BuiltSet<SigningFailedErrorHttpStatusCodeEnum>
-    _$signingFailedErrorHttpStatusCodeEnumValues = BuiltSet<
-        SigningFailedErrorHttpStatusCodeEnum>(const <SigningFailedErrorHttpStatusCodeEnum>[
-  _$signingFailedErrorHttpStatusCodeEnum_number400,
-]);
+_$signingFailedErrorHttpStatusCodeEnumValues =
+    BuiltSet<SigningFailedErrorHttpStatusCodeEnum>(
+      const <SigningFailedErrorHttpStatusCodeEnum>[
+        _$signingFailedErrorHttpStatusCodeEnum_number400,
+      ],
+    );
 
 Serializer<SigningFailedErrorNameEnum> _$signingFailedErrorNameEnumSerializer =
     _$SigningFailedErrorNameEnumSerializer();
 Serializer<SigningFailedErrorMessageEnum>
-    _$signingFailedErrorMessageEnumSerializer =
+_$signingFailedErrorMessageEnumSerializer =
     _$SigningFailedErrorMessageEnumSerializer();
 Serializer<SigningFailedErrorHttpStatusCodeEnum>
-    _$signingFailedErrorHttpStatusCodeEnumSerializer =
+_$signingFailedErrorHttpStatusCodeEnumSerializer =
     _$SigningFailedErrorHttpStatusCodeEnumSerializer();
 
 class _$SigningFailedErrorNameEnumSerializer
@@ -88,16 +92,20 @@ class _$SigningFailedErrorNameEnumSerializer
   final String wireName = 'SigningFailedErrorNameEnum';
 
   @override
-  Object serialize(Serializers serializers, SigningFailedErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    SigningFailedErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   SigningFailedErrorNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      SigningFailedErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => SigningFailedErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$SigningFailedErrorMessageEnumSerializer
@@ -116,16 +124,19 @@ class _$SigningFailedErrorMessageEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, SigningFailedErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    SigningFailedErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   SigningFailedErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      SigningFailedErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => SigningFailedErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$SigningFailedErrorHttpStatusCodeEnumSerializer
@@ -139,23 +150,26 @@ class _$SigningFailedErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    SigningFailedErrorHttpStatusCodeEnum
+    SigningFailedErrorHttpStatusCodeEnum,
   ];
   @override
   final String wireName = 'SigningFailedErrorHttpStatusCodeEnum';
 
   @override
   Object serialize(
-          Serializers serializers, SigningFailedErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    SigningFailedErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   SigningFailedErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      SigningFailedErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => SigningFailedErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$SigningFailedError extends SigningFailedError {
@@ -170,21 +184,21 @@ class _$SigningFailedError extends SigningFailedError {
   @override
   final BuiltList<ServiceErrorResponseDetailsInner>? details;
 
-  factory _$SigningFailedError(
-          [void Function(SigningFailedErrorBuilder)? updates]) =>
-      (SigningFailedErrorBuilder()..update(updates))._build();
+  factory _$SigningFailedError([
+    void Function(SigningFailedErrorBuilder)? updates,
+  ]) => (SigningFailedErrorBuilder()..update(updates))._build();
 
-  _$SigningFailedError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$SigningFailedError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   SigningFailedError rebuild(
-          void Function(SigningFailedErrorBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(SigningFailedErrorBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   SigningFailedErrorBuilder toBuilder() =>
@@ -287,16 +301,29 @@ class SigningFailedErrorBuilder
   _$SigningFailedError _build() {
     _$SigningFailedError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$SigningFailedError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'SigningFailedError', 'name'),
+              name,
+              r'SigningFailedError',
+              'name',
+            ),
             message: BuiltValueNullFieldError.checkNotNull(
-                message, r'SigningFailedError', 'message'),
+              message,
+              r'SigningFailedError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode, r'SigningFailedError', 'httpStatusCode'),
+              httpStatusCode,
+              r'SigningFailedError',
+              'httpStatusCode',
+            ),
             traceId: BuiltValueNullFieldError.checkNotNull(
-                traceId, r'SigningFailedError', 'traceId'),
+              traceId,
+              r'SigningFailedError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -306,7 +333,10 @@ class SigningFailedErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'SigningFailedError', _$failedField, e.toString());
+          r'SigningFailedError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

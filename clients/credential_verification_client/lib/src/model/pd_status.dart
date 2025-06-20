@@ -12,7 +12,7 @@ part 'pd_status.g.dart';
 /// PdStatus
 ///
 /// Properties:
-/// * [directive] 
+/// * [directive]
 @BuiltValue()
 abstract class PdStatus implements Built<PdStatus, PdStatusBuilder> {
   @BuiltValueField(wireName: r'directive')
@@ -57,7 +57,11 @@ class _$PdStatusSerializer implements PrimitiveSerializer<PdStatus> {
     PdStatus object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -73,10 +77,12 @@ class _$PdStatusSerializer implements PrimitiveSerializer<PdStatus> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'directive':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(PdStatusDirectiveEnum),
-          ) as PdStatusDirectiveEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(PdStatusDirectiveEnum),
+                  )
+                  as PdStatusDirectiveEnum;
           result.directive = valueDes;
           break;
         default:
@@ -109,19 +115,22 @@ class _$PdStatusSerializer implements PrimitiveSerializer<PdStatus> {
 }
 
 class PdStatusDirectiveEnum extends EnumClass {
-
   @BuiltValueEnumConst(wireName: r'required')
-  static const PdStatusDirectiveEnum required_ = _$pdStatusDirectiveEnum_required_;
+  static const PdStatusDirectiveEnum required_ =
+      _$pdStatusDirectiveEnum_required_;
   @BuiltValueEnumConst(wireName: r'allowed')
   static const PdStatusDirectiveEnum allowed = _$pdStatusDirectiveEnum_allowed;
   @BuiltValueEnumConst(wireName: r'disallowed')
-  static const PdStatusDirectiveEnum disallowed = _$pdStatusDirectiveEnum_disallowed;
+  static const PdStatusDirectiveEnum disallowed =
+      _$pdStatusDirectiveEnum_disallowed;
 
-  static Serializer<PdStatusDirectiveEnum> get serializer => _$pdStatusDirectiveEnumSerializer;
+  static Serializer<PdStatusDirectiveEnum> get serializer =>
+      _$pdStatusDirectiveEnumSerializer;
 
-  const PdStatusDirectiveEnum._(String name): super(name);
+  const PdStatusDirectiveEnum._(String name) : super(name);
 
-  static BuiltSet<PdStatusDirectiveEnum> get values => _$pdStatusDirectiveEnumValues;
-  static PdStatusDirectiveEnum valueOf(String name) => _$pdStatusDirectiveEnumValueOf(name);
+  static BuiltSet<PdStatusDirectiveEnum> get values =>
+      _$pdStatusDirectiveEnumValues;
+  static PdStatusDirectiveEnum valueOf(String name) =>
+      _$pdStatusDirectiveEnumValueOf(name);
 }
-

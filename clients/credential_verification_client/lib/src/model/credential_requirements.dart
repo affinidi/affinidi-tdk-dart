@@ -14,9 +14,10 @@ part 'credential_requirements.g.dart';
 ///
 /// Properties:
 /// * [type] - Type list of the VC requirements
-/// * [constraints] 
+/// * [constraints]
 @BuiltValue()
-abstract class CredentialRequirements implements Built<CredentialRequirements, CredentialRequirementsBuilder> {
+abstract class CredentialRequirements
+    implements Built<CredentialRequirements, CredentialRequirementsBuilder> {
   /// Type list of the VC requirements
   @BuiltValueField(wireName: r'type')
   BuiltList<String> get type;
@@ -26,18 +27,25 @@ abstract class CredentialRequirements implements Built<CredentialRequirements, C
 
   CredentialRequirements._();
 
-  factory CredentialRequirements([void updates(CredentialRequirementsBuilder b)]) = _$CredentialRequirements;
+  factory CredentialRequirements([
+    void updates(CredentialRequirementsBuilder b),
+  ]) = _$CredentialRequirements;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CredentialRequirementsBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CredentialRequirements> get serializer => _$CredentialRequirementsSerializer();
+  static Serializer<CredentialRequirements> get serializer =>
+      _$CredentialRequirementsSerializer();
 }
 
-class _$CredentialRequirementsSerializer implements PrimitiveSerializer<CredentialRequirements> {
+class _$CredentialRequirementsSerializer
+    implements PrimitiveSerializer<CredentialRequirements> {
   @override
-  final Iterable<Type> types = const [CredentialRequirements, _$CredentialRequirements];
+  final Iterable<Type> types = const [
+    CredentialRequirements,
+    _$CredentialRequirements,
+  ];
 
   @override
   final String wireName = r'CredentialRequirements';
@@ -67,7 +75,11 @@ class _$CredentialRequirementsSerializer implements PrimitiveSerializer<Credenti
     CredentialRequirements object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -83,17 +95,25 @@ class _$CredentialRequirementsSerializer implements PrimitiveSerializer<Credenti
       final value = serializedList[i + 1];
       switch (key) {
         case r'type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.type.replace(valueDes);
           break;
         case r'constraints':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(CredentialRequirementsConstraints),
-          ) as CredentialRequirementsConstraints;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      CredentialRequirementsConstraints,
+                    ),
+                  )
+                  as CredentialRequirementsConstraints;
           result.constraints.replace(valueDes);
           break;
         default:
@@ -124,4 +144,3 @@ class _$CredentialRequirementsSerializer implements PrimitiveSerializer<Credenti
     return result.build();
   }
 }
-

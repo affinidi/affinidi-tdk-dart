@@ -6,6 +6,5 @@ void main() {
   final instance = CredentialResponseImmediateCredentialBuilder();
   // TODO add properties to the builder and call build()
 
-  group(CredentialResponseImmediateCredential, () {
-  });
+  group(CredentialResponseImmediateCredential, () {});
 }

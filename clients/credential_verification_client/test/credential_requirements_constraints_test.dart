@@ -6,6 +6,5 @@ void main() {
   final instance = CredentialRequirementsConstraintsBuilder();
   // TODO add properties to the builder and call build()
 
-  group(CredentialRequirementsConstraints, () {
-  });
+  group(CredentialRequirementsConstraints, () {});
 }

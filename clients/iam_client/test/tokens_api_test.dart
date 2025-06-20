@@ -1,7 +1,6 @@
 import 'package:test/test.dart';
 import 'package:affinidi_tdk_iam_client/affinidi_tdk_iam_client.dart';
 
-
 /// tests for TokensApi
 void main() {
   final instance = AffinidiTdkIamClient().getTokensApi();
@@ -36,6 +35,5 @@ void main() {
     test('test updateToken', () async {
       // TODO
     });
-
   });
 }

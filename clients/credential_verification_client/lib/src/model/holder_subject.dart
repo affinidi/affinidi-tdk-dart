@@ -12,10 +12,11 @@ part 'holder_subject.g.dart';
 /// HolderSubject
 ///
 /// Properties:
-/// * [fieldId] 
-/// * [directive] 
+/// * [fieldId]
+/// * [directive]
 @BuiltValue()
-abstract class HolderSubject implements Built<HolderSubject, HolderSubjectBuilder> {
+abstract class HolderSubject
+    implements Built<HolderSubject, HolderSubjectBuilder> {
   @BuiltValueField(wireName: r'field_id')
   BuiltList<String> get fieldId;
 
@@ -25,13 +26,15 @@ abstract class HolderSubject implements Built<HolderSubject, HolderSubjectBuilde
 
   HolderSubject._();
 
-  factory HolderSubject([void updates(HolderSubjectBuilder b)]) = _$HolderSubject;
+  factory HolderSubject([void updates(HolderSubjectBuilder b)]) =
+      _$HolderSubject;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(HolderSubjectBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<HolderSubject> get serializer => _$HolderSubjectSerializer();
+  static Serializer<HolderSubject> get serializer =>
+      _$HolderSubjectSerializer();
 }
 
 class _$HolderSubjectSerializer implements PrimitiveSerializer<HolderSubject> {
@@ -64,7 +67,11 @@ class _$HolderSubjectSerializer implements PrimitiveSerializer<HolderSubject> {
     HolderSubject object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -80,17 +87,23 @@ class _$HolderSubjectSerializer implements PrimitiveSerializer<HolderSubject> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'field_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.fieldId.replace(valueDes);
           break;
         case r'directive':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(HolderSubjectDirectiveEnum),
-          ) as HolderSubjectDirectiveEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(HolderSubjectDirectiveEnum),
+                  )
+                  as HolderSubjectDirectiveEnum;
           result.directive = valueDes;
           break;
         default:
@@ -123,17 +136,20 @@ class _$HolderSubjectSerializer implements PrimitiveSerializer<HolderSubject> {
 }
 
 class HolderSubjectDirectiveEnum extends EnumClass {
-
   @BuiltValueEnumConst(wireName: r'required')
-  static const HolderSubjectDirectiveEnum required_ = _$holderSubjectDirectiveEnum_required_;
+  static const HolderSubjectDirectiveEnum required_ =
+      _$holderSubjectDirectiveEnum_required_;
   @BuiltValueEnumConst(wireName: r'preferred')
-  static const HolderSubjectDirectiveEnum preferred = _$holderSubjectDirectiveEnum_preferred;
+  static const HolderSubjectDirectiveEnum preferred =
+      _$holderSubjectDirectiveEnum_preferred;
 
-  static Serializer<HolderSubjectDirectiveEnum> get serializer => _$holderSubjectDirectiveEnumSerializer;
+  static Serializer<HolderSubjectDirectiveEnum> get serializer =>
+      _$holderSubjectDirectiveEnumSerializer;
 
-  const HolderSubjectDirectiveEnum._(String name): super(name);
+  const HolderSubjectDirectiveEnum._(String name) : super(name);
 
-  static BuiltSet<HolderSubjectDirectiveEnum> get values => _$holderSubjectDirectiveEnumValues;
-  static HolderSubjectDirectiveEnum valueOf(String name) => _$holderSubjectDirectiveEnumValueOf(name);
+  static BuiltSet<HolderSubjectDirectiveEnum> get values =>
+      _$holderSubjectDirectiveEnumValues;
+  static HolderSubjectDirectiveEnum valueOf(String name) =>
+      _$holderSubjectDirectiveEnumValueOf(name);
 }
-

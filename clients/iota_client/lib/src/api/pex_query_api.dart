@@ -20,10 +20,8 @@ import 'package:affinidi_tdk_iota_client/src/model/pex_query_dto.dart';
 import 'package:affinidi_tdk_iota_client/src/model/resource_limit_exceeded_error.dart';
 import 'package:affinidi_tdk_iota_client/src/model/save_pex_queries_update_input.dart';
 import 'package:affinidi_tdk_iota_client/src/model/update_pex_query_input.dart';
-import 'package:built_value/json_object.dart';
 
 class PexQueryApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -45,7 +43,7 @@ class PexQueryApi {
   ///
   /// Returns a [Future] containing a [Response] with a [PexQueryDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PexQueryDto>> createPexQuery({ 
+  Future<Response<PexQueryDto>> createPexQuery({
     required String configurationId,
     required CreatePexQueryInput createPexQueryInput,
     CancelToken? cancelToken,
@@ -55,12 +53,20 @@ class PexQueryApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/v1/configurations/{configurationId}/pex-queries'.replaceAll('{' r'configurationId' '}', encodeQueryParameter(_serializers, configurationId, const FullType(String)).toString());
+    final _path = r'/v1/configurations/{configurationId}/pex-queries'
+        .replaceAll(
+          '{'
+          r'configurationId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            configurationId,
+            const FullType(String),
+          ).toString(),
+        );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -80,14 +86,13 @@ class PexQueryApi {
 
     try {
       const _type = FullType(CreatePexQueryInput);
-      _bodyData = _serializers.serialize(createPexQueryInput, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      _bodyData = _serializers.serialize(
+        createPexQueryInput,
+        specifiedType: _type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -107,11 +112,13 @@ class PexQueryApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(PexQueryDto),
-      ) as PexQueryDto;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(PexQueryDto),
+                )
+                as PexQueryDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -149,7 +156,7 @@ class PexQueryApi {
   ///
   /// Returns a [Future] containing a [Response] with a [JsonObject] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<JsonObject>> deletePexQueries({ 
+  Future<Response<JsonObject>> deletePexQueries({
     required String configurationId,
     required DeletePexQueriesInput deletePexQueriesInput,
     CancelToken? cancelToken,
@@ -159,12 +166,20 @@ class PexQueryApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/v1/configurations/{configurationId}/delete-queries'.replaceAll('{' r'configurationId' '}', encodeQueryParameter(_serializers, configurationId, const FullType(String)).toString());
+    final _path = r'/v1/configurations/{configurationId}/delete-queries'
+        .replaceAll(
+          '{'
+          r'configurationId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            configurationId,
+            const FullType(String),
+          ).toString(),
+        );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -184,14 +199,13 @@ class PexQueryApi {
 
     try {
       const _type = FullType(DeletePexQueriesInput);
-      _bodyData = _serializers.serialize(deletePexQueriesInput, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      _bodyData = _serializers.serialize(
+        deletePexQueriesInput,
+        specifiedType: _type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -211,11 +225,13 @@ class PexQueryApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(JsonObject),
-      ) as JsonObject;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(JsonObject),
+                )
+                as JsonObject;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -253,7 +269,7 @@ class PexQueryApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> deletePexQueryById({ 
+  Future<Response<void>> deletePexQueryById({
     required String configurationId,
     required String queryId,
     CancelToken? cancelToken,
@@ -263,12 +279,30 @@ class PexQueryApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/v1/configurations/{configurationId}/pex-queries/{queryId}'.replaceAll('{' r'configurationId' '}', encodeQueryParameter(_serializers, configurationId, const FullType(String)).toString()).replaceAll('{' r'queryId' '}', encodeQueryParameter(_serializers, queryId, const FullType(String)).toString());
+    final _path = r'/v1/configurations/{configurationId}/pex-queries/{queryId}'
+        .replaceAll(
+          '{'
+          r'configurationId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            configurationId,
+            const FullType(String),
+          ).toString(),
+        )
+        .replaceAll(
+          '{'
+          r'queryId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            queryId,
+            const FullType(String),
+          ).toString(),
+        );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -309,7 +343,7 @@ class PexQueryApi {
   ///
   /// Returns a [Future] containing a [Response] with a [PexQueryDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PexQueryDto>> getPexQueryById({ 
+  Future<Response<PexQueryDto>> getPexQueryById({
     required String configurationId,
     required String queryId,
     CancelToken? cancelToken,
@@ -319,12 +353,30 @@ class PexQueryApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/v1/configurations/{configurationId}/pex-queries/{queryId}'.replaceAll('{' r'configurationId' '}', encodeQueryParameter(_serializers, configurationId, const FullType(String)).toString()).replaceAll('{' r'queryId' '}', encodeQueryParameter(_serializers, queryId, const FullType(String)).toString());
+    final _path = r'/v1/configurations/{configurationId}/pex-queries/{queryId}'
+        .replaceAll(
+          '{'
+          r'configurationId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            configurationId,
+            const FullType(String),
+          ).toString(),
+        )
+        .replaceAll(
+          '{'
+          r'queryId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            queryId,
+            const FullType(String),
+          ).toString(),
+        );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -351,11 +403,13 @@ class PexQueryApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(PexQueryDto),
-      ) as PexQueryDto;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(PexQueryDto),
+                )
+                as PexQueryDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -394,7 +448,7 @@ class PexQueryApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ListPexQueriesOK] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ListPexQueriesOK>> listPexQueries({ 
+  Future<Response<ListPexQueriesOK>> listPexQueries({
     required String configurationId,
     int? limit,
     String? exclusiveStartKey,
@@ -405,12 +459,20 @@ class PexQueryApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/v1/configurations/{configurationId}/pex-queries'.replaceAll('{' r'configurationId' '}', encodeQueryParameter(_serializers, configurationId, const FullType(String)).toString());
+    final _path = r'/v1/configurations/{configurationId}/pex-queries'
+        .replaceAll(
+          '{'
+          r'configurationId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            configurationId,
+            const FullType(String),
+          ).toString(),
+        );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -426,8 +488,18 @@ class PexQueryApi {
     );
 
     final _queryParameters = <String, dynamic>{
-      if (limit != null) r'limit': encodeQueryParameter(_serializers, limit, const FullType(int)),
-      if (exclusiveStartKey != null) r'exclusiveStartKey': encodeQueryParameter(_serializers, exclusiveStartKey, const FullType(String)),
+      if (limit != null)
+        r'limit': encodeQueryParameter(
+          _serializers,
+          limit,
+          const FullType(int),
+        ),
+      if (exclusiveStartKey != null)
+        r'exclusiveStartKey': encodeQueryParameter(
+          _serializers,
+          exclusiveStartKey,
+          const FullType(String),
+        ),
     };
 
     final _response = await _dio.request<Object>(
@@ -443,11 +515,13 @@ class PexQueryApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(ListPexQueriesOK),
-      ) as ListPexQueriesOK;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(ListPexQueriesOK),
+                )
+                as ListPexQueriesOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -485,7 +559,7 @@ class PexQueryApi {
   ///
   /// Returns a [Future] containing a [Response] with a [JsonObject] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<JsonObject>> savePexQueries({ 
+  Future<Response<JsonObject>> savePexQueries({
     required String configurationId,
     required SavePexQueriesUpdateInput savePexQueriesUpdateInput,
     CancelToken? cancelToken,
@@ -495,12 +569,20 @@ class PexQueryApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/v1/configurations/{configurationId}/save-queries'.replaceAll('{' r'configurationId' '}', encodeQueryParameter(_serializers, configurationId, const FullType(String)).toString());
+    final _path = r'/v1/configurations/{configurationId}/save-queries'
+        .replaceAll(
+          '{'
+          r'configurationId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            configurationId,
+            const FullType(String),
+          ).toString(),
+        );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -520,14 +602,13 @@ class PexQueryApi {
 
     try {
       const _type = FullType(SavePexQueriesUpdateInput);
-      _bodyData = _serializers.serialize(savePexQueriesUpdateInput, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      _bodyData = _serializers.serialize(
+        savePexQueriesUpdateInput,
+        specifiedType: _type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -547,11 +628,13 @@ class PexQueryApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(JsonObject),
-      ) as JsonObject;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(JsonObject),
+                )
+                as JsonObject;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -590,7 +673,7 @@ class PexQueryApi {
   ///
   /// Returns a [Future] containing a [Response] with a [PexQueryDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PexQueryDto>> updatePexQueryById({ 
+  Future<Response<PexQueryDto>> updatePexQueryById({
     required String configurationId,
     required String queryId,
     required UpdatePexQueryInput updatePexQueryInput,
@@ -601,12 +684,30 @@ class PexQueryApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/v1/configurations/{configurationId}/pex-queries/{queryId}'.replaceAll('{' r'configurationId' '}', encodeQueryParameter(_serializers, configurationId, const FullType(String)).toString()).replaceAll('{' r'queryId' '}', encodeQueryParameter(_serializers, queryId, const FullType(String)).toString());
+    final _path = r'/v1/configurations/{configurationId}/pex-queries/{queryId}'
+        .replaceAll(
+          '{'
+          r'configurationId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            configurationId,
+            const FullType(String),
+          ).toString(),
+        )
+        .replaceAll(
+          '{'
+          r'queryId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            queryId,
+            const FullType(String),
+          ).toString(),
+        );
     final _options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -626,14 +727,13 @@ class PexQueryApi {
 
     try {
       const _type = FullType(UpdatePexQueryInput);
-      _bodyData = _serializers.serialize(updatePexQueryInput, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      _bodyData = _serializers.serialize(
+        updatePexQueryInput,
+        specifiedType: _type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -653,11 +753,13 @@ class PexQueryApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(PexQueryDto),
-      ) as PexQueryDto;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(PexQueryDto),
+                )
+                as PexQueryDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -679,5 +781,4 @@ class PexQueryApi {
       extra: _response.extra,
     );
   }
-
 }

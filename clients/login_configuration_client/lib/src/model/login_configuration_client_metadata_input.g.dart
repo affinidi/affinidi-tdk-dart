@@ -15,20 +15,20 @@ class _$LoginConfigurationClientMetadataInput
   @override
   final String logo;
 
-  factory _$LoginConfigurationClientMetadataInput(
-          [void Function(LoginConfigurationClientMetadataInputBuilder)?
-              updates]) =>
-      (LoginConfigurationClientMetadataInputBuilder()..update(updates))
-          ._build();
+  factory _$LoginConfigurationClientMetadataInput([
+    void Function(LoginConfigurationClientMetadataInputBuilder)? updates,
+  ]) => (LoginConfigurationClientMetadataInputBuilder()..update(updates))
+      ._build();
 
-  _$LoginConfigurationClientMetadataInput._(
-      {required this.name, required this.origin, required this.logo})
-      : super._();
+  _$LoginConfigurationClientMetadataInput._({
+    required this.name,
+    required this.origin,
+    required this.logo,
+  }) : super._();
   @override
   LoginConfigurationClientMetadataInput rebuild(
-          void Function(LoginConfigurationClientMetadataInputBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(LoginConfigurationClientMetadataInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   LoginConfigurationClientMetadataInputBuilder toBuilder() =>
@@ -56,7 +56,8 @@ class _$LoginConfigurationClientMetadataInput
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'LoginConfigurationClientMetadataInput')
+            r'LoginConfigurationClientMetadataInput',
+          )
           ..add('name', name)
           ..add('origin', origin)
           ..add('logo', logo))
@@ -66,8 +67,10 @@ class _$LoginConfigurationClientMetadataInput
 
 class LoginConfigurationClientMetadataInputBuilder
     implements
-        Builder<LoginConfigurationClientMetadataInput,
-            LoginConfigurationClientMetadataInputBuilder> {
+        Builder<
+          LoginConfigurationClientMetadataInput,
+          LoginConfigurationClientMetadataInputBuilder
+        > {
   _$LoginConfigurationClientMetadataInput? _$v;
 
   String? _name;
@@ -104,7 +107,8 @@ class LoginConfigurationClientMetadataInputBuilder
 
   @override
   void update(
-      void Function(LoginConfigurationClientMetadataInputBuilder)? updates) {
+    void Function(LoginConfigurationClientMetadataInputBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -112,14 +116,24 @@ class LoginConfigurationClientMetadataInputBuilder
   LoginConfigurationClientMetadataInput build() => _build();
 
   _$LoginConfigurationClientMetadataInput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$LoginConfigurationClientMetadataInput._(
           name: BuiltValueNullFieldError.checkNotNull(
-              name, r'LoginConfigurationClientMetadataInput', 'name'),
+            name,
+            r'LoginConfigurationClientMetadataInput',
+            'name',
+          ),
           origin: BuiltValueNullFieldError.checkNotNull(
-              origin, r'LoginConfigurationClientMetadataInput', 'origin'),
+            origin,
+            r'LoginConfigurationClientMetadataInput',
+            'origin',
+          ),
           logo: BuiltValueNullFieldError.checkNotNull(
-              logo, r'LoginConfigurationClientMetadataInput', 'logo'),
+            logo,
+            r'LoginConfigurationClientMetadataInput',
+            'logo',
+          ),
         );
     replace(_$result);
     return _$result;

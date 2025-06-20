@@ -10,15 +10,15 @@ class _$StartFileScanInput extends StartFileScanInput {
   @override
   final String dek;
 
-  factory _$StartFileScanInput(
-          [void Function(StartFileScanInputBuilder)? updates]) =>
-      (StartFileScanInputBuilder()..update(updates))._build();
+  factory _$StartFileScanInput([
+    void Function(StartFileScanInputBuilder)? updates,
+  ]) => (StartFileScanInputBuilder()..update(updates))._build();
 
   _$StartFileScanInput._({required this.dek}) : super._();
   @override
   StartFileScanInput rebuild(
-          void Function(StartFileScanInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(StartFileScanInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   StartFileScanInputBuilder toBuilder() =>
@@ -40,8 +40,9 @@ class _$StartFileScanInput extends StartFileScanInput {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'StartFileScanInput')..add('dek', dek))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'StartFileScanInput',
+    )..add('dek', dek)).toString();
   }
 }
 
@@ -80,10 +81,14 @@ class StartFileScanInputBuilder
   StartFileScanInput build() => _build();
 
   _$StartFileScanInput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$StartFileScanInput._(
           dek: BuiltValueNullFieldError.checkNotNull(
-              dek, r'StartFileScanInput', 'dek'),
+            dek,
+            r'StartFileScanInput',
+            'dek',
+          ),
         );
     replace(_$result);
     return _$result;

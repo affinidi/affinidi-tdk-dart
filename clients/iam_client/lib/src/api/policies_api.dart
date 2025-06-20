@@ -15,7 +15,6 @@ import 'package:affinidi_tdk_iam_client/src/model/policy_dto.dart';
 import 'package:affinidi_tdk_iam_client/src/model/unexpected_error.dart';
 
 class PoliciesApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -23,11 +22,11 @@ class PoliciesApi {
   const PoliciesApi(this._dio, this._serializers);
 
   /// getPolicies
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [principalId] 
-  /// * [principalType] 
+  /// * [principalId]
+  /// * [principalType]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -37,7 +36,7 @@ class PoliciesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [PolicyDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PolicyDto>> getPolicies({ 
+  Future<Response<PolicyDto>> getPolicies({
     required String principalId,
     required String principalType,
     CancelToken? cancelToken,
@@ -47,12 +46,19 @@ class PoliciesApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/v1/policies/principals/{principalId}'.replaceAll('{' r'principalId' '}', encodeQueryParameter(_serializers, principalId, const FullType(String)).toString());
+    final _path = r'/v1/policies/principals/{principalId}'.replaceAll(
+      '{'
+      r'principalId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        principalId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -68,7 +74,11 @@ class PoliciesApi {
     );
 
     final _queryParameters = <String, dynamic>{
-      r'principalType': encodeQueryParameter(_serializers, principalType, const FullType(String)),
+      r'principalType': encodeQueryParameter(
+        _serializers,
+        principalType,
+        const FullType(String),
+      ),
     };
 
     final _response = await _dio.request<Object>(
@@ -84,11 +94,13 @@ class PoliciesApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(PolicyDto),
-      ) as PolicyDto;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(PolicyDto),
+                )
+                as PolicyDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -112,11 +124,11 @@ class PoliciesApi {
   }
 
   /// updatePolicies
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [principalId] 
-  /// * [principalType] 
+  /// * [principalId]
+  /// * [principalType]
   /// * [policyDto] - UpdatePolicies
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
@@ -127,7 +139,7 @@ class PoliciesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [PolicyDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PolicyDto>> updatePolicies({ 
+  Future<Response<PolicyDto>> updatePolicies({
     required String principalId,
     required String principalType,
     required PolicyDto policyDto,
@@ -138,12 +150,19 @@ class PoliciesApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/v1/policies/principals/{principalId}'.replaceAll('{' r'principalId' '}', encodeQueryParameter(_serializers, principalId, const FullType(String)).toString());
+    final _path = r'/v1/policies/principals/{principalId}'.replaceAll(
+      '{'
+      r'principalId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        principalId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'PUT',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -160,7 +179,11 @@ class PoliciesApi {
     );
 
     final _queryParameters = <String, dynamic>{
-      r'principalType': encodeQueryParameter(_serializers, principalType, const FullType(String)),
+      r'principalType': encodeQueryParameter(
+        _serializers,
+        principalType,
+        const FullType(String),
+      ),
     };
 
     dynamic _bodyData;
@@ -168,10 +191,9 @@ class PoliciesApi {
     try {
       const _type = FullType(PolicyDto);
       _bodyData = _serializers.serialize(policyDto, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
           queryParameters: _queryParameters,
@@ -196,11 +218,13 @@ class PoliciesApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(PolicyDto),
-      ) as PolicyDto;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(PolicyDto),
+                )
+                as PolicyDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -222,5 +246,4 @@ class PoliciesApi {
       extra: _response.extra,
     );
   }
-
 }

@@ -11,26 +11,35 @@ part 'cors_login_session_for_idp_ok.g.dart';
 /// CorsLoginSessionForIdpOK
 ///
 /// Properties:
-/// * [corsLoginSessionForIdpOk] 
+/// * [corsLoginSessionForIdpOk]
 @BuiltValue()
-abstract class CorsLoginSessionForIdpOK implements Built<CorsLoginSessionForIdpOK, CorsLoginSessionForIdpOKBuilder> {
+abstract class CorsLoginSessionForIdpOK
+    implements
+        Built<CorsLoginSessionForIdpOK, CorsLoginSessionForIdpOKBuilder> {
   @BuiltValueField(wireName: r'corsLoginSessionForIdpOk')
   String? get corsLoginSessionForIdpOk;
 
   CorsLoginSessionForIdpOK._();
 
-  factory CorsLoginSessionForIdpOK([void updates(CorsLoginSessionForIdpOKBuilder b)]) = _$CorsLoginSessionForIdpOK;
+  factory CorsLoginSessionForIdpOK([
+    void updates(CorsLoginSessionForIdpOKBuilder b),
+  ]) = _$CorsLoginSessionForIdpOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsLoginSessionForIdpOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CorsLoginSessionForIdpOK> get serializer => _$CorsLoginSessionForIdpOKSerializer();
+  static Serializer<CorsLoginSessionForIdpOK> get serializer =>
+      _$CorsLoginSessionForIdpOKSerializer();
 }
 
-class _$CorsLoginSessionForIdpOKSerializer implements PrimitiveSerializer<CorsLoginSessionForIdpOK> {
+class _$CorsLoginSessionForIdpOKSerializer
+    implements PrimitiveSerializer<CorsLoginSessionForIdpOK> {
   @override
-  final Iterable<Type> types = const [CorsLoginSessionForIdpOK, _$CorsLoginSessionForIdpOK];
+  final Iterable<Type> types = const [
+    CorsLoginSessionForIdpOK,
+    _$CorsLoginSessionForIdpOK,
+  ];
 
   @override
   final String wireName = r'CorsLoginSessionForIdpOK';
@@ -55,7 +64,11 @@ class _$CorsLoginSessionForIdpOKSerializer implements PrimitiveSerializer<CorsLo
     CorsLoginSessionForIdpOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -71,10 +84,12 @@ class _$CorsLoginSessionForIdpOKSerializer implements PrimitiveSerializer<CorsLo
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsLoginSessionForIdpOk':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.corsLoginSessionForIdpOk = valueDes;
           break;
         default:
@@ -105,4 +120,3 @@ class _$CorsLoginSessionForIdpOKSerializer implements PrimitiveSerializer<CorsLo
     return result.build();
   }
 }
-

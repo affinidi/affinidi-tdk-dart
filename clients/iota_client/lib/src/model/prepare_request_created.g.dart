@@ -10,15 +10,15 @@ class _$PrepareRequestCreated extends PrepareRequestCreated {
   @override
   final PrepareRequestCreatedData data;
 
-  factory _$PrepareRequestCreated(
-          [void Function(PrepareRequestCreatedBuilder)? updates]) =>
-      (PrepareRequestCreatedBuilder()..update(updates))._build();
+  factory _$PrepareRequestCreated([
+    void Function(PrepareRequestCreatedBuilder)? updates,
+  ]) => (PrepareRequestCreatedBuilder()..update(updates))._build();
 
   _$PrepareRequestCreated._({required this.data}) : super._();
   @override
   PrepareRequestCreated rebuild(
-          void Function(PrepareRequestCreatedBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(PrepareRequestCreatedBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   PrepareRequestCreatedBuilder toBuilder() =>
@@ -40,9 +40,9 @@ class _$PrepareRequestCreated extends PrepareRequestCreated {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'PrepareRequestCreated')
-          ..add('data', data))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'PrepareRequestCreated',
+    )..add('data', data)).toString();
   }
 }
 
@@ -84,10 +84,7 @@ class PrepareRequestCreatedBuilder
   _$PrepareRequestCreated _build() {
     _$PrepareRequestCreated _$result;
     try {
-      _$result = _$v ??
-          _$PrepareRequestCreated._(
-            data: data.build(),
-          );
+      _$result = _$v ?? _$PrepareRequestCreated._(data: data.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -95,7 +92,10 @@ class PrepareRequestCreatedBuilder
         data.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'PrepareRequestCreated', _$failedField, e.toString());
+          r'PrepareRequestCreated',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

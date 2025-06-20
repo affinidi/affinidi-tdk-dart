@@ -12,12 +12,12 @@ class _$ListPexQueriesOK extends ListPexQueriesOK {
   @override
   final String? lastEvaluatedKey;
 
-  factory _$ListPexQueriesOK(
-          [void Function(ListPexQueriesOKBuilder)? updates]) =>
-      (ListPexQueriesOKBuilder()..update(updates))._build();
+  factory _$ListPexQueriesOK([
+    void Function(ListPexQueriesOKBuilder)? updates,
+  ]) => (ListPexQueriesOKBuilder()..update(updates))._build();
 
   _$ListPexQueriesOK._({required this.pexQueries, this.lastEvaluatedKey})
-      : super._();
+    : super._();
   @override
   ListPexQueriesOK rebuild(void Function(ListPexQueriesOKBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -97,7 +97,8 @@ class ListPexQueriesOKBuilder
   _$ListPexQueriesOK _build() {
     _$ListPexQueriesOK _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$ListPexQueriesOK._(
             pexQueries: pexQueries.build(),
             lastEvaluatedKey: lastEvaluatedKey,
@@ -109,7 +110,10 @@ class ListPexQueriesOKBuilder
         pexQueries.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'ListPexQueriesOK', _$failedField, e.toString());
+          r'ListPexQueriesOK',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

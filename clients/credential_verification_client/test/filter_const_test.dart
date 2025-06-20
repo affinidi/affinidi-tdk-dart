@@ -6,6 +6,5 @@ void main() {
   final instance = FilterConstBuilder();
   // TODO add properties to the builder and call build()
 
-  group(FilterConst, () {
-  });
+  group(FilterConst, () {});
 }

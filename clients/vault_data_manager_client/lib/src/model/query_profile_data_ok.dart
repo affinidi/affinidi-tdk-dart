@@ -12,24 +12,28 @@ part 'query_profile_data_ok.g.dart';
 /// QueryProfileDataOK
 ///
 /// Properties:
-/// * [data] 
+/// * [data]
 @BuiltValue()
-abstract class QueryProfileDataOK implements Built<QueryProfileDataOK, QueryProfileDataOKBuilder> {
+abstract class QueryProfileDataOK
+    implements Built<QueryProfileDataOK, QueryProfileDataOKBuilder> {
   @BuiltValueField(wireName: r'data')
   JsonObject? get data;
 
   QueryProfileDataOK._();
 
-  factory QueryProfileDataOK([void updates(QueryProfileDataOKBuilder b)]) = _$QueryProfileDataOK;
+  factory QueryProfileDataOK([void updates(QueryProfileDataOKBuilder b)]) =
+      _$QueryProfileDataOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(QueryProfileDataOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<QueryProfileDataOK> get serializer => _$QueryProfileDataOKSerializer();
+  static Serializer<QueryProfileDataOK> get serializer =>
+      _$QueryProfileDataOKSerializer();
 }
 
-class _$QueryProfileDataOKSerializer implements PrimitiveSerializer<QueryProfileDataOK> {
+class _$QueryProfileDataOKSerializer
+    implements PrimitiveSerializer<QueryProfileDataOK> {
   @override
   final Iterable<Type> types = const [QueryProfileDataOK, _$QueryProfileDataOK];
 
@@ -56,7 +60,11 @@ class _$QueryProfileDataOKSerializer implements PrimitiveSerializer<QueryProfile
     QueryProfileDataOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -72,10 +80,12 @@ class _$QueryProfileDataOKSerializer implements PrimitiveSerializer<QueryProfile
       final value = serializedList[i + 1];
       switch (key) {
         case r'data':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JsonObject),
+                  )
+                  as JsonObject;
           result.data = valueDes;
           break;
         default:
@@ -106,4 +116,3 @@ class _$QueryProfileDataOKSerializer implements PrimitiveSerializer<QueryProfile
     return result.build();
   }
 }
-

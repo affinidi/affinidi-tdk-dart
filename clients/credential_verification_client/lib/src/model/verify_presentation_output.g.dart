@@ -8,20 +8,20 @@ part of 'verify_presentation_output.dart';
 
 class _$VerifyPresentationOutput extends VerifyPresentationOutput {
   @override
-  final VerifyPresentationOutputErrors errors;
+  final BuiltList<String> errors;
   @override
   final bool isValid;
 
-  factory _$VerifyPresentationOutput(
-          [void Function(VerifyPresentationOutputBuilder)? updates]) =>
-      (VerifyPresentationOutputBuilder()..update(updates))._build();
+  factory _$VerifyPresentationOutput([
+    void Function(VerifyPresentationOutputBuilder)? updates,
+  ]) => (VerifyPresentationOutputBuilder()..update(updates))._build();
 
   _$VerifyPresentationOutput._({required this.errors, required this.isValid})
-      : super._();
+    : super._();
   @override
   VerifyPresentationOutput rebuild(
-          void Function(VerifyPresentationOutputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(VerifyPresentationOutputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   VerifyPresentationOutputBuilder toBuilder() =>
@@ -58,11 +58,9 @@ class VerifyPresentationOutputBuilder
         Builder<VerifyPresentationOutput, VerifyPresentationOutputBuilder> {
   _$VerifyPresentationOutput? _$v;
 
-  VerifyPresentationOutputErrorsBuilder? _errors;
-  VerifyPresentationOutputErrorsBuilder get errors =>
-      _$this._errors ??= VerifyPresentationOutputErrorsBuilder();
-  set errors(VerifyPresentationOutputErrorsBuilder? errors) =>
-      _$this._errors = errors;
+  ListBuilder<String>? _errors;
+  ListBuilder<String> get errors => _$this._errors ??= ListBuilder<String>();
+  set errors(ListBuilder<String>? errors) => _$this._errors = errors;
 
   bool? _isValid;
   bool? get isValid => _$this._isValid;
@@ -98,11 +96,15 @@ class VerifyPresentationOutputBuilder
   _$VerifyPresentationOutput _build() {
     _$VerifyPresentationOutput _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$VerifyPresentationOutput._(
             errors: errors.build(),
             isValid: BuiltValueNullFieldError.checkNotNull(
-                isValid, r'VerifyPresentationOutput', 'isValid'),
+              isValid,
+              r'VerifyPresentationOutput',
+              'isValid',
+            ),
           );
     } catch (_) {
       late String _$failedField;
@@ -111,7 +113,10 @@ class VerifyPresentationOutputBuilder
         errors.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'VerifyPresentationOutput', _$failedField, e.toString());
+          r'VerifyPresentationOutput',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

@@ -58,7 +58,7 @@ class _$NodeTypeMeta {
   BuiltSet<NodeType> get values => _$values;
 }
 
-abstract class _$NodeTypeMixin {
+mixin _$NodeTypeMixin {
   // ignore: non_constant_identifier_names
   _$NodeTypeMeta get NodeType => const _$NodeTypeMeta();
 }
@@ -91,15 +91,20 @@ class _$NodeTypeSerializer implements PrimitiveSerializer<NodeType> {
   final String wireName = 'NodeType';
 
   @override
-  Object serialize(Serializers serializers, NodeType object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    NodeType object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
-  NodeType deserialize(Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      NodeType.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+  NodeType deserialize(
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => NodeType.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 // ignore_for_file: deprecated_member_use_from_same_package,type=lint

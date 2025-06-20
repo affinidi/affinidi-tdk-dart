@@ -19,22 +19,22 @@ class _$LoginSessionDtoAuthorizationRequest
   @override
   final String? nonce;
 
-  factory _$LoginSessionDtoAuthorizationRequest(
-          [void Function(LoginSessionDtoAuthorizationRequestBuilder)?
-              updates]) =>
+  factory _$LoginSessionDtoAuthorizationRequest([
+    void Function(LoginSessionDtoAuthorizationRequestBuilder)? updates,
+  ]) =>
       (LoginSessionDtoAuthorizationRequestBuilder()..update(updates))._build();
 
-  _$LoginSessionDtoAuthorizationRequest._(
-      {required this.state,
-      required this.presentationDefinition,
-      this.ari,
-      this.clientId,
-      this.nonce})
-      : super._();
+  _$LoginSessionDtoAuthorizationRequest._({
+    required this.state,
+    required this.presentationDefinition,
+    this.ari,
+    this.clientId,
+    this.nonce,
+  }) : super._();
   @override
   LoginSessionDtoAuthorizationRequest rebuild(
-          void Function(LoginSessionDtoAuthorizationRequestBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(LoginSessionDtoAuthorizationRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   LoginSessionDtoAuthorizationRequestBuilder toBuilder() =>
@@ -77,8 +77,10 @@ class _$LoginSessionDtoAuthorizationRequest
 
 class LoginSessionDtoAuthorizationRequestBuilder
     implements
-        Builder<LoginSessionDtoAuthorizationRequest,
-            LoginSessionDtoAuthorizationRequestBuilder> {
+        Builder<
+          LoginSessionDtoAuthorizationRequest,
+          LoginSessionDtoAuthorizationRequestBuilder
+        > {
   _$LoginSessionDtoAuthorizationRequest? _$v;
 
   String? _state;
@@ -126,7 +128,8 @@ class LoginSessionDtoAuthorizationRequestBuilder
 
   @override
   void update(
-      void Function(LoginSessionDtoAuthorizationRequestBuilder)? updates) {
+    void Function(LoginSessionDtoAuthorizationRequestBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -134,14 +137,19 @@ class LoginSessionDtoAuthorizationRequestBuilder
   LoginSessionDtoAuthorizationRequest build() => _build();
 
   _$LoginSessionDtoAuthorizationRequest _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$LoginSessionDtoAuthorizationRequest._(
           state: BuiltValueNullFieldError.checkNotNull(
-              state, r'LoginSessionDtoAuthorizationRequest', 'state'),
+            state,
+            r'LoginSessionDtoAuthorizationRequest',
+            'state',
+          ),
           presentationDefinition: BuiltValueNullFieldError.checkNotNull(
-              presentationDefinition,
-              r'LoginSessionDtoAuthorizationRequest',
-              'presentationDefinition'),
+            presentationDefinition,
+            r'LoginSessionDtoAuthorizationRequest',
+            'presentationDefinition',
+          ),
           ari: ari,
           clientId: clientId,
           nonce: nonce,

@@ -13,13 +13,18 @@ part 'consumer_auth_token_endpoint_input.g.dart';
 /// ConsumerAuthTokenEndpointInput
 ///
 /// Properties:
-/// * [grantType] 
-/// * [code] 
-/// * [refreshToken] 
-/// * [redirectUri] 
-/// * [clientId] 
+/// * [grantType]
+/// * [code]
+/// * [refreshToken]
+/// * [redirectUri]
+/// * [clientId]
 @BuiltValue()
-abstract class ConsumerAuthTokenEndpointInput implements Built<ConsumerAuthTokenEndpointInput, ConsumerAuthTokenEndpointInputBuilder> {
+abstract class ConsumerAuthTokenEndpointInput
+    implements
+        Built<
+          ConsumerAuthTokenEndpointInput,
+          ConsumerAuthTokenEndpointInputBuilder
+        > {
   @BuiltValueField(wireName: r'grant_type')
   String get grantType;
 
@@ -37,18 +42,25 @@ abstract class ConsumerAuthTokenEndpointInput implements Built<ConsumerAuthToken
 
   ConsumerAuthTokenEndpointInput._();
 
-  factory ConsumerAuthTokenEndpointInput([void updates(ConsumerAuthTokenEndpointInputBuilder b)]) = _$ConsumerAuthTokenEndpointInput;
+  factory ConsumerAuthTokenEndpointInput([
+    void updates(ConsumerAuthTokenEndpointInputBuilder b),
+  ]) = _$ConsumerAuthTokenEndpointInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ConsumerAuthTokenEndpointInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ConsumerAuthTokenEndpointInput> get serializer => _$ConsumerAuthTokenEndpointInputSerializer();
+  static Serializer<ConsumerAuthTokenEndpointInput> get serializer =>
+      _$ConsumerAuthTokenEndpointInputSerializer();
 }
 
-class _$ConsumerAuthTokenEndpointInputSerializer implements PrimitiveSerializer<ConsumerAuthTokenEndpointInput> {
+class _$ConsumerAuthTokenEndpointInputSerializer
+    implements PrimitiveSerializer<ConsumerAuthTokenEndpointInput> {
   @override
-  final Iterable<Type> types = const [ConsumerAuthTokenEndpointInput, _$ConsumerAuthTokenEndpointInput];
+  final Iterable<Type> types = const [
+    ConsumerAuthTokenEndpointInput,
+    _$ConsumerAuthTokenEndpointInput,
+  ];
 
   @override
   final String wireName = r'ConsumerAuthTokenEndpointInput';
@@ -99,7 +111,11 @@ class _$ConsumerAuthTokenEndpointInputSerializer implements PrimitiveSerializer<
     ConsumerAuthTokenEndpointInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -115,38 +131,48 @@ class _$ConsumerAuthTokenEndpointInputSerializer implements PrimitiveSerializer<
       final value = serializedList[i + 1];
       switch (key) {
         case r'grant_type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.grantType = valueDes;
           break;
         case r'code':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.code = valueDes;
           break;
         case r'refresh_token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.refreshToken = valueDes;
           break;
         case r'redirect_uri':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.redirectUri = valueDes;
           break;
         case r'client_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.clientId = valueDes;
           break;
         default:
@@ -177,4 +203,3 @@ class _$ConsumerAuthTokenEndpointInputSerializer implements PrimitiveSerializer<
     return result.build();
   }
 }
-

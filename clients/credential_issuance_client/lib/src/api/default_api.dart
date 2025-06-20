@@ -17,7 +17,6 @@ import 'package:affinidi_tdk_credential_issuance_client/src/model/list_issuance_
 import 'package:affinidi_tdk_credential_issuance_client/src/model/not_found_error.dart';
 
 class DefaultApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -40,7 +39,7 @@ class DefaultApi {
   ///
   /// Returns a [Future] containing a [Response] with a [FlowData] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<FlowData>> changeCredentialStatus({ 
+  Future<Response<FlowData>> changeCredentialStatus({
     required String projectId,
     required String configurationId,
     required ChangeCredentialStatusInput changeCredentialStatusInput,
@@ -51,12 +50,31 @@ class DefaultApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/v1/{projectId}/configurations/{configurationId}/issuance/change-status'.replaceAll('{' r'projectId' '}', encodeQueryParameter(_serializers, projectId, const FullType(String)).toString()).replaceAll('{' r'configurationId' '}', encodeQueryParameter(_serializers, configurationId, const FullType(String)).toString());
+    final _path =
+        r'/v1/{projectId}/configurations/{configurationId}/issuance/change-status'
+            .replaceAll(
+              '{'
+              r'projectId'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                projectId,
+                const FullType(String),
+              ).toString(),
+            )
+            .replaceAll(
+              '{'
+              r'configurationId'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                configurationId,
+                const FullType(String),
+              ).toString(),
+            );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -76,14 +94,13 @@ class DefaultApi {
 
     try {
       const _type = FullType(ChangeCredentialStatusInput);
-      _bodyData = _serializers.serialize(changeCredentialStatusInput, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      _bodyData = _serializers.serialize(
+        changeCredentialStatusInput,
+        specifiedType: _type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -103,11 +120,13 @@ class DefaultApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(FlowData),
-      ) as FlowData;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(FlowData),
+                )
+                as FlowData;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -147,7 +166,7 @@ class DefaultApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ListIssuanceRecordResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ListIssuanceRecordResponse>> listIssuanceDataRecords({ 
+  Future<Response<ListIssuanceRecordResponse>> listIssuanceDataRecords({
     required String projectId,
     required String configurationId,
     int? limit = 10,
@@ -159,12 +178,31 @@ class DefaultApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/v1/{projectId}/configurations/{configurationId}/issuance/issuance-data-records'.replaceAll('{' r'projectId' '}', encodeQueryParameter(_serializers, projectId, const FullType(String)).toString()).replaceAll('{' r'configurationId' '}', encodeQueryParameter(_serializers, configurationId, const FullType(String)).toString());
+    final _path =
+        r'/v1/{projectId}/configurations/{configurationId}/issuance/issuance-data-records'
+            .replaceAll(
+              '{'
+              r'projectId'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                projectId,
+                const FullType(String),
+              ).toString(),
+            )
+            .replaceAll(
+              '{'
+              r'configurationId'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                configurationId,
+                const FullType(String),
+              ).toString(),
+            );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -180,8 +218,18 @@ class DefaultApi {
     );
 
     final _queryParameters = <String, dynamic>{
-      if (limit != null) r'limit': encodeQueryParameter(_serializers, limit, const FullType(int)),
-      if (exclusiveStartKey != null) r'exclusiveStartKey': encodeQueryParameter(_serializers, exclusiveStartKey, const FullType(String)),
+      if (limit != null)
+        r'limit': encodeQueryParameter(
+          _serializers,
+          limit,
+          const FullType(int),
+        ),
+      if (exclusiveStartKey != null)
+        r'exclusiveStartKey': encodeQueryParameter(
+          _serializers,
+          exclusiveStartKey,
+          const FullType(String),
+        ),
     };
 
     final _response = await _dio.request<Object>(
@@ -197,11 +245,13 @@ class DefaultApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(ListIssuanceRecordResponse),
-      ) as ListIssuanceRecordResponse;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(ListIssuanceRecordResponse),
+                )
+                as ListIssuanceRecordResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -223,5 +273,4 @@ class DefaultApi {
       extra: _response.extra,
     );
   }
-
 }

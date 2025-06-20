@@ -11,24 +11,28 @@ part 'delete_account_dto.g.dart';
 /// DeleteAccountDto
 ///
 /// Properties:
-/// * [accountIndex] 
+/// * [accountIndex]
 @BuiltValue()
-abstract class DeleteAccountDto implements Built<DeleteAccountDto, DeleteAccountDtoBuilder> {
+abstract class DeleteAccountDto
+    implements Built<DeleteAccountDto, DeleteAccountDtoBuilder> {
   @BuiltValueField(wireName: r'accountIndex')
   int? get accountIndex;
 
   DeleteAccountDto._();
 
-  factory DeleteAccountDto([void updates(DeleteAccountDtoBuilder b)]) = _$DeleteAccountDto;
+  factory DeleteAccountDto([void updates(DeleteAccountDtoBuilder b)]) =
+      _$DeleteAccountDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(DeleteAccountDtoBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<DeleteAccountDto> get serializer => _$DeleteAccountDtoSerializer();
+  static Serializer<DeleteAccountDto> get serializer =>
+      _$DeleteAccountDtoSerializer();
 }
 
-class _$DeleteAccountDtoSerializer implements PrimitiveSerializer<DeleteAccountDto> {
+class _$DeleteAccountDtoSerializer
+    implements PrimitiveSerializer<DeleteAccountDto> {
   @override
   final Iterable<Type> types = const [DeleteAccountDto, _$DeleteAccountDto];
 
@@ -55,7 +59,11 @@ class _$DeleteAccountDtoSerializer implements PrimitiveSerializer<DeleteAccountD
     DeleteAccountDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -71,10 +79,9 @@ class _$DeleteAccountDtoSerializer implements PrimitiveSerializer<DeleteAccountD
       final value = serializedList[i + 1];
       switch (key) {
         case r'accountIndex':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.accountIndex = valueDes;
           break;
         default:
@@ -105,4 +112,3 @@ class _$DeleteAccountDtoSerializer implements PrimitiveSerializer<DeleteAccountD
     return result.build();
   }
 }
-

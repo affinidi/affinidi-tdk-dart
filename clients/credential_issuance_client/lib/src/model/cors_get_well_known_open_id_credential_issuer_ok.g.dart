@@ -11,20 +11,18 @@ class _$CorsGetWellKnownOpenIdCredentialIssuerOK
   @override
   final String? corsGetWellKnownOpenIdCredentialIssuerOk;
 
-  factory _$CorsGetWellKnownOpenIdCredentialIssuerOK(
-          [void Function(CorsGetWellKnownOpenIdCredentialIssuerOKBuilder)?
-              updates]) =>
-      (CorsGetWellKnownOpenIdCredentialIssuerOKBuilder()..update(updates))
-          ._build();
+  factory _$CorsGetWellKnownOpenIdCredentialIssuerOK([
+    void Function(CorsGetWellKnownOpenIdCredentialIssuerOKBuilder)? updates,
+  ]) => (CorsGetWellKnownOpenIdCredentialIssuerOKBuilder()..update(updates))
+      ._build();
 
-  _$CorsGetWellKnownOpenIdCredentialIssuerOK._(
-      {this.corsGetWellKnownOpenIdCredentialIssuerOk})
-      : super._();
+  _$CorsGetWellKnownOpenIdCredentialIssuerOK._({
+    this.corsGetWellKnownOpenIdCredentialIssuerOk,
+  }) : super._();
   @override
   CorsGetWellKnownOpenIdCredentialIssuerOK rebuild(
-          void Function(CorsGetWellKnownOpenIdCredentialIssuerOKBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CorsGetWellKnownOpenIdCredentialIssuerOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CorsGetWellKnownOpenIdCredentialIssuerOKBuilder toBuilder() =>
@@ -49,26 +47,30 @@ class _$CorsGetWellKnownOpenIdCredentialIssuerOK
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'CorsGetWellKnownOpenIdCredentialIssuerOK')
-          ..add('corsGetWellKnownOpenIdCredentialIssuerOk',
-              corsGetWellKnownOpenIdCredentialIssuerOk))
+          r'CorsGetWellKnownOpenIdCredentialIssuerOK',
+        )..add(
+          'corsGetWellKnownOpenIdCredentialIssuerOk',
+          corsGetWellKnownOpenIdCredentialIssuerOk,
+        ))
         .toString();
   }
 }
 
 class CorsGetWellKnownOpenIdCredentialIssuerOKBuilder
     implements
-        Builder<CorsGetWellKnownOpenIdCredentialIssuerOK,
-            CorsGetWellKnownOpenIdCredentialIssuerOKBuilder> {
+        Builder<
+          CorsGetWellKnownOpenIdCredentialIssuerOK,
+          CorsGetWellKnownOpenIdCredentialIssuerOKBuilder
+        > {
   _$CorsGetWellKnownOpenIdCredentialIssuerOK? _$v;
 
   String? _corsGetWellKnownOpenIdCredentialIssuerOk;
   String? get corsGetWellKnownOpenIdCredentialIssuerOk =>
       _$this._corsGetWellKnownOpenIdCredentialIssuerOk;
   set corsGetWellKnownOpenIdCredentialIssuerOk(
-          String? corsGetWellKnownOpenIdCredentialIssuerOk) =>
-      _$this._corsGetWellKnownOpenIdCredentialIssuerOk =
-          corsGetWellKnownOpenIdCredentialIssuerOk;
+    String? corsGetWellKnownOpenIdCredentialIssuerOk,
+  ) => _$this._corsGetWellKnownOpenIdCredentialIssuerOk =
+      corsGetWellKnownOpenIdCredentialIssuerOk;
 
   CorsGetWellKnownOpenIdCredentialIssuerOKBuilder() {
     CorsGetWellKnownOpenIdCredentialIssuerOK._defaults(this);
@@ -91,7 +93,8 @@ class CorsGetWellKnownOpenIdCredentialIssuerOKBuilder
 
   @override
   void update(
-      void Function(CorsGetWellKnownOpenIdCredentialIssuerOKBuilder)? updates) {
+    void Function(CorsGetWellKnownOpenIdCredentialIssuerOKBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -99,7 +102,8 @@ class CorsGetWellKnownOpenIdCredentialIssuerOKBuilder
   CorsGetWellKnownOpenIdCredentialIssuerOK build() => _build();
 
   _$CorsGetWellKnownOpenIdCredentialIssuerOK _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CorsGetWellKnownOpenIdCredentialIssuerOK._(
           corsGetWellKnownOpenIdCredentialIssuerOk:
               corsGetWellKnownOpenIdCredentialIssuerOk,

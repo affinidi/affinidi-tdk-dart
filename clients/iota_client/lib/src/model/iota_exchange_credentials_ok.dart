@@ -12,10 +12,12 @@ part 'iota_exchange_credentials_ok.g.dart';
 /// IotaExchangeCredentialsOK
 ///
 /// Properties:
-/// * [connectionClientId] 
-/// * [credentials] 
+/// * [connectionClientId]
+/// * [credentials]
 @BuiltValue()
-abstract class IotaExchangeCredentialsOK implements Built<IotaExchangeCredentialsOK, IotaExchangeCredentialsOKBuilder> {
+abstract class IotaExchangeCredentialsOK
+    implements
+        Built<IotaExchangeCredentialsOK, IotaExchangeCredentialsOKBuilder> {
   @BuiltValueField(wireName: r'connectionClientId')
   String get connectionClientId;
 
@@ -24,18 +26,25 @@ abstract class IotaExchangeCredentialsOK implements Built<IotaExchangeCredential
 
   IotaExchangeCredentialsOK._();
 
-  factory IotaExchangeCredentialsOK([void updates(IotaExchangeCredentialsOKBuilder b)]) = _$IotaExchangeCredentialsOK;
+  factory IotaExchangeCredentialsOK([
+    void updates(IotaExchangeCredentialsOKBuilder b),
+  ]) = _$IotaExchangeCredentialsOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(IotaExchangeCredentialsOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<IotaExchangeCredentialsOK> get serializer => _$IotaExchangeCredentialsOKSerializer();
+  static Serializer<IotaExchangeCredentialsOK> get serializer =>
+      _$IotaExchangeCredentialsOKSerializer();
 }
 
-class _$IotaExchangeCredentialsOKSerializer implements PrimitiveSerializer<IotaExchangeCredentialsOK> {
+class _$IotaExchangeCredentialsOKSerializer
+    implements PrimitiveSerializer<IotaExchangeCredentialsOK> {
   @override
-  final Iterable<Type> types = const [IotaExchangeCredentialsOK, _$IotaExchangeCredentialsOK];
+  final Iterable<Type> types = const [
+    IotaExchangeCredentialsOK,
+    _$IotaExchangeCredentialsOK,
+  ];
 
   @override
   final String wireName = r'IotaExchangeCredentialsOK';
@@ -63,7 +72,11 @@ class _$IotaExchangeCredentialsOKSerializer implements PrimitiveSerializer<IotaE
     IotaExchangeCredentialsOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -79,17 +92,23 @@ class _$IotaExchangeCredentialsOKSerializer implements PrimitiveSerializer<IotaE
       final value = serializedList[i + 1];
       switch (key) {
         case r'connectionClientId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.connectionClientId = valueDes;
           break;
         case r'credentials':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(IotaExchangeCredentialsOKCredentials),
-          ) as IotaExchangeCredentialsOKCredentials;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      IotaExchangeCredentialsOKCredentials,
+                    ),
+                  )
+                  as IotaExchangeCredentialsOKCredentials;
           result.credentials.replace(valueDes);
           break;
         default:
@@ -120,4 +139,3 @@ class _$IotaExchangeCredentialsOKSerializer implements PrimitiveSerializer<IotaE
     return result.build();
   }
 }
-

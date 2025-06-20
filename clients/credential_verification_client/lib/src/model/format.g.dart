@@ -23,9 +23,14 @@ class _$Format extends Format {
   factory _$Format([void Function(FormatBuilder)? updates]) =>
       (FormatBuilder()..update(updates))._build();
 
-  _$Format._(
-      {this.jwt, this.jwtVc, this.jwtVp, this.ldp, this.ldpVc, this.ldpVp})
-      : super._();
+  _$Format._({
+    this.jwt,
+    this.jwtVc,
+    this.jwtVp,
+    this.ldp,
+    this.ldpVc,
+    this.ldpVp,
+  }) : super._();
   @override
   Format rebuild(void Function(FormatBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -132,7 +137,8 @@ class FormatBuilder implements Builder<Format, FormatBuilder> {
   _$Format _build() {
     _$Format _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$Format._(
             jwt: _jwt?.build(),
             jwtVc: _jwtVc?.build(),
@@ -158,7 +164,10 @@ class FormatBuilder implements Builder<Format, FormatBuilder> {
         _ldpVp?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'Format', _$failedField, e.toString());
+          r'Format',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

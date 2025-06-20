@@ -1,7 +1,6 @@
 import 'package:test/test.dart';
 import 'package:affinidi_tdk_credential_issuance_client/affinidi_tdk_credential_issuance_client.dart';
 
-
 /// tests for OfferApi
 void main() {
   final instance = AffinidiTdkCredentialIssuanceClient().getOfferApi();
@@ -13,6 +12,5 @@ void main() {
     test('test getCredentialOffer', () async {
       // TODO
     });
-
   });
 }

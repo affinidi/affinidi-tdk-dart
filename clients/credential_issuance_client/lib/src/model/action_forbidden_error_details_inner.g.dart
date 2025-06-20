@@ -17,17 +17,20 @@ class _$ActionForbiddenErrorDetailsInner
   @override
   final String? location;
 
-  factory _$ActionForbiddenErrorDetailsInner(
-          [void Function(ActionForbiddenErrorDetailsInnerBuilder)? updates]) =>
-      (ActionForbiddenErrorDetailsInnerBuilder()..update(updates))._build();
+  factory _$ActionForbiddenErrorDetailsInner([
+    void Function(ActionForbiddenErrorDetailsInnerBuilder)? updates,
+  ]) => (ActionForbiddenErrorDetailsInnerBuilder()..update(updates))._build();
 
-  _$ActionForbiddenErrorDetailsInner._(
-      {required this.issue, this.field, this.value, this.location})
-      : super._();
+  _$ActionForbiddenErrorDetailsInner._({
+    required this.issue,
+    this.field,
+    this.value,
+    this.location,
+  }) : super._();
   @override
   ActionForbiddenErrorDetailsInner rebuild(
-          void Function(ActionForbiddenErrorDetailsInnerBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ActionForbiddenErrorDetailsInnerBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ActionForbiddenErrorDetailsInnerBuilder toBuilder() =>
@@ -67,8 +70,10 @@ class _$ActionForbiddenErrorDetailsInner
 
 class ActionForbiddenErrorDetailsInnerBuilder
     implements
-        Builder<ActionForbiddenErrorDetailsInner,
-            ActionForbiddenErrorDetailsInnerBuilder> {
+        Builder<
+          ActionForbiddenErrorDetailsInner,
+          ActionForbiddenErrorDetailsInnerBuilder
+        > {
   _$ActionForbiddenErrorDetailsInner? _$v;
 
   String? _issue;
@@ -117,10 +122,14 @@ class ActionForbiddenErrorDetailsInnerBuilder
   ActionForbiddenErrorDetailsInner build() => _build();
 
   _$ActionForbiddenErrorDetailsInner _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$ActionForbiddenErrorDetailsInner._(
           issue: BuiltValueNullFieldError.checkNotNull(
-              issue, r'ActionForbiddenErrorDetailsInner', 'issue'),
+            issue,
+            r'ActionForbiddenErrorDetailsInner',
+            'issue',
+          ),
           field: field,
           value: value,
           location: location,

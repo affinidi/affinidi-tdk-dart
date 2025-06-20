@@ -37,9 +37,9 @@ class _$CorsMoveNodeOK extends CorsMoveNodeOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'CorsMoveNodeOK')
-          ..add('corsMoveNodeOk', corsMoveNodeOk))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'CorsMoveNodeOK',
+    )..add('corsMoveNodeOk', corsMoveNodeOk)).toString();
   }
 }
 
@@ -79,10 +79,7 @@ class CorsMoveNodeOKBuilder
   CorsMoveNodeOK build() => _build();
 
   _$CorsMoveNodeOK _build() {
-    final _$result = _$v ??
-        _$CorsMoveNodeOK._(
-          corsMoveNodeOk: corsMoveNodeOk,
-        );
+    final _$result = _$v ?? _$CorsMoveNodeOK._(corsMoveNodeOk: corsMoveNodeOk);
     replace(_$result);
     return _$result;
   }

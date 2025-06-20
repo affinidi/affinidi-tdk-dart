@@ -1,31 +1,31 @@
 # affinidi_tdk_wallets_client.api.WalletApi
 
 ## Load the API package
-
 ```dart
 import 'package:affinidi_tdk_wallets_client/api.dart';
 ```
 
 All URIs are relative to *https://apse1.api.affinidi.io/cwe*
 
-| Method                                            | HTTP request                                    | Description |
-| ------------------------------------------------- | ----------------------------------------------- | ----------- |
-| [**createWallet**](WalletApi.md#createwallet)     | **POST** /v1/wallets                            |
-| [**deleteWallet**](WalletApi.md#deletewallet)     | **DELETE** /v1/wallets/{walletId}               |
-| [**getWallet**](WalletApi.md#getwallet)           | **GET** /v1/wallets/{walletId}                  |
-| [**listWallets**](WalletApi.md#listwallets)       | **GET** /v1/wallets                             |
-| [**signCredential**](WalletApi.md#signcredential) | **POST** /v1/wallets/{walletId}/sign-credential |
-| [**signJwtToken**](WalletApi.md#signjwttoken)     | **POST** /v1/wallets/{walletId}/sign-jwt        |
-| [**updateWallet**](WalletApi.md#updatewallet)     | **PATCH** /v1/wallets/{walletId}                |
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**createWallet**](WalletApi.md#createwallet) | **POST** /v1/wallets | 
+[**deleteWallet**](WalletApi.md#deletewallet) | **DELETE** /v1/wallets/{walletId} | 
+[**getWallet**](WalletApi.md#getwallet) | **GET** /v1/wallets/{walletId} | 
+[**listWallets**](WalletApi.md#listwallets) | **GET** /v1/wallets | 
+[**signCredential**](WalletApi.md#signcredential) | **POST** /v1/wallets/{walletId}/sign-credential | 
+[**signJwtToken**](WalletApi.md#signjwttoken) | **POST** /v1/wallets/{walletId}/sign-jwt | 
+[**updateWallet**](WalletApi.md#updatewallet) | **PATCH** /v1/wallets/{walletId} | 
+
 
 # **createWallet**
-
 > CreateWalletResponse createWallet(createWalletInput)
+
+
 
 creates a wallet
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_wallets_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -34,7 +34,7 @@ import 'package:affinidi_tdk_wallets_client/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('ProjectTokenAuth').apiKeyPrefix = 'Bearer';
 
 final api = AffinidiTdkWalletsClient().getWalletApi();
-final CreateWalletInput createWalletInput = ; // CreateWalletInput | CreateWallet
+final CreateWalletInput createWalletInput = {"name":"AliceWallet","description":"Personal wallet using did:key","didMethod":"key"}; // CreateWalletInput | CreateWallet
 
 try {
     final response = api.createWallet(createWalletInput);
@@ -46,9 +46,9 @@ try {
 
 ### Parameters
 
-| Name                  | Type                                          | Description  | Notes      |
-| --------------------- | --------------------------------------------- | ------------ | ---------- |
-| **createWalletInput** | [**CreateWalletInput**](CreateWalletInput.md) | CreateWallet | [optional] |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **createWalletInput** | [**CreateWalletInput**](CreateWalletInput.md)| CreateWallet | [optional] 
 
 ### Return type
 
@@ -60,19 +60,19 @@ try {
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
-- **Accept**: application/json
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **deleteWallet**
-
 > deleteWallet(walletId)
+
+
 
 delete wallet by walletId
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_wallets_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -92,9 +92,9 @@ try {
 
 ### Parameters
 
-| Name         | Type       | Description      | Notes |
-| ------------ | ---------- | ---------------- | ----- |
-| **walletId** | **String** | id of the wallet |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **walletId** | **String**| id of the wallet | 
 
 ### Return type
 
@@ -106,19 +106,19 @@ void (empty response body)
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: Not defined
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getWallet**
-
 > WalletDto getWallet(walletId)
+
+
 
 get wallet details using wallet Id.
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_wallets_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -139,9 +139,9 @@ try {
 
 ### Parameters
 
-| Name         | Type       | Description      | Notes |
-| ------------ | ---------- | ---------------- | ----- |
-| **walletId** | **String** | id of the wallet |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **walletId** | **String**| id of the wallet | 
 
 ### Return type
 
@@ -153,19 +153,19 @@ try {
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: application/json
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **listWallets**
-
 > WalletsListDto listWallets(didType)
+
+
 
 lists all wallets
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_wallets_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -174,7 +174,7 @@ import 'package:affinidi_tdk_wallets_client/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('ProjectTokenAuth').apiKeyPrefix = 'Bearer';
 
 final api = AffinidiTdkWalletsClient().getWalletApi();
-final String didType = didType_example; // String |
+final String didType = didType_example; // String | 
 
 try {
     final response = api.listWallets(didType);
@@ -186,9 +186,9 @@ try {
 
 ### Parameters
 
-| Name        | Type       | Description | Notes      |
-| ----------- | ---------- | ----------- | ---------- |
-| **didType** | **String** |             | [optional] |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **didType** | **String**|  | [optional] 
 
 ### Return type
 
@@ -200,19 +200,19 @@ try {
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: application/json
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **signCredential**
-
 > SignCredentialResultDto signCredential(walletId, signCredentialInputDto)
+
+
 
 signs credential with the wallet
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_wallets_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -234,10 +234,10 @@ try {
 
 ### Parameters
 
-| Name                       | Type                                                    | Description      | Notes |
-| -------------------------- | ------------------------------------------------------- | ---------------- | ----- |
-| **walletId**               | **String**                                              | id of the wallet |
-| **signCredentialInputDto** | [**SignCredentialInputDto**](SignCredentialInputDto.md) | SignCredential   |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **walletId** | **String**| id of the wallet | 
+ **signCredentialInputDto** | [**SignCredentialInputDto**](SignCredentialInputDto.md)| SignCredential | 
 
 ### Return type
 
@@ -249,19 +249,19 @@ try {
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
-- **Accept**: application/json
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **signJwtToken**
-
 > SignJwtTokenOK signJwtToken(walletId, signJwtToken)
+
+
 
 signs a jwt token with the wallet
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_wallets_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -283,10 +283,10 @@ try {
 
 ### Parameters
 
-| Name             | Type                                | Description       | Notes |
-| ---------------- | ----------------------------------- | ----------------- | ----- |
-| **walletId**     | **String**                          | id of the wallet. |
-| **signJwtToken** | [**SignJwtToken**](SignJwtToken.md) | SignJwtToken      |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **walletId** | **String**| id of the wallet. | 
+ **signJwtToken** | [**SignJwtToken**](SignJwtToken.md)| SignJwtToken | 
 
 ### Return type
 
@@ -298,19 +298,19 @@ try {
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
-- **Accept**: application/json
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **updateWallet**
-
 > WalletDto updateWallet(walletId, updateWalletInput)
+
+
 
 update wallet details using wallet Id.
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_wallets_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -332,10 +332,10 @@ try {
 
 ### Parameters
 
-| Name                  | Type                                          | Description      | Notes |
-| --------------------- | --------------------------------------------- | ---------------- | ----- |
-| **walletId**          | **String**                                    | id of the wallet |
-| **updateWalletInput** | [**UpdateWalletInput**](UpdateWalletInput.md) | UpdateWallet     |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **walletId** | **String**| id of the wallet | 
+ **updateWalletInput** | [**UpdateWalletInput**](UpdateWalletInput.md)| UpdateWallet | 
 
 ### Return type
 
@@ -347,7 +347,8 @@ try {
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
-- **Accept**: application/json
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+

@@ -7,7 +7,8 @@ part of 'credential_offer_response_grants_urn_ietf_params_oauth_grant_type_pre_a
 // **************************************************************************
 
 class _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode
-    extends CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode {
+    extends
+        CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode {
   @override
   final num? length;
   @override
@@ -15,30 +16,35 @@ class _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCod
   @override
   final String? description;
 
-  factory _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode(
-          [void Function(
-                  CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder)?
-              updates]) =>
+  factory _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode([
+    void Function(
+      CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder,
+    )?
+    updates,
+  ]) =>
       (CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder()
             ..update(updates))
           ._build();
 
-  _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode._(
-      {this.length, this.inputMode, this.description})
-      : super._();
+  _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode._({
+    this.length,
+    this.inputMode,
+    this.description,
+  }) : super._();
   @override
   CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode
-      rebuild(
-              void Function(
-                      CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder)
-                  updates) =>
-          (toBuilder()..update(updates)).build();
+  rebuild(
+    void Function(
+      CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder,
+    )
+    updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder
-      toBuilder() =>
-          CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder()
-            ..replace(this);
+  toBuilder() =>
+      CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder()
+        ..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -63,7 +69,8 @@ class _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCod
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode')
+            r'CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode',
+          )
           ..add('length', length)
           ..add('inputMode', inputMode)
           ..add('description', description))
@@ -74,10 +81,11 @@ class _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCod
 class CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder
     implements
         Builder<
-            CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode,
-            CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder> {
+          CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode,
+          CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder
+        > {
   _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode?
-      _$v;
+  _$v;
 
   num? _length;
   num? get length => _$this._length;
@@ -92,12 +100,13 @@ class CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeT
   set description(String? description) => _$this._description = description;
 
   CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder() {
-    CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode
-        ._defaults(this);
+    CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode._defaults(
+      this,
+    );
   }
 
   CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder
-      get _$this {
+  get _$this {
     final $v = _$v;
     if ($v != null) {
       _length = $v.length;
@@ -110,33 +119,34 @@ class CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeT
 
   @override
   void replace(
-      CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode
-          other) {
-    _$v = other
-        as _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode;
+    CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode
+    other,
+  ) {
+    _$v =
+        other
+            as _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode;
   }
 
   @override
   void update(
-      void Function(
-              CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder)?
-          updates) {
+    void Function(
+      CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder,
+    )?
+    updates,
+  ) {
     if (updates != null) updates(this);
   }
 
   @override
   CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode
-      build() => _build();
+  build() => _build();
 
   _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode
-      _build() {
-    final _$result = _$v ??
+  _build() {
+    final _$result =
+        _$v ??
         _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode
-            ._(
-          length: length,
-          inputMode: inputMode,
-          description: description,
-        );
+            ._(length: length, inputMode: inputMode, description: description);
     replace(_$result);
     return _$result;
   }

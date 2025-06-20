@@ -81,14 +81,16 @@ void main() {
 
     // VC.type value. To use as an index, it is grouped together with projectId, as \"{projectIdConfigurationId}#{credentialType}\"
     // String projectIdConfigurationIdCredentialType
-    test('to test the property `projectIdConfigurationIdCredentialType`', () async {
-      // TODO
-    });
+    test(
+      'to test the property `projectIdConfigurationIdCredentialType`',
+      () async {
+        // TODO
+      },
+    );
 
     // BuiltList<FlowDataStatusListsDetailsInner> statusListsDetails
     test('to test the property `statusListsDetails`', () async {
       // TODO
     });
-
   });
 }

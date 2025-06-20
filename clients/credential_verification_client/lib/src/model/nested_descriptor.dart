@@ -11,12 +11,13 @@ part 'nested_descriptor.g.dart';
 /// NestedDescriptor
 ///
 /// Properties:
-/// * [id] 
-/// * [path] 
-/// * [pathNested] 
-/// * [format] 
+/// * [id]
+/// * [path]
+/// * [pathNested]
+/// * [format]
 @BuiltValue()
-abstract class NestedDescriptor implements Built<NestedDescriptor, NestedDescriptorBuilder> {
+abstract class NestedDescriptor
+    implements Built<NestedDescriptor, NestedDescriptorBuilder> {
   @BuiltValueField(wireName: r'id')
   String? get id;
 
@@ -31,16 +32,19 @@ abstract class NestedDescriptor implements Built<NestedDescriptor, NestedDescrip
 
   NestedDescriptor._();
 
-  factory NestedDescriptor([void updates(NestedDescriptorBuilder b)]) = _$NestedDescriptor;
+  factory NestedDescriptor([void updates(NestedDescriptorBuilder b)]) =
+      _$NestedDescriptor;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(NestedDescriptorBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<NestedDescriptor> get serializer => _$NestedDescriptorSerializer();
+  static Serializer<NestedDescriptor> get serializer =>
+      _$NestedDescriptorSerializer();
 }
 
-class _$NestedDescriptorSerializer implements PrimitiveSerializer<NestedDescriptor> {
+class _$NestedDescriptorSerializer
+    implements PrimitiveSerializer<NestedDescriptor> {
   @override
   final Iterable<Type> types = const [NestedDescriptor, _$NestedDescriptor];
 
@@ -84,7 +88,11 @@ class _$NestedDescriptorSerializer implements PrimitiveSerializer<NestedDescript
     NestedDescriptor object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -100,31 +108,39 @@ class _$NestedDescriptorSerializer implements PrimitiveSerializer<NestedDescript
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'path':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.path = valueDes;
           break;
         case r'path_nested':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(NestedDescriptor),
-          ) as NestedDescriptor;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(NestedDescriptor),
+                  )
+                  as NestedDescriptor;
           result.pathNested.replace(valueDes);
           break;
         case r'format':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.format = valueDes;
           break;
         default:
@@ -155,4 +171,3 @@ class _$NestedDescriptorSerializer implements PrimitiveSerializer<NestedDescript
     return result.build();
   }
 }
-

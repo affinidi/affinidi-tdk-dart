@@ -12,10 +12,11 @@ part 'update_token_input.g.dart';
 /// UpdateTokenInput
 ///
 /// Properties:
-/// * [name] 
-/// * [authenticationMethod] 
+/// * [name]
+/// * [authenticationMethod]
 @BuiltValue()
-abstract class UpdateTokenInput implements Built<UpdateTokenInput, UpdateTokenInputBuilder> {
+abstract class UpdateTokenInput
+    implements Built<UpdateTokenInput, UpdateTokenInputBuilder> {
   @BuiltValueField(wireName: r'name')
   String? get name;
 
@@ -24,16 +25,19 @@ abstract class UpdateTokenInput implements Built<UpdateTokenInput, UpdateTokenIn
 
   UpdateTokenInput._();
 
-  factory UpdateTokenInput([void updates(UpdateTokenInputBuilder b)]) = _$UpdateTokenInput;
+  factory UpdateTokenInput([void updates(UpdateTokenInputBuilder b)]) =
+      _$UpdateTokenInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UpdateTokenInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateTokenInput> get serializer => _$UpdateTokenInputSerializer();
+  static Serializer<UpdateTokenInput> get serializer =>
+      _$UpdateTokenInputSerializer();
 }
 
-class _$UpdateTokenInputSerializer implements PrimitiveSerializer<UpdateTokenInput> {
+class _$UpdateTokenInputSerializer
+    implements PrimitiveSerializer<UpdateTokenInput> {
   @override
   final Iterable<Type> types = const [UpdateTokenInput, _$UpdateTokenInput];
 
@@ -56,7 +60,9 @@ class _$UpdateTokenInputSerializer implements PrimitiveSerializer<UpdateTokenInp
       yield r'authenticationMethod';
       yield serializers.serialize(
         object.authenticationMethod,
-        specifiedType: const FullType(UpdateTokenPrivateKeyAuthenticationMethodDto),
+        specifiedType: const FullType(
+          UpdateTokenPrivateKeyAuthenticationMethodDto,
+        ),
       );
     }
   }
@@ -67,7 +73,11 @@ class _$UpdateTokenInputSerializer implements PrimitiveSerializer<UpdateTokenInp
     UpdateTokenInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -83,17 +93,23 @@ class _$UpdateTokenInputSerializer implements PrimitiveSerializer<UpdateTokenInp
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'authenticationMethod':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(UpdateTokenPrivateKeyAuthenticationMethodDto),
-          ) as UpdateTokenPrivateKeyAuthenticationMethodDto;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      UpdateTokenPrivateKeyAuthenticationMethodDto,
+                    ),
+                  )
+                  as UpdateTokenPrivateKeyAuthenticationMethodDto;
           result.authenticationMethod.replace(valueDes);
           break;
         default:
@@ -124,4 +140,3 @@ class _$UpdateTokenInputSerializer implements PrimitiveSerializer<UpdateTokenInp
     return result.build();
   }
 }
-

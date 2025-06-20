@@ -10,15 +10,15 @@ class _$QueryProfileDataOK extends QueryProfileDataOK {
   @override
   final JsonObject? data;
 
-  factory _$QueryProfileDataOK(
-          [void Function(QueryProfileDataOKBuilder)? updates]) =>
-      (QueryProfileDataOKBuilder()..update(updates))._build();
+  factory _$QueryProfileDataOK([
+    void Function(QueryProfileDataOKBuilder)? updates,
+  ]) => (QueryProfileDataOKBuilder()..update(updates))._build();
 
   _$QueryProfileDataOK._({this.data}) : super._();
   @override
   QueryProfileDataOK rebuild(
-          void Function(QueryProfileDataOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(QueryProfileDataOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   QueryProfileDataOKBuilder toBuilder() =>
@@ -40,9 +40,9 @@ class _$QueryProfileDataOK extends QueryProfileDataOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'QueryProfileDataOK')
-          ..add('data', data))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'QueryProfileDataOK',
+    )..add('data', data)).toString();
   }
 }
 
@@ -81,10 +81,7 @@ class QueryProfileDataOKBuilder
   QueryProfileDataOK build() => _build();
 
   _$QueryProfileDataOK _build() {
-    final _$result = _$v ??
-        _$QueryProfileDataOK._(
-          data: data,
-        );
+    final _$result = _$v ?? _$QueryProfileDataOK._(data: data);
     replace(_$result);
     return _$result;
   }

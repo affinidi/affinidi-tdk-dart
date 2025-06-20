@@ -88,6 +88,5 @@ void main() {
     test('to test the property `tokenEndpointAuthMethod`', () async {
       // TODO
     });
-
   });
 }

@@ -27,15 +27,15 @@ IssuanceConfigDtoFormatEnum _$issuanceConfigDtoFormatEnumValueOf(String name) {
 }
 
 final BuiltSet<IssuanceConfigDtoFormatEnum>
-    _$issuanceConfigDtoFormatEnumValues =
+_$issuanceConfigDtoFormatEnumValues =
     BuiltSet<IssuanceConfigDtoFormatEnum>(const <IssuanceConfigDtoFormatEnum>[
-  _$issuanceConfigDtoFormatEnum_ldpVc,
-  _$issuanceConfigDtoFormatEnum_jwtVcJsonLd,
-  _$issuanceConfigDtoFormatEnum_sdJwtVcJsonLd,
-]);
+      _$issuanceConfigDtoFormatEnum_ldpVc,
+      _$issuanceConfigDtoFormatEnum_jwtVcJsonLd,
+      _$issuanceConfigDtoFormatEnum_sdJwtVcJsonLd,
+    ]);
 
 Serializer<IssuanceConfigDtoFormatEnum>
-    _$issuanceConfigDtoFormatEnumSerializer =
+_$issuanceConfigDtoFormatEnumSerializer =
     _$IssuanceConfigDtoFormatEnumSerializer();
 
 class _$IssuanceConfigDtoFormatEnumSerializer
@@ -57,16 +57,20 @@ class _$IssuanceConfigDtoFormatEnumSerializer
   final String wireName = 'IssuanceConfigDtoFormatEnum';
 
   @override
-  Object serialize(Serializers serializers, IssuanceConfigDtoFormatEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    IssuanceConfigDtoFormatEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   IssuanceConfigDtoFormatEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      IssuanceConfigDtoFormatEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => IssuanceConfigDtoFormatEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$IssuanceConfigDto extends IssuanceConfigDto {
@@ -99,26 +103,26 @@ class _$IssuanceConfigDto extends IssuanceConfigDto {
   @override
   final CisConfigurationWebhookSetting? webhook;
 
-  factory _$IssuanceConfigDto(
-          [void Function(IssuanceConfigDtoBuilder)? updates]) =>
-      (IssuanceConfigDtoBuilder()..update(updates))._build();
+  factory _$IssuanceConfigDto([
+    void Function(IssuanceConfigDtoBuilder)? updates,
+  ]) => (IssuanceConfigDtoBuilder()..update(updates))._build();
 
-  _$IssuanceConfigDto._(
-      {this.id,
-      this.name,
-      this.description,
-      this.issuerDid,
-      this.issuerWalletId,
-      this.credentialOfferDuration,
-      this.cNonceDuration,
-      this.format,
-      this.issuerUri,
-      this.credentialSupported,
-      this.issuerMetadata,
-      this.version,
-      this.returnUris,
-      this.webhook})
-      : super._();
+  _$IssuanceConfigDto._({
+    this.id,
+    this.name,
+    this.description,
+    this.issuerDid,
+    this.issuerWalletId,
+    this.credentialOfferDuration,
+    this.cNonceDuration,
+    this.format,
+    this.issuerUri,
+    this.credentialSupported,
+    this.issuerMetadata,
+    this.version,
+    this.returnUris,
+    this.webhook,
+  }) : super._();
   @override
   IssuanceConfigDto rebuild(void Function(IssuanceConfigDtoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -236,8 +240,8 @@ class IssuanceConfigDtoBuilder
   ListBuilder<CredentialSupportedObject> get credentialSupported =>
       _$this._credentialSupported ??= ListBuilder<CredentialSupportedObject>();
   set credentialSupported(
-          ListBuilder<CredentialSupportedObject>? credentialSupported) =>
-      _$this._credentialSupported = credentialSupported;
+    ListBuilder<CredentialSupportedObject>? credentialSupported,
+  ) => _$this._credentialSupported = credentialSupported;
 
   MapBuilder<String, JsonObject?>? _issuerMetadata;
   MapBuilder<String, JsonObject?> get issuerMetadata =>
@@ -303,7 +307,8 @@ class IssuanceConfigDtoBuilder
   _$IssuanceConfigDto _build() {
     _$IssuanceConfigDto _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$IssuanceConfigDto._(
             id: id,
             name: name,
@@ -334,7 +339,10 @@ class IssuanceConfigDtoBuilder
         _webhook?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'IssuanceConfigDto', _$failedField, e.toString());
+          r'IssuanceConfigDto',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

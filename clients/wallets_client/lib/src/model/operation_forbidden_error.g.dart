@@ -7,11 +7,12 @@ part of 'operation_forbidden_error.dart';
 // **************************************************************************
 
 const OperationForbiddenErrorNameEnum
-    _$operationForbiddenErrorNameEnum_operationForbiddenError =
+_$operationForbiddenErrorNameEnum_operationForbiddenError =
     const OperationForbiddenErrorNameEnum._('operationForbiddenError');
 
 OperationForbiddenErrorNameEnum _$operationForbiddenErrorNameEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'operationForbiddenError':
       return _$operationForbiddenErrorNameEnum_operationForbiddenError;
@@ -21,18 +22,22 @@ OperationForbiddenErrorNameEnum _$operationForbiddenErrorNameEnumValueOf(
 }
 
 final BuiltSet<OperationForbiddenErrorNameEnum>
-    _$operationForbiddenErrorNameEnumValues = BuiltSet<
-        OperationForbiddenErrorNameEnum>(const <OperationForbiddenErrorNameEnum>[
-  _$operationForbiddenErrorNameEnum_operationForbiddenError,
-]);
+_$operationForbiddenErrorNameEnumValues =
+    BuiltSet<OperationForbiddenErrorNameEnum>(
+      const <OperationForbiddenErrorNameEnum>[
+        _$operationForbiddenErrorNameEnum_operationForbiddenError,
+      ],
+    );
 
 const OperationForbiddenErrorMessageEnum
-    _$operationForbiddenErrorMessageEnum_operationForbiddenColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod =
+_$operationForbiddenErrorMessageEnum_operationForbiddenColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod =
     const OperationForbiddenErrorMessageEnum._(
-        'operationForbiddenColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod');
+      'operationForbiddenColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod',
+    );
 
 OperationForbiddenErrorMessageEnum _$operationForbiddenErrorMessageEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'operationForbiddenColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod':
       return _$operationForbiddenErrorMessageEnum_operationForbiddenColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod;
@@ -42,17 +47,19 @@ OperationForbiddenErrorMessageEnum _$operationForbiddenErrorMessageEnumValueOf(
 }
 
 final BuiltSet<OperationForbiddenErrorMessageEnum>
-    _$operationForbiddenErrorMessageEnumValues = BuiltSet<
-        OperationForbiddenErrorMessageEnum>(const <OperationForbiddenErrorMessageEnum>[
-  _$operationForbiddenErrorMessageEnum_operationForbiddenColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod,
-]);
+_$operationForbiddenErrorMessageEnumValues =
+    BuiltSet<OperationForbiddenErrorMessageEnum>(const <
+      OperationForbiddenErrorMessageEnum
+    >[
+      _$operationForbiddenErrorMessageEnum_operationForbiddenColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod,
+    ]);
 
 const OperationForbiddenErrorHttpStatusCodeEnum
-    _$operationForbiddenErrorHttpStatusCodeEnum_number403 =
+_$operationForbiddenErrorHttpStatusCodeEnum_number403 =
     const OperationForbiddenErrorHttpStatusCodeEnum._('number403');
 
 OperationForbiddenErrorHttpStatusCodeEnum
-    _$operationForbiddenErrorHttpStatusCodeEnumValueOf(String name) {
+_$operationForbiddenErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number403':
       return _$operationForbiddenErrorHttpStatusCodeEnum_number403;
@@ -62,19 +69,21 @@ OperationForbiddenErrorHttpStatusCodeEnum
 }
 
 final BuiltSet<OperationForbiddenErrorHttpStatusCodeEnum>
-    _$operationForbiddenErrorHttpStatusCodeEnumValues = BuiltSet<
-        OperationForbiddenErrorHttpStatusCodeEnum>(const <OperationForbiddenErrorHttpStatusCodeEnum>[
-  _$operationForbiddenErrorHttpStatusCodeEnum_number403,
-]);
+_$operationForbiddenErrorHttpStatusCodeEnumValues =
+    BuiltSet<OperationForbiddenErrorHttpStatusCodeEnum>(
+      const <OperationForbiddenErrorHttpStatusCodeEnum>[
+        _$operationForbiddenErrorHttpStatusCodeEnum_number403,
+      ],
+    );
 
 Serializer<OperationForbiddenErrorNameEnum>
-    _$operationForbiddenErrorNameEnumSerializer =
+_$operationForbiddenErrorNameEnumSerializer =
     _$OperationForbiddenErrorNameEnumSerializer();
 Serializer<OperationForbiddenErrorMessageEnum>
-    _$operationForbiddenErrorMessageEnumSerializer =
+_$operationForbiddenErrorMessageEnumSerializer =
     _$OperationForbiddenErrorMessageEnumSerializer();
 Serializer<OperationForbiddenErrorHttpStatusCodeEnum>
-    _$operationForbiddenErrorHttpStatusCodeEnumSerializer =
+_$operationForbiddenErrorHttpStatusCodeEnumSerializer =
     _$OperationForbiddenErrorHttpStatusCodeEnumSerializer();
 
 class _$OperationForbiddenErrorNameEnumSerializer
@@ -93,16 +102,19 @@ class _$OperationForbiddenErrorNameEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, OperationForbiddenErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    OperationForbiddenErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   OperationForbiddenErrorNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      OperationForbiddenErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => OperationForbiddenErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$OperationForbiddenErrorMessageEnumSerializer
@@ -123,16 +135,19 @@ class _$OperationForbiddenErrorMessageEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, OperationForbiddenErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    OperationForbiddenErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   OperationForbiddenErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      OperationForbiddenErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => OperationForbiddenErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$OperationForbiddenErrorHttpStatusCodeEnumSerializer
@@ -146,23 +161,26 @@ class _$OperationForbiddenErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    OperationForbiddenErrorHttpStatusCodeEnum
+    OperationForbiddenErrorHttpStatusCodeEnum,
   ];
   @override
   final String wireName = 'OperationForbiddenErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          OperationForbiddenErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    OperationForbiddenErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   OperationForbiddenErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      OperationForbiddenErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => OperationForbiddenErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$OperationForbiddenError extends OperationForbiddenError {
@@ -177,21 +195,21 @@ class _$OperationForbiddenError extends OperationForbiddenError {
   @override
   final BuiltList<ServiceErrorResponseDetailsInner>? details;
 
-  factory _$OperationForbiddenError(
-          [void Function(OperationForbiddenErrorBuilder)? updates]) =>
-      (OperationForbiddenErrorBuilder()..update(updates))._build();
+  factory _$OperationForbiddenError([
+    void Function(OperationForbiddenErrorBuilder)? updates,
+  ]) => (OperationForbiddenErrorBuilder()..update(updates))._build();
 
-  _$OperationForbiddenError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$OperationForbiddenError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   OperationForbiddenError rebuild(
-          void Function(OperationForbiddenErrorBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(OperationForbiddenErrorBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   OperationForbiddenErrorBuilder toBuilder() =>
@@ -250,8 +268,8 @@ class OperationForbiddenErrorBuilder
   OperationForbiddenErrorHttpStatusCodeEnum? get httpStatusCode =>
       _$this._httpStatusCode;
   set httpStatusCode(
-          OperationForbiddenErrorHttpStatusCodeEnum? httpStatusCode) =>
-      _$this._httpStatusCode = httpStatusCode;
+    OperationForbiddenErrorHttpStatusCodeEnum? httpStatusCode,
+  ) => _$this._httpStatusCode = httpStatusCode;
 
   String? _traceId;
   String? get traceId => _$this._traceId;
@@ -296,16 +314,29 @@ class OperationForbiddenErrorBuilder
   _$OperationForbiddenError _build() {
     _$OperationForbiddenError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$OperationForbiddenError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'OperationForbiddenError', 'name'),
+              name,
+              r'OperationForbiddenError',
+              'name',
+            ),
             message: BuiltValueNullFieldError.checkNotNull(
-                message, r'OperationForbiddenError', 'message'),
+              message,
+              r'OperationForbiddenError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode, r'OperationForbiddenError', 'httpStatusCode'),
+              httpStatusCode,
+              r'OperationForbiddenError',
+              'httpStatusCode',
+            ),
             traceId: BuiltValueNullFieldError.checkNotNull(
-                traceId, r'OperationForbiddenError', 'traceId'),
+              traceId,
+              r'OperationForbiddenError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -315,7 +346,10 @@ class OperationForbiddenErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'OperationForbiddenError', _$failedField, e.toString());
+          r'OperationForbiddenError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

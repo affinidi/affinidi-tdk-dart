@@ -13,10 +13,11 @@ part 'project_with_policy_list.g.dart';
 /// ProjectWithPolicyList
 ///
 /// Properties:
-/// * [projects] 
-/// * [lastEvaluatedKey] 
+/// * [projects]
+/// * [lastEvaluatedKey]
 @BuiltValue()
-abstract class ProjectWithPolicyList implements Built<ProjectWithPolicyList, ProjectWithPolicyListBuilder> {
+abstract class ProjectWithPolicyList
+    implements Built<ProjectWithPolicyList, ProjectWithPolicyListBuilder> {
   @BuiltValueField(wireName: r'projects')
   BuiltList<ProjectWithPolicyDto> get projects;
 
@@ -25,18 +26,25 @@ abstract class ProjectWithPolicyList implements Built<ProjectWithPolicyList, Pro
 
   ProjectWithPolicyList._();
 
-  factory ProjectWithPolicyList([void updates(ProjectWithPolicyListBuilder b)]) = _$ProjectWithPolicyList;
+  factory ProjectWithPolicyList([
+    void updates(ProjectWithPolicyListBuilder b),
+  ]) = _$ProjectWithPolicyList;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ProjectWithPolicyListBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ProjectWithPolicyList> get serializer => _$ProjectWithPolicyListSerializer();
+  static Serializer<ProjectWithPolicyList> get serializer =>
+      _$ProjectWithPolicyListSerializer();
 }
 
-class _$ProjectWithPolicyListSerializer implements PrimitiveSerializer<ProjectWithPolicyList> {
+class _$ProjectWithPolicyListSerializer
+    implements PrimitiveSerializer<ProjectWithPolicyList> {
   @override
-  final Iterable<Type> types = const [ProjectWithPolicyList, _$ProjectWithPolicyList];
+  final Iterable<Type> types = const [
+    ProjectWithPolicyList,
+    _$ProjectWithPolicyList,
+  ];
 
   @override
   final String wireName = r'ProjectWithPolicyList';
@@ -49,7 +57,9 @@ class _$ProjectWithPolicyListSerializer implements PrimitiveSerializer<ProjectWi
     yield r'projects';
     yield serializers.serialize(
       object.projects,
-      specifiedType: const FullType(BuiltList, [FullType(ProjectWithPolicyDto)]),
+      specifiedType: const FullType(BuiltList, [
+        FullType(ProjectWithPolicyDto),
+      ]),
     );
     if (object.lastEvaluatedKey != null) {
       yield r'lastEvaluatedKey';
@@ -66,7 +76,11 @@ class _$ProjectWithPolicyListSerializer implements PrimitiveSerializer<ProjectWi
     ProjectWithPolicyList object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -82,17 +96,23 @@ class _$ProjectWithPolicyListSerializer implements PrimitiveSerializer<ProjectWi
       final value = serializedList[i + 1];
       switch (key) {
         case r'projects':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(ProjectWithPolicyDto)]),
-          ) as BuiltList<ProjectWithPolicyDto>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(ProjectWithPolicyDto),
+                    ]),
+                  )
+                  as BuiltList<ProjectWithPolicyDto>;
           result.projects.replace(valueDes);
           break;
         case r'lastEvaluatedKey':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.lastEvaluatedKey = valueDes;
           break;
         default:
@@ -123,4 +143,3 @@ class _$ProjectWithPolicyListSerializer implements PrimitiveSerializer<ProjectWi
     return result.build();
   }
 }
-

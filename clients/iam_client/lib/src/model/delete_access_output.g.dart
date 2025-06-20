@@ -10,15 +10,15 @@ class _$DeleteAccessOutput extends DeleteAccessOutput {
   @override
   final bool success;
 
-  factory _$DeleteAccessOutput(
-          [void Function(DeleteAccessOutputBuilder)? updates]) =>
-      (DeleteAccessOutputBuilder()..update(updates))._build();
+  factory _$DeleteAccessOutput([
+    void Function(DeleteAccessOutputBuilder)? updates,
+  ]) => (DeleteAccessOutputBuilder()..update(updates))._build();
 
   _$DeleteAccessOutput._({required this.success}) : super._();
   @override
   DeleteAccessOutput rebuild(
-          void Function(DeleteAccessOutputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(DeleteAccessOutputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   DeleteAccessOutputBuilder toBuilder() =>
@@ -40,9 +40,9 @@ class _$DeleteAccessOutput extends DeleteAccessOutput {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'DeleteAccessOutput')
-          ..add('success', success))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'DeleteAccessOutput',
+    )..add('success', success)).toString();
   }
 }
 
@@ -81,10 +81,14 @@ class DeleteAccessOutputBuilder
   DeleteAccessOutput build() => _build();
 
   _$DeleteAccessOutput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$DeleteAccessOutput._(
           success: BuiltValueNullFieldError.checkNotNull(
-              success, r'DeleteAccessOutput', 'success'),
+            success,
+            r'DeleteAccessOutput',
+            'success',
+          ),
         );
     replace(_$result);
     return _$result;

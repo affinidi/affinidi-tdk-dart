@@ -7,14 +7,14 @@ part of 'change_credential_status_input.dart';
 // **************************************************************************
 
 const ChangeCredentialStatusInputChangeReasonEnum
-    _$changeCredentialStatusInputChangeReasonEnum_INVALID_CREDENTIAL =
+_$changeCredentialStatusInputChangeReasonEnum_INVALID_CREDENTIAL =
     const ChangeCredentialStatusInputChangeReasonEnum._('INVALID_CREDENTIAL');
 const ChangeCredentialStatusInputChangeReasonEnum
-    _$changeCredentialStatusInputChangeReasonEnum_COMPROMISED_ISSUER =
+_$changeCredentialStatusInputChangeReasonEnum_COMPROMISED_ISSUER =
     const ChangeCredentialStatusInputChangeReasonEnum._('COMPROMISED_ISSUER');
 
 ChangeCredentialStatusInputChangeReasonEnum
-    _$changeCredentialStatusInputChangeReasonEnumValueOf(String name) {
+_$changeCredentialStatusInputChangeReasonEnumValueOf(String name) {
   switch (name) {
     case 'INVALID_CREDENTIAL':
       return _$changeCredentialStatusInputChangeReasonEnum_INVALID_CREDENTIAL;
@@ -26,14 +26,16 @@ ChangeCredentialStatusInputChangeReasonEnum
 }
 
 final BuiltSet<ChangeCredentialStatusInputChangeReasonEnum>
-    _$changeCredentialStatusInputChangeReasonEnumValues = BuiltSet<
-        ChangeCredentialStatusInputChangeReasonEnum>(const <ChangeCredentialStatusInputChangeReasonEnum>[
-  _$changeCredentialStatusInputChangeReasonEnum_INVALID_CREDENTIAL,
-  _$changeCredentialStatusInputChangeReasonEnum_COMPROMISED_ISSUER,
-]);
+_$changeCredentialStatusInputChangeReasonEnumValues =
+    BuiltSet<ChangeCredentialStatusInputChangeReasonEnum>(
+      const <ChangeCredentialStatusInputChangeReasonEnum>[
+        _$changeCredentialStatusInputChangeReasonEnum_INVALID_CREDENTIAL,
+        _$changeCredentialStatusInputChangeReasonEnum_COMPROMISED_ISSUER,
+      ],
+    );
 
 Serializer<ChangeCredentialStatusInputChangeReasonEnum>
-    _$changeCredentialStatusInputChangeReasonEnumSerializer =
+_$changeCredentialStatusInputChangeReasonEnumSerializer =
     _$ChangeCredentialStatusInputChangeReasonEnumSerializer();
 
 class _$ChangeCredentialStatusInputChangeReasonEnumSerializer
@@ -50,23 +52,26 @@ class _$ChangeCredentialStatusInputChangeReasonEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    ChangeCredentialStatusInputChangeReasonEnum
+    ChangeCredentialStatusInputChangeReasonEnum,
   ];
   @override
   final String wireName = 'ChangeCredentialStatusInputChangeReasonEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          ChangeCredentialStatusInputChangeReasonEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    ChangeCredentialStatusInputChangeReasonEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   ChangeCredentialStatusInputChangeReasonEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      ChangeCredentialStatusInputChangeReasonEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => ChangeCredentialStatusInputChangeReasonEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$ChangeCredentialStatusInput extends ChangeCredentialStatusInput {
@@ -75,16 +80,16 @@ class _$ChangeCredentialStatusInput extends ChangeCredentialStatusInput {
   @override
   final String? issuanceRecordId;
 
-  factory _$ChangeCredentialStatusInput(
-          [void Function(ChangeCredentialStatusInputBuilder)? updates]) =>
-      (ChangeCredentialStatusInputBuilder()..update(updates))._build();
+  factory _$ChangeCredentialStatusInput([
+    void Function(ChangeCredentialStatusInputBuilder)? updates,
+  ]) => (ChangeCredentialStatusInputBuilder()..update(updates))._build();
 
   _$ChangeCredentialStatusInput._({this.changeReason, this.issuanceRecordId})
-      : super._();
+    : super._();
   @override
   ChangeCredentialStatusInput rebuild(
-          void Function(ChangeCredentialStatusInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ChangeCredentialStatusInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ChangeCredentialStatusInputBuilder toBuilder() =>
@@ -118,8 +123,10 @@ class _$ChangeCredentialStatusInput extends ChangeCredentialStatusInput {
 
 class ChangeCredentialStatusInputBuilder
     implements
-        Builder<ChangeCredentialStatusInput,
-            ChangeCredentialStatusInputBuilder> {
+        Builder<
+          ChangeCredentialStatusInput,
+          ChangeCredentialStatusInputBuilder
+        > {
   _$ChangeCredentialStatusInput? _$v;
 
   ChangeCredentialStatusInputChangeReasonEnum? _changeReason;
@@ -161,7 +168,8 @@ class ChangeCredentialStatusInputBuilder
   ChangeCredentialStatusInput build() => _build();
 
   _$ChangeCredentialStatusInput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$ChangeCredentialStatusInput._(
           changeReason: changeReason,
           issuanceRecordId: issuanceRecordId,

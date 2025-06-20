@@ -7,7 +7,7 @@ void main() {
   // TODO add properties to the builder and call build()
 
   group(OAuth2TokenAuthorizationDetailsInner, () {
-    // String that determines the authorization details type. 
+    // String that determines the authorization details type.
     // String type (default value: 'openid_credential')
     test('to test the property `type`', () async {
       // TODO
@@ -22,6 +22,5 @@ void main() {
     test('to test the property `credentialIdentifiers`', () async {
       // TODO
     });
-
   });
 }

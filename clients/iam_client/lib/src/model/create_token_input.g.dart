@@ -10,19 +10,19 @@ class _$CreateTokenInput extends CreateTokenInput {
   @override
   final String name;
   @override
-  final TokenAuthenticationMethodDto authenticationMethod;
+  final TokenPrivateKeyAuthenticationMethodDto authenticationMethod;
   @override
   final String? description;
 
-  factory _$CreateTokenInput(
-          [void Function(CreateTokenInputBuilder)? updates]) =>
-      (CreateTokenInputBuilder()..update(updates))._build();
+  factory _$CreateTokenInput([
+    void Function(CreateTokenInputBuilder)? updates,
+  ]) => (CreateTokenInputBuilder()..update(updates))._build();
 
-  _$CreateTokenInput._(
-      {required this.name,
-      required this.authenticationMethod,
-      this.description})
-      : super._();
+  _$CreateTokenInput._({
+    required this.name,
+    required this.authenticationMethod,
+    this.description,
+  }) : super._();
   @override
   CreateTokenInput rebuild(void Function(CreateTokenInputBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -68,12 +68,13 @@ class CreateTokenInputBuilder
   String? get name => _$this._name;
   set name(String? name) => _$this._name = name;
 
-  TokenAuthenticationMethodDtoBuilder? _authenticationMethod;
-  TokenAuthenticationMethodDtoBuilder get authenticationMethod =>
-      _$this._authenticationMethod ??= TokenAuthenticationMethodDtoBuilder();
+  TokenPrivateKeyAuthenticationMethodDtoBuilder? _authenticationMethod;
+  TokenPrivateKeyAuthenticationMethodDtoBuilder get authenticationMethod =>
+      _$this._authenticationMethod ??=
+          TokenPrivateKeyAuthenticationMethodDtoBuilder();
   set authenticationMethod(
-          TokenAuthenticationMethodDtoBuilder? authenticationMethod) =>
-      _$this._authenticationMethod = authenticationMethod;
+    TokenPrivateKeyAuthenticationMethodDtoBuilder? authenticationMethod,
+  ) => _$this._authenticationMethod = authenticationMethod;
 
   String? _description;
   String? get description => _$this._description;
@@ -110,10 +111,14 @@ class CreateTokenInputBuilder
   _$CreateTokenInput _build() {
     _$CreateTokenInput _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$CreateTokenInput._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'CreateTokenInput', 'name'),
+              name,
+              r'CreateTokenInput',
+              'name',
+            ),
             authenticationMethod: authenticationMethod.build(),
             description: description,
           );
@@ -124,7 +129,10 @@ class CreateTokenInputBuilder
         authenticationMethod.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'CreateTokenInput', _$failedField, e.toString());
+          r'CreateTokenInput',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

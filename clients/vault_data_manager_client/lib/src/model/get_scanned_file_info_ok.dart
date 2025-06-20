@@ -12,16 +12,17 @@ part 'get_scanned_file_info_ok.g.dart';
 /// GetScannedFileInfoOK
 ///
 /// Properties:
-/// * [data] 
+/// * [data]
 /// * [jobId] - A unique, randomly generated idetifier
 /// * [status] - Status of the file scanning once initiated
 /// * [profileId] - A unique, randomly generated identifier
 /// * [exclusiveStartKey] - The base64url encoded key of the first item that this operation will evaluate (it is not returned). Use the value that was returned in the previous operation.
 /// * [nodeId] - A unique, randomly generated identifier
-/// * [createdAt] 
-/// * [name] 
+/// * [createdAt]
+/// * [name]
 @BuiltValue()
-abstract class GetScannedFileInfoOK implements Built<GetScannedFileInfoOK, GetScannedFileInfoOKBuilder> {
+abstract class GetScannedFileInfoOK
+    implements Built<GetScannedFileInfoOK, GetScannedFileInfoOKBuilder> {
   @BuiltValueField(wireName: r'data')
   JsonObject get data;
 
@@ -53,18 +54,24 @@ abstract class GetScannedFileInfoOK implements Built<GetScannedFileInfoOK, GetSc
 
   GetScannedFileInfoOK._();
 
-  factory GetScannedFileInfoOK([void updates(GetScannedFileInfoOKBuilder b)]) = _$GetScannedFileInfoOK;
+  factory GetScannedFileInfoOK([void updates(GetScannedFileInfoOKBuilder b)]) =
+      _$GetScannedFileInfoOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetScannedFileInfoOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetScannedFileInfoOK> get serializer => _$GetScannedFileInfoOKSerializer();
+  static Serializer<GetScannedFileInfoOK> get serializer =>
+      _$GetScannedFileInfoOKSerializer();
 }
 
-class _$GetScannedFileInfoOKSerializer implements PrimitiveSerializer<GetScannedFileInfoOK> {
+class _$GetScannedFileInfoOKSerializer
+    implements PrimitiveSerializer<GetScannedFileInfoOK> {
   @override
-  final Iterable<Type> types = const [GetScannedFileInfoOK, _$GetScannedFileInfoOK];
+  final Iterable<Type> types = const [
+    GetScannedFileInfoOK,
+    _$GetScannedFileInfoOK,
+  ];
 
   @override
   final String wireName = r'GetScannedFileInfoOK';
@@ -124,7 +131,11 @@ class _$GetScannedFileInfoOKSerializer implements PrimitiveSerializer<GetScanned
     GetScannedFileInfoOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -140,59 +151,75 @@ class _$GetScannedFileInfoOKSerializer implements PrimitiveSerializer<GetScanned
       final value = serializedList[i + 1];
       switch (key) {
         case r'data':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JsonObject),
+                  )
+                  as JsonObject;
           result.data = valueDes;
           break;
         case r'jobId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.jobId = valueDes;
           break;
         case r'status':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.status = valueDes;
           break;
         case r'profileId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.profileId = valueDes;
           break;
         case r'exclusiveStartKey':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.exclusiveStartKey = valueDes;
           break;
         case r'nodeId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.nodeId = valueDes;
           break;
         case r'createdAt':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.createdAt = valueDes;
           break;
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         default:
@@ -223,4 +250,3 @@ class _$GetScannedFileInfoOKSerializer implements PrimitiveSerializer<GetScanned
     return result.build();
   }
 }
-

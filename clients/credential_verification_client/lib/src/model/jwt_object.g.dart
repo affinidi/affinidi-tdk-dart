@@ -37,8 +37,9 @@ class _$JwtObject extends JwtObject {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'JwtObject')..add('alg', alg))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'JwtObject',
+    )..add('alg', alg)).toString();
   }
 }
 
@@ -78,10 +79,7 @@ class JwtObjectBuilder implements Builder<JwtObject, JwtObjectBuilder> {
   _$JwtObject _build() {
     _$JwtObject _$result;
     try {
-      _$result = _$v ??
-          _$JwtObject._(
-            alg: alg.build(),
-          );
+      _$result = _$v ?? _$JwtObject._(alg: alg.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -89,7 +87,10 @@ class JwtObjectBuilder implements Builder<JwtObject, JwtObjectBuilder> {
         alg.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'JwtObject', _$failedField, e.toString());
+          r'JwtObject',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

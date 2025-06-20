@@ -11,29 +11,32 @@ class _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1
   @override
   final String jwksUri;
 
-  factory _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1(
-          [void Function(
-                  TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1Builder)?
-              updates]) =>
+  factory _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1([
+    void Function(
+      TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1Builder,
+    )?
+    updates,
+  ]) =>
       (TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1Builder()
             ..update(updates))
           ._build();
 
-  _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1._(
-      {required this.jwksUri})
-      : super._();
+  _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1._({
+    required this.jwksUri,
+  }) : super._();
   @override
   TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1 rebuild(
-          void Function(
-                  TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1Builder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(
+      TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1Builder,
+    )
+    updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1Builder
-      toBuilder() =>
-          TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1Builder()
-            ..replace(this);
+  toBuilder() =>
+      TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1Builder()
+        ..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -53,16 +56,17 @@ class _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1')
-          ..add('jwksUri', jwksUri))
-        .toString();
+      r'TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1',
+    )..add('jwksUri', jwksUri)).toString();
   }
 }
 
 class TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1Builder
     implements
-        Builder<TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1,
-            TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1Builder> {
+        Builder<
+          TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1,
+          TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1Builder
+        > {
   _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1? _$v;
 
   String? _jwksUri;
@@ -84,15 +88,18 @@ class TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1Builder
 
   @override
   void replace(
-      TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1 other) {
+    TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1 other,
+  ) {
     _$v = other as _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1;
   }
 
   @override
   void update(
-      void Function(
-              TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1Builder)?
-          updates) {
+    void Function(
+      TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1Builder,
+    )?
+    updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -100,12 +107,14 @@ class TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1Builder
   TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1 build() => _build();
 
   _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1 _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1._(
           jwksUri: BuiltValueNullFieldError.checkNotNull(
-              jwksUri,
-              r'TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1',
-              'jwksUri'),
+            jwksUri,
+            r'TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf1',
+            'jwksUri',
+          ),
         );
     replace(_$result);
     return _$result;

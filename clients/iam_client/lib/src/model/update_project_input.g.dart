@@ -12,15 +12,15 @@ class _$UpdateProjectInput extends UpdateProjectInput {
   @override
   final String? description;
 
-  factory _$UpdateProjectInput(
-          [void Function(UpdateProjectInputBuilder)? updates]) =>
-      (UpdateProjectInputBuilder()..update(updates))._build();
+  factory _$UpdateProjectInput([
+    void Function(UpdateProjectInputBuilder)? updates,
+  ]) => (UpdateProjectInputBuilder()..update(updates))._build();
 
   _$UpdateProjectInput._({this.name, this.description}) : super._();
   @override
   UpdateProjectInput rebuild(
-          void Function(UpdateProjectInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateProjectInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateProjectInputBuilder toBuilder() =>
@@ -92,11 +92,8 @@ class UpdateProjectInputBuilder
   UpdateProjectInput build() => _build();
 
   _$UpdateProjectInput _build() {
-    final _$result = _$v ??
-        _$UpdateProjectInput._(
-          name: name,
-          description: description,
-        );
+    final _$result =
+        _$v ?? _$UpdateProjectInput._(name: name, description: description);
     replace(_$result);
     return _$result;
   }

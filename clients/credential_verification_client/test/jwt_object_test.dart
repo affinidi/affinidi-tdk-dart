@@ -12,6 +12,5 @@ void main() {
     test('to test the property `alg`', () async {
       // TODO
     });
-
   });
 }

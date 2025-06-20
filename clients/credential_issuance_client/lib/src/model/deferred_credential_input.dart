@@ -13,25 +13,33 @@ part 'deferred_credential_input.g.dart';
 /// Properties:
 /// * [transactionId] - String identifying a Deferred Issuance transaction. This claim is contained in the response if the Credential Issuer was unable to immediately issue the Credential.
 @BuiltValue()
-abstract class DeferredCredentialInput implements Built<DeferredCredentialInput, DeferredCredentialInputBuilder> {
+abstract class DeferredCredentialInput
+    implements Built<DeferredCredentialInput, DeferredCredentialInputBuilder> {
   /// String identifying a Deferred Issuance transaction. This claim is contained in the response if the Credential Issuer was unable to immediately issue the Credential.
   @BuiltValueField(wireName: r'transaction_id')
   String get transactionId;
 
   DeferredCredentialInput._();
 
-  factory DeferredCredentialInput([void updates(DeferredCredentialInputBuilder b)]) = _$DeferredCredentialInput;
+  factory DeferredCredentialInput([
+    void updates(DeferredCredentialInputBuilder b),
+  ]) = _$DeferredCredentialInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(DeferredCredentialInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<DeferredCredentialInput> get serializer => _$DeferredCredentialInputSerializer();
+  static Serializer<DeferredCredentialInput> get serializer =>
+      _$DeferredCredentialInputSerializer();
 }
 
-class _$DeferredCredentialInputSerializer implements PrimitiveSerializer<DeferredCredentialInput> {
+class _$DeferredCredentialInputSerializer
+    implements PrimitiveSerializer<DeferredCredentialInput> {
   @override
-  final Iterable<Type> types = const [DeferredCredentialInput, _$DeferredCredentialInput];
+  final Iterable<Type> types = const [
+    DeferredCredentialInput,
+    _$DeferredCredentialInput,
+  ];
 
   @override
   final String wireName = r'DeferredCredentialInput';
@@ -54,7 +62,11 @@ class _$DeferredCredentialInputSerializer implements PrimitiveSerializer<Deferre
     DeferredCredentialInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -70,10 +82,12 @@ class _$DeferredCredentialInputSerializer implements PrimitiveSerializer<Deferre
       final value = serializedList[i + 1];
       switch (key) {
         case r'transaction_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.transactionId = valueDes;
           break;
         default:
@@ -104,4 +118,3 @@ class _$DeferredCredentialInputSerializer implements PrimitiveSerializer<Deferre
     return result.build();
   }
 }
-

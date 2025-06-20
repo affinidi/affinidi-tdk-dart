@@ -12,17 +12,18 @@ class _$IotaExchangeCredentialsOK extends IotaExchangeCredentialsOK {
   @override
   final IotaExchangeCredentialsOKCredentials credentials;
 
-  factory _$IotaExchangeCredentialsOK(
-          [void Function(IotaExchangeCredentialsOKBuilder)? updates]) =>
-      (IotaExchangeCredentialsOKBuilder()..update(updates))._build();
+  factory _$IotaExchangeCredentialsOK([
+    void Function(IotaExchangeCredentialsOKBuilder)? updates,
+  ]) => (IotaExchangeCredentialsOKBuilder()..update(updates))._build();
 
-  _$IotaExchangeCredentialsOK._(
-      {required this.connectionClientId, required this.credentials})
-      : super._();
+  _$IotaExchangeCredentialsOK._({
+    required this.connectionClientId,
+    required this.credentials,
+  }) : super._();
   @override
   IotaExchangeCredentialsOK rebuild(
-          void Function(IotaExchangeCredentialsOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(IotaExchangeCredentialsOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   IotaExchangeCredentialsOKBuilder toBuilder() =>
@@ -100,12 +101,14 @@ class IotaExchangeCredentialsOKBuilder
   _$IotaExchangeCredentialsOK _build() {
     _$IotaExchangeCredentialsOK _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$IotaExchangeCredentialsOK._(
             connectionClientId: BuiltValueNullFieldError.checkNotNull(
-                connectionClientId,
-                r'IotaExchangeCredentialsOK',
-                'connectionClientId'),
+              connectionClientId,
+              r'IotaExchangeCredentialsOK',
+              'connectionClientId',
+            ),
             credentials: credentials.build(),
           );
     } catch (_) {
@@ -115,7 +118,10 @@ class IotaExchangeCredentialsOKBuilder
         credentials.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'IotaExchangeCredentialsOK', _$failedField, e.toString());
+          r'IotaExchangeCredentialsOK',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

@@ -10,15 +10,15 @@ class _$UpdateConfigurationByIdOK extends UpdateConfigurationByIdOK {
   @override
   final String? updateConfigurationByIdOk;
 
-  factory _$UpdateConfigurationByIdOK(
-          [void Function(UpdateConfigurationByIdOKBuilder)? updates]) =>
-      (UpdateConfigurationByIdOKBuilder()..update(updates))._build();
+  factory _$UpdateConfigurationByIdOK([
+    void Function(UpdateConfigurationByIdOKBuilder)? updates,
+  ]) => (UpdateConfigurationByIdOKBuilder()..update(updates))._build();
 
   _$UpdateConfigurationByIdOK._({this.updateConfigurationByIdOk}) : super._();
   @override
   UpdateConfigurationByIdOK rebuild(
-          void Function(UpdateConfigurationByIdOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateConfigurationByIdOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateConfigurationByIdOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$UpdateConfigurationByIdOK extends UpdateConfigurationByIdOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'UpdateConfigurationByIdOK')
-          ..add('updateConfigurationByIdOk', updateConfigurationByIdOk))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'UpdateConfigurationByIdOK',
+    )..add('updateConfigurationByIdOk', updateConfigurationByIdOk)).toString();
   }
 }
 
@@ -84,7 +84,8 @@ class UpdateConfigurationByIdOKBuilder
   UpdateConfigurationByIdOK build() => _build();
 
   _$UpdateConfigurationByIdOK _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$UpdateConfigurationByIdOK._(
           updateConfigurationByIdOk: updateConfigurationByIdOk,
         );

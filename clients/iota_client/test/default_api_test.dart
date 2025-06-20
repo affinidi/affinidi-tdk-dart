@@ -1,7 +1,6 @@
 import 'package:test/test.dart';
 import 'package:affinidi_tdk_iota_client/affinidi_tdk_iota_client.dart';
 
-
 /// tests for DefaultApi
 void main() {
   final instance = AffinidiTdkIotaClient().getDefaultApi();
@@ -13,6 +12,5 @@ void main() {
     test('test listLoggedConsents', () async {
       // TODO
     });
-
   });
 }

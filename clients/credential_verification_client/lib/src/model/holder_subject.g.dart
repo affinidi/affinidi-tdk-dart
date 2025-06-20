@@ -24,9 +24,9 @@ HolderSubjectDirectiveEnum _$holderSubjectDirectiveEnumValueOf(String name) {
 
 final BuiltSet<HolderSubjectDirectiveEnum> _$holderSubjectDirectiveEnumValues =
     BuiltSet<HolderSubjectDirectiveEnum>(const <HolderSubjectDirectiveEnum>[
-  _$holderSubjectDirectiveEnum_required_,
-  _$holderSubjectDirectiveEnum_preferred,
-]);
+      _$holderSubjectDirectiveEnum_required_,
+      _$holderSubjectDirectiveEnum_preferred,
+    ]);
 
 Serializer<HolderSubjectDirectiveEnum> _$holderSubjectDirectiveEnumSerializer =
     _$HolderSubjectDirectiveEnumSerializer();
@@ -48,16 +48,20 @@ class _$HolderSubjectDirectiveEnumSerializer
   final String wireName = 'HolderSubjectDirectiveEnum';
 
   @override
-  Object serialize(Serializers serializers, HolderSubjectDirectiveEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    HolderSubjectDirectiveEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   HolderSubjectDirectiveEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      HolderSubjectDirectiveEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => HolderSubjectDirectiveEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$HolderSubject extends HolderSubject {
@@ -70,7 +74,7 @@ class _$HolderSubject extends HolderSubject {
       (HolderSubjectBuilder()..update(updates))._build();
 
   _$HolderSubject._({required this.fieldId, required this.directive})
-      : super._();
+    : super._();
   @override
   HolderSubject rebuild(void Function(HolderSubjectBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -147,11 +151,15 @@ class HolderSubjectBuilder
   _$HolderSubject _build() {
     _$HolderSubject _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$HolderSubject._(
             fieldId: fieldId.build(),
             directive: BuiltValueNullFieldError.checkNotNull(
-                directive, r'HolderSubject', 'directive'),
+              directive,
+              r'HolderSubject',
+              'directive',
+            ),
           );
     } catch (_) {
       late String _$failedField;
@@ -160,7 +168,10 @@ class HolderSubjectBuilder
         fieldId.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'HolderSubject', _$failedField, e.toString());
+          r'HolderSubject',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

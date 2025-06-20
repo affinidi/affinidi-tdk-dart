@@ -16,7 +16,7 @@ class _$WhoamiDto extends WhoamiDto {
       (WhoamiDtoBuilder()..update(updates))._build();
 
   _$WhoamiDto._({required this.principalId, required this.principalType})
-      : super._();
+    : super._();
   @override
   WhoamiDto rebuild(void Function(WhoamiDtoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -90,12 +90,19 @@ class WhoamiDtoBuilder implements Builder<WhoamiDto, WhoamiDtoBuilder> {
   WhoamiDto build() => _build();
 
   _$WhoamiDto _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$WhoamiDto._(
           principalId: BuiltValueNullFieldError.checkNotNull(
-              principalId, r'WhoamiDto', 'principalId'),
+            principalId,
+            r'WhoamiDto',
+            'principalId',
+          ),
           principalType: BuiltValueNullFieldError.checkNotNull(
-              principalType, r'WhoamiDto', 'principalType'),
+            principalType,
+            r'WhoamiDto',
+            'principalType',
+          ),
         );
     replace(_$result);
     return _$result;

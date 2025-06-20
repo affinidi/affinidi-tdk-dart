@@ -1,7 +1,6 @@
 import 'package:test/test.dart';
 import 'package:affinidi_tdk_iam_client/affinidi_tdk_iam_client.dart';
 
-
 /// tests for ConsumerAuthApi
 void main() {
   final instance = AffinidiTdkIamClient().getConsumerAuthApi();
@@ -15,6 +14,5 @@ void main() {
     test('test consumerAuthTokenEndpoint', () async {
       // TODO
     });
-
   });
 }

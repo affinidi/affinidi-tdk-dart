@@ -10,15 +10,15 @@ class _$CorsListScannedFilesOK extends CorsListScannedFilesOK {
   @override
   final String? corsListScannedFilesOk;
 
-  factory _$CorsListScannedFilesOK(
-          [void Function(CorsListScannedFilesOKBuilder)? updates]) =>
-      (CorsListScannedFilesOKBuilder()..update(updates))._build();
+  factory _$CorsListScannedFilesOK([
+    void Function(CorsListScannedFilesOKBuilder)? updates,
+  ]) => (CorsListScannedFilesOKBuilder()..update(updates))._build();
 
   _$CorsListScannedFilesOK._({this.corsListScannedFilesOk}) : super._();
   @override
   CorsListScannedFilesOK rebuild(
-          void Function(CorsListScannedFilesOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CorsListScannedFilesOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CorsListScannedFilesOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$CorsListScannedFilesOK extends CorsListScannedFilesOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'CorsListScannedFilesOK')
-          ..add('corsListScannedFilesOk', corsListScannedFilesOk))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'CorsListScannedFilesOK',
+    )..add('corsListScannedFilesOk', corsListScannedFilesOk)).toString();
   }
 }
 
@@ -83,7 +83,8 @@ class CorsListScannedFilesOKBuilder
   CorsListScannedFilesOK build() => _build();
 
   _$CorsListScannedFilesOK _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CorsListScannedFilesOK._(
           corsListScannedFilesOk: corsListScannedFilesOk,
         );

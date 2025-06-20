@@ -13,11 +13,13 @@ part 'credential_response_immediate.g.dart';
 /// CredentialResponseImmediate
 ///
 /// Properties:
-/// * [credential] 
+/// * [credential]
 /// * [cNonce] - String containing a nonce to be used when creating a proof of possession of the key proof
-/// * [cNonceExpiresIn] 
+/// * [cNonceExpiresIn]
 @BuiltValue()
-abstract class CredentialResponseImmediate implements Built<CredentialResponseImmediate, CredentialResponseImmediateBuilder> {
+abstract class CredentialResponseImmediate
+    implements
+        Built<CredentialResponseImmediate, CredentialResponseImmediateBuilder> {
   @BuiltValueField(wireName: r'credential')
   CredentialResponseImmediateCredential get credential;
 
@@ -30,18 +32,25 @@ abstract class CredentialResponseImmediate implements Built<CredentialResponseIm
 
   CredentialResponseImmediate._();
 
-  factory CredentialResponseImmediate([void updates(CredentialResponseImmediateBuilder b)]) = _$CredentialResponseImmediate;
+  factory CredentialResponseImmediate([
+    void updates(CredentialResponseImmediateBuilder b),
+  ]) = _$CredentialResponseImmediate;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CredentialResponseImmediateBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CredentialResponseImmediate> get serializer => _$CredentialResponseImmediateSerializer();
+  static Serializer<CredentialResponseImmediate> get serializer =>
+      _$CredentialResponseImmediateSerializer();
 }
 
-class _$CredentialResponseImmediateSerializer implements PrimitiveSerializer<CredentialResponseImmediate> {
+class _$CredentialResponseImmediateSerializer
+    implements PrimitiveSerializer<CredentialResponseImmediate> {
   @override
-  final Iterable<Type> types = const [CredentialResponseImmediate, _$CredentialResponseImmediate];
+  final Iterable<Type> types = const [
+    CredentialResponseImmediate,
+    _$CredentialResponseImmediate,
+  ];
 
   @override
   final String wireName = r'CredentialResponseImmediate';
@@ -74,7 +83,11 @@ class _$CredentialResponseImmediateSerializer implements PrimitiveSerializer<Cre
     CredentialResponseImmediate object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -90,24 +103,34 @@ class _$CredentialResponseImmediateSerializer implements PrimitiveSerializer<Cre
       final value = serializedList[i + 1];
       switch (key) {
         case r'credential':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(CredentialResponseImmediateCredential),
-          ) as CredentialResponseImmediateCredential;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      CredentialResponseImmediateCredential,
+                    ),
+                  )
+                  as CredentialResponseImmediateCredential;
           result.credential.replace(valueDes);
           break;
         case r'c_nonce':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.cNonce = valueDes;
           break;
         case r'c_nonce_expires_in':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(CredentialResponseImmediateCNonceExpiresIn),
-          ) as CredentialResponseImmediateCNonceExpiresIn;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      CredentialResponseImmediateCNonceExpiresIn,
+                    ),
+                  )
+                  as CredentialResponseImmediateCNonceExpiresIn;
           result.cNonceExpiresIn.replace(valueDes);
           break;
         default:
@@ -138,4 +161,3 @@ class _$CredentialResponseImmediateSerializer implements PrimitiveSerializer<Cre
     return result.build();
   }
 }
-

@@ -15,9 +15,10 @@ part 'create_credential_input.g.dart';
 ///
 /// Properties:
 /// * [credentialIdentifier] - It is a String that identifies a Credential that is being requested to be issued.
-/// * [proof] 
+/// * [proof]
 @BuiltValue()
-abstract class CreateCredentialInput implements Built<CreateCredentialInput, CreateCredentialInputBuilder> {
+abstract class CreateCredentialInput
+    implements Built<CreateCredentialInput, CreateCredentialInputBuilder> {
   /// It is a String that identifies a Credential that is being requested to be issued.
   @BuiltValueField(wireName: r'credential_identifier')
   String? get credentialIdentifier;
@@ -27,18 +28,25 @@ abstract class CreateCredentialInput implements Built<CreateCredentialInput, Cre
 
   CreateCredentialInput._();
 
-  factory CreateCredentialInput([void updates(CreateCredentialInputBuilder b)]) = _$CreateCredentialInput;
+  factory CreateCredentialInput([
+    void updates(CreateCredentialInputBuilder b),
+  ]) = _$CreateCredentialInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateCredentialInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateCredentialInput> get serializer => _$CreateCredentialInputSerializer();
+  static Serializer<CreateCredentialInput> get serializer =>
+      _$CreateCredentialInputSerializer();
 }
 
-class _$CreateCredentialInputSerializer implements PrimitiveSerializer<CreateCredentialInput> {
+class _$CreateCredentialInputSerializer
+    implements PrimitiveSerializer<CreateCredentialInput> {
   @override
-  final Iterable<Type> types = const [CreateCredentialInput, _$CreateCredentialInput];
+  final Iterable<Type> types = const [
+    CreateCredentialInput,
+    _$CreateCredentialInput,
+  ];
 
   @override
   final String wireName = r'CreateCredentialInput';
@@ -68,7 +76,11 @@ class _$CreateCredentialInputSerializer implements PrimitiveSerializer<CreateCre
     CreateCredentialInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -84,17 +96,21 @@ class _$CreateCredentialInputSerializer implements PrimitiveSerializer<CreateCre
       final value = serializedList[i + 1];
       switch (key) {
         case r'credential_identifier':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.credentialIdentifier = valueDes;
           break;
         case r'proof':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(CredentialProof),
-          ) as CredentialProof;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(CredentialProof),
+                  )
+                  as CredentialProof;
           result.proof.replace(valueDes);
           break;
         default:
@@ -125,4 +141,3 @@ class _$CreateCredentialInputSerializer implements PrimitiveSerializer<CreateCre
     return result.build();
   }
 }
-

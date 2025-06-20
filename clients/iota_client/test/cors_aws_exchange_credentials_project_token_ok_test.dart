@@ -8,9 +8,11 @@ void main() {
 
   group(CorsAwsExchangeCredentialsProjectTokenOK, () {
     // String corsAwsExchangeCredentialsProjectTokenOk
-    test('to test the property `corsAwsExchangeCredentialsProjectTokenOk`', () async {
-      // TODO
-    });
-
+    test(
+      'to test the property `corsAwsExchangeCredentialsProjectTokenOk`',
+      () async {
+        // TODO
+      },
+    );
   });
 }

@@ -11,24 +11,28 @@ part 'cors_move_node_ok.g.dart';
 /// CorsMoveNodeOK
 ///
 /// Properties:
-/// * [corsMoveNodeOk] 
+/// * [corsMoveNodeOk]
 @BuiltValue()
-abstract class CorsMoveNodeOK implements Built<CorsMoveNodeOK, CorsMoveNodeOKBuilder> {
+abstract class CorsMoveNodeOK
+    implements Built<CorsMoveNodeOK, CorsMoveNodeOKBuilder> {
   @BuiltValueField(wireName: r'corsMoveNodeOk')
   String? get corsMoveNodeOk;
 
   CorsMoveNodeOK._();
 
-  factory CorsMoveNodeOK([void updates(CorsMoveNodeOKBuilder b)]) = _$CorsMoveNodeOK;
+  factory CorsMoveNodeOK([void updates(CorsMoveNodeOKBuilder b)]) =
+      _$CorsMoveNodeOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsMoveNodeOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CorsMoveNodeOK> get serializer => _$CorsMoveNodeOKSerializer();
+  static Serializer<CorsMoveNodeOK> get serializer =>
+      _$CorsMoveNodeOKSerializer();
 }
 
-class _$CorsMoveNodeOKSerializer implements PrimitiveSerializer<CorsMoveNodeOK> {
+class _$CorsMoveNodeOKSerializer
+    implements PrimitiveSerializer<CorsMoveNodeOK> {
   @override
   final Iterable<Type> types = const [CorsMoveNodeOK, _$CorsMoveNodeOK];
 
@@ -55,7 +59,11 @@ class _$CorsMoveNodeOKSerializer implements PrimitiveSerializer<CorsMoveNodeOK> 
     CorsMoveNodeOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -71,10 +79,12 @@ class _$CorsMoveNodeOKSerializer implements PrimitiveSerializer<CorsMoveNodeOK> 
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsMoveNodeOk':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.corsMoveNodeOk = valueDes;
           break;
         default:
@@ -105,4 +115,3 @@ class _$CorsMoveNodeOKSerializer implements PrimitiveSerializer<CorsMoveNodeOK> 
     return result.build();
   }
 }
-

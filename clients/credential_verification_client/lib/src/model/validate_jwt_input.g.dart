@@ -10,9 +10,9 @@ class _$ValidateJwtInput extends ValidateJwtInput {
   @override
   final String token;
 
-  factory _$ValidateJwtInput(
-          [void Function(ValidateJwtInputBuilder)? updates]) =>
-      (ValidateJwtInputBuilder()..update(updates))._build();
+  factory _$ValidateJwtInput([
+    void Function(ValidateJwtInputBuilder)? updates,
+  ]) => (ValidateJwtInputBuilder()..update(updates))._build();
 
   _$ValidateJwtInput._({required this.token}) : super._();
   @override
@@ -39,9 +39,9 @@ class _$ValidateJwtInput extends ValidateJwtInput {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'ValidateJwtInput')
-          ..add('token', token))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'ValidateJwtInput',
+    )..add('token', token)).toString();
   }
 }
 
@@ -80,10 +80,14 @@ class ValidateJwtInputBuilder
   ValidateJwtInput build() => _build();
 
   _$ValidateJwtInput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$ValidateJwtInput._(
           token: BuiltValueNullFieldError.checkNotNull(
-              token, r'ValidateJwtInput', 'token'),
+            token,
+            r'ValidateJwtInput',
+            'token',
+          ),
         );
     replace(_$result);
     return _$result;

@@ -10,16 +10,16 @@ class _$CorsAwsCredentialExchangeOK extends CorsAwsCredentialExchangeOK {
   @override
   final String? corsAwsCredentialExchangeOk;
 
-  factory _$CorsAwsCredentialExchangeOK(
-          [void Function(CorsAwsCredentialExchangeOKBuilder)? updates]) =>
-      (CorsAwsCredentialExchangeOKBuilder()..update(updates))._build();
+  factory _$CorsAwsCredentialExchangeOK([
+    void Function(CorsAwsCredentialExchangeOKBuilder)? updates,
+  ]) => (CorsAwsCredentialExchangeOKBuilder()..update(updates))._build();
 
   _$CorsAwsCredentialExchangeOK._({this.corsAwsCredentialExchangeOk})
-      : super._();
+    : super._();
   @override
   CorsAwsCredentialExchangeOK rebuild(
-          void Function(CorsAwsCredentialExchangeOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CorsAwsCredentialExchangeOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CorsAwsCredentialExchangeOKBuilder toBuilder() =>
@@ -50,8 +50,10 @@ class _$CorsAwsCredentialExchangeOK extends CorsAwsCredentialExchangeOK {
 
 class CorsAwsCredentialExchangeOKBuilder
     implements
-        Builder<CorsAwsCredentialExchangeOK,
-            CorsAwsCredentialExchangeOKBuilder> {
+        Builder<
+          CorsAwsCredentialExchangeOK,
+          CorsAwsCredentialExchangeOKBuilder
+        > {
   _$CorsAwsCredentialExchangeOK? _$v;
 
   String? _corsAwsCredentialExchangeOk;
@@ -87,7 +89,8 @@ class CorsAwsCredentialExchangeOKBuilder
   CorsAwsCredentialExchangeOK build() => _build();
 
   _$CorsAwsCredentialExchangeOK _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CorsAwsCredentialExchangeOK._(
           corsAwsCredentialExchangeOk: corsAwsCredentialExchangeOk,
         );

@@ -18,7 +18,12 @@ part 'consumer_auth_token_endpoint_output.g.dart';
 /// * [scope] - The scope of the access token
 /// * [tokenType] - The type of the token issued
 @BuiltValue()
-abstract class ConsumerAuthTokenEndpointOutput implements Built<ConsumerAuthTokenEndpointOutput, ConsumerAuthTokenEndpointOutputBuilder> {
+abstract class ConsumerAuthTokenEndpointOutput
+    implements
+        Built<
+          ConsumerAuthTokenEndpointOutput,
+          ConsumerAuthTokenEndpointOutputBuilder
+        > {
   /// The access token issued by the authorization server.
   @BuiltValueField(wireName: r'access_token')
   String? get accessToken;
@@ -45,18 +50,25 @@ abstract class ConsumerAuthTokenEndpointOutput implements Built<ConsumerAuthToke
 
   ConsumerAuthTokenEndpointOutput._();
 
-  factory ConsumerAuthTokenEndpointOutput([void updates(ConsumerAuthTokenEndpointOutputBuilder b)]) = _$ConsumerAuthTokenEndpointOutput;
+  factory ConsumerAuthTokenEndpointOutput([
+    void updates(ConsumerAuthTokenEndpointOutputBuilder b),
+  ]) = _$ConsumerAuthTokenEndpointOutput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ConsumerAuthTokenEndpointOutputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ConsumerAuthTokenEndpointOutput> get serializer => _$ConsumerAuthTokenEndpointOutputSerializer();
+  static Serializer<ConsumerAuthTokenEndpointOutput> get serializer =>
+      _$ConsumerAuthTokenEndpointOutputSerializer();
 }
 
-class _$ConsumerAuthTokenEndpointOutputSerializer implements PrimitiveSerializer<ConsumerAuthTokenEndpointOutput> {
+class _$ConsumerAuthTokenEndpointOutputSerializer
+    implements PrimitiveSerializer<ConsumerAuthTokenEndpointOutput> {
   @override
-  final Iterable<Type> types = const [ConsumerAuthTokenEndpointOutput, _$ConsumerAuthTokenEndpointOutput];
+  final Iterable<Type> types = const [
+    ConsumerAuthTokenEndpointOutput,
+    _$ConsumerAuthTokenEndpointOutput,
+  ];
 
   @override
   final String wireName = r'ConsumerAuthTokenEndpointOutput';
@@ -116,7 +128,11 @@ class _$ConsumerAuthTokenEndpointOutputSerializer implements PrimitiveSerializer
     ConsumerAuthTokenEndpointOutput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -132,45 +148,51 @@ class _$ConsumerAuthTokenEndpointOutputSerializer implements PrimitiveSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'access_token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.accessToken = valueDes;
           break;
         case r'expires_in':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.expiresIn = valueDes;
           break;
         case r'id_token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.idToken = valueDes;
           break;
         case r'refresh_token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.refreshToken = valueDes;
           break;
         case r'scope':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.scope = valueDes;
           break;
         case r'token_type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.tokenType = valueDes;
           break;
         default:
@@ -201,4 +223,3 @@ class _$ConsumerAuthTokenEndpointOutputSerializer implements PrimitiveSerializer
     return result.build();
   }
 }
-

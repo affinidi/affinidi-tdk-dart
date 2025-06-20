@@ -16,7 +16,7 @@ class _$LoginSessionDto extends LoginSessionDto {
       (LoginSessionDtoBuilder()..update(updates))._build();
 
   _$LoginSessionDto._({required this.id, required this.authorizationRequest})
-      : super._();
+    : super._();
   @override
   LoginSessionDto rebuild(void Function(LoginSessionDtoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -63,8 +63,8 @@ class LoginSessionDtoBuilder
       _$this._authorizationRequest ??=
           LoginSessionDtoAuthorizationRequestBuilder();
   set authorizationRequest(
-          LoginSessionDtoAuthorizationRequestBuilder? authorizationRequest) =>
-      _$this._authorizationRequest = authorizationRequest;
+    LoginSessionDtoAuthorizationRequestBuilder? authorizationRequest,
+  ) => _$this._authorizationRequest = authorizationRequest;
 
   LoginSessionDtoBuilder() {
     LoginSessionDto._defaults(this);
@@ -96,10 +96,14 @@ class LoginSessionDtoBuilder
   _$LoginSessionDto _build() {
     _$LoginSessionDto _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$LoginSessionDto._(
             id: BuiltValueNullFieldError.checkNotNull(
-                id, r'LoginSessionDto', 'id'),
+              id,
+              r'LoginSessionDto',
+              'id',
+            ),
             authorizationRequest: authorizationRequest.build(),
           );
     } catch (_) {
@@ -109,7 +113,10 @@ class LoginSessionDtoBuilder
         authorizationRequest.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'LoginSessionDto', _$failedField, e.toString());
+          r'LoginSessionDto',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

@@ -27,13 +27,16 @@ class AffinidiTdkLoginConfigurationClient {
     String? basePathOverride,
     List<Interceptor>? interceptors,
     Future<String?> Function()? authTokenHook,
-  })  : this.serializers = serializers ?? standardSerializers,
-        this.dio = dio ??
-            Dio(BaseOptions(
-              baseUrl: basePathOverride ?? basePath,
-              connectTimeout: const Duration(milliseconds: 15000),
-              receiveTimeout: const Duration(milliseconds: 15000),
-            )) {
+  }) : this.serializers = serializers ?? standardSerializers,
+       this.dio =
+           dio ??
+           Dio(
+             BaseOptions(
+               baseUrl: basePathOverride ?? basePath,
+               connectTimeout: const Duration(milliseconds: 15000),
+               receiveTimeout: const Duration(milliseconds: 15000),
+             ),
+           ) {
     if (interceptors == null) {
       this.dio.interceptors.addAll([
         OAuthInterceptor(),
@@ -76,24 +79,33 @@ class AffinidiTdkLoginConfigurationClient {
 
             if (errorData is Map<String, dynamic>) {
               final errorName = errorData['name'] ?? 'Unknown Error';
-              final traceId = errorData['traceId']?.toString().isNotEmpty == true ? errorData['traceId'] : 'N/A';
-              final errorMessage = errorData['message'] ?? 'No error message provided';
-              final details = errorData['details'] != null ? errorData['details'].toString() : 'No details available';
+              final traceId =
+                  errorData['traceId']?.toString().isNotEmpty == true
+                  ? errorData['traceId']
+                  : 'N/A';
+              final errorMessage =
+                  errorData['message'] ?? 'No error message provided';
+              final details = errorData['details'] != null
+                  ? errorData['details'].toString()
+                  : 'No details available';
 
               formattedError += '- Error Type: $errorName\n';
               formattedError += '- Trace ID: $traceId\n';
               formattedError += '- Message: $errorMessage\n';
               formattedError += '- Details: $details\n';
             } else {
-              formattedError += 'Response Body: ${e.response?.data?.toString() ?? "No response body"}';
+              formattedError +=
+                  'Response Body: ${e.response?.data?.toString() ?? "No response body"}';
             }
 
-            handler.reject(DioException(
-              requestOptions: e.requestOptions,
-              response: e.response,
-              type: e.type,
-              error: formattedError,
-            ));
+            handler.reject(
+              DioException(
+                requestOptions: e.requestOptions,
+                response: e.response,
+                type: e.type,
+                error: formattedError,
+              ),
+            );
           } else {
             handler.next(e);
           }
@@ -104,25 +116,41 @@ class AffinidiTdkLoginConfigurationClient {
 
   void setOAuthToken(String name, String token) {
     if (this.dio.interceptors.any((i) => i is OAuthInterceptor)) {
-      (this.dio.interceptors.firstWhere((i) => i is OAuthInterceptor) as OAuthInterceptor).tokens[name] = token;
+      (this.dio.interceptors.firstWhere((i) => i is OAuthInterceptor)
+                  as OAuthInterceptor)
+              .tokens[name] =
+          token;
     }
   }
 
   void setBearerAuth(String name, String token) {
     if (this.dio.interceptors.any((i) => i is BearerAuthInterceptor)) {
-      (this.dio.interceptors.firstWhere((i) => i is BearerAuthInterceptor) as BearerAuthInterceptor).tokens[name] = token;
+      (this.dio.interceptors.firstWhere((i) => i is BearerAuthInterceptor)
+                  as BearerAuthInterceptor)
+              .tokens[name] =
+          token;
     }
   }
 
   void setBasicAuth(String name, String username, String password) {
     if (this.dio.interceptors.any((i) => i is BasicAuthInterceptor)) {
-      (this.dio.interceptors.firstWhere((i) => i is BasicAuthInterceptor) as BasicAuthInterceptor).authInfo[name] = BasicAuthInfo(username, password);
+      (this.dio.interceptors.firstWhere((i) => i is BasicAuthInterceptor)
+              as BasicAuthInterceptor)
+          .authInfo[name] = BasicAuthInfo(
+        username,
+        password,
+      );
     }
   }
 
   void setApiKey(String name, String apiKey) {
     if (this.dio.interceptors.any((i) => i is ApiKeyAuthInterceptor)) {
-      (this.dio.interceptors.firstWhere((element) => element is ApiKeyAuthInterceptor) as ApiKeyAuthInterceptor).apiKeys[name] = apiKey;
+      (this.dio.interceptors.firstWhere(
+                    (element) => element is ApiKeyAuthInterceptor,
+                  )
+                  as ApiKeyAuthInterceptor)
+              .apiKeys[name] =
+          apiKey;
     }
   }
 

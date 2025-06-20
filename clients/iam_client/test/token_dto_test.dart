@@ -31,7 +31,7 @@ void main() {
       // TODO
     });
 
-    // TokenAuthenticationMethodDto authenticationMethod
+    // TokenPrivateKeyAuthenticationMethodDto authenticationMethod
     test('to test the property `authenticationMethod`', () async {
       // TODO
     });
@@ -41,6 +41,5 @@ void main() {
     test('to test the property `scopes`', () async {
       // TODO
     });
-
   });
 }

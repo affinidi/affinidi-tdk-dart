@@ -1,7 +1,6 @@
 import 'package:test/test.dart';
 import 'package:affinidi_tdk_iota_client/affinidi_tdk_iota_client.dart';
 
-
 /// tests for IotaApi
 void main() {
   final instance = AffinidiTdkIotaClient().getIotaApi();
@@ -41,6 +40,5 @@ void main() {
     test('test iotaExchangeCredentials', () async {
       // TODO
     });
-
   });
 }

@@ -10,15 +10,15 @@ class _$DeferredCredentialInput extends DeferredCredentialInput {
   @override
   final String transactionId;
 
-  factory _$DeferredCredentialInput(
-          [void Function(DeferredCredentialInputBuilder)? updates]) =>
-      (DeferredCredentialInputBuilder()..update(updates))._build();
+  factory _$DeferredCredentialInput([
+    void Function(DeferredCredentialInputBuilder)? updates,
+  ]) => (DeferredCredentialInputBuilder()..update(updates))._build();
 
   _$DeferredCredentialInput._({required this.transactionId}) : super._();
   @override
   DeferredCredentialInput rebuild(
-          void Function(DeferredCredentialInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(DeferredCredentialInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   DeferredCredentialInputBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$DeferredCredentialInput extends DeferredCredentialInput {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'DeferredCredentialInput')
-          ..add('transactionId', transactionId))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'DeferredCredentialInput',
+    )..add('transactionId', transactionId)).toString();
   }
 }
 
@@ -84,10 +84,14 @@ class DeferredCredentialInputBuilder
   DeferredCredentialInput build() => _build();
 
   _$DeferredCredentialInput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$DeferredCredentialInput._(
           transactionId: BuiltValueNullFieldError.checkNotNull(
-              transactionId, r'DeferredCredentialInput', 'transactionId'),
+            transactionId,
+            r'DeferredCredentialInput',
+            'transactionId',
+          ),
         );
     replace(_$result);
     return _$result;

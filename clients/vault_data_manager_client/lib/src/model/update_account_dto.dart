@@ -12,11 +12,12 @@ part 'update_account_dto.g.dart';
 /// UpdateAccountDto
 ///
 /// Properties:
-/// * [accountIndex] 
+/// * [accountIndex]
 /// * [accountDid] - Profile DID that is associated with the account number
-/// * [metadata] 
+/// * [metadata]
 @BuiltValue()
-abstract class UpdateAccountDto implements Built<UpdateAccountDto, UpdateAccountDtoBuilder> {
+abstract class UpdateAccountDto
+    implements Built<UpdateAccountDto, UpdateAccountDtoBuilder> {
   @BuiltValueField(wireName: r'accountIndex')
   int get accountIndex;
 
@@ -29,16 +30,19 @@ abstract class UpdateAccountDto implements Built<UpdateAccountDto, UpdateAccount
 
   UpdateAccountDto._();
 
-  factory UpdateAccountDto([void updates(UpdateAccountDtoBuilder b)]) = _$UpdateAccountDto;
+  factory UpdateAccountDto([void updates(UpdateAccountDtoBuilder b)]) =
+      _$UpdateAccountDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UpdateAccountDtoBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateAccountDto> get serializer => _$UpdateAccountDtoSerializer();
+  static Serializer<UpdateAccountDto> get serializer =>
+      _$UpdateAccountDtoSerializer();
 }
 
-class _$UpdateAccountDtoSerializer implements PrimitiveSerializer<UpdateAccountDto> {
+class _$UpdateAccountDtoSerializer
+    implements PrimitiveSerializer<UpdateAccountDto> {
   @override
   final Iterable<Type> types = const [UpdateAccountDto, _$UpdateAccountDto];
 
@@ -75,7 +79,11 @@ class _$UpdateAccountDtoSerializer implements PrimitiveSerializer<UpdateAccountD
     UpdateAccountDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -91,24 +99,27 @@ class _$UpdateAccountDtoSerializer implements PrimitiveSerializer<UpdateAccountD
       final value = serializedList[i + 1];
       switch (key) {
         case r'accountIndex':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.accountIndex = valueDes;
           break;
         case r'accountDid':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.accountDid = valueDes;
           break;
         case r'metadata':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JsonObject),
+                  )
+                  as JsonObject;
           result.metadata = valueDes;
           break;
         default:
@@ -139,4 +150,3 @@ class _$UpdateAccountDtoSerializer implements PrimitiveSerializer<UpdateAccountD
     return result.build();
   }
 }
-

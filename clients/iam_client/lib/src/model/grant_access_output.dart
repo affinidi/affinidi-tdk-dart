@@ -11,10 +11,11 @@ part 'grant_access_output.g.dart';
 /// GrantAccessOutput
 ///
 /// Properties:
-/// * [success] 
+/// * [success]
 /// * [grantId] - Unique identifier for the access grant
 @BuiltValue()
-abstract class GrantAccessOutput implements Built<GrantAccessOutput, GrantAccessOutputBuilder> {
+abstract class GrantAccessOutput
+    implements Built<GrantAccessOutput, GrantAccessOutputBuilder> {
   @BuiltValueField(wireName: r'success')
   bool get success;
 
@@ -24,16 +25,19 @@ abstract class GrantAccessOutput implements Built<GrantAccessOutput, GrantAccess
 
   GrantAccessOutput._();
 
-  factory GrantAccessOutput([void updates(GrantAccessOutputBuilder b)]) = _$GrantAccessOutput;
+  factory GrantAccessOutput([void updates(GrantAccessOutputBuilder b)]) =
+      _$GrantAccessOutput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GrantAccessOutputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GrantAccessOutput> get serializer => _$GrantAccessOutputSerializer();
+  static Serializer<GrantAccessOutput> get serializer =>
+      _$GrantAccessOutputSerializer();
 }
 
-class _$GrantAccessOutputSerializer implements PrimitiveSerializer<GrantAccessOutput> {
+class _$GrantAccessOutputSerializer
+    implements PrimitiveSerializer<GrantAccessOutput> {
   @override
   final Iterable<Type> types = const [GrantAccessOutput, _$GrantAccessOutput];
 
@@ -65,7 +69,11 @@ class _$GrantAccessOutputSerializer implements PrimitiveSerializer<GrantAccessOu
     GrantAccessOutput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -81,17 +89,21 @@ class _$GrantAccessOutputSerializer implements PrimitiveSerializer<GrantAccessOu
       final value = serializedList[i + 1];
       switch (key) {
         case r'success':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.success = valueDes;
           break;
         case r'grantId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.grantId = valueDes;
           break;
         default:
@@ -122,4 +134,3 @@ class _$GrantAccessOutputSerializer implements PrimitiveSerializer<GrantAccessOu
     return result.build();
   }
 }
-

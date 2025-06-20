@@ -37,8 +37,9 @@ class _$FilterConst extends FilterConst {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'FilterConst')..add('oneOf', oneOf))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'FilterConst',
+    )..add('oneOf', oneOf)).toString();
   }
 }
 
@@ -76,10 +77,14 @@ class FilterConstBuilder implements Builder<FilterConst, FilterConstBuilder> {
   FilterConst build() => _build();
 
   _$FilterConst _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$FilterConst._(
           oneOf: BuiltValueNullFieldError.checkNotNull(
-              oneOf, r'FilterConst', 'oneOf'),
+            oneOf,
+            r'FilterConst',
+            'oneOf',
+          ),
         );
     replace(_$result);
     return _$result;

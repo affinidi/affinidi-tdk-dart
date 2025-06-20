@@ -10,15 +10,15 @@ class _$CorsListNodeChildrenOK extends CorsListNodeChildrenOK {
   @override
   final String? corsListNodeChildrenOk;
 
-  factory _$CorsListNodeChildrenOK(
-          [void Function(CorsListNodeChildrenOKBuilder)? updates]) =>
-      (CorsListNodeChildrenOKBuilder()..update(updates))._build();
+  factory _$CorsListNodeChildrenOK([
+    void Function(CorsListNodeChildrenOKBuilder)? updates,
+  ]) => (CorsListNodeChildrenOKBuilder()..update(updates))._build();
 
   _$CorsListNodeChildrenOK._({this.corsListNodeChildrenOk}) : super._();
   @override
   CorsListNodeChildrenOK rebuild(
-          void Function(CorsListNodeChildrenOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CorsListNodeChildrenOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CorsListNodeChildrenOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$CorsListNodeChildrenOK extends CorsListNodeChildrenOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'CorsListNodeChildrenOK')
-          ..add('corsListNodeChildrenOk', corsListNodeChildrenOk))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'CorsListNodeChildrenOK',
+    )..add('corsListNodeChildrenOk', corsListNodeChildrenOk)).toString();
   }
 }
 
@@ -83,7 +83,8 @@ class CorsListNodeChildrenOKBuilder
   CorsListNodeChildrenOK build() => _build();
 
   _$CorsListNodeChildrenOK _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CorsListNodeChildrenOK._(
           corsListNodeChildrenOk: corsListNodeChildrenOk,
         );

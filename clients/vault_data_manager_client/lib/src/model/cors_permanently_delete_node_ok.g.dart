@@ -10,16 +10,16 @@ class _$CorsPermanentlyDeleteNodeOK extends CorsPermanentlyDeleteNodeOK {
   @override
   final String? corsPermanentlyDeleteNodeOk;
 
-  factory _$CorsPermanentlyDeleteNodeOK(
-          [void Function(CorsPermanentlyDeleteNodeOKBuilder)? updates]) =>
-      (CorsPermanentlyDeleteNodeOKBuilder()..update(updates))._build();
+  factory _$CorsPermanentlyDeleteNodeOK([
+    void Function(CorsPermanentlyDeleteNodeOKBuilder)? updates,
+  ]) => (CorsPermanentlyDeleteNodeOKBuilder()..update(updates))._build();
 
   _$CorsPermanentlyDeleteNodeOK._({this.corsPermanentlyDeleteNodeOk})
-      : super._();
+    : super._();
   @override
   CorsPermanentlyDeleteNodeOK rebuild(
-          void Function(CorsPermanentlyDeleteNodeOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CorsPermanentlyDeleteNodeOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CorsPermanentlyDeleteNodeOKBuilder toBuilder() =>
@@ -50,8 +50,10 @@ class _$CorsPermanentlyDeleteNodeOK extends CorsPermanentlyDeleteNodeOK {
 
 class CorsPermanentlyDeleteNodeOKBuilder
     implements
-        Builder<CorsPermanentlyDeleteNodeOK,
-            CorsPermanentlyDeleteNodeOKBuilder> {
+        Builder<
+          CorsPermanentlyDeleteNodeOK,
+          CorsPermanentlyDeleteNodeOKBuilder
+        > {
   _$CorsPermanentlyDeleteNodeOK? _$v;
 
   String? _corsPermanentlyDeleteNodeOk;
@@ -87,7 +89,8 @@ class CorsPermanentlyDeleteNodeOKBuilder
   CorsPermanentlyDeleteNodeOK build() => _build();
 
   _$CorsPermanentlyDeleteNodeOK _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CorsPermanentlyDeleteNodeOK._(
           corsPermanentlyDeleteNodeOk: corsPermanentlyDeleteNodeOk,
         );

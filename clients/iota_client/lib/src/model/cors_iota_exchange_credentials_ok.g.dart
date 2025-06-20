@@ -10,16 +10,16 @@ class _$CorsIotaExchangeCredentialsOK extends CorsIotaExchangeCredentialsOK {
   @override
   final String? corsIotaExchangeCredentialsOk;
 
-  factory _$CorsIotaExchangeCredentialsOK(
-          [void Function(CorsIotaExchangeCredentialsOKBuilder)? updates]) =>
-      (CorsIotaExchangeCredentialsOKBuilder()..update(updates))._build();
+  factory _$CorsIotaExchangeCredentialsOK([
+    void Function(CorsIotaExchangeCredentialsOKBuilder)? updates,
+  ]) => (CorsIotaExchangeCredentialsOKBuilder()..update(updates))._build();
 
   _$CorsIotaExchangeCredentialsOK._({this.corsIotaExchangeCredentialsOk})
-      : super._();
+    : super._();
   @override
   CorsIotaExchangeCredentialsOK rebuild(
-          void Function(CorsIotaExchangeCredentialsOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CorsIotaExchangeCredentialsOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CorsIotaExchangeCredentialsOKBuilder toBuilder() =>
@@ -50,8 +50,10 @@ class _$CorsIotaExchangeCredentialsOK extends CorsIotaExchangeCredentialsOK {
 
 class CorsIotaExchangeCredentialsOKBuilder
     implements
-        Builder<CorsIotaExchangeCredentialsOK,
-            CorsIotaExchangeCredentialsOKBuilder> {
+        Builder<
+          CorsIotaExchangeCredentialsOK,
+          CorsIotaExchangeCredentialsOKBuilder
+        > {
   _$CorsIotaExchangeCredentialsOK? _$v;
 
   String? _corsIotaExchangeCredentialsOk;
@@ -87,7 +89,8 @@ class CorsIotaExchangeCredentialsOKBuilder
   CorsIotaExchangeCredentialsOK build() => _build();
 
   _$CorsIotaExchangeCredentialsOK _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CorsIotaExchangeCredentialsOK._(
           corsIotaExchangeCredentialsOk: corsIotaExchangeCredentialsOk,
         );

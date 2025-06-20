@@ -14,7 +14,8 @@ part 'update_wallet_input.g.dart';
 /// * [name] - The name of the wallet
 /// * [description] - The description of the wallet
 @BuiltValue()
-abstract class UpdateWalletInput implements Built<UpdateWalletInput, UpdateWalletInputBuilder> {
+abstract class UpdateWalletInput
+    implements Built<UpdateWalletInput, UpdateWalletInputBuilder> {
   /// The name of the wallet
   @BuiltValueField(wireName: r'name')
   String? get name;
@@ -25,16 +26,19 @@ abstract class UpdateWalletInput implements Built<UpdateWalletInput, UpdateWalle
 
   UpdateWalletInput._();
 
-  factory UpdateWalletInput([void updates(UpdateWalletInputBuilder b)]) = _$UpdateWalletInput;
+  factory UpdateWalletInput([void updates(UpdateWalletInputBuilder b)]) =
+      _$UpdateWalletInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UpdateWalletInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateWalletInput> get serializer => _$UpdateWalletInputSerializer();
+  static Serializer<UpdateWalletInput> get serializer =>
+      _$UpdateWalletInputSerializer();
 }
 
-class _$UpdateWalletInputSerializer implements PrimitiveSerializer<UpdateWalletInput> {
+class _$UpdateWalletInputSerializer
+    implements PrimitiveSerializer<UpdateWalletInput> {
   @override
   final Iterable<Type> types = const [UpdateWalletInput, _$UpdateWalletInput];
 
@@ -68,7 +72,11 @@ class _$UpdateWalletInputSerializer implements PrimitiveSerializer<UpdateWalletI
     UpdateWalletInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -84,17 +92,21 @@ class _$UpdateWalletInputSerializer implements PrimitiveSerializer<UpdateWalletI
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.description = valueDes;
           break;
         default:
@@ -125,4 +137,3 @@ class _$UpdateWalletInputSerializer implements PrimitiveSerializer<UpdateWalletI
     return result.build();
   }
 }
-

@@ -7,12 +7,13 @@ part of 'login_configuration_read_invalid_client_id_error.dart';
 // **************************************************************************
 
 const LoginConfigurationReadInvalidClientIdErrorNameEnum
-    _$loginConfigurationReadInvalidClientIdErrorNameEnum_loginConfigurationReadInvalidClientIdError =
+_$loginConfigurationReadInvalidClientIdErrorNameEnum_loginConfigurationReadInvalidClientIdError =
     const LoginConfigurationReadInvalidClientIdErrorNameEnum._(
-        'loginConfigurationReadInvalidClientIdError');
+      'loginConfigurationReadInvalidClientIdError',
+    );
 
 LoginConfigurationReadInvalidClientIdErrorNameEnum
-    _$loginConfigurationReadInvalidClientIdErrorNameEnumValueOf(String name) {
+_$loginConfigurationReadInvalidClientIdErrorNameEnumValueOf(String name) {
   switch (name) {
     case 'loginConfigurationReadInvalidClientIdError':
       return _$loginConfigurationReadInvalidClientIdErrorNameEnum_loginConfigurationReadInvalidClientIdError;
@@ -22,19 +23,21 @@ LoginConfigurationReadInvalidClientIdErrorNameEnum
 }
 
 final BuiltSet<LoginConfigurationReadInvalidClientIdErrorNameEnum>
-    _$loginConfigurationReadInvalidClientIdErrorNameEnumValues = BuiltSet<
-        LoginConfigurationReadInvalidClientIdErrorNameEnum>(const <LoginConfigurationReadInvalidClientIdErrorNameEnum>[
-  _$loginConfigurationReadInvalidClientIdErrorNameEnum_loginConfigurationReadInvalidClientIdError,
-]);
+_$loginConfigurationReadInvalidClientIdErrorNameEnumValues =
+    BuiltSet<LoginConfigurationReadInvalidClientIdErrorNameEnum>(const <
+      LoginConfigurationReadInvalidClientIdErrorNameEnum
+    >[
+      _$loginConfigurationReadInvalidClientIdErrorNameEnum_loginConfigurationReadInvalidClientIdError,
+    ]);
 
 const LoginConfigurationReadInvalidClientIdErrorMessageEnum
-    _$loginConfigurationReadInvalidClientIdErrorMessageEnum_loginConfigurationReadInvalidClientIdError =
+_$loginConfigurationReadInvalidClientIdErrorMessageEnum_loginConfigurationReadInvalidClientIdError =
     const LoginConfigurationReadInvalidClientIdErrorMessageEnum._(
-        'loginConfigurationReadInvalidClientIdError');
+      'loginConfigurationReadInvalidClientIdError',
+    );
 
 LoginConfigurationReadInvalidClientIdErrorMessageEnum
-    _$loginConfigurationReadInvalidClientIdErrorMessageEnumValueOf(
-        String name) {
+_$loginConfigurationReadInvalidClientIdErrorMessageEnumValueOf(String name) {
   switch (name) {
     case 'loginConfigurationReadInvalidClientIdError':
       return _$loginConfigurationReadInvalidClientIdErrorMessageEnum_loginConfigurationReadInvalidClientIdError;
@@ -44,19 +47,23 @@ LoginConfigurationReadInvalidClientIdErrorMessageEnum
 }
 
 final BuiltSet<LoginConfigurationReadInvalidClientIdErrorMessageEnum>
-    _$loginConfigurationReadInvalidClientIdErrorMessageEnumValues = BuiltSet<
-        LoginConfigurationReadInvalidClientIdErrorMessageEnum>(const <LoginConfigurationReadInvalidClientIdErrorMessageEnum>[
-  _$loginConfigurationReadInvalidClientIdErrorMessageEnum_loginConfigurationReadInvalidClientIdError,
-]);
+_$loginConfigurationReadInvalidClientIdErrorMessageEnumValues =
+    BuiltSet<LoginConfigurationReadInvalidClientIdErrorMessageEnum>(const <
+      LoginConfigurationReadInvalidClientIdErrorMessageEnum
+    >[
+      _$loginConfigurationReadInvalidClientIdErrorMessageEnum_loginConfigurationReadInvalidClientIdError,
+    ]);
 
 const LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum
-    _$loginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum_number400 =
+_$loginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum_number400 =
     const LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum._(
-        'number400');
+      'number400',
+    );
 
 LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum
-    _$loginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnumValueOf(
-        String name) {
+_$loginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnumValueOf(
+  String name,
+) {
   switch (name) {
     case 'number400':
       return _$loginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum_number400;
@@ -66,26 +73,28 @@ LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum
 }
 
 final BuiltSet<LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum>
-    _$loginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnumValues =
+_$loginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnumValues =
     BuiltSet<
-        LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum>(const <LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum>[
-  _$loginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum_number400,
-]);
+      LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum
+    >(const <LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum>[
+      _$loginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum_number400,
+    ]);
 
 Serializer<LoginConfigurationReadInvalidClientIdErrorNameEnum>
-    _$loginConfigurationReadInvalidClientIdErrorNameEnumSerializer =
+_$loginConfigurationReadInvalidClientIdErrorNameEnumSerializer =
     _$LoginConfigurationReadInvalidClientIdErrorNameEnumSerializer();
 Serializer<LoginConfigurationReadInvalidClientIdErrorMessageEnum>
-    _$loginConfigurationReadInvalidClientIdErrorMessageEnumSerializer =
+_$loginConfigurationReadInvalidClientIdErrorMessageEnumSerializer =
     _$LoginConfigurationReadInvalidClientIdErrorMessageEnumSerializer();
 Serializer<LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum>
-    _$loginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnumSerializer =
+_$loginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnumSerializer =
     _$LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnumSerializer();
 
 class _$LoginConfigurationReadInvalidClientIdErrorNameEnumSerializer
     implements
         PrimitiveSerializer<
-            LoginConfigurationReadInvalidClientIdErrorNameEnum> {
+          LoginConfigurationReadInvalidClientIdErrorNameEnum
+        > {
   static const Map<String, Object> _toWire = const <String, Object>{
     'loginConfigurationReadInvalidClientIdError':
         'LoginConfigurationReadInvalidClientIdError',
@@ -97,29 +106,33 @@ class _$LoginConfigurationReadInvalidClientIdErrorNameEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    LoginConfigurationReadInvalidClientIdErrorNameEnum
+    LoginConfigurationReadInvalidClientIdErrorNameEnum,
   ];
   @override
   final String wireName = 'LoginConfigurationReadInvalidClientIdErrorNameEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          LoginConfigurationReadInvalidClientIdErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    LoginConfigurationReadInvalidClientIdErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   LoginConfigurationReadInvalidClientIdErrorNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      LoginConfigurationReadInvalidClientIdErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => LoginConfigurationReadInvalidClientIdErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$LoginConfigurationReadInvalidClientIdErrorMessageEnumSerializer
     implements
         PrimitiveSerializer<
-            LoginConfigurationReadInvalidClientIdErrorMessageEnum> {
+          LoginConfigurationReadInvalidClientIdErrorMessageEnum
+        > {
   static const Map<String, Object> _toWire = const <String, Object>{
     'loginConfigurationReadInvalidClientIdError':
         'LoginConfigurationReadInvalidClientIdError',
@@ -131,30 +144,34 @@ class _$LoginConfigurationReadInvalidClientIdErrorMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    LoginConfigurationReadInvalidClientIdErrorMessageEnum
+    LoginConfigurationReadInvalidClientIdErrorMessageEnum,
   ];
   @override
   final String wireName =
       'LoginConfigurationReadInvalidClientIdErrorMessageEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          LoginConfigurationReadInvalidClientIdErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    LoginConfigurationReadInvalidClientIdErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   LoginConfigurationReadInvalidClientIdErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      LoginConfigurationReadInvalidClientIdErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => LoginConfigurationReadInvalidClientIdErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnumSerializer
     implements
         PrimitiveSerializer<
-            LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum> {
+          LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum
+        > {
   static const Map<String, Object> _toWire = const <String, Object>{
     'number400': 400,
   };
@@ -164,24 +181,27 @@ class _$LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum
+    LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum,
   ];
   @override
   final String wireName =
       'LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$LoginConfigurationReadInvalidClientIdError
@@ -192,30 +212,28 @@ class _$LoginConfigurationReadInvalidClientIdError
   final LoginConfigurationReadInvalidClientIdErrorMessageEnum message;
   @override
   final LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum
-      httpStatusCode;
+  httpStatusCode;
   @override
   final String traceId;
   @override
   final BuiltList<InvalidParameterErrorDetailsInner>? details;
 
-  factory _$LoginConfigurationReadInvalidClientIdError(
-          [void Function(LoginConfigurationReadInvalidClientIdErrorBuilder)?
-              updates]) =>
-      (LoginConfigurationReadInvalidClientIdErrorBuilder()..update(updates))
-          ._build();
+  factory _$LoginConfigurationReadInvalidClientIdError([
+    void Function(LoginConfigurationReadInvalidClientIdErrorBuilder)? updates,
+  ]) => (LoginConfigurationReadInvalidClientIdErrorBuilder()..update(updates))
+      ._build();
 
-  _$LoginConfigurationReadInvalidClientIdError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$LoginConfigurationReadInvalidClientIdError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   LoginConfigurationReadInvalidClientIdError rebuild(
-          void Function(LoginConfigurationReadInvalidClientIdErrorBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(LoginConfigurationReadInvalidClientIdErrorBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   LoginConfigurationReadInvalidClientIdErrorBuilder toBuilder() =>
@@ -247,7 +265,8 @@ class _$LoginConfigurationReadInvalidClientIdError
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'LoginConfigurationReadInvalidClientIdError')
+            r'LoginConfigurationReadInvalidClientIdError',
+          )
           ..add('name', name)
           ..add('message', message)
           ..add('httpStatusCode', httpStatusCode)
@@ -259,8 +278,10 @@ class _$LoginConfigurationReadInvalidClientIdError
 
 class LoginConfigurationReadInvalidClientIdErrorBuilder
     implements
-        Builder<LoginConfigurationReadInvalidClientIdError,
-            LoginConfigurationReadInvalidClientIdErrorBuilder> {
+        Builder<
+          LoginConfigurationReadInvalidClientIdError,
+          LoginConfigurationReadInvalidClientIdErrorBuilder
+        > {
   _$LoginConfigurationReadInvalidClientIdError? _$v;
 
   LoginConfigurationReadInvalidClientIdErrorNameEnum? _name;
@@ -276,11 +297,11 @@ class LoginConfigurationReadInvalidClientIdErrorBuilder
 
   LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum? _httpStatusCode;
   LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum?
-      get httpStatusCode => _$this._httpStatusCode;
+  get httpStatusCode => _$this._httpStatusCode;
   set httpStatusCode(
-          LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum?
-              httpStatusCode) =>
-      _$this._httpStatusCode = httpStatusCode;
+    LoginConfigurationReadInvalidClientIdErrorHttpStatusCodeEnum?
+    httpStatusCode,
+  ) => _$this._httpStatusCode = httpStatusCode;
 
   String? _traceId;
   String? get traceId => _$this._traceId;
@@ -316,8 +337,8 @@ class LoginConfigurationReadInvalidClientIdErrorBuilder
 
   @override
   void update(
-      void Function(LoginConfigurationReadInvalidClientIdErrorBuilder)?
-          updates) {
+    void Function(LoginConfigurationReadInvalidClientIdErrorBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -327,18 +348,29 @@ class LoginConfigurationReadInvalidClientIdErrorBuilder
   _$LoginConfigurationReadInvalidClientIdError _build() {
     _$LoginConfigurationReadInvalidClientIdError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$LoginConfigurationReadInvalidClientIdError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'LoginConfigurationReadInvalidClientIdError', 'name'),
-            message: BuiltValueNullFieldError.checkNotNull(message,
-                r'LoginConfigurationReadInvalidClientIdError', 'message'),
+              name,
+              r'LoginConfigurationReadInvalidClientIdError',
+              'name',
+            ),
+            message: BuiltValueNullFieldError.checkNotNull(
+              message,
+              r'LoginConfigurationReadInvalidClientIdError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode,
-                r'LoginConfigurationReadInvalidClientIdError',
-                'httpStatusCode'),
-            traceId: BuiltValueNullFieldError.checkNotNull(traceId,
-                r'LoginConfigurationReadInvalidClientIdError', 'traceId'),
+              httpStatusCode,
+              r'LoginConfigurationReadInvalidClientIdError',
+              'httpStatusCode',
+            ),
+            traceId: BuiltValueNullFieldError.checkNotNull(
+              traceId,
+              r'LoginConfigurationReadInvalidClientIdError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -348,9 +380,10 @@ class LoginConfigurationReadInvalidClientIdErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'LoginConfigurationReadInvalidClientIdError',
-            _$failedField,
-            e.toString());
+          r'LoginConfigurationReadInvalidClientIdError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

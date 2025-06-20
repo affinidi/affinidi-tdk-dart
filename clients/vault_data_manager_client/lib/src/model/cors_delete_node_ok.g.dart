@@ -10,9 +10,9 @@ class _$CorsDeleteNodeOK extends CorsDeleteNodeOK {
   @override
   final String? corsDeleteNodeOk;
 
-  factory _$CorsDeleteNodeOK(
-          [void Function(CorsDeleteNodeOKBuilder)? updates]) =>
-      (CorsDeleteNodeOKBuilder()..update(updates))._build();
+  factory _$CorsDeleteNodeOK([
+    void Function(CorsDeleteNodeOKBuilder)? updates,
+  ]) => (CorsDeleteNodeOKBuilder()..update(updates))._build();
 
   _$CorsDeleteNodeOK._({this.corsDeleteNodeOk}) : super._();
   @override
@@ -40,9 +40,9 @@ class _$CorsDeleteNodeOK extends CorsDeleteNodeOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'CorsDeleteNodeOK')
-          ..add('corsDeleteNodeOk', corsDeleteNodeOk))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'CorsDeleteNodeOK',
+    )..add('corsDeleteNodeOk', corsDeleteNodeOk)).toString();
   }
 }
 
@@ -82,10 +82,8 @@ class CorsDeleteNodeOKBuilder
   CorsDeleteNodeOK build() => _build();
 
   _$CorsDeleteNodeOK _build() {
-    final _$result = _$v ??
-        _$CorsDeleteNodeOK._(
-          corsDeleteNodeOk: corsDeleteNodeOk,
-        );
+    final _$result =
+        _$v ?? _$CorsDeleteNodeOK._(corsDeleteNodeOk: corsDeleteNodeOk);
     replace(_$result);
     return _$result;
   }

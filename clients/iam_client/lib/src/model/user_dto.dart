@@ -11,7 +11,7 @@ part 'user_dto.g.dart';
 /// UserDto
 ///
 /// Properties:
-/// * [principalId] 
+/// * [principalId]
 @BuiltValue()
 abstract class UserDto implements Built<UserDto, UserDtoBuilder> {
   @BuiltValueField(wireName: r'principalId')
@@ -53,7 +53,11 @@ class _$UserDtoSerializer implements PrimitiveSerializer<UserDto> {
     UserDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -69,10 +73,12 @@ class _$UserDtoSerializer implements PrimitiveSerializer<UserDto> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'principalId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.principalId = valueDes;
           break;
         default:
@@ -103,4 +109,3 @@ class _$UserDtoSerializer implements PrimitiveSerializer<UserDto> {
     return result.build();
   }
 }
-

@@ -37,9 +37,9 @@ class _$CorsInitNodesOK extends CorsInitNodesOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'CorsInitNodesOK')
-          ..add('corsInitNodesOk', corsInitNodesOk))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'CorsInitNodesOK',
+    )..add('corsInitNodesOk', corsInitNodesOk)).toString();
   }
 }
 
@@ -79,10 +79,8 @@ class CorsInitNodesOKBuilder
   CorsInitNodesOK build() => _build();
 
   _$CorsInitNodesOK _build() {
-    final _$result = _$v ??
-        _$CorsInitNodesOK._(
-          corsInitNodesOk: corsInitNodesOk,
-        );
+    final _$result =
+        _$v ?? _$CorsInitNodesOK._(corsInitNodesOk: corsInitNodesOk);
     replace(_$result);
     return _$result;
   }

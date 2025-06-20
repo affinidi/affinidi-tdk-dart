@@ -13,10 +13,11 @@ part 'list_pex_queries_ok.g.dart';
 /// ListPexQueriesOK
 ///
 /// Properties:
-/// * [pexQueries] 
-/// * [lastEvaluatedKey] 
+/// * [pexQueries]
+/// * [lastEvaluatedKey]
 @BuiltValue()
-abstract class ListPexQueriesOK implements Built<ListPexQueriesOK, ListPexQueriesOKBuilder> {
+abstract class ListPexQueriesOK
+    implements Built<ListPexQueriesOK, ListPexQueriesOKBuilder> {
   @BuiltValueField(wireName: r'pexQueries')
   BuiltList<PexQueryDto> get pexQueries;
 
@@ -25,16 +26,19 @@ abstract class ListPexQueriesOK implements Built<ListPexQueriesOK, ListPexQuerie
 
   ListPexQueriesOK._();
 
-  factory ListPexQueriesOK([void updates(ListPexQueriesOKBuilder b)]) = _$ListPexQueriesOK;
+  factory ListPexQueriesOK([void updates(ListPexQueriesOKBuilder b)]) =
+      _$ListPexQueriesOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ListPexQueriesOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ListPexQueriesOK> get serializer => _$ListPexQueriesOKSerializer();
+  static Serializer<ListPexQueriesOK> get serializer =>
+      _$ListPexQueriesOKSerializer();
 }
 
-class _$ListPexQueriesOKSerializer implements PrimitiveSerializer<ListPexQueriesOK> {
+class _$ListPexQueriesOKSerializer
+    implements PrimitiveSerializer<ListPexQueriesOK> {
   @override
   final Iterable<Type> types = const [ListPexQueriesOK, _$ListPexQueriesOK];
 
@@ -66,7 +70,11 @@ class _$ListPexQueriesOKSerializer implements PrimitiveSerializer<ListPexQueries
     ListPexQueriesOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -82,17 +90,23 @@ class _$ListPexQueriesOKSerializer implements PrimitiveSerializer<ListPexQueries
       final value = serializedList[i + 1];
       switch (key) {
         case r'pexQueries':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(PexQueryDto)]),
-          ) as BuiltList<PexQueryDto>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(PexQueryDto),
+                    ]),
+                  )
+                  as BuiltList<PexQueryDto>;
           result.pexQueries.replace(valueDes);
           break;
         case r'lastEvaluatedKey':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.lastEvaluatedKey = valueDes;
           break;
         default:
@@ -123,4 +137,3 @@ class _$ListPexQueriesOKSerializer implements PrimitiveSerializer<ListPexQueries
     return result.build();
   }
 }
-

@@ -12,16 +12,16 @@ class _$UpdateProfileDataInput extends UpdateProfileDataInput {
   @override
   final JsonObject data;
 
-  factory _$UpdateProfileDataInput(
-          [void Function(UpdateProfileDataInputBuilder)? updates]) =>
-      (UpdateProfileDataInputBuilder()..update(updates))._build();
+  factory _$UpdateProfileDataInput([
+    void Function(UpdateProfileDataInputBuilder)? updates,
+  ]) => (UpdateProfileDataInputBuilder()..update(updates))._build();
 
   _$UpdateProfileDataInput._({required this.dek, required this.data})
-      : super._();
+    : super._();
   @override
   UpdateProfileDataInput rebuild(
-          void Function(UpdateProfileDataInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateProfileDataInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateProfileDataInputBuilder toBuilder() =>
@@ -93,12 +93,19 @@ class UpdateProfileDataInputBuilder
   UpdateProfileDataInput build() => _build();
 
   _$UpdateProfileDataInput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$UpdateProfileDataInput._(
           dek: BuiltValueNullFieldError.checkNotNull(
-              dek, r'UpdateProfileDataInput', 'dek'),
+            dek,
+            r'UpdateProfileDataInput',
+            'dek',
+          ),
           data: BuiltValueNullFieldError.checkNotNull(
-              data, r'UpdateProfileDataInput', 'data'),
+            data,
+            r'UpdateProfileDataInput',
+            'data',
+          ),
         );
     replace(_$result);
     return _$result;

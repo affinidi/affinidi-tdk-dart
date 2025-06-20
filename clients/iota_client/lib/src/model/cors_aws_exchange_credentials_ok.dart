@@ -11,26 +11,38 @@ part 'cors_aws_exchange_credentials_ok.g.dart';
 /// CorsAwsExchangeCredentialsOK
 ///
 /// Properties:
-/// * [corsAwsExchangeCredentialsOk] 
+/// * [corsAwsExchangeCredentialsOk]
 @BuiltValue()
-abstract class CorsAwsExchangeCredentialsOK implements Built<CorsAwsExchangeCredentialsOK, CorsAwsExchangeCredentialsOKBuilder> {
+abstract class CorsAwsExchangeCredentialsOK
+    implements
+        Built<
+          CorsAwsExchangeCredentialsOK,
+          CorsAwsExchangeCredentialsOKBuilder
+        > {
   @BuiltValueField(wireName: r'corsAwsExchangeCredentialsOk')
   String? get corsAwsExchangeCredentialsOk;
 
   CorsAwsExchangeCredentialsOK._();
 
-  factory CorsAwsExchangeCredentialsOK([void updates(CorsAwsExchangeCredentialsOKBuilder b)]) = _$CorsAwsExchangeCredentialsOK;
+  factory CorsAwsExchangeCredentialsOK([
+    void updates(CorsAwsExchangeCredentialsOKBuilder b),
+  ]) = _$CorsAwsExchangeCredentialsOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsAwsExchangeCredentialsOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CorsAwsExchangeCredentialsOK> get serializer => _$CorsAwsExchangeCredentialsOKSerializer();
+  static Serializer<CorsAwsExchangeCredentialsOK> get serializer =>
+      _$CorsAwsExchangeCredentialsOKSerializer();
 }
 
-class _$CorsAwsExchangeCredentialsOKSerializer implements PrimitiveSerializer<CorsAwsExchangeCredentialsOK> {
+class _$CorsAwsExchangeCredentialsOKSerializer
+    implements PrimitiveSerializer<CorsAwsExchangeCredentialsOK> {
   @override
-  final Iterable<Type> types = const [CorsAwsExchangeCredentialsOK, _$CorsAwsExchangeCredentialsOK];
+  final Iterable<Type> types = const [
+    CorsAwsExchangeCredentialsOK,
+    _$CorsAwsExchangeCredentialsOK,
+  ];
 
   @override
   final String wireName = r'CorsAwsExchangeCredentialsOK';
@@ -55,7 +67,11 @@ class _$CorsAwsExchangeCredentialsOKSerializer implements PrimitiveSerializer<Co
     CorsAwsExchangeCredentialsOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -71,10 +87,12 @@ class _$CorsAwsExchangeCredentialsOKSerializer implements PrimitiveSerializer<Co
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsAwsExchangeCredentialsOk':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.corsAwsExchangeCredentialsOk = valueDes;
           break;
         default:
@@ -105,4 +123,3 @@ class _$CorsAwsExchangeCredentialsOKSerializer implements PrimitiveSerializer<Co
     return result.build();
   }
 }
-

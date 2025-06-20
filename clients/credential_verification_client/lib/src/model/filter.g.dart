@@ -47,26 +47,26 @@ class _$Filter extends Filter {
   factory _$Filter([void Function(FilterBuilder)? updates]) =>
       (FilterBuilder()..update(updates))._build();
 
-  _$Filter._(
-      {this.const_,
-      this.enum_,
-      this.exclusiveMinimum,
-      this.exclusiveMaximum,
-      this.format,
-      this.formatMaximum,
-      this.formatMinimum,
-      this.formatExclusiveMaximum,
-      this.formatExclusiveMinimum,
-      this.minLength,
-      this.maxLength,
-      this.minimum,
-      this.maximum,
-      this.not,
-      this.pattern,
-      this.contains,
-      this.items,
-      this.type})
-      : super._();
+  _$Filter._({
+    this.const_,
+    this.enum_,
+    this.exclusiveMinimum,
+    this.exclusiveMaximum,
+    this.format,
+    this.formatMaximum,
+    this.formatMinimum,
+    this.formatExclusiveMaximum,
+    this.formatExclusiveMinimum,
+    this.minLength,
+    this.maxLength,
+    this.minimum,
+    this.maximum,
+    this.not,
+    this.pattern,
+    this.contains,
+    this.items,
+    this.type,
+  }) : super._();
   @override
   Filter rebuild(void Function(FilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -278,7 +278,8 @@ class FilterBuilder implements Builder<Filter, FilterBuilder> {
   _$Filter _build() {
     _$Filter _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$Filter._(
             const_: _const_?.build(),
             enum_: _enum_?.build(),
@@ -322,7 +323,10 @@ class FilterBuilder implements Builder<Filter, FilterBuilder> {
         _items?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'Filter', _$failedField, e.toString());
+          r'Filter',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

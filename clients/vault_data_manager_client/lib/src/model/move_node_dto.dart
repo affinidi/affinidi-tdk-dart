@@ -11,7 +11,7 @@ part 'move_node_dto.g.dart';
 /// MoveNodeDto
 ///
 /// Properties:
-/// * [newNodeId] 
+/// * [newNodeId]
 @BuiltValue()
 abstract class MoveNodeDto implements Built<MoveNodeDto, MoveNodeDtoBuilder> {
   @BuiltValueField(wireName: r'newNodeId')
@@ -55,7 +55,11 @@ class _$MoveNodeDtoSerializer implements PrimitiveSerializer<MoveNodeDto> {
     MoveNodeDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -71,10 +75,12 @@ class _$MoveNodeDtoSerializer implements PrimitiveSerializer<MoveNodeDto> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'newNodeId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.newNodeId = valueDes;
           break;
         default:
@@ -105,4 +111,3 @@ class _$MoveNodeDtoSerializer implements PrimitiveSerializer<MoveNodeDto> {
     return result.build();
   }
 }
-

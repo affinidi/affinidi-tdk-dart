@@ -1,7 +1,6 @@
 import 'package:test/test.dart';
 import 'package:affinidi_tdk_iota_client/affinidi_tdk_iota_client.dart';
 
-
 /// tests for PexQueryApi
 void main() {
   final instance = AffinidiTdkIotaClient().getPexQueryApi();
@@ -55,6 +54,5 @@ void main() {
     test('test updatePexQueryById', () async {
       // TODO
     });
-
   });
 }

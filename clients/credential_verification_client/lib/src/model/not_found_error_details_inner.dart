@@ -11,12 +11,14 @@ part 'not_found_error_details_inner.g.dart';
 /// NotFoundErrorDetailsInner
 ///
 /// Properties:
-/// * [issue] 
-/// * [field] 
-/// * [value] 
-/// * [location] 
+/// * [issue]
+/// * [field]
+/// * [value]
+/// * [location]
 @BuiltValue()
-abstract class NotFoundErrorDetailsInner implements Built<NotFoundErrorDetailsInner, NotFoundErrorDetailsInnerBuilder> {
+abstract class NotFoundErrorDetailsInner
+    implements
+        Built<NotFoundErrorDetailsInner, NotFoundErrorDetailsInnerBuilder> {
   @BuiltValueField(wireName: r'issue')
   String get issue;
 
@@ -31,18 +33,25 @@ abstract class NotFoundErrorDetailsInner implements Built<NotFoundErrorDetailsIn
 
   NotFoundErrorDetailsInner._();
 
-  factory NotFoundErrorDetailsInner([void updates(NotFoundErrorDetailsInnerBuilder b)]) = _$NotFoundErrorDetailsInner;
+  factory NotFoundErrorDetailsInner([
+    void updates(NotFoundErrorDetailsInnerBuilder b),
+  ]) = _$NotFoundErrorDetailsInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(NotFoundErrorDetailsInnerBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<NotFoundErrorDetailsInner> get serializer => _$NotFoundErrorDetailsInnerSerializer();
+  static Serializer<NotFoundErrorDetailsInner> get serializer =>
+      _$NotFoundErrorDetailsInnerSerializer();
 }
 
-class _$NotFoundErrorDetailsInnerSerializer implements PrimitiveSerializer<NotFoundErrorDetailsInner> {
+class _$NotFoundErrorDetailsInnerSerializer
+    implements PrimitiveSerializer<NotFoundErrorDetailsInner> {
   @override
-  final Iterable<Type> types = const [NotFoundErrorDetailsInner, _$NotFoundErrorDetailsInner];
+  final Iterable<Type> types = const [
+    NotFoundErrorDetailsInner,
+    _$NotFoundErrorDetailsInner,
+  ];
 
   @override
   final String wireName = r'NotFoundErrorDetailsInner';
@@ -86,7 +95,11 @@ class _$NotFoundErrorDetailsInnerSerializer implements PrimitiveSerializer<NotFo
     NotFoundErrorDetailsInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -102,31 +115,39 @@ class _$NotFoundErrorDetailsInnerSerializer implements PrimitiveSerializer<NotFo
       final value = serializedList[i + 1];
       switch (key) {
         case r'issue':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.issue = valueDes;
           break;
         case r'field':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.field = valueDes;
           break;
         case r'value':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.value = valueDes;
           break;
         case r'location':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.location = valueDes;
           break;
         default:
@@ -157,4 +178,3 @@ class _$NotFoundErrorDetailsInnerSerializer implements PrimitiveSerializer<NotFo
     return result.build();
   }
 }
-

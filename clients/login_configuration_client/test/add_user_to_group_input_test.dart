@@ -22,6 +22,5 @@ void main() {
     test('to test the property `userId`', () async {
       // TODO
     });
-
   });
 }

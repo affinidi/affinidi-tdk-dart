@@ -8,9 +8,12 @@ void main() {
 
   group(OIDCConfigCredentialsSupportedDraft00Inner, () {
     // BuiltList<String> cryptographicBindingMethodsSupported
-    test('to test the property `cryptographicBindingMethodsSupported`', () async {
-      // TODO
-    });
+    test(
+      'to test the property `cryptographicBindingMethodsSupported`',
+      () async {
+        // TODO
+      },
+    );
 
     // BuiltList<String> cryptographicSuitesSupported
     test('to test the property `cryptographicSuitesSupported`', () async {
@@ -26,6 +29,5 @@ void main() {
     test('to test the property `types`', () async {
       // TODO
     });
-
   });
 }

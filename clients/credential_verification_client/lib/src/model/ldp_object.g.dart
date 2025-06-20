@@ -37,9 +37,9 @@ class _$LdpObject extends LdpObject {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'LdpObject')
-          ..add('proofType', proofType))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'LdpObject',
+    )..add('proofType', proofType)).toString();
   }
 }
 
@@ -81,10 +81,7 @@ class LdpObjectBuilder implements Builder<LdpObject, LdpObjectBuilder> {
   _$LdpObject _build() {
     _$LdpObject _$result;
     try {
-      _$result = _$v ??
-          _$LdpObject._(
-            proofType: proofType.build(),
-          );
+      _$result = _$v ?? _$LdpObject._(proofType: proofType.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -92,7 +89,10 @@ class LdpObjectBuilder implements Builder<LdpObject, LdpObjectBuilder> {
         proofType.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'LdpObject', _$failedField, e.toString());
+          r'LdpObject',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

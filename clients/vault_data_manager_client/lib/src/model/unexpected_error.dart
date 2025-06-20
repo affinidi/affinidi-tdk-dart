@@ -13,13 +13,14 @@ part 'unexpected_error.g.dart';
 /// UnexpectedError
 ///
 /// Properties:
-/// * [name] 
-/// * [message] 
-/// * [httpStatusCode] 
-/// * [traceId] 
-/// * [details] 
+/// * [name]
+/// * [message]
+/// * [httpStatusCode]
+/// * [traceId]
+/// * [details]
 @BuiltValue()
-abstract class UnexpectedError implements Built<UnexpectedError, UnexpectedErrorBuilder> {
+abstract class UnexpectedError
+    implements Built<UnexpectedError, UnexpectedErrorBuilder> {
   @BuiltValueField(wireName: r'name')
   UnexpectedErrorNameEnum get name;
   // enum nameEnum {  UnexpectedError,  };
@@ -40,16 +41,19 @@ abstract class UnexpectedError implements Built<UnexpectedError, UnexpectedError
 
   UnexpectedError._();
 
-  factory UnexpectedError([void updates(UnexpectedErrorBuilder b)]) = _$UnexpectedError;
+  factory UnexpectedError([void updates(UnexpectedErrorBuilder b)]) =
+      _$UnexpectedError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UnexpectedErrorBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UnexpectedError> get serializer => _$UnexpectedErrorSerializer();
+  static Serializer<UnexpectedError> get serializer =>
+      _$UnexpectedErrorSerializer();
 }
 
-class _$UnexpectedErrorSerializer implements PrimitiveSerializer<UnexpectedError> {
+class _$UnexpectedErrorSerializer
+    implements PrimitiveSerializer<UnexpectedError> {
   @override
   final Iterable<Type> types = const [UnexpectedError, _$UnexpectedError];
 
@@ -85,7 +89,9 @@ class _$UnexpectedErrorSerializer implements PrimitiveSerializer<UnexpectedError
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(InvalidParameterErrorDetailsInner),
+        ]),
       );
     }
   }
@@ -96,7 +102,11 @@ class _$UnexpectedErrorSerializer implements PrimitiveSerializer<UnexpectedError
     UnexpectedError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -112,38 +122,52 @@ class _$UnexpectedErrorSerializer implements PrimitiveSerializer<UnexpectedError
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(UnexpectedErrorNameEnum),
-          ) as UnexpectedErrorNameEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(UnexpectedErrorNameEnum),
+                  )
+                  as UnexpectedErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(UnexpectedErrorMessageEnum),
-          ) as UnexpectedErrorMessageEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(UnexpectedErrorMessageEnum),
+                  )
+                  as UnexpectedErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(UnexpectedErrorHttpStatusCodeEnum),
-          ) as UnexpectedErrorHttpStatusCodeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      UnexpectedErrorHttpStatusCodeEnum,
+                    ),
+                  )
+                  as UnexpectedErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
-          ) as BuiltList<InvalidParameterErrorDetailsInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(InvalidParameterErrorDetailsInner),
+                    ]),
+                  )
+                  as BuiltList<InvalidParameterErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -176,41 +200,49 @@ class _$UnexpectedErrorSerializer implements PrimitiveSerializer<UnexpectedError
 }
 
 class UnexpectedErrorNameEnum extends EnumClass {
-
   @BuiltValueEnumConst(wireName: r'UnexpectedError')
-  static const UnexpectedErrorNameEnum unexpectedError = _$unexpectedErrorNameEnum_unexpectedError;
+  static const UnexpectedErrorNameEnum unexpectedError =
+      _$unexpectedErrorNameEnum_unexpectedError;
 
-  static Serializer<UnexpectedErrorNameEnum> get serializer => _$unexpectedErrorNameEnumSerializer;
+  static Serializer<UnexpectedErrorNameEnum> get serializer =>
+      _$unexpectedErrorNameEnumSerializer;
 
-  const UnexpectedErrorNameEnum._(String name): super(name);
+  const UnexpectedErrorNameEnum._(String name) : super(name);
 
-  static BuiltSet<UnexpectedErrorNameEnum> get values => _$unexpectedErrorNameEnumValues;
-  static UnexpectedErrorNameEnum valueOf(String name) => _$unexpectedErrorNameEnumValueOf(name);
+  static BuiltSet<UnexpectedErrorNameEnum> get values =>
+      _$unexpectedErrorNameEnumValues;
+  static UnexpectedErrorNameEnum valueOf(String name) =>
+      _$unexpectedErrorNameEnumValueOf(name);
 }
 
 class UnexpectedErrorMessageEnum extends EnumClass {
-
   @BuiltValueEnumConst(wireName: r'Unexpected Error Occurred.')
-  static const UnexpectedErrorMessageEnum unexpectedErrorOccurredPeriod = _$unexpectedErrorMessageEnum_unexpectedErrorOccurredPeriod;
+  static const UnexpectedErrorMessageEnum unexpectedErrorOccurredPeriod =
+      _$unexpectedErrorMessageEnum_unexpectedErrorOccurredPeriod;
 
-  static Serializer<UnexpectedErrorMessageEnum> get serializer => _$unexpectedErrorMessageEnumSerializer;
+  static Serializer<UnexpectedErrorMessageEnum> get serializer =>
+      _$unexpectedErrorMessageEnumSerializer;
 
-  const UnexpectedErrorMessageEnum._(String name): super(name);
+  const UnexpectedErrorMessageEnum._(String name) : super(name);
 
-  static BuiltSet<UnexpectedErrorMessageEnum> get values => _$unexpectedErrorMessageEnumValues;
-  static UnexpectedErrorMessageEnum valueOf(String name) => _$unexpectedErrorMessageEnumValueOf(name);
+  static BuiltSet<UnexpectedErrorMessageEnum> get values =>
+      _$unexpectedErrorMessageEnumValues;
+  static UnexpectedErrorMessageEnum valueOf(String name) =>
+      _$unexpectedErrorMessageEnumValueOf(name);
 }
 
 class UnexpectedErrorHttpStatusCodeEnum extends EnumClass {
-
   @BuiltValueEnumConst(wireNumber: 500)
-  static const UnexpectedErrorHttpStatusCodeEnum number500 = _$unexpectedErrorHttpStatusCodeEnum_number500;
+  static const UnexpectedErrorHttpStatusCodeEnum number500 =
+      _$unexpectedErrorHttpStatusCodeEnum_number500;
 
-  static Serializer<UnexpectedErrorHttpStatusCodeEnum> get serializer => _$unexpectedErrorHttpStatusCodeEnumSerializer;
+  static Serializer<UnexpectedErrorHttpStatusCodeEnum> get serializer =>
+      _$unexpectedErrorHttpStatusCodeEnumSerializer;
 
-  const UnexpectedErrorHttpStatusCodeEnum._(String name): super(name);
+  const UnexpectedErrorHttpStatusCodeEnum._(String name) : super(name);
 
-  static BuiltSet<UnexpectedErrorHttpStatusCodeEnum> get values => _$unexpectedErrorHttpStatusCodeEnumValues;
-  static UnexpectedErrorHttpStatusCodeEnum valueOf(String name) => _$unexpectedErrorHttpStatusCodeEnumValueOf(name);
+  static BuiltSet<UnexpectedErrorHttpStatusCodeEnum> get values =>
+      _$unexpectedErrorHttpStatusCodeEnumValues;
+  static UnexpectedErrorHttpStatusCodeEnum valueOf(String name) =>
+      _$unexpectedErrorHttpStatusCodeEnumValueOf(name);
 }
-

@@ -15,20 +15,20 @@ class _$SavePexQueriesUpdateInputQueriesInner
   @override
   final String? description;
 
-  factory _$SavePexQueriesUpdateInputQueriesInner(
-          [void Function(SavePexQueriesUpdateInputQueriesInnerBuilder)?
-              updates]) =>
-      (SavePexQueriesUpdateInputQueriesInnerBuilder()..update(updates))
-          ._build();
+  factory _$SavePexQueriesUpdateInputQueriesInner([
+    void Function(SavePexQueriesUpdateInputQueriesInnerBuilder)? updates,
+  ]) => (SavePexQueriesUpdateInputQueriesInnerBuilder()..update(updates))
+      ._build();
 
-  _$SavePexQueriesUpdateInputQueriesInner._(
-      {required this.queryId, this.vpDefinition, this.description})
-      : super._();
+  _$SavePexQueriesUpdateInputQueriesInner._({
+    required this.queryId,
+    this.vpDefinition,
+    this.description,
+  }) : super._();
   @override
   SavePexQueriesUpdateInputQueriesInner rebuild(
-          void Function(SavePexQueriesUpdateInputQueriesInnerBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(SavePexQueriesUpdateInputQueriesInnerBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   SavePexQueriesUpdateInputQueriesInnerBuilder toBuilder() =>
@@ -56,7 +56,8 @@ class _$SavePexQueriesUpdateInputQueriesInner
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'SavePexQueriesUpdateInputQueriesInner')
+            r'SavePexQueriesUpdateInputQueriesInner',
+          )
           ..add('queryId', queryId)
           ..add('vpDefinition', vpDefinition)
           ..add('description', description))
@@ -66,8 +67,10 @@ class _$SavePexQueriesUpdateInputQueriesInner
 
 class SavePexQueriesUpdateInputQueriesInnerBuilder
     implements
-        Builder<SavePexQueriesUpdateInputQueriesInner,
-            SavePexQueriesUpdateInputQueriesInnerBuilder> {
+        Builder<
+          SavePexQueriesUpdateInputQueriesInner,
+          SavePexQueriesUpdateInputQueriesInnerBuilder
+        > {
   _$SavePexQueriesUpdateInputQueriesInner? _$v;
 
   String? _queryId;
@@ -104,7 +107,8 @@ class SavePexQueriesUpdateInputQueriesInnerBuilder
 
   @override
   void update(
-      void Function(SavePexQueriesUpdateInputQueriesInnerBuilder)? updates) {
+    void Function(SavePexQueriesUpdateInputQueriesInnerBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -112,10 +116,14 @@ class SavePexQueriesUpdateInputQueriesInnerBuilder
   SavePexQueriesUpdateInputQueriesInner build() => _build();
 
   _$SavePexQueriesUpdateInputQueriesInner _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$SavePexQueriesUpdateInputQueriesInner._(
           queryId: BuiltValueNullFieldError.checkNotNull(
-              queryId, r'SavePexQueriesUpdateInputQueriesInner', 'queryId'),
+            queryId,
+            r'SavePexQueriesUpdateInputQueriesInner',
+            'queryId',
+          ),
           vpDefinition: vpDefinition,
           description: description,
         );

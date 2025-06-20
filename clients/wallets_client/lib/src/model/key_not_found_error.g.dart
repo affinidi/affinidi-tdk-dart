@@ -20,8 +20,8 @@ KeyNotFoundErrorNameEnum _$keyNotFoundErrorNameEnumValueOf(String name) {
 
 final BuiltSet<KeyNotFoundErrorNameEnum> _$keyNotFoundErrorNameEnumValues =
     BuiltSet<KeyNotFoundErrorNameEnum>(const <KeyNotFoundErrorNameEnum>[
-  _$keyNotFoundErrorNameEnum_keyNotFoundError,
-]);
+      _$keyNotFoundErrorNameEnum_keyNotFoundError,
+    ]);
 
 const KeyNotFoundErrorMessageEnum _$keyNotFoundErrorMessageEnum_keyNotFound =
     const KeyNotFoundErrorMessageEnum._('keyNotFound');
@@ -36,17 +36,19 @@ KeyNotFoundErrorMessageEnum _$keyNotFoundErrorMessageEnumValueOf(String name) {
 }
 
 final BuiltSet<KeyNotFoundErrorMessageEnum>
-    _$keyNotFoundErrorMessageEnumValues =
-    BuiltSet<KeyNotFoundErrorMessageEnum>(const <KeyNotFoundErrorMessageEnum>[
-  _$keyNotFoundErrorMessageEnum_keyNotFound,
-]);
+_$keyNotFoundErrorMessageEnumValues = BuiltSet<KeyNotFoundErrorMessageEnum>(
+  const <KeyNotFoundErrorMessageEnum>[
+    _$keyNotFoundErrorMessageEnum_keyNotFound,
+  ],
+);
 
 const KeyNotFoundErrorHttpStatusCodeEnum
-    _$keyNotFoundErrorHttpStatusCodeEnum_number500 =
+_$keyNotFoundErrorHttpStatusCodeEnum_number500 =
     const KeyNotFoundErrorHttpStatusCodeEnum._('number500');
 
 KeyNotFoundErrorHttpStatusCodeEnum _$keyNotFoundErrorHttpStatusCodeEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'number500':
       return _$keyNotFoundErrorHttpStatusCodeEnum_number500;
@@ -56,18 +58,20 @@ KeyNotFoundErrorHttpStatusCodeEnum _$keyNotFoundErrorHttpStatusCodeEnumValueOf(
 }
 
 final BuiltSet<KeyNotFoundErrorHttpStatusCodeEnum>
-    _$keyNotFoundErrorHttpStatusCodeEnumValues = BuiltSet<
-        KeyNotFoundErrorHttpStatusCodeEnum>(const <KeyNotFoundErrorHttpStatusCodeEnum>[
-  _$keyNotFoundErrorHttpStatusCodeEnum_number500,
-]);
+_$keyNotFoundErrorHttpStatusCodeEnumValues =
+    BuiltSet<KeyNotFoundErrorHttpStatusCodeEnum>(
+      const <KeyNotFoundErrorHttpStatusCodeEnum>[
+        _$keyNotFoundErrorHttpStatusCodeEnum_number500,
+      ],
+    );
 
 Serializer<KeyNotFoundErrorNameEnum> _$keyNotFoundErrorNameEnumSerializer =
     _$KeyNotFoundErrorNameEnumSerializer();
 Serializer<KeyNotFoundErrorMessageEnum>
-    _$keyNotFoundErrorMessageEnumSerializer =
+_$keyNotFoundErrorMessageEnumSerializer =
     _$KeyNotFoundErrorMessageEnumSerializer();
 Serializer<KeyNotFoundErrorHttpStatusCodeEnum>
-    _$keyNotFoundErrorHttpStatusCodeEnumSerializer =
+_$keyNotFoundErrorHttpStatusCodeEnumSerializer =
     _$KeyNotFoundErrorHttpStatusCodeEnumSerializer();
 
 class _$KeyNotFoundErrorNameEnumSerializer
@@ -85,16 +89,20 @@ class _$KeyNotFoundErrorNameEnumSerializer
   final String wireName = 'KeyNotFoundErrorNameEnum';
 
   @override
-  Object serialize(Serializers serializers, KeyNotFoundErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    KeyNotFoundErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   KeyNotFoundErrorNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      KeyNotFoundErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => KeyNotFoundErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$KeyNotFoundErrorMessageEnumSerializer
@@ -112,16 +120,20 @@ class _$KeyNotFoundErrorMessageEnumSerializer
   final String wireName = 'KeyNotFoundErrorMessageEnum';
 
   @override
-  Object serialize(Serializers serializers, KeyNotFoundErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    KeyNotFoundErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   KeyNotFoundErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      KeyNotFoundErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => KeyNotFoundErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$KeyNotFoundErrorHttpStatusCodeEnumSerializer
@@ -140,16 +152,19 @@ class _$KeyNotFoundErrorHttpStatusCodeEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, KeyNotFoundErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    KeyNotFoundErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   KeyNotFoundErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      KeyNotFoundErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => KeyNotFoundErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$KeyNotFoundError extends KeyNotFoundError {
@@ -164,17 +179,17 @@ class _$KeyNotFoundError extends KeyNotFoundError {
   @override
   final BuiltList<ServiceErrorResponseDetailsInner>? details;
 
-  factory _$KeyNotFoundError(
-          [void Function(KeyNotFoundErrorBuilder)? updates]) =>
-      (KeyNotFoundErrorBuilder()..update(updates))._build();
+  factory _$KeyNotFoundError([
+    void Function(KeyNotFoundErrorBuilder)? updates,
+  ]) => (KeyNotFoundErrorBuilder()..update(updates))._build();
 
-  _$KeyNotFoundError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$KeyNotFoundError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   KeyNotFoundError rebuild(void Function(KeyNotFoundErrorBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -280,16 +295,29 @@ class KeyNotFoundErrorBuilder
   _$KeyNotFoundError _build() {
     _$KeyNotFoundError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$KeyNotFoundError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'KeyNotFoundError', 'name'),
+              name,
+              r'KeyNotFoundError',
+              'name',
+            ),
             message: BuiltValueNullFieldError.checkNotNull(
-                message, r'KeyNotFoundError', 'message'),
+              message,
+              r'KeyNotFoundError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode, r'KeyNotFoundError', 'httpStatusCode'),
+              httpStatusCode,
+              r'KeyNotFoundError',
+              'httpStatusCode',
+            ),
             traceId: BuiltValueNullFieldError.checkNotNull(
-                traceId, r'KeyNotFoundError', 'traceId'),
+              traceId,
+              r'KeyNotFoundError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -299,7 +327,10 @@ class KeyNotFoundErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'KeyNotFoundError', _$failedField, e.toString());
+          r'KeyNotFoundError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

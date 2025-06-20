@@ -12,26 +12,38 @@ part 'get_revocation_list_credential_result_dto.g.dart';
 /// DTO contains revocation list credential
 ///
 /// Properties:
-/// * [revocationListCredential] 
+/// * [revocationListCredential]
 @BuiltValue()
-abstract class GetRevocationListCredentialResultDto implements Built<GetRevocationListCredentialResultDto, GetRevocationListCredentialResultDtoBuilder> {
+abstract class GetRevocationListCredentialResultDto
+    implements
+        Built<
+          GetRevocationListCredentialResultDto,
+          GetRevocationListCredentialResultDtoBuilder
+        > {
   @BuiltValueField(wireName: r'revocationListCredential')
   JsonObject get revocationListCredential;
 
   GetRevocationListCredentialResultDto._();
 
-  factory GetRevocationListCredentialResultDto([void updates(GetRevocationListCredentialResultDtoBuilder b)]) = _$GetRevocationListCredentialResultDto;
+  factory GetRevocationListCredentialResultDto([
+    void updates(GetRevocationListCredentialResultDtoBuilder b),
+  ]) = _$GetRevocationListCredentialResultDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetRevocationListCredentialResultDtoBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetRevocationListCredentialResultDto> get serializer => _$GetRevocationListCredentialResultDtoSerializer();
+  static Serializer<GetRevocationListCredentialResultDto> get serializer =>
+      _$GetRevocationListCredentialResultDtoSerializer();
 }
 
-class _$GetRevocationListCredentialResultDtoSerializer implements PrimitiveSerializer<GetRevocationListCredentialResultDto> {
+class _$GetRevocationListCredentialResultDtoSerializer
+    implements PrimitiveSerializer<GetRevocationListCredentialResultDto> {
   @override
-  final Iterable<Type> types = const [GetRevocationListCredentialResultDto, _$GetRevocationListCredentialResultDto];
+  final Iterable<Type> types = const [
+    GetRevocationListCredentialResultDto,
+    _$GetRevocationListCredentialResultDto,
+  ];
 
   @override
   final String wireName = r'GetRevocationListCredentialResultDto';
@@ -54,7 +66,11 @@ class _$GetRevocationListCredentialResultDtoSerializer implements PrimitiveSeria
     GetRevocationListCredentialResultDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -70,10 +86,12 @@ class _$GetRevocationListCredentialResultDtoSerializer implements PrimitiveSeria
       final value = serializedList[i + 1];
       switch (key) {
         case r'revocationListCredential':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JsonObject),
+                  )
+                  as JsonObject;
           result.revocationListCredential = valueDes;
           break;
         default:
@@ -104,4 +122,3 @@ class _$GetRevocationListCredentialResultDtoSerializer implements PrimitiveSeria
     return result.build();
   }
 }
-

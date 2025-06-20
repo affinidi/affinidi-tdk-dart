@@ -10,15 +10,15 @@ class _$CorsGetCredentialOfferOK extends CorsGetCredentialOfferOK {
   @override
   final String? corsGetCredentialOfferOk;
 
-  factory _$CorsGetCredentialOfferOK(
-          [void Function(CorsGetCredentialOfferOKBuilder)? updates]) =>
-      (CorsGetCredentialOfferOKBuilder()..update(updates))._build();
+  factory _$CorsGetCredentialOfferOK([
+    void Function(CorsGetCredentialOfferOKBuilder)? updates,
+  ]) => (CorsGetCredentialOfferOKBuilder()..update(updates))._build();
 
   _$CorsGetCredentialOfferOK._({this.corsGetCredentialOfferOk}) : super._();
   @override
   CorsGetCredentialOfferOK rebuild(
-          void Function(CorsGetCredentialOfferOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CorsGetCredentialOfferOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CorsGetCredentialOfferOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$CorsGetCredentialOfferOK extends CorsGetCredentialOfferOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'CorsGetCredentialOfferOK')
-          ..add('corsGetCredentialOfferOk', corsGetCredentialOfferOk))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'CorsGetCredentialOfferOK',
+    )..add('corsGetCredentialOfferOk', corsGetCredentialOfferOk)).toString();
   }
 }
 
@@ -84,7 +84,8 @@ class CorsGetCredentialOfferOKBuilder
   CorsGetCredentialOfferOK build() => _build();
 
   _$CorsGetCredentialOfferOK _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CorsGetCredentialOfferOK._(
           corsGetCredentialOfferOk: corsGetCredentialOfferOk,
         );

@@ -11,11 +11,12 @@ part 'add_user_to_group_input.g.dart';
 /// input used to add a user to a group
 ///
 /// Properties:
-/// * [name] 
-/// * [description] 
+/// * [name]
+/// * [description]
 /// * [userId] - Unique identifier of the user
 @BuiltValue()
-abstract class AddUserToGroupInput implements Built<AddUserToGroupInput, AddUserToGroupInputBuilder> {
+abstract class AddUserToGroupInput
+    implements Built<AddUserToGroupInput, AddUserToGroupInputBuilder> {
   @BuiltValueField(wireName: r'name')
   String? get name;
 
@@ -28,18 +29,24 @@ abstract class AddUserToGroupInput implements Built<AddUserToGroupInput, AddUser
 
   AddUserToGroupInput._();
 
-  factory AddUserToGroupInput([void updates(AddUserToGroupInputBuilder b)]) = _$AddUserToGroupInput;
+  factory AddUserToGroupInput([void updates(AddUserToGroupInputBuilder b)]) =
+      _$AddUserToGroupInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AddUserToGroupInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<AddUserToGroupInput> get serializer => _$AddUserToGroupInputSerializer();
+  static Serializer<AddUserToGroupInput> get serializer =>
+      _$AddUserToGroupInputSerializer();
 }
 
-class _$AddUserToGroupInputSerializer implements PrimitiveSerializer<AddUserToGroupInput> {
+class _$AddUserToGroupInputSerializer
+    implements PrimitiveSerializer<AddUserToGroupInput> {
   @override
-  final Iterable<Type> types = const [AddUserToGroupInput, _$AddUserToGroupInput];
+  final Iterable<Type> types = const [
+    AddUserToGroupInput,
+    _$AddUserToGroupInput,
+  ];
 
   @override
   final String wireName = r'AddUserToGroupInput';
@@ -76,7 +83,11 @@ class _$AddUserToGroupInputSerializer implements PrimitiveSerializer<AddUserToGr
     AddUserToGroupInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -92,24 +103,30 @@ class _$AddUserToGroupInputSerializer implements PrimitiveSerializer<AddUserToGr
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.description = valueDes;
           break;
         case r'userId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.userId = valueDes;
           break;
         default:
@@ -140,4 +157,3 @@ class _$AddUserToGroupInputSerializer implements PrimitiveSerializer<AddUserToGr
     return result.build();
   }
 }
-

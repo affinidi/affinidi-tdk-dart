@@ -12,11 +12,12 @@ part 'blocked_users_input.g.dart';
 /// BlockedUsersInput
 ///
 /// Properties:
-/// * [name] 
-/// * [description] 
-/// * [userIds] 
+/// * [name]
+/// * [description]
+/// * [userIds]
 @BuiltValue()
-abstract class BlockedUsersInput implements Built<BlockedUsersInput, BlockedUsersInputBuilder> {
+abstract class BlockedUsersInput
+    implements Built<BlockedUsersInput, BlockedUsersInputBuilder> {
   @BuiltValueField(wireName: r'name')
   String? get name;
 
@@ -28,16 +29,19 @@ abstract class BlockedUsersInput implements Built<BlockedUsersInput, BlockedUser
 
   BlockedUsersInput._();
 
-  factory BlockedUsersInput([void updates(BlockedUsersInputBuilder b)]) = _$BlockedUsersInput;
+  factory BlockedUsersInput([void updates(BlockedUsersInputBuilder b)]) =
+      _$BlockedUsersInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(BlockedUsersInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<BlockedUsersInput> get serializer => _$BlockedUsersInputSerializer();
+  static Serializer<BlockedUsersInput> get serializer =>
+      _$BlockedUsersInputSerializer();
 }
 
-class _$BlockedUsersInputSerializer implements PrimitiveSerializer<BlockedUsersInput> {
+class _$BlockedUsersInputSerializer
+    implements PrimitiveSerializer<BlockedUsersInput> {
   @override
   final Iterable<Type> types = const [BlockedUsersInput, _$BlockedUsersInput];
 
@@ -76,7 +80,11 @@ class _$BlockedUsersInputSerializer implements PrimitiveSerializer<BlockedUsersI
     BlockedUsersInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -92,24 +100,32 @@ class _$BlockedUsersInputSerializer implements PrimitiveSerializer<BlockedUsersI
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.description = valueDes;
           break;
         case r'userIds':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.userIds.replace(valueDes);
           break;
         default:
@@ -140,4 +156,3 @@ class _$BlockedUsersInputSerializer implements PrimitiveSerializer<BlockedUsersI
     return result.build();
   }
 }
-

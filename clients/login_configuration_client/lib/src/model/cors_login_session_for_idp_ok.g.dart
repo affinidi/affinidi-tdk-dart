@@ -10,15 +10,15 @@ class _$CorsLoginSessionForIdpOK extends CorsLoginSessionForIdpOK {
   @override
   final String? corsLoginSessionForIdpOk;
 
-  factory _$CorsLoginSessionForIdpOK(
-          [void Function(CorsLoginSessionForIdpOKBuilder)? updates]) =>
-      (CorsLoginSessionForIdpOKBuilder()..update(updates))._build();
+  factory _$CorsLoginSessionForIdpOK([
+    void Function(CorsLoginSessionForIdpOKBuilder)? updates,
+  ]) => (CorsLoginSessionForIdpOKBuilder()..update(updates))._build();
 
   _$CorsLoginSessionForIdpOK._({this.corsLoginSessionForIdpOk}) : super._();
   @override
   CorsLoginSessionForIdpOK rebuild(
-          void Function(CorsLoginSessionForIdpOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CorsLoginSessionForIdpOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CorsLoginSessionForIdpOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$CorsLoginSessionForIdpOK extends CorsLoginSessionForIdpOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'CorsLoginSessionForIdpOK')
-          ..add('corsLoginSessionForIdpOk', corsLoginSessionForIdpOk))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'CorsLoginSessionForIdpOK',
+    )..add('corsLoginSessionForIdpOk', corsLoginSessionForIdpOk)).toString();
   }
 }
 
@@ -84,7 +84,8 @@ class CorsLoginSessionForIdpOKBuilder
   CorsLoginSessionForIdpOK build() => _build();
 
   _$CorsLoginSessionForIdpOK _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CorsLoginSessionForIdpOK._(
           corsLoginSessionForIdpOk: corsLoginSessionForIdpOk,
         );

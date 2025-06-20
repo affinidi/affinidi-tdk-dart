@@ -11,26 +11,38 @@ part 'cors_initiate_data_sharing_request_ok.g.dart';
 /// CorsInitiateDataSharingRequestOK
 ///
 /// Properties:
-/// * [corsInitiateDataSharingRequestOk] 
+/// * [corsInitiateDataSharingRequestOk]
 @BuiltValue()
-abstract class CorsInitiateDataSharingRequestOK implements Built<CorsInitiateDataSharingRequestOK, CorsInitiateDataSharingRequestOKBuilder> {
+abstract class CorsInitiateDataSharingRequestOK
+    implements
+        Built<
+          CorsInitiateDataSharingRequestOK,
+          CorsInitiateDataSharingRequestOKBuilder
+        > {
   @BuiltValueField(wireName: r'corsInitiateDataSharingRequestOk')
   String? get corsInitiateDataSharingRequestOk;
 
   CorsInitiateDataSharingRequestOK._();
 
-  factory CorsInitiateDataSharingRequestOK([void updates(CorsInitiateDataSharingRequestOKBuilder b)]) = _$CorsInitiateDataSharingRequestOK;
+  factory CorsInitiateDataSharingRequestOK([
+    void updates(CorsInitiateDataSharingRequestOKBuilder b),
+  ]) = _$CorsInitiateDataSharingRequestOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsInitiateDataSharingRequestOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CorsInitiateDataSharingRequestOK> get serializer => _$CorsInitiateDataSharingRequestOKSerializer();
+  static Serializer<CorsInitiateDataSharingRequestOK> get serializer =>
+      _$CorsInitiateDataSharingRequestOKSerializer();
 }
 
-class _$CorsInitiateDataSharingRequestOKSerializer implements PrimitiveSerializer<CorsInitiateDataSharingRequestOK> {
+class _$CorsInitiateDataSharingRequestOKSerializer
+    implements PrimitiveSerializer<CorsInitiateDataSharingRequestOK> {
   @override
-  final Iterable<Type> types = const [CorsInitiateDataSharingRequestOK, _$CorsInitiateDataSharingRequestOK];
+  final Iterable<Type> types = const [
+    CorsInitiateDataSharingRequestOK,
+    _$CorsInitiateDataSharingRequestOK,
+  ];
 
   @override
   final String wireName = r'CorsInitiateDataSharingRequestOK';
@@ -55,7 +67,11 @@ class _$CorsInitiateDataSharingRequestOKSerializer implements PrimitiveSerialize
     CorsInitiateDataSharingRequestOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -71,10 +87,12 @@ class _$CorsInitiateDataSharingRequestOKSerializer implements PrimitiveSerialize
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsInitiateDataSharingRequestOk':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.corsInitiateDataSharingRequestOk = valueDes;
           break;
         default:
@@ -105,4 +123,3 @@ class _$CorsInitiateDataSharingRequestOKSerializer implements PrimitiveSerialize
     return result.build();
   }
 }
-

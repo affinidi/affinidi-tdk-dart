@@ -11,26 +11,38 @@ part 'cors_iota_exchange_credentials_ok.g.dart';
 /// CorsIotaExchangeCredentialsOK
 ///
 /// Properties:
-/// * [corsIotaExchangeCredentialsOk] 
+/// * [corsIotaExchangeCredentialsOk]
 @BuiltValue()
-abstract class CorsIotaExchangeCredentialsOK implements Built<CorsIotaExchangeCredentialsOK, CorsIotaExchangeCredentialsOKBuilder> {
+abstract class CorsIotaExchangeCredentialsOK
+    implements
+        Built<
+          CorsIotaExchangeCredentialsOK,
+          CorsIotaExchangeCredentialsOKBuilder
+        > {
   @BuiltValueField(wireName: r'corsIotaExchangeCredentialsOk')
   String? get corsIotaExchangeCredentialsOk;
 
   CorsIotaExchangeCredentialsOK._();
 
-  factory CorsIotaExchangeCredentialsOK([void updates(CorsIotaExchangeCredentialsOKBuilder b)]) = _$CorsIotaExchangeCredentialsOK;
+  factory CorsIotaExchangeCredentialsOK([
+    void updates(CorsIotaExchangeCredentialsOKBuilder b),
+  ]) = _$CorsIotaExchangeCredentialsOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsIotaExchangeCredentialsOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CorsIotaExchangeCredentialsOK> get serializer => _$CorsIotaExchangeCredentialsOKSerializer();
+  static Serializer<CorsIotaExchangeCredentialsOK> get serializer =>
+      _$CorsIotaExchangeCredentialsOKSerializer();
 }
 
-class _$CorsIotaExchangeCredentialsOKSerializer implements PrimitiveSerializer<CorsIotaExchangeCredentialsOK> {
+class _$CorsIotaExchangeCredentialsOKSerializer
+    implements PrimitiveSerializer<CorsIotaExchangeCredentialsOK> {
   @override
-  final Iterable<Type> types = const [CorsIotaExchangeCredentialsOK, _$CorsIotaExchangeCredentialsOK];
+  final Iterable<Type> types = const [
+    CorsIotaExchangeCredentialsOK,
+    _$CorsIotaExchangeCredentialsOK,
+  ];
 
   @override
   final String wireName = r'CorsIotaExchangeCredentialsOK';
@@ -55,7 +67,11 @@ class _$CorsIotaExchangeCredentialsOKSerializer implements PrimitiveSerializer<C
     CorsIotaExchangeCredentialsOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -71,10 +87,12 @@ class _$CorsIotaExchangeCredentialsOKSerializer implements PrimitiveSerializer<C
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsIotaExchangeCredentialsOk':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.corsIotaExchangeCredentialsOk = valueDes;
           break;
         default:
@@ -105,4 +123,3 @@ class _$CorsIotaExchangeCredentialsOKSerializer implements PrimitiveSerializer<C
     return result.build();
   }
 }
-

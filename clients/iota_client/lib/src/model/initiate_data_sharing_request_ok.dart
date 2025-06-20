@@ -12,26 +12,38 @@ part 'initiate_data_sharing_request_ok.g.dart';
 /// InitiateDataSharingRequestOK
 ///
 /// Properties:
-/// * [data] 
+/// * [data]
 @BuiltValue()
-abstract class InitiateDataSharingRequestOK implements Built<InitiateDataSharingRequestOK, InitiateDataSharingRequestOKBuilder> {
+abstract class InitiateDataSharingRequestOK
+    implements
+        Built<
+          InitiateDataSharingRequestOK,
+          InitiateDataSharingRequestOKBuilder
+        > {
   @BuiltValueField(wireName: r'data')
   InitiateDataSharingRequestOKData? get data;
 
   InitiateDataSharingRequestOK._();
 
-  factory InitiateDataSharingRequestOK([void updates(InitiateDataSharingRequestOKBuilder b)]) = _$InitiateDataSharingRequestOK;
+  factory InitiateDataSharingRequestOK([
+    void updates(InitiateDataSharingRequestOKBuilder b),
+  ]) = _$InitiateDataSharingRequestOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(InitiateDataSharingRequestOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<InitiateDataSharingRequestOK> get serializer => _$InitiateDataSharingRequestOKSerializer();
+  static Serializer<InitiateDataSharingRequestOK> get serializer =>
+      _$InitiateDataSharingRequestOKSerializer();
 }
 
-class _$InitiateDataSharingRequestOKSerializer implements PrimitiveSerializer<InitiateDataSharingRequestOK> {
+class _$InitiateDataSharingRequestOKSerializer
+    implements PrimitiveSerializer<InitiateDataSharingRequestOK> {
   @override
-  final Iterable<Type> types = const [InitiateDataSharingRequestOK, _$InitiateDataSharingRequestOK];
+  final Iterable<Type> types = const [
+    InitiateDataSharingRequestOK,
+    _$InitiateDataSharingRequestOK,
+  ];
 
   @override
   final String wireName = r'InitiateDataSharingRequestOK';
@@ -56,7 +68,11 @@ class _$InitiateDataSharingRequestOKSerializer implements PrimitiveSerializer<In
     InitiateDataSharingRequestOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -72,10 +88,14 @@ class _$InitiateDataSharingRequestOKSerializer implements PrimitiveSerializer<In
       final value = serializedList[i + 1];
       switch (key) {
         case r'data':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(InitiateDataSharingRequestOKData),
-          ) as InitiateDataSharingRequestOKData;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      InitiateDataSharingRequestOKData,
+                    ),
+                  )
+                  as InitiateDataSharingRequestOKData;
           result.data.replace(valueDes);
           break;
         default:
@@ -106,4 +126,3 @@ class _$InitiateDataSharingRequestOKSerializer implements PrimitiveSerializer<In
     return result.build();
   }
 }
-

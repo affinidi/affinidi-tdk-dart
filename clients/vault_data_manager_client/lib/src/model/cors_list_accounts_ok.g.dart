@@ -10,15 +10,15 @@ class _$CorsListAccountsOK extends CorsListAccountsOK {
   @override
   final String? corsListAccountsOk;
 
-  factory _$CorsListAccountsOK(
-          [void Function(CorsListAccountsOKBuilder)? updates]) =>
-      (CorsListAccountsOKBuilder()..update(updates))._build();
+  factory _$CorsListAccountsOK([
+    void Function(CorsListAccountsOKBuilder)? updates,
+  ]) => (CorsListAccountsOKBuilder()..update(updates))._build();
 
   _$CorsListAccountsOK._({this.corsListAccountsOk}) : super._();
   @override
   CorsListAccountsOK rebuild(
-          void Function(CorsListAccountsOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CorsListAccountsOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CorsListAccountsOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$CorsListAccountsOK extends CorsListAccountsOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'CorsListAccountsOK')
-          ..add('corsListAccountsOk', corsListAccountsOk))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'CorsListAccountsOK',
+    )..add('corsListAccountsOk', corsListAccountsOk)).toString();
   }
 }
 
@@ -83,10 +83,8 @@ class CorsListAccountsOKBuilder
   CorsListAccountsOK build() => _build();
 
   _$CorsListAccountsOK _build() {
-    final _$result = _$v ??
-        _$CorsListAccountsOK._(
-          corsListAccountsOk: corsListAccountsOk,
-        );
+    final _$result =
+        _$v ?? _$CorsListAccountsOK._(corsListAccountsOk: corsListAccountsOk);
     replace(_$result);
     return _$result;
   }

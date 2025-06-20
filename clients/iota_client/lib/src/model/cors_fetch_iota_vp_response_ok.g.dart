@@ -10,15 +10,15 @@ class _$CorsFetchIotaVpResponseOK extends CorsFetchIotaVpResponseOK {
   @override
   final String? corsFetchIotaVpResponseOk;
 
-  factory _$CorsFetchIotaVpResponseOK(
-          [void Function(CorsFetchIotaVpResponseOKBuilder)? updates]) =>
-      (CorsFetchIotaVpResponseOKBuilder()..update(updates))._build();
+  factory _$CorsFetchIotaVpResponseOK([
+    void Function(CorsFetchIotaVpResponseOKBuilder)? updates,
+  ]) => (CorsFetchIotaVpResponseOKBuilder()..update(updates))._build();
 
   _$CorsFetchIotaVpResponseOK._({this.corsFetchIotaVpResponseOk}) : super._();
   @override
   CorsFetchIotaVpResponseOK rebuild(
-          void Function(CorsFetchIotaVpResponseOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CorsFetchIotaVpResponseOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CorsFetchIotaVpResponseOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$CorsFetchIotaVpResponseOK extends CorsFetchIotaVpResponseOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'CorsFetchIotaVpResponseOK')
-          ..add('corsFetchIotaVpResponseOk', corsFetchIotaVpResponseOk))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'CorsFetchIotaVpResponseOK',
+    )..add('corsFetchIotaVpResponseOk', corsFetchIotaVpResponseOk)).toString();
   }
 }
 
@@ -84,7 +84,8 @@ class CorsFetchIotaVpResponseOKBuilder
   CorsFetchIotaVpResponseOK build() => _build();
 
   _$CorsFetchIotaVpResponseOK _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CorsFetchIotaVpResponseOK._(
           corsFetchIotaVpResponseOk: corsFetchIotaVpResponseOk,
         );

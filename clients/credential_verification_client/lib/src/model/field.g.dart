@@ -24,9 +24,9 @@ FieldPredicateEnum _$fieldPredicateEnumValueOf(String name) {
 
 final BuiltSet<FieldPredicateEnum> _$fieldPredicateEnumValues =
     BuiltSet<FieldPredicateEnum>(const <FieldPredicateEnum>[
-  _$fieldPredicateEnum_required_,
-  _$fieldPredicateEnum_preferred,
-]);
+      _$fieldPredicateEnum_required_,
+      _$fieldPredicateEnum_preferred,
+    ]);
 
 Serializer<FieldPredicateEnum> _$fieldPredicateEnumSerializer =
     _$FieldPredicateEnumSerializer();
@@ -48,15 +48,20 @@ class _$FieldPredicateEnumSerializer
   final String wireName = 'FieldPredicateEnum';
 
   @override
-  Object serialize(Serializers serializers, FieldPredicateEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    FieldPredicateEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
-  FieldPredicateEnum deserialize(Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      FieldPredicateEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+  FieldPredicateEnum deserialize(
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => FieldPredicateEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$Field extends Field {
@@ -75,7 +80,7 @@ class _$Field extends Field {
       (FieldBuilder()..update(updates))._build();
 
   _$Field._({this.id, this.path, this.purpose, this.filter, this.predicate})
-      : super._();
+    : super._();
   @override
   Field rebuild(void Function(FieldBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -174,7 +179,8 @@ class FieldBuilder implements Builder<Field, FieldBuilder> {
   _$Field _build() {
     _$Field _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$Field._(
             id: id,
             path: _path?.build(),

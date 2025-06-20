@@ -11,26 +11,34 @@ part 'cors_get_configuration_ok.g.dart';
 /// CorsGetConfigurationOK
 ///
 /// Properties:
-/// * [corsGetConfigurationOk] 
+/// * [corsGetConfigurationOk]
 @BuiltValue()
-abstract class CorsGetConfigurationOK implements Built<CorsGetConfigurationOK, CorsGetConfigurationOKBuilder> {
+abstract class CorsGetConfigurationOK
+    implements Built<CorsGetConfigurationOK, CorsGetConfigurationOKBuilder> {
   @BuiltValueField(wireName: r'corsGetConfigurationOk')
   String? get corsGetConfigurationOk;
 
   CorsGetConfigurationOK._();
 
-  factory CorsGetConfigurationOK([void updates(CorsGetConfigurationOKBuilder b)]) = _$CorsGetConfigurationOK;
+  factory CorsGetConfigurationOK([
+    void updates(CorsGetConfigurationOKBuilder b),
+  ]) = _$CorsGetConfigurationOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsGetConfigurationOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CorsGetConfigurationOK> get serializer => _$CorsGetConfigurationOKSerializer();
+  static Serializer<CorsGetConfigurationOK> get serializer =>
+      _$CorsGetConfigurationOKSerializer();
 }
 
-class _$CorsGetConfigurationOKSerializer implements PrimitiveSerializer<CorsGetConfigurationOK> {
+class _$CorsGetConfigurationOKSerializer
+    implements PrimitiveSerializer<CorsGetConfigurationOK> {
   @override
-  final Iterable<Type> types = const [CorsGetConfigurationOK, _$CorsGetConfigurationOK];
+  final Iterable<Type> types = const [
+    CorsGetConfigurationOK,
+    _$CorsGetConfigurationOK,
+  ];
 
   @override
   final String wireName = r'CorsGetConfigurationOK';
@@ -55,7 +63,11 @@ class _$CorsGetConfigurationOKSerializer implements PrimitiveSerializer<CorsGetC
     CorsGetConfigurationOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -71,10 +83,12 @@ class _$CorsGetConfigurationOKSerializer implements PrimitiveSerializer<CorsGetC
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsGetConfigurationOk':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.corsGetConfigurationOk = valueDes;
           break;
         default:
@@ -105,4 +119,3 @@ class _$CorsGetConfigurationOKSerializer implements PrimitiveSerializer<CorsGetC
     return result.build();
   }
 }
-

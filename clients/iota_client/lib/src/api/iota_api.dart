@@ -22,7 +22,6 @@ import 'package:affinidi_tdk_iota_client/src/model/not_found_error.dart';
 import 'package:affinidi_tdk_iota_client/src/model/operation_forbidden_error.dart';
 
 class IotaApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -43,7 +42,7 @@ class IotaApi {
   ///
   /// Returns a [Future] containing a [Response] with a [AwsExchangeCredentialsOK] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AwsExchangeCredentialsOK>> awsExchangeCredentials({ 
+  Future<Response<AwsExchangeCredentialsOK>> awsExchangeCredentials({
     required AwsExchangeCredentials awsExchangeCredentials,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -55,13 +54,8 @@ class IotaApi {
     final _path = r'/v1/aws-exchange-credentials';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       contentType: 'application/json',
       validateStatus: validateStatus,
     );
@@ -70,14 +64,13 @@ class IotaApi {
 
     try {
       const _type = FullType(AwsExchangeCredentials);
-      _bodyData = _serializers.serialize(awsExchangeCredentials, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      _bodyData = _serializers.serialize(
+        awsExchangeCredentials,
+        specifiedType: _type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -97,11 +90,13 @@ class IotaApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(AwsExchangeCredentialsOK),
-      ) as AwsExchangeCredentialsOK;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(AwsExchangeCredentialsOK),
+                )
+                as AwsExchangeCredentialsOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -138,8 +133,10 @@ class IotaApi {
   ///
   /// Returns a [Future] containing a [Response] with a [IotaExchangeCredentialsOK] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<IotaExchangeCredentialsOK>> awsExchangeCredentialsProjectToken({ 
-    required AwsExchangeCredentialsProjectToken awsExchangeCredentialsProjectToken,
+  Future<Response<IotaExchangeCredentialsOK>>
+  awsExchangeCredentialsProjectToken({
+    required AwsExchangeCredentialsProjectToken
+    awsExchangeCredentialsProjectToken,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -150,9 +147,7 @@ class IotaApi {
     final _path = r'/v1/aws-exchange-credentials/project-token';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -172,14 +167,13 @@ class IotaApi {
 
     try {
       const _type = FullType(AwsExchangeCredentialsProjectToken);
-      _bodyData = _serializers.serialize(awsExchangeCredentialsProjectToken, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      _bodyData = _serializers.serialize(
+        awsExchangeCredentialsProjectToken,
+        specifiedType: _type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -199,11 +193,13 @@ class IotaApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(IotaExchangeCredentialsOK),
-      ) as IotaExchangeCredentialsOK;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(IotaExchangeCredentialsOK),
+                )
+                as IotaExchangeCredentialsOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -240,7 +236,7 @@ class IotaApi {
   ///
   /// Returns a [Future] containing a [Response] with a [FetchIOTAVPResponseOK] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<FetchIOTAVPResponseOK>> fetchIotaVpResponse({ 
+  Future<Response<FetchIOTAVPResponseOK>> fetchIotaVpResponse({
     required FetchIOTAVPResponseInput fetchIOTAVPResponseInput,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -252,9 +248,7 @@ class IotaApi {
     final _path = r'/v1/fetch-iota-response';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -274,14 +268,13 @@ class IotaApi {
 
     try {
       const _type = FullType(FetchIOTAVPResponseInput);
-      _bodyData = _serializers.serialize(fetchIOTAVPResponseInput, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      _bodyData = _serializers.serialize(
+        fetchIOTAVPResponseInput,
+        specifiedType: _type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -301,11 +294,13 @@ class IotaApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(FetchIOTAVPResponseOK),
-      ) as FetchIOTAVPResponseOK;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(FetchIOTAVPResponseOK),
+                )
+                as FetchIOTAVPResponseOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -342,7 +337,7 @@ class IotaApi {
   ///
   /// Returns a [Future] containing a [Response] with a [InitiateDataSharingRequestOK] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<InitiateDataSharingRequestOK>> initiateDataSharingRequest({ 
+  Future<Response<InitiateDataSharingRequestOK>> initiateDataSharingRequest({
     required InitiateDataSharingRequestInput initiateDataSharingRequestInput,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -354,9 +349,7 @@ class IotaApi {
     final _path = r'/v1/initiate-data-sharing-request';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -376,14 +369,13 @@ class IotaApi {
 
     try {
       const _type = FullType(InitiateDataSharingRequestInput);
-      _bodyData = _serializers.serialize(initiateDataSharingRequestInput, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      _bodyData = _serializers.serialize(
+        initiateDataSharingRequestInput,
+        specifiedType: _type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -403,11 +395,13 @@ class IotaApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(InitiateDataSharingRequestOK),
-      ) as InitiateDataSharingRequestOK;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(InitiateDataSharingRequestOK),
+                )
+                as InitiateDataSharingRequestOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -444,7 +438,7 @@ class IotaApi {
   ///
   /// Returns a [Future] containing a [Response] with a [IotaExchangeCredentialsOK] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<IotaExchangeCredentialsOK>> iotaExchangeCredentials({ 
+  Future<Response<IotaExchangeCredentialsOK>> iotaExchangeCredentials({
     required IotaExchangeCredentials iotaExchangeCredentials,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -456,13 +450,8 @@ class IotaApi {
     final _path = r'/v1/exchange-credentials';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       contentType: 'application/json',
       validateStatus: validateStatus,
     );
@@ -471,14 +460,13 @@ class IotaApi {
 
     try {
       const _type = FullType(IotaExchangeCredentials);
-      _bodyData = _serializers.serialize(iotaExchangeCredentials, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      _bodyData = _serializers.serialize(
+        iotaExchangeCredentials,
+        specifiedType: _type,
+      );
+    } catch (error, stackTrace) {
       throw DioException(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -498,11 +486,13 @@ class IotaApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(IotaExchangeCredentialsOK),
-      ) as IotaExchangeCredentialsOK;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(IotaExchangeCredentialsOK),
+                )
+                as IotaExchangeCredentialsOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -524,5 +514,4 @@ class IotaApi {
       extra: _response.extra,
     );
   }
-
 }

@@ -21,13 +21,13 @@ class _$ErrorOAuth2 extends ErrorOAuth2 {
   factory _$ErrorOAuth2([void Function(ErrorOAuth2Builder)? updates]) =>
       (ErrorOAuth2Builder()..update(updates))._build();
 
-  _$ErrorOAuth2._(
-      {required this.error,
-      this.errorDebug,
-      required this.errorDescription,
-      this.errorHint,
-      required this.statusCode})
-      : super._();
+  _$ErrorOAuth2._({
+    required this.error,
+    this.errorDebug,
+    required this.errorDescription,
+    this.errorHint,
+    required this.statusCode,
+  }) : super._();
   @override
   ErrorOAuth2 rebuild(void Function(ErrorOAuth2Builder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -125,16 +125,26 @@ class ErrorOAuth2Builder implements Builder<ErrorOAuth2, ErrorOAuth2Builder> {
   ErrorOAuth2 build() => _build();
 
   _$ErrorOAuth2 _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$ErrorOAuth2._(
           error: BuiltValueNullFieldError.checkNotNull(
-              error, r'ErrorOAuth2', 'error'),
+            error,
+            r'ErrorOAuth2',
+            'error',
+          ),
           errorDebug: errorDebug,
           errorDescription: BuiltValueNullFieldError.checkNotNull(
-              errorDescription, r'ErrorOAuth2', 'errorDescription'),
+            errorDescription,
+            r'ErrorOAuth2',
+            'errorDescription',
+          ),
           errorHint: errorHint,
           statusCode: BuiltValueNullFieldError.checkNotNull(
-              statusCode, r'ErrorOAuth2', 'statusCode'),
+            statusCode,
+            r'ErrorOAuth2',
+            'statusCode',
+          ),
         );
     replace(_$result);
     return _$result;

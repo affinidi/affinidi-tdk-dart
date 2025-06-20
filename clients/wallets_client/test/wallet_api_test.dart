@@ -1,7 +1,6 @@
 import 'package:test/test.dart';
 import 'package:affinidi_tdk_wallets_client/affinidi_tdk_wallets_client.dart';
 
-
 /// tests for WalletApi
 void main() {
   final instance = AffinidiTdkWalletsClient().getWalletApi();
@@ -55,6 +54,5 @@ void main() {
     test('test updateWallet', () async {
       // TODO
     });
-
   });
 }

@@ -10,15 +10,15 @@ class _$CorsGenerateCredentialsOK extends CorsGenerateCredentialsOK {
   @override
   final String? corsGenerateCredentialsOk;
 
-  factory _$CorsGenerateCredentialsOK(
-          [void Function(CorsGenerateCredentialsOKBuilder)? updates]) =>
-      (CorsGenerateCredentialsOKBuilder()..update(updates))._build();
+  factory _$CorsGenerateCredentialsOK([
+    void Function(CorsGenerateCredentialsOKBuilder)? updates,
+  ]) => (CorsGenerateCredentialsOKBuilder()..update(updates))._build();
 
   _$CorsGenerateCredentialsOK._({this.corsGenerateCredentialsOk}) : super._();
   @override
   CorsGenerateCredentialsOK rebuild(
-          void Function(CorsGenerateCredentialsOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CorsGenerateCredentialsOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CorsGenerateCredentialsOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$CorsGenerateCredentialsOK extends CorsGenerateCredentialsOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'CorsGenerateCredentialsOK')
-          ..add('corsGenerateCredentialsOk', corsGenerateCredentialsOk))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'CorsGenerateCredentialsOK',
+    )..add('corsGenerateCredentialsOk', corsGenerateCredentialsOk)).toString();
   }
 }
 
@@ -84,7 +84,8 @@ class CorsGenerateCredentialsOKBuilder
   CorsGenerateCredentialsOK build() => _build();
 
   _$CorsGenerateCredentialsOK _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CorsGenerateCredentialsOK._(
           corsGenerateCredentialsOk: corsGenerateCredentialsOk,
         );

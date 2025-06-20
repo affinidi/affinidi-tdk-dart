@@ -11,11 +11,16 @@ part 'initiate_data_sharing_request_ok_data.g.dart';
 /// InitiateDataSharingRequestOKData
 ///
 /// Properties:
-/// * [jwt] 
-/// * [correlationId] 
-/// * [transactionId] 
+/// * [jwt]
+/// * [correlationId]
+/// * [transactionId]
 @BuiltValue()
-abstract class InitiateDataSharingRequestOKData implements Built<InitiateDataSharingRequestOKData, InitiateDataSharingRequestOKDataBuilder> {
+abstract class InitiateDataSharingRequestOKData
+    implements
+        Built<
+          InitiateDataSharingRequestOKData,
+          InitiateDataSharingRequestOKDataBuilder
+        > {
   @BuiltValueField(wireName: r'jwt')
   String get jwt;
 
@@ -27,18 +32,25 @@ abstract class InitiateDataSharingRequestOKData implements Built<InitiateDataSha
 
   InitiateDataSharingRequestOKData._();
 
-  factory InitiateDataSharingRequestOKData([void updates(InitiateDataSharingRequestOKDataBuilder b)]) = _$InitiateDataSharingRequestOKData;
+  factory InitiateDataSharingRequestOKData([
+    void updates(InitiateDataSharingRequestOKDataBuilder b),
+  ]) = _$InitiateDataSharingRequestOKData;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(InitiateDataSharingRequestOKDataBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<InitiateDataSharingRequestOKData> get serializer => _$InitiateDataSharingRequestOKDataSerializer();
+  static Serializer<InitiateDataSharingRequestOKData> get serializer =>
+      _$InitiateDataSharingRequestOKDataSerializer();
 }
 
-class _$InitiateDataSharingRequestOKDataSerializer implements PrimitiveSerializer<InitiateDataSharingRequestOKData> {
+class _$InitiateDataSharingRequestOKDataSerializer
+    implements PrimitiveSerializer<InitiateDataSharingRequestOKData> {
   @override
-  final Iterable<Type> types = const [InitiateDataSharingRequestOKData, _$InitiateDataSharingRequestOKData];
+  final Iterable<Type> types = const [
+    InitiateDataSharingRequestOKData,
+    _$InitiateDataSharingRequestOKData,
+  ];
 
   @override
   final String wireName = r'InitiateDataSharingRequestOKData';
@@ -71,7 +83,11 @@ class _$InitiateDataSharingRequestOKDataSerializer implements PrimitiveSerialize
     InitiateDataSharingRequestOKData object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -87,24 +103,30 @@ class _$InitiateDataSharingRequestOKDataSerializer implements PrimitiveSerialize
       final value = serializedList[i + 1];
       switch (key) {
         case r'jwt':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.jwt = valueDes;
           break;
         case r'correlationId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.correlationId = valueDes;
           break;
         case r'transactionId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.transactionId = valueDes;
           break;
         default:
@@ -135,4 +157,3 @@ class _$InitiateDataSharingRequestOKDataSerializer implements PrimitiveSerialize
     return result.build();
   }
 }
-

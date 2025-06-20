@@ -11,26 +11,33 @@ part 'cors_start_file_scan_ok.g.dart';
 /// CorsStartFileScanOK
 ///
 /// Properties:
-/// * [corsStartFileScanOk] 
+/// * [corsStartFileScanOk]
 @BuiltValue()
-abstract class CorsStartFileScanOK implements Built<CorsStartFileScanOK, CorsStartFileScanOKBuilder> {
+abstract class CorsStartFileScanOK
+    implements Built<CorsStartFileScanOK, CorsStartFileScanOKBuilder> {
   @BuiltValueField(wireName: r'corsStartFileScanOk')
   String? get corsStartFileScanOk;
 
   CorsStartFileScanOK._();
 
-  factory CorsStartFileScanOK([void updates(CorsStartFileScanOKBuilder b)]) = _$CorsStartFileScanOK;
+  factory CorsStartFileScanOK([void updates(CorsStartFileScanOKBuilder b)]) =
+      _$CorsStartFileScanOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsStartFileScanOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CorsStartFileScanOK> get serializer => _$CorsStartFileScanOKSerializer();
+  static Serializer<CorsStartFileScanOK> get serializer =>
+      _$CorsStartFileScanOKSerializer();
 }
 
-class _$CorsStartFileScanOKSerializer implements PrimitiveSerializer<CorsStartFileScanOK> {
+class _$CorsStartFileScanOKSerializer
+    implements PrimitiveSerializer<CorsStartFileScanOK> {
   @override
-  final Iterable<Type> types = const [CorsStartFileScanOK, _$CorsStartFileScanOK];
+  final Iterable<Type> types = const [
+    CorsStartFileScanOK,
+    _$CorsStartFileScanOK,
+  ];
 
   @override
   final String wireName = r'CorsStartFileScanOK';
@@ -55,7 +62,11 @@ class _$CorsStartFileScanOKSerializer implements PrimitiveSerializer<CorsStartFi
     CorsStartFileScanOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -71,10 +82,12 @@ class _$CorsStartFileScanOKSerializer implements PrimitiveSerializer<CorsStartFi
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsStartFileScanOk':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.corsStartFileScanOk = valueDes;
           break;
         default:
@@ -105,4 +118,3 @@ class _$CorsStartFileScanOKSerializer implements PrimitiveSerializer<CorsStartFi
     return result.build();
   }
 }
-

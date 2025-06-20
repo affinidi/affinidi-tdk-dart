@@ -16,20 +16,20 @@ class _$ServiceErrorResponse extends ServiceErrorResponse {
   @override
   final BuiltList<ServiceErrorResponseDetailsInner>? details;
 
-  factory _$ServiceErrorResponse(
-          [void Function(ServiceErrorResponseBuilder)? updates]) =>
-      (ServiceErrorResponseBuilder()..update(updates))._build();
+  factory _$ServiceErrorResponse([
+    void Function(ServiceErrorResponseBuilder)? updates,
+  ]) => (ServiceErrorResponseBuilder()..update(updates))._build();
 
-  _$ServiceErrorResponse._(
-      {required this.debugId,
-      required this.name,
-      required this.code,
-      this.details})
-      : super._();
+  _$ServiceErrorResponse._({
+    required this.debugId,
+    required this.name,
+    required this.code,
+    this.details,
+  }) : super._();
   @override
   ServiceErrorResponse rebuild(
-          void Function(ServiceErrorResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ServiceErrorResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ServiceErrorResponseBuilder toBuilder() =>
@@ -121,14 +121,24 @@ class ServiceErrorResponseBuilder
   _$ServiceErrorResponse _build() {
     _$ServiceErrorResponse _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$ServiceErrorResponse._(
             debugId: BuiltValueNullFieldError.checkNotNull(
-                debugId, r'ServiceErrorResponse', 'debugId'),
+              debugId,
+              r'ServiceErrorResponse',
+              'debugId',
+            ),
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'ServiceErrorResponse', 'name'),
+              name,
+              r'ServiceErrorResponse',
+              'name',
+            ),
             code: BuiltValueNullFieldError.checkNotNull(
-                code, r'ServiceErrorResponse', 'code'),
+              code,
+              r'ServiceErrorResponse',
+              'code',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -138,7 +148,10 @@ class ServiceErrorResponseBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'ServiceErrorResponse', _$failedField, e.toString());
+          r'ServiceErrorResponse',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

@@ -12,9 +12,9 @@ class _$UpdateWalletInput extends UpdateWalletInput {
   @override
   final String? description;
 
-  factory _$UpdateWalletInput(
-          [void Function(UpdateWalletInputBuilder)? updates]) =>
-      (UpdateWalletInputBuilder()..update(updates))._build();
+  factory _$UpdateWalletInput([
+    void Function(UpdateWalletInputBuilder)? updates,
+  ]) => (UpdateWalletInputBuilder()..update(updates))._build();
 
   _$UpdateWalletInput._({this.name, this.description}) : super._();
   @override
@@ -91,11 +91,8 @@ class UpdateWalletInputBuilder
   UpdateWalletInput build() => _build();
 
   _$UpdateWalletInput _build() {
-    final _$result = _$v ??
-        _$UpdateWalletInput._(
-          name: name,
-          description: description,
-        );
+    final _$result =
+        _$v ?? _$UpdateWalletInput._(name: name, description: description);
     replace(_$result);
     return _$result;
   }

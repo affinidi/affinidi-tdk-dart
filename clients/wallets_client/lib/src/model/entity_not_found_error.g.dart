@@ -7,7 +7,7 @@ part of 'entity_not_found_error.dart';
 // **************************************************************************
 
 const EntityNotFoundErrorNameEnum
-    _$entityNotFoundErrorNameEnum_entityNotFoundError =
+_$entityNotFoundErrorNameEnum_entityNotFoundError =
     const EntityNotFoundErrorNameEnum._('entityNotFoundError');
 
 EntityNotFoundErrorNameEnum _$entityNotFoundErrorNameEnumValueOf(String name) {
@@ -20,17 +20,19 @@ EntityNotFoundErrorNameEnum _$entityNotFoundErrorNameEnumValueOf(String name) {
 }
 
 final BuiltSet<EntityNotFoundErrorNameEnum>
-    _$entityNotFoundErrorNameEnumValues =
-    BuiltSet<EntityNotFoundErrorNameEnum>(const <EntityNotFoundErrorNameEnum>[
-  _$entityNotFoundErrorNameEnum_entityNotFoundError,
-]);
+_$entityNotFoundErrorNameEnumValues = BuiltSet<EntityNotFoundErrorNameEnum>(
+  const <EntityNotFoundErrorNameEnum>[
+    _$entityNotFoundErrorNameEnum_entityNotFoundError,
+  ],
+);
 
 const EntityNotFoundErrorMessageEnum
-    _$entityNotFoundErrorMessageEnum_entityNotFound =
+_$entityNotFoundErrorMessageEnum_entityNotFound =
     const EntityNotFoundErrorMessageEnum._('entityNotFound');
 
 EntityNotFoundErrorMessageEnum _$entityNotFoundErrorMessageEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'entityNotFound':
       return _$entityNotFoundErrorMessageEnum_entityNotFound;
@@ -40,17 +42,19 @@ EntityNotFoundErrorMessageEnum _$entityNotFoundErrorMessageEnumValueOf(
 }
 
 final BuiltSet<EntityNotFoundErrorMessageEnum>
-    _$entityNotFoundErrorMessageEnumValues = BuiltSet<
-        EntityNotFoundErrorMessageEnum>(const <EntityNotFoundErrorMessageEnum>[
-  _$entityNotFoundErrorMessageEnum_entityNotFound,
-]);
+_$entityNotFoundErrorMessageEnumValues =
+    BuiltSet<EntityNotFoundErrorMessageEnum>(
+      const <EntityNotFoundErrorMessageEnum>[
+        _$entityNotFoundErrorMessageEnum_entityNotFound,
+      ],
+    );
 
 const EntityNotFoundErrorHttpStatusCodeEnum
-    _$entityNotFoundErrorHttpStatusCodeEnum_number404 =
+_$entityNotFoundErrorHttpStatusCodeEnum_number404 =
     const EntityNotFoundErrorHttpStatusCodeEnum._('number404');
 
 EntityNotFoundErrorHttpStatusCodeEnum
-    _$entityNotFoundErrorHttpStatusCodeEnumValueOf(String name) {
+_$entityNotFoundErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number404':
       return _$entityNotFoundErrorHttpStatusCodeEnum_number404;
@@ -60,19 +64,21 @@ EntityNotFoundErrorHttpStatusCodeEnum
 }
 
 final BuiltSet<EntityNotFoundErrorHttpStatusCodeEnum>
-    _$entityNotFoundErrorHttpStatusCodeEnumValues = BuiltSet<
-        EntityNotFoundErrorHttpStatusCodeEnum>(const <EntityNotFoundErrorHttpStatusCodeEnum>[
-  _$entityNotFoundErrorHttpStatusCodeEnum_number404,
-]);
+_$entityNotFoundErrorHttpStatusCodeEnumValues =
+    BuiltSet<EntityNotFoundErrorHttpStatusCodeEnum>(
+      const <EntityNotFoundErrorHttpStatusCodeEnum>[
+        _$entityNotFoundErrorHttpStatusCodeEnum_number404,
+      ],
+    );
 
 Serializer<EntityNotFoundErrorNameEnum>
-    _$entityNotFoundErrorNameEnumSerializer =
+_$entityNotFoundErrorNameEnumSerializer =
     _$EntityNotFoundErrorNameEnumSerializer();
 Serializer<EntityNotFoundErrorMessageEnum>
-    _$entityNotFoundErrorMessageEnumSerializer =
+_$entityNotFoundErrorMessageEnumSerializer =
     _$EntityNotFoundErrorMessageEnumSerializer();
 Serializer<EntityNotFoundErrorHttpStatusCodeEnum>
-    _$entityNotFoundErrorHttpStatusCodeEnumSerializer =
+_$entityNotFoundErrorHttpStatusCodeEnumSerializer =
     _$EntityNotFoundErrorHttpStatusCodeEnumSerializer();
 
 class _$EntityNotFoundErrorNameEnumSerializer
@@ -90,16 +96,20 @@ class _$EntityNotFoundErrorNameEnumSerializer
   final String wireName = 'EntityNotFoundErrorNameEnum';
 
   @override
-  Object serialize(Serializers serializers, EntityNotFoundErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    EntityNotFoundErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   EntityNotFoundErrorNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      EntityNotFoundErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => EntityNotFoundErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$EntityNotFoundErrorMessageEnumSerializer
@@ -118,16 +128,19 @@ class _$EntityNotFoundErrorMessageEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, EntityNotFoundErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    EntityNotFoundErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   EntityNotFoundErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      EntityNotFoundErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => EntityNotFoundErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$EntityNotFoundErrorHttpStatusCodeEnumSerializer
@@ -141,23 +154,26 @@ class _$EntityNotFoundErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    EntityNotFoundErrorHttpStatusCodeEnum
+    EntityNotFoundErrorHttpStatusCodeEnum,
   ];
   @override
   final String wireName = 'EntityNotFoundErrorHttpStatusCodeEnum';
 
   @override
   Object serialize(
-          Serializers serializers, EntityNotFoundErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    EntityNotFoundErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   EntityNotFoundErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      EntityNotFoundErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => EntityNotFoundErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$EntityNotFoundError extends EntityNotFoundError {
@@ -172,21 +188,21 @@ class _$EntityNotFoundError extends EntityNotFoundError {
   @override
   final BuiltList<ServiceErrorResponseDetailsInner>? details;
 
-  factory _$EntityNotFoundError(
-          [void Function(EntityNotFoundErrorBuilder)? updates]) =>
-      (EntityNotFoundErrorBuilder()..update(updates))._build();
+  factory _$EntityNotFoundError([
+    void Function(EntityNotFoundErrorBuilder)? updates,
+  ]) => (EntityNotFoundErrorBuilder()..update(updates))._build();
 
-  _$EntityNotFoundError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$EntityNotFoundError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   EntityNotFoundError rebuild(
-          void Function(EntityNotFoundErrorBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(EntityNotFoundErrorBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   EntityNotFoundErrorBuilder toBuilder() =>
@@ -289,16 +305,29 @@ class EntityNotFoundErrorBuilder
   _$EntityNotFoundError _build() {
     _$EntityNotFoundError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$EntityNotFoundError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'EntityNotFoundError', 'name'),
+              name,
+              r'EntityNotFoundError',
+              'name',
+            ),
             message: BuiltValueNullFieldError.checkNotNull(
-                message, r'EntityNotFoundError', 'message'),
+              message,
+              r'EntityNotFoundError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode, r'EntityNotFoundError', 'httpStatusCode'),
+              httpStatusCode,
+              r'EntityNotFoundError',
+              'httpStatusCode',
+            ),
             traceId: BuiltValueNullFieldError.checkNotNull(
-                traceId, r'EntityNotFoundError', 'traceId'),
+              traceId,
+              r'EntityNotFoundError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -308,7 +337,10 @@ class EntityNotFoundErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'EntityNotFoundError', _$failedField, e.toString());
+          r'EntityNotFoundError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

@@ -11,24 +11,28 @@ part 'cors_init_nodes_ok.g.dart';
 /// CorsInitNodesOK
 ///
 /// Properties:
-/// * [corsInitNodesOk] 
+/// * [corsInitNodesOk]
 @BuiltValue()
-abstract class CorsInitNodesOK implements Built<CorsInitNodesOK, CorsInitNodesOKBuilder> {
+abstract class CorsInitNodesOK
+    implements Built<CorsInitNodesOK, CorsInitNodesOKBuilder> {
   @BuiltValueField(wireName: r'corsInitNodesOk')
   String? get corsInitNodesOk;
 
   CorsInitNodesOK._();
 
-  factory CorsInitNodesOK([void updates(CorsInitNodesOKBuilder b)]) = _$CorsInitNodesOK;
+  factory CorsInitNodesOK([void updates(CorsInitNodesOKBuilder b)]) =
+      _$CorsInitNodesOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsInitNodesOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CorsInitNodesOK> get serializer => _$CorsInitNodesOKSerializer();
+  static Serializer<CorsInitNodesOK> get serializer =>
+      _$CorsInitNodesOKSerializer();
 }
 
-class _$CorsInitNodesOKSerializer implements PrimitiveSerializer<CorsInitNodesOK> {
+class _$CorsInitNodesOKSerializer
+    implements PrimitiveSerializer<CorsInitNodesOK> {
   @override
   final Iterable<Type> types = const [CorsInitNodesOK, _$CorsInitNodesOK];
 
@@ -55,7 +59,11 @@ class _$CorsInitNodesOKSerializer implements PrimitiveSerializer<CorsInitNodesOK
     CorsInitNodesOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -71,10 +79,12 @@ class _$CorsInitNodesOKSerializer implements PrimitiveSerializer<CorsInitNodesOK
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsInitNodesOk':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.corsInitNodesOk = valueDes;
           break;
         default:
@@ -105,4 +115,3 @@ class _$CorsInitNodesOKSerializer implements PrimitiveSerializer<CorsInitNodesOK
     return result.build();
   }
 }
-

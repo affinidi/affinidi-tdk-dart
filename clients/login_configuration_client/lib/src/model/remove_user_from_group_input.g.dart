@@ -10,15 +10,15 @@ class _$RemoveUserFromGroupInput extends RemoveUserFromGroupInput {
   @override
   final String userId;
 
-  factory _$RemoveUserFromGroupInput(
-          [void Function(RemoveUserFromGroupInputBuilder)? updates]) =>
-      (RemoveUserFromGroupInputBuilder()..update(updates))._build();
+  factory _$RemoveUserFromGroupInput([
+    void Function(RemoveUserFromGroupInputBuilder)? updates,
+  ]) => (RemoveUserFromGroupInputBuilder()..update(updates))._build();
 
   _$RemoveUserFromGroupInput._({required this.userId}) : super._();
   @override
   RemoveUserFromGroupInput rebuild(
-          void Function(RemoveUserFromGroupInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(RemoveUserFromGroupInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   RemoveUserFromGroupInputBuilder toBuilder() =>
@@ -40,9 +40,9 @@ class _$RemoveUserFromGroupInput extends RemoveUserFromGroupInput {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'RemoveUserFromGroupInput')
-          ..add('userId', userId))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'RemoveUserFromGroupInput',
+    )..add('userId', userId)).toString();
   }
 }
 
@@ -82,10 +82,14 @@ class RemoveUserFromGroupInputBuilder
   RemoveUserFromGroupInput build() => _build();
 
   _$RemoveUserFromGroupInput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$RemoveUserFromGroupInput._(
           userId: BuiltValueNullFieldError.checkNotNull(
-              userId, r'RemoveUserFromGroupInput', 'userId'),
+            userId,
+            r'RemoveUserFromGroupInput',
+            'userId',
+          ),
         );
     replace(_$result);
     return _$result;

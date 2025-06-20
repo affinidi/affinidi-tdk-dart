@@ -7,11 +7,12 @@ part of 'resource_creation_error.dart';
 // **************************************************************************
 
 const ResourceCreationErrorNameEnum
-    _$resourceCreationErrorNameEnum_resourceCreationError =
+_$resourceCreationErrorNameEnum_resourceCreationError =
     const ResourceCreationErrorNameEnum._('resourceCreationError');
 
 ResourceCreationErrorNameEnum _$resourceCreationErrorNameEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'resourceCreationError':
       return _$resourceCreationErrorNameEnum_resourceCreationError;
@@ -21,17 +22,19 @@ ResourceCreationErrorNameEnum _$resourceCreationErrorNameEnumValueOf(
 }
 
 final BuiltSet<ResourceCreationErrorNameEnum>
-    _$resourceCreationErrorNameEnumValues = BuiltSet<
-        ResourceCreationErrorNameEnum>(const <ResourceCreationErrorNameEnum>[
-  _$resourceCreationErrorNameEnum_resourceCreationError,
-]);
+_$resourceCreationErrorNameEnumValues = BuiltSet<ResourceCreationErrorNameEnum>(
+  const <ResourceCreationErrorNameEnum>[
+    _$resourceCreationErrorNameEnum_resourceCreationError,
+  ],
+);
 
 const ResourceCreationErrorMessageEnum
-    _$resourceCreationErrorMessageEnum_failedToCreateResourcesPeriod =
+_$resourceCreationErrorMessageEnum_failedToCreateResourcesPeriod =
     const ResourceCreationErrorMessageEnum._('failedToCreateResourcesPeriod');
 
 ResourceCreationErrorMessageEnum _$resourceCreationErrorMessageEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'failedToCreateResourcesPeriod':
       return _$resourceCreationErrorMessageEnum_failedToCreateResourcesPeriod;
@@ -41,17 +44,19 @@ ResourceCreationErrorMessageEnum _$resourceCreationErrorMessageEnumValueOf(
 }
 
 final BuiltSet<ResourceCreationErrorMessageEnum>
-    _$resourceCreationErrorMessageEnumValues = BuiltSet<
-        ResourceCreationErrorMessageEnum>(const <ResourceCreationErrorMessageEnum>[
-  _$resourceCreationErrorMessageEnum_failedToCreateResourcesPeriod,
-]);
+_$resourceCreationErrorMessageEnumValues =
+    BuiltSet<ResourceCreationErrorMessageEnum>(
+      const <ResourceCreationErrorMessageEnum>[
+        _$resourceCreationErrorMessageEnum_failedToCreateResourcesPeriod,
+      ],
+    );
 
 const ResourceCreationErrorHttpStatusCodeEnum
-    _$resourceCreationErrorHttpStatusCodeEnum_number424 =
+_$resourceCreationErrorHttpStatusCodeEnum_number424 =
     const ResourceCreationErrorHttpStatusCodeEnum._('number424');
 
 ResourceCreationErrorHttpStatusCodeEnum
-    _$resourceCreationErrorHttpStatusCodeEnumValueOf(String name) {
+_$resourceCreationErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number424':
       return _$resourceCreationErrorHttpStatusCodeEnum_number424;
@@ -61,19 +66,21 @@ ResourceCreationErrorHttpStatusCodeEnum
 }
 
 final BuiltSet<ResourceCreationErrorHttpStatusCodeEnum>
-    _$resourceCreationErrorHttpStatusCodeEnumValues = BuiltSet<
-        ResourceCreationErrorHttpStatusCodeEnum>(const <ResourceCreationErrorHttpStatusCodeEnum>[
-  _$resourceCreationErrorHttpStatusCodeEnum_number424,
-]);
+_$resourceCreationErrorHttpStatusCodeEnumValues =
+    BuiltSet<ResourceCreationErrorHttpStatusCodeEnum>(
+      const <ResourceCreationErrorHttpStatusCodeEnum>[
+        _$resourceCreationErrorHttpStatusCodeEnum_number424,
+      ],
+    );
 
 Serializer<ResourceCreationErrorNameEnum>
-    _$resourceCreationErrorNameEnumSerializer =
+_$resourceCreationErrorNameEnumSerializer =
     _$ResourceCreationErrorNameEnumSerializer();
 Serializer<ResourceCreationErrorMessageEnum>
-    _$resourceCreationErrorMessageEnumSerializer =
+_$resourceCreationErrorMessageEnumSerializer =
     _$ResourceCreationErrorMessageEnumSerializer();
 Serializer<ResourceCreationErrorHttpStatusCodeEnum>
-    _$resourceCreationErrorHttpStatusCodeEnumSerializer =
+_$resourceCreationErrorHttpStatusCodeEnumSerializer =
     _$ResourceCreationErrorHttpStatusCodeEnumSerializer();
 
 class _$ResourceCreationErrorNameEnumSerializer
@@ -92,16 +99,19 @@ class _$ResourceCreationErrorNameEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, ResourceCreationErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    ResourceCreationErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   ResourceCreationErrorNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      ResourceCreationErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => ResourceCreationErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$ResourceCreationErrorMessageEnumSerializer
@@ -120,16 +130,19 @@ class _$ResourceCreationErrorMessageEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, ResourceCreationErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    ResourceCreationErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   ResourceCreationErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      ResourceCreationErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => ResourceCreationErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$ResourceCreationErrorHttpStatusCodeEnumSerializer
@@ -143,23 +156,26 @@ class _$ResourceCreationErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    ResourceCreationErrorHttpStatusCodeEnum
+    ResourceCreationErrorHttpStatusCodeEnum,
   ];
   @override
   final String wireName = 'ResourceCreationErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          ResourceCreationErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    ResourceCreationErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   ResourceCreationErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      ResourceCreationErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => ResourceCreationErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$ResourceCreationError extends ResourceCreationError {
@@ -174,21 +190,21 @@ class _$ResourceCreationError extends ResourceCreationError {
   @override
   final BuiltList<InvalidParameterErrorDetailsInner>? details;
 
-  factory _$ResourceCreationError(
-          [void Function(ResourceCreationErrorBuilder)? updates]) =>
-      (ResourceCreationErrorBuilder()..update(updates))._build();
+  factory _$ResourceCreationError([
+    void Function(ResourceCreationErrorBuilder)? updates,
+  ]) => (ResourceCreationErrorBuilder()..update(updates))._build();
 
-  _$ResourceCreationError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$ResourceCreationError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   ResourceCreationError rebuild(
-          void Function(ResourceCreationErrorBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ResourceCreationErrorBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ResourceCreationErrorBuilder toBuilder() =>
@@ -291,16 +307,29 @@ class ResourceCreationErrorBuilder
   _$ResourceCreationError _build() {
     _$ResourceCreationError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$ResourceCreationError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'ResourceCreationError', 'name'),
+              name,
+              r'ResourceCreationError',
+              'name',
+            ),
             message: BuiltValueNullFieldError.checkNotNull(
-                message, r'ResourceCreationError', 'message'),
+              message,
+              r'ResourceCreationError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode, r'ResourceCreationError', 'httpStatusCode'),
+              httpStatusCode,
+              r'ResourceCreationError',
+              'httpStatusCode',
+            ),
             traceId: BuiltValueNullFieldError.checkNotNull(
-                traceId, r'ResourceCreationError', 'traceId'),
+              traceId,
+              r'ResourceCreationError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -310,7 +339,10 @@ class ResourceCreationErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'ResourceCreationError', _$failedField, e.toString());
+          r'ResourceCreationError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

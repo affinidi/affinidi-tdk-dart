@@ -10,15 +10,15 @@ class _$AwsExchangeCredentials extends AwsExchangeCredentials {
   @override
   final String assertion;
 
-  factory _$AwsExchangeCredentials(
-          [void Function(AwsExchangeCredentialsBuilder)? updates]) =>
-      (AwsExchangeCredentialsBuilder()..update(updates))._build();
+  factory _$AwsExchangeCredentials([
+    void Function(AwsExchangeCredentialsBuilder)? updates,
+  ]) => (AwsExchangeCredentialsBuilder()..update(updates))._build();
 
   _$AwsExchangeCredentials._({required this.assertion}) : super._();
   @override
   AwsExchangeCredentials rebuild(
-          void Function(AwsExchangeCredentialsBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(AwsExchangeCredentialsBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   AwsExchangeCredentialsBuilder toBuilder() =>
@@ -40,9 +40,9 @@ class _$AwsExchangeCredentials extends AwsExchangeCredentials {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'AwsExchangeCredentials')
-          ..add('assertion', assertion))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'AwsExchangeCredentials',
+    )..add('assertion', assertion)).toString();
   }
 }
 
@@ -81,10 +81,14 @@ class AwsExchangeCredentialsBuilder
   AwsExchangeCredentials build() => _build();
 
   _$AwsExchangeCredentials _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$AwsExchangeCredentials._(
           assertion: BuiltValueNullFieldError.checkNotNull(
-              assertion, r'AwsExchangeCredentials', 'assertion'),
+            assertion,
+            r'AwsExchangeCredentials',
+            'assertion',
+          ),
         );
     replace(_$result);
     return _$result;

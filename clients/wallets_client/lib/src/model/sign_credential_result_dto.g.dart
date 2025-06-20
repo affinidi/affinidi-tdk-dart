@@ -10,15 +10,15 @@ class _$SignCredentialResultDto extends SignCredentialResultDto {
   @override
   final BuiltMap<String, JsonObject?> signedCredential;
 
-  factory _$SignCredentialResultDto(
-          [void Function(SignCredentialResultDtoBuilder)? updates]) =>
-      (SignCredentialResultDtoBuilder()..update(updates))._build();
+  factory _$SignCredentialResultDto([
+    void Function(SignCredentialResultDtoBuilder)? updates,
+  ]) => (SignCredentialResultDtoBuilder()..update(updates))._build();
 
   _$SignCredentialResultDto._({required this.signedCredential}) : super._();
   @override
   SignCredentialResultDto rebuild(
-          void Function(SignCredentialResultDtoBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(SignCredentialResultDtoBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   SignCredentialResultDtoBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$SignCredentialResultDto extends SignCredentialResultDto {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'SignCredentialResultDto')
-          ..add('signedCredential', signedCredential))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'SignCredentialResultDto',
+    )..add('signedCredential', signedCredential)).toString();
   }
 }
 
@@ -87,7 +87,8 @@ class SignCredentialResultDtoBuilder
   _$SignCredentialResultDto _build() {
     _$SignCredentialResultDto _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$SignCredentialResultDto._(
             signedCredential: signedCredential.build(),
           );
@@ -98,7 +99,10 @@ class SignCredentialResultDtoBuilder
         signedCredential.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'SignCredentialResultDto', _$failedField, e.toString());
+          r'SignCredentialResultDto',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

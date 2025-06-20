@@ -15,19 +15,19 @@ part 'flow_data.g.dart';
 /// Properties:
 /// * [createdAt] - [GEN] ISO 8601 string of the creation date/time the entity
 /// * [modifiedAt] - [GEN] ISO 8601 string of the modification date/time the entity
-/// * [id] 
-/// * [projectId] 
-/// * [flowId] 
-/// * [credentialTypeId] 
-/// * [jsonLdContextUrl] 
-/// * [jsonSchemaUrl] 
+/// * [id]
+/// * [projectId]
+/// * [flowId]
+/// * [credentialTypeId]
+/// * [jsonLdContextUrl]
+/// * [jsonSchemaUrl]
 /// * [configurationId] - Id of configuration, used to issue VC.
 /// * [issuedAt] - when credential was issued to the holder (holder invoked generateCredentials endpoint)
 /// * [walletId] - Id of wallet, used to issue VC.
 /// * [projectIdConfigurationId] - Id of configuration with which VC was issued. To use as an index, it is grouped together with projectId, as \"{projectIdConfigurationId}#{configurationId}\"
 /// * [projectIdConfigurationIdWalletId] - Id of wallet which issued VC. To use as an index, it is grouped together with projectId, as \"{projectIdConfigurationId}#{walletId}\"
 /// * [projectIdConfigurationIdCredentialType] - VC.type value. To use as an index, it is grouped together with projectId, as \"{projectIdConfigurationId}#{credentialType}\"
-/// * [statusListsDetails] 
+/// * [statusListsDetails]
 @BuiltValue()
 abstract class FlowData implements Built<FlowData, FlowDataBuilder> {
   /// [GEN] ISO 8601 string of the creation date/time the entity
@@ -194,7 +194,9 @@ class _$FlowDataSerializer implements PrimitiveSerializer<FlowData> {
       yield r'statusListsDetails';
       yield serializers.serialize(
         object.statusListsDetails,
-        specifiedType: const FullType(BuiltList, [FullType(FlowDataStatusListsDetailsInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(FlowDataStatusListsDetailsInner),
+        ]),
       );
     }
   }
@@ -205,7 +207,11 @@ class _$FlowDataSerializer implements PrimitiveSerializer<FlowData> {
     FlowData object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -221,108 +227,140 @@ class _$FlowDataSerializer implements PrimitiveSerializer<FlowData> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'createdAt':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.createdAt = valueDes;
           break;
         case r'modifiedAt':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.modifiedAt = valueDes;
           break;
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'projectId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.projectId = valueDes;
           break;
         case r'flowId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.flowId = valueDes;
           break;
         case r'credentialTypeId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.credentialTypeId = valueDes;
           break;
         case r'jsonLdContextUrl':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.jsonLdContextUrl = valueDes;
           break;
         case r'jsonSchemaUrl':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.jsonSchemaUrl = valueDes;
           break;
         case r'configurationId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.configurationId = valueDes;
           break;
         case r'issuedAt':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.issuedAt = valueDes;
           break;
         case r'walletId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.walletId = valueDes;
           break;
         case r'projectIdConfigurationId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.projectIdConfigurationId = valueDes;
           break;
         case r'projectIdConfigurationIdWalletId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.projectIdConfigurationIdWalletId = valueDes;
           break;
         case r'projectIdConfigurationIdCredentialType':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.projectIdConfigurationIdCredentialType = valueDes;
           break;
         case r'statusListsDetails':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(FlowDataStatusListsDetailsInner)]),
-          ) as BuiltList<FlowDataStatusListsDetailsInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(FlowDataStatusListsDetailsInner),
+                    ]),
+                  )
+                  as BuiltList<FlowDataStatusListsDetailsInner>;
           result.statusListsDetails.replace(valueDes);
           break;
         default:
@@ -353,4 +391,3 @@ class _$FlowDataSerializer implements PrimitiveSerializer<FlowData> {
     return result.build();
   }
 }
-

@@ -1,7 +1,6 @@
 import 'package:test/test.dart';
 import 'package:affinidi_tdk_iam_client/affinidi_tdk_iam_client.dart';
 
-
 /// tests for StsApi
 void main() {
   final instance = AffinidiTdkIamClient().getStsApi();
@@ -16,6 +15,5 @@ void main() {
     test('test whoami', () async {
       // TODO
     });
-
   });
 }

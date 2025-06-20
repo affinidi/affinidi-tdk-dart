@@ -49,27 +49,27 @@ class _$GetUserInfo extends GetUserInfo {
   factory _$GetUserInfo([void Function(GetUserInfoBuilder)? updates]) =>
       (GetUserInfoBuilder()..update(updates))._build();
 
-  _$GetUserInfo._(
-      {this.birthdate,
-      this.email,
-      this.emailVerified,
-      this.familyName,
-      this.gender,
-      this.givenName,
-      this.locale,
-      this.middleName,
-      this.name,
-      this.nickname,
-      this.phoneNumber,
-      this.phoneNumberVerified,
-      this.picture,
-      this.preferredUsername,
-      this.profile,
-      this.sub,
-      this.updatedAt,
-      this.website,
-      this.zoneinfo})
-      : super._();
+  _$GetUserInfo._({
+    this.birthdate,
+    this.email,
+    this.emailVerified,
+    this.familyName,
+    this.gender,
+    this.givenName,
+    this.locale,
+    this.middleName,
+    this.name,
+    this.nickname,
+    this.phoneNumber,
+    this.phoneNumberVerified,
+    this.picture,
+    this.preferredUsername,
+    this.profile,
+    this.sub,
+    this.updatedAt,
+    this.website,
+    this.zoneinfo,
+  }) : super._();
   @override
   GetUserInfo rebuild(void Function(GetUserInfoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -281,7 +281,8 @@ class GetUserInfoBuilder implements Builder<GetUserInfo, GetUserInfoBuilder> {
   GetUserInfo build() => _build();
 
   _$GetUserInfo _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$GetUserInfo._(
           birthdate: birthdate,
           email: email,

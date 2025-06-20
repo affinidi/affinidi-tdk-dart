@@ -7,11 +7,12 @@ part of 'invalid_claim_context_error.dart';
 // **************************************************************************
 
 const InvalidClaimContextErrorNameEnum
-    _$invalidClaimContextErrorNameEnum_invalidClaimContextError =
+_$invalidClaimContextErrorNameEnum_invalidClaimContextError =
     const InvalidClaimContextErrorNameEnum._('invalidClaimContextError');
 
 InvalidClaimContextErrorNameEnum _$invalidClaimContextErrorNameEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'invalidClaimContextError':
       return _$invalidClaimContextErrorNameEnum_invalidClaimContextError;
@@ -21,17 +22,19 @@ InvalidClaimContextErrorNameEnum _$invalidClaimContextErrorNameEnumValueOf(
 }
 
 final BuiltSet<InvalidClaimContextErrorNameEnum>
-    _$invalidClaimContextErrorNameEnumValues = BuiltSet<
-        InvalidClaimContextErrorNameEnum>(const <InvalidClaimContextErrorNameEnum>[
-  _$invalidClaimContextErrorNameEnum_invalidClaimContextError,
-]);
+_$invalidClaimContextErrorNameEnumValues =
+    BuiltSet<InvalidClaimContextErrorNameEnum>(
+      const <InvalidClaimContextErrorNameEnum>[
+        _$invalidClaimContextErrorNameEnum_invalidClaimContextError,
+      ],
+    );
 
 const InvalidClaimContextErrorMessageEnum
-    _$invalidClaimContextErrorMessageEnum_invalidClaimContext =
+_$invalidClaimContextErrorMessageEnum_invalidClaimContext =
     const InvalidClaimContextErrorMessageEnum._('invalidClaimContext');
 
 InvalidClaimContextErrorMessageEnum
-    _$invalidClaimContextErrorMessageEnumValueOf(String name) {
+_$invalidClaimContextErrorMessageEnumValueOf(String name) {
   switch (name) {
     case 'invalidClaimContext':
       return _$invalidClaimContextErrorMessageEnum_invalidClaimContext;
@@ -41,17 +44,19 @@ InvalidClaimContextErrorMessageEnum
 }
 
 final BuiltSet<InvalidClaimContextErrorMessageEnum>
-    _$invalidClaimContextErrorMessageEnumValues = BuiltSet<
-        InvalidClaimContextErrorMessageEnum>(const <InvalidClaimContextErrorMessageEnum>[
-  _$invalidClaimContextErrorMessageEnum_invalidClaimContext,
-]);
+_$invalidClaimContextErrorMessageEnumValues =
+    BuiltSet<InvalidClaimContextErrorMessageEnum>(
+      const <InvalidClaimContextErrorMessageEnum>[
+        _$invalidClaimContextErrorMessageEnum_invalidClaimContext,
+      ],
+    );
 
 const InvalidClaimContextErrorHttpStatusCodeEnum
-    _$invalidClaimContextErrorHttpStatusCodeEnum_number400 =
+_$invalidClaimContextErrorHttpStatusCodeEnum_number400 =
     const InvalidClaimContextErrorHttpStatusCodeEnum._('number400');
 
 InvalidClaimContextErrorHttpStatusCodeEnum
-    _$invalidClaimContextErrorHttpStatusCodeEnumValueOf(String name) {
+_$invalidClaimContextErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$invalidClaimContextErrorHttpStatusCodeEnum_number400;
@@ -61,19 +66,21 @@ InvalidClaimContextErrorHttpStatusCodeEnum
 }
 
 final BuiltSet<InvalidClaimContextErrorHttpStatusCodeEnum>
-    _$invalidClaimContextErrorHttpStatusCodeEnumValues = BuiltSet<
-        InvalidClaimContextErrorHttpStatusCodeEnum>(const <InvalidClaimContextErrorHttpStatusCodeEnum>[
-  _$invalidClaimContextErrorHttpStatusCodeEnum_number400,
-]);
+_$invalidClaimContextErrorHttpStatusCodeEnumValues =
+    BuiltSet<InvalidClaimContextErrorHttpStatusCodeEnum>(
+      const <InvalidClaimContextErrorHttpStatusCodeEnum>[
+        _$invalidClaimContextErrorHttpStatusCodeEnum_number400,
+      ],
+    );
 
 Serializer<InvalidClaimContextErrorNameEnum>
-    _$invalidClaimContextErrorNameEnumSerializer =
+_$invalidClaimContextErrorNameEnumSerializer =
     _$InvalidClaimContextErrorNameEnumSerializer();
 Serializer<InvalidClaimContextErrorMessageEnum>
-    _$invalidClaimContextErrorMessageEnumSerializer =
+_$invalidClaimContextErrorMessageEnumSerializer =
     _$InvalidClaimContextErrorMessageEnumSerializer();
 Serializer<InvalidClaimContextErrorHttpStatusCodeEnum>
-    _$invalidClaimContextErrorHttpStatusCodeEnumSerializer =
+_$invalidClaimContextErrorHttpStatusCodeEnumSerializer =
     _$InvalidClaimContextErrorHttpStatusCodeEnumSerializer();
 
 class _$InvalidClaimContextErrorNameEnumSerializer
@@ -92,16 +99,19 @@ class _$InvalidClaimContextErrorNameEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, InvalidClaimContextErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    InvalidClaimContextErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   InvalidClaimContextErrorNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      InvalidClaimContextErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => InvalidClaimContextErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$InvalidClaimContextErrorMessageEnumSerializer
@@ -115,23 +125,26 @@ class _$InvalidClaimContextErrorMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    InvalidClaimContextErrorMessageEnum
+    InvalidClaimContextErrorMessageEnum,
   ];
   @override
   final String wireName = 'InvalidClaimContextErrorMessageEnum';
 
   @override
   Object serialize(
-          Serializers serializers, InvalidClaimContextErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    InvalidClaimContextErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   InvalidClaimContextErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      InvalidClaimContextErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => InvalidClaimContextErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$InvalidClaimContextErrorHttpStatusCodeEnumSerializer
@@ -145,23 +158,26 @@ class _$InvalidClaimContextErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    InvalidClaimContextErrorHttpStatusCodeEnum
+    InvalidClaimContextErrorHttpStatusCodeEnum,
   ];
   @override
   final String wireName = 'InvalidClaimContextErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          InvalidClaimContextErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    InvalidClaimContextErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   InvalidClaimContextErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      InvalidClaimContextErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => InvalidClaimContextErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$InvalidClaimContextError extends InvalidClaimContextError {
@@ -176,21 +192,21 @@ class _$InvalidClaimContextError extends InvalidClaimContextError {
   @override
   final BuiltList<InvalidParameterErrorDetailsInner>? details;
 
-  factory _$InvalidClaimContextError(
-          [void Function(InvalidClaimContextErrorBuilder)? updates]) =>
-      (InvalidClaimContextErrorBuilder()..update(updates))._build();
+  factory _$InvalidClaimContextError([
+    void Function(InvalidClaimContextErrorBuilder)? updates,
+  ]) => (InvalidClaimContextErrorBuilder()..update(updates))._build();
 
-  _$InvalidClaimContextError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$InvalidClaimContextError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   InvalidClaimContextError rebuild(
-          void Function(InvalidClaimContextErrorBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(InvalidClaimContextErrorBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   InvalidClaimContextErrorBuilder toBuilder() =>
@@ -249,8 +265,8 @@ class InvalidClaimContextErrorBuilder
   InvalidClaimContextErrorHttpStatusCodeEnum? get httpStatusCode =>
       _$this._httpStatusCode;
   set httpStatusCode(
-          InvalidClaimContextErrorHttpStatusCodeEnum? httpStatusCode) =>
-      _$this._httpStatusCode = httpStatusCode;
+    InvalidClaimContextErrorHttpStatusCodeEnum? httpStatusCode,
+  ) => _$this._httpStatusCode = httpStatusCode;
 
   String? _traceId;
   String? get traceId => _$this._traceId;
@@ -295,16 +311,29 @@ class InvalidClaimContextErrorBuilder
   _$InvalidClaimContextError _build() {
     _$InvalidClaimContextError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$InvalidClaimContextError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'InvalidClaimContextError', 'name'),
+              name,
+              r'InvalidClaimContextError',
+              'name',
+            ),
             message: BuiltValueNullFieldError.checkNotNull(
-                message, r'InvalidClaimContextError', 'message'),
+              message,
+              r'InvalidClaimContextError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode, r'InvalidClaimContextError', 'httpStatusCode'),
+              httpStatusCode,
+              r'InvalidClaimContextError',
+              'httpStatusCode',
+            ),
             traceId: BuiltValueNullFieldError.checkNotNull(
-                traceId, r'InvalidClaimContextError', 'traceId'),
+              traceId,
+              r'InvalidClaimContextError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -314,7 +343,10 @@ class InvalidClaimContextErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'InvalidClaimContextError', _$failedField, e.toString());
+          r'InvalidClaimContextError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

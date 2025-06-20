@@ -17,10 +17,10 @@ part 'consent_dto.g.dart';
 /// * [userId] - Unique identifier for the user.
 /// * [vcType] - Type of the VC shared by the user. It creates a consent record for each  VC type shared except for the base type VerifiableCredential.
 /// * [status] - Status of the consent.
-/// * [modifiedAt] 
-/// * [modifiedBy] 
-/// * [createdAt] 
-/// * [createdBy] 
+/// * [modifiedAt]
+/// * [modifiedBy]
+/// * [createdAt]
+/// * [createdBy]
 @BuiltValue()
 abstract class ConsentDto implements Built<ConsentDto, ConsentDtoBuilder> {
   /// The ID of the project.
@@ -132,7 +132,11 @@ class _$ConsentDtoSerializer implements PrimitiveSerializer<ConsentDto> {
     ConsentDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -148,66 +152,84 @@ class _$ConsentDtoSerializer implements PrimitiveSerializer<ConsentDto> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'projectId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.projectId = valueDes;
           break;
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'userId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.userId = valueDes;
           break;
         case r'vcType':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.vcType = valueDes;
           break;
         case r'status':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(ConsentDtoStatusEnum),
-          ) as ConsentDtoStatusEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(ConsentDtoStatusEnum),
+                  )
+                  as ConsentDtoStatusEnum;
           result.status = valueDes;
           break;
         case r'modifiedAt':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.modifiedAt = valueDes;
           break;
         case r'modifiedBy':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.modifiedBy = valueDes;
           break;
         case r'createdAt':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.createdAt = valueDes;
           break;
         case r'createdBy':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.createdBy = valueDes;
           break;
         default:
@@ -240,16 +262,17 @@ class _$ConsentDtoSerializer implements PrimitiveSerializer<ConsentDto> {
 }
 
 class ConsentDtoStatusEnum extends EnumClass {
-
   /// Status of the consent.
   @BuiltValueEnumConst(wireName: r'GIVEN')
   static const ConsentDtoStatusEnum GIVEN = _$consentDtoStatusEnum_GIVEN;
 
-  static Serializer<ConsentDtoStatusEnum> get serializer => _$consentDtoStatusEnumSerializer;
+  static Serializer<ConsentDtoStatusEnum> get serializer =>
+      _$consentDtoStatusEnumSerializer;
 
-  const ConsentDtoStatusEnum._(String name): super(name);
+  const ConsentDtoStatusEnum._(String name) : super(name);
 
-  static BuiltSet<ConsentDtoStatusEnum> get values => _$consentDtoStatusEnumValues;
-  static ConsentDtoStatusEnum valueOf(String name) => _$consentDtoStatusEnumValueOf(name);
+  static BuiltSet<ConsentDtoStatusEnum> get values =>
+      _$consentDtoStatusEnumValues;
+  static ConsentDtoStatusEnum valueOf(String name) =>
+      _$consentDtoStatusEnumValueOf(name);
 }
-

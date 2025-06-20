@@ -14,19 +14,19 @@ class _$PresentationSubmission extends PresentationSubmission {
   @override
   final BuiltList<Descriptor> descriptorMap;
 
-  factory _$PresentationSubmission(
-          [void Function(PresentationSubmissionBuilder)? updates]) =>
-      (PresentationSubmissionBuilder()..update(updates))._build();
+  factory _$PresentationSubmission([
+    void Function(PresentationSubmissionBuilder)? updates,
+  ]) => (PresentationSubmissionBuilder()..update(updates))._build();
 
-  _$PresentationSubmission._(
-      {required this.id,
-      required this.definitionId,
-      required this.descriptorMap})
-      : super._();
+  _$PresentationSubmission._({
+    required this.id,
+    required this.definitionId,
+    required this.descriptorMap,
+  }) : super._();
   @override
   PresentationSubmission rebuild(
-          void Function(PresentationSubmissionBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(PresentationSubmissionBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   PresentationSubmissionBuilder toBuilder() =>
@@ -110,12 +110,19 @@ class PresentationSubmissionBuilder
   _$PresentationSubmission _build() {
     _$PresentationSubmission _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$PresentationSubmission._(
             id: BuiltValueNullFieldError.checkNotNull(
-                id, r'PresentationSubmission', 'id'),
+              id,
+              r'PresentationSubmission',
+              'id',
+            ),
             definitionId: BuiltValueNullFieldError.checkNotNull(
-                definitionId, r'PresentationSubmission', 'definitionId'),
+              definitionId,
+              r'PresentationSubmission',
+              'definitionId',
+            ),
             descriptorMap: descriptorMap.build(),
           );
     } catch (_) {
@@ -125,7 +132,10 @@ class PresentationSubmissionBuilder
         descriptorMap.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'PresentationSubmission', _$failedField, e.toString());
+          r'PresentationSubmission',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

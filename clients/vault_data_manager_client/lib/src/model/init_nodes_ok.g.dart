@@ -93,7 +93,8 @@ class InitNodesOKBuilder implements Builder<InitNodesOK, InitNodesOKBuilder> {
   _$InitNodesOK _build() {
     _$InitNodesOK _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$InitNodesOK._(
             consumerMetadata: _consumerMetadata?.build(),
             defaultProfile: defaultProfile,
@@ -105,7 +106,10 @@ class InitNodesOKBuilder implements Builder<InitNodesOK, InitNodesOKBuilder> {
         _consumerMetadata?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'InitNodesOK', _$failedField, e.toString());
+          r'InitNodesOK',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

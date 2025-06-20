@@ -20,16 +20,18 @@ InvalidProofErrorNameEnum _$invalidProofErrorNameEnumValueOf(String name) {
 
 final BuiltSet<InvalidProofErrorNameEnum> _$invalidProofErrorNameEnumValues =
     BuiltSet<InvalidProofErrorNameEnum>(const <InvalidProofErrorNameEnum>[
-  _$invalidProofErrorNameEnum_invalidProofError,
-]);
+      _$invalidProofErrorNameEnum_invalidProofError,
+    ]);
 
 const InvalidProofErrorMessageEnum
-    _$invalidProofErrorMessageEnum_theProofInTheCredentialRequestIsInvalid =
+_$invalidProofErrorMessageEnum_theProofInTheCredentialRequestIsInvalid =
     const InvalidProofErrorMessageEnum._(
-        'theProofInTheCredentialRequestIsInvalid');
+      'theProofInTheCredentialRequestIsInvalid',
+    );
 
 InvalidProofErrorMessageEnum _$invalidProofErrorMessageEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'theProofInTheCredentialRequestIsInvalid':
       return _$invalidProofErrorMessageEnum_theProofInTheCredentialRequestIsInvalid;
@@ -39,17 +41,18 @@ InvalidProofErrorMessageEnum _$invalidProofErrorMessageEnumValueOf(
 }
 
 final BuiltSet<InvalidProofErrorMessageEnum>
-    _$invalidProofErrorMessageEnumValues =
-    BuiltSet<InvalidProofErrorMessageEnum>(const <InvalidProofErrorMessageEnum>[
-  _$invalidProofErrorMessageEnum_theProofInTheCredentialRequestIsInvalid,
-]);
+_$invalidProofErrorMessageEnumValues = BuiltSet<InvalidProofErrorMessageEnum>(
+  const <InvalidProofErrorMessageEnum>[
+    _$invalidProofErrorMessageEnum_theProofInTheCredentialRequestIsInvalid,
+  ],
+);
 
 const InvalidProofErrorHttpStatusCodeEnum
-    _$invalidProofErrorHttpStatusCodeEnum_number400 =
+_$invalidProofErrorHttpStatusCodeEnum_number400 =
     const InvalidProofErrorHttpStatusCodeEnum._('number400');
 
 InvalidProofErrorHttpStatusCodeEnum
-    _$invalidProofErrorHttpStatusCodeEnumValueOf(String name) {
+_$invalidProofErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$invalidProofErrorHttpStatusCodeEnum_number400;
@@ -59,18 +62,20 @@ InvalidProofErrorHttpStatusCodeEnum
 }
 
 final BuiltSet<InvalidProofErrorHttpStatusCodeEnum>
-    _$invalidProofErrorHttpStatusCodeEnumValues = BuiltSet<
-        InvalidProofErrorHttpStatusCodeEnum>(const <InvalidProofErrorHttpStatusCodeEnum>[
-  _$invalidProofErrorHttpStatusCodeEnum_number400,
-]);
+_$invalidProofErrorHttpStatusCodeEnumValues =
+    BuiltSet<InvalidProofErrorHttpStatusCodeEnum>(
+      const <InvalidProofErrorHttpStatusCodeEnum>[
+        _$invalidProofErrorHttpStatusCodeEnum_number400,
+      ],
+    );
 
 Serializer<InvalidProofErrorNameEnum> _$invalidProofErrorNameEnumSerializer =
     _$InvalidProofErrorNameEnumSerializer();
 Serializer<InvalidProofErrorMessageEnum>
-    _$invalidProofErrorMessageEnumSerializer =
+_$invalidProofErrorMessageEnumSerializer =
     _$InvalidProofErrorMessageEnumSerializer();
 Serializer<InvalidProofErrorHttpStatusCodeEnum>
-    _$invalidProofErrorHttpStatusCodeEnumSerializer =
+_$invalidProofErrorHttpStatusCodeEnumSerializer =
     _$InvalidProofErrorHttpStatusCodeEnumSerializer();
 
 class _$InvalidProofErrorNameEnumSerializer
@@ -88,16 +93,20 @@ class _$InvalidProofErrorNameEnumSerializer
   final String wireName = 'InvalidProofErrorNameEnum';
 
   @override
-  Object serialize(Serializers serializers, InvalidProofErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    InvalidProofErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   InvalidProofErrorNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      InvalidProofErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => InvalidProofErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$InvalidProofErrorMessageEnumSerializer
@@ -117,16 +126,20 @@ class _$InvalidProofErrorMessageEnumSerializer
   final String wireName = 'InvalidProofErrorMessageEnum';
 
   @override
-  Object serialize(Serializers serializers, InvalidProofErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    InvalidProofErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   InvalidProofErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      InvalidProofErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => InvalidProofErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$InvalidProofErrorHttpStatusCodeEnumSerializer
@@ -140,23 +153,26 @@ class _$InvalidProofErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    InvalidProofErrorHttpStatusCodeEnum
+    InvalidProofErrorHttpStatusCodeEnum,
   ];
   @override
   final String wireName = 'InvalidProofErrorHttpStatusCodeEnum';
 
   @override
   Object serialize(
-          Serializers serializers, InvalidProofErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    InvalidProofErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   InvalidProofErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      InvalidProofErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => InvalidProofErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$InvalidProofError extends InvalidProofError {
@@ -171,17 +187,17 @@ class _$InvalidProofError extends InvalidProofError {
   @override
   final BuiltList<ActionForbiddenErrorDetailsInner>? details;
 
-  factory _$InvalidProofError(
-          [void Function(InvalidProofErrorBuilder)? updates]) =>
-      (InvalidProofErrorBuilder()..update(updates))._build();
+  factory _$InvalidProofError([
+    void Function(InvalidProofErrorBuilder)? updates,
+  ]) => (InvalidProofErrorBuilder()..update(updates))._build();
 
-  _$InvalidProofError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$InvalidProofError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   InvalidProofError rebuild(void Function(InvalidProofErrorBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -287,16 +303,29 @@ class InvalidProofErrorBuilder
   _$InvalidProofError _build() {
     _$InvalidProofError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$InvalidProofError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'InvalidProofError', 'name'),
+              name,
+              r'InvalidProofError',
+              'name',
+            ),
             message: BuiltValueNullFieldError.checkNotNull(
-                message, r'InvalidProofError', 'message'),
+              message,
+              r'InvalidProofError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode, r'InvalidProofError', 'httpStatusCode'),
+              httpStatusCode,
+              r'InvalidProofError',
+              'httpStatusCode',
+            ),
             traceId: BuiltValueNullFieldError.checkNotNull(
-                traceId, r'InvalidProofError', 'traceId'),
+              traceId,
+              r'InvalidProofError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -306,7 +335,10 @@ class InvalidProofErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'InvalidProofError', _$failedField, e.toString());
+          r'InvalidProofError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

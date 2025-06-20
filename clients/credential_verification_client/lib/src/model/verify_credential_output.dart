@@ -15,7 +15,8 @@ part 'verify_credential_output.g.dart';
 /// * [errors] - Errors of the VCs failed verification
 /// * [isValid] - Verification result
 @BuiltValue()
-abstract class VerifyCredentialOutput implements Built<VerifyCredentialOutput, VerifyCredentialOutputBuilder> {
+abstract class VerifyCredentialOutput
+    implements Built<VerifyCredentialOutput, VerifyCredentialOutputBuilder> {
   /// Errors of the VCs failed verification
   @BuiltValueField(wireName: r'errors')
   BuiltList<String> get errors;
@@ -26,18 +27,25 @@ abstract class VerifyCredentialOutput implements Built<VerifyCredentialOutput, V
 
   VerifyCredentialOutput._();
 
-  factory VerifyCredentialOutput([void updates(VerifyCredentialOutputBuilder b)]) = _$VerifyCredentialOutput;
+  factory VerifyCredentialOutput([
+    void updates(VerifyCredentialOutputBuilder b),
+  ]) = _$VerifyCredentialOutput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(VerifyCredentialOutputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<VerifyCredentialOutput> get serializer => _$VerifyCredentialOutputSerializer();
+  static Serializer<VerifyCredentialOutput> get serializer =>
+      _$VerifyCredentialOutputSerializer();
 }
 
-class _$VerifyCredentialOutputSerializer implements PrimitiveSerializer<VerifyCredentialOutput> {
+class _$VerifyCredentialOutputSerializer
+    implements PrimitiveSerializer<VerifyCredentialOutput> {
   @override
-  final Iterable<Type> types = const [VerifyCredentialOutput, _$VerifyCredentialOutput];
+  final Iterable<Type> types = const [
+    VerifyCredentialOutput,
+    _$VerifyCredentialOutput,
+  ];
 
   @override
   final String wireName = r'VerifyCredentialOutput';
@@ -65,7 +73,11 @@ class _$VerifyCredentialOutputSerializer implements PrimitiveSerializer<VerifyCr
     VerifyCredentialOutput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -81,17 +93,23 @@ class _$VerifyCredentialOutputSerializer implements PrimitiveSerializer<VerifyCr
       final value = serializedList[i + 1];
       switch (key) {
         case r'errors':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.errors.replace(valueDes);
           break;
         case r'isValid':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.isValid = valueDes;
           break;
         default:
@@ -122,4 +140,3 @@ class _$VerifyCredentialOutputSerializer implements PrimitiveSerializer<VerifyCr
     return result.build();
   }
 }
-

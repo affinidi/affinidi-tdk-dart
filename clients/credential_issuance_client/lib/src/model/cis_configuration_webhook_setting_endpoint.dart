@@ -13,25 +13,37 @@ part 'cis_configuration_webhook_setting_endpoint.g.dart';
 /// Properties:
 /// * [url] - url endpoint where notification will be sent with issuanceId after user has claimed the VC related to issuanceId
 @BuiltValue()
-abstract class CisConfigurationWebhookSettingEndpoint implements Built<CisConfigurationWebhookSettingEndpoint, CisConfigurationWebhookSettingEndpointBuilder> {
+abstract class CisConfigurationWebhookSettingEndpoint
+    implements
+        Built<
+          CisConfigurationWebhookSettingEndpoint,
+          CisConfigurationWebhookSettingEndpointBuilder
+        > {
   /// url endpoint where notification will be sent with issuanceId after user has claimed the VC related to issuanceId
   @BuiltValueField(wireName: r'url')
   String? get url;
 
   CisConfigurationWebhookSettingEndpoint._();
 
-  factory CisConfigurationWebhookSettingEndpoint([void updates(CisConfigurationWebhookSettingEndpointBuilder b)]) = _$CisConfigurationWebhookSettingEndpoint;
+  factory CisConfigurationWebhookSettingEndpoint([
+    void updates(CisConfigurationWebhookSettingEndpointBuilder b),
+  ]) = _$CisConfigurationWebhookSettingEndpoint;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CisConfigurationWebhookSettingEndpointBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CisConfigurationWebhookSettingEndpoint> get serializer => _$CisConfigurationWebhookSettingEndpointSerializer();
+  static Serializer<CisConfigurationWebhookSettingEndpoint> get serializer =>
+      _$CisConfigurationWebhookSettingEndpointSerializer();
 }
 
-class _$CisConfigurationWebhookSettingEndpointSerializer implements PrimitiveSerializer<CisConfigurationWebhookSettingEndpoint> {
+class _$CisConfigurationWebhookSettingEndpointSerializer
+    implements PrimitiveSerializer<CisConfigurationWebhookSettingEndpoint> {
   @override
-  final Iterable<Type> types = const [CisConfigurationWebhookSettingEndpoint, _$CisConfigurationWebhookSettingEndpoint];
+  final Iterable<Type> types = const [
+    CisConfigurationWebhookSettingEndpoint,
+    _$CisConfigurationWebhookSettingEndpoint,
+  ];
 
   @override
   final String wireName = r'CisConfigurationWebhookSettingEndpoint';
@@ -56,7 +68,11 @@ class _$CisConfigurationWebhookSettingEndpointSerializer implements PrimitiveSer
     CisConfigurationWebhookSettingEndpoint object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -72,10 +88,12 @@ class _$CisConfigurationWebhookSettingEndpointSerializer implements PrimitiveSer
       final value = serializedList[i + 1];
       switch (key) {
         case r'url':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.url = valueDes;
           break;
         default:
@@ -106,4 +124,3 @@ class _$CisConfigurationWebhookSettingEndpointSerializer implements PrimitiveSer
     return result.build();
   }
 }
-

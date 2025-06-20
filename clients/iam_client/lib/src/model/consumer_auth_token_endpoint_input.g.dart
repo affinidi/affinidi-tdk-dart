@@ -18,21 +18,21 @@ class _$ConsumerAuthTokenEndpointInput extends ConsumerAuthTokenEndpointInput {
   @override
   final String? clientId;
 
-  factory _$ConsumerAuthTokenEndpointInput(
-          [void Function(ConsumerAuthTokenEndpointInputBuilder)? updates]) =>
-      (ConsumerAuthTokenEndpointInputBuilder()..update(updates))._build();
+  factory _$ConsumerAuthTokenEndpointInput([
+    void Function(ConsumerAuthTokenEndpointInputBuilder)? updates,
+  ]) => (ConsumerAuthTokenEndpointInputBuilder()..update(updates))._build();
 
-  _$ConsumerAuthTokenEndpointInput._(
-      {required this.grantType,
-      this.code,
-      this.refreshToken,
-      this.redirectUri,
-      this.clientId})
-      : super._();
+  _$ConsumerAuthTokenEndpointInput._({
+    required this.grantType,
+    this.code,
+    this.refreshToken,
+    this.redirectUri,
+    this.clientId,
+  }) : super._();
   @override
   ConsumerAuthTokenEndpointInput rebuild(
-          void Function(ConsumerAuthTokenEndpointInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ConsumerAuthTokenEndpointInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ConsumerAuthTokenEndpointInputBuilder toBuilder() =>
@@ -75,8 +75,10 @@ class _$ConsumerAuthTokenEndpointInput extends ConsumerAuthTokenEndpointInput {
 
 class ConsumerAuthTokenEndpointInputBuilder
     implements
-        Builder<ConsumerAuthTokenEndpointInput,
-            ConsumerAuthTokenEndpointInputBuilder> {
+        Builder<
+          ConsumerAuthTokenEndpointInput,
+          ConsumerAuthTokenEndpointInputBuilder
+        > {
   _$ConsumerAuthTokenEndpointInput? _$v;
 
   String? _grantType;
@@ -130,10 +132,14 @@ class ConsumerAuthTokenEndpointInputBuilder
   ConsumerAuthTokenEndpointInput build() => _build();
 
   _$ConsumerAuthTokenEndpointInput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$ConsumerAuthTokenEndpointInput._(
           grantType: BuiltValueNullFieldError.checkNotNull(
-              grantType, r'ConsumerAuthTokenEndpointInput', 'grantType'),
+            grantType,
+            r'ConsumerAuthTokenEndpointInput',
+            'grantType',
+          ),
           code: code,
           refreshToken: refreshToken,
           redirectUri: redirectUri,

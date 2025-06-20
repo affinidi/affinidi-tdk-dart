@@ -7,11 +7,12 @@ part of 'message_publishing_error.dart';
 // **************************************************************************
 
 const MessagePublishingErrorNameEnum
-    _$messagePublishingErrorNameEnum_messagePublishingError =
+_$messagePublishingErrorNameEnum_messagePublishingError =
     const MessagePublishingErrorNameEnum._('messagePublishingError');
 
 MessagePublishingErrorNameEnum _$messagePublishingErrorNameEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'messagePublishingError':
       return _$messagePublishingErrorNameEnum_messagePublishingError;
@@ -21,18 +22,22 @@ MessagePublishingErrorNameEnum _$messagePublishingErrorNameEnumValueOf(
 }
 
 final BuiltSet<MessagePublishingErrorNameEnum>
-    _$messagePublishingErrorNameEnumValues = BuiltSet<
-        MessagePublishingErrorNameEnum>(const <MessagePublishingErrorNameEnum>[
-  _$messagePublishingErrorNameEnum_messagePublishingError,
-]);
+_$messagePublishingErrorNameEnumValues =
+    BuiltSet<MessagePublishingErrorNameEnum>(
+      const <MessagePublishingErrorNameEnum>[
+        _$messagePublishingErrorNameEnum_messagePublishingError,
+      ],
+    );
 
 const MessagePublishingErrorMessageEnum
-    _$messagePublishingErrorMessageEnum_notAbleToPublishMessagesToTopic =
+_$messagePublishingErrorMessageEnum_notAbleToPublishMessagesToTopic =
     const MessagePublishingErrorMessageEnum._(
-        'notAbleToPublishMessagesToTopic');
+      'notAbleToPublishMessagesToTopic',
+    );
 
 MessagePublishingErrorMessageEnum _$messagePublishingErrorMessageEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'notAbleToPublishMessagesToTopic':
       return _$messagePublishingErrorMessageEnum_notAbleToPublishMessagesToTopic;
@@ -42,17 +47,19 @@ MessagePublishingErrorMessageEnum _$messagePublishingErrorMessageEnumValueOf(
 }
 
 final BuiltSet<MessagePublishingErrorMessageEnum>
-    _$messagePublishingErrorMessageEnumValues = BuiltSet<
-        MessagePublishingErrorMessageEnum>(const <MessagePublishingErrorMessageEnum>[
-  _$messagePublishingErrorMessageEnum_notAbleToPublishMessagesToTopic,
-]);
+_$messagePublishingErrorMessageEnumValues =
+    BuiltSet<MessagePublishingErrorMessageEnum>(
+      const <MessagePublishingErrorMessageEnum>[
+        _$messagePublishingErrorMessageEnum_notAbleToPublishMessagesToTopic,
+      ],
+    );
 
 const MessagePublishingErrorHttpStatusCodeEnum
-    _$messagePublishingErrorHttpStatusCodeEnum_number500 =
+_$messagePublishingErrorHttpStatusCodeEnum_number500 =
     const MessagePublishingErrorHttpStatusCodeEnum._('number500');
 
 MessagePublishingErrorHttpStatusCodeEnum
-    _$messagePublishingErrorHttpStatusCodeEnumValueOf(String name) {
+_$messagePublishingErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number500':
       return _$messagePublishingErrorHttpStatusCodeEnum_number500;
@@ -62,19 +69,21 @@ MessagePublishingErrorHttpStatusCodeEnum
 }
 
 final BuiltSet<MessagePublishingErrorHttpStatusCodeEnum>
-    _$messagePublishingErrorHttpStatusCodeEnumValues = BuiltSet<
-        MessagePublishingErrorHttpStatusCodeEnum>(const <MessagePublishingErrorHttpStatusCodeEnum>[
-  _$messagePublishingErrorHttpStatusCodeEnum_number500,
-]);
+_$messagePublishingErrorHttpStatusCodeEnumValues =
+    BuiltSet<MessagePublishingErrorHttpStatusCodeEnum>(
+      const <MessagePublishingErrorHttpStatusCodeEnum>[
+        _$messagePublishingErrorHttpStatusCodeEnum_number500,
+      ],
+    );
 
 Serializer<MessagePublishingErrorNameEnum>
-    _$messagePublishingErrorNameEnumSerializer =
+_$messagePublishingErrorNameEnumSerializer =
     _$MessagePublishingErrorNameEnumSerializer();
 Serializer<MessagePublishingErrorMessageEnum>
-    _$messagePublishingErrorMessageEnumSerializer =
+_$messagePublishingErrorMessageEnumSerializer =
     _$MessagePublishingErrorMessageEnumSerializer();
 Serializer<MessagePublishingErrorHttpStatusCodeEnum>
-    _$messagePublishingErrorHttpStatusCodeEnumSerializer =
+_$messagePublishingErrorHttpStatusCodeEnumSerializer =
     _$MessagePublishingErrorHttpStatusCodeEnumSerializer();
 
 class _$MessagePublishingErrorNameEnumSerializer
@@ -93,16 +102,19 @@ class _$MessagePublishingErrorNameEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, MessagePublishingErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    MessagePublishingErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   MessagePublishingErrorNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      MessagePublishingErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => MessagePublishingErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$MessagePublishingErrorMessageEnumSerializer
@@ -121,16 +133,19 @@ class _$MessagePublishingErrorMessageEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, MessagePublishingErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    MessagePublishingErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   MessagePublishingErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      MessagePublishingErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => MessagePublishingErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$MessagePublishingErrorHttpStatusCodeEnumSerializer
@@ -144,23 +159,26 @@ class _$MessagePublishingErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    MessagePublishingErrorHttpStatusCodeEnum
+    MessagePublishingErrorHttpStatusCodeEnum,
   ];
   @override
   final String wireName = 'MessagePublishingErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          MessagePublishingErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    MessagePublishingErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   MessagePublishingErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      MessagePublishingErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => MessagePublishingErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$MessagePublishingError extends MessagePublishingError {
@@ -175,21 +193,21 @@ class _$MessagePublishingError extends MessagePublishingError {
   @override
   final BuiltList<InvalidParameterErrorDetailsInner>? details;
 
-  factory _$MessagePublishingError(
-          [void Function(MessagePublishingErrorBuilder)? updates]) =>
-      (MessagePublishingErrorBuilder()..update(updates))._build();
+  factory _$MessagePublishingError([
+    void Function(MessagePublishingErrorBuilder)? updates,
+  ]) => (MessagePublishingErrorBuilder()..update(updates))._build();
 
-  _$MessagePublishingError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$MessagePublishingError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   MessagePublishingError rebuild(
-          void Function(MessagePublishingErrorBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(MessagePublishingErrorBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   MessagePublishingErrorBuilder toBuilder() =>
@@ -247,8 +265,8 @@ class MessagePublishingErrorBuilder
   MessagePublishingErrorHttpStatusCodeEnum? get httpStatusCode =>
       _$this._httpStatusCode;
   set httpStatusCode(
-          MessagePublishingErrorHttpStatusCodeEnum? httpStatusCode) =>
-      _$this._httpStatusCode = httpStatusCode;
+    MessagePublishingErrorHttpStatusCodeEnum? httpStatusCode,
+  ) => _$this._httpStatusCode = httpStatusCode;
 
   String? _traceId;
   String? get traceId => _$this._traceId;
@@ -293,16 +311,29 @@ class MessagePublishingErrorBuilder
   _$MessagePublishingError _build() {
     _$MessagePublishingError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$MessagePublishingError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'MessagePublishingError', 'name'),
+              name,
+              r'MessagePublishingError',
+              'name',
+            ),
             message: BuiltValueNullFieldError.checkNotNull(
-                message, r'MessagePublishingError', 'message'),
+              message,
+              r'MessagePublishingError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode, r'MessagePublishingError', 'httpStatusCode'),
+              httpStatusCode,
+              r'MessagePublishingError',
+              'httpStatusCode',
+            ),
             traceId: BuiltValueNullFieldError.checkNotNull(
-                traceId, r'MessagePublishingError', 'traceId'),
+              traceId,
+              r'MessagePublishingError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -312,7 +343,10 @@ class MessagePublishingErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'MessagePublishingError', _$failedField, e.toString());
+          r'MessagePublishingError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

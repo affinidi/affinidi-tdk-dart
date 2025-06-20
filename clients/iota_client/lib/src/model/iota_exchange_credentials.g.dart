@@ -10,15 +10,15 @@ class _$IotaExchangeCredentials extends IotaExchangeCredentials {
   @override
   final String assertion;
 
-  factory _$IotaExchangeCredentials(
-          [void Function(IotaExchangeCredentialsBuilder)? updates]) =>
-      (IotaExchangeCredentialsBuilder()..update(updates))._build();
+  factory _$IotaExchangeCredentials([
+    void Function(IotaExchangeCredentialsBuilder)? updates,
+  ]) => (IotaExchangeCredentialsBuilder()..update(updates))._build();
 
   _$IotaExchangeCredentials._({required this.assertion}) : super._();
   @override
   IotaExchangeCredentials rebuild(
-          void Function(IotaExchangeCredentialsBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(IotaExchangeCredentialsBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   IotaExchangeCredentialsBuilder toBuilder() =>
@@ -40,9 +40,9 @@ class _$IotaExchangeCredentials extends IotaExchangeCredentials {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'IotaExchangeCredentials')
-          ..add('assertion', assertion))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'IotaExchangeCredentials',
+    )..add('assertion', assertion)).toString();
   }
 }
 
@@ -82,10 +82,14 @@ class IotaExchangeCredentialsBuilder
   IotaExchangeCredentials build() => _build();
 
   _$IotaExchangeCredentials _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$IotaExchangeCredentials._(
           assertion: BuiltValueNullFieldError.checkNotNull(
-              assertion, r'IotaExchangeCredentials', 'assertion'),
+            assertion,
+            r'IotaExchangeCredentials',
+            'assertion',
+          ),
         );
     replace(_$result);
     return _$result;

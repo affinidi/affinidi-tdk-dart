@@ -28,10 +28,10 @@ PdStatusDirectiveEnum _$pdStatusDirectiveEnumValueOf(String name) {
 
 final BuiltSet<PdStatusDirectiveEnum> _$pdStatusDirectiveEnumValues =
     BuiltSet<PdStatusDirectiveEnum>(const <PdStatusDirectiveEnum>[
-  _$pdStatusDirectiveEnum_required_,
-  _$pdStatusDirectiveEnum_allowed,
-  _$pdStatusDirectiveEnum_disallowed,
-]);
+      _$pdStatusDirectiveEnum_required_,
+      _$pdStatusDirectiveEnum_allowed,
+      _$pdStatusDirectiveEnum_disallowed,
+    ]);
 
 Serializer<PdStatusDirectiveEnum> _$pdStatusDirectiveEnumSerializer =
     _$PdStatusDirectiveEnumSerializer();
@@ -55,15 +55,20 @@ class _$PdStatusDirectiveEnumSerializer
   final String wireName = 'PdStatusDirectiveEnum';
 
   @override
-  Object serialize(Serializers serializers, PdStatusDirectiveEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    PdStatusDirectiveEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
-  PdStatusDirectiveEnum deserialize(Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      PdStatusDirectiveEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+  PdStatusDirectiveEnum deserialize(
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => PdStatusDirectiveEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$PdStatus extends PdStatus {
@@ -97,9 +102,9 @@ class _$PdStatus extends PdStatus {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'PdStatus')
-          ..add('directive', directive))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'PdStatus',
+    )..add('directive', directive)).toString();
   }
 }
 
@@ -138,10 +143,7 @@ class PdStatusBuilder implements Builder<PdStatus, PdStatusBuilder> {
   PdStatus build() => _build();
 
   _$PdStatus _build() {
-    final _$result = _$v ??
-        _$PdStatus._(
-          directive: directive,
-        );
+    final _$result = _$v ?? _$PdStatus._(directive: directive);
     replace(_$result);
     return _$result;
   }

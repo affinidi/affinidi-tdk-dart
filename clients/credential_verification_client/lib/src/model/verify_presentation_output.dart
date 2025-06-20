@@ -3,7 +3,7 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:affinidi_tdk_credential_verification_client/src/model/verify_presentation_output_errors.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -12,12 +12,15 @@ part 'verify_presentation_output.g.dart';
 /// Response model of /verify-vp
 ///
 /// Properties:
-/// * [errors] 
+/// * [errors] - Error of the verification
 /// * [isValid] - Verification result
 @BuiltValue()
-abstract class VerifyPresentationOutput implements Built<VerifyPresentationOutput, VerifyPresentationOutputBuilder> {
+abstract class VerifyPresentationOutput
+    implements
+        Built<VerifyPresentationOutput, VerifyPresentationOutputBuilder> {
+  /// Error of the verification
   @BuiltValueField(wireName: r'errors')
-  VerifyPresentationOutputErrors get errors;
+  BuiltList<String> get errors;
 
   /// Verification result
   @BuiltValueField(wireName: r'isValid')
@@ -25,18 +28,25 @@ abstract class VerifyPresentationOutput implements Built<VerifyPresentationOutpu
 
   VerifyPresentationOutput._();
 
-  factory VerifyPresentationOutput([void updates(VerifyPresentationOutputBuilder b)]) = _$VerifyPresentationOutput;
+  factory VerifyPresentationOutput([
+    void updates(VerifyPresentationOutputBuilder b),
+  ]) = _$VerifyPresentationOutput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(VerifyPresentationOutputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<VerifyPresentationOutput> get serializer => _$VerifyPresentationOutputSerializer();
+  static Serializer<VerifyPresentationOutput> get serializer =>
+      _$VerifyPresentationOutputSerializer();
 }
 
-class _$VerifyPresentationOutputSerializer implements PrimitiveSerializer<VerifyPresentationOutput> {
+class _$VerifyPresentationOutputSerializer
+    implements PrimitiveSerializer<VerifyPresentationOutput> {
   @override
-  final Iterable<Type> types = const [VerifyPresentationOutput, _$VerifyPresentationOutput];
+  final Iterable<Type> types = const [
+    VerifyPresentationOutput,
+    _$VerifyPresentationOutput,
+  ];
 
   @override
   final String wireName = r'VerifyPresentationOutput';
@@ -49,7 +59,7 @@ class _$VerifyPresentationOutputSerializer implements PrimitiveSerializer<Verify
     yield r'errors';
     yield serializers.serialize(
       object.errors,
-      specifiedType: const FullType(VerifyPresentationOutputErrors),
+      specifiedType: const FullType(BuiltList, [FullType(String)]),
     );
     yield r'isValid';
     yield serializers.serialize(
@@ -64,7 +74,11 @@ class _$VerifyPresentationOutputSerializer implements PrimitiveSerializer<Verify
     VerifyPresentationOutput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -80,17 +94,23 @@ class _$VerifyPresentationOutputSerializer implements PrimitiveSerializer<Verify
       final value = serializedList[i + 1];
       switch (key) {
         case r'errors':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(VerifyPresentationOutputErrors),
-          ) as VerifyPresentationOutputErrors;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.errors.replace(valueDes);
           break;
         case r'isValid':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.isValid = valueDes;
           break;
         default:
@@ -121,4 +141,3 @@ class _$VerifyPresentationOutputSerializer implements PrimitiveSerializer<Verify
     return result.build();
   }
 }
-

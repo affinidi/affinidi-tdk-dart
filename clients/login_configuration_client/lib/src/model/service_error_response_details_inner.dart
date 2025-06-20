@@ -16,7 +16,12 @@ part 'service_error_response_details_inner.g.dart';
 /// * [value] - value
 /// * [location] - location
 @BuiltValue()
-abstract class ServiceErrorResponseDetailsInner implements Built<ServiceErrorResponseDetailsInner, ServiceErrorResponseDetailsInnerBuilder> {
+abstract class ServiceErrorResponseDetailsInner
+    implements
+        Built<
+          ServiceErrorResponseDetailsInner,
+          ServiceErrorResponseDetailsInnerBuilder
+        > {
   /// issue
   @BuiltValueField(wireName: r'issue')
   String get issue;
@@ -35,18 +40,25 @@ abstract class ServiceErrorResponseDetailsInner implements Built<ServiceErrorRes
 
   ServiceErrorResponseDetailsInner._();
 
-  factory ServiceErrorResponseDetailsInner([void updates(ServiceErrorResponseDetailsInnerBuilder b)]) = _$ServiceErrorResponseDetailsInner;
+  factory ServiceErrorResponseDetailsInner([
+    void updates(ServiceErrorResponseDetailsInnerBuilder b),
+  ]) = _$ServiceErrorResponseDetailsInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ServiceErrorResponseDetailsInnerBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ServiceErrorResponseDetailsInner> get serializer => _$ServiceErrorResponseDetailsInnerSerializer();
+  static Serializer<ServiceErrorResponseDetailsInner> get serializer =>
+      _$ServiceErrorResponseDetailsInnerSerializer();
 }
 
-class _$ServiceErrorResponseDetailsInnerSerializer implements PrimitiveSerializer<ServiceErrorResponseDetailsInner> {
+class _$ServiceErrorResponseDetailsInnerSerializer
+    implements PrimitiveSerializer<ServiceErrorResponseDetailsInner> {
   @override
-  final Iterable<Type> types = const [ServiceErrorResponseDetailsInner, _$ServiceErrorResponseDetailsInner];
+  final Iterable<Type> types = const [
+    ServiceErrorResponseDetailsInner,
+    _$ServiceErrorResponseDetailsInner,
+  ];
 
   @override
   final String wireName = r'ServiceErrorResponseDetailsInner';
@@ -90,7 +102,11 @@ class _$ServiceErrorResponseDetailsInnerSerializer implements PrimitiveSerialize
     ServiceErrorResponseDetailsInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -106,31 +122,39 @@ class _$ServiceErrorResponseDetailsInnerSerializer implements PrimitiveSerialize
       final value = serializedList[i + 1];
       switch (key) {
         case r'issue':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.issue = valueDes;
           break;
         case r'field':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.field = valueDes;
           break;
         case r'value':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.value = valueDes;
           break;
         case r'location':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.location = valueDes;
           break;
         default:
@@ -161,4 +185,3 @@ class _$ServiceErrorResponseDetailsInnerSerializer implements PrimitiveSerialize
     return result.build();
   }
 }
-

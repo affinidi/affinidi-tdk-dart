@@ -12,12 +12,12 @@ class _$ValidateJwtOutput extends ValidateJwtOutput {
   @override
   final JsonObject payload;
 
-  factory _$ValidateJwtOutput(
-          [void Function(ValidateJwtOutputBuilder)? updates]) =>
-      (ValidateJwtOutputBuilder()..update(updates))._build();
+  factory _$ValidateJwtOutput([
+    void Function(ValidateJwtOutputBuilder)? updates,
+  ]) => (ValidateJwtOutputBuilder()..update(updates))._build();
 
   _$ValidateJwtOutput._({required this.isValid, required this.payload})
-      : super._();
+    : super._();
   @override
   ValidateJwtOutput rebuild(void Function(ValidateJwtOutputBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -92,12 +92,19 @@ class ValidateJwtOutputBuilder
   ValidateJwtOutput build() => _build();
 
   _$ValidateJwtOutput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$ValidateJwtOutput._(
           isValid: BuiltValueNullFieldError.checkNotNull(
-              isValid, r'ValidateJwtOutput', 'isValid'),
+            isValid,
+            r'ValidateJwtOutput',
+            'isValid',
+          ),
           payload: BuiltValueNullFieldError.checkNotNull(
-              payload, r'ValidateJwtOutput', 'payload'),
+            payload,
+            r'ValidateJwtOutput',
+            'payload',
+          ),
         );
     replace(_$result);
     return _$result;

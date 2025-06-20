@@ -14,11 +14,16 @@ part 'list_scanned_files_ok_scanned_files_inner.g.dart';
 /// * [jobId] - A unique, randomly generated identifier
 /// * [status] - The Status of the listed files
 /// * [profileId] - A unique, randomly generated identifier
-/// * [nodeId] 
-/// * [createdAt] 
-/// * [name] 
+/// * [nodeId]
+/// * [createdAt]
+/// * [name]
 @BuiltValue()
-abstract class ListScannedFilesOKScannedFilesInner implements Built<ListScannedFilesOKScannedFilesInner, ListScannedFilesOKScannedFilesInnerBuilder> {
+abstract class ListScannedFilesOKScannedFilesInner
+    implements
+        Built<
+          ListScannedFilesOKScannedFilesInner,
+          ListScannedFilesOKScannedFilesInnerBuilder
+        > {
   /// A unique, randomly generated identifier
   @BuiltValueField(wireName: r'jobId')
   String get jobId;
@@ -42,18 +47,25 @@ abstract class ListScannedFilesOKScannedFilesInner implements Built<ListScannedF
 
   ListScannedFilesOKScannedFilesInner._();
 
-  factory ListScannedFilesOKScannedFilesInner([void updates(ListScannedFilesOKScannedFilesInnerBuilder b)]) = _$ListScannedFilesOKScannedFilesInner;
+  factory ListScannedFilesOKScannedFilesInner([
+    void updates(ListScannedFilesOKScannedFilesInnerBuilder b),
+  ]) = _$ListScannedFilesOKScannedFilesInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ListScannedFilesOKScannedFilesInnerBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ListScannedFilesOKScannedFilesInner> get serializer => _$ListScannedFilesOKScannedFilesInnerSerializer();
+  static Serializer<ListScannedFilesOKScannedFilesInner> get serializer =>
+      _$ListScannedFilesOKScannedFilesInnerSerializer();
 }
 
-class _$ListScannedFilesOKScannedFilesInnerSerializer implements PrimitiveSerializer<ListScannedFilesOKScannedFilesInner> {
+class _$ListScannedFilesOKScannedFilesInnerSerializer
+    implements PrimitiveSerializer<ListScannedFilesOKScannedFilesInner> {
   @override
-  final Iterable<Type> types = const [ListScannedFilesOKScannedFilesInner, _$ListScannedFilesOKScannedFilesInner];
+  final Iterable<Type> types = const [
+    ListScannedFilesOKScannedFilesInner,
+    _$ListScannedFilesOKScannedFilesInner,
+  ];
 
   @override
   final String wireName = r'ListScannedFilesOKScannedFilesInner';
@@ -101,7 +113,11 @@ class _$ListScannedFilesOKScannedFilesInnerSerializer implements PrimitiveSerial
     ListScannedFilesOKScannedFilesInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -117,45 +133,57 @@ class _$ListScannedFilesOKScannedFilesInnerSerializer implements PrimitiveSerial
       final value = serializedList[i + 1];
       switch (key) {
         case r'jobId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.jobId = valueDes;
           break;
         case r'status':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.status = valueDes;
           break;
         case r'profileId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.profileId = valueDes;
           break;
         case r'nodeId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.nodeId = valueDes;
           break;
         case r'createdAt':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.createdAt = valueDes;
           break;
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         default:
@@ -186,4 +214,3 @@ class _$ListScannedFilesOKScannedFilesInnerSerializer implements PrimitiveSerial
     return result.build();
   }
 }
-

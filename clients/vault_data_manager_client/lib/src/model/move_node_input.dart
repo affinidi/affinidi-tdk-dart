@@ -14,7 +14,8 @@ part 'move_node_input.g.dart';
 /// * [destinationNodeId] - Parent to which current node should be moved
 /// * [resolveNameConflictsAutomatically] - automatically update the name of Node if target Node has children with the same name. If not provided, name won't be updated automatically
 @BuiltValue()
-abstract class MoveNodeInput implements Built<MoveNodeInput, MoveNodeInputBuilder> {
+abstract class MoveNodeInput
+    implements Built<MoveNodeInput, MoveNodeInputBuilder> {
   /// Parent to which current node should be moved
   @BuiltValueField(wireName: r'destinationNodeId')
   String get destinationNodeId;
@@ -25,14 +26,16 @@ abstract class MoveNodeInput implements Built<MoveNodeInput, MoveNodeInputBuilde
 
   MoveNodeInput._();
 
-  factory MoveNodeInput([void updates(MoveNodeInputBuilder b)]) = _$MoveNodeInput;
+  factory MoveNodeInput([void updates(MoveNodeInputBuilder b)]) =
+      _$MoveNodeInput;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(MoveNodeInputBuilder b) => b
-      ..resolveNameConflictsAutomatically = false;
+  static void _defaults(MoveNodeInputBuilder b) =>
+      b..resolveNameConflictsAutomatically = false;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<MoveNodeInput> get serializer => _$MoveNodeInputSerializer();
+  static Serializer<MoveNodeInput> get serializer =>
+      _$MoveNodeInputSerializer();
 }
 
 class _$MoveNodeInputSerializer implements PrimitiveSerializer<MoveNodeInput> {
@@ -67,7 +70,11 @@ class _$MoveNodeInputSerializer implements PrimitiveSerializer<MoveNodeInput> {
     MoveNodeInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -83,17 +90,21 @@ class _$MoveNodeInputSerializer implements PrimitiveSerializer<MoveNodeInput> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'destinationNodeId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.destinationNodeId = valueDes;
           break;
         case r'resolveNameConflictsAutomatically':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.resolveNameConflictsAutomatically = valueDes;
           break;
         default:
@@ -124,4 +135,3 @@ class _$MoveNodeInputSerializer implements PrimitiveSerializer<MoveNodeInput> {
     return result.build();
   }
 }
-

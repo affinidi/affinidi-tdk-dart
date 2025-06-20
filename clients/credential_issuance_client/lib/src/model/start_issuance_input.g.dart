@@ -9,14 +9,15 @@ part of 'start_issuance_input.dart';
 const StartIssuanceInputClaimModeEnum _$startIssuanceInputClaimModeEnum_NORMAL =
     const StartIssuanceInputClaimModeEnum._('NORMAL');
 const StartIssuanceInputClaimModeEnum
-    _$startIssuanceInputClaimModeEnum_TX_CODE =
+_$startIssuanceInputClaimModeEnum_TX_CODE =
     const StartIssuanceInputClaimModeEnum._('TX_CODE');
 const StartIssuanceInputClaimModeEnum
-    _$startIssuanceInputClaimModeEnum_FIXED_HOLDER =
+_$startIssuanceInputClaimModeEnum_FIXED_HOLDER =
     const StartIssuanceInputClaimModeEnum._('FIXED_HOLDER');
 
 StartIssuanceInputClaimModeEnum _$startIssuanceInputClaimModeEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'NORMAL':
       return _$startIssuanceInputClaimModeEnum_NORMAL;
@@ -30,15 +31,17 @@ StartIssuanceInputClaimModeEnum _$startIssuanceInputClaimModeEnumValueOf(
 }
 
 final BuiltSet<StartIssuanceInputClaimModeEnum>
-    _$startIssuanceInputClaimModeEnumValues = BuiltSet<
-        StartIssuanceInputClaimModeEnum>(const <StartIssuanceInputClaimModeEnum>[
-  _$startIssuanceInputClaimModeEnum_NORMAL,
-  _$startIssuanceInputClaimModeEnum_TX_CODE,
-  _$startIssuanceInputClaimModeEnum_FIXED_HOLDER,
-]);
+_$startIssuanceInputClaimModeEnumValues =
+    BuiltSet<StartIssuanceInputClaimModeEnum>(
+      const <StartIssuanceInputClaimModeEnum>[
+        _$startIssuanceInputClaimModeEnum_NORMAL,
+        _$startIssuanceInputClaimModeEnum_TX_CODE,
+        _$startIssuanceInputClaimModeEnum_FIXED_HOLDER,
+      ],
+    );
 
 Serializer<StartIssuanceInputClaimModeEnum>
-    _$startIssuanceInputClaimModeEnumSerializer =
+_$startIssuanceInputClaimModeEnumSerializer =
     _$StartIssuanceInputClaimModeEnumSerializer();
 
 class _$StartIssuanceInputClaimModeEnumSerializer
@@ -61,16 +64,19 @@ class _$StartIssuanceInputClaimModeEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, StartIssuanceInputClaimModeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    StartIssuanceInputClaimModeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   StartIssuanceInputClaimModeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      StartIssuanceInputClaimModeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => StartIssuanceInputClaimModeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$StartIssuanceInput extends StartIssuanceInput {
@@ -83,17 +89,20 @@ class _$StartIssuanceInput extends StartIssuanceInput {
   @override
   final BuiltList<StartIssuanceInputDataInner> data;
 
-  factory _$StartIssuanceInput(
-          [void Function(StartIssuanceInputBuilder)? updates]) =>
-      (StartIssuanceInputBuilder()..update(updates))._build();
+  factory _$StartIssuanceInput([
+    void Function(StartIssuanceInputBuilder)? updates,
+  ]) => (StartIssuanceInputBuilder()..update(updates))._build();
 
-  _$StartIssuanceInput._(
-      {this.claimMode, this.holderDid, this.issuanceId, required this.data})
-      : super._();
+  _$StartIssuanceInput._({
+    this.claimMode,
+    this.holderDid,
+    this.issuanceId,
+    required this.data,
+  }) : super._();
   @override
   StartIssuanceInput rebuild(
-          void Function(StartIssuanceInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(StartIssuanceInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   StartIssuanceInputBuilder toBuilder() =>
@@ -186,7 +195,8 @@ class StartIssuanceInputBuilder
   _$StartIssuanceInput _build() {
     _$StartIssuanceInput _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$StartIssuanceInput._(
             claimMode: claimMode,
             holderDid: holderDid,
@@ -200,7 +210,10 @@ class StartIssuanceInputBuilder
         data.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'StartIssuanceInput', _$failedField, e.toString());
+          r'StartIssuanceInput',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

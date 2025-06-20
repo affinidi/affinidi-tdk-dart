@@ -12,13 +12,14 @@ part 'verify_presentation_input.g.dart';
 /// Request model of /verify-vp
 ///
 /// Properties:
-/// * [verifiablePresentation] 
-/// * [signedPresentation] 
-/// * [presentationDefinition] 
-/// * [presentationSubmission] 
-/// * [challenge] 
+/// * [verifiablePresentation]
+/// * [signedPresentation]
+/// * [presentationDefinition]
+/// * [presentationSubmission]
+/// * [challenge]
 @BuiltValue()
-abstract class VerifyPresentationInput implements Built<VerifyPresentationInput, VerifyPresentationInputBuilder> {
+abstract class VerifyPresentationInput
+    implements Built<VerifyPresentationInput, VerifyPresentationInputBuilder> {
   @BuiltValueField(wireName: r'verifiablePresentation')
   JsonObject? get verifiablePresentation;
 
@@ -36,18 +37,25 @@ abstract class VerifyPresentationInput implements Built<VerifyPresentationInput,
 
   VerifyPresentationInput._();
 
-  factory VerifyPresentationInput([void updates(VerifyPresentationInputBuilder b)]) = _$VerifyPresentationInput;
+  factory VerifyPresentationInput([
+    void updates(VerifyPresentationInputBuilder b),
+  ]) = _$VerifyPresentationInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(VerifyPresentationInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<VerifyPresentationInput> get serializer => _$VerifyPresentationInputSerializer();
+  static Serializer<VerifyPresentationInput> get serializer =>
+      _$VerifyPresentationInputSerializer();
 }
 
-class _$VerifyPresentationInputSerializer implements PrimitiveSerializer<VerifyPresentationInput> {
+class _$VerifyPresentationInputSerializer
+    implements PrimitiveSerializer<VerifyPresentationInput> {
   @override
-  final Iterable<Type> types = const [VerifyPresentationInput, _$VerifyPresentationInput];
+  final Iterable<Type> types = const [
+    VerifyPresentationInput,
+    _$VerifyPresentationInput,
+  ];
 
   @override
   final String wireName = r'VerifyPresentationInput';
@@ -100,7 +108,11 @@ class _$VerifyPresentationInputSerializer implements PrimitiveSerializer<VerifyP
     VerifyPresentationInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -116,38 +128,48 @@ class _$VerifyPresentationInputSerializer implements PrimitiveSerializer<VerifyP
       final value = serializedList[i + 1];
       switch (key) {
         case r'verifiablePresentation':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JsonObject),
+                  )
+                  as JsonObject;
           result.verifiablePresentation = valueDes;
           break;
         case r'signedPresentation':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JsonObject),
+                  )
+                  as JsonObject;
           result.signedPresentation = valueDes;
           break;
         case r'presentationDefinition':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JsonObject),
+                  )
+                  as JsonObject;
           result.presentationDefinition = valueDes;
           break;
         case r'presentationSubmission':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JsonObject),
+                  )
+                  as JsonObject;
           result.presentationSubmission = valueDes;
           break;
         case r'challenge':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.challenge = valueDes;
           break;
         default:
@@ -178,4 +200,3 @@ class _$VerifyPresentationInputSerializer implements PrimitiveSerializer<VerifyP
     return result.build();
   }
 }
-

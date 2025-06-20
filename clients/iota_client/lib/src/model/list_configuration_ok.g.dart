@@ -10,15 +10,15 @@ class _$ListConfigurationOK extends ListConfigurationOK {
   @override
   final BuiltList<IotaConfigurationDto> configurations;
 
-  factory _$ListConfigurationOK(
-          [void Function(ListConfigurationOKBuilder)? updates]) =>
-      (ListConfigurationOKBuilder()..update(updates))._build();
+  factory _$ListConfigurationOK([
+    void Function(ListConfigurationOKBuilder)? updates,
+  ]) => (ListConfigurationOKBuilder()..update(updates))._build();
 
   _$ListConfigurationOK._({required this.configurations}) : super._();
   @override
   ListConfigurationOK rebuild(
-          void Function(ListConfigurationOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ListConfigurationOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ListConfigurationOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$ListConfigurationOK extends ListConfigurationOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'ListConfigurationOK')
-          ..add('configurations', configurations))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'ListConfigurationOK',
+    )..add('configurations', configurations)).toString();
   }
 }
 
@@ -86,10 +86,9 @@ class ListConfigurationOKBuilder
   _$ListConfigurationOK _build() {
     _$ListConfigurationOK _$result;
     try {
-      _$result = _$v ??
-          _$ListConfigurationOK._(
-            configurations: configurations.build(),
-          );
+      _$result =
+          _$v ??
+          _$ListConfigurationOK._(configurations: configurations.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -97,7 +96,10 @@ class ListConfigurationOKBuilder
         configurations.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'ListConfigurationOK', _$failedField, e.toString());
+          r'ListConfigurationOK',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

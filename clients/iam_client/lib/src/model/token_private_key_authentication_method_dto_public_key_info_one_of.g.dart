@@ -11,23 +11,26 @@ class _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf
   @override
   final JsonWebKeySetDto jwks;
 
-  factory _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf(
-          [void Function(
-                  TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOfBuilder)?
-              updates]) =>
+  factory _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf([
+    void Function(
+      TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOfBuilder,
+    )?
+    updates,
+  ]) =>
       (TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOfBuilder()
             ..update(updates))
           ._build();
 
-  _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf._(
-      {required this.jwks})
-      : super._();
+  _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf._({
+    required this.jwks,
+  }) : super._();
   @override
   TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf rebuild(
-          void Function(
-                  TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOfBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(
+      TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOfBuilder,
+    )
+    updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOfBuilder toBuilder() =>
@@ -52,16 +55,17 @@ class _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf')
-          ..add('jwks', jwks))
-        .toString();
+      r'TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf',
+    )..add('jwks', jwks)).toString();
   }
 }
 
 class TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOfBuilder
     implements
-        Builder<TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf,
-            TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOfBuilder> {
+        Builder<
+          TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf,
+          TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOfBuilder
+        > {
   _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf? _$v;
 
   JsonWebKeySetDtoBuilder? _jwks;
@@ -89,9 +93,11 @@ class TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOfBuilder
 
   @override
   void update(
-      void Function(
-              TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOfBuilder)?
-          updates) {
+    void Function(
+      TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOfBuilder,
+    )?
+    updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -101,7 +107,8 @@ class TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOfBuilder
   _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf _build() {
     _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf._(
             jwks: jwks.build(),
           );
@@ -112,9 +119,10 @@ class TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOfBuilder
         jwks.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf',
-            _$failedField,
-            e.toString());
+          r'TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

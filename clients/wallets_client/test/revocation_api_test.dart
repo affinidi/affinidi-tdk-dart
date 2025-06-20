@@ -1,7 +1,6 @@
 import 'package:test/test.dart';
 import 'package:affinidi_tdk_wallets_client/affinidi_tdk_wallets_client.dart';
 
-
 /// tests for RevocationApi
 void main() {
   final instance = AffinidiTdkWalletsClient().getRevocationApi();
@@ -31,6 +30,5 @@ void main() {
     test('test revokeCredential', () async {
       // TODO
     });
-
   });
 }
