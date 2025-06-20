@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 jobs:
   dart-pipeline:
-    uses: affinidi/pipeline-dart/.github/workflows/publish.yaml@feat/flutter-dependant-workflows
+    uses: affinidi/pipeline-dart/.github/workflows/publish.yaml@main
     secrets: inherit
     with:
       publish: true
