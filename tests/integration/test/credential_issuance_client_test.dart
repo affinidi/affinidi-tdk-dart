@@ -37,8 +37,7 @@ void main() {
       consumerAuthProvider = ConsumerAuthProvider(signer: didSigner);
 
       final issuanceClient = AffinidiTdkCredentialIssuanceClient(
-        authTokenHook: ResourceFactory.getAuthTokenHook(),
-      );
+          authTokenHook: ResourceFactory.getAuthTokenHook());
       configurationApi = issuanceClient.getConfigurationApi();
       issuanceApi = issuanceClient.getIssuanceApi();
       offerApi = issuanceClient.getOfferApi();
@@ -56,31 +55,19 @@ void main() {
         final response = await configurationApi.getIssuanceConfigList();
 
         // Then
-        expect(
-          response.data,
-          isNotNull,
-          reason: 'Response data should not be null',
-        );
+        expect(response.data, isNotNull,
+            reason: 'Response data should not be null');
 
         final configs = response.data?.configurations;
-        expect(
-          configs,
-          isNotNull,
-          reason: 'Configurations list should not be null',
-        );
-        expect(
-          configs!,
-          isNotEmpty,
-          reason: 'Configurations list should not be empty',
-        );
+        expect(configs, isNotNull,
+            reason: 'Configurations list should not be null');
+        expect(configs!, isNotEmpty,
+            reason: 'Configurations list should not be empty');
 
         // Store configuration ID
         configurationId = configs.first.id;
-        expect(
-          configurationId,
-          isNotEmpty,
-          reason: 'First configuration ID should not be empty',
-        );
+        expect(configurationId, isNotEmpty,
+            reason: 'First configuration ID should not be empty');
       });
 
       test('Updates issuance configuration', () async {
@@ -90,9 +77,9 @@ void main() {
           ..description = updatedDescription;
 
         final config = (await configurationApi.updateIssuanceConfigById(
-          configurationId: configurationId,
-          updateIssuanceConfigInput: updateIssuanceConfigInput.build(),
-        )).data;
+                configurationId: configurationId,
+                updateIssuanceConfigInput: updateIssuanceConfigInput.build()))
+            .data;
 
         expect(config, isNotNull);
         expect(config?.description, equals(updatedDescription));
@@ -100,8 +87,8 @@ void main() {
 
       test('Reads issuance configuration', () async {
         final config = (await configurationApi.getIssuanceConfigById(
-          configurationId: configurationId,
-        )).data;
+                configurationId: configurationId))
+            .data;
 
         expect(config, isNotNull);
       });
@@ -144,9 +131,9 @@ void main() {
           ]);
 
         final issuanceResponse = (await issuanceApi.startIssuance(
-          projectId: env.projectId,
-          startIssuanceInput: startIssuanceInput.build(),
-        )).data;
+                projectId: env.projectId,
+                startIssuanceInput: startIssuanceInput.build()))
+            .data;
 
         expect(issuanceResponse, isNotNull);
         expect(issuanceResponse?.issuanceId, isNotEmpty);
@@ -156,28 +143,23 @@ void main() {
 
       test('Get Offer', () async {
         final offerResponse = (await offerApi.getCredentialOffer(
-          projectId: env.projectId,
-          issuanceId: issuanceId,
-        )).data;
+                projectId: env.projectId, issuanceId: issuanceId))
+            .data;
 
         expect(offerResponse, isNotNull);
         expect(offerResponse?.credentialIssuer, isNotEmpty);
         expect(offerResponse?.grants, isNotNull);
         expect(
-          offerResponse
-              ?.grants
-              .urnColonIetfColonParamsColonOauthColonGrantTypeColonPreAuthorizedCode,
-          isNotNull,
-        );
+            offerResponse?.grants
+                .urnColonIetfColonParamsColonOauthColonGrantTypeColonPreAuthorizedCode,
+            isNotNull);
         expect(
-          offerResponse
-              ?.grants
-              .urnColonIetfColonParamsColonOauthColonGrantTypeColonPreAuthorizedCode
-              .preAuthorizedCode,
-          isNotEmpty,
-        );
-        preAuthCode =
             offerResponse
+                ?.grants
+                .urnColonIetfColonParamsColonOauthColonGrantTypeColonPreAuthorizedCode
+                .preAuthorizedCode,
+            isNotEmpty);
+        preAuthCode = offerResponse
                 ?.grants
                 .urnColonIetfColonParamsColonOauthColonGrantTypeColonPreAuthorizedCode
                 .preAuthorizedCode ??
@@ -185,21 +167,19 @@ void main() {
       });
 
       test("Claim batch credential", () async {
-        final issuerMetadata =
-            (await wellKnownApi.getWellKnownOpenIdCredentialIssuer(
-              projectId: env.projectId,
-            )).data;
+        final issuerMetadata = (await wellKnownApi
+                .getWellKnownOpenIdCredentialIssuer(projectId: env.projectId))
+            .data;
         expect(issuerMetadata, isNotNull);
 
         final tokenEndpoint = issuerMetadata?.tokenEndpoint;
         expect(tokenEndpoint, isNotNull);
 
-        final tokenDetails = await consumerAuthProvider
-            .exchangePreAuthCodeForToken(
-              tokenEndpoint: issuerMetadata?.tokenEndpoint ?? '',
-              preAuthCode: preAuthCode,
-              txCode: txCode ?? '',
-            );
+        final tokenDetails =
+            await consumerAuthProvider.exchangePreAuthCodeForToken(
+                tokenEndpoint: issuerMetadata?.tokenEndpoint ?? '',
+                preAuthCode: preAuthCode,
+                txCode: txCode ?? '');
 
         expect(tokenDetails.accessToken, isNotNull);
         expect(tokenDetails.authorizationDetails, isNotNull);
@@ -210,13 +190,10 @@ void main() {
             final proof = CredentialProofBuilder()
               ..jwt = await consumerAuthProvider.fetchCisToken()
               ..proofType = CredentialProofProofTypeEnum.jwt;
-            credentialRequests.add(
-              BatchCredentialInputCredentialRequestsInner(
-                (b) => b
+            credentialRequests
+                .add(BatchCredentialInputCredentialRequestsInner((b) => b
                   ..credentialIdentifier = credentialIdentifier
-                  ..proof = proof,
-              ),
-            );
+                  ..proof = proof));
           }
         }
 
@@ -231,10 +208,10 @@ void main() {
         final client = AffinidiTdkCredentialIssuanceClient();
         final credentialsApi = client.getCredentialsApi();
         final data = (await credentialsApi.batchCredential(
-          projectId: env.projectId,
-          batchCredentialInput: batchCredentialInput.build(),
-          headers: headers,
-        )).data;
+                projectId: env.projectId,
+                batchCredentialInput: batchCredentialInput.build(),
+                headers: headers))
+            .data;
         expect(data, isNotNull);
         expect(data?.credentialResponses, isNotNull);
         expect(data?.credentialResponses.length, equals(10));
@@ -244,10 +221,10 @@ void main() {
 
       test('Get issued credentials for specific flow', () async {
         final data = (await credentialsApi.getIssuanceIdClaimedCredential(
-          configurationId: configurationId,
-          projectId: env.projectId,
-          issuanceId: issuanceId,
-        )).data;
+                configurationId: configurationId,
+                projectId: env.projectId,
+                issuanceId: issuanceId))
+            .data;
         expect(data, isNotNull);
         expect(data?.credentials, isNotNull);
         expect(data?.credentials?.length, equals(10));

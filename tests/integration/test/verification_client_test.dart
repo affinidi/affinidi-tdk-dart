@@ -11,8 +11,7 @@ void main() {
 
     setUpAll(() async {
       final apiClient = AffinidiTdkCredentialVerificationClient(
-        authTokenHook: ResourceFactory.getAuthTokenHook(),
-      );
+          authTokenHook: ResourceFactory.getAuthTokenHook());
       verificationApi = apiClient.getDefaultApi();
     });
 
@@ -20,12 +19,14 @@ void main() {
       final credential = getFixtures().verifiableCredential;
 
       final verifyCredentialInputBuilder = VerifyCredentialInputBuilder()
-        ..verifiableCredentials = ListBuilder<JsonObject>([
-          MapJsonObject(credential),
-        ]);
+        ..verifiableCredentials = ListBuilder<JsonObject>(
+          [
+            MapJsonObject(credential),
+          ],
+        );
       final verificationResponse = (await verificationApi.verifyCredentials(
-        verifyCredentialInput: verifyCredentialInputBuilder.build(),
-      )).data;
+              verifyCredentialInput: verifyCredentialInputBuilder.build()))
+          .data;
       expect(verificationResponse, isNotNull);
       expect(verificationResponse!.isValid, isTrue);
       expect(verificationResponse.errors, isEmpty);
