@@ -14,7 +14,6 @@ workspace:
   - packages/vault
   - packages/vault_data_manager
   - packages/vault_flutter_utils
-  - packages/vault_storages
   - packages/vault_flutter_utils/example/flutter_secure_storage
   - clients/login_configuration_client
   - clients/credential_issuance_client

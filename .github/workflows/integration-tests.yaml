@@ -21,13 +21,6 @@ jobs:
         run: dart pub get
         working-directory: tests/integration
 
-      - name: Cache testing env file
-        uses: actions/cache@v4
-        id: testing-env-cache
-        with:
-          path: tests/.env
-          key: ${{ runner.os }}-testing-env-${{ hashFiles('tests/.env') }}
-
       - if: ${{ steps.testing-env-cache.outputs.cache-hit != 'true' }}
         name: Prepare environment file
         env:
