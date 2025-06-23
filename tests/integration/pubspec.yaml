@@ -5,27 +5,27 @@ environment:
 
 dev_dependencies:
   affinidi_tdk_auth_provider:
-    path: ../../../packages/auth_provider
+    path: ../../packages/auth_provider
   affinidi_tdk_common: ^1.6.0
   affinidi_tdk_consumer_auth_provider:
-    path: ../../../packages/consumer_auth_provider
+    path: ../../packages/consumer_auth_provider
   affinidi_tdk_cryptography:
-    path: ../../../packages/cryptography
+    path: ../../packages/cryptography
   ssi: ^1.0.0
   affinidi_tdk_iam_client:
-    path: ../../../clients/iam_client
+    path: ../../clients/iam_client
   affinidi_tdk_wallets_client:
-    path: ../../../clients/wallets_client
+    path: ../../clients/wallets_client
   affinidi_tdk_credential_issuance_client:
-    path: ../../../clients/credential_issuance_client
+    path: ../../clients/credential_issuance_client
   affinidi_tdk_vault_data_manager_client:
-    path: ../../../clients/vault_data_manager_client
+    path: ../../clients/vault_data_manager_client
   affinidi_tdk_credential_verification_client:
-    path: ../../../clients/credential_verification_client
+    path: ../../clients/credential_verification_client
   affinidi_tdk_iota_client:
-    path: ../../../clients/iota_client
+    path: ../../clients/iota_client
   affinidi_tdk_login_configuration_client:
-    path: ../../../clients/login_configuration_client
+    path: ../../clients/login_configuration_client
   dotenv: ^4.2.0
   lints: ^5.0.0
   test: ^1.24.0

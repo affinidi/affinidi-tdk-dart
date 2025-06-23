@@ -1,4 +1,4 @@
-name: Pull Request on clients update
+name: Pull Request on Clients Update
 on:
   push:
     branches-ignore:
