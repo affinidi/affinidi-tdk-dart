@@ -1,0 +1,32 @@
+name: Integration Tests
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  integration_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: 3.8.1
+
+      - name: Install dependencies
+        run: dart pub get
+        working-directory: tests/integration
+
+      - if: ${{ steps.testing-env-cache.outputs.cache-hit != 'true' }}
+        name: Prepare environment file
+        env:
+          TESTING_ENV_FILE_CONTENT: ${{ secrets.TESTING_ENV_FILE_CONTENT }}
+        run: echo $TESTING_ENV_FILE_CONTENT | base64 --decode > tests/.env
+
+      - name: Run integration tests
+        run: dart test
+        working-directory: tests/integration

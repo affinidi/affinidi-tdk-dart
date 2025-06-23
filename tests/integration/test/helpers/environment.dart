@@ -37,7 +37,7 @@ class CredentialIssuanceEnvironment {
 }
 
 ProjectEnvironment getProjectEnvironment() {
-  final env = DotEnv()..load(['../../.env']);
+  final env = DotEnv()..load(['../.env']);
 
   if (!env.isEveryDefined(['PROJECT_ID', 'TOKEN_ID', 'PRIVATE_KEY'])) {
     throw Exception(
@@ -62,7 +62,7 @@ ProjectEnvironment getProjectEnvironment() {
 }
 
 VaultEnvironment getVaultEnvironment() {
-  final env = DotEnv()..load(['../../.env']);
+  final env = DotEnv()..load(['../.env']);
 
   if (!env.isEveryDefined(['VAULT_SEED_BYTES_HEX_ENCODED'])) {
     throw Exception(
@@ -77,7 +77,7 @@ VaultEnvironment getVaultEnvironment() {
 }
 
 CredentialIssuanceEnvironment getCredentialIssuanceEnvironment() {
-  final env = DotEnv()..load(['../../.env']);
+  final env = DotEnv()..load(['../.env']);
 
   if (!env.isEveryDefined(['CREDENTIAL_ISSUANCE_DATA'])) {
     throw Exception(
