@@ -32,6 +32,7 @@ melos:
   scripts:
     analyze:
       exec: dart analyze .
+      concurrency: 4
     test:
       run: |
         melos run test-flutter
