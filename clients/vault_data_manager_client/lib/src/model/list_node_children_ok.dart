@@ -13,11 +13,10 @@ part 'list_node_children_ok.g.dart';
 /// ListNodeChildrenOK
 ///
 /// Properties:
-/// * [nodes]
-/// * [lastEvaluatedKey]
+/// * [nodes] 
+/// * [lastEvaluatedKey] 
 @BuiltValue()
-abstract class ListNodeChildrenOK
-    implements Built<ListNodeChildrenOK, ListNodeChildrenOKBuilder> {
+abstract class ListNodeChildrenOK implements Built<ListNodeChildrenOK, ListNodeChildrenOKBuilder> {
   @BuiltValueField(wireName: r'nodes')
   BuiltList<NodeDto>? get nodes;
 
@@ -26,19 +25,16 @@ abstract class ListNodeChildrenOK
 
   ListNodeChildrenOK._();
 
-  factory ListNodeChildrenOK([void updates(ListNodeChildrenOKBuilder b)]) =
-      _$ListNodeChildrenOK;
+  factory ListNodeChildrenOK([void updates(ListNodeChildrenOKBuilder b)]) = _$ListNodeChildrenOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ListNodeChildrenOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ListNodeChildrenOK> get serializer =>
-      _$ListNodeChildrenOKSerializer();
+  static Serializer<ListNodeChildrenOK> get serializer => _$ListNodeChildrenOKSerializer();
 }
 
-class _$ListNodeChildrenOKSerializer
-    implements PrimitiveSerializer<ListNodeChildrenOK> {
+class _$ListNodeChildrenOKSerializer implements PrimitiveSerializer<ListNodeChildrenOK> {
   @override
   final Iterable<Type> types = const [ListNodeChildrenOK, _$ListNodeChildrenOK];
 
@@ -72,11 +68,7 @@ class _$ListNodeChildrenOKSerializer
     ListNodeChildrenOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -92,23 +84,17 @@ class _$ListNodeChildrenOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'nodes':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(NodeDto),
-                    ]),
-                  )
-                  as BuiltList<NodeDto>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(NodeDto)]),
+          ) as BuiltList<NodeDto>;
           result.nodes.replace(valueDes);
           break;
         case r'lastEvaluatedKey':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.lastEvaluatedKey = valueDes;
           break;
         default:
@@ -139,3 +125,4 @@ class _$ListNodeChildrenOKSerializer
     return result.build();
   }
 }
+

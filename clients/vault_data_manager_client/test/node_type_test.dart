@@ -3,5 +3,7 @@ import 'package:affinidi_tdk_vault_data_manager_client/affinidi_tdk_vault_data_m
 
 // tests for NodeType
 void main() {
-  group(NodeType, () {});
+
+  group(NodeType, () {
+  });
 }

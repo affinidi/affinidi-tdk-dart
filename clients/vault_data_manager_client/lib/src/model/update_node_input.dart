@@ -15,8 +15,7 @@ part 'update_node_input.g.dart';
 /// * [description] - Description of the node
 /// * [metadata] - metadata of the node in stringified json format
 @BuiltValue()
-abstract class UpdateNodeInput
-    implements Built<UpdateNodeInput, UpdateNodeInputBuilder> {
+abstract class UpdateNodeInput implements Built<UpdateNodeInput, UpdateNodeInputBuilder> {
   /// Name of the node
   @BuiltValueField(wireName: r'name')
   String? get name;
@@ -31,19 +30,16 @@ abstract class UpdateNodeInput
 
   UpdateNodeInput._();
 
-  factory UpdateNodeInput([void updates(UpdateNodeInputBuilder b)]) =
-      _$UpdateNodeInput;
+  factory UpdateNodeInput([void updates(UpdateNodeInputBuilder b)]) = _$UpdateNodeInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UpdateNodeInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateNodeInput> get serializer =>
-      _$UpdateNodeInputSerializer();
+  static Serializer<UpdateNodeInput> get serializer => _$UpdateNodeInputSerializer();
 }
 
-class _$UpdateNodeInputSerializer
-    implements PrimitiveSerializer<UpdateNodeInput> {
+class _$UpdateNodeInputSerializer implements PrimitiveSerializer<UpdateNodeInput> {
   @override
   final Iterable<Type> types = const [UpdateNodeInput, _$UpdateNodeInput];
 
@@ -84,11 +80,7 @@ class _$UpdateNodeInputSerializer
     UpdateNodeInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -104,30 +96,24 @@ class _$UpdateNodeInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.description = valueDes;
           break;
         case r'metadata':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.metadata = valueDes;
           break;
         default:
@@ -158,3 +144,4 @@ class _$UpdateNodeInputSerializer
     return result.build();
   }
 }
+

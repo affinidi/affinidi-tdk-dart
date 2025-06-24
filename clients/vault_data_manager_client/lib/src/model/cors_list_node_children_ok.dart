@@ -11,34 +11,26 @@ part 'cors_list_node_children_ok.g.dart';
 /// CorsListNodeChildrenOK
 ///
 /// Properties:
-/// * [corsListNodeChildrenOk]
+/// * [corsListNodeChildrenOk] 
 @BuiltValue()
-abstract class CorsListNodeChildrenOK
-    implements Built<CorsListNodeChildrenOK, CorsListNodeChildrenOKBuilder> {
+abstract class CorsListNodeChildrenOK implements Built<CorsListNodeChildrenOK, CorsListNodeChildrenOKBuilder> {
   @BuiltValueField(wireName: r'corsListNodeChildrenOk')
   String? get corsListNodeChildrenOk;
 
   CorsListNodeChildrenOK._();
 
-  factory CorsListNodeChildrenOK([
-    void updates(CorsListNodeChildrenOKBuilder b),
-  ]) = _$CorsListNodeChildrenOK;
+  factory CorsListNodeChildrenOK([void updates(CorsListNodeChildrenOKBuilder b)]) = _$CorsListNodeChildrenOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsListNodeChildrenOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CorsListNodeChildrenOK> get serializer =>
-      _$CorsListNodeChildrenOKSerializer();
+  static Serializer<CorsListNodeChildrenOK> get serializer => _$CorsListNodeChildrenOKSerializer();
 }
 
-class _$CorsListNodeChildrenOKSerializer
-    implements PrimitiveSerializer<CorsListNodeChildrenOK> {
+class _$CorsListNodeChildrenOKSerializer implements PrimitiveSerializer<CorsListNodeChildrenOK> {
   @override
-  final Iterable<Type> types = const [
-    CorsListNodeChildrenOK,
-    _$CorsListNodeChildrenOK,
-  ];
+  final Iterable<Type> types = const [CorsListNodeChildrenOK, _$CorsListNodeChildrenOK];
 
   @override
   final String wireName = r'CorsListNodeChildrenOK';
@@ -63,11 +55,7 @@ class _$CorsListNodeChildrenOKSerializer
     CorsListNodeChildrenOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -83,12 +71,10 @@ class _$CorsListNodeChildrenOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsListNodeChildrenOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsListNodeChildrenOk = valueDes;
           break;
         default:
@@ -119,3 +105,4 @@ class _$CorsListNodeChildrenOKSerializer
     return result.build();
   }
 }
+

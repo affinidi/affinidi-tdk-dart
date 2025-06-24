@@ -13,27 +13,23 @@ part 'start_file_scan_input.g.dart';
 /// Properties:
 /// * [dek] - A base64 encoded data encryption key, encrypted using VFS public key. This is important as this is used when starting document scan and also while uploading the file to s3
 @BuiltValue()
-abstract class StartFileScanInput
-    implements Built<StartFileScanInput, StartFileScanInputBuilder> {
+abstract class StartFileScanInput implements Built<StartFileScanInput, StartFileScanInputBuilder> {
   /// A base64 encoded data encryption key, encrypted using VFS public key. This is important as this is used when starting document scan and also while uploading the file to s3
   @BuiltValueField(wireName: r'dek')
   String get dek;
 
   StartFileScanInput._();
 
-  factory StartFileScanInput([void updates(StartFileScanInputBuilder b)]) =
-      _$StartFileScanInput;
+  factory StartFileScanInput([void updates(StartFileScanInputBuilder b)]) = _$StartFileScanInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(StartFileScanInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<StartFileScanInput> get serializer =>
-      _$StartFileScanInputSerializer();
+  static Serializer<StartFileScanInput> get serializer => _$StartFileScanInputSerializer();
 }
 
-class _$StartFileScanInputSerializer
-    implements PrimitiveSerializer<StartFileScanInput> {
+class _$StartFileScanInputSerializer implements PrimitiveSerializer<StartFileScanInput> {
   @override
   final Iterable<Type> types = const [StartFileScanInput, _$StartFileScanInput];
 
@@ -58,11 +54,7 @@ class _$StartFileScanInputSerializer
     StartFileScanInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -78,12 +70,10 @@ class _$StartFileScanInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'dek':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.dek = valueDes;
           break;
         default:
@@ -114,3 +104,4 @@ class _$StartFileScanInputSerializer
     return result.build();
   }
 }
+

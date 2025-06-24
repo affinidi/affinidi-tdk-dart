@@ -13,23 +13,22 @@ part 'consumer_metadata_dto.g.dart';
 /// ConsumerMetadataDto
 ///
 /// Properties:
-/// * [nodeId]
-/// * [status]
-/// * [fileCount]
-/// * [folderCount]
-/// * [profileCount]
-/// * [name]
-/// * [consumerId]
+/// * [nodeId] 
+/// * [status] 
+/// * [fileCount] 
+/// * [folderCount] 
+/// * [profileCount] 
+/// * [name] 
+/// * [consumerId] 
 /// * [createdAt] - creation date/time
 /// * [modifiedAt] - modification date/time
 /// * [createdBy] - Identifier of the user who created
 /// * [modifiedBy] - Identifier of the user who last updated
 /// * [description] - Description of the node
-/// * [type]
+/// * [type] 
 /// * [consumedFileStorage] - Tracks the amount of bytes used by the stored data.
 @BuiltValue()
-abstract class ConsumerMetadataDto
-    implements Built<ConsumerMetadataDto, ConsumerMetadataDtoBuilder> {
+abstract class ConsumerMetadataDto implements Built<ConsumerMetadataDto, ConsumerMetadataDtoBuilder> {
   @BuiltValueField(wireName: r'nodeId')
   String get nodeId;
 
@@ -82,24 +81,18 @@ abstract class ConsumerMetadataDto
 
   ConsumerMetadataDto._();
 
-  factory ConsumerMetadataDto([void updates(ConsumerMetadataDtoBuilder b)]) =
-      _$ConsumerMetadataDto;
+  factory ConsumerMetadataDto([void updates(ConsumerMetadataDtoBuilder b)]) = _$ConsumerMetadataDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ConsumerMetadataDtoBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ConsumerMetadataDto> get serializer =>
-      _$ConsumerMetadataDtoSerializer();
+  static Serializer<ConsumerMetadataDto> get serializer => _$ConsumerMetadataDtoSerializer();
 }
 
-class _$ConsumerMetadataDtoSerializer
-    implements PrimitiveSerializer<ConsumerMetadataDto> {
+class _$ConsumerMetadataDtoSerializer implements PrimitiveSerializer<ConsumerMetadataDto> {
   @override
-  final Iterable<Type> types = const [
-    ConsumerMetadataDto,
-    _$ConsumerMetadataDto,
-  ];
+  final Iterable<Type> types = const [ConsumerMetadataDto, _$ConsumerMetadataDto];
 
   @override
   final String wireName = r'ConsumerMetadataDto';
@@ -195,11 +188,7 @@ class _$ConsumerMetadataDtoSerializer
     ConsumerMetadataDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -215,117 +204,101 @@ class _$ConsumerMetadataDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'nodeId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.nodeId = valueDes;
           break;
         case r'status':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(NodeStatus),
-                  )
-                  as NodeStatus;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(NodeStatus),
+          ) as NodeStatus;
           result.status = valueDes;
           break;
         case r'fileCount':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.fileCount = valueDes;
           break;
         case r'folderCount':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.folderCount = valueDes;
           break;
         case r'profileCount':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.profileCount = valueDes;
           break;
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'consumerId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.consumerId = valueDes;
           break;
         case r'createdAt':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.createdAt = valueDes;
           break;
         case r'modifiedAt':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.modifiedAt = valueDes;
           break;
         case r'createdBy':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.createdBy = valueDes;
           break;
         case r'modifiedBy':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.modifiedBy = valueDes;
           break;
         case r'description':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.description = valueDes;
           break;
         case r'type':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(NodeType),
-                  )
-                  as NodeType;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(NodeType),
+          ) as NodeType;
           result.type = valueDes;
           break;
         case r'consumedFileStorage':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.consumedFileStorage = valueDes;
           break;
         default:
@@ -356,3 +329,4 @@ class _$ConsumerMetadataDtoSerializer
     return result.build();
   }
 }
+
