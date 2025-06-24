@@ -45,11 +45,12 @@ melos:
         dirExists: test
         concurrency: 4
         failFast: true
+      noSelect: true
       packageFilters:
         flutter: true
         includePrivatePackages: false
+        diff: 'origin/main'
         ignore: 
-         - "*_client*"
          - "*_example*"
 
     test-dart:
@@ -59,11 +60,12 @@ melos:
         dirExists: test
         concurrency: 4
         failFast: true
+      noSelect: true
       packageFilters:
         flutter: false
-        includePrivatePackages: false
+        private: false
+        diff: 'origin/main'
         ignore: 
-         - "*_client*"
          - "*_example*"
 
     test-integration:
@@ -73,8 +75,10 @@ melos:
         dirExists: test
         concurrency: 4
         failFast: true
+      noSelect: true
       packageFilters:
         flutter: false
+        private: true
         scope: 
          - "*integration_tests*"
 

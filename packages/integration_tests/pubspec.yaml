@@ -1,4 +1,4 @@
-name: dart_tdk_integration_tests
+name: affinidi_tdk_dart_integration_tests
 
 environment:
   sdk: ^3.8.1
