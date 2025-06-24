@@ -33,17 +33,15 @@ void main() {
       final description = 'Test wallet description';
       final didWebUrl = 'didweb.com';
 
-      final walletInputBuilder =
-          CreateWalletInputBuilder()
-            ..name = name
-            ..description = description
-            ..didMethod = CreateWalletInputDidMethodEnum.web
-            ..didWebUrl = didWebUrl;
+      final walletInputBuilder = CreateWalletInputBuilder()
+        ..name = name
+        ..description = description
+        ..didMethod = CreateWalletInputDidMethodEnum.web
+        ..didWebUrl = didWebUrl;
 
-      final createdWallet =
-          (await walletApi.createWallet(
-            createWalletInput: walletInputBuilder.build(),
-          )).data;
+      final createdWallet = (await walletApi.createWallet(
+        createWalletInput: walletInputBuilder.build(),
+      )).data;
 
       expect(createdWallet, isNotNull);
       expect(createdWallet!.wallet, isNotNull);
@@ -67,29 +65,26 @@ void main() {
       final typeName = 'VerifiableCredential';
       final expiresAt = '10';
 
-      final params =
-          SignCredentialInputDtoUnsignedCredentialParamsBuilder()
-            ..jsonLdContextUrl = jsonLdContextUrl
-            ..jsonSchemaUrl = jsonSchemaUrl
-            ..typeName = typeName
-            ..holderDid = holderDid
-            ..expiresAt = expiresAt;
+      final params = SignCredentialInputDtoUnsignedCredentialParamsBuilder()
+        ..jsonLdContextUrl = jsonLdContextUrl
+        ..jsonSchemaUrl = jsonSchemaUrl
+        ..typeName = typeName
+        ..holderDid = holderDid
+        ..expiresAt = expiresAt;
 
       final revocable = true;
       final credentialFormat = SignCredentialInputDtoCredentialFormatEnum.ldpVc;
       final unsignedCredentialParams = params;
 
-      final signCredentialBuilder =
-          SignCredentialInputDtoBuilder()
-            ..revocable = revocable
-            ..credentialFormat = credentialFormat
-            ..unsignedCredentialParams = unsignedCredentialParams;
+      final signCredentialBuilder = SignCredentialInputDtoBuilder()
+        ..revocable = revocable
+        ..credentialFormat = credentialFormat
+        ..unsignedCredentialParams = unsignedCredentialParams;
 
-      final signedVC =
-          (await walletApi.signCredential(
-            walletId: walletId,
-            signCredentialInputDto: signCredentialBuilder.build(),
-          )).data;
+      final signedVC = (await walletApi.signCredential(
+        walletId: walletId,
+        signCredentialInputDto: signCredentialBuilder.build(),
+      )).data;
 
       expect(signedVC?.signedCredential, isNotNull);
     });
@@ -108,16 +103,14 @@ void main() {
       final jsonHeader = JsonObject(header);
       final jsonPayload = JsonObject(payload);
 
-      final signTokenBuilder =
-          SignJwtTokenBuilder()
-            ..header = jsonHeader
-            ..payload = jsonPayload;
+      final signTokenBuilder = SignJwtTokenBuilder()
+        ..header = jsonHeader
+        ..payload = jsonPayload;
 
-      final result =
-          (await walletApi.signJwtToken(
-            walletId: walletId,
-            signJwtToken: signTokenBuilder.build(),
-          )).data;
+      final result = (await walletApi.signJwtToken(
+        walletId: walletId,
+        signJwtToken: signTokenBuilder.build(),
+      )).data;
 
       expect(result?.signedJwt, isNotNull);
     });
@@ -140,16 +133,14 @@ void main() {
       final updatedName = 'Updated Wallet';
       final updatedDescription = 'Updated description';
 
-      final walletInputBuilder =
-          UpdateWalletInputBuilder()
-            ..name = updatedName
-            ..description = updatedDescription;
+      final walletInputBuilder = UpdateWalletInputBuilder()
+        ..name = updatedName
+        ..description = updatedDescription;
 
-      final wallet =
-          (await walletApi.updateWallet(
-            walletId: walletId,
-            updateWalletInput: walletInputBuilder.build(),
-          )).data;
+      final wallet = (await walletApi.updateWallet(
+        walletId: walletId,
+        updateWalletInput: walletInputBuilder.build(),
+      )).data;
 
       expect(wallet, isNotNull);
       expect(wallet!.name, equals(updatedName));
