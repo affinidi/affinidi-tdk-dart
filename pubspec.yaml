@@ -15,6 +15,7 @@ workspace:
   - packages/vault_data_manager
   - packages/vault_flutter_utils
   - packages/vault_flutter_utils/example/flutter_secure_storage
+  - packages/integration_tests
   - clients/login_configuration_client
   - clients/credential_issuance_client
   - clients/iam_client
@@ -46,6 +47,7 @@ melos:
         failFast: true
       packageFilters:
         flutter: true
+        includePrivatePackages: false
         ignore: 
          - "*_client*"
          - "*_example*"
@@ -59,9 +61,22 @@ melos:
         failFast: true
       packageFilters:
         flutter: false
+        includePrivatePackages: false
         ignore: 
          - "*_client*"
          - "*_example*"
+
+    test-integration:
+      run: dart test
+      description: Run integration tests
+      exec:
+        dirExists: test
+        concurrency: 4
+        failFast: true
+      packageFilters:
+        flutter: false
+        scope: 
+         - "*integration_tests*"
 
     coverage-report:
       run: >
