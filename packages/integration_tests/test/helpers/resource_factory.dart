@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:built_value/json_object.dart';
-import 'package:one_of/one_of.dart';
 import 'package:built_collection/built_collection.dart';
 
 import 'package:affinidi_tdk_auth_provider/affinidi_tdk_auth_provider.dart';
@@ -29,17 +28,18 @@ class ResourceFactory {
     );
     final walletApi = apiClient.getWalletApi();
 
-    final didKeyInputBuilder = CreateWalletInputBuilder()
-      ..didMethod = CreateWalletInputDidMethodEnum.key;
-    final didWebInputBuilder = CreateWalletInputBuilder()
-      ..didMethod = CreateWalletInputDidMethodEnum.web
-      ..didWebUrl = '${randomString()}.com';
+    final didKeyInputBuilder =
+        CreateWalletInputBuilder()
+          ..didMethod = CreateWalletInputDidMethodEnum.key;
+    final didWebInputBuilder =
+        CreateWalletInputBuilder()
+          ..didMethod = CreateWalletInputDidMethodEnum.web
+          ..didWebUrl = '${randomString()}.com';
 
     final builder = didWeb ? didWebInputBuilder : didKeyInputBuilder;
 
-    final createdWallet = (await walletApi.createWallet(
-      createWalletInput: builder.build(),
-    )).data;
+    final createdWallet =
+        (await walletApi.createWallet(createWalletInput: builder.build())).data;
 
     return createdWallet!.wallet;
   }
@@ -68,14 +68,16 @@ class ResourceFactory {
     );
     final verificationApi = apiClient.getDefaultApi();
 
-    final verifyCredentialInputBuilder = VerifyCredentialInputBuilder()
-      ..verifiableCredentials = ListBuilder<JsonObject>([
-        MapJsonObject(credential),
-      ]);
+    final verifyCredentialInputBuilder =
+        VerifyCredentialInputBuilder()
+          ..verifiableCredentials = ListBuilder<JsonObject>([
+            MapJsonObject(credential),
+          ]);
 
-    final verificationResponse = (await verificationApi.verifyCredentials(
-      verifyCredentialInput: verifyCredentialInputBuilder.build(),
-    )).data;
+    final verificationResponse =
+        (await verificationApi.verifyCredentials(
+          verifyCredentialInput: verifyCredentialInputBuilder.build(),
+        )).data;
 
     return verificationResponse!.isValid;
   }
