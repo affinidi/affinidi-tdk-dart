@@ -33,23 +33,36 @@ melos:
       exec: dart analyze .
     test:
       run: |
-        melos run execute-tests
+        melos run test-flutter
+        melos run test-dart
         melos run coverage-report
-    execute-tests:
-      run: |
-        if [ -d "test" ]; then 
-          if [ -f "pubspec.yaml" ] && grep -q "sdk: flutter" pubspec.yaml; then
-            flutter test --coverage
-          else
-            dart run coverage:test_with_coverage
-          fi
-        else
-          echo "No tests in $(pwd), skipping."
-        fi
-      description: Run tests in each package
+
+    test-flutter:
+      run: flutter test --coverage
+      description: Run tests in each flutter package
       exec:
+        dirExists: test
         concurrency: 4
         failFast: true
+      packageFilters:
+        flutter: true
+        ignore: 
+         - "*_client*"
+         - "*_example*"
+
+    test-dart:
+      run: dart run coverage:test_with_coverage
+      description: Run tests in each dart package
+      exec:
+        dirExists: test
+        concurrency: 4
+        failFast: true
+      packageFilters:
+        flutter: false
+        ignore: 
+         - "*_client*"
+         - "*_example*"
+
     coverage-report:
       run: >
         mkdir -p coverage
