@@ -40,12 +40,11 @@ melos:
         melos run coverage-report
 
     test-flutter:
-      run: flutter test --coverage
       description: Run tests in each flutter package
-      exec:
-        dirExists: test
-        concurrency: 4
-        failFast: true
+      exec: flutter test --coverage
+      dirExists: test
+      concurrency: 4
+      failFast: true
       noSelect: true
       packageFilters:
         flutter: true
@@ -55,12 +54,11 @@ melos:
          - "*_example*"
 
     test-dart:
-      run: dart run coverage:test_with_coverage
       description: Run tests in each dart package
-      exec:
-        dirExists: test
-        concurrency: 4
-        failFast: true
+      exec: dart run coverage:test_with_coverage
+      dirExists: test
+      concurrency: 4
+      failFast: true
       noSelect: true
       packageFilters:
         flutter: false
@@ -70,12 +68,11 @@ melos:
          - "*_example*"
 
     test-integration:
-      run: dart test
       description: Run integration tests
-      exec:
-        dirExists: test
-        concurrency: 4
-        failFast: true
+      exec: dart test
+      dirExists: test
+      concurrency: 4
+      failFast: true
       noSelect: true
       packageFilters:
         flutter: false
