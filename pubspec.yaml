@@ -15,6 +15,7 @@ workspace:
   - packages/vault_data_manager
   - packages/vault_flutter_utils
   - packages/vault_flutter_utils/example/flutter_secure_storage
+  - packages/integration_tests
   - clients/login_configuration_client
   - clients/credential_issuance_client
   - clients/iam_client
@@ -31,25 +32,61 @@ melos:
   scripts:
     analyze:
       exec: dart analyze .
+      concurrency: 4
+      failFast: true
+      noSelect: true
+      packageFilters:
+        flutter: true
+        includePrivatePackages: false
+        diff: 'origin/main'
+
     test:
       run: |
-        melos run execute-tests
+        melos run test-flutter
+        melos run test-dart
         melos run coverage-report
-    execute-tests:
-      run: |
-        if [ -d "test" ]; then 
-          if [ -f "pubspec.yaml" ] && grep -q "sdk: flutter" pubspec.yaml; then
-            flutter test --coverage
-          else
-            dart run coverage:test_with_coverage
-          fi
-        else
-          echo "No tests in $(pwd), skipping."
-        fi
-      description: Run tests in each package
-      exec:
-        concurrency: 4
-        failFast: true
+
+    test-flutter:
+      description: Run tests in each flutter package
+      exec: flutter test --coverage
+      dirExists: test
+      concurrency: 4
+      failFast: true
+      noSelect: true
+      packageFilters:
+        flutter: true
+        includePrivatePackages: false
+        diff: 'origin/main'
+        ignore: 
+         - "*_example*"
+
+    test-dart:
+      description: Run tests in each dart package
+      exec: dart run coverage:test_with_coverage
+      dirExists: test
+      concurrency: 4
+      failFast: true
+      noSelect: true
+      packageFilters:
+        flutter: false
+        private: false
+        diff: 'origin/main'
+        ignore: 
+         - "*_example*"
+
+    test-integration:
+      description: Run integration tests
+      exec: dart test
+      dirExists: test
+      concurrency: 4
+      failFast: true
+      noSelect: true
+      packageFilters:
+        flutter: false
+        private: true
+        scope: 
+         - "*integration_tests*"
+
     coverage-report:
       run: >
         mkdir -p coverage

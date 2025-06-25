@@ -1,16 +1,19 @@
-name: dart_tdk_integration_tests
+name: affinidi_tdk_dart_integration_tests
 
 environment:
   sdk: ^3.8.1
 
+resolution: workspace
+publish_to: none
+
 dev_dependencies:
   affinidi_tdk_auth_provider:
-    path: ../../packages/auth_provider
+    path: ../auth_provider
   affinidi_tdk_common: ^1.6.0
   affinidi_tdk_consumer_auth_provider:
-    path: ../../packages/consumer_auth_provider
+    path: ../consumer_auth_provider
   affinidi_tdk_cryptography:
-    path: ../../packages/cryptography
+    path: ../cryptography
   ssi: ^1.0.0
   affinidi_tdk_iam_client:
     path: ../../clients/iam_client
