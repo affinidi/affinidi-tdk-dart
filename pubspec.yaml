@@ -33,6 +33,13 @@ melos:
     analyze:
       exec: dart analyze .
       concurrency: 4
+      failFast: true
+      noSelect: true
+      packageFilters:
+        flutter: true
+        includePrivatePackages: false
+        diff: 'origin/main'
+
     test:
       run: |
         melos run test-flutter
