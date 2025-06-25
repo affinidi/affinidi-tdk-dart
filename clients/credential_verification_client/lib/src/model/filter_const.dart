@@ -36,8 +36,8 @@ class _$FilterConstSerializer implements PrimitiveSerializer<FilterConst> {
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    FilterConst object,
-  ) sync* {}
+    FilterConst object) sync* {
+  }
 
   @override
   Object serialize(
@@ -46,10 +46,7 @@ class _$FilterConstSerializer implements PrimitiveSerializer<FilterConst> {
     FullType specifiedType = FullType.unspecified,
   }) {
     final oneOf = object.oneOf;
-    return serializers.serialize(
-      oneOf.value,
-      specifiedType: FullType(oneOf.valueType),
-    )!;
+    return serializers.serialize(oneOf.value, specifiedType: FullType(oneOf.valueType))!;
   }
 
   @override
@@ -60,11 +57,10 @@ class _$FilterConstSerializer implements PrimitiveSerializer<FilterConst> {
   }) {
     final result = FilterConstBuilder();
     Object? oneOfDataSrc;
-    final targetType = const FullType(OneOf, [FullType(num), FullType(String)]);
+    final targetType = const FullType(OneOf, [FullType(num), FullType(String), ]);
     oneOfDataSrc = serialized;
-    result.oneOf =
-        serializers.deserialize(oneOfDataSrc, specifiedType: targetType)
-            as OneOf;
+    result.oneOf = serializers.deserialize(oneOfDataSrc, specifiedType: targetType) as OneOf;
     return result.build();
   }
 }
+

@@ -14,8 +14,7 @@ part 'group_user_mapping_dto.g.dart';
 /// * [userId] - Unique identifier of the user
 /// * [addedAt] - Group to user mapping creation date
 @BuiltValue()
-abstract class GroupUserMappingDto
-    implements Built<GroupUserMappingDto, GroupUserMappingDtoBuilder> {
+abstract class GroupUserMappingDto implements Built<GroupUserMappingDto, GroupUserMappingDtoBuilder> {
   /// Unique identifier of the user
   @BuiltValueField(wireName: r'userId')
   String get userId;
@@ -26,24 +25,18 @@ abstract class GroupUserMappingDto
 
   GroupUserMappingDto._();
 
-  factory GroupUserMappingDto([void updates(GroupUserMappingDtoBuilder b)]) =
-      _$GroupUserMappingDto;
+  factory GroupUserMappingDto([void updates(GroupUserMappingDtoBuilder b)]) = _$GroupUserMappingDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GroupUserMappingDtoBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GroupUserMappingDto> get serializer =>
-      _$GroupUserMappingDtoSerializer();
+  static Serializer<GroupUserMappingDto> get serializer => _$GroupUserMappingDtoSerializer();
 }
 
-class _$GroupUserMappingDtoSerializer
-    implements PrimitiveSerializer<GroupUserMappingDto> {
+class _$GroupUserMappingDtoSerializer implements PrimitiveSerializer<GroupUserMappingDto> {
   @override
-  final Iterable<Type> types = const [
-    GroupUserMappingDto,
-    _$GroupUserMappingDto,
-  ];
+  final Iterable<Type> types = const [GroupUserMappingDto, _$GroupUserMappingDto];
 
   @override
   final String wireName = r'GroupUserMappingDto';
@@ -71,11 +64,7 @@ class _$GroupUserMappingDtoSerializer
     GroupUserMappingDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -91,21 +80,17 @@ class _$GroupUserMappingDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'userId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.userId = valueDes;
           break;
         case r'addedAt':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.addedAt = valueDes;
           break;
         default:
@@ -136,3 +121,4 @@ class _$GroupUserMappingDtoSerializer
     return result.build();
   }
 }
+

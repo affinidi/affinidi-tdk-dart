@@ -17,20 +17,18 @@ class _$CreateLoginConfigurationOutputAuth
   @override
   final String? issuer;
 
-  factory _$CreateLoginConfigurationOutputAuth([
-    void Function(CreateLoginConfigurationOutputAuthBuilder)? updates,
-  ]) => (CreateLoginConfigurationOutputAuthBuilder()..update(updates))._build();
+  factory _$CreateLoginConfigurationOutputAuth(
+          [void Function(CreateLoginConfigurationOutputAuthBuilder)?
+              updates]) =>
+      (CreateLoginConfigurationOutputAuthBuilder()..update(updates))._build();
 
-  _$CreateLoginConfigurationOutputAuth._({
-    required this.clientId,
-    this.clientSecret,
-    this.scope,
-    this.issuer,
-  }) : super._();
+  _$CreateLoginConfigurationOutputAuth._(
+      {required this.clientId, this.clientSecret, this.scope, this.issuer})
+      : super._();
   @override
   CreateLoginConfigurationOutputAuth rebuild(
-    void Function(CreateLoginConfigurationOutputAuthBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CreateLoginConfigurationOutputAuthBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CreateLoginConfigurationOutputAuthBuilder toBuilder() =>
@@ -70,10 +68,8 @@ class _$CreateLoginConfigurationOutputAuth
 
 class CreateLoginConfigurationOutputAuthBuilder
     implements
-        Builder<
-          CreateLoginConfigurationOutputAuth,
-          CreateLoginConfigurationOutputAuthBuilder
-        > {
+        Builder<CreateLoginConfigurationOutputAuth,
+            CreateLoginConfigurationOutputAuthBuilder> {
   _$CreateLoginConfigurationOutputAuth? _$v;
 
   String? _clientId;
@@ -115,8 +111,7 @@ class CreateLoginConfigurationOutputAuthBuilder
 
   @override
   void update(
-    void Function(CreateLoginConfigurationOutputAuthBuilder)? updates,
-  ) {
+      void Function(CreateLoginConfigurationOutputAuthBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -124,14 +119,10 @@ class CreateLoginConfigurationOutputAuthBuilder
   CreateLoginConfigurationOutputAuth build() => _build();
 
   _$CreateLoginConfigurationOutputAuth _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CreateLoginConfigurationOutputAuth._(
           clientId: BuiltValueNullFieldError.checkNotNull(
-            clientId,
-            r'CreateLoginConfigurationOutputAuth',
-            'clientId',
-          ),
+              clientId, r'CreateLoginConfigurationOutputAuth', 'clientId'),
           clientSecret: clientSecret,
           scope: scope,
           issuer: issuer,

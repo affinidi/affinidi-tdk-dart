@@ -1,6 +1,7 @@
 import 'package:test/test.dart';
 import 'package:affinidi_tdk_login_configuration_client/affinidi_tdk_login_configuration_client.dart';
 
+
 /// tests for GroupApi
 void main() {
   final instance = AffinidiTdkLoginConfigurationClient().getGroupApi();
@@ -40,5 +41,6 @@ void main() {
     test('test removeUserFromGroup', () async {
       // TODO
     });
+
   });
 }

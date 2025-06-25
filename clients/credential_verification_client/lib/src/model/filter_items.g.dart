@@ -37,9 +37,8 @@ class _$FilterItems extends FilterItems {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'FilterItems',
-    )..add('oneOf', oneOf)).toString();
+    return (newBuiltValueToStringHelper(r'FilterItems')..add('oneOf', oneOf))
+        .toString();
   }
 }
 
@@ -77,14 +76,10 @@ class FilterItemsBuilder implements Builder<FilterItems, FilterItemsBuilder> {
   FilterItems build() => _build();
 
   _$FilterItems _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$FilterItems._(
           oneOf: BuiltValueNullFieldError.checkNotNull(
-            oneOf,
-            r'FilterItems',
-            'oneOf',
-          ),
+              oneOf, r'FilterItems', 'oneOf'),
         );
     replace(_$result);
     return _$result;

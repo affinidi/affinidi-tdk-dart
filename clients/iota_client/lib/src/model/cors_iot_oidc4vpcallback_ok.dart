@@ -11,35 +11,26 @@ part 'cors_iot_oidc4vpcallback_ok.g.dart';
 /// CorsIotOidc4vpcallbackOK
 ///
 /// Properties:
-/// * [corsIotOidc4vpcallbackOk]
+/// * [corsIotOidc4vpcallbackOk] 
 @BuiltValue()
-abstract class CorsIotOidc4vpcallbackOK
-    implements
-        Built<CorsIotOidc4vpcallbackOK, CorsIotOidc4vpcallbackOKBuilder> {
+abstract class CorsIotOidc4vpcallbackOK implements Built<CorsIotOidc4vpcallbackOK, CorsIotOidc4vpcallbackOKBuilder> {
   @BuiltValueField(wireName: r'corsIotOidc4vpcallbackOk')
   String? get corsIotOidc4vpcallbackOk;
 
   CorsIotOidc4vpcallbackOK._();
 
-  factory CorsIotOidc4vpcallbackOK([
-    void updates(CorsIotOidc4vpcallbackOKBuilder b),
-  ]) = _$CorsIotOidc4vpcallbackOK;
+  factory CorsIotOidc4vpcallbackOK([void updates(CorsIotOidc4vpcallbackOKBuilder b)]) = _$CorsIotOidc4vpcallbackOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsIotOidc4vpcallbackOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CorsIotOidc4vpcallbackOK> get serializer =>
-      _$CorsIotOidc4vpcallbackOKSerializer();
+  static Serializer<CorsIotOidc4vpcallbackOK> get serializer => _$CorsIotOidc4vpcallbackOKSerializer();
 }
 
-class _$CorsIotOidc4vpcallbackOKSerializer
-    implements PrimitiveSerializer<CorsIotOidc4vpcallbackOK> {
+class _$CorsIotOidc4vpcallbackOKSerializer implements PrimitiveSerializer<CorsIotOidc4vpcallbackOK> {
   @override
-  final Iterable<Type> types = const [
-    CorsIotOidc4vpcallbackOK,
-    _$CorsIotOidc4vpcallbackOK,
-  ];
+  final Iterable<Type> types = const [CorsIotOidc4vpcallbackOK, _$CorsIotOidc4vpcallbackOK];
 
   @override
   final String wireName = r'CorsIotOidc4vpcallbackOK';
@@ -64,11 +55,7 @@ class _$CorsIotOidc4vpcallbackOKSerializer
     CorsIotOidc4vpcallbackOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -84,12 +71,10 @@ class _$CorsIotOidc4vpcallbackOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsIotOidc4vpcallbackOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsIotOidc4vpcallbackOk = valueDes;
           break;
         default:
@@ -120,3 +105,4 @@ class _$CorsIotOidc4vpcallbackOKSerializer
     return result.build();
   }
 }
+

@@ -13,12 +13,11 @@ part 'presentation_submission.g.dart';
 /// PresentationSubmission
 ///
 /// Properties:
-/// * [id]
-/// * [definitionId]
-/// * [descriptorMap]
+/// * [id] 
+/// * [definitionId] 
+/// * [descriptorMap] 
 @BuiltValue()
-abstract class PresentationSubmission
-    implements Built<PresentationSubmission, PresentationSubmissionBuilder> {
+abstract class PresentationSubmission implements Built<PresentationSubmission, PresentationSubmissionBuilder> {
   @BuiltValueField(wireName: r'id')
   String get id;
 
@@ -30,25 +29,18 @@ abstract class PresentationSubmission
 
   PresentationSubmission._();
 
-  factory PresentationSubmission([
-    void updates(PresentationSubmissionBuilder b),
-  ]) = _$PresentationSubmission;
+  factory PresentationSubmission([void updates(PresentationSubmissionBuilder b)]) = _$PresentationSubmission;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(PresentationSubmissionBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<PresentationSubmission> get serializer =>
-      _$PresentationSubmissionSerializer();
+  static Serializer<PresentationSubmission> get serializer => _$PresentationSubmissionSerializer();
 }
 
-class _$PresentationSubmissionSerializer
-    implements PrimitiveSerializer<PresentationSubmission> {
+class _$PresentationSubmissionSerializer implements PrimitiveSerializer<PresentationSubmission> {
   @override
-  final Iterable<Type> types = const [
-    PresentationSubmission,
-    _$PresentationSubmission,
-  ];
+  final Iterable<Type> types = const [PresentationSubmission, _$PresentationSubmission];
 
   @override
   final String wireName = r'PresentationSubmission';
@@ -81,11 +73,7 @@ class _$PresentationSubmissionSerializer
     PresentationSubmission object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -101,32 +89,24 @@ class _$PresentationSubmissionSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.id = valueDes;
           break;
         case r'definition_id':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.definitionId = valueDes;
           break;
         case r'descriptor_map':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(Descriptor),
-                    ]),
-                  )
-                  as BuiltList<Descriptor>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(Descriptor)]),
+          ) as BuiltList<Descriptor>;
           result.descriptorMap.replace(valueDes);
           break;
         default:
@@ -157,3 +137,4 @@ class _$PresentationSubmissionSerializer
     return result.build();
   }
 }
+

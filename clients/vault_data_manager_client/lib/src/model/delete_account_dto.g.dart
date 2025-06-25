@@ -10,9 +10,9 @@ class _$DeleteAccountDto extends DeleteAccountDto {
   @override
   final int? accountIndex;
 
-  factory _$DeleteAccountDto([
-    void Function(DeleteAccountDtoBuilder)? updates,
-  ]) => (DeleteAccountDtoBuilder()..update(updates))._build();
+  factory _$DeleteAccountDto(
+          [void Function(DeleteAccountDtoBuilder)? updates]) =>
+      (DeleteAccountDtoBuilder()..update(updates))._build();
 
   _$DeleteAccountDto._({this.accountIndex}) : super._();
   @override
@@ -39,9 +39,9 @@ class _$DeleteAccountDto extends DeleteAccountDto {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'DeleteAccountDto',
-    )..add('accountIndex', accountIndex)).toString();
+    return (newBuiltValueToStringHelper(r'DeleteAccountDto')
+          ..add('accountIndex', accountIndex))
+        .toString();
   }
 }
 
@@ -80,7 +80,10 @@ class DeleteAccountDtoBuilder
   DeleteAccountDto build() => _build();
 
   _$DeleteAccountDto _build() {
-    final _$result = _$v ?? _$DeleteAccountDto._(accountIndex: accountIndex);
+    final _$result = _$v ??
+        _$DeleteAccountDto._(
+          accountIndex: accountIndex,
+        );
     replace(_$result);
     return _$result;
   }

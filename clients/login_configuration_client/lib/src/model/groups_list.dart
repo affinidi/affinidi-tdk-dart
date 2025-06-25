@@ -13,7 +13,7 @@ part 'groups_list.g.dart';
 /// GroupsList
 ///
 /// Properties:
-/// * [groups]
+/// * [groups] 
 @BuiltValue()
 abstract class GroupsList implements Built<GroupsList, GroupsListBuilder> {
   @BuiltValueField(wireName: r'groups')
@@ -57,11 +57,7 @@ class _$GroupsListSerializer implements PrimitiveSerializer<GroupsList> {
     GroupsList object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -77,14 +73,10 @@ class _$GroupsListSerializer implements PrimitiveSerializer<GroupsList> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'groups':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(GroupDto),
-                    ]),
-                  )
-                  as BuiltList<GroupDto>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(GroupDto)]),
+          ) as BuiltList<GroupDto>;
           result.groups.replace(valueDes);
           break;
         default:
@@ -115,3 +107,4 @@ class _$GroupsListSerializer implements PrimitiveSerializer<GroupsList> {
     return result.build();
   }
 }
+

@@ -11,16 +11,11 @@ part 'create_project_scoped_token_output.g.dart';
 /// CreateProjectScopedTokenOutput
 ///
 /// Properties:
-/// * [accessToken]
-/// * [expiresIn]
-/// * [scope]
+/// * [accessToken] 
+/// * [expiresIn] 
+/// * [scope] 
 @BuiltValue()
-abstract class CreateProjectScopedTokenOutput
-    implements
-        Built<
-          CreateProjectScopedTokenOutput,
-          CreateProjectScopedTokenOutputBuilder
-        > {
+abstract class CreateProjectScopedTokenOutput implements Built<CreateProjectScopedTokenOutput, CreateProjectScopedTokenOutputBuilder> {
   @BuiltValueField(wireName: r'accessToken')
   String get accessToken;
 
@@ -32,25 +27,18 @@ abstract class CreateProjectScopedTokenOutput
 
   CreateProjectScopedTokenOutput._();
 
-  factory CreateProjectScopedTokenOutput([
-    void updates(CreateProjectScopedTokenOutputBuilder b),
-  ]) = _$CreateProjectScopedTokenOutput;
+  factory CreateProjectScopedTokenOutput([void updates(CreateProjectScopedTokenOutputBuilder b)]) = _$CreateProjectScopedTokenOutput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateProjectScopedTokenOutputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateProjectScopedTokenOutput> get serializer =>
-      _$CreateProjectScopedTokenOutputSerializer();
+  static Serializer<CreateProjectScopedTokenOutput> get serializer => _$CreateProjectScopedTokenOutputSerializer();
 }
 
-class _$CreateProjectScopedTokenOutputSerializer
-    implements PrimitiveSerializer<CreateProjectScopedTokenOutput> {
+class _$CreateProjectScopedTokenOutputSerializer implements PrimitiveSerializer<CreateProjectScopedTokenOutput> {
   @override
-  final Iterable<Type> types = const [
-    CreateProjectScopedTokenOutput,
-    _$CreateProjectScopedTokenOutput,
-  ];
+  final Iterable<Type> types = const [CreateProjectScopedTokenOutput, _$CreateProjectScopedTokenOutput];
 
   @override
   final String wireName = r'CreateProjectScopedTokenOutput';
@@ -83,11 +71,7 @@ class _$CreateProjectScopedTokenOutputSerializer
     CreateProjectScopedTokenOutput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -103,27 +87,24 @@ class _$CreateProjectScopedTokenOutputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'accessToken':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.accessToken = valueDes;
           break;
         case r'expiresIn':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.expiresIn = valueDes;
           break;
         case r'scope':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.scope = valueDes;
           break;
         default:
@@ -154,3 +135,4 @@ class _$CreateProjectScopedTokenOutputSerializer
     return result.build();
   }
 }
+

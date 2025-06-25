@@ -13,8 +13,8 @@ part 'token_list.g.dart';
 /// TokenList
 ///
 /// Properties:
-/// * [tokens]
-/// * [lastEvaluatedKey]
+/// * [tokens] 
+/// * [lastEvaluatedKey] 
 @BuiltValue()
 abstract class TokenList implements Built<TokenList, TokenListBuilder> {
   @BuiltValueField(wireName: r'tokens')
@@ -66,11 +66,7 @@ class _$TokenListSerializer implements PrimitiveSerializer<TokenList> {
     TokenList object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -86,23 +82,17 @@ class _$TokenListSerializer implements PrimitiveSerializer<TokenList> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'tokens':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(TokenDto),
-                    ]),
-                  )
-                  as BuiltList<TokenDto>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(TokenDto)]),
+          ) as BuiltList<TokenDto>;
           result.tokens.replace(valueDes);
           break;
         case r'lastEvaluatedKey':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.lastEvaluatedKey = valueDes;
           break;
         default:
@@ -133,3 +123,4 @@ class _$TokenListSerializer implements PrimitiveSerializer<TokenList> {
     return result.build();
   }
 }
+

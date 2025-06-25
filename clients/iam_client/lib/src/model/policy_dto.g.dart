@@ -23,14 +23,14 @@ class _$PolicyDto extends PolicyDto {
   factory _$PolicyDto([void Function(PolicyDtoBuilder)? updates]) =>
       (PolicyDtoBuilder()..update(updates))._build();
 
-  _$PolicyDto._({
-    this.name,
-    this.description,
-    this.principalId,
-    this.projectId,
-    required this.version,
-    required this.statement,
-  }) : super._();
+  _$PolicyDto._(
+      {this.name,
+      this.description,
+      this.principalId,
+      this.projectId,
+      required this.version,
+      required this.statement})
+      : super._();
   @override
   PolicyDto rebuild(void Function(PolicyDtoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -139,18 +139,14 @@ class PolicyDtoBuilder implements Builder<PolicyDto, PolicyDtoBuilder> {
   _$PolicyDto _build() {
     _$PolicyDto _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$PolicyDto._(
             name: name,
             description: description,
             principalId: principalId,
             projectId: projectId,
             version: BuiltValueNullFieldError.checkNotNull(
-              version,
-              r'PolicyDto',
-              'version',
-            ),
+                version, r'PolicyDto', 'version'),
             statement: statement.build(),
           );
     } catch (_) {
@@ -160,10 +156,7 @@ class PolicyDtoBuilder implements Builder<PolicyDto, PolicyDtoBuilder> {
         statement.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'PolicyDto',
-          _$failedField,
-          e.toString(),
-        );
+            r'PolicyDto', _$failedField, e.toString());
       }
       rethrow;
     }

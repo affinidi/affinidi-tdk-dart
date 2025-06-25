@@ -13,28 +13,24 @@ part 'wallets_list_dto.g.dart';
 /// list of wallets
 ///
 /// Properties:
-/// * [wallets]
+/// * [wallets] 
 @BuiltValue()
-abstract class WalletsListDto
-    implements Built<WalletsListDto, WalletsListDtoBuilder> {
+abstract class WalletsListDto implements Built<WalletsListDto, WalletsListDtoBuilder> {
   @BuiltValueField(wireName: r'wallets')
   BuiltList<WalletDto>? get wallets;
 
   WalletsListDto._();
 
-  factory WalletsListDto([void updates(WalletsListDtoBuilder b)]) =
-      _$WalletsListDto;
+  factory WalletsListDto([void updates(WalletsListDtoBuilder b)]) = _$WalletsListDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(WalletsListDtoBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<WalletsListDto> get serializer =>
-      _$WalletsListDtoSerializer();
+  static Serializer<WalletsListDto> get serializer => _$WalletsListDtoSerializer();
 }
 
-class _$WalletsListDtoSerializer
-    implements PrimitiveSerializer<WalletsListDto> {
+class _$WalletsListDtoSerializer implements PrimitiveSerializer<WalletsListDto> {
   @override
   final Iterable<Type> types = const [WalletsListDto, _$WalletsListDto];
 
@@ -61,11 +57,7 @@ class _$WalletsListDtoSerializer
     WalletsListDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -81,14 +73,10 @@ class _$WalletsListDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'wallets':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(WalletDto),
-                    ]),
-                  )
-                  as BuiltList<WalletDto>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(WalletDto)]),
+          ) as BuiltList<WalletDto>;
           result.wallets.replace(valueDes);
           break;
         default:
@@ -119,3 +107,4 @@ class _$WalletsListDtoSerializer
     return result.build();
   }
 }
+

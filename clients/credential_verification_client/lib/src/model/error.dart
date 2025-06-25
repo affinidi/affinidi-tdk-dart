@@ -118,11 +118,7 @@ class _$ErrorSerializer implements PrimitiveSerializer<Error> {
     Error object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -138,59 +134,45 @@ class _$ErrorSerializer implements PrimitiveSerializer<Error> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'errorCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.errorCode = valueDes;
           break;
         case r'errorMessage':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.errorMessage = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.message = valueDes;
           break;
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'debugId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.debugId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ErrorDetail),
-                    ]),
-                  )
-                  as BuiltList<ErrorDetail>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(ErrorDetail)]),
+          ) as BuiltList<ErrorDetail>;
           result.details.replace(valueDes);
           break;
         default:
@@ -221,3 +203,4 @@ class _$ErrorSerializer implements PrimitiveSerializer<Error> {
     return result.build();
   }
 }
+

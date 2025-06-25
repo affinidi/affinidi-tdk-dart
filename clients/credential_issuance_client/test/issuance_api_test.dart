@@ -1,6 +1,7 @@
 import 'package:test/test.dart';
 import 'package:affinidi_tdk_credential_issuance_client/affinidi_tdk_credential_issuance_client.dart';
 
+
 /// tests for IssuanceApi
 void main() {
   final instance = AffinidiTdkCredentialIssuanceClient().getIssuanceApi();
@@ -33,5 +34,6 @@ void main() {
     test('test startIssuance', () async {
       // TODO
     });
+
   });
 }

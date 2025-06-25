@@ -15,31 +15,27 @@ part 'credential_response.g.dart';
 /// CredentialResponse
 ///
 /// Properties:
-/// * [credential]
+/// * [credential] 
 /// * [cNonce] - String containing a nonce to be used when creating a proof of possession of the key proof
 /// * [cNonceExpiresIn] - Lifetime in seconds of the c_nonce
 /// * [transactionId] - String identifying a Deferred Issuance transaction. This claim is contained in the response if the Credential Issuer was unable to immediately issue the Credential.
 @BuiltValue()
-abstract class CredentialResponse
-    implements Built<CredentialResponse, CredentialResponseBuilder> {
+abstract class CredentialResponse implements Built<CredentialResponse, CredentialResponseBuilder> {
   /// One Of [CredentialResponseDeferred], [CredentialResponseImmediate]
   OneOf get oneOf;
 
   CredentialResponse._();
 
-  factory CredentialResponse([void updates(CredentialResponseBuilder b)]) =
-      _$CredentialResponse;
+  factory CredentialResponse([void updates(CredentialResponseBuilder b)]) = _$CredentialResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CredentialResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CredentialResponse> get serializer =>
-      _$CredentialResponseSerializer();
+  static Serializer<CredentialResponse> get serializer => _$CredentialResponseSerializer();
 }
 
-class _$CredentialResponseSerializer
-    implements PrimitiveSerializer<CredentialResponse> {
+class _$CredentialResponseSerializer implements PrimitiveSerializer<CredentialResponse> {
   @override
   final Iterable<Type> types = const [CredentialResponse, _$CredentialResponse];
 
@@ -48,8 +44,8 @@ class _$CredentialResponseSerializer
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    CredentialResponse object,
-  ) sync* {}
+    CredentialResponse object) sync* {
+  }
 
   @override
   Object serialize(
@@ -58,10 +54,7 @@ class _$CredentialResponseSerializer
     FullType specifiedType = FullType.unspecified,
   }) {
     final oneOf = object.oneOf;
-    return serializers.serialize(
-      oneOf.value,
-      specifiedType: FullType(oneOf.valueType),
-    )!;
+    return serializers.serialize(oneOf.value, specifiedType: FullType(oneOf.valueType))!;
   }
 
   @override
@@ -72,14 +65,10 @@ class _$CredentialResponseSerializer
   }) {
     final result = CredentialResponseBuilder();
     Object? oneOfDataSrc;
-    final targetType = const FullType(OneOf, [
-      FullType(CredentialResponseImmediate),
-      FullType(CredentialResponseDeferred),
-    ]);
+    final targetType = const FullType(OneOf, [FullType(CredentialResponseImmediate), FullType(CredentialResponseDeferred), ]);
     oneOfDataSrc = serialized;
-    result.oneOf =
-        serializers.deserialize(oneOfDataSrc, specifiedType: targetType)
-            as OneOf;
+    result.oneOf = serializers.deserialize(oneOfDataSrc, specifiedType: targetType) as OneOf;
     return result.build();
   }
 }
+

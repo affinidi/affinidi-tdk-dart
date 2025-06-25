@@ -12,17 +12,16 @@ part 'submission_requirement.g.dart';
 /// SubmissionRequirement
 ///
 /// Properties:
-/// * [name]
-/// * [purpose]
-/// * [rule]
-/// * [count]
-/// * [min]
-/// * [max]
-/// * [from]
-/// * [fromNested]
+/// * [name] 
+/// * [purpose] 
+/// * [rule] 
+/// * [count] 
+/// * [min] 
+/// * [max] 
+/// * [from] 
+/// * [fromNested] 
 @BuiltValue()
-abstract class SubmissionRequirement
-    implements Built<SubmissionRequirement, SubmissionRequirementBuilder> {
+abstract class SubmissionRequirement implements Built<SubmissionRequirement, SubmissionRequirementBuilder> {
   @BuiltValueField(wireName: r'name')
   String? get name;
 
@@ -50,25 +49,18 @@ abstract class SubmissionRequirement
 
   SubmissionRequirement._();
 
-  factory SubmissionRequirement([
-    void updates(SubmissionRequirementBuilder b),
-  ]) = _$SubmissionRequirement;
+  factory SubmissionRequirement([void updates(SubmissionRequirementBuilder b)]) = _$SubmissionRequirement;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SubmissionRequirementBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<SubmissionRequirement> get serializer =>
-      _$SubmissionRequirementSerializer();
+  static Serializer<SubmissionRequirement> get serializer => _$SubmissionRequirementSerializer();
 }
 
-class _$SubmissionRequirementSerializer
-    implements PrimitiveSerializer<SubmissionRequirement> {
+class _$SubmissionRequirementSerializer implements PrimitiveSerializer<SubmissionRequirement> {
   @override
-  final Iterable<Type> types = const [
-    SubmissionRequirement,
-    _$SubmissionRequirement,
-  ];
+  final Iterable<Type> types = const [SubmissionRequirement, _$SubmissionRequirement];
 
   @override
   final String wireName = r'SubmissionRequirement';
@@ -129,9 +121,7 @@ class _$SubmissionRequirementSerializer
       yield r'from_nested';
       yield serializers.serialize(
         object.fromNested,
-        specifiedType: const FullType(BuiltList, [
-          FullType(SubmissionRequirement),
-        ]),
+        specifiedType: const FullType(BuiltList, [FullType(SubmissionRequirement)]),
       );
     }
   }
@@ -142,11 +132,7 @@ class _$SubmissionRequirementSerializer
     SubmissionRequirement object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -162,70 +148,59 @@ class _$SubmissionRequirementSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'purpose':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.purpose = valueDes;
           break;
         case r'rule':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      SubmissionRequirementRuleEnum,
-                    ),
-                  )
-                  as SubmissionRequirementRuleEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(SubmissionRequirementRuleEnum),
+          ) as SubmissionRequirementRuleEnum;
           result.rule = valueDes;
           break;
         case r'count':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.count = valueDes;
           break;
         case r'min':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.min = valueDes;
           break;
         case r'max':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.max = valueDes;
           break;
         case r'from':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.from = valueDes;
           break;
         case r'from_nested':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(SubmissionRequirement),
-                    ]),
-                  )
-                  as BuiltList<SubmissionRequirement>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(SubmissionRequirement)]),
+          ) as BuiltList<SubmissionRequirement>;
           result.fromNested.replace(valueDes);
           break;
         default:
@@ -258,20 +233,17 @@ class _$SubmissionRequirementSerializer
 }
 
 class SubmissionRequirementRuleEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireName: r'all')
-  static const SubmissionRequirementRuleEnum all =
-      _$submissionRequirementRuleEnum_all;
+  static const SubmissionRequirementRuleEnum all = _$submissionRequirementRuleEnum_all;
   @BuiltValueEnumConst(wireName: r'pick')
-  static const SubmissionRequirementRuleEnum pick =
-      _$submissionRequirementRuleEnum_pick;
+  static const SubmissionRequirementRuleEnum pick = _$submissionRequirementRuleEnum_pick;
 
-  static Serializer<SubmissionRequirementRuleEnum> get serializer =>
-      _$submissionRequirementRuleEnumSerializer;
+  static Serializer<SubmissionRequirementRuleEnum> get serializer => _$submissionRequirementRuleEnumSerializer;
 
-  const SubmissionRequirementRuleEnum._(String name) : super(name);
+  const SubmissionRequirementRuleEnum._(String name): super(name);
 
-  static BuiltSet<SubmissionRequirementRuleEnum> get values =>
-      _$submissionRequirementRuleEnumValues;
-  static SubmissionRequirementRuleEnum valueOf(String name) =>
-      _$submissionRequirementRuleEnumValueOf(name);
+  static BuiltSet<SubmissionRequirementRuleEnum> get values => _$submissionRequirementRuleEnumValues;
+  static SubmissionRequirementRuleEnum valueOf(String name) => _$submissionRequirementRuleEnumValueOf(name);
 }
+

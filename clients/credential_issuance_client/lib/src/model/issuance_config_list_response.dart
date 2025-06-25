@@ -13,35 +13,26 @@ part 'issuance_config_list_response.g.dart';
 /// IssuanceConfigListResponse
 ///
 /// Properties:
-/// * [configurations]
+/// * [configurations] 
 @BuiltValue()
-abstract class IssuanceConfigListResponse
-    implements
-        Built<IssuanceConfigListResponse, IssuanceConfigListResponseBuilder> {
+abstract class IssuanceConfigListResponse implements Built<IssuanceConfigListResponse, IssuanceConfigListResponseBuilder> {
   @BuiltValueField(wireName: r'configurations')
   BuiltList<IssuanceConfigMiniDto> get configurations;
 
   IssuanceConfigListResponse._();
 
-  factory IssuanceConfigListResponse([
-    void updates(IssuanceConfigListResponseBuilder b),
-  ]) = _$IssuanceConfigListResponse;
+  factory IssuanceConfigListResponse([void updates(IssuanceConfigListResponseBuilder b)]) = _$IssuanceConfigListResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(IssuanceConfigListResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<IssuanceConfigListResponse> get serializer =>
-      _$IssuanceConfigListResponseSerializer();
+  static Serializer<IssuanceConfigListResponse> get serializer => _$IssuanceConfigListResponseSerializer();
 }
 
-class _$IssuanceConfigListResponseSerializer
-    implements PrimitiveSerializer<IssuanceConfigListResponse> {
+class _$IssuanceConfigListResponseSerializer implements PrimitiveSerializer<IssuanceConfigListResponse> {
   @override
-  final Iterable<Type> types = const [
-    IssuanceConfigListResponse,
-    _$IssuanceConfigListResponse,
-  ];
+  final Iterable<Type> types = const [IssuanceConfigListResponse, _$IssuanceConfigListResponse];
 
   @override
   final String wireName = r'IssuanceConfigListResponse';
@@ -54,9 +45,7 @@ class _$IssuanceConfigListResponseSerializer
     yield r'configurations';
     yield serializers.serialize(
       object.configurations,
-      specifiedType: const FullType(BuiltList, [
-        FullType(IssuanceConfigMiniDto),
-      ]),
+      specifiedType: const FullType(BuiltList, [FullType(IssuanceConfigMiniDto)]),
     );
   }
 
@@ -66,11 +55,7 @@ class _$IssuanceConfigListResponseSerializer
     IssuanceConfigListResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -86,14 +71,10 @@ class _$IssuanceConfigListResponseSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'configurations':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(IssuanceConfigMiniDto),
-                    ]),
-                  )
-                  as BuiltList<IssuanceConfigMiniDto>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(IssuanceConfigMiniDto)]),
+          ) as BuiltList<IssuanceConfigMiniDto>;
           result.configurations.replace(valueDes);
           break;
         default:
@@ -124,3 +105,4 @@ class _$IssuanceConfigListResponseSerializer
     return result.build();
   }
 }
+

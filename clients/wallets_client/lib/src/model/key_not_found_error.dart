@@ -13,14 +13,13 @@ part 'key_not_found_error.g.dart';
 /// KeyNotFoundError
 ///
 /// Properties:
-/// * [name]
-/// * [message]
-/// * [httpStatusCode]
-/// * [traceId]
-/// * [details]
+/// * [name] 
+/// * [message] 
+/// * [httpStatusCode] 
+/// * [traceId] 
+/// * [details] 
 @BuiltValue()
-abstract class KeyNotFoundError
-    implements Built<KeyNotFoundError, KeyNotFoundErrorBuilder> {
+abstract class KeyNotFoundError implements Built<KeyNotFoundError, KeyNotFoundErrorBuilder> {
   @BuiltValueField(wireName: r'name')
   KeyNotFoundErrorNameEnum get name;
   // enum nameEnum {  KeyNotFoundError,  };
@@ -41,19 +40,16 @@ abstract class KeyNotFoundError
 
   KeyNotFoundError._();
 
-  factory KeyNotFoundError([void updates(KeyNotFoundErrorBuilder b)]) =
-      _$KeyNotFoundError;
+  factory KeyNotFoundError([void updates(KeyNotFoundErrorBuilder b)]) = _$KeyNotFoundError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(KeyNotFoundErrorBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<KeyNotFoundError> get serializer =>
-      _$KeyNotFoundErrorSerializer();
+  static Serializer<KeyNotFoundError> get serializer => _$KeyNotFoundErrorSerializer();
 }
 
-class _$KeyNotFoundErrorSerializer
-    implements PrimitiveSerializer<KeyNotFoundError> {
+class _$KeyNotFoundErrorSerializer implements PrimitiveSerializer<KeyNotFoundError> {
   @override
   final Iterable<Type> types = const [KeyNotFoundError, _$KeyNotFoundError];
 
@@ -89,9 +85,7 @@ class _$KeyNotFoundErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ServiceErrorResponseDetailsInner),
-        ]),
+        specifiedType: const FullType(BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
       );
     }
   }
@@ -102,11 +96,7 @@ class _$KeyNotFoundErrorSerializer
     KeyNotFoundError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -122,52 +112,38 @@ class _$KeyNotFoundErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(KeyNotFoundErrorNameEnum),
-                  )
-                  as KeyNotFoundErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(KeyNotFoundErrorNameEnum),
+          ) as KeyNotFoundErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(KeyNotFoundErrorMessageEnum),
-                  )
-                  as KeyNotFoundErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(KeyNotFoundErrorMessageEnum),
+          ) as KeyNotFoundErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      KeyNotFoundErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as KeyNotFoundErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(KeyNotFoundErrorHttpStatusCodeEnum),
+          ) as KeyNotFoundErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ServiceErrorResponseDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ServiceErrorResponseDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
+          ) as BuiltList<ServiceErrorResponseDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -200,49 +176,41 @@ class _$KeyNotFoundErrorSerializer
 }
 
 class KeyNotFoundErrorNameEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireName: r'KeyNotFoundError')
-  static const KeyNotFoundErrorNameEnum keyNotFoundError =
-      _$keyNotFoundErrorNameEnum_keyNotFoundError;
+  static const KeyNotFoundErrorNameEnum keyNotFoundError = _$keyNotFoundErrorNameEnum_keyNotFoundError;
 
-  static Serializer<KeyNotFoundErrorNameEnum> get serializer =>
-      _$keyNotFoundErrorNameEnumSerializer;
+  static Serializer<KeyNotFoundErrorNameEnum> get serializer => _$keyNotFoundErrorNameEnumSerializer;
 
-  const KeyNotFoundErrorNameEnum._(String name) : super(name);
+  const KeyNotFoundErrorNameEnum._(String name): super(name);
 
-  static BuiltSet<KeyNotFoundErrorNameEnum> get values =>
-      _$keyNotFoundErrorNameEnumValues;
-  static KeyNotFoundErrorNameEnum valueOf(String name) =>
-      _$keyNotFoundErrorNameEnumValueOf(name);
+  static BuiltSet<KeyNotFoundErrorNameEnum> get values => _$keyNotFoundErrorNameEnumValues;
+  static KeyNotFoundErrorNameEnum valueOf(String name) => _$keyNotFoundErrorNameEnumValueOf(name);
 }
 
 class KeyNotFoundErrorMessageEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireName: r'Key not found')
-  static const KeyNotFoundErrorMessageEnum keyNotFound =
-      _$keyNotFoundErrorMessageEnum_keyNotFound;
+  static const KeyNotFoundErrorMessageEnum keyNotFound = _$keyNotFoundErrorMessageEnum_keyNotFound;
 
-  static Serializer<KeyNotFoundErrorMessageEnum> get serializer =>
-      _$keyNotFoundErrorMessageEnumSerializer;
+  static Serializer<KeyNotFoundErrorMessageEnum> get serializer => _$keyNotFoundErrorMessageEnumSerializer;
 
-  const KeyNotFoundErrorMessageEnum._(String name) : super(name);
+  const KeyNotFoundErrorMessageEnum._(String name): super(name);
 
-  static BuiltSet<KeyNotFoundErrorMessageEnum> get values =>
-      _$keyNotFoundErrorMessageEnumValues;
-  static KeyNotFoundErrorMessageEnum valueOf(String name) =>
-      _$keyNotFoundErrorMessageEnumValueOf(name);
+  static BuiltSet<KeyNotFoundErrorMessageEnum> get values => _$keyNotFoundErrorMessageEnumValues;
+  static KeyNotFoundErrorMessageEnum valueOf(String name) => _$keyNotFoundErrorMessageEnumValueOf(name);
 }
 
 class KeyNotFoundErrorHttpStatusCodeEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireNumber: 500)
-  static const KeyNotFoundErrorHttpStatusCodeEnum number500 =
-      _$keyNotFoundErrorHttpStatusCodeEnum_number500;
+  static const KeyNotFoundErrorHttpStatusCodeEnum number500 = _$keyNotFoundErrorHttpStatusCodeEnum_number500;
 
-  static Serializer<KeyNotFoundErrorHttpStatusCodeEnum> get serializer =>
-      _$keyNotFoundErrorHttpStatusCodeEnumSerializer;
+  static Serializer<KeyNotFoundErrorHttpStatusCodeEnum> get serializer => _$keyNotFoundErrorHttpStatusCodeEnumSerializer;
 
-  const KeyNotFoundErrorHttpStatusCodeEnum._(String name) : super(name);
+  const KeyNotFoundErrorHttpStatusCodeEnum._(String name): super(name);
 
-  static BuiltSet<KeyNotFoundErrorHttpStatusCodeEnum> get values =>
-      _$keyNotFoundErrorHttpStatusCodeEnumValues;
-  static KeyNotFoundErrorHttpStatusCodeEnum valueOf(String name) =>
-      _$keyNotFoundErrorHttpStatusCodeEnumValueOf(name);
+  static BuiltSet<KeyNotFoundErrorHttpStatusCodeEnum> get values => _$keyNotFoundErrorHttpStatusCodeEnumValues;
+  static KeyNotFoundErrorHttpStatusCodeEnum valueOf(String name) => _$keyNotFoundErrorHttpStatusCodeEnumValueOf(name);
 }
+

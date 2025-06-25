@@ -42,33 +42,33 @@ class _$JsonWebKeyKeysInner extends JsonWebKeyKeysInner {
   @override
   final String? y;
 
-  factory _$JsonWebKeyKeysInner([
-    void Function(JsonWebKeyKeysInnerBuilder)? updates,
-  ]) => (JsonWebKeyKeysInnerBuilder()..update(updates))._build();
+  factory _$JsonWebKeyKeysInner(
+          [void Function(JsonWebKeyKeysInnerBuilder)? updates]) =>
+      (JsonWebKeyKeysInnerBuilder()..update(updates))._build();
 
-  _$JsonWebKeyKeysInner._({
-    required this.alg,
-    this.crv,
-    this.d,
-    this.dp,
-    this.dq,
-    this.e,
-    this.k,
-    required this.kid,
-    required this.kty,
-    this.n,
-    this.p,
-    this.q,
-    this.qi,
-    required this.use,
-    this.x,
-    required this.x5c,
-    this.y,
-  }) : super._();
+  _$JsonWebKeyKeysInner._(
+      {required this.alg,
+      this.crv,
+      this.d,
+      this.dp,
+      this.dq,
+      this.e,
+      this.k,
+      required this.kid,
+      required this.kty,
+      this.n,
+      this.p,
+      this.q,
+      this.qi,
+      required this.use,
+      this.x,
+      required this.x5c,
+      this.y})
+      : super._();
   @override
   JsonWebKeyKeysInner rebuild(
-    void Function(JsonWebKeyKeysInnerBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(JsonWebKeyKeysInnerBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   JsonWebKeyKeysInnerBuilder toBuilder() =>
@@ -262,14 +262,10 @@ class JsonWebKeyKeysInnerBuilder
   _$JsonWebKeyKeysInner _build() {
     _$JsonWebKeyKeysInner _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$JsonWebKeyKeysInner._(
             alg: BuiltValueNullFieldError.checkNotNull(
-              alg,
-              r'JsonWebKeyKeysInner',
-              'alg',
-            ),
+                alg, r'JsonWebKeyKeysInner', 'alg'),
             crv: crv,
             d: d,
             dp: dp,
@@ -277,24 +273,15 @@ class JsonWebKeyKeysInnerBuilder
             e: e,
             k: k,
             kid: BuiltValueNullFieldError.checkNotNull(
-              kid,
-              r'JsonWebKeyKeysInner',
-              'kid',
-            ),
+                kid, r'JsonWebKeyKeysInner', 'kid'),
             kty: BuiltValueNullFieldError.checkNotNull(
-              kty,
-              r'JsonWebKeyKeysInner',
-              'kty',
-            ),
+                kty, r'JsonWebKeyKeysInner', 'kty'),
             n: n,
             p: p,
             q: q,
             qi: qi,
             use: BuiltValueNullFieldError.checkNotNull(
-              use,
-              r'JsonWebKeyKeysInner',
-              'use',
-            ),
+                use, r'JsonWebKeyKeysInner', 'use'),
             x: x,
             x5c: x5c.build(),
             y: y,
@@ -306,10 +293,7 @@ class JsonWebKeyKeysInnerBuilder
         x5c.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'JsonWebKeyKeysInner',
-          _$failedField,
-          e.toString(),
-        );
+            r'JsonWebKeyKeysInner', _$failedField, e.toString());
       }
       rethrow;
     }

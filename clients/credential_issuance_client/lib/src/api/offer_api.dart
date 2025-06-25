@@ -13,6 +13,7 @@ import 'package:affinidi_tdk_credential_issuance_client/src/model/credential_off
 import 'package:affinidi_tdk_credential_issuance_client/src/model/get_credential_offer400_response.dart';
 
 class OfferApi {
+
   final Dio _dio;
 
   final Serializers _serializers;
@@ -34,7 +35,7 @@ class OfferApi {
   ///
   /// Returns a [Future] containing a [Response] with a [CredentialOfferResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<CredentialOfferResponse>> getCredentialOffer({
+  Future<Response<CredentialOfferResponse>> getCredentialOffer({ 
     required String projectId,
     required String issuanceId,
     CancelToken? cancelToken,
@@ -44,31 +45,16 @@ class OfferApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/v1/{projectId}/offers/{issuanceId}'
-        .replaceAll(
-          '{'
-          r'projectId'
-          '}',
-          encodeQueryParameter(
-            _serializers,
-            projectId,
-            const FullType(String),
-          ).toString(),
-        )
-        .replaceAll(
-          '{'
-          r'issuanceId'
-          '}',
-          encodeQueryParameter(
-            _serializers,
-            issuanceId,
-            const FullType(String),
-          ).toString(),
-        );
+    final _path = r'/v1/{projectId}/offers/{issuanceId}'.replaceAll('{' r'projectId' '}', encodeQueryParameter(_serializers, projectId, const FullType(String)).toString()).replaceAll('{' r'issuanceId' '}', encodeQueryParameter(_serializers, issuanceId, const FullType(String)).toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
-      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[],
+        ...?extra,
+      },
       validateStatus: validateStatus,
     );
 
@@ -84,13 +70,11 @@ class OfferApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(CredentialOfferResponse),
-                )
-                as CredentialOfferResponse;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(CredentialOfferResponse),
+      ) as CredentialOfferResponse;
+
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -112,4 +96,5 @@ class OfferApi {
       extra: _response.extra,
     );
   }
+
 }

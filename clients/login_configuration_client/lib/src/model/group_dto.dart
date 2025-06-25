@@ -84,11 +84,7 @@ class _$GroupDtoSerializer implements PrimitiveSerializer<GroupDto> {
     GroupDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -104,39 +100,31 @@ class _$GroupDtoSerializer implements PrimitiveSerializer<GroupDto> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'ari':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.ari = valueDes;
           break;
         case r'projectId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.projectId = valueDes;
           break;
         case r'groupName':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.groupName = valueDes;
           break;
         case r'creationDate':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.creationDate = valueDes;
           break;
         default:
@@ -167,3 +155,4 @@ class _$GroupDtoSerializer implements PrimitiveSerializer<GroupDto> {
     return result.build();
   }
 }
+

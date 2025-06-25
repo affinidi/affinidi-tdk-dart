@@ -12,18 +12,17 @@ class _$ListLoginConfigurationOutput extends ListLoginConfigurationOutput {
   @override
   final String? lastEvaluatedKey;
 
-  factory _$ListLoginConfigurationOutput([
-    void Function(ListLoginConfigurationOutputBuilder)? updates,
-  ]) => (ListLoginConfigurationOutputBuilder()..update(updates))._build();
+  factory _$ListLoginConfigurationOutput(
+          [void Function(ListLoginConfigurationOutputBuilder)? updates]) =>
+      (ListLoginConfigurationOutputBuilder()..update(updates))._build();
 
-  _$ListLoginConfigurationOutput._({
-    required this.configurations,
-    this.lastEvaluatedKey,
-  }) : super._();
+  _$ListLoginConfigurationOutput._(
+      {required this.configurations, this.lastEvaluatedKey})
+      : super._();
   @override
   ListLoginConfigurationOutput rebuild(
-    void Function(ListLoginConfigurationOutputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(ListLoginConfigurationOutputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   ListLoginConfigurationOutputBuilder toBuilder() =>
@@ -57,10 +56,8 @@ class _$ListLoginConfigurationOutput extends ListLoginConfigurationOutput {
 
 class ListLoginConfigurationOutputBuilder
     implements
-        Builder<
-          ListLoginConfigurationOutput,
-          ListLoginConfigurationOutputBuilder
-        > {
+        Builder<ListLoginConfigurationOutput,
+            ListLoginConfigurationOutputBuilder> {
   _$ListLoginConfigurationOutput? _$v;
 
   ListBuilder<LoginConfigurationObject>? _configurations;
@@ -104,8 +101,7 @@ class ListLoginConfigurationOutputBuilder
   _$ListLoginConfigurationOutput _build() {
     _$ListLoginConfigurationOutput _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$ListLoginConfigurationOutput._(
             configurations: configurations.build(),
             lastEvaluatedKey: lastEvaluatedKey,
@@ -117,10 +113,7 @@ class ListLoginConfigurationOutputBuilder
         configurations.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'ListLoginConfigurationOutput',
-          _$failedField,
-          e.toString(),
-        );
+            r'ListLoginConfigurationOutput', _$failedField, e.toString());
       }
       rethrow;
     }

@@ -12,12 +12,11 @@ part 'constraints_statuses.g.dart';
 /// ConstraintsStatuses
 ///
 /// Properties:
-/// * [active]
-/// * [suspended]
-/// * [revoked]
+/// * [active] 
+/// * [suspended] 
+/// * [revoked] 
 @BuiltValue()
-abstract class ConstraintsStatuses
-    implements Built<ConstraintsStatuses, ConstraintsStatusesBuilder> {
+abstract class ConstraintsStatuses implements Built<ConstraintsStatuses, ConstraintsStatusesBuilder> {
   @BuiltValueField(wireName: r'active')
   PdStatus? get active;
 
@@ -29,24 +28,18 @@ abstract class ConstraintsStatuses
 
   ConstraintsStatuses._();
 
-  factory ConstraintsStatuses([void updates(ConstraintsStatusesBuilder b)]) =
-      _$ConstraintsStatuses;
+  factory ConstraintsStatuses([void updates(ConstraintsStatusesBuilder b)]) = _$ConstraintsStatuses;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ConstraintsStatusesBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ConstraintsStatuses> get serializer =>
-      _$ConstraintsStatusesSerializer();
+  static Serializer<ConstraintsStatuses> get serializer => _$ConstraintsStatusesSerializer();
 }
 
-class _$ConstraintsStatusesSerializer
-    implements PrimitiveSerializer<ConstraintsStatuses> {
+class _$ConstraintsStatusesSerializer implements PrimitiveSerializer<ConstraintsStatuses> {
   @override
-  final Iterable<Type> types = const [
-    ConstraintsStatuses,
-    _$ConstraintsStatuses,
-  ];
+  final Iterable<Type> types = const [ConstraintsStatuses, _$ConstraintsStatuses];
 
   @override
   final String wireName = r'ConstraintsStatuses';
@@ -85,11 +78,7 @@ class _$ConstraintsStatusesSerializer
     ConstraintsStatuses object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -105,30 +94,24 @@ class _$ConstraintsStatusesSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'active':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(PdStatus),
-                  )
-                  as PdStatus;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(PdStatus),
+          ) as PdStatus;
           result.active.replace(valueDes);
           break;
         case r'suspended':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(PdStatus),
-                  )
-                  as PdStatus;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(PdStatus),
+          ) as PdStatus;
           result.suspended.replace(valueDes);
           break;
         case r'revoked':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(PdStatus),
-                  )
-                  as PdStatus;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(PdStatus),
+          ) as PdStatus;
           result.revoked.replace(valueDes);
           break;
         default:
@@ -159,3 +142,4 @@ class _$ConstraintsStatusesSerializer
     return result.build();
   }
 }
+

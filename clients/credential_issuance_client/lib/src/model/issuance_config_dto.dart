@@ -15,23 +15,22 @@ part 'issuance_config_dto.g.dart';
 /// IssuanceConfigDto
 ///
 /// Properties:
-/// * [id]
-/// * [name]
-/// * [description]
+/// * [id] 
+/// * [name] 
+/// * [description] 
 /// * [issuerDid] - Issuer DID
 /// * [issuerWalletId] - Issuer Wallet id
 /// * [credentialOfferDuration] - credential offer duration in second
 /// * [cNonceDuration] - c_nonce duration in second
 /// * [format] - String identifying the format of this Credential, i.e., jwt_vc_json-ld or ldp_vc. Depending on the format value, the object contains further elements defining the type
 /// * [issuerUri] - Issuer URI
-/// * [credentialSupported]
+/// * [credentialSupported] 
 /// * [issuerMetadata] - Issuer public information wallet may want to show to user during consent confirmation
-/// * [version]
+/// * [version] 
 /// * [returnUris] - List of allowed URIs to be returned to after issuance
-/// * [webhook]
+/// * [webhook] 
 @BuiltValue()
-abstract class IssuanceConfigDto
-    implements Built<IssuanceConfigDto, IssuanceConfigDtoBuilder> {
+abstract class IssuanceConfigDto implements Built<IssuanceConfigDto, IssuanceConfigDtoBuilder> {
   @BuiltValueField(wireName: r'id')
   String? get id;
 
@@ -85,19 +84,16 @@ abstract class IssuanceConfigDto
 
   IssuanceConfigDto._();
 
-  factory IssuanceConfigDto([void updates(IssuanceConfigDtoBuilder b)]) =
-      _$IssuanceConfigDto;
+  factory IssuanceConfigDto([void updates(IssuanceConfigDtoBuilder b)]) = _$IssuanceConfigDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(IssuanceConfigDtoBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<IssuanceConfigDto> get serializer =>
-      _$IssuanceConfigDtoSerializer();
+  static Serializer<IssuanceConfigDto> get serializer => _$IssuanceConfigDtoSerializer();
 }
 
-class _$IssuanceConfigDtoSerializer
-    implements PrimitiveSerializer<IssuanceConfigDto> {
+class _$IssuanceConfigDtoSerializer implements PrimitiveSerializer<IssuanceConfigDto> {
   @override
   final Iterable<Type> types = const [IssuanceConfigDto, _$IssuanceConfigDto];
 
@@ -176,19 +172,14 @@ class _$IssuanceConfigDtoSerializer
       yield r'credentialSupported';
       yield serializers.serialize(
         object.credentialSupported,
-        specifiedType: const FullType(BuiltList, [
-          FullType(CredentialSupportedObject),
-        ]),
+        specifiedType: const FullType(BuiltList, [FullType(CredentialSupportedObject)]),
       );
     }
     if (object.issuerMetadata != null) {
       yield r'issuerMetadata';
       yield serializers.serialize(
         object.issuerMetadata,
-        specifiedType: const FullType(BuiltMap, [
-          FullType(String),
-          FullType.nullable(JsonObject),
-        ]),
+        specifiedType: const FullType(BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
       );
     }
     if (object.version != null) {
@@ -220,11 +211,7 @@ class _$IssuanceConfigDtoSerializer
     IssuanceConfigDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -240,129 +227,101 @@ class _$IssuanceConfigDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.id = valueDes;
           break;
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.description = valueDes;
           break;
         case r'issuerDid':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.issuerDid = valueDes;
           break;
         case r'issuerWalletId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.issuerWalletId = valueDes;
           break;
         case r'credentialOfferDuration':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.credentialOfferDuration = valueDes;
           break;
         case r'cNonceDuration':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.cNonceDuration = valueDes;
           break;
         case r'format':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(IssuanceConfigDtoFormatEnum),
-                  )
-                  as IssuanceConfigDtoFormatEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(IssuanceConfigDtoFormatEnum),
+          ) as IssuanceConfigDtoFormatEnum;
           result.format = valueDes;
           break;
         case r'issuerUri':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.issuerUri = valueDes;
           break;
         case r'credentialSupported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(CredentialSupportedObject),
-                    ]),
-                  )
-                  as BuiltList<CredentialSupportedObject>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(CredentialSupportedObject)]),
+          ) as BuiltList<CredentialSupportedObject>;
           result.credentialSupported.replace(valueDes);
           break;
         case r'issuerMetadata':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltMap, [
-                      FullType(String),
-                      FullType.nullable(JsonObject),
-                    ]),
-                  )
-                  as BuiltMap<String, JsonObject?>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
+          ) as BuiltMap<String, JsonObject?>;
           result.issuerMetadata.replace(valueDes);
           break;
         case r'version':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.version = valueDes;
           break;
         case r'returnUris':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.returnUris.replace(valueDes);
           break;
         case r'webhook':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CisConfigurationWebhookSetting,
-                    ),
-                  )
-                  as CisConfigurationWebhookSetting;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CisConfigurationWebhookSetting),
+          ) as CisConfigurationWebhookSetting;
           result.webhook.replace(valueDes);
           break;
         default:
@@ -395,28 +354,22 @@ class _$IssuanceConfigDtoSerializer
 }
 
 class IssuanceConfigDtoFormatEnum extends EnumClass {
+
   /// String identifying the format of this Credential, i.e., jwt_vc_json-ld or ldp_vc. Depending on the format value, the object contains further elements defining the type
   @BuiltValueEnumConst(wireName: r'ldp_vc')
-  static const IssuanceConfigDtoFormatEnum ldpVc =
-      _$issuanceConfigDtoFormatEnum_ldpVc;
-
+  static const IssuanceConfigDtoFormatEnum ldpVc = _$issuanceConfigDtoFormatEnum_ldpVc;
   /// String identifying the format of this Credential, i.e., jwt_vc_json-ld or ldp_vc. Depending on the format value, the object contains further elements defining the type
   @BuiltValueEnumConst(wireName: r'jwt_vc_json-ld')
-  static const IssuanceConfigDtoFormatEnum jwtVcJsonLd =
-      _$issuanceConfigDtoFormatEnum_jwtVcJsonLd;
-
+  static const IssuanceConfigDtoFormatEnum jwtVcJsonLd = _$issuanceConfigDtoFormatEnum_jwtVcJsonLd;
   /// String identifying the format of this Credential, i.e., jwt_vc_json-ld or ldp_vc. Depending on the format value, the object contains further elements defining the type
   @BuiltValueEnumConst(wireName: r'sd_jwt_vc_json-ld')
-  static const IssuanceConfigDtoFormatEnum sdJwtVcJsonLd =
-      _$issuanceConfigDtoFormatEnum_sdJwtVcJsonLd;
+  static const IssuanceConfigDtoFormatEnum sdJwtVcJsonLd = _$issuanceConfigDtoFormatEnum_sdJwtVcJsonLd;
 
-  static Serializer<IssuanceConfigDtoFormatEnum> get serializer =>
-      _$issuanceConfigDtoFormatEnumSerializer;
+  static Serializer<IssuanceConfigDtoFormatEnum> get serializer => _$issuanceConfigDtoFormatEnumSerializer;
 
-  const IssuanceConfigDtoFormatEnum._(String name) : super(name);
+  const IssuanceConfigDtoFormatEnum._(String name): super(name);
 
-  static BuiltSet<IssuanceConfigDtoFormatEnum> get values =>
-      _$issuanceConfigDtoFormatEnumValues;
-  static IssuanceConfigDtoFormatEnum valueOf(String name) =>
-      _$issuanceConfigDtoFormatEnumValueOf(name);
+  static BuiltSet<IssuanceConfigDtoFormatEnum> get values => _$issuanceConfigDtoFormatEnumValues;
+  static IssuanceConfigDtoFormatEnum valueOf(String name) => _$issuanceConfigDtoFormatEnumValueOf(name);
 }
+

@@ -37,9 +37,9 @@ class _$GroupNamesInput extends GroupNamesInput {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'GroupNamesInput',
-    )..add('groupNames', groupNames)).toString();
+    return (newBuiltValueToStringHelper(r'GroupNamesInput')
+          ..add('groupNames', groupNames))
+        .toString();
   }
 }
 
@@ -82,7 +82,10 @@ class GroupNamesInputBuilder
   _$GroupNamesInput _build() {
     _$GroupNamesInput _$result;
     try {
-      _$result = _$v ?? _$GroupNamesInput._(groupNames: groupNames.build());
+      _$result = _$v ??
+          _$GroupNamesInput._(
+            groupNames: groupNames.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -90,10 +93,7 @@ class GroupNamesInputBuilder
         groupNames.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'GroupNamesInput',
-          _$failedField,
-          e.toString(),
-        );
+            r'GroupNamesInput', _$failedField, e.toString());
       }
       rethrow;
     }

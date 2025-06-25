@@ -11,18 +11,17 @@ part 'json_web_key_dto.g.dart';
 /// JsonWebKeyDto
 ///
 /// Properties:
-/// * [kid]
-/// * [kty]
-/// * [n]
-/// * [e]
-/// * [x]
-/// * [y]
-/// * [crv]
-/// * [alg]
-/// * [use]
+/// * [kid] 
+/// * [kty] 
+/// * [n] 
+/// * [e] 
+/// * [x] 
+/// * [y] 
+/// * [crv] 
+/// * [alg] 
+/// * [use] 
 @BuiltValue()
-abstract class JsonWebKeyDto
-    implements Built<JsonWebKeyDto, JsonWebKeyDtoBuilder> {
+abstract class JsonWebKeyDto implements Built<JsonWebKeyDto, JsonWebKeyDtoBuilder> {
   @BuiltValueField(wireName: r'kid')
   String get kid;
 
@@ -52,15 +51,13 @@ abstract class JsonWebKeyDto
 
   JsonWebKeyDto._();
 
-  factory JsonWebKeyDto([void updates(JsonWebKeyDtoBuilder b)]) =
-      _$JsonWebKeyDto;
+  factory JsonWebKeyDto([void updates(JsonWebKeyDtoBuilder b)]) = _$JsonWebKeyDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(JsonWebKeyDtoBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<JsonWebKeyDto> get serializer =>
-      _$JsonWebKeyDtoSerializer();
+  static Serializer<JsonWebKeyDto> get serializer => _$JsonWebKeyDtoSerializer();
 }
 
 class _$JsonWebKeyDtoSerializer implements PrimitiveSerializer<JsonWebKeyDto> {
@@ -138,11 +135,7 @@ class _$JsonWebKeyDtoSerializer implements PrimitiveSerializer<JsonWebKeyDto> {
     JsonWebKeyDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -158,84 +151,66 @@ class _$JsonWebKeyDtoSerializer implements PrimitiveSerializer<JsonWebKeyDto> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'kid':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.kid = valueDes;
           break;
         case r'kty':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.kty = valueDes;
           break;
         case r'n':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.n = valueDes;
           break;
         case r'e':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.e = valueDes;
           break;
         case r'x':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.x = valueDes;
           break;
         case r'y':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.y = valueDes;
           break;
         case r'crv':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.crv = valueDes;
           break;
         case r'alg':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.alg = valueDes;
           break;
         case r'use':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.use = valueDes;
           break;
         default:
@@ -266,3 +241,4 @@ class _$JsonWebKeyDtoSerializer implements PrimitiveSerializer<JsonWebKeyDto> {
     return result.build();
   }
 }
+

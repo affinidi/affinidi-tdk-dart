@@ -17,6 +17,7 @@ import 'package:affinidi_tdk_iam_client/src/model/update_access_input.dart';
 import 'package:affinidi_tdk_iam_client/src/model/update_access_output.dart';
 
 class AuthzApi {
+
   final Dio _dio;
 
   final Serializers _serializers;
@@ -27,7 +28,7 @@ class AuthzApi {
   /// deleteAccessVfs
   ///
   /// Parameters:
-  /// * [granteeDid]
+  /// * [granteeDid] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -37,7 +38,7 @@ class AuthzApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> deleteAccessVfs({
+  Future<Response<void>> deleteAccessVfs({ 
     required String granteeDid,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -46,19 +47,12 @@ class AuthzApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/v1/authz/vfs/access/{granteeDid}'.replaceAll(
-      '{'
-      r'granteeDid'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        granteeDid,
-        const FullType(String),
-      ).toString(),
-    );
+    final _path = r'/v1/authz/vfs/access/{granteeDid}'.replaceAll('{' r'granteeDid' '}', encodeQueryParameter(_serializers, granteeDid, const FullType(String)).toString());
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -98,7 +92,7 @@ class AuthzApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GrantAccessOutput] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GrantAccessOutput>> grantAccessVfs({
+  Future<Response<GrantAccessOutput>> grantAccessVfs({ 
     required GrantAccessInput grantAccessInput,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -110,7 +104,9 @@ class AuthzApi {
     final _path = r'/v1/authz/vfs/access';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -130,13 +126,14 @@ class AuthzApi {
 
     try {
       const _type = FullType(GrantAccessInput);
-      _bodyData = _serializers.serialize(
-        grantAccessInput,
-        specifiedType: _type,
-      );
-    } catch (error, stackTrace) {
+      _bodyData = _serializers.serialize(grantAccessInput, specifiedType: _type);
+
+    } catch(error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+         requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -156,13 +153,11 @@ class AuthzApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(GrantAccessOutput),
-                )
-                as GrantAccessOutput;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(GrantAccessOutput),
+      ) as GrantAccessOutput;
+
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -189,7 +184,7 @@ class AuthzApi {
   /// updateAccessVfs
   ///
   /// Parameters:
-  /// * [granteeDid]
+  /// * [granteeDid] 
   /// * [updateAccessInput] - update access to virtual file system
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
@@ -200,7 +195,7 @@ class AuthzApi {
   ///
   /// Returns a [Future] containing a [Response] with a [UpdateAccessOutput] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<UpdateAccessOutput>> updateAccessVfs({
+  Future<Response<UpdateAccessOutput>> updateAccessVfs({ 
     required String granteeDid,
     required UpdateAccessInput updateAccessInput,
     CancelToken? cancelToken,
@@ -210,19 +205,12 @@ class AuthzApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/v1/authz/vfs/access/{granteeDid}'.replaceAll(
-      '{'
-      r'granteeDid'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        granteeDid,
-        const FullType(String),
-      ).toString(),
-    );
+    final _path = r'/v1/authz/vfs/access/{granteeDid}'.replaceAll('{' r'granteeDid' '}', encodeQueryParameter(_serializers, granteeDid, const FullType(String)).toString());
     final _options = Options(
       method: r'PUT',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -242,13 +230,14 @@ class AuthzApi {
 
     try {
       const _type = FullType(UpdateAccessInput);
-      _bodyData = _serializers.serialize(
-        updateAccessInput,
-        specifiedType: _type,
-      );
-    } catch (error, stackTrace) {
+      _bodyData = _serializers.serialize(updateAccessInput, specifiedType: _type);
+
+    } catch(error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+         requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -268,13 +257,11 @@ class AuthzApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(UpdateAccessOutput),
-                )
-                as UpdateAccessOutput;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(UpdateAccessOutput),
+      ) as UpdateAccessOutput;
+
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -296,4 +283,5 @@ class AuthzApi {
       extra: _response.extra,
     );
   }
+
 }

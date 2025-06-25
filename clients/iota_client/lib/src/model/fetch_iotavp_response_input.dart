@@ -16,9 +16,7 @@ part 'fetch_iotavp_response_input.g.dart';
 /// * [responseCode] - A unique identifier to fetch the callback response data. Send this value together with the transactionId to successfully fetch the data.
 /// * [configurationId] - ID of the Affinidi Iota Framework configuration.
 @BuiltValue()
-abstract class FetchIOTAVPResponseInput
-    implements
-        Built<FetchIOTAVPResponseInput, FetchIOTAVPResponseInputBuilder> {
+abstract class FetchIOTAVPResponseInput implements Built<FetchIOTAVPResponseInput, FetchIOTAVPResponseInputBuilder> {
   /// A unique, randomly generated identifier that correlates the request and response in the data-sharing request flow.
   @BuiltValueField(wireName: r'correlationId')
   String get correlationId;
@@ -37,25 +35,18 @@ abstract class FetchIOTAVPResponseInput
 
   FetchIOTAVPResponseInput._();
 
-  factory FetchIOTAVPResponseInput([
-    void updates(FetchIOTAVPResponseInputBuilder b),
-  ]) = _$FetchIOTAVPResponseInput;
+  factory FetchIOTAVPResponseInput([void updates(FetchIOTAVPResponseInputBuilder b)]) = _$FetchIOTAVPResponseInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(FetchIOTAVPResponseInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<FetchIOTAVPResponseInput> get serializer =>
-      _$FetchIOTAVPResponseInputSerializer();
+  static Serializer<FetchIOTAVPResponseInput> get serializer => _$FetchIOTAVPResponseInputSerializer();
 }
 
-class _$FetchIOTAVPResponseInputSerializer
-    implements PrimitiveSerializer<FetchIOTAVPResponseInput> {
+class _$FetchIOTAVPResponseInputSerializer implements PrimitiveSerializer<FetchIOTAVPResponseInput> {
   @override
-  final Iterable<Type> types = const [
-    FetchIOTAVPResponseInput,
-    _$FetchIOTAVPResponseInput,
-  ];
+  final Iterable<Type> types = const [FetchIOTAVPResponseInput, _$FetchIOTAVPResponseInput];
 
   @override
   final String wireName = r'FetchIOTAVPResponseInput';
@@ -93,11 +84,7 @@ class _$FetchIOTAVPResponseInputSerializer
     FetchIOTAVPResponseInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -113,39 +100,31 @@ class _$FetchIOTAVPResponseInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'correlationId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.correlationId = valueDes;
           break;
         case r'transactionId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.transactionId = valueDes;
           break;
         case r'responseCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.responseCode = valueDes;
           break;
         case r'configurationId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.configurationId = valueDes;
           break;
         default:
@@ -176,3 +155,4 @@ class _$FetchIOTAVPResponseInputSerializer
     return result.build();
   }
 }
+

@@ -15,8 +15,7 @@ part 'create_pex_query_input.g.dart';
 /// * [vpDefinition] - The presentation definition describing the data requirement that must be satisfied by the user. The value is in a JSON stringify format.
 /// * [description] - An optional description of what the query is used for.
 @BuiltValue()
-abstract class CreatePexQueryInput
-    implements Built<CreatePexQueryInput, CreatePexQueryInputBuilder> {
+abstract class CreatePexQueryInput implements Built<CreatePexQueryInput, CreatePexQueryInputBuilder> {
   /// The name of the presentation definition to quickly identify the query.
   @BuiltValueField(wireName: r'name')
   String get name;
@@ -31,24 +30,18 @@ abstract class CreatePexQueryInput
 
   CreatePexQueryInput._();
 
-  factory CreatePexQueryInput([void updates(CreatePexQueryInputBuilder b)]) =
-      _$CreatePexQueryInput;
+  factory CreatePexQueryInput([void updates(CreatePexQueryInputBuilder b)]) = _$CreatePexQueryInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreatePexQueryInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreatePexQueryInput> get serializer =>
-      _$CreatePexQueryInputSerializer();
+  static Serializer<CreatePexQueryInput> get serializer => _$CreatePexQueryInputSerializer();
 }
 
-class _$CreatePexQueryInputSerializer
-    implements PrimitiveSerializer<CreatePexQueryInput> {
+class _$CreatePexQueryInputSerializer implements PrimitiveSerializer<CreatePexQueryInput> {
   @override
-  final Iterable<Type> types = const [
-    CreatePexQueryInput,
-    _$CreatePexQueryInput,
-  ];
+  final Iterable<Type> types = const [CreatePexQueryInput, _$CreatePexQueryInput];
 
   @override
   final String wireName = r'CreatePexQueryInput';
@@ -83,11 +76,7 @@ class _$CreatePexQueryInputSerializer
     CreatePexQueryInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -103,30 +92,24 @@ class _$CreatePexQueryInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'vpDefinition':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.vpDefinition = valueDes;
           break;
         case r'description':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.description = valueDes;
           break;
         default:
@@ -157,3 +140,4 @@ class _$CreatePexQueryInputSerializer
     return result.build();
   }
 }
+

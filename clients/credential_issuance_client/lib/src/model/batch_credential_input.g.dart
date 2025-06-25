@@ -9,17 +9,17 @@ part of 'batch_credential_input.dart';
 class _$BatchCredentialInput extends BatchCredentialInput {
   @override
   final BuiltList<BatchCredentialInputCredentialRequestsInner>
-  credentialRequests;
+      credentialRequests;
 
-  factory _$BatchCredentialInput([
-    void Function(BatchCredentialInputBuilder)? updates,
-  ]) => (BatchCredentialInputBuilder()..update(updates))._build();
+  factory _$BatchCredentialInput(
+          [void Function(BatchCredentialInputBuilder)? updates]) =>
+      (BatchCredentialInputBuilder()..update(updates))._build();
 
   _$BatchCredentialInput._({required this.credentialRequests}) : super._();
   @override
   BatchCredentialInput rebuild(
-    void Function(BatchCredentialInputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(BatchCredentialInputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   BatchCredentialInputBuilder toBuilder() =>
@@ -42,9 +42,9 @@ class _$BatchCredentialInput extends BatchCredentialInput {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'BatchCredentialInput',
-    )..add('credentialRequests', credentialRequests)).toString();
+    return (newBuiltValueToStringHelper(r'BatchCredentialInput')
+          ..add('credentialRequests', credentialRequests))
+        .toString();
   }
 }
 
@@ -54,12 +54,12 @@ class BatchCredentialInputBuilder
 
   ListBuilder<BatchCredentialInputCredentialRequestsInner>? _credentialRequests;
   ListBuilder<BatchCredentialInputCredentialRequestsInner>
-  get credentialRequests => _$this._credentialRequests ??=
-      ListBuilder<BatchCredentialInputCredentialRequestsInner>();
+      get credentialRequests => _$this._credentialRequests ??=
+          ListBuilder<BatchCredentialInputCredentialRequestsInner>();
   set credentialRequests(
-    ListBuilder<BatchCredentialInputCredentialRequestsInner>?
-    credentialRequests,
-  ) => _$this._credentialRequests = credentialRequests;
+          ListBuilder<BatchCredentialInputCredentialRequestsInner>?
+              credentialRequests) =>
+      _$this._credentialRequests = credentialRequests;
 
   BatchCredentialInputBuilder() {
     BatchCredentialInput._defaults(this);
@@ -90,8 +90,7 @@ class BatchCredentialInputBuilder
   _$BatchCredentialInput _build() {
     _$BatchCredentialInput _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$BatchCredentialInput._(
             credentialRequests: credentialRequests.build(),
           );
@@ -102,10 +101,7 @@ class BatchCredentialInputBuilder
         credentialRequests.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'BatchCredentialInput',
-          _$failedField,
-          e.toString(),
-        );
+            r'BatchCredentialInput', _$failedField, e.toString());
       }
       rethrow;
     }

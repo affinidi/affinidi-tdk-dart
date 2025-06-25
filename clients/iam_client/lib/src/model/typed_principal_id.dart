@@ -11,28 +11,24 @@ part 'typed_principal_id.g.dart';
 /// TypedPrincipalId
 ///
 /// Properties:
-/// * [principalId]
+/// * [principalId] 
 @BuiltValue()
-abstract class TypedPrincipalId
-    implements Built<TypedPrincipalId, TypedPrincipalIdBuilder> {
+abstract class TypedPrincipalId implements Built<TypedPrincipalId, TypedPrincipalIdBuilder> {
   @BuiltValueField(wireName: r'principalId')
   String get principalId;
 
   TypedPrincipalId._();
 
-  factory TypedPrincipalId([void updates(TypedPrincipalIdBuilder b)]) =
-      _$TypedPrincipalId;
+  factory TypedPrincipalId([void updates(TypedPrincipalIdBuilder b)]) = _$TypedPrincipalId;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(TypedPrincipalIdBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<TypedPrincipalId> get serializer =>
-      _$TypedPrincipalIdSerializer();
+  static Serializer<TypedPrincipalId> get serializer => _$TypedPrincipalIdSerializer();
 }
 
-class _$TypedPrincipalIdSerializer
-    implements PrimitiveSerializer<TypedPrincipalId> {
+class _$TypedPrincipalIdSerializer implements PrimitiveSerializer<TypedPrincipalId> {
   @override
   final Iterable<Type> types = const [TypedPrincipalId, _$TypedPrincipalId];
 
@@ -57,11 +53,7 @@ class _$TypedPrincipalIdSerializer
     TypedPrincipalId object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -77,12 +69,10 @@ class _$TypedPrincipalIdSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'principalId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.principalId = valueDes;
           break;
         default:
@@ -113,3 +103,4 @@ class _$TypedPrincipalIdSerializer
     return result.build();
   }
 }
+

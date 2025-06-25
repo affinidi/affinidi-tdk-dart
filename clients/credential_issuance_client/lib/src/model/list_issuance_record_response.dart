@@ -13,12 +13,10 @@ part 'list_issuance_record_response.g.dart';
 /// list of issuance data records
 ///
 /// Properties:
-/// * [flowData]
-/// * [lastEvaluatedKey]
+/// * [flowData] 
+/// * [lastEvaluatedKey] 
 @BuiltValue()
-abstract class ListIssuanceRecordResponse
-    implements
-        Built<ListIssuanceRecordResponse, ListIssuanceRecordResponseBuilder> {
+abstract class ListIssuanceRecordResponse implements Built<ListIssuanceRecordResponse, ListIssuanceRecordResponseBuilder> {
   @BuiltValueField(wireName: r'flowData')
   BuiltList<FlowData>? get flowData;
 
@@ -27,25 +25,18 @@ abstract class ListIssuanceRecordResponse
 
   ListIssuanceRecordResponse._();
 
-  factory ListIssuanceRecordResponse([
-    void updates(ListIssuanceRecordResponseBuilder b),
-  ]) = _$ListIssuanceRecordResponse;
+  factory ListIssuanceRecordResponse([void updates(ListIssuanceRecordResponseBuilder b)]) = _$ListIssuanceRecordResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ListIssuanceRecordResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ListIssuanceRecordResponse> get serializer =>
-      _$ListIssuanceRecordResponseSerializer();
+  static Serializer<ListIssuanceRecordResponse> get serializer => _$ListIssuanceRecordResponseSerializer();
 }
 
-class _$ListIssuanceRecordResponseSerializer
-    implements PrimitiveSerializer<ListIssuanceRecordResponse> {
+class _$ListIssuanceRecordResponseSerializer implements PrimitiveSerializer<ListIssuanceRecordResponse> {
   @override
-  final Iterable<Type> types = const [
-    ListIssuanceRecordResponse,
-    _$ListIssuanceRecordResponse,
-  ];
+  final Iterable<Type> types = const [ListIssuanceRecordResponse, _$ListIssuanceRecordResponse];
 
   @override
   final String wireName = r'ListIssuanceRecordResponse';
@@ -77,11 +68,7 @@ class _$ListIssuanceRecordResponseSerializer
     ListIssuanceRecordResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -97,23 +84,17 @@ class _$ListIssuanceRecordResponseSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'flowData':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(FlowData),
-                    ]),
-                  )
-                  as BuiltList<FlowData>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(FlowData)]),
+          ) as BuiltList<FlowData>;
           result.flowData.replace(valueDes);
           break;
         case r'lastEvaluatedKey':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.lastEvaluatedKey = valueDes;
           break;
         default:
@@ -144,3 +125,4 @@ class _$ListIssuanceRecordResponseSerializer
     return result.build();
   }
 }
+

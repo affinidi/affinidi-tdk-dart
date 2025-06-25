@@ -13,14 +13,9 @@ part 'batch_credential_input_credential_requests_inner.g.dart';
 ///
 /// Properties:
 /// * [credentialIdentifier] - It is a String that identifies a Credential that is being requested to be issued.
-/// * [proof]
+/// * [proof] 
 @BuiltValue()
-abstract class BatchCredentialInputCredentialRequestsInner
-    implements
-        Built<
-          BatchCredentialInputCredentialRequestsInner,
-          BatchCredentialInputCredentialRequestsInnerBuilder
-        > {
+abstract class BatchCredentialInputCredentialRequestsInner implements Built<BatchCredentialInputCredentialRequestsInner, BatchCredentialInputCredentialRequestsInnerBuilder> {
   /// It is a String that identifies a Credential that is being requested to be issued.
   @BuiltValueField(wireName: r'credential_identifier')
   String? get credentialIdentifier;
@@ -30,27 +25,18 @@ abstract class BatchCredentialInputCredentialRequestsInner
 
   BatchCredentialInputCredentialRequestsInner._();
 
-  factory BatchCredentialInputCredentialRequestsInner([
-    void updates(BatchCredentialInputCredentialRequestsInnerBuilder b),
-  ]) = _$BatchCredentialInputCredentialRequestsInner;
+  factory BatchCredentialInputCredentialRequestsInner([void updates(BatchCredentialInputCredentialRequestsInnerBuilder b)]) = _$BatchCredentialInputCredentialRequestsInner;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(BatchCredentialInputCredentialRequestsInnerBuilder b) =>
-      b;
+  static void _defaults(BatchCredentialInputCredentialRequestsInnerBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<BatchCredentialInputCredentialRequestsInner>
-  get serializer => _$BatchCredentialInputCredentialRequestsInnerSerializer();
+  static Serializer<BatchCredentialInputCredentialRequestsInner> get serializer => _$BatchCredentialInputCredentialRequestsInnerSerializer();
 }
 
-class _$BatchCredentialInputCredentialRequestsInnerSerializer
-    implements
-        PrimitiveSerializer<BatchCredentialInputCredentialRequestsInner> {
+class _$BatchCredentialInputCredentialRequestsInnerSerializer implements PrimitiveSerializer<BatchCredentialInputCredentialRequestsInner> {
   @override
-  final Iterable<Type> types = const [
-    BatchCredentialInputCredentialRequestsInner,
-    _$BatchCredentialInputCredentialRequestsInner,
-  ];
+  final Iterable<Type> types = const [BatchCredentialInputCredentialRequestsInner, _$BatchCredentialInputCredentialRequestsInner];
 
   @override
   final String wireName = r'BatchCredentialInputCredentialRequestsInner';
@@ -80,11 +66,7 @@ class _$BatchCredentialInputCredentialRequestsInnerSerializer
     BatchCredentialInputCredentialRequestsInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -100,21 +82,17 @@ class _$BatchCredentialInputCredentialRequestsInnerSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'credential_identifier':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.credentialIdentifier = valueDes;
           break;
         case r'proof':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(CredentialProof),
-                  )
-                  as CredentialProof;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CredentialProof),
+          ) as CredentialProof;
           result.proof.replace(valueDes);
           break;
         default:
@@ -145,3 +123,4 @@ class _$BatchCredentialInputCredentialRequestsInnerSerializer
     return result.build();
   }
 }
+

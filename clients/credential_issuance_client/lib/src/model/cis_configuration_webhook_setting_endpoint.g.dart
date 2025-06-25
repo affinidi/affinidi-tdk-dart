@@ -11,16 +11,18 @@ class _$CisConfigurationWebhookSettingEndpoint
   @override
   final String? url;
 
-  factory _$CisConfigurationWebhookSettingEndpoint([
-    void Function(CisConfigurationWebhookSettingEndpointBuilder)? updates,
-  ]) => (CisConfigurationWebhookSettingEndpointBuilder()..update(updates))
-      ._build();
+  factory _$CisConfigurationWebhookSettingEndpoint(
+          [void Function(CisConfigurationWebhookSettingEndpointBuilder)?
+              updates]) =>
+      (CisConfigurationWebhookSettingEndpointBuilder()..update(updates))
+          ._build();
 
   _$CisConfigurationWebhookSettingEndpoint._({this.url}) : super._();
   @override
   CisConfigurationWebhookSettingEndpoint rebuild(
-    void Function(CisConfigurationWebhookSettingEndpointBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CisConfigurationWebhookSettingEndpointBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CisConfigurationWebhookSettingEndpointBuilder toBuilder() =>
@@ -43,17 +45,16 @@ class _$CisConfigurationWebhookSettingEndpoint
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-      r'CisConfigurationWebhookSettingEndpoint',
-    )..add('url', url)).toString();
+            r'CisConfigurationWebhookSettingEndpoint')
+          ..add('url', url))
+        .toString();
   }
 }
 
 class CisConfigurationWebhookSettingEndpointBuilder
     implements
-        Builder<
-          CisConfigurationWebhookSettingEndpoint,
-          CisConfigurationWebhookSettingEndpointBuilder
-        > {
+        Builder<CisConfigurationWebhookSettingEndpoint,
+            CisConfigurationWebhookSettingEndpointBuilder> {
   _$CisConfigurationWebhookSettingEndpoint? _$v;
 
   String? _url;
@@ -80,8 +81,7 @@ class CisConfigurationWebhookSettingEndpointBuilder
 
   @override
   void update(
-    void Function(CisConfigurationWebhookSettingEndpointBuilder)? updates,
-  ) {
+      void Function(CisConfigurationWebhookSettingEndpointBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -89,8 +89,10 @@ class CisConfigurationWebhookSettingEndpointBuilder
   CisConfigurationWebhookSettingEndpoint build() => _build();
 
   _$CisConfigurationWebhookSettingEndpoint _build() {
-    final _$result =
-        _$v ?? _$CisConfigurationWebhookSettingEndpoint._(url: url);
+    final _$result = _$v ??
+        _$CisConfigurationWebhookSettingEndpoint._(
+          url: url,
+        );
     replace(_$result);
     return _$result;
   }

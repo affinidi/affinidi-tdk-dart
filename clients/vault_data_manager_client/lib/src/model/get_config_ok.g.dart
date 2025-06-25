@@ -16,7 +16,7 @@ class _$GetConfigOK extends GetConfigOK {
       (GetConfigOKBuilder()..update(updates))._build();
 
   _$GetConfigOK._({required this.profileName, required this.maximumProfiles})
-    : super._();
+      : super._();
   @override
   GetConfigOK rebuild(void Function(GetConfigOKBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -90,19 +90,12 @@ class GetConfigOKBuilder implements Builder<GetConfigOK, GetConfigOKBuilder> {
   GetConfigOK build() => _build();
 
   _$GetConfigOK _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$GetConfigOK._(
           profileName: BuiltValueNullFieldError.checkNotNull(
-            profileName,
-            r'GetConfigOK',
-            'profileName',
-          ),
+              profileName, r'GetConfigOK', 'profileName'),
           maximumProfiles: BuiltValueNullFieldError.checkNotNull(
-            maximumProfiles,
-            r'GetConfigOK',
-            'maximumProfiles',
-          ),
+              maximumProfiles, r'GetConfigOK', 'maximumProfiles'),
         );
     replace(_$result);
     return _$result;

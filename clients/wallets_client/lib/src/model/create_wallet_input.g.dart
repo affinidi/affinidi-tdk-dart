@@ -12,8 +12,7 @@ const CreateWalletInputDidMethodEnum _$createWalletInputDidMethodEnum_web =
     const CreateWalletInputDidMethodEnum._('web');
 
 CreateWalletInputDidMethodEnum _$createWalletInputDidMethodEnumValueOf(
-  String name,
-) {
+    String name) {
   switch (name) {
     case 'key':
       return _$createWalletInputDidMethodEnum_key;
@@ -25,16 +24,14 @@ CreateWalletInputDidMethodEnum _$createWalletInputDidMethodEnumValueOf(
 }
 
 final BuiltSet<CreateWalletInputDidMethodEnum>
-_$createWalletInputDidMethodEnumValues =
-    BuiltSet<CreateWalletInputDidMethodEnum>(
-      const <CreateWalletInputDidMethodEnum>[
-        _$createWalletInputDidMethodEnum_key,
-        _$createWalletInputDidMethodEnum_web,
-      ],
-    );
+    _$createWalletInputDidMethodEnumValues = BuiltSet<
+        CreateWalletInputDidMethodEnum>(const <CreateWalletInputDidMethodEnum>[
+  _$createWalletInputDidMethodEnum_key,
+  _$createWalletInputDidMethodEnum_web,
+]);
 
 Serializer<CreateWalletInputDidMethodEnum>
-_$createWalletInputDidMethodEnumSerializer =
+    _$createWalletInputDidMethodEnumSerializer =
     _$CreateWalletInputDidMethodEnumSerializer();
 
 class _$CreateWalletInputDidMethodEnumSerializer
@@ -55,19 +52,16 @@ class _$CreateWalletInputDidMethodEnumSerializer
 
   @override
   Object serialize(
-    Serializers serializers,
-    CreateWalletInputDidMethodEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, CreateWalletInputDidMethodEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   CreateWalletInputDidMethodEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => CreateWalletInputDidMethodEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      CreateWalletInputDidMethodEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$CreateWalletInput extends CreateWalletInput {
@@ -80,16 +74,13 @@ class _$CreateWalletInput extends CreateWalletInput {
   @override
   final String? didWebUrl;
 
-  factory _$CreateWalletInput([
-    void Function(CreateWalletInputBuilder)? updates,
-  ]) => (CreateWalletInputBuilder()..update(updates))._build();
+  factory _$CreateWalletInput(
+          [void Function(CreateWalletInputBuilder)? updates]) =>
+      (CreateWalletInputBuilder()..update(updates))._build();
 
-  _$CreateWalletInput._({
-    this.name,
-    this.description,
-    required this.didMethod,
-    this.didWebUrl,
-  }) : super._();
+  _$CreateWalletInput._(
+      {this.name, this.description, required this.didMethod, this.didWebUrl})
+      : super._();
   @override
   CreateWalletInput rebuild(void Function(CreateWalletInputBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -181,16 +172,12 @@ class CreateWalletInputBuilder
   CreateWalletInput build() => _build();
 
   _$CreateWalletInput _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CreateWalletInput._(
           name: name,
           description: description,
           didMethod: BuiltValueNullFieldError.checkNotNull(
-            didMethod,
-            r'CreateWalletInput',
-            'didMethod',
-          ),
+              didMethod, r'CreateWalletInput', 'didMethod'),
           didWebUrl: didWebUrl,
         );
     replace(_$result);

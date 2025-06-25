@@ -13,15 +13,13 @@ part 'create_project_network_error.g.dart';
 /// CreateProjectNetworkError
 ///
 /// Properties:
-/// * [name]
-/// * [message]
-/// * [httpStatusCode]
-/// * [traceId]
-/// * [details]
+/// * [name] 
+/// * [message] 
+/// * [httpStatusCode] 
+/// * [traceId] 
+/// * [details] 
 @BuiltValue()
-abstract class CreateProjectNetworkError
-    implements
-        Built<CreateProjectNetworkError, CreateProjectNetworkErrorBuilder> {
+abstract class CreateProjectNetworkError implements Built<CreateProjectNetworkError, CreateProjectNetworkErrorBuilder> {
   @BuiltValueField(wireName: r'name')
   CreateProjectNetworkErrorNameEnum get name;
   // enum nameEnum {  CreateProjectNetworkError,  };
@@ -42,25 +40,18 @@ abstract class CreateProjectNetworkError
 
   CreateProjectNetworkError._();
 
-  factory CreateProjectNetworkError([
-    void updates(CreateProjectNetworkErrorBuilder b),
-  ]) = _$CreateProjectNetworkError;
+  factory CreateProjectNetworkError([void updates(CreateProjectNetworkErrorBuilder b)]) = _$CreateProjectNetworkError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateProjectNetworkErrorBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateProjectNetworkError> get serializer =>
-      _$CreateProjectNetworkErrorSerializer();
+  static Serializer<CreateProjectNetworkError> get serializer => _$CreateProjectNetworkErrorSerializer();
 }
 
-class _$CreateProjectNetworkErrorSerializer
-    implements PrimitiveSerializer<CreateProjectNetworkError> {
+class _$CreateProjectNetworkErrorSerializer implements PrimitiveSerializer<CreateProjectNetworkError> {
   @override
-  final Iterable<Type> types = const [
-    CreateProjectNetworkError,
-    _$CreateProjectNetworkError,
-  ];
+  final Iterable<Type> types = const [CreateProjectNetworkError, _$CreateProjectNetworkError];
 
   @override
   final String wireName = r'CreateProjectNetworkError';
@@ -83,9 +74,7 @@ class _$CreateProjectNetworkErrorSerializer
     yield r'httpStatusCode';
     yield serializers.serialize(
       object.httpStatusCode,
-      specifiedType: const FullType(
-        CreateProjectNetworkErrorHttpStatusCodeEnum,
-      ),
+      specifiedType: const FullType(CreateProjectNetworkErrorHttpStatusCodeEnum),
     );
     yield r'traceId';
     yield serializers.serialize(
@@ -96,9 +85,7 @@ class _$CreateProjectNetworkErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(InvalidParameterErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
       );
     }
   }
@@ -109,11 +96,7 @@ class _$CreateProjectNetworkErrorSerializer
     CreateProjectNetworkError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -129,56 +112,38 @@ class _$CreateProjectNetworkErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CreateProjectNetworkErrorNameEnum,
-                    ),
-                  )
-                  as CreateProjectNetworkErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CreateProjectNetworkErrorNameEnum),
+          ) as CreateProjectNetworkErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CreateProjectNetworkErrorMessageEnum,
-                    ),
-                  )
-                  as CreateProjectNetworkErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CreateProjectNetworkErrorMessageEnum),
+          ) as CreateProjectNetworkErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CreateProjectNetworkErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as CreateProjectNetworkErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CreateProjectNetworkErrorHttpStatusCodeEnum),
+          ) as CreateProjectNetworkErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(InvalidParameterErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<InvalidParameterErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
+          ) as BuiltList<InvalidParameterErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -211,50 +176,41 @@ class _$CreateProjectNetworkErrorSerializer
 }
 
 class CreateProjectNetworkErrorNameEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireName: r'CreateProjectNetworkError')
-  static const CreateProjectNetworkErrorNameEnum createProjectNetworkError =
-      _$createProjectNetworkErrorNameEnum_createProjectNetworkError;
+  static const CreateProjectNetworkErrorNameEnum createProjectNetworkError = _$createProjectNetworkErrorNameEnum_createProjectNetworkError;
 
-  static Serializer<CreateProjectNetworkErrorNameEnum> get serializer =>
-      _$createProjectNetworkErrorNameEnumSerializer;
+  static Serializer<CreateProjectNetworkErrorNameEnum> get serializer => _$createProjectNetworkErrorNameEnumSerializer;
 
-  const CreateProjectNetworkErrorNameEnum._(String name) : super(name);
+  const CreateProjectNetworkErrorNameEnum._(String name): super(name);
 
-  static BuiltSet<CreateProjectNetworkErrorNameEnum> get values =>
-      _$createProjectNetworkErrorNameEnumValues;
-  static CreateProjectNetworkErrorNameEnum valueOf(String name) =>
-      _$createProjectNetworkErrorNameEnumValueOf(name);
+  static BuiltSet<CreateProjectNetworkErrorNameEnum> get values => _$createProjectNetworkErrorNameEnumValues;
+  static CreateProjectNetworkErrorNameEnum valueOf(String name) => _$createProjectNetworkErrorNameEnumValueOf(name);
 }
 
 class CreateProjectNetworkErrorMessageEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireName: r'CreateProjectNetworkError')
-  static const CreateProjectNetworkErrorMessageEnum createProjectNetworkError =
-      _$createProjectNetworkErrorMessageEnum_createProjectNetworkError;
+  static const CreateProjectNetworkErrorMessageEnum createProjectNetworkError = _$createProjectNetworkErrorMessageEnum_createProjectNetworkError;
 
-  static Serializer<CreateProjectNetworkErrorMessageEnum> get serializer =>
-      _$createProjectNetworkErrorMessageEnumSerializer;
+  static Serializer<CreateProjectNetworkErrorMessageEnum> get serializer => _$createProjectNetworkErrorMessageEnumSerializer;
 
-  const CreateProjectNetworkErrorMessageEnum._(String name) : super(name);
+  const CreateProjectNetworkErrorMessageEnum._(String name): super(name);
 
-  static BuiltSet<CreateProjectNetworkErrorMessageEnum> get values =>
-      _$createProjectNetworkErrorMessageEnumValues;
-  static CreateProjectNetworkErrorMessageEnum valueOf(String name) =>
-      _$createProjectNetworkErrorMessageEnumValueOf(name);
+  static BuiltSet<CreateProjectNetworkErrorMessageEnum> get values => _$createProjectNetworkErrorMessageEnumValues;
+  static CreateProjectNetworkErrorMessageEnum valueOf(String name) => _$createProjectNetworkErrorMessageEnumValueOf(name);
 }
 
 class CreateProjectNetworkErrorHttpStatusCodeEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireNumber: 400)
-  static const CreateProjectNetworkErrorHttpStatusCodeEnum number400 =
-      _$createProjectNetworkErrorHttpStatusCodeEnum_number400;
+  static const CreateProjectNetworkErrorHttpStatusCodeEnum number400 = _$createProjectNetworkErrorHttpStatusCodeEnum_number400;
 
-  static Serializer<CreateProjectNetworkErrorHttpStatusCodeEnum>
-  get serializer => _$createProjectNetworkErrorHttpStatusCodeEnumSerializer;
+  static Serializer<CreateProjectNetworkErrorHttpStatusCodeEnum> get serializer => _$createProjectNetworkErrorHttpStatusCodeEnumSerializer;
 
-  const CreateProjectNetworkErrorHttpStatusCodeEnum._(String name)
-    : super(name);
+  const CreateProjectNetworkErrorHttpStatusCodeEnum._(String name): super(name);
 
-  static BuiltSet<CreateProjectNetworkErrorHttpStatusCodeEnum> get values =>
-      _$createProjectNetworkErrorHttpStatusCodeEnumValues;
-  static CreateProjectNetworkErrorHttpStatusCodeEnum valueOf(String name) =>
-      _$createProjectNetworkErrorHttpStatusCodeEnumValueOf(name);
+  static BuiltSet<CreateProjectNetworkErrorHttpStatusCodeEnum> get values => _$createProjectNetworkErrorHttpStatusCodeEnumValues;
+  static CreateProjectNetworkErrorHttpStatusCodeEnum valueOf(String name) => _$createProjectNetworkErrorHttpStatusCodeEnumValueOf(name);
 }
+

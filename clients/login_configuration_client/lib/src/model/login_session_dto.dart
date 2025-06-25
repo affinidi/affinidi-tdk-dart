@@ -13,10 +13,9 @@ part 'login_session_dto.g.dart';
 ///
 /// Properties:
 /// * [id] - Session primary identifier
-/// * [authorizationRequest]
+/// * [authorizationRequest] 
 @BuiltValue()
-abstract class LoginSessionDto
-    implements Built<LoginSessionDto, LoginSessionDtoBuilder> {
+abstract class LoginSessionDto implements Built<LoginSessionDto, LoginSessionDtoBuilder> {
   /// Session primary identifier
   @BuiltValueField(wireName: r'id')
   String get id;
@@ -26,19 +25,16 @@ abstract class LoginSessionDto
 
   LoginSessionDto._();
 
-  factory LoginSessionDto([void updates(LoginSessionDtoBuilder b)]) =
-      _$LoginSessionDto;
+  factory LoginSessionDto([void updates(LoginSessionDtoBuilder b)]) = _$LoginSessionDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(LoginSessionDtoBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<LoginSessionDto> get serializer =>
-      _$LoginSessionDtoSerializer();
+  static Serializer<LoginSessionDto> get serializer => _$LoginSessionDtoSerializer();
 }
 
-class _$LoginSessionDtoSerializer
-    implements PrimitiveSerializer<LoginSessionDto> {
+class _$LoginSessionDtoSerializer implements PrimitiveSerializer<LoginSessionDto> {
   @override
   final Iterable<Type> types = const [LoginSessionDto, _$LoginSessionDto];
 
@@ -68,11 +64,7 @@ class _$LoginSessionDtoSerializer
     LoginSessionDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -88,23 +80,17 @@ class _$LoginSessionDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.id = valueDes;
           break;
         case r'authorizationRequest':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      LoginSessionDtoAuthorizationRequest,
-                    ),
-                  )
-                  as LoginSessionDtoAuthorizationRequest;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(LoginSessionDtoAuthorizationRequest),
+          ) as LoginSessionDtoAuthorizationRequest;
           result.authorizationRequest.replace(valueDes);
           break;
         default:
@@ -135,3 +121,4 @@ class _$LoginSessionDtoSerializer
     return result.build();
   }
 }
+

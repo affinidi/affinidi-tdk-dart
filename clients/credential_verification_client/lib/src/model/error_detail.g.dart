@@ -37,9 +37,9 @@ class _$ErrorDetail extends ErrorDetail {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'ErrorDetail',
-    )..add('message', message)).toString();
+    return (newBuiltValueToStringHelper(r'ErrorDetail')
+          ..add('message', message))
+        .toString();
   }
 }
 
@@ -77,7 +77,10 @@ class ErrorDetailBuilder implements Builder<ErrorDetail, ErrorDetailBuilder> {
   ErrorDetail build() => _build();
 
   _$ErrorDetail _build() {
-    final _$result = _$v ?? _$ErrorDetail._(message: message);
+    final _$result = _$v ??
+        _$ErrorDetail._(
+          message: message,
+        );
     replace(_$result);
     return _$result;
   }

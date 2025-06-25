@@ -13,14 +13,13 @@ part 'operation_forbidden_error.g.dart';
 /// OperationForbiddenError
 ///
 /// Properties:
-/// * [name]
-/// * [message]
-/// * [httpStatusCode]
-/// * [traceId]
-/// * [details]
+/// * [name] 
+/// * [message] 
+/// * [httpStatusCode] 
+/// * [traceId] 
+/// * [details] 
 @BuiltValue()
-abstract class OperationForbiddenError
-    implements Built<OperationForbiddenError, OperationForbiddenErrorBuilder> {
+abstract class OperationForbiddenError implements Built<OperationForbiddenError, OperationForbiddenErrorBuilder> {
   @BuiltValueField(wireName: r'name')
   OperationForbiddenErrorNameEnum get name;
   // enum nameEnum {  OperationForbiddenError,  };
@@ -41,25 +40,18 @@ abstract class OperationForbiddenError
 
   OperationForbiddenError._();
 
-  factory OperationForbiddenError([
-    void updates(OperationForbiddenErrorBuilder b),
-  ]) = _$OperationForbiddenError;
+  factory OperationForbiddenError([void updates(OperationForbiddenErrorBuilder b)]) = _$OperationForbiddenError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(OperationForbiddenErrorBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<OperationForbiddenError> get serializer =>
-      _$OperationForbiddenErrorSerializer();
+  static Serializer<OperationForbiddenError> get serializer => _$OperationForbiddenErrorSerializer();
 }
 
-class _$OperationForbiddenErrorSerializer
-    implements PrimitiveSerializer<OperationForbiddenError> {
+class _$OperationForbiddenErrorSerializer implements PrimitiveSerializer<OperationForbiddenError> {
   @override
-  final Iterable<Type> types = const [
-    OperationForbiddenError,
-    _$OperationForbiddenError,
-  ];
+  final Iterable<Type> types = const [OperationForbiddenError, _$OperationForbiddenError];
 
   @override
   final String wireName = r'OperationForbiddenError';
@@ -93,9 +85,7 @@ class _$OperationForbiddenErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(InvalidParameterErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
       );
     }
   }
@@ -106,11 +96,7 @@ class _$OperationForbiddenErrorSerializer
     OperationForbiddenError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -126,56 +112,38 @@ class _$OperationForbiddenErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      OperationForbiddenErrorNameEnum,
-                    ),
-                  )
-                  as OperationForbiddenErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(OperationForbiddenErrorNameEnum),
+          ) as OperationForbiddenErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      OperationForbiddenErrorMessageEnum,
-                    ),
-                  )
-                  as OperationForbiddenErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(OperationForbiddenErrorMessageEnum),
+          ) as OperationForbiddenErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      OperationForbiddenErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as OperationForbiddenErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(OperationForbiddenErrorHttpStatusCodeEnum),
+          ) as OperationForbiddenErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(InvalidParameterErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<InvalidParameterErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
+          ) as BuiltList<InvalidParameterErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -208,50 +176,41 @@ class _$OperationForbiddenErrorSerializer
 }
 
 class OperationForbiddenErrorNameEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireName: r'OperationForbiddenError')
-  static const OperationForbiddenErrorNameEnum operationForbiddenError =
-      _$operationForbiddenErrorNameEnum_operationForbiddenError;
+  static const OperationForbiddenErrorNameEnum operationForbiddenError = _$operationForbiddenErrorNameEnum_operationForbiddenError;
 
-  static Serializer<OperationForbiddenErrorNameEnum> get serializer =>
-      _$operationForbiddenErrorNameEnumSerializer;
+  static Serializer<OperationForbiddenErrorNameEnum> get serializer => _$operationForbiddenErrorNameEnumSerializer;
 
-  const OperationForbiddenErrorNameEnum._(String name) : super(name);
+  const OperationForbiddenErrorNameEnum._(String name): super(name);
 
-  static BuiltSet<OperationForbiddenErrorNameEnum> get values =>
-      _$operationForbiddenErrorNameEnumValues;
-  static OperationForbiddenErrorNameEnum valueOf(String name) =>
-      _$operationForbiddenErrorNameEnumValueOf(name);
+  static BuiltSet<OperationForbiddenErrorNameEnum> get values => _$operationForbiddenErrorNameEnumValues;
+  static OperationForbiddenErrorNameEnum valueOf(String name) => _$operationForbiddenErrorNameEnumValueOf(name);
 }
 
 class OperationForbiddenErrorMessageEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireName: r'Operation forbidden: ${param}.')
-  static const OperationForbiddenErrorMessageEnum
-  operationForbiddenColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod =
-      _$operationForbiddenErrorMessageEnum_operationForbiddenColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod;
+  static const OperationForbiddenErrorMessageEnum operationForbiddenColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod = _$operationForbiddenErrorMessageEnum_operationForbiddenColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod;
 
-  static Serializer<OperationForbiddenErrorMessageEnum> get serializer =>
-      _$operationForbiddenErrorMessageEnumSerializer;
+  static Serializer<OperationForbiddenErrorMessageEnum> get serializer => _$operationForbiddenErrorMessageEnumSerializer;
 
-  const OperationForbiddenErrorMessageEnum._(String name) : super(name);
+  const OperationForbiddenErrorMessageEnum._(String name): super(name);
 
-  static BuiltSet<OperationForbiddenErrorMessageEnum> get values =>
-      _$operationForbiddenErrorMessageEnumValues;
-  static OperationForbiddenErrorMessageEnum valueOf(String name) =>
-      _$operationForbiddenErrorMessageEnumValueOf(name);
+  static BuiltSet<OperationForbiddenErrorMessageEnum> get values => _$operationForbiddenErrorMessageEnumValues;
+  static OperationForbiddenErrorMessageEnum valueOf(String name) => _$operationForbiddenErrorMessageEnumValueOf(name);
 }
 
 class OperationForbiddenErrorHttpStatusCodeEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireNumber: 403)
-  static const OperationForbiddenErrorHttpStatusCodeEnum number403 =
-      _$operationForbiddenErrorHttpStatusCodeEnum_number403;
+  static const OperationForbiddenErrorHttpStatusCodeEnum number403 = _$operationForbiddenErrorHttpStatusCodeEnum_number403;
 
-  static Serializer<OperationForbiddenErrorHttpStatusCodeEnum> get serializer =>
-      _$operationForbiddenErrorHttpStatusCodeEnumSerializer;
+  static Serializer<OperationForbiddenErrorHttpStatusCodeEnum> get serializer => _$operationForbiddenErrorHttpStatusCodeEnumSerializer;
 
-  const OperationForbiddenErrorHttpStatusCodeEnum._(String name) : super(name);
+  const OperationForbiddenErrorHttpStatusCodeEnum._(String name): super(name);
 
-  static BuiltSet<OperationForbiddenErrorHttpStatusCodeEnum> get values =>
-      _$operationForbiddenErrorHttpStatusCodeEnumValues;
-  static OperationForbiddenErrorHttpStatusCodeEnum valueOf(String name) =>
-      _$operationForbiddenErrorHttpStatusCodeEnumValueOf(name);
+  static BuiltSet<OperationForbiddenErrorHttpStatusCodeEnum> get values => _$operationForbiddenErrorHttpStatusCodeEnumValues;
+  static OperationForbiddenErrorHttpStatusCodeEnum valueOf(String name) => _$operationForbiddenErrorHttpStatusCodeEnumValueOf(name);
 }
+

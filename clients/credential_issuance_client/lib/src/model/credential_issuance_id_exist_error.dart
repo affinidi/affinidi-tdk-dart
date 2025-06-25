@@ -13,18 +13,13 @@ part 'credential_issuance_id_exist_error.g.dart';
 /// CredentialIssuanceIdExistError
 ///
 /// Properties:
-/// * [name]
-/// * [message]
-/// * [httpStatusCode]
-/// * [traceId]
-/// * [details]
+/// * [name] 
+/// * [message] 
+/// * [httpStatusCode] 
+/// * [traceId] 
+/// * [details] 
 @BuiltValue()
-abstract class CredentialIssuanceIdExistError
-    implements
-        Built<
-          CredentialIssuanceIdExistError,
-          CredentialIssuanceIdExistErrorBuilder
-        > {
+abstract class CredentialIssuanceIdExistError implements Built<CredentialIssuanceIdExistError, CredentialIssuanceIdExistErrorBuilder> {
   @BuiltValueField(wireName: r'name')
   CredentialIssuanceIdExistErrorNameEnum get name;
   // enum nameEnum {  CredentialIssuanceIdExistError,  };
@@ -45,25 +40,18 @@ abstract class CredentialIssuanceIdExistError
 
   CredentialIssuanceIdExistError._();
 
-  factory CredentialIssuanceIdExistError([
-    void updates(CredentialIssuanceIdExistErrorBuilder b),
-  ]) = _$CredentialIssuanceIdExistError;
+  factory CredentialIssuanceIdExistError([void updates(CredentialIssuanceIdExistErrorBuilder b)]) = _$CredentialIssuanceIdExistError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CredentialIssuanceIdExistErrorBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CredentialIssuanceIdExistError> get serializer =>
-      _$CredentialIssuanceIdExistErrorSerializer();
+  static Serializer<CredentialIssuanceIdExistError> get serializer => _$CredentialIssuanceIdExistErrorSerializer();
 }
 
-class _$CredentialIssuanceIdExistErrorSerializer
-    implements PrimitiveSerializer<CredentialIssuanceIdExistError> {
+class _$CredentialIssuanceIdExistErrorSerializer implements PrimitiveSerializer<CredentialIssuanceIdExistError> {
   @override
-  final Iterable<Type> types = const [
-    CredentialIssuanceIdExistError,
-    _$CredentialIssuanceIdExistError,
-  ];
+  final Iterable<Type> types = const [CredentialIssuanceIdExistError, _$CredentialIssuanceIdExistError];
 
   @override
   final String wireName = r'CredentialIssuanceIdExistError';
@@ -86,9 +74,7 @@ class _$CredentialIssuanceIdExistErrorSerializer
     yield r'httpStatusCode';
     yield serializers.serialize(
       object.httpStatusCode,
-      specifiedType: const FullType(
-        CredentialIssuanceIdExistErrorHttpStatusCodeEnum,
-      ),
+      specifiedType: const FullType(CredentialIssuanceIdExistErrorHttpStatusCodeEnum),
     );
     yield r'traceId';
     yield serializers.serialize(
@@ -99,9 +85,7 @@ class _$CredentialIssuanceIdExistErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ActionForbiddenErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
       );
     }
   }
@@ -112,11 +96,7 @@ class _$CredentialIssuanceIdExistErrorSerializer
     CredentialIssuanceIdExistError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -132,56 +112,38 @@ class _$CredentialIssuanceIdExistErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CredentialIssuanceIdExistErrorNameEnum,
-                    ),
-                  )
-                  as CredentialIssuanceIdExistErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CredentialIssuanceIdExistErrorNameEnum),
+          ) as CredentialIssuanceIdExistErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CredentialIssuanceIdExistErrorMessageEnum,
-                    ),
-                  )
-                  as CredentialIssuanceIdExistErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CredentialIssuanceIdExistErrorMessageEnum),
+          ) as CredentialIssuanceIdExistErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CredentialIssuanceIdExistErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as CredentialIssuanceIdExistErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CredentialIssuanceIdExistErrorHttpStatusCodeEnum),
+          ) as CredentialIssuanceIdExistErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ActionForbiddenErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ActionForbiddenErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
+          ) as BuiltList<ActionForbiddenErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -214,57 +176,41 @@ class _$CredentialIssuanceIdExistErrorSerializer
 }
 
 class CredentialIssuanceIdExistErrorNameEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireName: r'CredentialIssuanceIdExistError')
-  static const CredentialIssuanceIdExistErrorNameEnum
-  credentialIssuanceIdExistError =
-      _$credentialIssuanceIdExistErrorNameEnum_credentialIssuanceIdExistError;
+  static const CredentialIssuanceIdExistErrorNameEnum credentialIssuanceIdExistError = _$credentialIssuanceIdExistErrorNameEnum_credentialIssuanceIdExistError;
 
-  static Serializer<CredentialIssuanceIdExistErrorNameEnum> get serializer =>
-      _$credentialIssuanceIdExistErrorNameEnumSerializer;
+  static Serializer<CredentialIssuanceIdExistErrorNameEnum> get serializer => _$credentialIssuanceIdExistErrorNameEnumSerializer;
 
-  const CredentialIssuanceIdExistErrorNameEnum._(String name) : super(name);
+  const CredentialIssuanceIdExistErrorNameEnum._(String name): super(name);
 
-  static BuiltSet<CredentialIssuanceIdExistErrorNameEnum> get values =>
-      _$credentialIssuanceIdExistErrorNameEnumValues;
-  static CredentialIssuanceIdExistErrorNameEnum valueOf(String name) =>
-      _$credentialIssuanceIdExistErrorNameEnumValueOf(name);
+  static BuiltSet<CredentialIssuanceIdExistErrorNameEnum> get values => _$credentialIssuanceIdExistErrorNameEnumValues;
+  static CredentialIssuanceIdExistErrorNameEnum valueOf(String name) => _$credentialIssuanceIdExistErrorNameEnumValueOf(name);
 }
 
 class CredentialIssuanceIdExistErrorMessageEnum extends EnumClass {
-  @BuiltValueEnumConst(
-    wireName:
-        r'issuanceId exist for the project, please use different issuanceId',
-  )
-  static const CredentialIssuanceIdExistErrorMessageEnum
-  issuanceIdExistForTheProjectCommaPleaseUseDifferentIssuanceId =
-      _$credentialIssuanceIdExistErrorMessageEnum_issuanceIdExistForTheProjectCommaPleaseUseDifferentIssuanceId;
 
-  static Serializer<CredentialIssuanceIdExistErrorMessageEnum> get serializer =>
-      _$credentialIssuanceIdExistErrorMessageEnumSerializer;
+  @BuiltValueEnumConst(wireName: r'issuanceId exist for the project, please use different issuanceId')
+  static const CredentialIssuanceIdExistErrorMessageEnum issuanceIdExistForTheProjectCommaPleaseUseDifferentIssuanceId = _$credentialIssuanceIdExistErrorMessageEnum_issuanceIdExistForTheProjectCommaPleaseUseDifferentIssuanceId;
 
-  const CredentialIssuanceIdExistErrorMessageEnum._(String name) : super(name);
+  static Serializer<CredentialIssuanceIdExistErrorMessageEnum> get serializer => _$credentialIssuanceIdExistErrorMessageEnumSerializer;
 
-  static BuiltSet<CredentialIssuanceIdExistErrorMessageEnum> get values =>
-      _$credentialIssuanceIdExistErrorMessageEnumValues;
-  static CredentialIssuanceIdExistErrorMessageEnum valueOf(String name) =>
-      _$credentialIssuanceIdExistErrorMessageEnumValueOf(name);
+  const CredentialIssuanceIdExistErrorMessageEnum._(String name): super(name);
+
+  static BuiltSet<CredentialIssuanceIdExistErrorMessageEnum> get values => _$credentialIssuanceIdExistErrorMessageEnumValues;
+  static CredentialIssuanceIdExistErrorMessageEnum valueOf(String name) => _$credentialIssuanceIdExistErrorMessageEnumValueOf(name);
 }
 
 class CredentialIssuanceIdExistErrorHttpStatusCodeEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireNumber: 400)
-  static const CredentialIssuanceIdExistErrorHttpStatusCodeEnum number400 =
-      _$credentialIssuanceIdExistErrorHttpStatusCodeEnum_number400;
+  static const CredentialIssuanceIdExistErrorHttpStatusCodeEnum number400 = _$credentialIssuanceIdExistErrorHttpStatusCodeEnum_number400;
 
-  static Serializer<CredentialIssuanceIdExistErrorHttpStatusCodeEnum>
-  get serializer =>
-      _$credentialIssuanceIdExistErrorHttpStatusCodeEnumSerializer;
+  static Serializer<CredentialIssuanceIdExistErrorHttpStatusCodeEnum> get serializer => _$credentialIssuanceIdExistErrorHttpStatusCodeEnumSerializer;
 
-  const CredentialIssuanceIdExistErrorHttpStatusCodeEnum._(String name)
-    : super(name);
+  const CredentialIssuanceIdExistErrorHttpStatusCodeEnum._(String name): super(name);
 
-  static BuiltSet<CredentialIssuanceIdExistErrorHttpStatusCodeEnum>
-  get values => _$credentialIssuanceIdExistErrorHttpStatusCodeEnumValues;
-  static CredentialIssuanceIdExistErrorHttpStatusCodeEnum valueOf(
-    String name,
-  ) => _$credentialIssuanceIdExistErrorHttpStatusCodeEnumValueOf(name);
+  static BuiltSet<CredentialIssuanceIdExistErrorHttpStatusCodeEnum> get values => _$credentialIssuanceIdExistErrorHttpStatusCodeEnumValues;
+  static CredentialIssuanceIdExistErrorHttpStatusCodeEnum valueOf(String name) => _$credentialIssuanceIdExistErrorHttpStatusCodeEnumValueOf(name);
 }
+

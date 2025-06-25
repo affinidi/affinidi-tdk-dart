@@ -15,19 +15,19 @@ class _$SignCredentialsDm2SdJwtInputDto
   @override
   final JsonObject disclosureFrame;
 
-  factory _$SignCredentialsDm2SdJwtInputDto([
-    void Function(SignCredentialsDm2SdJwtInputDtoBuilder)? updates,
-  ]) => (SignCredentialsDm2SdJwtInputDtoBuilder()..update(updates))._build();
+  factory _$SignCredentialsDm2SdJwtInputDto(
+          [void Function(SignCredentialsDm2SdJwtInputDtoBuilder)? updates]) =>
+      (SignCredentialsDm2SdJwtInputDtoBuilder()..update(updates))._build();
 
-  _$SignCredentialsDm2SdJwtInputDto._({
-    required this.unsignedCredential,
-    this.revocable,
-    required this.disclosureFrame,
-  }) : super._();
+  _$SignCredentialsDm2SdJwtInputDto._(
+      {required this.unsignedCredential,
+      this.revocable,
+      required this.disclosureFrame})
+      : super._();
   @override
   SignCredentialsDm2SdJwtInputDto rebuild(
-    void Function(SignCredentialsDm2SdJwtInputDtoBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(SignCredentialsDm2SdJwtInputDtoBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   SignCredentialsDm2SdJwtInputDtoBuilder toBuilder() =>
@@ -64,10 +64,8 @@ class _$SignCredentialsDm2SdJwtInputDto
 
 class SignCredentialsDm2SdJwtInputDtoBuilder
     implements
-        Builder<
-          SignCredentialsDm2SdJwtInputDto,
-          SignCredentialsDm2SdJwtInputDtoBuilder
-        > {
+        Builder<SignCredentialsDm2SdJwtInputDto,
+            SignCredentialsDm2SdJwtInputDtoBuilder> {
   _$SignCredentialsDm2SdJwtInputDto? _$v;
 
   JsonObject? _unsignedCredential;
@@ -113,20 +111,17 @@ class SignCredentialsDm2SdJwtInputDtoBuilder
   SignCredentialsDm2SdJwtInputDto build() => _build();
 
   _$SignCredentialsDm2SdJwtInputDto _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$SignCredentialsDm2SdJwtInputDto._(
           unsignedCredential: BuiltValueNullFieldError.checkNotNull(
-            unsignedCredential,
-            r'SignCredentialsDm2SdJwtInputDto',
-            'unsignedCredential',
-          ),
+              unsignedCredential,
+              r'SignCredentialsDm2SdJwtInputDto',
+              'unsignedCredential'),
           revocable: revocable,
           disclosureFrame: BuiltValueNullFieldError.checkNotNull(
-            disclosureFrame,
-            r'SignCredentialsDm2SdJwtInputDto',
-            'disclosureFrame',
-          ),
+              disclosureFrame,
+              r'SignCredentialsDm2SdJwtInputDto',
+              'disclosureFrame'),
         );
     replace(_$result);
     return _$result;

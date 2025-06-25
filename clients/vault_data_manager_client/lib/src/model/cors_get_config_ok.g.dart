@@ -37,9 +37,9 @@ class _$CorsGetConfigOK extends CorsGetConfigOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'CorsGetConfigOK',
-    )..add('corsGetConfigOk', corsGetConfigOk)).toString();
+    return (newBuiltValueToStringHelper(r'CorsGetConfigOK')
+          ..add('corsGetConfigOk', corsGetConfigOk))
+        .toString();
   }
 }
 
@@ -79,8 +79,10 @@ class CorsGetConfigOKBuilder
   CorsGetConfigOK build() => _build();
 
   _$CorsGetConfigOK _build() {
-    final _$result =
-        _$v ?? _$CorsGetConfigOK._(corsGetConfigOk: corsGetConfigOk);
+    final _$result = _$v ??
+        _$CorsGetConfigOK._(
+          corsGetConfigOk: corsGetConfigOk,
+        );
     replace(_$result);
     return _$result;
   }

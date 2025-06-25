@@ -3,8 +3,7 @@ import 'package:affinidi_tdk_credential_issuance_client/affinidi_tdk_credential_
 
 // tests for WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner
 void main() {
-  final instance =
-      WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder();
+  final instance = WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder();
   // TODO add properties to the builder and call build()
 
   group(WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner, () {
@@ -25,5 +24,6 @@ void main() {
     test('to test the property `jsonLdContextUrl`', () async {
       // TODO
     });
+
   });
 }

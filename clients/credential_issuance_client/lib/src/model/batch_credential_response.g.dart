@@ -9,25 +9,23 @@ part of 'batch_credential_response.dart';
 class _$BatchCredentialResponse extends BatchCredentialResponse {
   @override
   final BuiltList<BatchCredentialResponseCredentialResponsesInner>
-  credentialResponses;
+      credentialResponses;
   @override
   final String? cNonce;
   @override
   final int? cNonceExpiresIn;
 
-  factory _$BatchCredentialResponse([
-    void Function(BatchCredentialResponseBuilder)? updates,
-  ]) => (BatchCredentialResponseBuilder()..update(updates))._build();
+  factory _$BatchCredentialResponse(
+          [void Function(BatchCredentialResponseBuilder)? updates]) =>
+      (BatchCredentialResponseBuilder()..update(updates))._build();
 
-  _$BatchCredentialResponse._({
-    required this.credentialResponses,
-    this.cNonce,
-    this.cNonceExpiresIn,
-  }) : super._();
+  _$BatchCredentialResponse._(
+      {required this.credentialResponses, this.cNonce, this.cNonceExpiresIn})
+      : super._();
   @override
   BatchCredentialResponse rebuild(
-    void Function(BatchCredentialResponseBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(BatchCredentialResponseBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   BatchCredentialResponseBuilder toBuilder() =>
@@ -68,14 +66,14 @@ class BatchCredentialResponseBuilder
   _$BatchCredentialResponse? _$v;
 
   ListBuilder<BatchCredentialResponseCredentialResponsesInner>?
-  _credentialResponses;
+      _credentialResponses;
   ListBuilder<BatchCredentialResponseCredentialResponsesInner>
-  get credentialResponses => _$this._credentialResponses ??=
-      ListBuilder<BatchCredentialResponseCredentialResponsesInner>();
+      get credentialResponses => _$this._credentialResponses ??=
+          ListBuilder<BatchCredentialResponseCredentialResponsesInner>();
   set credentialResponses(
-    ListBuilder<BatchCredentialResponseCredentialResponsesInner>?
-    credentialResponses,
-  ) => _$this._credentialResponses = credentialResponses;
+          ListBuilder<BatchCredentialResponseCredentialResponsesInner>?
+              credentialResponses) =>
+      _$this._credentialResponses = credentialResponses;
 
   String? _cNonce;
   String? get cNonce => _$this._cNonce;
@@ -117,8 +115,7 @@ class BatchCredentialResponseBuilder
   _$BatchCredentialResponse _build() {
     _$BatchCredentialResponse _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$BatchCredentialResponse._(
             credentialResponses: credentialResponses.build(),
             cNonce: cNonce,
@@ -131,10 +128,7 @@ class BatchCredentialResponseBuilder
         credentialResponses.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'BatchCredentialResponse',
-          _$failedField,
-          e.toString(),
-        );
+            r'BatchCredentialResponse', _$failedField, e.toString());
       }
       rethrow;
     }

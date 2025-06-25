@@ -7,7 +7,7 @@ void main() {
   // TODO add properties to the builder and call build()
 
   group(SignCredentialsDm2LdInputDto, () {
-    // Unsigned Credential in Dm2 format
+    // Unsigned Credential in Dm2 format 
     // JsonObject unsignedCredential
     test('to test the property `unsignedCredential`', () async {
       // TODO
@@ -17,5 +17,6 @@ void main() {
     test('to test the property `revocable`', () async {
       // TODO
     });
+
   });
 }

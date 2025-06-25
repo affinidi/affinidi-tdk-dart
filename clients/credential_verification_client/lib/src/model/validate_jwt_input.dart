@@ -13,27 +13,23 @@ part 'validate_jwt_input.g.dart';
 /// Properties:
 /// * [token] - JWT token
 @BuiltValue()
-abstract class ValidateJwtInput
-    implements Built<ValidateJwtInput, ValidateJwtInputBuilder> {
+abstract class ValidateJwtInput implements Built<ValidateJwtInput, ValidateJwtInputBuilder> {
   /// JWT token
   @BuiltValueField(wireName: r'token')
   String get token;
 
   ValidateJwtInput._();
 
-  factory ValidateJwtInput([void updates(ValidateJwtInputBuilder b)]) =
-      _$ValidateJwtInput;
+  factory ValidateJwtInput([void updates(ValidateJwtInputBuilder b)]) = _$ValidateJwtInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ValidateJwtInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ValidateJwtInput> get serializer =>
-      _$ValidateJwtInputSerializer();
+  static Serializer<ValidateJwtInput> get serializer => _$ValidateJwtInputSerializer();
 }
 
-class _$ValidateJwtInputSerializer
-    implements PrimitiveSerializer<ValidateJwtInput> {
+class _$ValidateJwtInputSerializer implements PrimitiveSerializer<ValidateJwtInput> {
   @override
   final Iterable<Type> types = const [ValidateJwtInput, _$ValidateJwtInput];
 
@@ -58,11 +54,7 @@ class _$ValidateJwtInputSerializer
     ValidateJwtInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -78,12 +70,10 @@ class _$ValidateJwtInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'token':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.token = valueDes;
           break;
         default:
@@ -114,3 +104,4 @@ class _$ValidateJwtInputSerializer
     return result.build();
   }
 }
+

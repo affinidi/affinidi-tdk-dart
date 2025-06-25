@@ -11,35 +11,26 @@ part 'update_configuration_by_id_ok.g.dart';
 /// UpdateConfigurationByIdOK
 ///
 /// Properties:
-/// * [updateConfigurationByIdOk]
+/// * [updateConfigurationByIdOk] 
 @BuiltValue()
-abstract class UpdateConfigurationByIdOK
-    implements
-        Built<UpdateConfigurationByIdOK, UpdateConfigurationByIdOKBuilder> {
+abstract class UpdateConfigurationByIdOK implements Built<UpdateConfigurationByIdOK, UpdateConfigurationByIdOKBuilder> {
   @BuiltValueField(wireName: r'updateConfigurationByIdOk')
   String? get updateConfigurationByIdOk;
 
   UpdateConfigurationByIdOK._();
 
-  factory UpdateConfigurationByIdOK([
-    void updates(UpdateConfigurationByIdOKBuilder b),
-  ]) = _$UpdateConfigurationByIdOK;
+  factory UpdateConfigurationByIdOK([void updates(UpdateConfigurationByIdOKBuilder b)]) = _$UpdateConfigurationByIdOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UpdateConfigurationByIdOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateConfigurationByIdOK> get serializer =>
-      _$UpdateConfigurationByIdOKSerializer();
+  static Serializer<UpdateConfigurationByIdOK> get serializer => _$UpdateConfigurationByIdOKSerializer();
 }
 
-class _$UpdateConfigurationByIdOKSerializer
-    implements PrimitiveSerializer<UpdateConfigurationByIdOK> {
+class _$UpdateConfigurationByIdOKSerializer implements PrimitiveSerializer<UpdateConfigurationByIdOK> {
   @override
-  final Iterable<Type> types = const [
-    UpdateConfigurationByIdOK,
-    _$UpdateConfigurationByIdOK,
-  ];
+  final Iterable<Type> types = const [UpdateConfigurationByIdOK, _$UpdateConfigurationByIdOK];
 
   @override
   final String wireName = r'UpdateConfigurationByIdOK';
@@ -64,11 +55,7 @@ class _$UpdateConfigurationByIdOKSerializer
     UpdateConfigurationByIdOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -84,12 +71,10 @@ class _$UpdateConfigurationByIdOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'updateConfigurationByIdOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.updateConfigurationByIdOk = valueDes;
           break;
         default:
@@ -120,3 +105,4 @@ class _$UpdateConfigurationByIdOKSerializer
     return result.build();
   }
 }
+

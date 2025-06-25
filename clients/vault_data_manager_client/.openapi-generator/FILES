@@ -140,7 +140,6 @@ lib/src/model/update_profile_data_ok.dart
 lib/src/serializers.dart
 project.json
 pubspec.yaml
-pubspec.yaml
 test/account_dto_test.dart
 test/accounts_api_test.dart
 test/aws_credential_exchange_operation_ok_test.dart

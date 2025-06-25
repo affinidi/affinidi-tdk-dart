@@ -12,9 +12,9 @@ class _$UpdateTokenInput extends UpdateTokenInput {
   @override
   final UpdateTokenPrivateKeyAuthenticationMethodDto? authenticationMethod;
 
-  factory _$UpdateTokenInput([
-    void Function(UpdateTokenInputBuilder)? updates,
-  ]) => (UpdateTokenInputBuilder()..update(updates))._build();
+  factory _$UpdateTokenInput(
+          [void Function(UpdateTokenInputBuilder)? updates]) =>
+      (UpdateTokenInputBuilder()..update(updates))._build();
 
   _$UpdateTokenInput._({this.name, this.authenticationMethod}) : super._();
   @override
@@ -61,11 +61,12 @@ class UpdateTokenInputBuilder
 
   UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder? _authenticationMethod;
   UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder
-  get authenticationMethod => _$this._authenticationMethod ??=
-      UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder();
+      get authenticationMethod => _$this._authenticationMethod ??=
+          UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder();
   set authenticationMethod(
-    UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder? authenticationMethod,
-  ) => _$this._authenticationMethod = authenticationMethod;
+          UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder?
+              authenticationMethod) =>
+      _$this._authenticationMethod = authenticationMethod;
 
   UpdateTokenInputBuilder() {
     UpdateTokenInput._defaults(this);
@@ -97,8 +98,7 @@ class UpdateTokenInputBuilder
   _$UpdateTokenInput _build() {
     _$UpdateTokenInput _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$UpdateTokenInput._(
             name: name,
             authenticationMethod: _authenticationMethod?.build(),
@@ -110,10 +110,7 @@ class UpdateTokenInputBuilder
         _authenticationMethod?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'UpdateTokenInput',
-          _$failedField,
-          e.toString(),
-        );
+            r'UpdateTokenInput', _$failedField, e.toString());
       }
       rethrow;
     }

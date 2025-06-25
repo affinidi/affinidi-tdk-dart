@@ -12,18 +12,17 @@ class _$LoginSessionForIDPInput extends LoginSessionForIDPInput {
   @override
   final String clientId;
 
-  factory _$LoginSessionForIDPInput([
-    void Function(LoginSessionForIDPInputBuilder)? updates,
-  ]) => (LoginSessionForIDPInputBuilder()..update(updates))._build();
+  factory _$LoginSessionForIDPInput(
+          [void Function(LoginSessionForIDPInputBuilder)? updates]) =>
+      (LoginSessionForIDPInputBuilder()..update(updates))._build();
 
-  _$LoginSessionForIDPInput._({
-    required this.loginChallenge,
-    required this.clientId,
-  }) : super._();
+  _$LoginSessionForIDPInput._(
+      {required this.loginChallenge, required this.clientId})
+      : super._();
   @override
   LoginSessionForIDPInput rebuild(
-    void Function(LoginSessionForIDPInputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(LoginSessionForIDPInputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   LoginSessionForIDPInputBuilder toBuilder() =>
@@ -97,19 +96,12 @@ class LoginSessionForIDPInputBuilder
   LoginSessionForIDPInput build() => _build();
 
   _$LoginSessionForIDPInput _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$LoginSessionForIDPInput._(
           loginChallenge: BuiltValueNullFieldError.checkNotNull(
-            loginChallenge,
-            r'LoginSessionForIDPInput',
-            'loginChallenge',
-          ),
+              loginChallenge, r'LoginSessionForIDPInput', 'loginChallenge'),
           clientId: BuiltValueNullFieldError.checkNotNull(
-            clientId,
-            r'LoginSessionForIDPInput',
-            'clientId',
-          ),
+              clientId, r'LoginSessionForIDPInput', 'clientId'),
         );
     replace(_$result);
     return _$result;

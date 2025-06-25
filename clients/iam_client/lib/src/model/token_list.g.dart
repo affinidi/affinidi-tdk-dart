@@ -92,8 +92,7 @@ class TokenListBuilder implements Builder<TokenList, TokenListBuilder> {
   _$TokenList _build() {
     _$TokenList _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$TokenList._(
             tokens: tokens.build(),
             lastEvaluatedKey: lastEvaluatedKey,
@@ -105,10 +104,7 @@ class TokenListBuilder implements Builder<TokenList, TokenListBuilder> {
         tokens.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'TokenList',
-          _$failedField,
-          e.toString(),
-        );
+            r'TokenList', _$failedField, e.toString());
       }
       rethrow;
     }

@@ -11,38 +11,26 @@ part 'cors_login_session_accept_response_ok.g.dart';
 /// CorsLoginSessionAcceptResponseOK
 ///
 /// Properties:
-/// * [corsLoginSessionAcceptResponseOk]
+/// * [corsLoginSessionAcceptResponseOk] 
 @BuiltValue()
-abstract class CorsLoginSessionAcceptResponseOK
-    implements
-        Built<
-          CorsLoginSessionAcceptResponseOK,
-          CorsLoginSessionAcceptResponseOKBuilder
-        > {
+abstract class CorsLoginSessionAcceptResponseOK implements Built<CorsLoginSessionAcceptResponseOK, CorsLoginSessionAcceptResponseOKBuilder> {
   @BuiltValueField(wireName: r'corsLoginSessionAcceptResponseOk')
   String? get corsLoginSessionAcceptResponseOk;
 
   CorsLoginSessionAcceptResponseOK._();
 
-  factory CorsLoginSessionAcceptResponseOK([
-    void updates(CorsLoginSessionAcceptResponseOKBuilder b),
-  ]) = _$CorsLoginSessionAcceptResponseOK;
+  factory CorsLoginSessionAcceptResponseOK([void updates(CorsLoginSessionAcceptResponseOKBuilder b)]) = _$CorsLoginSessionAcceptResponseOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsLoginSessionAcceptResponseOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CorsLoginSessionAcceptResponseOK> get serializer =>
-      _$CorsLoginSessionAcceptResponseOKSerializer();
+  static Serializer<CorsLoginSessionAcceptResponseOK> get serializer => _$CorsLoginSessionAcceptResponseOKSerializer();
 }
 
-class _$CorsLoginSessionAcceptResponseOKSerializer
-    implements PrimitiveSerializer<CorsLoginSessionAcceptResponseOK> {
+class _$CorsLoginSessionAcceptResponseOKSerializer implements PrimitiveSerializer<CorsLoginSessionAcceptResponseOK> {
   @override
-  final Iterable<Type> types = const [
-    CorsLoginSessionAcceptResponseOK,
-    _$CorsLoginSessionAcceptResponseOK,
-  ];
+  final Iterable<Type> types = const [CorsLoginSessionAcceptResponseOK, _$CorsLoginSessionAcceptResponseOK];
 
   @override
   final String wireName = r'CorsLoginSessionAcceptResponseOK';
@@ -67,11 +55,7 @@ class _$CorsLoginSessionAcceptResponseOKSerializer
     CorsLoginSessionAcceptResponseOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -87,12 +71,10 @@ class _$CorsLoginSessionAcceptResponseOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsLoginSessionAcceptResponseOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsLoginSessionAcceptResponseOk = valueDes;
           break;
         default:
@@ -123,3 +105,4 @@ class _$CorsLoginSessionAcceptResponseOKSerializer
     return result.build();
   }
 }
+

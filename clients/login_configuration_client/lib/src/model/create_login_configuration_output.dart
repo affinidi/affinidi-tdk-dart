@@ -18,18 +18,13 @@ part 'create_login_configuration_output.g.dart';
 /// * [projectId] - Project id
 /// * [configurationId] - Configuration id
 /// * [name] - User defined login configuration name
-/// * [auth]
+/// * [auth] 
 /// * [redirectUris] - OAuth 2.0 Redirect URIs
-/// * [clientMetadata]
+/// * [clientMetadata] 
 /// * [creationDate] - OAuth 2.0 Client Creation Date
 /// * [postLogoutRedirectUris] - Post Logout Redirect URIs, Used to redirect the user's browser to a specified URL after the logout process is complete. Must match the domain, port, scheme of at least one of the registered redirect URIs
 @BuiltValue()
-abstract class CreateLoginConfigurationOutput
-    implements
-        Built<
-          CreateLoginConfigurationOutput,
-          CreateLoginConfigurationOutputBuilder
-        > {
+abstract class CreateLoginConfigurationOutput implements Built<CreateLoginConfigurationOutput, CreateLoginConfigurationOutputBuilder> {
   /// Configuration ari
   @BuiltValueField(wireName: r'ari')
   String get ari;
@@ -66,25 +61,18 @@ abstract class CreateLoginConfigurationOutput
 
   CreateLoginConfigurationOutput._();
 
-  factory CreateLoginConfigurationOutput([
-    void updates(CreateLoginConfigurationOutputBuilder b),
-  ]) = _$CreateLoginConfigurationOutput;
+  factory CreateLoginConfigurationOutput([void updates(CreateLoginConfigurationOutputBuilder b)]) = _$CreateLoginConfigurationOutput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateLoginConfigurationOutputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateLoginConfigurationOutput> get serializer =>
-      _$CreateLoginConfigurationOutputSerializer();
+  static Serializer<CreateLoginConfigurationOutput> get serializer => _$CreateLoginConfigurationOutputSerializer();
 }
 
-class _$CreateLoginConfigurationOutputSerializer
-    implements PrimitiveSerializer<CreateLoginConfigurationOutput> {
+class _$CreateLoginConfigurationOutputSerializer implements PrimitiveSerializer<CreateLoginConfigurationOutput> {
   @override
-  final Iterable<Type> types = const [
-    CreateLoginConfigurationOutput,
-    _$CreateLoginConfigurationOutput,
-  ];
+  final Iterable<Type> types = const [CreateLoginConfigurationOutput, _$CreateLoginConfigurationOutput];
 
   @override
   final String wireName = r'CreateLoginConfigurationOutput';
@@ -151,11 +139,7 @@ class _$CreateLoginConfigurationOutputSerializer
     CreateLoginConfigurationOutput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -171,92 +155,66 @@ class _$CreateLoginConfigurationOutputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'ari':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.ari = valueDes;
           break;
         case r'projectId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.projectId = valueDes;
           break;
         case r'configurationId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.configurationId = valueDes;
           break;
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'auth':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CreateLoginConfigurationOutputAuth,
-                    ),
-                  )
-                  as CreateLoginConfigurationOutputAuth;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CreateLoginConfigurationOutputAuth),
+          ) as CreateLoginConfigurationOutputAuth;
           result.auth.replace(valueDes);
           break;
         case r'redirectUris':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.redirectUris.replace(valueDes);
           break;
         case r'clientMetadata':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      LoginConfigurationClientMetadataOutput,
-                    ),
-                  )
-                  as LoginConfigurationClientMetadataOutput;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(LoginConfigurationClientMetadataOutput),
+          ) as LoginConfigurationClientMetadataOutput;
           result.clientMetadata.replace(valueDes);
           break;
         case r'creationDate':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.creationDate = valueDes;
           break;
         case r'postLogoutRedirectUris':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.postLogoutRedirectUris.replace(valueDes);
           break;
         default:
@@ -287,3 +245,4 @@ class _$CreateLoginConfigurationOutputSerializer
     return result.build();
   }
 }
+

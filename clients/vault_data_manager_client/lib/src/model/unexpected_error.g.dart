@@ -20,11 +20,11 @@ UnexpectedErrorNameEnum _$unexpectedErrorNameEnumValueOf(String name) {
 
 final BuiltSet<UnexpectedErrorNameEnum> _$unexpectedErrorNameEnumValues =
     BuiltSet<UnexpectedErrorNameEnum>(const <UnexpectedErrorNameEnum>[
-      _$unexpectedErrorNameEnum_unexpectedError,
-    ]);
+  _$unexpectedErrorNameEnum_unexpectedError,
+]);
 
 const UnexpectedErrorMessageEnum
-_$unexpectedErrorMessageEnum_unexpectedErrorOccurredPeriod =
+    _$unexpectedErrorMessageEnum_unexpectedErrorOccurredPeriod =
     const UnexpectedErrorMessageEnum._('unexpectedErrorOccurredPeriod');
 
 UnexpectedErrorMessageEnum _$unexpectedErrorMessageEnumValueOf(String name) {
@@ -38,16 +38,15 @@ UnexpectedErrorMessageEnum _$unexpectedErrorMessageEnumValueOf(String name) {
 
 final BuiltSet<UnexpectedErrorMessageEnum> _$unexpectedErrorMessageEnumValues =
     BuiltSet<UnexpectedErrorMessageEnum>(const <UnexpectedErrorMessageEnum>[
-      _$unexpectedErrorMessageEnum_unexpectedErrorOccurredPeriod,
-    ]);
+  _$unexpectedErrorMessageEnum_unexpectedErrorOccurredPeriod,
+]);
 
 const UnexpectedErrorHttpStatusCodeEnum
-_$unexpectedErrorHttpStatusCodeEnum_number500 =
+    _$unexpectedErrorHttpStatusCodeEnum_number500 =
     const UnexpectedErrorHttpStatusCodeEnum._('number500');
 
 UnexpectedErrorHttpStatusCodeEnum _$unexpectedErrorHttpStatusCodeEnumValueOf(
-  String name,
-) {
+    String name) {
   switch (name) {
     case 'number500':
       return _$unexpectedErrorHttpStatusCodeEnum_number500;
@@ -57,19 +56,17 @@ UnexpectedErrorHttpStatusCodeEnum _$unexpectedErrorHttpStatusCodeEnumValueOf(
 }
 
 final BuiltSet<UnexpectedErrorHttpStatusCodeEnum>
-_$unexpectedErrorHttpStatusCodeEnumValues =
-    BuiltSet<UnexpectedErrorHttpStatusCodeEnum>(
-      const <UnexpectedErrorHttpStatusCodeEnum>[
-        _$unexpectedErrorHttpStatusCodeEnum_number500,
-      ],
-    );
+    _$unexpectedErrorHttpStatusCodeEnumValues = BuiltSet<
+        UnexpectedErrorHttpStatusCodeEnum>(const <UnexpectedErrorHttpStatusCodeEnum>[
+  _$unexpectedErrorHttpStatusCodeEnum_number500,
+]);
 
 Serializer<UnexpectedErrorNameEnum> _$unexpectedErrorNameEnumSerializer =
     _$UnexpectedErrorNameEnumSerializer();
 Serializer<UnexpectedErrorMessageEnum> _$unexpectedErrorMessageEnumSerializer =
     _$UnexpectedErrorMessageEnumSerializer();
 Serializer<UnexpectedErrorHttpStatusCodeEnum>
-_$unexpectedErrorHttpStatusCodeEnumSerializer =
+    _$unexpectedErrorHttpStatusCodeEnumSerializer =
     _$UnexpectedErrorHttpStatusCodeEnumSerializer();
 
 class _$UnexpectedErrorNameEnumSerializer
@@ -87,20 +84,16 @@ class _$UnexpectedErrorNameEnumSerializer
   final String wireName = 'UnexpectedErrorNameEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    UnexpectedErrorNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers, UnexpectedErrorNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   UnexpectedErrorNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => UnexpectedErrorNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      UnexpectedErrorNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$UnexpectedErrorMessageEnumSerializer
@@ -118,20 +111,16 @@ class _$UnexpectedErrorMessageEnumSerializer
   final String wireName = 'UnexpectedErrorMessageEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    UnexpectedErrorMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers, UnexpectedErrorMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   UnexpectedErrorMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => UnexpectedErrorMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      UnexpectedErrorMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$UnexpectedErrorHttpStatusCodeEnumSerializer
@@ -150,19 +139,16 @@ class _$UnexpectedErrorHttpStatusCodeEnumSerializer
 
   @override
   Object serialize(
-    Serializers serializers,
-    UnexpectedErrorHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, UnexpectedErrorHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   UnexpectedErrorHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => UnexpectedErrorHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      UnexpectedErrorHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$UnexpectedError extends UnexpectedError {
@@ -180,13 +166,13 @@ class _$UnexpectedError extends UnexpectedError {
   factory _$UnexpectedError([void Function(UnexpectedErrorBuilder)? updates]) =>
       (UnexpectedErrorBuilder()..update(updates))._build();
 
-  _$UnexpectedError._({
-    required this.name,
-    required this.message,
-    required this.httpStatusCode,
-    required this.traceId,
-    this.details,
-  }) : super._();
+  _$UnexpectedError._(
+      {required this.name,
+      required this.message,
+      required this.httpStatusCode,
+      required this.traceId,
+      this.details})
+      : super._();
   @override
   UnexpectedError rebuild(void Function(UnexpectedErrorBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -290,29 +276,16 @@ class UnexpectedErrorBuilder
   _$UnexpectedError _build() {
     _$UnexpectedError _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$UnexpectedError._(
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'UnexpectedError',
-              'name',
-            ),
+                name, r'UnexpectedError', 'name'),
             message: BuiltValueNullFieldError.checkNotNull(
-              message,
-              r'UnexpectedError',
-              'message',
-            ),
+                message, r'UnexpectedError', 'message'),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-              httpStatusCode,
-              r'UnexpectedError',
-              'httpStatusCode',
-            ),
+                httpStatusCode, r'UnexpectedError', 'httpStatusCode'),
             traceId: BuiltValueNullFieldError.checkNotNull(
-              traceId,
-              r'UnexpectedError',
-              'traceId',
-            ),
+                traceId, r'UnexpectedError', 'traceId'),
             details: _details?.build(),
           );
     } catch (_) {
@@ -322,10 +295,7 @@ class UnexpectedErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'UnexpectedError',
-          _$failedField,
-          e.toString(),
-        );
+            r'UnexpectedError', _$failedField, e.toString());
       }
       rethrow;
     }

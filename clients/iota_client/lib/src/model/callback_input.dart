@@ -18,8 +18,7 @@ part 'callback_input.g.dart';
 /// * [errorDescription] - A human-readable description that provides detailed information about the error.
 /// * [onboarded] - It specifies whether the data sharing flow triggered an onboarding process to the Affinidi Vault [New User].
 @BuiltValue()
-abstract class CallbackInput
-    implements Built<CallbackInput, CallbackInputBuilder> {
+abstract class CallbackInput implements Built<CallbackInput, CallbackInputBuilder> {
   /// A randomly generated string that follows a valid UUID (version 1-5) format to validate the session.
   @BuiltValueField(wireName: r'state')
   String get state;
@@ -46,15 +45,13 @@ abstract class CallbackInput
 
   CallbackInput._();
 
-  factory CallbackInput([void updates(CallbackInputBuilder b)]) =
-      _$CallbackInput;
+  factory CallbackInput([void updates(CallbackInputBuilder b)]) = _$CallbackInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CallbackInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CallbackInput> get serializer =>
-      _$CallbackInputSerializer();
+  static Serializer<CallbackInput> get serializer => _$CallbackInputSerializer();
 }
 
 class _$CallbackInputSerializer implements PrimitiveSerializer<CallbackInput> {
@@ -117,11 +114,7 @@ class _$CallbackInputSerializer implements PrimitiveSerializer<CallbackInput> {
     CallbackInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -137,57 +130,45 @@ class _$CallbackInputSerializer implements PrimitiveSerializer<CallbackInput> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'state':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.state = valueDes;
           break;
         case r'presentation_submission':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.presentationSubmission = valueDes;
           break;
         case r'vp_token':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.vpToken = valueDes;
           break;
         case r'error':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.error = valueDes;
           break;
         case r'error_description':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.errorDescription = valueDes;
           break;
         case r'onboarded':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.onboarded = valueDes;
           break;
         default:
@@ -218,3 +199,4 @@ class _$CallbackInputSerializer implements PrimitiveSerializer<CallbackInput> {
     return result.build();
   }
 }
+

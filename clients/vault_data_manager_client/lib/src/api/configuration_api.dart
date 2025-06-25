@@ -12,6 +12,7 @@ import 'package:affinidi_tdk_vault_data_manager_client/src/model/get_config_ok.d
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/invalid_parameter_error.dart';
 
 class ConfigurationApi {
+
   final Dio _dio;
 
   final Serializers _serializers;
@@ -31,7 +32,7 @@ class ConfigurationApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GetConfigOK] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetConfigOK>> getConfiguration({
+  Future<Response<GetConfigOK>> getConfiguration({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -42,7 +43,9 @@ class ConfigurationApi {
     final _path = r'/v1/config';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -69,13 +72,11 @@ class ConfigurationApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(GetConfigOK),
-                )
-                as GetConfigOK;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(GetConfigOK),
+      ) as GetConfigOK;
+
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -97,4 +98,5 @@ class ConfigurationApi {
       extra: _response.extra,
     );
   }
+
 }

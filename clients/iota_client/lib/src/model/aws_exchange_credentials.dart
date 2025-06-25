@@ -13,33 +13,25 @@ part 'aws_exchange_credentials.g.dart';
 /// Properties:
 /// * [assertion] - A valid JSON Web Token (JWT) that secures the WebSocket connection. The JWT is signed with the key pair's private key used to create the Personal Access Token (PAT).
 @BuiltValue()
-abstract class AwsExchangeCredentials
-    implements Built<AwsExchangeCredentials, AwsExchangeCredentialsBuilder> {
+abstract class AwsExchangeCredentials implements Built<AwsExchangeCredentials, AwsExchangeCredentialsBuilder> {
   /// A valid JSON Web Token (JWT) that secures the WebSocket connection. The JWT is signed with the key pair's private key used to create the Personal Access Token (PAT).
   @BuiltValueField(wireName: r'assertion')
   String get assertion;
 
   AwsExchangeCredentials._();
 
-  factory AwsExchangeCredentials([
-    void updates(AwsExchangeCredentialsBuilder b),
-  ]) = _$AwsExchangeCredentials;
+  factory AwsExchangeCredentials([void updates(AwsExchangeCredentialsBuilder b)]) = _$AwsExchangeCredentials;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AwsExchangeCredentialsBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<AwsExchangeCredentials> get serializer =>
-      _$AwsExchangeCredentialsSerializer();
+  static Serializer<AwsExchangeCredentials> get serializer => _$AwsExchangeCredentialsSerializer();
 }
 
-class _$AwsExchangeCredentialsSerializer
-    implements PrimitiveSerializer<AwsExchangeCredentials> {
+class _$AwsExchangeCredentialsSerializer implements PrimitiveSerializer<AwsExchangeCredentials> {
   @override
-  final Iterable<Type> types = const [
-    AwsExchangeCredentials,
-    _$AwsExchangeCredentials,
-  ];
+  final Iterable<Type> types = const [AwsExchangeCredentials, _$AwsExchangeCredentials];
 
   @override
   final String wireName = r'AwsExchangeCredentials';
@@ -62,11 +54,7 @@ class _$AwsExchangeCredentialsSerializer
     AwsExchangeCredentials object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -82,12 +70,10 @@ class _$AwsExchangeCredentialsSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'assertion':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.assertion = valueDes;
           break;
         default:
@@ -118,3 +104,4 @@ class _$AwsExchangeCredentialsSerializer
     return result.build();
   }
 }
+

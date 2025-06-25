@@ -13,10 +13,9 @@ part 'credential_proof.g.dart';
 ///
 /// Properties:
 /// * [proofType] - String denoting the key proof type.
-/// * [jwt]
+/// * [jwt] 
 @BuiltValue()
-abstract class CredentialProof
-    implements Built<CredentialProof, CredentialProofBuilder> {
+abstract class CredentialProof implements Built<CredentialProof, CredentialProofBuilder> {
   /// String denoting the key proof type.
   @BuiltValueField(wireName: r'proof_type')
   CredentialProofProofTypeEnum get proofType;
@@ -27,19 +26,16 @@ abstract class CredentialProof
 
   CredentialProof._();
 
-  factory CredentialProof([void updates(CredentialProofBuilder b)]) =
-      _$CredentialProof;
+  factory CredentialProof([void updates(CredentialProofBuilder b)]) = _$CredentialProof;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CredentialProofBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CredentialProof> get serializer =>
-      _$CredentialProofSerializer();
+  static Serializer<CredentialProof> get serializer => _$CredentialProofSerializer();
 }
 
-class _$CredentialProofSerializer
-    implements PrimitiveSerializer<CredentialProof> {
+class _$CredentialProofSerializer implements PrimitiveSerializer<CredentialProof> {
   @override
   final Iterable<Type> types = const [CredentialProof, _$CredentialProof];
 
@@ -69,11 +65,7 @@ class _$CredentialProofSerializer
     CredentialProof object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -89,21 +81,17 @@ class _$CredentialProofSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'proof_type':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(CredentialProofProofTypeEnum),
-                  )
-                  as CredentialProofProofTypeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CredentialProofProofTypeEnum),
+          ) as CredentialProofProofTypeEnum;
           result.proofType = valueDes;
           break;
         case r'jwt':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.jwt = valueDes;
           break;
         default:
@@ -136,18 +124,16 @@ class _$CredentialProofSerializer
 }
 
 class CredentialProofProofTypeEnum extends EnumClass {
+
   /// String denoting the key proof type.
   @BuiltValueEnumConst(wireName: r'jwt')
-  static const CredentialProofProofTypeEnum jwt =
-      _$credentialProofProofTypeEnum_jwt;
+  static const CredentialProofProofTypeEnum jwt = _$credentialProofProofTypeEnum_jwt;
 
-  static Serializer<CredentialProofProofTypeEnum> get serializer =>
-      _$credentialProofProofTypeEnumSerializer;
+  static Serializer<CredentialProofProofTypeEnum> get serializer => _$credentialProofProofTypeEnumSerializer;
 
-  const CredentialProofProofTypeEnum._(String name) : super(name);
+  const CredentialProofProofTypeEnum._(String name): super(name);
 
-  static BuiltSet<CredentialProofProofTypeEnum> get values =>
-      _$credentialProofProofTypeEnumValues;
-  static CredentialProofProofTypeEnum valueOf(String name) =>
-      _$credentialProofProofTypeEnumValueOf(name);
+  static BuiltSet<CredentialProofProofTypeEnum> get values => _$credentialProofProofTypeEnumValues;
+  static CredentialProofProofTypeEnum valueOf(String name) => _$credentialProofProofTypeEnumValueOf(name);
 }
+

@@ -13,15 +13,10 @@ part 'sign_credentials_dm2_sd_jwt_input_dto.g.dart';
 ///
 /// Properties:
 /// * [unsignedCredential] - Unsigned Credential in Dm2 format
-/// * [revocable]
-/// * [disclosureFrame]
+/// * [revocable] 
+/// * [disclosureFrame] 
 @BuiltValue()
-abstract class SignCredentialsDm2SdJwtInputDto
-    implements
-        Built<
-          SignCredentialsDm2SdJwtInputDto,
-          SignCredentialsDm2SdJwtInputDtoBuilder
-        > {
+abstract class SignCredentialsDm2SdJwtInputDto implements Built<SignCredentialsDm2SdJwtInputDto, SignCredentialsDm2SdJwtInputDtoBuilder> {
   /// Unsigned Credential in Dm2 format
   @BuiltValueField(wireName: r'unsignedCredential')
   JsonObject get unsignedCredential;
@@ -34,25 +29,18 @@ abstract class SignCredentialsDm2SdJwtInputDto
 
   SignCredentialsDm2SdJwtInputDto._();
 
-  factory SignCredentialsDm2SdJwtInputDto([
-    void updates(SignCredentialsDm2SdJwtInputDtoBuilder b),
-  ]) = _$SignCredentialsDm2SdJwtInputDto;
+  factory SignCredentialsDm2SdJwtInputDto([void updates(SignCredentialsDm2SdJwtInputDtoBuilder b)]) = _$SignCredentialsDm2SdJwtInputDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SignCredentialsDm2SdJwtInputDtoBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<SignCredentialsDm2SdJwtInputDto> get serializer =>
-      _$SignCredentialsDm2SdJwtInputDtoSerializer();
+  static Serializer<SignCredentialsDm2SdJwtInputDto> get serializer => _$SignCredentialsDm2SdJwtInputDtoSerializer();
 }
 
-class _$SignCredentialsDm2SdJwtInputDtoSerializer
-    implements PrimitiveSerializer<SignCredentialsDm2SdJwtInputDto> {
+class _$SignCredentialsDm2SdJwtInputDtoSerializer implements PrimitiveSerializer<SignCredentialsDm2SdJwtInputDto> {
   @override
-  final Iterable<Type> types = const [
-    SignCredentialsDm2SdJwtInputDto,
-    _$SignCredentialsDm2SdJwtInputDto,
-  ];
+  final Iterable<Type> types = const [SignCredentialsDm2SdJwtInputDto, _$SignCredentialsDm2SdJwtInputDto];
 
   @override
   final String wireName = r'SignCredentialsDm2SdJwtInputDto';
@@ -87,11 +75,7 @@ class _$SignCredentialsDm2SdJwtInputDtoSerializer
     SignCredentialsDm2SdJwtInputDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -107,30 +91,24 @@ class _$SignCredentialsDm2SdJwtInputDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'unsignedCredential':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.unsignedCredential = valueDes;
           break;
         case r'revocable':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.revocable = valueDes;
           break;
         case r'disclosureFrame':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.disclosureFrame = valueDes;
           break;
         default:
@@ -161,3 +139,4 @@ class _$SignCredentialsDm2SdJwtInputDtoSerializer
     return result.build();
   }
 }
+

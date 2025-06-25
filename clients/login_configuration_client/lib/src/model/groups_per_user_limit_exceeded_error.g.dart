@@ -7,13 +7,12 @@ part of 'groups_per_user_limit_exceeded_error.dart';
 // **************************************************************************
 
 const GroupsPerUserLimitExceededErrorNameEnum
-_$groupsPerUserLimitExceededErrorNameEnum_groupsPerUserLimitExceededError =
+    _$groupsPerUserLimitExceededErrorNameEnum_groupsPerUserLimitExceededError =
     const GroupsPerUserLimitExceededErrorNameEnum._(
-      'groupsPerUserLimitExceededError',
-    );
+        'groupsPerUserLimitExceededError');
 
 GroupsPerUserLimitExceededErrorNameEnum
-_$groupsPerUserLimitExceededErrorNameEnumValueOf(String name) {
+    _$groupsPerUserLimitExceededErrorNameEnumValueOf(String name) {
   switch (name) {
     case 'groupsPerUserLimitExceededError':
       return _$groupsPerUserLimitExceededErrorNameEnum_groupsPerUserLimitExceededError;
@@ -23,21 +22,18 @@ _$groupsPerUserLimitExceededErrorNameEnumValueOf(String name) {
 }
 
 final BuiltSet<GroupsPerUserLimitExceededErrorNameEnum>
-_$groupsPerUserLimitExceededErrorNameEnumValues =
-    BuiltSet<GroupsPerUserLimitExceededErrorNameEnum>(const <
-      GroupsPerUserLimitExceededErrorNameEnum
-    >[
-      _$groupsPerUserLimitExceededErrorNameEnum_groupsPerUserLimitExceededError,
-    ]);
+    _$groupsPerUserLimitExceededErrorNameEnumValues = BuiltSet<
+        GroupsPerUserLimitExceededErrorNameEnum>(const <GroupsPerUserLimitExceededErrorNameEnum>[
+  _$groupsPerUserLimitExceededErrorNameEnum_groupsPerUserLimitExceededError,
+]);
 
 const GroupsPerUserLimitExceededErrorMessageEnum
-_$groupsPerUserLimitExceededErrorMessageEnum_amountOfGroupsPerUserIsLimitedPeriod =
+    _$groupsPerUserLimitExceededErrorMessageEnum_amountOfGroupsPerUserIsLimitedPeriod =
     const GroupsPerUserLimitExceededErrorMessageEnum._(
-      'amountOfGroupsPerUserIsLimitedPeriod',
-    );
+        'amountOfGroupsPerUserIsLimitedPeriod');
 
 GroupsPerUserLimitExceededErrorMessageEnum
-_$groupsPerUserLimitExceededErrorMessageEnumValueOf(String name) {
+    _$groupsPerUserLimitExceededErrorMessageEnumValueOf(String name) {
   switch (name) {
     case 'amountOfGroupsPerUserIsLimitedPeriod':
       return _$groupsPerUserLimitExceededErrorMessageEnum_amountOfGroupsPerUserIsLimitedPeriod;
@@ -47,19 +43,17 @@ _$groupsPerUserLimitExceededErrorMessageEnumValueOf(String name) {
 }
 
 final BuiltSet<GroupsPerUserLimitExceededErrorMessageEnum>
-_$groupsPerUserLimitExceededErrorMessageEnumValues =
-    BuiltSet<GroupsPerUserLimitExceededErrorMessageEnum>(const <
-      GroupsPerUserLimitExceededErrorMessageEnum
-    >[
-      _$groupsPerUserLimitExceededErrorMessageEnum_amountOfGroupsPerUserIsLimitedPeriod,
-    ]);
+    _$groupsPerUserLimitExceededErrorMessageEnumValues = BuiltSet<
+        GroupsPerUserLimitExceededErrorMessageEnum>(const <GroupsPerUserLimitExceededErrorMessageEnum>[
+  _$groupsPerUserLimitExceededErrorMessageEnum_amountOfGroupsPerUserIsLimitedPeriod,
+]);
 
 const GroupsPerUserLimitExceededErrorHttpStatusCodeEnum
-_$groupsPerUserLimitExceededErrorHttpStatusCodeEnum_number409 =
+    _$groupsPerUserLimitExceededErrorHttpStatusCodeEnum_number409 =
     const GroupsPerUserLimitExceededErrorHttpStatusCodeEnum._('number409');
 
 GroupsPerUserLimitExceededErrorHttpStatusCodeEnum
-_$groupsPerUserLimitExceededErrorHttpStatusCodeEnumValueOf(String name) {
+    _$groupsPerUserLimitExceededErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number409':
       return _$groupsPerUserLimitExceededErrorHttpStatusCodeEnum_number409;
@@ -69,21 +63,19 @@ _$groupsPerUserLimitExceededErrorHttpStatusCodeEnumValueOf(String name) {
 }
 
 final BuiltSet<GroupsPerUserLimitExceededErrorHttpStatusCodeEnum>
-_$groupsPerUserLimitExceededErrorHttpStatusCodeEnumValues =
-    BuiltSet<GroupsPerUserLimitExceededErrorHttpStatusCodeEnum>(
-      const <GroupsPerUserLimitExceededErrorHttpStatusCodeEnum>[
-        _$groupsPerUserLimitExceededErrorHttpStatusCodeEnum_number409,
-      ],
-    );
+    _$groupsPerUserLimitExceededErrorHttpStatusCodeEnumValues = BuiltSet<
+        GroupsPerUserLimitExceededErrorHttpStatusCodeEnum>(const <GroupsPerUserLimitExceededErrorHttpStatusCodeEnum>[
+  _$groupsPerUserLimitExceededErrorHttpStatusCodeEnum_number409,
+]);
 
 Serializer<GroupsPerUserLimitExceededErrorNameEnum>
-_$groupsPerUserLimitExceededErrorNameEnumSerializer =
+    _$groupsPerUserLimitExceededErrorNameEnumSerializer =
     _$GroupsPerUserLimitExceededErrorNameEnumSerializer();
 Serializer<GroupsPerUserLimitExceededErrorMessageEnum>
-_$groupsPerUserLimitExceededErrorMessageEnumSerializer =
+    _$groupsPerUserLimitExceededErrorMessageEnumSerializer =
     _$GroupsPerUserLimitExceededErrorMessageEnumSerializer();
 Serializer<GroupsPerUserLimitExceededErrorHttpStatusCodeEnum>
-_$groupsPerUserLimitExceededErrorHttpStatusCodeEnumSerializer =
+    _$groupsPerUserLimitExceededErrorHttpStatusCodeEnumSerializer =
     _$GroupsPerUserLimitExceededErrorHttpStatusCodeEnumSerializer();
 
 class _$GroupsPerUserLimitExceededErrorNameEnumSerializer
@@ -97,26 +89,23 @@ class _$GroupsPerUserLimitExceededErrorNameEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    GroupsPerUserLimitExceededErrorNameEnum,
+    GroupsPerUserLimitExceededErrorNameEnum
   ];
   @override
   final String wireName = 'GroupsPerUserLimitExceededErrorNameEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    GroupsPerUserLimitExceededErrorNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          GroupsPerUserLimitExceededErrorNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   GroupsPerUserLimitExceededErrorNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => GroupsPerUserLimitExceededErrorNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      GroupsPerUserLimitExceededErrorNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$GroupsPerUserLimitExceededErrorMessageEnumSerializer
@@ -132,26 +121,23 @@ class _$GroupsPerUserLimitExceededErrorMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    GroupsPerUserLimitExceededErrorMessageEnum,
+    GroupsPerUserLimitExceededErrorMessageEnum
   ];
   @override
   final String wireName = 'GroupsPerUserLimitExceededErrorMessageEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    GroupsPerUserLimitExceededErrorMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          GroupsPerUserLimitExceededErrorMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   GroupsPerUserLimitExceededErrorMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => GroupsPerUserLimitExceededErrorMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      GroupsPerUserLimitExceededErrorMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$GroupsPerUserLimitExceededErrorHttpStatusCodeEnumSerializer
@@ -166,26 +152,23 @@ class _$GroupsPerUserLimitExceededErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    GroupsPerUserLimitExceededErrorHttpStatusCodeEnum,
+    GroupsPerUserLimitExceededErrorHttpStatusCodeEnum
   ];
   @override
   final String wireName = 'GroupsPerUserLimitExceededErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    GroupsPerUserLimitExceededErrorHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          GroupsPerUserLimitExceededErrorHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   GroupsPerUserLimitExceededErrorHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => GroupsPerUserLimitExceededErrorHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      GroupsPerUserLimitExceededErrorHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$GroupsPerUserLimitExceededError
@@ -201,21 +184,21 @@ class _$GroupsPerUserLimitExceededError
   @override
   final BuiltList<InvalidParameterErrorDetailsInner>? details;
 
-  factory _$GroupsPerUserLimitExceededError([
-    void Function(GroupsPerUserLimitExceededErrorBuilder)? updates,
-  ]) => (GroupsPerUserLimitExceededErrorBuilder()..update(updates))._build();
+  factory _$GroupsPerUserLimitExceededError(
+          [void Function(GroupsPerUserLimitExceededErrorBuilder)? updates]) =>
+      (GroupsPerUserLimitExceededErrorBuilder()..update(updates))._build();
 
-  _$GroupsPerUserLimitExceededError._({
-    required this.name,
-    required this.message,
-    required this.httpStatusCode,
-    required this.traceId,
-    this.details,
-  }) : super._();
+  _$GroupsPerUserLimitExceededError._(
+      {required this.name,
+      required this.message,
+      required this.httpStatusCode,
+      required this.traceId,
+      this.details})
+      : super._();
   @override
   GroupsPerUserLimitExceededError rebuild(
-    void Function(GroupsPerUserLimitExceededErrorBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(GroupsPerUserLimitExceededErrorBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   GroupsPerUserLimitExceededErrorBuilder toBuilder() =>
@@ -258,10 +241,8 @@ class _$GroupsPerUserLimitExceededError
 
 class GroupsPerUserLimitExceededErrorBuilder
     implements
-        Builder<
-          GroupsPerUserLimitExceededError,
-          GroupsPerUserLimitExceededErrorBuilder
-        > {
+        Builder<GroupsPerUserLimitExceededError,
+            GroupsPerUserLimitExceededErrorBuilder> {
   _$GroupsPerUserLimitExceededError? _$v;
 
   GroupsPerUserLimitExceededErrorNameEnum? _name;
@@ -278,8 +259,8 @@ class GroupsPerUserLimitExceededErrorBuilder
   GroupsPerUserLimitExceededErrorHttpStatusCodeEnum? get httpStatusCode =>
       _$this._httpStatusCode;
   set httpStatusCode(
-    GroupsPerUserLimitExceededErrorHttpStatusCodeEnum? httpStatusCode,
-  ) => _$this._httpStatusCode = httpStatusCode;
+          GroupsPerUserLimitExceededErrorHttpStatusCodeEnum? httpStatusCode) =>
+      _$this._httpStatusCode = httpStatusCode;
 
   String? _traceId;
   String? get traceId => _$this._traceId;
@@ -324,29 +305,18 @@ class GroupsPerUserLimitExceededErrorBuilder
   _$GroupsPerUserLimitExceededError _build() {
     _$GroupsPerUserLimitExceededError _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$GroupsPerUserLimitExceededError._(
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'GroupsPerUserLimitExceededError',
-              'name',
-            ),
+                name, r'GroupsPerUserLimitExceededError', 'name'),
             message: BuiltValueNullFieldError.checkNotNull(
-              message,
-              r'GroupsPerUserLimitExceededError',
-              'message',
-            ),
+                message, r'GroupsPerUserLimitExceededError', 'message'),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-              httpStatusCode,
-              r'GroupsPerUserLimitExceededError',
-              'httpStatusCode',
-            ),
+                httpStatusCode,
+                r'GroupsPerUserLimitExceededError',
+                'httpStatusCode'),
             traceId: BuiltValueNullFieldError.checkNotNull(
-              traceId,
-              r'GroupsPerUserLimitExceededError',
-              'traceId',
-            ),
+                traceId, r'GroupsPerUserLimitExceededError', 'traceId'),
             details: _details?.build(),
           );
     } catch (_) {
@@ -356,10 +326,7 @@ class GroupsPerUserLimitExceededErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'GroupsPerUserLimitExceededError',
-          _$failedField,
-          e.toString(),
-        );
+            r'GroupsPerUserLimitExceededError', _$failedField, e.toString());
       }
       rethrow;
     }

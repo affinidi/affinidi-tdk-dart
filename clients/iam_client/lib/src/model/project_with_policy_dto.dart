@@ -12,12 +12,11 @@ part 'project_with_policy_dto.g.dart';
 /// ProjectWithPolicyDto
 ///
 /// Properties:
-/// * [id]
-/// * [name]
-/// * [policy]
+/// * [id] 
+/// * [name] 
+/// * [policy] 
 @BuiltValue()
-abstract class ProjectWithPolicyDto
-    implements Built<ProjectWithPolicyDto, ProjectWithPolicyDtoBuilder> {
+abstract class ProjectWithPolicyDto implements Built<ProjectWithPolicyDto, ProjectWithPolicyDtoBuilder> {
   @BuiltValueField(wireName: r'id')
   String get id;
 
@@ -29,24 +28,18 @@ abstract class ProjectWithPolicyDto
 
   ProjectWithPolicyDto._();
 
-  factory ProjectWithPolicyDto([void updates(ProjectWithPolicyDtoBuilder b)]) =
-      _$ProjectWithPolicyDto;
+  factory ProjectWithPolicyDto([void updates(ProjectWithPolicyDtoBuilder b)]) = _$ProjectWithPolicyDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ProjectWithPolicyDtoBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ProjectWithPolicyDto> get serializer =>
-      _$ProjectWithPolicyDtoSerializer();
+  static Serializer<ProjectWithPolicyDto> get serializer => _$ProjectWithPolicyDtoSerializer();
 }
 
-class _$ProjectWithPolicyDtoSerializer
-    implements PrimitiveSerializer<ProjectWithPolicyDto> {
+class _$ProjectWithPolicyDtoSerializer implements PrimitiveSerializer<ProjectWithPolicyDto> {
   @override
-  final Iterable<Type> types = const [
-    ProjectWithPolicyDto,
-    _$ProjectWithPolicyDto,
-  ];
+  final Iterable<Type> types = const [ProjectWithPolicyDto, _$ProjectWithPolicyDto];
 
   @override
   final String wireName = r'ProjectWithPolicyDto';
@@ -79,11 +72,7 @@ class _$ProjectWithPolicyDtoSerializer
     ProjectWithPolicyDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -99,30 +88,24 @@ class _$ProjectWithPolicyDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.id = valueDes;
           break;
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'policy':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(PolicyDto),
-                  )
-                  as PolicyDto;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(PolicyDto),
+          ) as PolicyDto;
           result.policy.replace(valueDes);
           break;
         default:
@@ -153,3 +136,4 @@ class _$ProjectWithPolicyDtoSerializer
     return result.build();
   }
 }
+

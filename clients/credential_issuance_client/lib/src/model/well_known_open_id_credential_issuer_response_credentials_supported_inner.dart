@@ -15,12 +15,7 @@ part 'well_known_open_id_credential_issuer_response_credentials_supported_inner.
 /// * [jsonSchemaUrl] - credential jsonLdContextUrl
 /// * [jsonLdContextUrl] - credential jsonSchemaUrl
 @BuiltValue()
-abstract class WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner
-    implements
-        Built<
-          WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner,
-          WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder
-        > {
+abstract class WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner implements Built<WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner, WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder> {
   /// It is a String that identifies a Credential that is being requested to be issued.
   @BuiltValueField(wireName: r'credentialTypeId')
   String get credentialTypeId;
@@ -35,39 +30,21 @@ abstract class WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner
 
   WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner._();
 
-  factory WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner([
-    void updates(
-      WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder b,
-    ),
-  ]) = _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner;
+  factory WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner([void updates(WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder b)]) = _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(
-    WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder b,
-  ) => b;
+  static void _defaults(WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<
-    WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner
-  >
-  get serializer =>
-      _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerSerializer();
+  static Serializer<WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner> get serializer => _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerSerializer();
 }
 
-class _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerSerializer
-    implements
-        PrimitiveSerializer<
-          WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner
-        > {
+class _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerSerializer implements PrimitiveSerializer<WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner> {
   @override
-  final Iterable<Type> types = const [
-    WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner,
-    _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner,
-  ];
+  final Iterable<Type> types = const [WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner, _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner];
 
   @override
-  final String wireName =
-      r'WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner';
+  final String wireName = r'WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
@@ -97,11 +74,7 @@ class _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerSerializ
     WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -109,8 +82,7 @@ class _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerSerializ
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder
-    result,
+    required WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
@@ -118,30 +90,24 @@ class _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerSerializ
       final value = serializedList[i + 1];
       switch (key) {
         case r'credentialTypeId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.credentialTypeId = valueDes;
           break;
         case r'jsonSchemaUrl':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.jsonSchemaUrl = valueDes;
           break;
         case r'jsonLdContextUrl':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.jsonLdContextUrl = valueDes;
           break;
         default:
@@ -158,8 +124,7 @@ class _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerSerializ
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result =
-        WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder();
+    final result = WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(
@@ -173,3 +138,4 @@ class _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerSerializ
     return result.build();
   }
 }
+

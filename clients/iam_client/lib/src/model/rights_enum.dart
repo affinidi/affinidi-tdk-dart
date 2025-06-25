@@ -10,6 +10,7 @@ import 'package:built_value/serializer.dart';
 part 'rights_enum.g.dart';
 
 class RightsEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireName: r'vfs-read')
   static const RightsEnum vfsRead = _$vfsRead;
   @BuiltValueEnumConst(wireName: r'vfs-write')
@@ -17,7 +18,7 @@ class RightsEnum extends EnumClass {
 
   static Serializer<RightsEnum> get serializer => _$rightsEnumSerializer;
 
-  const RightsEnum._(String name) : super(name);
+  const RightsEnum._(String name): super(name);
 
   static BuiltSet<RightsEnum> get values => _$values;
   static RightsEnum valueOf(String name) => _$valueOf(name);
@@ -30,3 +31,4 @@ class RightsEnum extends EnumClass {
 ///
 /// Trigger mixin generation by writing a line like this one next to your enum.
 abstract class RightsEnumMixin = Object with _$RightsEnumMixin;
+

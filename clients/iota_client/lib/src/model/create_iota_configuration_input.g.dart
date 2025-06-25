@@ -7,14 +7,14 @@ part of 'create_iota_configuration_input.dart';
 // **************************************************************************
 
 const CreateIotaConfigurationInputModeEnum
-_$createIotaConfigurationInputModeEnum_redirect =
+    _$createIotaConfigurationInputModeEnum_redirect =
     const CreateIotaConfigurationInputModeEnum._('redirect');
 const CreateIotaConfigurationInputModeEnum
-_$createIotaConfigurationInputModeEnum_websocket =
+    _$createIotaConfigurationInputModeEnum_websocket =
     const CreateIotaConfigurationInputModeEnum._('websocket');
 
 CreateIotaConfigurationInputModeEnum
-_$createIotaConfigurationInputModeEnumValueOf(String name) {
+    _$createIotaConfigurationInputModeEnumValueOf(String name) {
   switch (name) {
     case 'redirect':
       return _$createIotaConfigurationInputModeEnum_redirect;
@@ -26,16 +26,14 @@ _$createIotaConfigurationInputModeEnumValueOf(String name) {
 }
 
 final BuiltSet<CreateIotaConfigurationInputModeEnum>
-_$createIotaConfigurationInputModeEnumValues =
-    BuiltSet<CreateIotaConfigurationInputModeEnum>(
-      const <CreateIotaConfigurationInputModeEnum>[
-        _$createIotaConfigurationInputModeEnum_redirect,
-        _$createIotaConfigurationInputModeEnum_websocket,
-      ],
-    );
+    _$createIotaConfigurationInputModeEnumValues = BuiltSet<
+        CreateIotaConfigurationInputModeEnum>(const <CreateIotaConfigurationInputModeEnum>[
+  _$createIotaConfigurationInputModeEnum_redirect,
+  _$createIotaConfigurationInputModeEnum_websocket,
+]);
 
 Serializer<CreateIotaConfigurationInputModeEnum>
-_$createIotaConfigurationInputModeEnumSerializer =
+    _$createIotaConfigurationInputModeEnumSerializer =
     _$CreateIotaConfigurationInputModeEnumSerializer();
 
 class _$CreateIotaConfigurationInputModeEnumSerializer
@@ -51,26 +49,23 @@ class _$CreateIotaConfigurationInputModeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CreateIotaConfigurationInputModeEnum,
+    CreateIotaConfigurationInputModeEnum
   ];
   @override
   final String wireName = 'CreateIotaConfigurationInputModeEnum';
 
   @override
   Object serialize(
-    Serializers serializers,
-    CreateIotaConfigurationInputModeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, CreateIotaConfigurationInputModeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   CreateIotaConfigurationInputModeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => CreateIotaConfigurationInputModeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      CreateIotaConfigurationInputModeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$CreateIotaConfigurationInput extends CreateIotaConfigurationInput {
@@ -97,27 +92,27 @@ class _$CreateIotaConfigurationInput extends CreateIotaConfigurationInput {
   @override
   final bool? enableIdvProviders;
 
-  factory _$CreateIotaConfigurationInput([
-    void Function(CreateIotaConfigurationInputBuilder)? updates,
-  ]) => (CreateIotaConfigurationInputBuilder()..update(updates))._build();
+  factory _$CreateIotaConfigurationInput(
+          [void Function(CreateIotaConfigurationInputBuilder)? updates]) =>
+      (CreateIotaConfigurationInputBuilder()..update(updates))._build();
 
-  _$CreateIotaConfigurationInput._({
-    required this.name,
-    this.description,
-    required this.walletAri,
-    this.iotaResponseWebhookURL,
-    required this.enableVerification,
-    required this.enableConsentAuditLog,
-    this.tokenMaxAge,
-    required this.clientMetadata,
-    this.mode,
-    this.redirectUris,
-    this.enableIdvProviders,
-  }) : super._();
+  _$CreateIotaConfigurationInput._(
+      {required this.name,
+      this.description,
+      required this.walletAri,
+      this.iotaResponseWebhookURL,
+      required this.enableVerification,
+      required this.enableConsentAuditLog,
+      this.tokenMaxAge,
+      required this.clientMetadata,
+      this.mode,
+      this.redirectUris,
+      this.enableIdvProviders})
+      : super._();
   @override
   CreateIotaConfigurationInput rebuild(
-    void Function(CreateIotaConfigurationInputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CreateIotaConfigurationInputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CreateIotaConfigurationInputBuilder toBuilder() =>
@@ -178,10 +173,8 @@ class _$CreateIotaConfigurationInput extends CreateIotaConfigurationInput {
 
 class CreateIotaConfigurationInputBuilder
     implements
-        Builder<
-          CreateIotaConfigurationInput,
-          CreateIotaConfigurationInputBuilder
-        > {
+        Builder<CreateIotaConfigurationInput,
+            CreateIotaConfigurationInputBuilder> {
   _$CreateIotaConfigurationInput? _$v;
 
   String? _name;
@@ -219,8 +212,8 @@ class CreateIotaConfigurationInputBuilder
   IotaConfigurationDtoClientMetadataBuilder get clientMetadata =>
       _$this._clientMetadata ??= IotaConfigurationDtoClientMetadataBuilder();
   set clientMetadata(
-    IotaConfigurationDtoClientMetadataBuilder? clientMetadata,
-  ) => _$this._clientMetadata = clientMetadata;
+          IotaConfigurationDtoClientMetadataBuilder? clientMetadata) =>
+      _$this._clientMetadata = clientMetadata;
 
   CreateIotaConfigurationInputModeEnum? _mode;
   CreateIotaConfigurationInputModeEnum? get mode => _$this._mode;
@@ -276,31 +269,22 @@ class CreateIotaConfigurationInputBuilder
   _$CreateIotaConfigurationInput _build() {
     _$CreateIotaConfigurationInput _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$CreateIotaConfigurationInput._(
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'CreateIotaConfigurationInput',
-              'name',
-            ),
+                name, r'CreateIotaConfigurationInput', 'name'),
             description: description,
             walletAri: BuiltValueNullFieldError.checkNotNull(
-              walletAri,
-              r'CreateIotaConfigurationInput',
-              'walletAri',
-            ),
+                walletAri, r'CreateIotaConfigurationInput', 'walletAri'),
             iotaResponseWebhookURL: iotaResponseWebhookURL,
             enableVerification: BuiltValueNullFieldError.checkNotNull(
-              enableVerification,
-              r'CreateIotaConfigurationInput',
-              'enableVerification',
-            ),
+                enableVerification,
+                r'CreateIotaConfigurationInput',
+                'enableVerification'),
             enableConsentAuditLog: BuiltValueNullFieldError.checkNotNull(
-              enableConsentAuditLog,
-              r'CreateIotaConfigurationInput',
-              'enableConsentAuditLog',
-            ),
+                enableConsentAuditLog,
+                r'CreateIotaConfigurationInput',
+                'enableConsentAuditLog'),
             tokenMaxAge: tokenMaxAge,
             clientMetadata: clientMetadata.build(),
             mode: mode,
@@ -317,10 +301,7 @@ class CreateIotaConfigurationInputBuilder
         _redirectUris?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'CreateIotaConfigurationInput',
-          _$failedField,
-          e.toString(),
-        );
+            r'CreateIotaConfigurationInput', _$failedField, e.toString());
       }
       rethrow;
     }

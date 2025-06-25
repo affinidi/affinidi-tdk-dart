@@ -3,5 +3,7 @@ import 'package:affinidi_tdk_login_configuration_client/affinidi_tdk_login_confi
 
 // tests for TokenEndpointAuthMethod
 void main() {
-  group(TokenEndpointAuthMethod, () {});
+
+  group(TokenEndpointAuthMethod, () {
+  });
 }

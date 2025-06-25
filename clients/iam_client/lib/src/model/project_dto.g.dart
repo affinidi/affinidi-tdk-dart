@@ -23,14 +23,14 @@ class _$ProjectDto extends ProjectDto {
   factory _$ProjectDto([void Function(ProjectDtoBuilder)? updates]) =>
       (ProjectDtoBuilder()..update(updates))._build();
 
-  _$ProjectDto._({
-    required this.id,
-    required this.name,
-    this.ownerId,
-    this.description,
-    this.createdAt,
-    this.updatedAt,
-  }) : super._();
+  _$ProjectDto._(
+      {required this.id,
+      required this.name,
+      this.ownerId,
+      this.description,
+      this.createdAt,
+      this.updatedAt})
+      : super._();
   @override
   ProjectDto rebuild(void Function(ProjectDtoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -135,15 +135,11 @@ class ProjectDtoBuilder implements Builder<ProjectDto, ProjectDtoBuilder> {
   ProjectDto build() => _build();
 
   _$ProjectDto _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$ProjectDto._(
           id: BuiltValueNullFieldError.checkNotNull(id, r'ProjectDto', 'id'),
           name: BuiltValueNullFieldError.checkNotNull(
-            name,
-            r'ProjectDto',
-            'name',
-          ),
+              name, r'ProjectDto', 'name'),
           ownerId: ownerId,
           description: description,
           createdAt: createdAt,

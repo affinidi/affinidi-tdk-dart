@@ -13,12 +13,11 @@ part 'group_user_mappings_list.g.dart';
 /// GroupUserMappingsList
 ///
 /// Properties:
-/// * [users]
-/// * [lastEvaluatedKey]
-/// * [totalUserCount]
+/// * [users] 
+/// * [lastEvaluatedKey] 
+/// * [totalUserCount] 
 @BuiltValue()
-abstract class GroupUserMappingsList
-    implements Built<GroupUserMappingsList, GroupUserMappingsListBuilder> {
+abstract class GroupUserMappingsList implements Built<GroupUserMappingsList, GroupUserMappingsListBuilder> {
   @BuiltValueField(wireName: r'users')
   BuiltList<GroupUserMappingDto>? get users;
 
@@ -30,25 +29,18 @@ abstract class GroupUserMappingsList
 
   GroupUserMappingsList._();
 
-  factory GroupUserMappingsList([
-    void updates(GroupUserMappingsListBuilder b),
-  ]) = _$GroupUserMappingsList;
+  factory GroupUserMappingsList([void updates(GroupUserMappingsListBuilder b)]) = _$GroupUserMappingsList;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GroupUserMappingsListBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GroupUserMappingsList> get serializer =>
-      _$GroupUserMappingsListSerializer();
+  static Serializer<GroupUserMappingsList> get serializer => _$GroupUserMappingsListSerializer();
 }
 
-class _$GroupUserMappingsListSerializer
-    implements PrimitiveSerializer<GroupUserMappingsList> {
+class _$GroupUserMappingsListSerializer implements PrimitiveSerializer<GroupUserMappingsList> {
   @override
-  final Iterable<Type> types = const [
-    GroupUserMappingsList,
-    _$GroupUserMappingsList,
-  ];
+  final Iterable<Type> types = const [GroupUserMappingsList, _$GroupUserMappingsList];
 
   @override
   final String wireName = r'GroupUserMappingsList';
@@ -62,9 +54,7 @@ class _$GroupUserMappingsListSerializer
       yield r'users';
       yield serializers.serialize(
         object.users,
-        specifiedType: const FullType(BuiltList, [
-          FullType(GroupUserMappingDto),
-        ]),
+        specifiedType: const FullType(BuiltList, [FullType(GroupUserMappingDto)]),
       );
     }
     if (object.lastEvaluatedKey != null) {
@@ -89,11 +79,7 @@ class _$GroupUserMappingsListSerializer
     GroupUserMappingsList object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -109,29 +95,24 @@ class _$GroupUserMappingsListSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'users':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(GroupUserMappingDto),
-                    ]),
-                  )
-                  as BuiltList<GroupUserMappingDto>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(GroupUserMappingDto)]),
+          ) as BuiltList<GroupUserMappingDto>;
           result.users.replace(valueDes);
           break;
         case r'lastEvaluatedKey':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.lastEvaluatedKey = valueDes;
           break;
         case r'totalUserCount':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.totalUserCount = valueDes;
           break;
         default:
@@ -162,3 +143,4 @@ class _$GroupUserMappingsListSerializer
     return result.build();
   }
 }
+

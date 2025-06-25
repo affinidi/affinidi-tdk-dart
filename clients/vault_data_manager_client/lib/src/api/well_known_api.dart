@@ -13,6 +13,7 @@ import 'package:affinidi_tdk_vault_data_manager_client/src/model/json_web_key_se
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/unexpected_error.dart';
 
 class WellKnownApi {
+
   final Dio _dio;
 
   final Serializers _serializers;
@@ -20,7 +21,7 @@ class WellKnownApi {
   const WellKnownApi(this._dio, this._serializers);
 
   /// getWellKnownJwks
-  ///
+  /// 
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -32,7 +33,7 @@ class WellKnownApi {
   ///
   /// Returns a [Future] containing a [Response] with a [JsonWebKeySetDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<JsonWebKeySetDto>> getWellKnownJwks({
+  Future<Response<JsonWebKeySetDto>> getWellKnownJwks({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -43,8 +44,13 @@ class WellKnownApi {
     final _path = r'/.well-known/jwks.json';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
-      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[],
+        ...?extra,
+      },
       validateStatus: validateStatus,
     );
 
@@ -60,13 +66,11 @@ class WellKnownApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(JsonWebKeySetDto),
-                )
-                as JsonWebKeySetDto;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(JsonWebKeySetDto),
+      ) as JsonWebKeySetDto;
+
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -88,4 +92,5 @@ class WellKnownApi {
       extra: _response.extra,
     );
   }
+
 }

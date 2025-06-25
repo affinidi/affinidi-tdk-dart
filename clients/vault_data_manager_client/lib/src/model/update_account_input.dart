@@ -19,8 +19,7 @@ part 'update_account_input.g.dart';
 /// * [metadata] - Description of metadata
 /// * [accountDid] - DID that is associated with the account number
 @BuiltValue()
-abstract class UpdateAccountInput
-    implements Built<UpdateAccountInput, UpdateAccountInputBuilder> {
+abstract class UpdateAccountInput implements Built<UpdateAccountInput, UpdateAccountInputBuilder> {
   /// Name of the account
   @BuiltValueField(wireName: r'name')
   String? get name;
@@ -47,19 +46,16 @@ abstract class UpdateAccountInput
 
   UpdateAccountInput._();
 
-  factory UpdateAccountInput([void updates(UpdateAccountInputBuilder b)]) =
-      _$UpdateAccountInput;
+  factory UpdateAccountInput([void updates(UpdateAccountInputBuilder b)]) = _$UpdateAccountInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UpdateAccountInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UpdateAccountInput> get serializer =>
-      _$UpdateAccountInputSerializer();
+  static Serializer<UpdateAccountInput> get serializer => _$UpdateAccountInputSerializer();
 }
 
-class _$UpdateAccountInputSerializer
-    implements PrimitiveSerializer<UpdateAccountInput> {
+class _$UpdateAccountInputSerializer implements PrimitiveSerializer<UpdateAccountInput> {
   @override
   final Iterable<Type> types = const [UpdateAccountInput, _$UpdateAccountInput];
 
@@ -117,11 +113,7 @@ class _$UpdateAccountInputSerializer
     UpdateAccountInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -137,57 +129,45 @@ class _$UpdateAccountInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.description = valueDes;
           break;
         case r'alias':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.alias = valueDes;
           break;
         case r'didProof':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.didProof = valueDes;
           break;
         case r'metadata':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.metadata = valueDes;
           break;
         case r'accountDid':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.accountDid = valueDes;
           break;
         default:
@@ -218,3 +198,4 @@ class _$UpdateAccountInputSerializer
     return result.build();
   }
 }
+

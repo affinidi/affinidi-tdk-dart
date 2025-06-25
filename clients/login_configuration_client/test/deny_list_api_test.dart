@@ -1,6 +1,7 @@
 import 'package:test/test.dart';
 import 'package:affinidi_tdk_login_configuration_client/affinidi_tdk_login_configuration_client.dart';
 
+
 /// tests for DenyListApi
 void main() {
   final instance = AffinidiTdkLoginConfigurationClient().getDenyListApi();
@@ -47,5 +48,6 @@ void main() {
     test('test unblockUsers', () async {
       // TODO
     });
+
   });
 }

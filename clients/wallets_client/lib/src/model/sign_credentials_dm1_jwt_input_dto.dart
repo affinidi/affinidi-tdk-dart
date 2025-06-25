@@ -13,14 +13,9 @@ part 'sign_credentials_dm1_jwt_input_dto.g.dart';
 ///
 /// Properties:
 /// * [unsignedCredential] - Unsigned Credential in Dm1 format
-/// * [revocable]
+/// * [revocable] 
 @BuiltValue()
-abstract class SignCredentialsDm1JwtInputDto
-    implements
-        Built<
-          SignCredentialsDm1JwtInputDto,
-          SignCredentialsDm1JwtInputDtoBuilder
-        > {
+abstract class SignCredentialsDm1JwtInputDto implements Built<SignCredentialsDm1JwtInputDto, SignCredentialsDm1JwtInputDtoBuilder> {
   /// Unsigned Credential in Dm1 format
   @BuiltValueField(wireName: r'unsignedCredential')
   JsonObject get unsignedCredential;
@@ -30,25 +25,18 @@ abstract class SignCredentialsDm1JwtInputDto
 
   SignCredentialsDm1JwtInputDto._();
 
-  factory SignCredentialsDm1JwtInputDto([
-    void updates(SignCredentialsDm1JwtInputDtoBuilder b),
-  ]) = _$SignCredentialsDm1JwtInputDto;
+  factory SignCredentialsDm1JwtInputDto([void updates(SignCredentialsDm1JwtInputDtoBuilder b)]) = _$SignCredentialsDm1JwtInputDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SignCredentialsDm1JwtInputDtoBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<SignCredentialsDm1JwtInputDto> get serializer =>
-      _$SignCredentialsDm1JwtInputDtoSerializer();
+  static Serializer<SignCredentialsDm1JwtInputDto> get serializer => _$SignCredentialsDm1JwtInputDtoSerializer();
 }
 
-class _$SignCredentialsDm1JwtInputDtoSerializer
-    implements PrimitiveSerializer<SignCredentialsDm1JwtInputDto> {
+class _$SignCredentialsDm1JwtInputDtoSerializer implements PrimitiveSerializer<SignCredentialsDm1JwtInputDto> {
   @override
-  final Iterable<Type> types = const [
-    SignCredentialsDm1JwtInputDto,
-    _$SignCredentialsDm1JwtInputDto,
-  ];
+  final Iterable<Type> types = const [SignCredentialsDm1JwtInputDto, _$SignCredentialsDm1JwtInputDto];
 
   @override
   final String wireName = r'SignCredentialsDm1JwtInputDto';
@@ -78,11 +66,7 @@ class _$SignCredentialsDm1JwtInputDtoSerializer
     SignCredentialsDm1JwtInputDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -98,21 +82,17 @@ class _$SignCredentialsDm1JwtInputDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'unsignedCredential':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.unsignedCredential = valueDes;
           break;
         case r'revocable':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.revocable = valueDes;
           break;
         default:
@@ -143,3 +123,4 @@ class _$SignCredentialsDm1JwtInputDtoSerializer
     return result.build();
   }
 }
+

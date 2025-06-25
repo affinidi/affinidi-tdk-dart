@@ -14,7 +14,7 @@ Affinidi TDK dart client for Affinidi WALLETS
 To use the package from [pub.dev](https://pub.dev), please include the following in pubspec.yaml
 ```yaml
 dependencies:
-  affinidi_tdk_wallets_client: ^1.0.0
+  affinidi_tdk_wallets_client: ^1.9.0
 ```
 
 ### Github

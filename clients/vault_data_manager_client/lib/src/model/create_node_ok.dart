@@ -13,13 +13,12 @@ part 'create_node_ok.g.dart';
 /// CreateNodeOK
 ///
 /// Properties:
-/// * [nodeId]
-/// * [url]
-/// * [link]
-/// * [fields]
+/// * [nodeId] 
+/// * [url] 
+/// * [link] 
+/// * [fields] 
 @BuiltValue()
-abstract class CreateNodeOK
-    implements Built<CreateNodeOK, CreateNodeOKBuilder> {
+abstract class CreateNodeOK implements Built<CreateNodeOK, CreateNodeOKBuilder> {
   @BuiltValueField(wireName: r'nodeId')
   String get nodeId;
 
@@ -78,10 +77,7 @@ class _$CreateNodeOKSerializer implements PrimitiveSerializer<CreateNodeOK> {
       yield r'fields';
       yield serializers.serialize(
         object.fields,
-        specifiedType: const FullType(BuiltMap, [
-          FullType(String),
-          FullType.nullable(JsonObject),
-        ]),
+        specifiedType: const FullType(BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
       );
     }
   }
@@ -92,11 +88,7 @@ class _$CreateNodeOKSerializer implements PrimitiveSerializer<CreateNodeOK> {
     CreateNodeOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -112,42 +104,31 @@ class _$CreateNodeOKSerializer implements PrimitiveSerializer<CreateNodeOK> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'nodeId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.nodeId = valueDes;
           break;
         case r'url':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.url = valueDes;
           break;
         case r'link':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.link = valueDes;
           break;
         case r'fields':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltMap, [
-                      FullType(String),
-                      FullType.nullable(JsonObject),
-                    ]),
-                  )
-                  as BuiltMap<String, JsonObject?>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
+          ) as BuiltMap<String, JsonObject?>;
           result.fields.replace(valueDes);
           break;
         default:
@@ -178,3 +159,4 @@ class _$CreateNodeOKSerializer implements PrimitiveSerializer<CreateNodeOK> {
     return result.build();
   }
 }
+

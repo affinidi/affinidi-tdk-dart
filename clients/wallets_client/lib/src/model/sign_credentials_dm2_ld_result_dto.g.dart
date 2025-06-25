@@ -10,15 +10,15 @@ class _$SignCredentialsDm2LdResultDto extends SignCredentialsDm2LdResultDto {
   @override
   final JsonObject credential;
 
-  factory _$SignCredentialsDm2LdResultDto([
-    void Function(SignCredentialsDm2LdResultDtoBuilder)? updates,
-  ]) => (SignCredentialsDm2LdResultDtoBuilder()..update(updates))._build();
+  factory _$SignCredentialsDm2LdResultDto(
+          [void Function(SignCredentialsDm2LdResultDtoBuilder)? updates]) =>
+      (SignCredentialsDm2LdResultDtoBuilder()..update(updates))._build();
 
   _$SignCredentialsDm2LdResultDto._({required this.credential}) : super._();
   @override
   SignCredentialsDm2LdResultDto rebuild(
-    void Function(SignCredentialsDm2LdResultDtoBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(SignCredentialsDm2LdResultDtoBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   SignCredentialsDm2LdResultDtoBuilder toBuilder() =>
@@ -41,18 +41,16 @@ class _$SignCredentialsDm2LdResultDto extends SignCredentialsDm2LdResultDto {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'SignCredentialsDm2LdResultDto',
-    )..add('credential', credential)).toString();
+    return (newBuiltValueToStringHelper(r'SignCredentialsDm2LdResultDto')
+          ..add('credential', credential))
+        .toString();
   }
 }
 
 class SignCredentialsDm2LdResultDtoBuilder
     implements
-        Builder<
-          SignCredentialsDm2LdResultDto,
-          SignCredentialsDm2LdResultDtoBuilder
-        > {
+        Builder<SignCredentialsDm2LdResultDto,
+            SignCredentialsDm2LdResultDtoBuilder> {
   _$SignCredentialsDm2LdResultDto? _$v;
 
   JsonObject? _credential;
@@ -86,14 +84,10 @@ class SignCredentialsDm2LdResultDtoBuilder
   SignCredentialsDm2LdResultDto build() => _build();
 
   _$SignCredentialsDm2LdResultDto _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$SignCredentialsDm2LdResultDto._(
           credential: BuiltValueNullFieldError.checkNotNull(
-            credential,
-            r'SignCredentialsDm2LdResultDto',
-            'credential',
-          ),
+              credential, r'SignCredentialsDm2LdResultDto', 'credential'),
         );
     replace(_$result);
     return _$result;

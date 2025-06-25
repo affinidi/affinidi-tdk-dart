@@ -10,15 +10,15 @@ class _$SignCredentialsDm1JwtResultDto extends SignCredentialsDm1JwtResultDto {
   @override
   final String credential;
 
-  factory _$SignCredentialsDm1JwtResultDto([
-    void Function(SignCredentialsDm1JwtResultDtoBuilder)? updates,
-  ]) => (SignCredentialsDm1JwtResultDtoBuilder()..update(updates))._build();
+  factory _$SignCredentialsDm1JwtResultDto(
+          [void Function(SignCredentialsDm1JwtResultDtoBuilder)? updates]) =>
+      (SignCredentialsDm1JwtResultDtoBuilder()..update(updates))._build();
 
   _$SignCredentialsDm1JwtResultDto._({required this.credential}) : super._();
   @override
   SignCredentialsDm1JwtResultDto rebuild(
-    void Function(SignCredentialsDm1JwtResultDtoBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(SignCredentialsDm1JwtResultDtoBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   SignCredentialsDm1JwtResultDtoBuilder toBuilder() =>
@@ -41,18 +41,16 @@ class _$SignCredentialsDm1JwtResultDto extends SignCredentialsDm1JwtResultDto {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'SignCredentialsDm1JwtResultDto',
-    )..add('credential', credential)).toString();
+    return (newBuiltValueToStringHelper(r'SignCredentialsDm1JwtResultDto')
+          ..add('credential', credential))
+        .toString();
   }
 }
 
 class SignCredentialsDm1JwtResultDtoBuilder
     implements
-        Builder<
-          SignCredentialsDm1JwtResultDto,
-          SignCredentialsDm1JwtResultDtoBuilder
-        > {
+        Builder<SignCredentialsDm1JwtResultDto,
+            SignCredentialsDm1JwtResultDtoBuilder> {
   _$SignCredentialsDm1JwtResultDto? _$v;
 
   String? _credential;
@@ -86,14 +84,10 @@ class SignCredentialsDm1JwtResultDtoBuilder
   SignCredentialsDm1JwtResultDto build() => _build();
 
   _$SignCredentialsDm1JwtResultDto _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$SignCredentialsDm1JwtResultDto._(
           credential: BuiltValueNullFieldError.checkNotNull(
-            credential,
-            r'SignCredentialsDm1JwtResultDto',
-            'credential',
-          ),
+              credential, r'SignCredentialsDm1JwtResultDto', 'credential'),
         );
     replace(_$result);
     return _$result;

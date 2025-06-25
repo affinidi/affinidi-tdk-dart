@@ -12,13 +12,12 @@ part 'policy_statement_dto.g.dart';
 /// PolicyStatementDto
 ///
 /// Properties:
-/// * [action]
-/// * [effect]
-/// * [principal]
-/// * [resource]
+/// * [action] 
+/// * [effect] 
+/// * [principal] 
+/// * [resource] 
 @BuiltValue()
-abstract class PolicyStatementDto
-    implements Built<PolicyStatementDto, PolicyStatementDtoBuilder> {
+abstract class PolicyStatementDto implements Built<PolicyStatementDto, PolicyStatementDtoBuilder> {
   @BuiltValueField(wireName: r'action')
   BuiltList<String> get action;
 
@@ -33,19 +32,16 @@ abstract class PolicyStatementDto
 
   PolicyStatementDto._();
 
-  factory PolicyStatementDto([void updates(PolicyStatementDtoBuilder b)]) =
-      _$PolicyStatementDto;
+  factory PolicyStatementDto([void updates(PolicyStatementDtoBuilder b)]) = _$PolicyStatementDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(PolicyStatementDtoBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<PolicyStatementDto> get serializer =>
-      _$PolicyStatementDtoSerializer();
+  static Serializer<PolicyStatementDto> get serializer => _$PolicyStatementDtoSerializer();
 }
 
-class _$PolicyStatementDtoSerializer
-    implements PrimitiveSerializer<PolicyStatementDto> {
+class _$PolicyStatementDtoSerializer implements PrimitiveSerializer<PolicyStatementDto> {
   @override
   final Iterable<Type> types = const [PolicyStatementDto, _$PolicyStatementDto];
 
@@ -85,11 +81,7 @@ class _$PolicyStatementDtoSerializer
     PolicyStatementDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -105,45 +97,31 @@ class _$PolicyStatementDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'action':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.action.replace(valueDes);
           break;
         case r'effect':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.effect = valueDes;
           break;
         case r'principal':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.principal.replace(valueDes);
           break;
         case r'resource':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.resource.replace(valueDes);
           break;
         default:
@@ -174,3 +152,4 @@ class _$PolicyStatementDtoSerializer
     return result.build();
   }
 }
+

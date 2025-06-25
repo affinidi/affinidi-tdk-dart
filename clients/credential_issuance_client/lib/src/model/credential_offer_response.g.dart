@@ -14,19 +14,19 @@ class _$CredentialOfferResponse extends CredentialOfferResponse {
   @override
   final CredentialOfferResponseGrants grants;
 
-  factory _$CredentialOfferResponse([
-    void Function(CredentialOfferResponseBuilder)? updates,
-  ]) => (CredentialOfferResponseBuilder()..update(updates))._build();
+  factory _$CredentialOfferResponse(
+          [void Function(CredentialOfferResponseBuilder)? updates]) =>
+      (CredentialOfferResponseBuilder()..update(updates))._build();
 
-  _$CredentialOfferResponse._({
-    required this.credentialIssuer,
-    required this.credentialConfigurationIds,
-    required this.grants,
-  }) : super._();
+  _$CredentialOfferResponse._(
+      {required this.credentialIssuer,
+      required this.credentialConfigurationIds,
+      required this.grants})
+      : super._();
   @override
   CredentialOfferResponse rebuild(
-    void Function(CredentialOfferResponseBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CredentialOfferResponseBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CredentialOfferResponseBuilder toBuilder() =>
@@ -75,8 +75,8 @@ class CredentialOfferResponseBuilder
   ListBuilder<String> get credentialConfigurationIds =>
       _$this._credentialConfigurationIds ??= ListBuilder<String>();
   set credentialConfigurationIds(
-    ListBuilder<String>? credentialConfigurationIds,
-  ) => _$this._credentialConfigurationIds = credentialConfigurationIds;
+          ListBuilder<String>? credentialConfigurationIds) =>
+      _$this._credentialConfigurationIds = credentialConfigurationIds;
 
   CredentialOfferResponseGrantsBuilder? _grants;
   CredentialOfferResponseGrantsBuilder get grants =>
@@ -115,14 +115,12 @@ class CredentialOfferResponseBuilder
   _$CredentialOfferResponse _build() {
     _$CredentialOfferResponse _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$CredentialOfferResponse._(
             credentialIssuer: BuiltValueNullFieldError.checkNotNull(
-              credentialIssuer,
-              r'CredentialOfferResponse',
-              'credentialIssuer',
-            ),
+                credentialIssuer,
+                r'CredentialOfferResponse',
+                'credentialIssuer'),
             credentialConfigurationIds: credentialConfigurationIds.build(),
             grants: grants.build(),
           );
@@ -135,10 +133,7 @@ class CredentialOfferResponseBuilder
         grants.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'CredentialOfferResponse',
-          _$failedField,
-          e.toString(),
-        );
+            r'CredentialOfferResponse', _$failedField, e.toString());
       }
       rethrow;
     }

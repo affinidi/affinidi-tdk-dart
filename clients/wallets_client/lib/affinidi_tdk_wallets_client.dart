@@ -45,3 +45,4 @@ export 'package:affinidi_tdk_wallets_client/src/model/update_wallet_input.dart';
 export 'package:affinidi_tdk_wallets_client/src/model/wallet_dto.dart';
 export 'package:affinidi_tdk_wallets_client/src/model/wallet_dto_keys_inner.dart';
 export 'package:affinidi_tdk_wallets_client/src/model/wallets_list_dto.dart';
+

@@ -1,6 +1,7 @@
 import 'package:test/test.dart';
 import 'package:affinidi_tdk_iota_client/affinidi_tdk_iota_client.dart';
 
+
 /// tests for ConfigurationsApi
 void main() {
   final instance = AffinidiTdkIotaClient().getConfigurationsApi();
@@ -27,7 +28,7 @@ void main() {
       // TODO
     });
 
-    // Retrieves the client metadata of an Affinidi Iota Framework configuration.
+    // Retrieves the client metadata of an Affinidi Iota Framework configuration. 
     //
     //Future<GetIotaConfigurationMetaDataOK> getIotaConfigurationMetaData(String projectId, String configurationId) async
     test('test getIotaConfigurationMetaData', () async {
@@ -47,5 +48,6 @@ void main() {
     test('test updateIotaConfigurationById', () async {
       // TODO
     });
+
   });
 }

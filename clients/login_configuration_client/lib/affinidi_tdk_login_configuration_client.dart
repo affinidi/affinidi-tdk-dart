@@ -70,3 +70,4 @@ export 'package:affinidi_tdk_login_configuration_client/src/model/token_endpoint
 export 'package:affinidi_tdk_login_configuration_client/src/model/unauthorized_error.dart';
 export 'package:affinidi_tdk_login_configuration_client/src/model/update_login_configuration_input.dart';
 export 'package:affinidi_tdk_login_configuration_client/src/model/vp_token_validation_error.dart';
+

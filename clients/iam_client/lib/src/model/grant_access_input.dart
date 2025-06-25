@@ -16,8 +16,7 @@ part 'grant_access_input.g.dart';
 /// * [granteeDid] - DID of the subject being granted access
 /// * [rights] - List of rights to grant to the subject
 @BuiltValue()
-abstract class GrantAccessInput
-    implements Built<GrantAccessInput, GrantAccessInputBuilder> {
+abstract class GrantAccessInput implements Built<GrantAccessInput, GrantAccessInputBuilder> {
   /// DID of the subject being granted access
   @BuiltValueField(wireName: r'granteeDid')
   String get granteeDid;
@@ -28,19 +27,16 @@ abstract class GrantAccessInput
 
   GrantAccessInput._();
 
-  factory GrantAccessInput([void updates(GrantAccessInputBuilder b)]) =
-      _$GrantAccessInput;
+  factory GrantAccessInput([void updates(GrantAccessInputBuilder b)]) = _$GrantAccessInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GrantAccessInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GrantAccessInput> get serializer =>
-      _$GrantAccessInputSerializer();
+  static Serializer<GrantAccessInput> get serializer => _$GrantAccessInputSerializer();
 }
 
-class _$GrantAccessInputSerializer
-    implements PrimitiveSerializer<GrantAccessInput> {
+class _$GrantAccessInputSerializer implements PrimitiveSerializer<GrantAccessInput> {
   @override
   final Iterable<Type> types = const [GrantAccessInput, _$GrantAccessInput];
 
@@ -70,11 +66,7 @@ class _$GrantAccessInputSerializer
     GrantAccessInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -90,23 +82,17 @@ class _$GrantAccessInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'granteeDid':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.granteeDid = valueDes;
           break;
         case r'rights':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(RightsEnum),
-                    ]),
-                  )
-                  as BuiltList<RightsEnum>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(RightsEnum)]),
+          ) as BuiltList<RightsEnum>;
           result.rights.replace(valueDes);
           break;
         default:
@@ -137,3 +123,4 @@ class _$GrantAccessInputSerializer
     return result.build();
   }
 }
+

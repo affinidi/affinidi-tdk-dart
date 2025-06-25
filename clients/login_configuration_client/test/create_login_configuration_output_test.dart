@@ -58,5 +58,6 @@ void main() {
     test('to test the property `postLogoutRedirectUris`', () async {
       // TODO
     });
+
   });
 }

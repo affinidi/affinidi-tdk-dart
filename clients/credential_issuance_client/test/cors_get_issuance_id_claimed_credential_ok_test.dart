@@ -8,11 +8,9 @@ void main() {
 
   group(CorsGetIssuanceIdClaimedCredentialOK, () {
     // String corsGetIssuanceIdClaimedCredentialOk
-    test(
-      'to test the property `corsGetIssuanceIdClaimedCredentialOk`',
-      () async {
-        // TODO
-      },
-    );
+    test('to test the property `corsGetIssuanceIdClaimedCredentialOk`', () async {
+      // TODO
+    });
+
   });
 }

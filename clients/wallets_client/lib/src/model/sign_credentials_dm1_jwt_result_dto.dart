@@ -13,37 +13,25 @@ part 'sign_credentials_dm1_jwt_result_dto.g.dart';
 /// Properties:
 /// * [credential] - Signed credential in DM2 jwt format
 @BuiltValue()
-abstract class SignCredentialsDm1JwtResultDto
-    implements
-        Built<
-          SignCredentialsDm1JwtResultDto,
-          SignCredentialsDm1JwtResultDtoBuilder
-        > {
+abstract class SignCredentialsDm1JwtResultDto implements Built<SignCredentialsDm1JwtResultDto, SignCredentialsDm1JwtResultDtoBuilder> {
   /// Signed credential in DM2 jwt format
   @BuiltValueField(wireName: r'credential')
   String get credential;
 
   SignCredentialsDm1JwtResultDto._();
 
-  factory SignCredentialsDm1JwtResultDto([
-    void updates(SignCredentialsDm1JwtResultDtoBuilder b),
-  ]) = _$SignCredentialsDm1JwtResultDto;
+  factory SignCredentialsDm1JwtResultDto([void updates(SignCredentialsDm1JwtResultDtoBuilder b)]) = _$SignCredentialsDm1JwtResultDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SignCredentialsDm1JwtResultDtoBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<SignCredentialsDm1JwtResultDto> get serializer =>
-      _$SignCredentialsDm1JwtResultDtoSerializer();
+  static Serializer<SignCredentialsDm1JwtResultDto> get serializer => _$SignCredentialsDm1JwtResultDtoSerializer();
 }
 
-class _$SignCredentialsDm1JwtResultDtoSerializer
-    implements PrimitiveSerializer<SignCredentialsDm1JwtResultDto> {
+class _$SignCredentialsDm1JwtResultDtoSerializer implements PrimitiveSerializer<SignCredentialsDm1JwtResultDto> {
   @override
-  final Iterable<Type> types = const [
-    SignCredentialsDm1JwtResultDto,
-    _$SignCredentialsDm1JwtResultDto,
-  ];
+  final Iterable<Type> types = const [SignCredentialsDm1JwtResultDto, _$SignCredentialsDm1JwtResultDto];
 
   @override
   final String wireName = r'SignCredentialsDm1JwtResultDto';
@@ -66,11 +54,7 @@ class _$SignCredentialsDm1JwtResultDtoSerializer
     SignCredentialsDm1JwtResultDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -86,12 +70,10 @@ class _$SignCredentialsDm1JwtResultDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'credential':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.credential = valueDes;
           break;
         default:
@@ -122,3 +104,4 @@ class _$SignCredentialsDm1JwtResultDtoSerializer
     return result.build();
   }
 }
+

@@ -13,15 +13,13 @@ part 'resource_limit_exceeded_error.g.dart';
 /// ResourceLimitExceededError
 ///
 /// Properties:
-/// * [name]
-/// * [message]
-/// * [httpStatusCode]
-/// * [traceId]
-/// * [details]
+/// * [name] 
+/// * [message] 
+/// * [httpStatusCode] 
+/// * [traceId] 
+/// * [details] 
 @BuiltValue()
-abstract class ResourceLimitExceededError
-    implements
-        Built<ResourceLimitExceededError, ResourceLimitExceededErrorBuilder> {
+abstract class ResourceLimitExceededError implements Built<ResourceLimitExceededError, ResourceLimitExceededErrorBuilder> {
   @BuiltValueField(wireName: r'name')
   ResourceLimitExceededErrorNameEnum get name;
   // enum nameEnum {  ResourceLimitExceededError,  };
@@ -42,25 +40,18 @@ abstract class ResourceLimitExceededError
 
   ResourceLimitExceededError._();
 
-  factory ResourceLimitExceededError([
-    void updates(ResourceLimitExceededErrorBuilder b),
-  ]) = _$ResourceLimitExceededError;
+  factory ResourceLimitExceededError([void updates(ResourceLimitExceededErrorBuilder b)]) = _$ResourceLimitExceededError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ResourceLimitExceededErrorBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ResourceLimitExceededError> get serializer =>
-      _$ResourceLimitExceededErrorSerializer();
+  static Serializer<ResourceLimitExceededError> get serializer => _$ResourceLimitExceededErrorSerializer();
 }
 
-class _$ResourceLimitExceededErrorSerializer
-    implements PrimitiveSerializer<ResourceLimitExceededError> {
+class _$ResourceLimitExceededErrorSerializer implements PrimitiveSerializer<ResourceLimitExceededError> {
   @override
-  final Iterable<Type> types = const [
-    ResourceLimitExceededError,
-    _$ResourceLimitExceededError,
-  ];
+  final Iterable<Type> types = const [ResourceLimitExceededError, _$ResourceLimitExceededError];
 
   @override
   final String wireName = r'ResourceLimitExceededError';
@@ -83,9 +74,7 @@ class _$ResourceLimitExceededErrorSerializer
     yield r'httpStatusCode';
     yield serializers.serialize(
       object.httpStatusCode,
-      specifiedType: const FullType(
-        ResourceLimitExceededErrorHttpStatusCodeEnum,
-      ),
+      specifiedType: const FullType(ResourceLimitExceededErrorHttpStatusCodeEnum),
     );
     yield r'traceId';
     yield serializers.serialize(
@@ -96,9 +85,7 @@ class _$ResourceLimitExceededErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(InvalidParameterErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
       );
     }
   }
@@ -109,11 +96,7 @@ class _$ResourceLimitExceededErrorSerializer
     ResourceLimitExceededError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -129,56 +112,38 @@ class _$ResourceLimitExceededErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      ResourceLimitExceededErrorNameEnum,
-                    ),
-                  )
-                  as ResourceLimitExceededErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(ResourceLimitExceededErrorNameEnum),
+          ) as ResourceLimitExceededErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      ResourceLimitExceededErrorMessageEnum,
-                    ),
-                  )
-                  as ResourceLimitExceededErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(ResourceLimitExceededErrorMessageEnum),
+          ) as ResourceLimitExceededErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      ResourceLimitExceededErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as ResourceLimitExceededErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(ResourceLimitExceededErrorHttpStatusCodeEnum),
+          ) as ResourceLimitExceededErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(InvalidParameterErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<InvalidParameterErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
+          ) as BuiltList<InvalidParameterErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -211,51 +176,41 @@ class _$ResourceLimitExceededErrorSerializer
 }
 
 class ResourceLimitExceededErrorNameEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireName: r'ResourceLimitExceededError')
-  static const ResourceLimitExceededErrorNameEnum resourceLimitExceededError =
-      _$resourceLimitExceededErrorNameEnum_resourceLimitExceededError;
+  static const ResourceLimitExceededErrorNameEnum resourceLimitExceededError = _$resourceLimitExceededErrorNameEnum_resourceLimitExceededError;
 
-  static Serializer<ResourceLimitExceededErrorNameEnum> get serializer =>
-      _$resourceLimitExceededErrorNameEnumSerializer;
+  static Serializer<ResourceLimitExceededErrorNameEnum> get serializer => _$resourceLimitExceededErrorNameEnumSerializer;
 
-  const ResourceLimitExceededErrorNameEnum._(String name) : super(name);
+  const ResourceLimitExceededErrorNameEnum._(String name): super(name);
 
-  static BuiltSet<ResourceLimitExceededErrorNameEnum> get values =>
-      _$resourceLimitExceededErrorNameEnumValues;
-  static ResourceLimitExceededErrorNameEnum valueOf(String name) =>
-      _$resourceLimitExceededErrorNameEnumValueOf(name);
+  static BuiltSet<ResourceLimitExceededErrorNameEnum> get values => _$resourceLimitExceededErrorNameEnumValues;
+  static ResourceLimitExceededErrorNameEnum valueOf(String name) => _$resourceLimitExceededErrorNameEnumValueOf(name);
 }
 
 class ResourceLimitExceededErrorMessageEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireName: r'Resource limit exceeded: ${param}.')
-  static const ResourceLimitExceededErrorMessageEnum
-  resourceLimitExceededColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod =
-      _$resourceLimitExceededErrorMessageEnum_resourceLimitExceededColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod;
+  static const ResourceLimitExceededErrorMessageEnum resourceLimitExceededColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod = _$resourceLimitExceededErrorMessageEnum_resourceLimitExceededColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod;
 
-  static Serializer<ResourceLimitExceededErrorMessageEnum> get serializer =>
-      _$resourceLimitExceededErrorMessageEnumSerializer;
+  static Serializer<ResourceLimitExceededErrorMessageEnum> get serializer => _$resourceLimitExceededErrorMessageEnumSerializer;
 
-  const ResourceLimitExceededErrorMessageEnum._(String name) : super(name);
+  const ResourceLimitExceededErrorMessageEnum._(String name): super(name);
 
-  static BuiltSet<ResourceLimitExceededErrorMessageEnum> get values =>
-      _$resourceLimitExceededErrorMessageEnumValues;
-  static ResourceLimitExceededErrorMessageEnum valueOf(String name) =>
-      _$resourceLimitExceededErrorMessageEnumValueOf(name);
+  static BuiltSet<ResourceLimitExceededErrorMessageEnum> get values => _$resourceLimitExceededErrorMessageEnumValues;
+  static ResourceLimitExceededErrorMessageEnum valueOf(String name) => _$resourceLimitExceededErrorMessageEnumValueOf(name);
 }
 
 class ResourceLimitExceededErrorHttpStatusCodeEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireNumber: 422)
-  static const ResourceLimitExceededErrorHttpStatusCodeEnum number422 =
-      _$resourceLimitExceededErrorHttpStatusCodeEnum_number422;
+  static const ResourceLimitExceededErrorHttpStatusCodeEnum number422 = _$resourceLimitExceededErrorHttpStatusCodeEnum_number422;
 
-  static Serializer<ResourceLimitExceededErrorHttpStatusCodeEnum>
-  get serializer => _$resourceLimitExceededErrorHttpStatusCodeEnumSerializer;
+  static Serializer<ResourceLimitExceededErrorHttpStatusCodeEnum> get serializer => _$resourceLimitExceededErrorHttpStatusCodeEnumSerializer;
 
-  const ResourceLimitExceededErrorHttpStatusCodeEnum._(String name)
-    : super(name);
+  const ResourceLimitExceededErrorHttpStatusCodeEnum._(String name): super(name);
 
-  static BuiltSet<ResourceLimitExceededErrorHttpStatusCodeEnum> get values =>
-      _$resourceLimitExceededErrorHttpStatusCodeEnumValues;
-  static ResourceLimitExceededErrorHttpStatusCodeEnum valueOf(String name) =>
-      _$resourceLimitExceededErrorHttpStatusCodeEnumValueOf(name);
+  static BuiltSet<ResourceLimitExceededErrorHttpStatusCodeEnum> get values => _$resourceLimitExceededErrorHttpStatusCodeEnumValues;
+  static ResourceLimitExceededErrorHttpStatusCodeEnum valueOf(String name) => _$resourceLimitExceededErrorHttpStatusCodeEnumValueOf(name);
 }
+

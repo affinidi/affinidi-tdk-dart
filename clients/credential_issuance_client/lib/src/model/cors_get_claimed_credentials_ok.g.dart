@@ -10,16 +10,16 @@ class _$CorsGetClaimedCredentialsOK extends CorsGetClaimedCredentialsOK {
   @override
   final String? corsGetClaimedCredentialsOk;
 
-  factory _$CorsGetClaimedCredentialsOK([
-    void Function(CorsGetClaimedCredentialsOKBuilder)? updates,
-  ]) => (CorsGetClaimedCredentialsOKBuilder()..update(updates))._build();
+  factory _$CorsGetClaimedCredentialsOK(
+          [void Function(CorsGetClaimedCredentialsOKBuilder)? updates]) =>
+      (CorsGetClaimedCredentialsOKBuilder()..update(updates))._build();
 
   _$CorsGetClaimedCredentialsOK._({this.corsGetClaimedCredentialsOk})
-    : super._();
+      : super._();
   @override
   CorsGetClaimedCredentialsOK rebuild(
-    void Function(CorsGetClaimedCredentialsOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CorsGetClaimedCredentialsOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CorsGetClaimedCredentialsOKBuilder toBuilder() =>
@@ -50,10 +50,8 @@ class _$CorsGetClaimedCredentialsOK extends CorsGetClaimedCredentialsOK {
 
 class CorsGetClaimedCredentialsOKBuilder
     implements
-        Builder<
-          CorsGetClaimedCredentialsOK,
-          CorsGetClaimedCredentialsOKBuilder
-        > {
+        Builder<CorsGetClaimedCredentialsOK,
+            CorsGetClaimedCredentialsOKBuilder> {
   _$CorsGetClaimedCredentialsOK? _$v;
 
   String? _corsGetClaimedCredentialsOk;
@@ -89,8 +87,7 @@ class CorsGetClaimedCredentialsOKBuilder
   CorsGetClaimedCredentialsOK build() => _build();
 
   _$CorsGetClaimedCredentialsOK _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CorsGetClaimedCredentialsOK._(
           corsGetClaimedCredentialsOk: corsGetClaimedCredentialsOk,
         );

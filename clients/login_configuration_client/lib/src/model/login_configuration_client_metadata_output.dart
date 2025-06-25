@@ -16,12 +16,7 @@ part 'login_configuration_client_metadata_output.g.dart';
 /// * [logo] - logo url that will be displayed in consent page
 /// * [domainVerified] - indicates if the developer's ownership of the domain has been verified
 @BuiltValue()
-abstract class LoginConfigurationClientMetadataOutput
-    implements
-        Built<
-          LoginConfigurationClientMetadataOutput,
-          LoginConfigurationClientMetadataOutputBuilder
-        > {
+abstract class LoginConfigurationClientMetadataOutput implements Built<LoginConfigurationClientMetadataOutput, LoginConfigurationClientMetadataOutputBuilder> {
   /// application name that will be displayed in consent page
   @BuiltValueField(wireName: r'name')
   String get name;
@@ -40,25 +35,18 @@ abstract class LoginConfigurationClientMetadataOutput
 
   LoginConfigurationClientMetadataOutput._();
 
-  factory LoginConfigurationClientMetadataOutput([
-    void updates(LoginConfigurationClientMetadataOutputBuilder b),
-  ]) = _$LoginConfigurationClientMetadataOutput;
+  factory LoginConfigurationClientMetadataOutput([void updates(LoginConfigurationClientMetadataOutputBuilder b)]) = _$LoginConfigurationClientMetadataOutput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(LoginConfigurationClientMetadataOutputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<LoginConfigurationClientMetadataOutput> get serializer =>
-      _$LoginConfigurationClientMetadataOutputSerializer();
+  static Serializer<LoginConfigurationClientMetadataOutput> get serializer => _$LoginConfigurationClientMetadataOutputSerializer();
 }
 
-class _$LoginConfigurationClientMetadataOutputSerializer
-    implements PrimitiveSerializer<LoginConfigurationClientMetadataOutput> {
+class _$LoginConfigurationClientMetadataOutputSerializer implements PrimitiveSerializer<LoginConfigurationClientMetadataOutput> {
   @override
-  final Iterable<Type> types = const [
-    LoginConfigurationClientMetadataOutput,
-    _$LoginConfigurationClientMetadataOutput,
-  ];
+  final Iterable<Type> types = const [LoginConfigurationClientMetadataOutput, _$LoginConfigurationClientMetadataOutput];
 
   @override
   final String wireName = r'LoginConfigurationClientMetadataOutput';
@@ -98,11 +86,7 @@ class _$LoginConfigurationClientMetadataOutputSerializer
     LoginConfigurationClientMetadataOutput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -118,39 +102,31 @@ class _$LoginConfigurationClientMetadataOutputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'origin':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.origin = valueDes;
           break;
         case r'logo':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.logo = valueDes;
           break;
         case r'domainVerified':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.domainVerified = valueDes;
           break;
         default:
@@ -181,3 +157,4 @@ class _$LoginConfigurationClientMetadataOutputSerializer
     return result.build();
   }
 }
+

@@ -13,14 +13,13 @@ part 'vc_claimed_error.g.dart';
 /// VcClaimedError
 ///
 /// Properties:
-/// * [name]
-/// * [message]
-/// * [httpStatusCode]
-/// * [traceId]
-/// * [details]
+/// * [name] 
+/// * [message] 
+/// * [httpStatusCode] 
+/// * [traceId] 
+/// * [details] 
 @BuiltValue()
-abstract class VcClaimedError
-    implements Built<VcClaimedError, VcClaimedErrorBuilder> {
+abstract class VcClaimedError implements Built<VcClaimedError, VcClaimedErrorBuilder> {
   @BuiltValueField(wireName: r'name')
   VcClaimedErrorNameEnum get name;
   // enum nameEnum {  VcClaimedError,  };
@@ -41,19 +40,16 @@ abstract class VcClaimedError
 
   VcClaimedError._();
 
-  factory VcClaimedError([void updates(VcClaimedErrorBuilder b)]) =
-      _$VcClaimedError;
+  factory VcClaimedError([void updates(VcClaimedErrorBuilder b)]) = _$VcClaimedError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(VcClaimedErrorBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<VcClaimedError> get serializer =>
-      _$VcClaimedErrorSerializer();
+  static Serializer<VcClaimedError> get serializer => _$VcClaimedErrorSerializer();
 }
 
-class _$VcClaimedErrorSerializer
-    implements PrimitiveSerializer<VcClaimedError> {
+class _$VcClaimedErrorSerializer implements PrimitiveSerializer<VcClaimedError> {
   @override
   final Iterable<Type> types = const [VcClaimedError, _$VcClaimedError];
 
@@ -89,9 +85,7 @@ class _$VcClaimedErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ActionForbiddenErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
       );
     }
   }
@@ -102,11 +96,7 @@ class _$VcClaimedErrorSerializer
     VcClaimedError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -122,52 +112,38 @@ class _$VcClaimedErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(VcClaimedErrorNameEnum),
-                  )
-                  as VcClaimedErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(VcClaimedErrorNameEnum),
+          ) as VcClaimedErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(VcClaimedErrorMessageEnum),
-                  )
-                  as VcClaimedErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(VcClaimedErrorMessageEnum),
+          ) as VcClaimedErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      VcClaimedErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as VcClaimedErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(VcClaimedErrorHttpStatusCodeEnum),
+          ) as VcClaimedErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ActionForbiddenErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ActionForbiddenErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
+          ) as BuiltList<ActionForbiddenErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -200,52 +176,41 @@ class _$VcClaimedErrorSerializer
 }
 
 class VcClaimedErrorNameEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireName: r'VcClaimedError')
-  static const VcClaimedErrorNameEnum vcClaimedError =
-      _$vcClaimedErrorNameEnum_vcClaimedError;
+  static const VcClaimedErrorNameEnum vcClaimedError = _$vcClaimedErrorNameEnum_vcClaimedError;
 
-  static Serializer<VcClaimedErrorNameEnum> get serializer =>
-      _$vcClaimedErrorNameEnumSerializer;
+  static Serializer<VcClaimedErrorNameEnum> get serializer => _$vcClaimedErrorNameEnumSerializer;
 
-  const VcClaimedErrorNameEnum._(String name) : super(name);
+  const VcClaimedErrorNameEnum._(String name): super(name);
 
-  static BuiltSet<VcClaimedErrorNameEnum> get values =>
-      _$vcClaimedErrorNameEnumValues;
-  static VcClaimedErrorNameEnum valueOf(String name) =>
-      _$vcClaimedErrorNameEnumValueOf(name);
+  static BuiltSet<VcClaimedErrorNameEnum> get values => _$vcClaimedErrorNameEnumValues;
+  static VcClaimedErrorNameEnum valueOf(String name) => _$vcClaimedErrorNameEnumValueOf(name);
 }
 
 class VcClaimedErrorMessageEnum extends EnumClass {
-  @BuiltValueEnumConst(
-    wireName: r'The requested VC has already been claimed by the user',
-  )
-  static const VcClaimedErrorMessageEnum
-  theRequestedVCHasAlreadyBeenClaimedByTheUser =
-      _$vcClaimedErrorMessageEnum_theRequestedVCHasAlreadyBeenClaimedByTheUser;
 
-  static Serializer<VcClaimedErrorMessageEnum> get serializer =>
-      _$vcClaimedErrorMessageEnumSerializer;
+  @BuiltValueEnumConst(wireName: r'The requested VC has already been claimed by the user')
+  static const VcClaimedErrorMessageEnum theRequestedVCHasAlreadyBeenClaimedByTheUser = _$vcClaimedErrorMessageEnum_theRequestedVCHasAlreadyBeenClaimedByTheUser;
 
-  const VcClaimedErrorMessageEnum._(String name) : super(name);
+  static Serializer<VcClaimedErrorMessageEnum> get serializer => _$vcClaimedErrorMessageEnumSerializer;
 
-  static BuiltSet<VcClaimedErrorMessageEnum> get values =>
-      _$vcClaimedErrorMessageEnumValues;
-  static VcClaimedErrorMessageEnum valueOf(String name) =>
-      _$vcClaimedErrorMessageEnumValueOf(name);
+  const VcClaimedErrorMessageEnum._(String name): super(name);
+
+  static BuiltSet<VcClaimedErrorMessageEnum> get values => _$vcClaimedErrorMessageEnumValues;
+  static VcClaimedErrorMessageEnum valueOf(String name) => _$vcClaimedErrorMessageEnumValueOf(name);
 }
 
 class VcClaimedErrorHttpStatusCodeEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireNumber: 400)
-  static const VcClaimedErrorHttpStatusCodeEnum number400 =
-      _$vcClaimedErrorHttpStatusCodeEnum_number400;
+  static const VcClaimedErrorHttpStatusCodeEnum number400 = _$vcClaimedErrorHttpStatusCodeEnum_number400;
 
-  static Serializer<VcClaimedErrorHttpStatusCodeEnum> get serializer =>
-      _$vcClaimedErrorHttpStatusCodeEnumSerializer;
+  static Serializer<VcClaimedErrorHttpStatusCodeEnum> get serializer => _$vcClaimedErrorHttpStatusCodeEnumSerializer;
 
-  const VcClaimedErrorHttpStatusCodeEnum._(String name) : super(name);
+  const VcClaimedErrorHttpStatusCodeEnum._(String name): super(name);
 
-  static BuiltSet<VcClaimedErrorHttpStatusCodeEnum> get values =>
-      _$vcClaimedErrorHttpStatusCodeEnumValues;
-  static VcClaimedErrorHttpStatusCodeEnum valueOf(String name) =>
-      _$vcClaimedErrorHttpStatusCodeEnumValueOf(name);
+  static BuiltSet<VcClaimedErrorHttpStatusCodeEnum> get values => _$vcClaimedErrorHttpStatusCodeEnumValues;
+  static VcClaimedErrorHttpStatusCodeEnum valueOf(String name) => _$vcClaimedErrorHttpStatusCodeEnumValueOf(name);
 }
+

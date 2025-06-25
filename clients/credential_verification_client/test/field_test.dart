@@ -31,5 +31,6 @@ void main() {
     test('to test the property `predicate`', () async {
       // TODO
     });
+
   });
 }

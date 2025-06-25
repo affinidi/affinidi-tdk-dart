@@ -17,7 +17,7 @@ part 'token_dto.g.dart';
 /// * [ari] - Token ARI
 /// * [ownerAri] - The Token owner's ARI
 /// * [name] - Owner defined Token display name
-/// * [authenticationMethod]
+/// * [authenticationMethod] 
 /// * [scopes] - Scopes that will be assigned to the Token on authentication
 @BuiltValue()
 abstract class TokenDto implements Built<TokenDto, TokenDtoBuilder> {
@@ -105,11 +105,7 @@ class _$TokenDtoSerializer implements PrimitiveSerializer<TokenDto> {
     TokenDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -125,61 +121,45 @@ class _$TokenDtoSerializer implements PrimitiveSerializer<TokenDto> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.id = valueDes;
           break;
         case r'ari':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.ari = valueDes;
           break;
         case r'ownerAri':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.ownerAri = valueDes;
           break;
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'authenticationMethod':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      TokenPrivateKeyAuthenticationMethodDto,
-                    ),
-                  )
-                  as TokenPrivateKeyAuthenticationMethodDto;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(TokenPrivateKeyAuthenticationMethodDto),
+          ) as TokenPrivateKeyAuthenticationMethodDto;
           result.authenticationMethod.replace(valueDes);
           break;
         case r'scopes':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.scopes.replace(valueDes);
           break;
         default:
@@ -210,3 +190,4 @@ class _$TokenDtoSerializer implements PrimitiveSerializer<TokenDto> {
     return result.build();
   }
 }
+

@@ -17,8 +17,7 @@ part 'create_wallet_input.g.dart';
 /// * [didMethod] - Define how DID of your wallet is created and resolved
 /// * [didWebUrl] - URL of the DID. Required if the did method is web
 @BuiltValue()
-abstract class CreateWalletInput
-    implements Built<CreateWalletInput, CreateWalletInputBuilder> {
+abstract class CreateWalletInput implements Built<CreateWalletInput, CreateWalletInputBuilder> {
   /// The name of the wallet
   @BuiltValueField(wireName: r'name')
   String? get name;
@@ -38,19 +37,16 @@ abstract class CreateWalletInput
 
   CreateWalletInput._();
 
-  factory CreateWalletInput([void updates(CreateWalletInputBuilder b)]) =
-      _$CreateWalletInput;
+  factory CreateWalletInput([void updates(CreateWalletInputBuilder b)]) = _$CreateWalletInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateWalletInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateWalletInput> get serializer =>
-      _$CreateWalletInputSerializer();
+  static Serializer<CreateWalletInput> get serializer => _$CreateWalletInputSerializer();
 }
 
-class _$CreateWalletInputSerializer
-    implements PrimitiveSerializer<CreateWalletInput> {
+class _$CreateWalletInputSerializer implements PrimitiveSerializer<CreateWalletInput> {
   @override
   final Iterable<Type> types = const [CreateWalletInput, _$CreateWalletInput];
 
@@ -96,11 +92,7 @@ class _$CreateWalletInputSerializer
     CreateWalletInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -116,41 +108,31 @@ class _$CreateWalletInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.description = valueDes;
           break;
         case r'didMethod':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CreateWalletInputDidMethodEnum,
-                    ),
-                  )
-                  as CreateWalletInputDidMethodEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CreateWalletInputDidMethodEnum),
+          ) as CreateWalletInputDidMethodEnum;
           result.didMethod = valueDes;
           break;
         case r'didWebUrl':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.didWebUrl = valueDes;
           break;
         default:
@@ -183,23 +165,19 @@ class _$CreateWalletInputSerializer
 }
 
 class CreateWalletInputDidMethodEnum extends EnumClass {
+
   /// Define how DID of your wallet is created and resolved
   @BuiltValueEnumConst(wireName: r'key')
-  static const CreateWalletInputDidMethodEnum key =
-      _$createWalletInputDidMethodEnum_key;
-
+  static const CreateWalletInputDidMethodEnum key = _$createWalletInputDidMethodEnum_key;
   /// Define how DID of your wallet is created and resolved
   @BuiltValueEnumConst(wireName: r'web')
-  static const CreateWalletInputDidMethodEnum web =
-      _$createWalletInputDidMethodEnum_web;
+  static const CreateWalletInputDidMethodEnum web = _$createWalletInputDidMethodEnum_web;
 
-  static Serializer<CreateWalletInputDidMethodEnum> get serializer =>
-      _$createWalletInputDidMethodEnumSerializer;
+  static Serializer<CreateWalletInputDidMethodEnum> get serializer => _$createWalletInputDidMethodEnumSerializer;
 
-  const CreateWalletInputDidMethodEnum._(String name) : super(name);
+  const CreateWalletInputDidMethodEnum._(String name): super(name);
 
-  static BuiltSet<CreateWalletInputDidMethodEnum> get values =>
-      _$createWalletInputDidMethodEnumValues;
-  static CreateWalletInputDidMethodEnum valueOf(String name) =>
-      _$createWalletInputDidMethodEnumValueOf(name);
+  static BuiltSet<CreateWalletInputDidMethodEnum> get values => _$createWalletInputDidMethodEnumValues;
+  static CreateWalletInputDidMethodEnum valueOf(String name) => _$createWalletInputDidMethodEnumValueOf(name);
 }
+

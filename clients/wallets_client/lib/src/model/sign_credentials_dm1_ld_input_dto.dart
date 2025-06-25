@@ -13,14 +13,9 @@ part 'sign_credentials_dm1_ld_input_dto.g.dart';
 ///
 /// Properties:
 /// * [unsignedCredential] - Unsigned Credential in Dm1 format
-/// * [revocable]
+/// * [revocable] 
 @BuiltValue()
-abstract class SignCredentialsDm1LdInputDto
-    implements
-        Built<
-          SignCredentialsDm1LdInputDto,
-          SignCredentialsDm1LdInputDtoBuilder
-        > {
+abstract class SignCredentialsDm1LdInputDto implements Built<SignCredentialsDm1LdInputDto, SignCredentialsDm1LdInputDtoBuilder> {
   /// Unsigned Credential in Dm1 format
   @BuiltValueField(wireName: r'unsignedCredential')
   JsonObject get unsignedCredential;
@@ -30,25 +25,18 @@ abstract class SignCredentialsDm1LdInputDto
 
   SignCredentialsDm1LdInputDto._();
 
-  factory SignCredentialsDm1LdInputDto([
-    void updates(SignCredentialsDm1LdInputDtoBuilder b),
-  ]) = _$SignCredentialsDm1LdInputDto;
+  factory SignCredentialsDm1LdInputDto([void updates(SignCredentialsDm1LdInputDtoBuilder b)]) = _$SignCredentialsDm1LdInputDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SignCredentialsDm1LdInputDtoBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<SignCredentialsDm1LdInputDto> get serializer =>
-      _$SignCredentialsDm1LdInputDtoSerializer();
+  static Serializer<SignCredentialsDm1LdInputDto> get serializer => _$SignCredentialsDm1LdInputDtoSerializer();
 }
 
-class _$SignCredentialsDm1LdInputDtoSerializer
-    implements PrimitiveSerializer<SignCredentialsDm1LdInputDto> {
+class _$SignCredentialsDm1LdInputDtoSerializer implements PrimitiveSerializer<SignCredentialsDm1LdInputDto> {
   @override
-  final Iterable<Type> types = const [
-    SignCredentialsDm1LdInputDto,
-    _$SignCredentialsDm1LdInputDto,
-  ];
+  final Iterable<Type> types = const [SignCredentialsDm1LdInputDto, _$SignCredentialsDm1LdInputDto];
 
   @override
   final String wireName = r'SignCredentialsDm1LdInputDto';
@@ -78,11 +66,7 @@ class _$SignCredentialsDm1LdInputDtoSerializer
     SignCredentialsDm1LdInputDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -98,21 +82,17 @@ class _$SignCredentialsDm1LdInputDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'unsignedCredential':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.unsignedCredential = valueDes;
           break;
         case r'revocable':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.revocable = valueDes;
           break;
         default:
@@ -143,3 +123,4 @@ class _$SignCredentialsDm1LdInputDtoSerializer
     return result.build();
   }
 }
+

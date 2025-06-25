@@ -6,5 +6,6 @@ void main() {
   final instance = GetWellKnownDidOKBuilder();
   // TODO add properties to the builder and call build()
 
-  group(GetWellKnownDidOK, () {});
+  group(GetWellKnownDidOK, () {
+  });
 }

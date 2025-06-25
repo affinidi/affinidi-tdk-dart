@@ -14,35 +14,26 @@ part 'supported_credential_metadata.g.dart';
 /// SupportedCredentialMetadata
 ///
 /// Properties:
-/// * [display]
+/// * [display] 
 @BuiltValue()
-abstract class SupportedCredentialMetadata
-    implements
-        Built<SupportedCredentialMetadata, SupportedCredentialMetadataBuilder> {
+abstract class SupportedCredentialMetadata implements Built<SupportedCredentialMetadata, SupportedCredentialMetadataBuilder> {
   @BuiltValueField(wireName: r'display')
   BuiltList<SupportedCredentialMetadataDisplayInner>? get display;
 
   SupportedCredentialMetadata._();
 
-  factory SupportedCredentialMetadata([
-    void updates(SupportedCredentialMetadataBuilder b),
-  ]) = _$SupportedCredentialMetadata;
+  factory SupportedCredentialMetadata([void updates(SupportedCredentialMetadataBuilder b)]) = _$SupportedCredentialMetadata;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SupportedCredentialMetadataBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<SupportedCredentialMetadata> get serializer =>
-      _$SupportedCredentialMetadataSerializer();
+  static Serializer<SupportedCredentialMetadata> get serializer => _$SupportedCredentialMetadataSerializer();
 }
 
-class _$SupportedCredentialMetadataSerializer
-    implements PrimitiveSerializer<SupportedCredentialMetadata> {
+class _$SupportedCredentialMetadataSerializer implements PrimitiveSerializer<SupportedCredentialMetadata> {
   @override
-  final Iterable<Type> types = const [
-    SupportedCredentialMetadata,
-    _$SupportedCredentialMetadata,
-  ];
+  final Iterable<Type> types = const [SupportedCredentialMetadata, _$SupportedCredentialMetadata];
 
   @override
   final String wireName = r'SupportedCredentialMetadata';
@@ -56,9 +47,7 @@ class _$SupportedCredentialMetadataSerializer
       yield r'display';
       yield serializers.serialize(
         object.display,
-        specifiedType: const FullType(BuiltList, [
-          FullType(SupportedCredentialMetadataDisplayInner),
-        ]),
+        specifiedType: const FullType(BuiltList, [FullType(SupportedCredentialMetadataDisplayInner)]),
       );
     }
   }
@@ -69,11 +58,7 @@ class _$SupportedCredentialMetadataSerializer
     SupportedCredentialMetadata object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -89,14 +74,10 @@ class _$SupportedCredentialMetadataSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'display':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(SupportedCredentialMetadataDisplayInner),
-                    ]),
-                  )
-                  as BuiltList<SupportedCredentialMetadataDisplayInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(SupportedCredentialMetadataDisplayInner)]),
+          ) as BuiltList<SupportedCredentialMetadataDisplayInner>;
           result.display.replace(valueDes);
           break;
         default:
@@ -127,3 +108,4 @@ class _$SupportedCredentialMetadataSerializer
     return result.build();
   }
 }
+

@@ -12,16 +12,16 @@ class _$CredentialRequirements extends CredentialRequirements {
   @override
   final CredentialRequirementsConstraints? constraints;
 
-  factory _$CredentialRequirements([
-    void Function(CredentialRequirementsBuilder)? updates,
-  ]) => (CredentialRequirementsBuilder()..update(updates))._build();
+  factory _$CredentialRequirements(
+          [void Function(CredentialRequirementsBuilder)? updates]) =>
+      (CredentialRequirementsBuilder()..update(updates))._build();
 
   _$CredentialRequirements._({required this.type, this.constraints})
-    : super._();
+      : super._();
   @override
   CredentialRequirements rebuild(
-    void Function(CredentialRequirementsBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CredentialRequirementsBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CredentialRequirementsBuilder toBuilder() =>
@@ -97,8 +97,7 @@ class CredentialRequirementsBuilder
   _$CredentialRequirements _build() {
     _$CredentialRequirements _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$CredentialRequirements._(
             type: type.build(),
             constraints: _constraints?.build(),
@@ -112,10 +111,7 @@ class CredentialRequirementsBuilder
         _constraints?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'CredentialRequirements',
-          _$failedField,
-          e.toString(),
-        );
+            r'CredentialRequirements', _$failedField, e.toString());
       }
       rethrow;
     }

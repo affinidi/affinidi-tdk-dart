@@ -10,15 +10,15 @@ class _$CorsDeleteAccountOK extends CorsDeleteAccountOK {
   @override
   final String? corsDeleteAccountOk;
 
-  factory _$CorsDeleteAccountOK([
-    void Function(CorsDeleteAccountOKBuilder)? updates,
-  ]) => (CorsDeleteAccountOKBuilder()..update(updates))._build();
+  factory _$CorsDeleteAccountOK(
+          [void Function(CorsDeleteAccountOKBuilder)? updates]) =>
+      (CorsDeleteAccountOKBuilder()..update(updates))._build();
 
   _$CorsDeleteAccountOK._({this.corsDeleteAccountOk}) : super._();
   @override
   CorsDeleteAccountOK rebuild(
-    void Function(CorsDeleteAccountOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CorsDeleteAccountOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CorsDeleteAccountOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$CorsDeleteAccountOK extends CorsDeleteAccountOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'CorsDeleteAccountOK',
-    )..add('corsDeleteAccountOk', corsDeleteAccountOk)).toString();
+    return (newBuiltValueToStringHelper(r'CorsDeleteAccountOK')
+          ..add('corsDeleteAccountOk', corsDeleteAccountOk))
+        .toString();
   }
 }
 
@@ -83,9 +83,10 @@ class CorsDeleteAccountOKBuilder
   CorsDeleteAccountOK build() => _build();
 
   _$CorsDeleteAccountOK _build() {
-    final _$result =
-        _$v ??
-        _$CorsDeleteAccountOK._(corsDeleteAccountOk: corsDeleteAccountOk);
+    final _$result = _$v ??
+        _$CorsDeleteAccountOK._(
+          corsDeleteAccountOk: corsDeleteAccountOk,
+        );
     replace(_$result);
     return _$result;
   }

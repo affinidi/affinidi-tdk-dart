@@ -14,16 +14,16 @@ class _$AddUserToGroupInput extends AddUserToGroupInput {
   @override
   final String userId;
 
-  factory _$AddUserToGroupInput([
-    void Function(AddUserToGroupInputBuilder)? updates,
-  ]) => (AddUserToGroupInputBuilder()..update(updates))._build();
+  factory _$AddUserToGroupInput(
+          [void Function(AddUserToGroupInputBuilder)? updates]) =>
+      (AddUserToGroupInputBuilder()..update(updates))._build();
 
   _$AddUserToGroupInput._({this.name, this.description, required this.userId})
-    : super._();
+      : super._();
   @override
   AddUserToGroupInput rebuild(
-    void Function(AddUserToGroupInputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(AddUserToGroupInputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   AddUserToGroupInputBuilder toBuilder() =>
@@ -103,16 +103,12 @@ class AddUserToGroupInputBuilder
   AddUserToGroupInput build() => _build();
 
   _$AddUserToGroupInput _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$AddUserToGroupInput._(
           name: name,
           description: description,
           userId: BuiltValueNullFieldError.checkNotNull(
-            userId,
-            r'AddUserToGroupInput',
-            'userId',
-          ),
+              userId, r'AddUserToGroupInput', 'userId'),
         );
     replace(_$result);
     return _$result;

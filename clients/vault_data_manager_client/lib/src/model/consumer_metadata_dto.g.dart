@@ -36,30 +36,30 @@ class _$ConsumerMetadataDto extends ConsumerMetadataDto {
   @override
   final int consumedFileStorage;
 
-  factory _$ConsumerMetadataDto([
-    void Function(ConsumerMetadataDtoBuilder)? updates,
-  ]) => (ConsumerMetadataDtoBuilder()..update(updates))._build();
+  factory _$ConsumerMetadataDto(
+          [void Function(ConsumerMetadataDtoBuilder)? updates]) =>
+      (ConsumerMetadataDtoBuilder()..update(updates))._build();
 
-  _$ConsumerMetadataDto._({
-    required this.nodeId,
-    required this.status,
-    this.fileCount,
-    this.folderCount,
-    this.profileCount,
-    required this.name,
-    required this.consumerId,
-    required this.createdAt,
-    required this.modifiedAt,
-    required this.createdBy,
-    required this.modifiedBy,
-    this.description,
-    required this.type,
-    required this.consumedFileStorage,
-  }) : super._();
+  _$ConsumerMetadataDto._(
+      {required this.nodeId,
+      required this.status,
+      this.fileCount,
+      this.folderCount,
+      this.profileCount,
+      required this.name,
+      required this.consumerId,
+      required this.createdAt,
+      required this.modifiedAt,
+      required this.createdBy,
+      required this.modifiedBy,
+      this.description,
+      required this.type,
+      required this.consumedFileStorage})
+      : super._();
   @override
   ConsumerMetadataDto rebuild(
-    void Function(ConsumerMetadataDtoBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(ConsumerMetadataDtoBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   ConsumerMetadataDtoBuilder toBuilder() =>
@@ -228,63 +228,34 @@ class ConsumerMetadataDtoBuilder
   ConsumerMetadataDto build() => _build();
 
   _$ConsumerMetadataDto _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$ConsumerMetadataDto._(
           nodeId: BuiltValueNullFieldError.checkNotNull(
-            nodeId,
-            r'ConsumerMetadataDto',
-            'nodeId',
-          ),
+              nodeId, r'ConsumerMetadataDto', 'nodeId'),
           status: BuiltValueNullFieldError.checkNotNull(
-            status,
-            r'ConsumerMetadataDto',
-            'status',
-          ),
+              status, r'ConsumerMetadataDto', 'status'),
           fileCount: fileCount,
           folderCount: folderCount,
           profileCount: profileCount,
           name: BuiltValueNullFieldError.checkNotNull(
-            name,
-            r'ConsumerMetadataDto',
-            'name',
-          ),
+              name, r'ConsumerMetadataDto', 'name'),
           consumerId: BuiltValueNullFieldError.checkNotNull(
-            consumerId,
-            r'ConsumerMetadataDto',
-            'consumerId',
-          ),
+              consumerId, r'ConsumerMetadataDto', 'consumerId'),
           createdAt: BuiltValueNullFieldError.checkNotNull(
-            createdAt,
-            r'ConsumerMetadataDto',
-            'createdAt',
-          ),
+              createdAt, r'ConsumerMetadataDto', 'createdAt'),
           modifiedAt: BuiltValueNullFieldError.checkNotNull(
-            modifiedAt,
-            r'ConsumerMetadataDto',
-            'modifiedAt',
-          ),
+              modifiedAt, r'ConsumerMetadataDto', 'modifiedAt'),
           createdBy: BuiltValueNullFieldError.checkNotNull(
-            createdBy,
-            r'ConsumerMetadataDto',
-            'createdBy',
-          ),
+              createdBy, r'ConsumerMetadataDto', 'createdBy'),
           modifiedBy: BuiltValueNullFieldError.checkNotNull(
-            modifiedBy,
-            r'ConsumerMetadataDto',
-            'modifiedBy',
-          ),
+              modifiedBy, r'ConsumerMetadataDto', 'modifiedBy'),
           description: description,
           type: BuiltValueNullFieldError.checkNotNull(
-            type,
-            r'ConsumerMetadataDto',
-            'type',
-          ),
+              type, r'ConsumerMetadataDto', 'type'),
           consumedFileStorage: BuiltValueNullFieldError.checkNotNull(
-            consumedFileStorage,
-            r'ConsumerMetadataDto',
-            'consumedFileStorage',
-          ),
+              consumedFileStorage,
+              r'ConsumerMetadataDto',
+              'consumedFileStorage'),
         );
     replace(_$result);
     return _$result;

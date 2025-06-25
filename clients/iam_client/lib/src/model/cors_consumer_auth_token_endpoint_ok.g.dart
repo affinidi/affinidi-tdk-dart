@@ -11,16 +11,16 @@ class _$CorsConsumerAuthTokenEndpointOK
   @override
   final String? corsConsumerAuthTokenEndpointOk;
 
-  factory _$CorsConsumerAuthTokenEndpointOK([
-    void Function(CorsConsumerAuthTokenEndpointOKBuilder)? updates,
-  ]) => (CorsConsumerAuthTokenEndpointOKBuilder()..update(updates))._build();
+  factory _$CorsConsumerAuthTokenEndpointOK(
+          [void Function(CorsConsumerAuthTokenEndpointOKBuilder)? updates]) =>
+      (CorsConsumerAuthTokenEndpointOKBuilder()..update(updates))._build();
 
   _$CorsConsumerAuthTokenEndpointOK._({this.corsConsumerAuthTokenEndpointOk})
-    : super._();
+      : super._();
   @override
   CorsConsumerAuthTokenEndpointOK rebuild(
-    void Function(CorsConsumerAuthTokenEndpointOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CorsConsumerAuthTokenEndpointOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CorsConsumerAuthTokenEndpointOKBuilder toBuilder() =>
@@ -45,28 +45,23 @@ class _$CorsConsumerAuthTokenEndpointOK
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'CorsConsumerAuthTokenEndpointOK')
-          ..add(
-            'corsConsumerAuthTokenEndpointOk',
-            corsConsumerAuthTokenEndpointOk,
-          ))
+          ..add('corsConsumerAuthTokenEndpointOk',
+              corsConsumerAuthTokenEndpointOk))
         .toString();
   }
 }
 
 class CorsConsumerAuthTokenEndpointOKBuilder
     implements
-        Builder<
-          CorsConsumerAuthTokenEndpointOK,
-          CorsConsumerAuthTokenEndpointOKBuilder
-        > {
+        Builder<CorsConsumerAuthTokenEndpointOK,
+            CorsConsumerAuthTokenEndpointOKBuilder> {
   _$CorsConsumerAuthTokenEndpointOK? _$v;
 
   String? _corsConsumerAuthTokenEndpointOk;
   String? get corsConsumerAuthTokenEndpointOk =>
       _$this._corsConsumerAuthTokenEndpointOk;
   set corsConsumerAuthTokenEndpointOk(
-    String? corsConsumerAuthTokenEndpointOk,
-  ) =>
+          String? corsConsumerAuthTokenEndpointOk) =>
       _$this._corsConsumerAuthTokenEndpointOk = corsConsumerAuthTokenEndpointOk;
 
   CorsConsumerAuthTokenEndpointOKBuilder() {
@@ -96,8 +91,7 @@ class CorsConsumerAuthTokenEndpointOKBuilder
   CorsConsumerAuthTokenEndpointOK build() => _build();
 
   _$CorsConsumerAuthTokenEndpointOK _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CorsConsumerAuthTokenEndpointOK._(
           corsConsumerAuthTokenEndpointOk: corsConsumerAuthTokenEndpointOk,
         );

@@ -11,28 +11,24 @@ part 'delete_access_output.g.dart';
 /// DeleteAccessOutput
 ///
 /// Properties:
-/// * [success]
+/// * [success] 
 @BuiltValue()
-abstract class DeleteAccessOutput
-    implements Built<DeleteAccessOutput, DeleteAccessOutputBuilder> {
+abstract class DeleteAccessOutput implements Built<DeleteAccessOutput, DeleteAccessOutputBuilder> {
   @BuiltValueField(wireName: r'success')
   bool get success;
 
   DeleteAccessOutput._();
 
-  factory DeleteAccessOutput([void updates(DeleteAccessOutputBuilder b)]) =
-      _$DeleteAccessOutput;
+  factory DeleteAccessOutput([void updates(DeleteAccessOutputBuilder b)]) = _$DeleteAccessOutput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(DeleteAccessOutputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<DeleteAccessOutput> get serializer =>
-      _$DeleteAccessOutputSerializer();
+  static Serializer<DeleteAccessOutput> get serializer => _$DeleteAccessOutputSerializer();
 }
 
-class _$DeleteAccessOutputSerializer
-    implements PrimitiveSerializer<DeleteAccessOutput> {
+class _$DeleteAccessOutputSerializer implements PrimitiveSerializer<DeleteAccessOutput> {
   @override
   final Iterable<Type> types = const [DeleteAccessOutput, _$DeleteAccessOutput];
 
@@ -57,11 +53,7 @@ class _$DeleteAccessOutputSerializer
     DeleteAccessOutput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -77,12 +69,10 @@ class _$DeleteAccessOutputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'success':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.success = valueDes;
           break;
         default:
@@ -113,3 +103,4 @@ class _$DeleteAccessOutputSerializer
     return result.build();
   }
 }
+

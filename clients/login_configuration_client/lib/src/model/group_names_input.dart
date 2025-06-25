@@ -12,28 +12,24 @@ part 'group_names_input.g.dart';
 /// GroupNamesInput
 ///
 /// Properties:
-/// * [groupNames]
+/// * [groupNames] 
 @BuiltValue()
-abstract class GroupNamesInput
-    implements Built<GroupNamesInput, GroupNamesInputBuilder> {
+abstract class GroupNamesInput implements Built<GroupNamesInput, GroupNamesInputBuilder> {
   @BuiltValueField(wireName: r'groupNames')
   BuiltList<String> get groupNames;
 
   GroupNamesInput._();
 
-  factory GroupNamesInput([void updates(GroupNamesInputBuilder b)]) =
-      _$GroupNamesInput;
+  factory GroupNamesInput([void updates(GroupNamesInputBuilder b)]) = _$GroupNamesInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GroupNamesInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GroupNamesInput> get serializer =>
-      _$GroupNamesInputSerializer();
+  static Serializer<GroupNamesInput> get serializer => _$GroupNamesInputSerializer();
 }
 
-class _$GroupNamesInputSerializer
-    implements PrimitiveSerializer<GroupNamesInput> {
+class _$GroupNamesInputSerializer implements PrimitiveSerializer<GroupNamesInput> {
   @override
   final Iterable<Type> types = const [GroupNamesInput, _$GroupNamesInput];
 
@@ -58,11 +54,7 @@ class _$GroupNamesInputSerializer
     GroupNamesInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -78,14 +70,10 @@ class _$GroupNamesInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'groupNames':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.groupNames.replace(valueDes);
           break;
         default:
@@ -116,3 +104,4 @@ class _$GroupNamesInputSerializer
     return result.build();
   }
 }
+

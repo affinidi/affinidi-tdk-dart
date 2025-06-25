@@ -12,34 +12,26 @@ part 'prepare_request_created.g.dart';
 /// PrepareRequestCreated
 ///
 /// Properties:
-/// * [data]
+/// * [data] 
 @BuiltValue()
-abstract class PrepareRequestCreated
-    implements Built<PrepareRequestCreated, PrepareRequestCreatedBuilder> {
+abstract class PrepareRequestCreated implements Built<PrepareRequestCreated, PrepareRequestCreatedBuilder> {
   @BuiltValueField(wireName: r'data')
   PrepareRequestCreatedData get data;
 
   PrepareRequestCreated._();
 
-  factory PrepareRequestCreated([
-    void updates(PrepareRequestCreatedBuilder b),
-  ]) = _$PrepareRequestCreated;
+  factory PrepareRequestCreated([void updates(PrepareRequestCreatedBuilder b)]) = _$PrepareRequestCreated;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(PrepareRequestCreatedBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<PrepareRequestCreated> get serializer =>
-      _$PrepareRequestCreatedSerializer();
+  static Serializer<PrepareRequestCreated> get serializer => _$PrepareRequestCreatedSerializer();
 }
 
-class _$PrepareRequestCreatedSerializer
-    implements PrimitiveSerializer<PrepareRequestCreated> {
+class _$PrepareRequestCreatedSerializer implements PrimitiveSerializer<PrepareRequestCreated> {
   @override
-  final Iterable<Type> types = const [
-    PrepareRequestCreated,
-    _$PrepareRequestCreated,
-  ];
+  final Iterable<Type> types = const [PrepareRequestCreated, _$PrepareRequestCreated];
 
   @override
   final String wireName = r'PrepareRequestCreated';
@@ -62,11 +54,7 @@ class _$PrepareRequestCreatedSerializer
     PrepareRequestCreated object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -82,12 +70,10 @@ class _$PrepareRequestCreatedSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'data':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(PrepareRequestCreatedData),
-                  )
-                  as PrepareRequestCreatedData;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(PrepareRequestCreatedData),
+          ) as PrepareRequestCreatedData;
           result.data.replace(valueDes);
           break;
         default:
@@ -118,3 +104,4 @@ class _$PrepareRequestCreatedSerializer
     return result.build();
   }
 }
+

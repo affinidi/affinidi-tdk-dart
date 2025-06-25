@@ -7,11 +7,11 @@ part of 'generate_credentials400_response.dart';
 // **************************************************************************
 
 const GenerateCredentials400ResponseNameEnum
-_$generateCredentials400ResponseNameEnum_invalidProofError =
+    _$generateCredentials400ResponseNameEnum_invalidProofError =
     const GenerateCredentials400ResponseNameEnum._('invalidProofError');
 
 GenerateCredentials400ResponseNameEnum
-_$generateCredentials400ResponseNameEnumValueOf(String name) {
+    _$generateCredentials400ResponseNameEnumValueOf(String name) {
   switch (name) {
     case 'invalidProofError':
       return _$generateCredentials400ResponseNameEnum_invalidProofError;
@@ -21,21 +21,18 @@ _$generateCredentials400ResponseNameEnumValueOf(String name) {
 }
 
 final BuiltSet<GenerateCredentials400ResponseNameEnum>
-_$generateCredentials400ResponseNameEnumValues =
-    BuiltSet<GenerateCredentials400ResponseNameEnum>(
-      const <GenerateCredentials400ResponseNameEnum>[
-        _$generateCredentials400ResponseNameEnum_invalidProofError,
-      ],
-    );
+    _$generateCredentials400ResponseNameEnumValues = BuiltSet<
+        GenerateCredentials400ResponseNameEnum>(const <GenerateCredentials400ResponseNameEnum>[
+  _$generateCredentials400ResponseNameEnum_invalidProofError,
+]);
 
 const GenerateCredentials400ResponseMessageEnum
-_$generateCredentials400ResponseMessageEnum_theProofInTheCredentialRequestIsInvalid =
+    _$generateCredentials400ResponseMessageEnum_theProofInTheCredentialRequestIsInvalid =
     const GenerateCredentials400ResponseMessageEnum._(
-      'theProofInTheCredentialRequestIsInvalid',
-    );
+        'theProofInTheCredentialRequestIsInvalid');
 
 GenerateCredentials400ResponseMessageEnum
-_$generateCredentials400ResponseMessageEnumValueOf(String name) {
+    _$generateCredentials400ResponseMessageEnumValueOf(String name) {
   switch (name) {
     case 'theProofInTheCredentialRequestIsInvalid':
       return _$generateCredentials400ResponseMessageEnum_theProofInTheCredentialRequestIsInvalid;
@@ -45,19 +42,17 @@ _$generateCredentials400ResponseMessageEnumValueOf(String name) {
 }
 
 final BuiltSet<GenerateCredentials400ResponseMessageEnum>
-_$generateCredentials400ResponseMessageEnumValues =
-    BuiltSet<GenerateCredentials400ResponseMessageEnum>(const <
-      GenerateCredentials400ResponseMessageEnum
-    >[
-      _$generateCredentials400ResponseMessageEnum_theProofInTheCredentialRequestIsInvalid,
-    ]);
+    _$generateCredentials400ResponseMessageEnumValues = BuiltSet<
+        GenerateCredentials400ResponseMessageEnum>(const <GenerateCredentials400ResponseMessageEnum>[
+  _$generateCredentials400ResponseMessageEnum_theProofInTheCredentialRequestIsInvalid,
+]);
 
 const GenerateCredentials400ResponseHttpStatusCodeEnum
-_$generateCredentials400ResponseHttpStatusCodeEnum_number400 =
+    _$generateCredentials400ResponseHttpStatusCodeEnum_number400 =
     const GenerateCredentials400ResponseHttpStatusCodeEnum._('number400');
 
 GenerateCredentials400ResponseHttpStatusCodeEnum
-_$generateCredentials400ResponseHttpStatusCodeEnumValueOf(String name) {
+    _$generateCredentials400ResponseHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$generateCredentials400ResponseHttpStatusCodeEnum_number400;
@@ -67,21 +62,19 @@ _$generateCredentials400ResponseHttpStatusCodeEnumValueOf(String name) {
 }
 
 final BuiltSet<GenerateCredentials400ResponseHttpStatusCodeEnum>
-_$generateCredentials400ResponseHttpStatusCodeEnumValues =
-    BuiltSet<GenerateCredentials400ResponseHttpStatusCodeEnum>(
-      const <GenerateCredentials400ResponseHttpStatusCodeEnum>[
-        _$generateCredentials400ResponseHttpStatusCodeEnum_number400,
-      ],
-    );
+    _$generateCredentials400ResponseHttpStatusCodeEnumValues = BuiltSet<
+        GenerateCredentials400ResponseHttpStatusCodeEnum>(const <GenerateCredentials400ResponseHttpStatusCodeEnum>[
+  _$generateCredentials400ResponseHttpStatusCodeEnum_number400,
+]);
 
 Serializer<GenerateCredentials400ResponseNameEnum>
-_$generateCredentials400ResponseNameEnumSerializer =
+    _$generateCredentials400ResponseNameEnumSerializer =
     _$GenerateCredentials400ResponseNameEnumSerializer();
 Serializer<GenerateCredentials400ResponseMessageEnum>
-_$generateCredentials400ResponseMessageEnumSerializer =
+    _$generateCredentials400ResponseMessageEnumSerializer =
     _$GenerateCredentials400ResponseMessageEnumSerializer();
 Serializer<GenerateCredentials400ResponseHttpStatusCodeEnum>
-_$generateCredentials400ResponseHttpStatusCodeEnumSerializer =
+    _$generateCredentials400ResponseHttpStatusCodeEnumSerializer =
     _$GenerateCredentials400ResponseHttpStatusCodeEnumSerializer();
 
 class _$GenerateCredentials400ResponseNameEnumSerializer
@@ -95,26 +88,23 @@ class _$GenerateCredentials400ResponseNameEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    GenerateCredentials400ResponseNameEnum,
+    GenerateCredentials400ResponseNameEnum
   ];
   @override
   final String wireName = 'GenerateCredentials400ResponseNameEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    GenerateCredentials400ResponseNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          GenerateCredentials400ResponseNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   GenerateCredentials400ResponseNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => GenerateCredentials400ResponseNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      GenerateCredentials400ResponseNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$GenerateCredentials400ResponseMessageEnumSerializer
@@ -130,26 +120,23 @@ class _$GenerateCredentials400ResponseMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    GenerateCredentials400ResponseMessageEnum,
+    GenerateCredentials400ResponseMessageEnum
   ];
   @override
   final String wireName = 'GenerateCredentials400ResponseMessageEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    GenerateCredentials400ResponseMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          GenerateCredentials400ResponseMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   GenerateCredentials400ResponseMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => GenerateCredentials400ResponseMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      GenerateCredentials400ResponseMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$GenerateCredentials400ResponseHttpStatusCodeEnumSerializer
@@ -164,41 +151,38 @@ class _$GenerateCredentials400ResponseHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    GenerateCredentials400ResponseHttpStatusCodeEnum,
+    GenerateCredentials400ResponseHttpStatusCodeEnum
   ];
   @override
   final String wireName = 'GenerateCredentials400ResponseHttpStatusCodeEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    GenerateCredentials400ResponseHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          GenerateCredentials400ResponseHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   GenerateCredentials400ResponseHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => GenerateCredentials400ResponseHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      GenerateCredentials400ResponseHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$GenerateCredentials400Response extends GenerateCredentials400Response {
   @override
   final OneOf oneOf;
 
-  factory _$GenerateCredentials400Response([
-    void Function(GenerateCredentials400ResponseBuilder)? updates,
-  ]) => (GenerateCredentials400ResponseBuilder()..update(updates))._build();
+  factory _$GenerateCredentials400Response(
+          [void Function(GenerateCredentials400ResponseBuilder)? updates]) =>
+      (GenerateCredentials400ResponseBuilder()..update(updates))._build();
 
   _$GenerateCredentials400Response._({required this.oneOf}) : super._();
   @override
   GenerateCredentials400Response rebuild(
-    void Function(GenerateCredentials400ResponseBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(GenerateCredentials400ResponseBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   GenerateCredentials400ResponseBuilder toBuilder() =>
@@ -220,18 +204,16 @@ class _$GenerateCredentials400Response extends GenerateCredentials400Response {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'GenerateCredentials400Response',
-    )..add('oneOf', oneOf)).toString();
+    return (newBuiltValueToStringHelper(r'GenerateCredentials400Response')
+          ..add('oneOf', oneOf))
+        .toString();
   }
 }
 
 class GenerateCredentials400ResponseBuilder
     implements
-        Builder<
-          GenerateCredentials400Response,
-          GenerateCredentials400ResponseBuilder
-        > {
+        Builder<GenerateCredentials400Response,
+            GenerateCredentials400ResponseBuilder> {
   _$GenerateCredentials400Response? _$v;
 
   OneOf? _oneOf;
@@ -265,14 +247,10 @@ class GenerateCredentials400ResponseBuilder
   GenerateCredentials400Response build() => _build();
 
   _$GenerateCredentials400Response _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$GenerateCredentials400Response._(
           oneOf: BuiltValueNullFieldError.checkNotNull(
-            oneOf,
-            r'GenerateCredentials400Response',
-            'oneOf',
-          ),
+              oneOf, r'GenerateCredentials400Response', 'oneOf'),
         );
     replace(_$result);
     return _$result;

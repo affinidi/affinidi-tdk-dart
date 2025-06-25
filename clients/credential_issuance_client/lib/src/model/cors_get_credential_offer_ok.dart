@@ -11,35 +11,26 @@ part 'cors_get_credential_offer_ok.g.dart';
 /// CorsGetCredentialOfferOK
 ///
 /// Properties:
-/// * [corsGetCredentialOfferOk]
+/// * [corsGetCredentialOfferOk] 
 @BuiltValue()
-abstract class CorsGetCredentialOfferOK
-    implements
-        Built<CorsGetCredentialOfferOK, CorsGetCredentialOfferOKBuilder> {
+abstract class CorsGetCredentialOfferOK implements Built<CorsGetCredentialOfferOK, CorsGetCredentialOfferOKBuilder> {
   @BuiltValueField(wireName: r'corsGetCredentialOfferOk')
   String? get corsGetCredentialOfferOk;
 
   CorsGetCredentialOfferOK._();
 
-  factory CorsGetCredentialOfferOK([
-    void updates(CorsGetCredentialOfferOKBuilder b),
-  ]) = _$CorsGetCredentialOfferOK;
+  factory CorsGetCredentialOfferOK([void updates(CorsGetCredentialOfferOKBuilder b)]) = _$CorsGetCredentialOfferOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsGetCredentialOfferOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CorsGetCredentialOfferOK> get serializer =>
-      _$CorsGetCredentialOfferOKSerializer();
+  static Serializer<CorsGetCredentialOfferOK> get serializer => _$CorsGetCredentialOfferOKSerializer();
 }
 
-class _$CorsGetCredentialOfferOKSerializer
-    implements PrimitiveSerializer<CorsGetCredentialOfferOK> {
+class _$CorsGetCredentialOfferOKSerializer implements PrimitiveSerializer<CorsGetCredentialOfferOK> {
   @override
-  final Iterable<Type> types = const [
-    CorsGetCredentialOfferOK,
-    _$CorsGetCredentialOfferOK,
-  ];
+  final Iterable<Type> types = const [CorsGetCredentialOfferOK, _$CorsGetCredentialOfferOK];
 
   @override
   final String wireName = r'CorsGetCredentialOfferOK';
@@ -64,11 +55,7 @@ class _$CorsGetCredentialOfferOKSerializer
     CorsGetCredentialOfferOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -84,12 +71,10 @@ class _$CorsGetCredentialOfferOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsGetCredentialOfferOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsGetCredentialOfferOk = valueDes;
           break;
         default:
@@ -120,3 +105,4 @@ class _$CorsGetCredentialOfferOKSerializer
     return result.build();
   }
 }
+

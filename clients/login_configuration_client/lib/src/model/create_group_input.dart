@@ -12,11 +12,10 @@ part 'create_group_input.g.dart';
 ///
 /// Properties:
 /// * [groupName] - name of the group for users, used as an id
-/// * [name]
-/// * [description]
+/// * [name] 
+/// * [description] 
 @BuiltValue()
-abstract class CreateGroupInput
-    implements Built<CreateGroupInput, CreateGroupInputBuilder> {
+abstract class CreateGroupInput implements Built<CreateGroupInput, CreateGroupInputBuilder> {
   /// name of the group for users, used as an id
   @BuiltValueField(wireName: r'groupName')
   String get groupName;
@@ -29,19 +28,16 @@ abstract class CreateGroupInput
 
   CreateGroupInput._();
 
-  factory CreateGroupInput([void updates(CreateGroupInputBuilder b)]) =
-      _$CreateGroupInput;
+  factory CreateGroupInput([void updates(CreateGroupInputBuilder b)]) = _$CreateGroupInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateGroupInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateGroupInput> get serializer =>
-      _$CreateGroupInputSerializer();
+  static Serializer<CreateGroupInput> get serializer => _$CreateGroupInputSerializer();
 }
 
-class _$CreateGroupInputSerializer
-    implements PrimitiveSerializer<CreateGroupInput> {
+class _$CreateGroupInputSerializer implements PrimitiveSerializer<CreateGroupInput> {
   @override
   final Iterable<Type> types = const [CreateGroupInput, _$CreateGroupInput];
 
@@ -80,11 +76,7 @@ class _$CreateGroupInputSerializer
     CreateGroupInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -100,30 +92,24 @@ class _$CreateGroupInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'groupName':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.groupName = valueDes;
           break;
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.description = valueDes;
           break;
         default:
@@ -154,3 +140,4 @@ class _$CreateGroupInputSerializer
     return result.build();
   }
 }
+

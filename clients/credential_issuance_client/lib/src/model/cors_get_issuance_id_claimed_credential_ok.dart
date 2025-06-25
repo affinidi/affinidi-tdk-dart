@@ -11,38 +11,26 @@ part 'cors_get_issuance_id_claimed_credential_ok.g.dart';
 /// CorsGetIssuanceIdClaimedCredentialOK
 ///
 /// Properties:
-/// * [corsGetIssuanceIdClaimedCredentialOk]
+/// * [corsGetIssuanceIdClaimedCredentialOk] 
 @BuiltValue()
-abstract class CorsGetIssuanceIdClaimedCredentialOK
-    implements
-        Built<
-          CorsGetIssuanceIdClaimedCredentialOK,
-          CorsGetIssuanceIdClaimedCredentialOKBuilder
-        > {
+abstract class CorsGetIssuanceIdClaimedCredentialOK implements Built<CorsGetIssuanceIdClaimedCredentialOK, CorsGetIssuanceIdClaimedCredentialOKBuilder> {
   @BuiltValueField(wireName: r'corsGetIssuanceIdClaimedCredentialOk')
   String? get corsGetIssuanceIdClaimedCredentialOk;
 
   CorsGetIssuanceIdClaimedCredentialOK._();
 
-  factory CorsGetIssuanceIdClaimedCredentialOK([
-    void updates(CorsGetIssuanceIdClaimedCredentialOKBuilder b),
-  ]) = _$CorsGetIssuanceIdClaimedCredentialOK;
+  factory CorsGetIssuanceIdClaimedCredentialOK([void updates(CorsGetIssuanceIdClaimedCredentialOKBuilder b)]) = _$CorsGetIssuanceIdClaimedCredentialOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsGetIssuanceIdClaimedCredentialOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CorsGetIssuanceIdClaimedCredentialOK> get serializer =>
-      _$CorsGetIssuanceIdClaimedCredentialOKSerializer();
+  static Serializer<CorsGetIssuanceIdClaimedCredentialOK> get serializer => _$CorsGetIssuanceIdClaimedCredentialOKSerializer();
 }
 
-class _$CorsGetIssuanceIdClaimedCredentialOKSerializer
-    implements PrimitiveSerializer<CorsGetIssuanceIdClaimedCredentialOK> {
+class _$CorsGetIssuanceIdClaimedCredentialOKSerializer implements PrimitiveSerializer<CorsGetIssuanceIdClaimedCredentialOK> {
   @override
-  final Iterable<Type> types = const [
-    CorsGetIssuanceIdClaimedCredentialOK,
-    _$CorsGetIssuanceIdClaimedCredentialOK,
-  ];
+  final Iterable<Type> types = const [CorsGetIssuanceIdClaimedCredentialOK, _$CorsGetIssuanceIdClaimedCredentialOK];
 
   @override
   final String wireName = r'CorsGetIssuanceIdClaimedCredentialOK';
@@ -67,11 +55,7 @@ class _$CorsGetIssuanceIdClaimedCredentialOKSerializer
     CorsGetIssuanceIdClaimedCredentialOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -87,12 +71,10 @@ class _$CorsGetIssuanceIdClaimedCredentialOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsGetIssuanceIdClaimedCredentialOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsGetIssuanceIdClaimedCredentialOk = valueDes;
           break;
         default:
@@ -123,3 +105,4 @@ class _$CorsGetIssuanceIdClaimedCredentialOKSerializer
     return result.build();
   }
 }
+

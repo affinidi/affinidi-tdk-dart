@@ -15,8 +15,7 @@ part 'issuance_state_response.g.dart';
 /// * [issuanceId] - Website's internal identifier. Website may use to get info about the status of issuance flow. If it is not provided, CIS will generate one.
 /// * [status] - String describing the status of the issuance
 @BuiltValue()
-abstract class IssuanceStateResponse
-    implements Built<IssuanceStateResponse, IssuanceStateResponseBuilder> {
+abstract class IssuanceStateResponse implements Built<IssuanceStateResponse, IssuanceStateResponseBuilder> {
   /// Website's internal identifier. Website may use to get info about the status of issuance flow. If it is not provided, CIS will generate one.
   @BuiltValueField(wireName: r'issuanceId')
   String get issuanceId;
@@ -28,25 +27,18 @@ abstract class IssuanceStateResponse
 
   IssuanceStateResponse._();
 
-  factory IssuanceStateResponse([
-    void updates(IssuanceStateResponseBuilder b),
-  ]) = _$IssuanceStateResponse;
+  factory IssuanceStateResponse([void updates(IssuanceStateResponseBuilder b)]) = _$IssuanceStateResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(IssuanceStateResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<IssuanceStateResponse> get serializer =>
-      _$IssuanceStateResponseSerializer();
+  static Serializer<IssuanceStateResponse> get serializer => _$IssuanceStateResponseSerializer();
 }
 
-class _$IssuanceStateResponseSerializer
-    implements PrimitiveSerializer<IssuanceStateResponse> {
+class _$IssuanceStateResponseSerializer implements PrimitiveSerializer<IssuanceStateResponse> {
   @override
-  final Iterable<Type> types = const [
-    IssuanceStateResponse,
-    _$IssuanceStateResponse,
-  ];
+  final Iterable<Type> types = const [IssuanceStateResponse, _$IssuanceStateResponse];
 
   @override
   final String wireName = r'IssuanceStateResponse';
@@ -74,11 +66,7 @@ class _$IssuanceStateResponseSerializer
     IssuanceStateResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -94,23 +82,17 @@ class _$IssuanceStateResponseSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'issuanceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.issuanceId = valueDes;
           break;
         case r'status':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      IssuanceStateResponseStatusEnum,
-                    ),
-                  )
-                  as IssuanceStateResponseStatusEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(IssuanceStateResponseStatusEnum),
+          ) as IssuanceStateResponseStatusEnum;
           result.status = valueDes;
           break;
         default:
@@ -143,33 +125,25 @@ class _$IssuanceStateResponseSerializer
 }
 
 class IssuanceStateResponseStatusEnum extends EnumClass {
+
   /// String describing the status of the issuance
   @BuiltValueEnumConst(wireName: r'INIT')
-  static const IssuanceStateResponseStatusEnum INIT =
-      _$issuanceStateResponseStatusEnum_INIT;
-
+  static const IssuanceStateResponseStatusEnum INIT = _$issuanceStateResponseStatusEnum_INIT;
   /// String describing the status of the issuance
   @BuiltValueEnumConst(wireName: r'OFFER_DELIVERED')
-  static const IssuanceStateResponseStatusEnum OFFER_DELIVERED =
-      _$issuanceStateResponseStatusEnum_OFFER_DELIVERED;
-
+  static const IssuanceStateResponseStatusEnum OFFER_DELIVERED = _$issuanceStateResponseStatusEnum_OFFER_DELIVERED;
   /// String describing the status of the issuance
   @BuiltValueEnumConst(wireName: r'VC_CLAIMED')
-  static const IssuanceStateResponseStatusEnum VC_CLAIMED =
-      _$issuanceStateResponseStatusEnum_VC_CLAIMED;
-
+  static const IssuanceStateResponseStatusEnum VC_CLAIMED = _$issuanceStateResponseStatusEnum_VC_CLAIMED;
   /// String describing the status of the issuance
   @BuiltValueEnumConst(wireName: r'TIMEOUT')
-  static const IssuanceStateResponseStatusEnum TIMEOUT =
-      _$issuanceStateResponseStatusEnum_TIMEOUT;
+  static const IssuanceStateResponseStatusEnum TIMEOUT = _$issuanceStateResponseStatusEnum_TIMEOUT;
 
-  static Serializer<IssuanceStateResponseStatusEnum> get serializer =>
-      _$issuanceStateResponseStatusEnumSerializer;
+  static Serializer<IssuanceStateResponseStatusEnum> get serializer => _$issuanceStateResponseStatusEnumSerializer;
 
-  const IssuanceStateResponseStatusEnum._(String name) : super(name);
+  const IssuanceStateResponseStatusEnum._(String name): super(name);
 
-  static BuiltSet<IssuanceStateResponseStatusEnum> get values =>
-      _$issuanceStateResponseStatusEnumValues;
-  static IssuanceStateResponseStatusEnum valueOf(String name) =>
-      _$issuanceStateResponseStatusEnumValueOf(name);
+  static BuiltSet<IssuanceStateResponseStatusEnum> get values => _$issuanceStateResponseStatusEnumValues;
+  static IssuanceStateResponseStatusEnum valueOf(String name) => _$issuanceStateResponseStatusEnumValueOf(name);
 }
+

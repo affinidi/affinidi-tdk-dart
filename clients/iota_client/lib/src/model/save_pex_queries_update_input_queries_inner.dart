@@ -15,12 +15,7 @@ part 'save_pex_queries_update_input_queries_inner.g.dart';
 /// * [vpDefinition] - The presentation definition describing the data requirement that must be satisfied by the user. The value is in a JSON stringify format.
 /// * [description] - An optional description of what the query is used for.
 @BuiltValue()
-abstract class SavePexQueriesUpdateInputQueriesInner
-    implements
-        Built<
-          SavePexQueriesUpdateInputQueriesInner,
-          SavePexQueriesUpdateInputQueriesInnerBuilder
-        > {
+abstract class SavePexQueriesUpdateInputQueriesInner implements Built<SavePexQueriesUpdateInputQueriesInner, SavePexQueriesUpdateInputQueriesInnerBuilder> {
   /// The ID of the query.
   @BuiltValueField(wireName: r'queryId')
   String get queryId;
@@ -35,25 +30,18 @@ abstract class SavePexQueriesUpdateInputQueriesInner
 
   SavePexQueriesUpdateInputQueriesInner._();
 
-  factory SavePexQueriesUpdateInputQueriesInner([
-    void updates(SavePexQueriesUpdateInputQueriesInnerBuilder b),
-  ]) = _$SavePexQueriesUpdateInputQueriesInner;
+  factory SavePexQueriesUpdateInputQueriesInner([void updates(SavePexQueriesUpdateInputQueriesInnerBuilder b)]) = _$SavePexQueriesUpdateInputQueriesInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SavePexQueriesUpdateInputQueriesInnerBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<SavePexQueriesUpdateInputQueriesInner> get serializer =>
-      _$SavePexQueriesUpdateInputQueriesInnerSerializer();
+  static Serializer<SavePexQueriesUpdateInputQueriesInner> get serializer => _$SavePexQueriesUpdateInputQueriesInnerSerializer();
 }
 
-class _$SavePexQueriesUpdateInputQueriesInnerSerializer
-    implements PrimitiveSerializer<SavePexQueriesUpdateInputQueriesInner> {
+class _$SavePexQueriesUpdateInputQueriesInnerSerializer implements PrimitiveSerializer<SavePexQueriesUpdateInputQueriesInner> {
   @override
-  final Iterable<Type> types = const [
-    SavePexQueriesUpdateInputQueriesInner,
-    _$SavePexQueriesUpdateInputQueriesInner,
-  ];
+  final Iterable<Type> types = const [SavePexQueriesUpdateInputQueriesInner, _$SavePexQueriesUpdateInputQueriesInner];
 
   @override
   final String wireName = r'SavePexQueriesUpdateInputQueriesInner';
@@ -90,11 +78,7 @@ class _$SavePexQueriesUpdateInputQueriesInnerSerializer
     SavePexQueriesUpdateInputQueriesInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -110,30 +94,24 @@ class _$SavePexQueriesUpdateInputQueriesInnerSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'queryId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.queryId = valueDes;
           break;
         case r'vpDefinition':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.vpDefinition = valueDes;
           break;
         case r'description':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.description = valueDes;
           break;
         default:
@@ -164,3 +142,4 @@ class _$SavePexQueriesUpdateInputQueriesInnerSerializer
     return result.build();
   }
 }
+

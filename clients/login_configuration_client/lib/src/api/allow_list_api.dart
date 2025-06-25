@@ -14,6 +14,7 @@ import 'package:affinidi_tdk_login_configuration_client/src/model/group_names_in
 import 'package:affinidi_tdk_login_configuration_client/src/model/invalid_groups_error.dart';
 
 class AllowListApi {
+
   final Dio _dio;
 
   final Serializers _serializers;
@@ -34,7 +35,7 @@ class AllowListApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> allowGroups({
+  Future<Response<void>> allowGroups({ 
     GroupNamesInput? groupNamesInput,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -46,7 +47,9 @@ class AllowListApi {
     final _path = r'/v1/allow-list/groups/add';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -66,12 +69,14 @@ class AllowListApi {
 
     try {
       const _type = FullType(GroupNamesInput);
-      _bodyData = groupNamesInput == null
-          ? null
-          : _serializers.serialize(groupNamesInput, specifiedType: _type);
-    } catch (error, stackTrace) {
+      _bodyData = groupNamesInput == null ? null : _serializers.serialize(groupNamesInput, specifiedType: _type);
+
+    } catch(error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+         requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -104,7 +109,7 @@ class AllowListApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> disallowGroups({
+  Future<Response<void>> disallowGroups({ 
     GroupNamesInput? groupNamesInput,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -116,7 +121,9 @@ class AllowListApi {
     final _path = r'/v1/allow-list/groups/remove';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -136,12 +143,14 @@ class AllowListApi {
 
     try {
       const _type = FullType(GroupNamesInput);
-      _bodyData = groupNamesInput == null
-          ? null
-          : _serializers.serialize(groupNamesInput, specifiedType: _type);
-    } catch (error, stackTrace) {
+      _bodyData = groupNamesInput == null ? null : _serializers.serialize(groupNamesInput, specifiedType: _type);
+
+    } catch(error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+         requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -164,7 +173,7 @@ class AllowListApi {
   /// Get Allowed Groups
   ///
   /// Parameters:
-  /// * [pageToken]
+  /// * [pageToken] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -174,7 +183,7 @@ class AllowListApi {
   ///
   /// Returns a [Future] containing a [Response] with a [GroupNames] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GroupNames>> listAllowedGroups({
+  Future<Response<GroupNames>> listAllowedGroups({ 
     String? pageToken,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -186,7 +195,9 @@ class AllowListApi {
     final _path = r'/v1/allow-list/groups';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -202,12 +213,7 @@ class AllowListApi {
     );
 
     final _queryParameters = <String, dynamic>{
-      if (pageToken != null)
-        r'pageToken': encodeQueryParameter(
-          _serializers,
-          pageToken,
-          const FullType(String),
-        ),
+      if (pageToken != null) r'pageToken': encodeQueryParameter(_serializers, pageToken, const FullType(String)),
     };
 
     final _response = await _dio.request<Object>(
@@ -223,13 +229,11 @@ class AllowListApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(GroupNames),
-                )
-                as GroupNames;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(GroupNames),
+      ) as GroupNames;
+
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -251,4 +255,5 @@ class AllowListApi {
       extra: _response.extra,
     );
   }
+
 }

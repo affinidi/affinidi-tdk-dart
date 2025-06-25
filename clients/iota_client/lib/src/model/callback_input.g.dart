@@ -23,14 +23,14 @@ class _$CallbackInput extends CallbackInput {
   factory _$CallbackInput([void Function(CallbackInputBuilder)? updates]) =>
       (CallbackInputBuilder()..update(updates))._build();
 
-  _$CallbackInput._({
-    required this.state,
-    this.presentationSubmission,
-    this.vpToken,
-    this.error,
-    this.errorDescription,
-    this.onboarded,
-  }) : super._();
+  _$CallbackInput._(
+      {required this.state,
+      this.presentationSubmission,
+      this.vpToken,
+      this.error,
+      this.errorDescription,
+      this.onboarded})
+      : super._();
   @override
   CallbackInput rebuild(void Function(CallbackInputBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -138,14 +138,10 @@ class CallbackInputBuilder
   CallbackInput build() => _build();
 
   _$CallbackInput _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CallbackInput._(
           state: BuiltValueNullFieldError.checkNotNull(
-            state,
-            r'CallbackInput',
-            'state',
-          ),
+              state, r'CallbackInput', 'state'),
           presentationSubmission: presentationSubmission,
           vpToken: vpToken,
           error: error,

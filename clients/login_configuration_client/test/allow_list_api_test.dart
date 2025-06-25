@@ -1,6 +1,7 @@
 import 'package:test/test.dart';
 import 'package:affinidi_tdk_login_configuration_client/affinidi_tdk_login_configuration_client.dart';
 
+
 /// tests for AllowListApi
 void main() {
   final instance = AffinidiTdkLoginConfigurationClient().getAllowListApi();
@@ -26,5 +27,6 @@ void main() {
     test('test listAllowedGroups', () async {
       // TODO
     });
+
   });
 }

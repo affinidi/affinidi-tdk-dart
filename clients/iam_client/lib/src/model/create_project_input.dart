@@ -11,11 +11,10 @@ part 'create_project_input.g.dart';
 /// CreateProjectInput
 ///
 /// Properties:
-/// * [name]
-/// * [description]
+/// * [name] 
+/// * [description] 
 @BuiltValue()
-abstract class CreateProjectInput
-    implements Built<CreateProjectInput, CreateProjectInputBuilder> {
+abstract class CreateProjectInput implements Built<CreateProjectInput, CreateProjectInputBuilder> {
   @BuiltValueField(wireName: r'name')
   String get name;
 
@@ -24,19 +23,16 @@ abstract class CreateProjectInput
 
   CreateProjectInput._();
 
-  factory CreateProjectInput([void updates(CreateProjectInputBuilder b)]) =
-      _$CreateProjectInput;
+  factory CreateProjectInput([void updates(CreateProjectInputBuilder b)]) = _$CreateProjectInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateProjectInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateProjectInput> get serializer =>
-      _$CreateProjectInputSerializer();
+  static Serializer<CreateProjectInput> get serializer => _$CreateProjectInputSerializer();
 }
 
-class _$CreateProjectInputSerializer
-    implements PrimitiveSerializer<CreateProjectInput> {
+class _$CreateProjectInputSerializer implements PrimitiveSerializer<CreateProjectInput> {
   @override
   final Iterable<Type> types = const [CreateProjectInput, _$CreateProjectInput];
 
@@ -68,11 +64,7 @@ class _$CreateProjectInputSerializer
     CreateProjectInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -88,21 +80,17 @@ class _$CreateProjectInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.description = valueDes;
           break;
         default:
@@ -133,3 +121,4 @@ class _$CreateProjectInputSerializer
     return result.build();
   }
 }
+

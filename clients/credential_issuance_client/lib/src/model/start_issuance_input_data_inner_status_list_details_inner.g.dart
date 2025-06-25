@@ -7,15 +7,13 @@ part of 'start_issuance_input_data_inner_status_list_details_inner.dart';
 // **************************************************************************
 
 const StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum
-_$startIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum_REVOCABLE =
+    _$startIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum_REVOCABLE =
     const StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum._(
-      'REVOCABLE',
-    );
+        'REVOCABLE');
 
 StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum
-_$startIssuanceInputDataInnerStatusListDetailsInnerPurposeEnumValueOf(
-  String name,
-) {
+    _$startIssuanceInputDataInnerStatusListDetailsInnerPurposeEnumValueOf(
+        String name) {
   switch (name) {
     case 'REVOCABLE':
       return _$startIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum_REVOCABLE;
@@ -25,28 +23,24 @@ _$startIssuanceInputDataInnerStatusListDetailsInnerPurposeEnumValueOf(
 }
 
 final BuiltSet<StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum>
-_$startIssuanceInputDataInnerStatusListDetailsInnerPurposeEnumValues =
+    _$startIssuanceInputDataInnerStatusListDetailsInnerPurposeEnumValues =
     BuiltSet<
-      StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum
-    >(const <StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum>[
-      _$startIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum_REVOCABLE,
-    ]);
+        StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum>(const <StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum>[
+  _$startIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum_REVOCABLE,
+]);
 
 const StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum
-_$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnum_revocationList2020 =
+    _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnum_revocationList2020 =
     const StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum._(
-      'revocationList2020',
-    );
+        'revocationList2020');
 const StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum
-_$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnum_bitstringStatusListV1 =
+    _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnum_bitstringStatusListV1 =
     const StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum._(
-      'bitstringStatusListV1',
-    );
+        'bitstringStatusListV1');
 
 StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum
-_$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnumValueOf(
-  String name,
-) {
+    _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnumValueOf(
+        String name) {
   switch (name) {
     case 'revocationList2020':
       return _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnum_revocationList2020;
@@ -58,26 +52,24 @@ _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnumValueOf(
 }
 
 final BuiltSet<StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum>
-_$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnumValues =
+    _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnumValues =
     BuiltSet<
-      StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum
-    >(const <StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum>[
-      _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnum_revocationList2020,
-      _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnum_bitstringStatusListV1,
-    ]);
+        StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum>(const <StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum>[
+  _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnum_revocationList2020,
+  _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnum_bitstringStatusListV1,
+]);
 
 Serializer<StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum>
-_$startIssuanceInputDataInnerStatusListDetailsInnerPurposeEnumSerializer =
+    _$startIssuanceInputDataInnerStatusListDetailsInnerPurposeEnumSerializer =
     _$StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnumSerializer();
 Serializer<StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum>
-_$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnumSerializer =
+    _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnumSerializer =
     _$StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnumSerializer();
 
 class _$StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnumSerializer
     implements
         PrimitiveSerializer<
-          StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum
-        > {
+            StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum> {
   static const Map<String, Object> _toWire = const <String, Object>{
     'REVOCABLE': 'REVOCABLE',
   };
@@ -87,34 +79,30 @@ class _$StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum,
+    StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum
   ];
   @override
   final String wireName =
       'StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnumSerializer
     implements
         PrimitiveSerializer<
-          StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum
-        > {
+            StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum> {
   static const Map<String, Object> _toWire = const <String, Object>{
     'revocationList2020': 'RevocationList2020',
     'bitstringStatusListV1': 'BitstringStatusListV1',
@@ -126,27 +114,24 @@ class _$StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum,
+    StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum
   ];
   @override
   final String wireName =
       'StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$StartIssuanceInputDataInnerStatusListDetailsInner
@@ -156,23 +141,23 @@ class _$StartIssuanceInputDataInnerStatusListDetailsInner
   @override
   final StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum standard;
 
-  factory _$StartIssuanceInputDataInnerStatusListDetailsInner([
-    void Function(StartIssuanceInputDataInnerStatusListDetailsInnerBuilder)?
-    updates,
-  ]) =>
+  factory _$StartIssuanceInputDataInnerStatusListDetailsInner(
+          [void Function(
+                  StartIssuanceInputDataInnerStatusListDetailsInnerBuilder)?
+              updates]) =>
       (StartIssuanceInputDataInnerStatusListDetailsInnerBuilder()
             ..update(updates))
           ._build();
 
-  _$StartIssuanceInputDataInnerStatusListDetailsInner._({
-    required this.purpose,
-    required this.standard,
-  }) : super._();
+  _$StartIssuanceInputDataInnerStatusListDetailsInner._(
+      {required this.purpose, required this.standard})
+      : super._();
   @override
   StartIssuanceInputDataInnerStatusListDetailsInner rebuild(
-    void Function(StartIssuanceInputDataInnerStatusListDetailsInnerBuilder)
-    updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(
+                  StartIssuanceInputDataInnerStatusListDetailsInnerBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   StartIssuanceInputDataInnerStatusListDetailsInnerBuilder toBuilder() =>
@@ -198,8 +183,7 @@ class _$StartIssuanceInputDataInnerStatusListDetailsInner
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'StartIssuanceInputDataInnerStatusListDetailsInner',
-          )
+            r'StartIssuanceInputDataInnerStatusListDetailsInner')
           ..add('purpose', purpose)
           ..add('standard', standard))
         .toString();
@@ -208,25 +192,25 @@ class _$StartIssuanceInputDataInnerStatusListDetailsInner
 
 class StartIssuanceInputDataInnerStatusListDetailsInnerBuilder
     implements
-        Builder<
-          StartIssuanceInputDataInnerStatusListDetailsInner,
-          StartIssuanceInputDataInnerStatusListDetailsInnerBuilder
-        > {
+        Builder<StartIssuanceInputDataInnerStatusListDetailsInner,
+            StartIssuanceInputDataInnerStatusListDetailsInnerBuilder> {
   _$StartIssuanceInputDataInnerStatusListDetailsInner? _$v;
 
   StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum? _purpose;
   StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum? get purpose =>
       _$this._purpose;
   set purpose(
-    StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum? purpose,
-  ) => _$this._purpose = purpose;
+          StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum?
+              purpose) =>
+      _$this._purpose = purpose;
 
   StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum? _standard;
   StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum? get standard =>
       _$this._standard;
   set standard(
-    StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum? standard,
-  ) => _$this._standard = standard;
+          StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum?
+              standard) =>
+      _$this._standard = standard;
 
   StartIssuanceInputDataInnerStatusListDetailsInnerBuilder() {
     StartIssuanceInputDataInnerStatusListDetailsInner._defaults(this);
@@ -249,9 +233,8 @@ class StartIssuanceInputDataInnerStatusListDetailsInnerBuilder
 
   @override
   void update(
-    void Function(StartIssuanceInputDataInnerStatusListDetailsInnerBuilder)?
-    updates,
-  ) {
+      void Function(StartIssuanceInputDataInnerStatusListDetailsInnerBuilder)?
+          updates) {
     if (updates != null) updates(this);
   }
 
@@ -259,19 +242,12 @@ class StartIssuanceInputDataInnerStatusListDetailsInnerBuilder
   StartIssuanceInputDataInnerStatusListDetailsInner build() => _build();
 
   _$StartIssuanceInputDataInnerStatusListDetailsInner _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$StartIssuanceInputDataInnerStatusListDetailsInner._(
-          purpose: BuiltValueNullFieldError.checkNotNull(
-            purpose,
-            r'StartIssuanceInputDataInnerStatusListDetailsInner',
-            'purpose',
-          ),
-          standard: BuiltValueNullFieldError.checkNotNull(
-            standard,
-            r'StartIssuanceInputDataInnerStatusListDetailsInner',
-            'standard',
-          ),
+          purpose: BuiltValueNullFieldError.checkNotNull(purpose,
+              r'StartIssuanceInputDataInnerStatusListDetailsInner', 'purpose'),
+          standard: BuiltValueNullFieldError.checkNotNull(standard,
+              r'StartIssuanceInputDataInnerStatusListDetailsInner', 'standard'),
         );
     replace(_$result);
     return _$result;

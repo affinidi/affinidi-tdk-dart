@@ -13,14 +13,9 @@ part 'cis_configuration_webhook_setting.g.dart';
 ///
 /// Properties:
 /// * [enabled] - flag to enabled or disabled the webhook
-/// * [endpoint]
+/// * [endpoint] 
 @BuiltValue()
-abstract class CisConfigurationWebhookSetting
-    implements
-        Built<
-          CisConfigurationWebhookSetting,
-          CisConfigurationWebhookSettingBuilder
-        > {
+abstract class CisConfigurationWebhookSetting implements Built<CisConfigurationWebhookSetting, CisConfigurationWebhookSettingBuilder> {
   /// flag to enabled or disabled the webhook
   @BuiltValueField(wireName: r'enabled')
   bool get enabled;
@@ -30,26 +25,19 @@ abstract class CisConfigurationWebhookSetting
 
   CisConfigurationWebhookSetting._();
 
-  factory CisConfigurationWebhookSetting([
-    void updates(CisConfigurationWebhookSettingBuilder b),
-  ]) = _$CisConfigurationWebhookSetting;
+  factory CisConfigurationWebhookSetting([void updates(CisConfigurationWebhookSettingBuilder b)]) = _$CisConfigurationWebhookSetting;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(CisConfigurationWebhookSettingBuilder b) =>
-      b..enabled = false;
+  static void _defaults(CisConfigurationWebhookSettingBuilder b) => b
+      ..enabled = false;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CisConfigurationWebhookSetting> get serializer =>
-      _$CisConfigurationWebhookSettingSerializer();
+  static Serializer<CisConfigurationWebhookSetting> get serializer => _$CisConfigurationWebhookSettingSerializer();
 }
 
-class _$CisConfigurationWebhookSettingSerializer
-    implements PrimitiveSerializer<CisConfigurationWebhookSetting> {
+class _$CisConfigurationWebhookSettingSerializer implements PrimitiveSerializer<CisConfigurationWebhookSetting> {
   @override
-  final Iterable<Type> types = const [
-    CisConfigurationWebhookSetting,
-    _$CisConfigurationWebhookSetting,
-  ];
+  final Iterable<Type> types = const [CisConfigurationWebhookSetting, _$CisConfigurationWebhookSetting];
 
   @override
   final String wireName = r'CisConfigurationWebhookSetting';
@@ -79,11 +67,7 @@ class _$CisConfigurationWebhookSettingSerializer
     CisConfigurationWebhookSetting object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -99,23 +83,17 @@ class _$CisConfigurationWebhookSettingSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'enabled':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.enabled = valueDes;
           break;
         case r'endpoint':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CisConfigurationWebhookSettingEndpoint,
-                    ),
-                  )
-                  as CisConfigurationWebhookSettingEndpoint;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CisConfigurationWebhookSettingEndpoint),
+          ) as CisConfigurationWebhookSettingEndpoint;
           result.endpoint.replace(valueDes);
           break;
         default:
@@ -146,3 +124,4 @@ class _$CisConfigurationWebhookSettingSerializer
     return result.build();
   }
 }
+

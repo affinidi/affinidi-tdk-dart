@@ -15,8 +15,7 @@ part 'id_token_mapping_item.g.dart';
 /// * [idTokenClaim] - Name of the corresponding field in the id_token
 /// * [inputDescriptorId] - Id of related input descriptor from presentation definition
 @BuiltValue()
-abstract class IdTokenMappingItem
-    implements Built<IdTokenMappingItem, IdTokenMappingItemBuilder> {
+abstract class IdTokenMappingItem implements Built<IdTokenMappingItem, IdTokenMappingItemBuilder> {
   /// Name(path) of the corresponding field in the vp_token
   @BuiltValueField(wireName: r'sourceField')
   String get sourceField;
@@ -31,19 +30,16 @@ abstract class IdTokenMappingItem
 
   IdTokenMappingItem._();
 
-  factory IdTokenMappingItem([void updates(IdTokenMappingItemBuilder b)]) =
-      _$IdTokenMappingItem;
+  factory IdTokenMappingItem([void updates(IdTokenMappingItemBuilder b)]) = _$IdTokenMappingItem;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(IdTokenMappingItemBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<IdTokenMappingItem> get serializer =>
-      _$IdTokenMappingItemSerializer();
+  static Serializer<IdTokenMappingItem> get serializer => _$IdTokenMappingItemSerializer();
 }
 
-class _$IdTokenMappingItemSerializer
-    implements PrimitiveSerializer<IdTokenMappingItem> {
+class _$IdTokenMappingItemSerializer implements PrimitiveSerializer<IdTokenMappingItem> {
   @override
   final Iterable<Type> types = const [IdTokenMappingItem, _$IdTokenMappingItem];
 
@@ -80,11 +76,7 @@ class _$IdTokenMappingItemSerializer
     IdTokenMappingItem object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -100,30 +92,24 @@ class _$IdTokenMappingItemSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'sourceField':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.sourceField = valueDes;
           break;
         case r'idTokenClaim':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.idTokenClaim = valueDes;
           break;
         case r'inputDescriptorId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.inputDescriptorId = valueDes;
           break;
         default:
@@ -154,3 +140,4 @@ class _$IdTokenMappingItemSerializer
     return result.build();
   }
 }
+

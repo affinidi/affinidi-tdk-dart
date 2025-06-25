@@ -7,9 +7,9 @@ part of 'get_well_known_did_ok.dart';
 // **************************************************************************
 
 class _$GetWellKnownDidOK extends GetWellKnownDidOK {
-  factory _$GetWellKnownDidOK([
-    void Function(GetWellKnownDidOKBuilder)? updates,
-  ]) => (GetWellKnownDidOKBuilder()..update(updates))._build();
+  factory _$GetWellKnownDidOK(
+          [void Function(GetWellKnownDidOKBuilder)? updates]) =>
+      (GetWellKnownDidOKBuilder()..update(updates))._build();
 
   _$GetWellKnownDidOK._() : super._();
   @override

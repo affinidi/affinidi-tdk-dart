@@ -7,13 +7,12 @@ part of 'credential_subject_not_valid_error.dart';
 // **************************************************************************
 
 const CredentialSubjectNotValidErrorNameEnum
-_$credentialSubjectNotValidErrorNameEnum_credentialSubjectNotValidError =
+    _$credentialSubjectNotValidErrorNameEnum_credentialSubjectNotValidError =
     const CredentialSubjectNotValidErrorNameEnum._(
-      'credentialSubjectNotValidError',
-    );
+        'credentialSubjectNotValidError');
 
 CredentialSubjectNotValidErrorNameEnum
-_$credentialSubjectNotValidErrorNameEnumValueOf(String name) {
+    _$credentialSubjectNotValidErrorNameEnumValueOf(String name) {
   switch (name) {
     case 'credentialSubjectNotValidError':
       return _$credentialSubjectNotValidErrorNameEnum_credentialSubjectNotValidError;
@@ -23,21 +22,18 @@ _$credentialSubjectNotValidErrorNameEnumValueOf(String name) {
 }
 
 final BuiltSet<CredentialSubjectNotValidErrorNameEnum>
-_$credentialSubjectNotValidErrorNameEnumValues =
-    BuiltSet<CredentialSubjectNotValidErrorNameEnum>(
-      const <CredentialSubjectNotValidErrorNameEnum>[
-        _$credentialSubjectNotValidErrorNameEnum_credentialSubjectNotValidError,
-      ],
-    );
+    _$credentialSubjectNotValidErrorNameEnumValues = BuiltSet<
+        CredentialSubjectNotValidErrorNameEnum>(const <CredentialSubjectNotValidErrorNameEnum>[
+  _$credentialSubjectNotValidErrorNameEnum_credentialSubjectNotValidError,
+]);
 
 const CredentialSubjectNotValidErrorMessageEnum
-_$credentialSubjectNotValidErrorMessageEnum_credentialSubjectIsNotAccordingToTheVcSchema =
+    _$credentialSubjectNotValidErrorMessageEnum_credentialSubjectIsNotAccordingToTheVcSchema =
     const CredentialSubjectNotValidErrorMessageEnum._(
-      'credentialSubjectIsNotAccordingToTheVcSchema',
-    );
+        'credentialSubjectIsNotAccordingToTheVcSchema');
 
 CredentialSubjectNotValidErrorMessageEnum
-_$credentialSubjectNotValidErrorMessageEnumValueOf(String name) {
+    _$credentialSubjectNotValidErrorMessageEnumValueOf(String name) {
   switch (name) {
     case 'credentialSubjectIsNotAccordingToTheVcSchema':
       return _$credentialSubjectNotValidErrorMessageEnum_credentialSubjectIsNotAccordingToTheVcSchema;
@@ -47,19 +43,17 @@ _$credentialSubjectNotValidErrorMessageEnumValueOf(String name) {
 }
 
 final BuiltSet<CredentialSubjectNotValidErrorMessageEnum>
-_$credentialSubjectNotValidErrorMessageEnumValues =
-    BuiltSet<CredentialSubjectNotValidErrorMessageEnum>(const <
-      CredentialSubjectNotValidErrorMessageEnum
-    >[
-      _$credentialSubjectNotValidErrorMessageEnum_credentialSubjectIsNotAccordingToTheVcSchema,
-    ]);
+    _$credentialSubjectNotValidErrorMessageEnumValues = BuiltSet<
+        CredentialSubjectNotValidErrorMessageEnum>(const <CredentialSubjectNotValidErrorMessageEnum>[
+  _$credentialSubjectNotValidErrorMessageEnum_credentialSubjectIsNotAccordingToTheVcSchema,
+]);
 
 const CredentialSubjectNotValidErrorHttpStatusCodeEnum
-_$credentialSubjectNotValidErrorHttpStatusCodeEnum_number400 =
+    _$credentialSubjectNotValidErrorHttpStatusCodeEnum_number400 =
     const CredentialSubjectNotValidErrorHttpStatusCodeEnum._('number400');
 
 CredentialSubjectNotValidErrorHttpStatusCodeEnum
-_$credentialSubjectNotValidErrorHttpStatusCodeEnumValueOf(String name) {
+    _$credentialSubjectNotValidErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$credentialSubjectNotValidErrorHttpStatusCodeEnum_number400;
@@ -69,21 +63,19 @@ _$credentialSubjectNotValidErrorHttpStatusCodeEnumValueOf(String name) {
 }
 
 final BuiltSet<CredentialSubjectNotValidErrorHttpStatusCodeEnum>
-_$credentialSubjectNotValidErrorHttpStatusCodeEnumValues =
-    BuiltSet<CredentialSubjectNotValidErrorHttpStatusCodeEnum>(
-      const <CredentialSubjectNotValidErrorHttpStatusCodeEnum>[
-        _$credentialSubjectNotValidErrorHttpStatusCodeEnum_number400,
-      ],
-    );
+    _$credentialSubjectNotValidErrorHttpStatusCodeEnumValues = BuiltSet<
+        CredentialSubjectNotValidErrorHttpStatusCodeEnum>(const <CredentialSubjectNotValidErrorHttpStatusCodeEnum>[
+  _$credentialSubjectNotValidErrorHttpStatusCodeEnum_number400,
+]);
 
 Serializer<CredentialSubjectNotValidErrorNameEnum>
-_$credentialSubjectNotValidErrorNameEnumSerializer =
+    _$credentialSubjectNotValidErrorNameEnumSerializer =
     _$CredentialSubjectNotValidErrorNameEnumSerializer();
 Serializer<CredentialSubjectNotValidErrorMessageEnum>
-_$credentialSubjectNotValidErrorMessageEnumSerializer =
+    _$credentialSubjectNotValidErrorMessageEnumSerializer =
     _$CredentialSubjectNotValidErrorMessageEnumSerializer();
 Serializer<CredentialSubjectNotValidErrorHttpStatusCodeEnum>
-_$credentialSubjectNotValidErrorHttpStatusCodeEnumSerializer =
+    _$credentialSubjectNotValidErrorHttpStatusCodeEnumSerializer =
     _$CredentialSubjectNotValidErrorHttpStatusCodeEnumSerializer();
 
 class _$CredentialSubjectNotValidErrorNameEnumSerializer
@@ -97,26 +89,23 @@ class _$CredentialSubjectNotValidErrorNameEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CredentialSubjectNotValidErrorNameEnum,
+    CredentialSubjectNotValidErrorNameEnum
   ];
   @override
   final String wireName = 'CredentialSubjectNotValidErrorNameEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    CredentialSubjectNotValidErrorNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          CredentialSubjectNotValidErrorNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   CredentialSubjectNotValidErrorNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => CredentialSubjectNotValidErrorNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      CredentialSubjectNotValidErrorNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$CredentialSubjectNotValidErrorMessageEnumSerializer
@@ -132,26 +121,23 @@ class _$CredentialSubjectNotValidErrorMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CredentialSubjectNotValidErrorMessageEnum,
+    CredentialSubjectNotValidErrorMessageEnum
   ];
   @override
   final String wireName = 'CredentialSubjectNotValidErrorMessageEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    CredentialSubjectNotValidErrorMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          CredentialSubjectNotValidErrorMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   CredentialSubjectNotValidErrorMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => CredentialSubjectNotValidErrorMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      CredentialSubjectNotValidErrorMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$CredentialSubjectNotValidErrorHttpStatusCodeEnumSerializer
@@ -166,26 +152,23 @@ class _$CredentialSubjectNotValidErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CredentialSubjectNotValidErrorHttpStatusCodeEnum,
+    CredentialSubjectNotValidErrorHttpStatusCodeEnum
   ];
   @override
   final String wireName = 'CredentialSubjectNotValidErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    CredentialSubjectNotValidErrorHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          CredentialSubjectNotValidErrorHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   CredentialSubjectNotValidErrorHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => CredentialSubjectNotValidErrorHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      CredentialSubjectNotValidErrorHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$CredentialSubjectNotValidError extends CredentialSubjectNotValidError {
@@ -200,21 +183,21 @@ class _$CredentialSubjectNotValidError extends CredentialSubjectNotValidError {
   @override
   final BuiltList<ActionForbiddenErrorDetailsInner>? details;
 
-  factory _$CredentialSubjectNotValidError([
-    void Function(CredentialSubjectNotValidErrorBuilder)? updates,
-  ]) => (CredentialSubjectNotValidErrorBuilder()..update(updates))._build();
+  factory _$CredentialSubjectNotValidError(
+          [void Function(CredentialSubjectNotValidErrorBuilder)? updates]) =>
+      (CredentialSubjectNotValidErrorBuilder()..update(updates))._build();
 
-  _$CredentialSubjectNotValidError._({
-    required this.name,
-    required this.message,
-    required this.httpStatusCode,
-    required this.traceId,
-    this.details,
-  }) : super._();
+  _$CredentialSubjectNotValidError._(
+      {required this.name,
+      required this.message,
+      required this.httpStatusCode,
+      required this.traceId,
+      this.details})
+      : super._();
   @override
   CredentialSubjectNotValidError rebuild(
-    void Function(CredentialSubjectNotValidErrorBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CredentialSubjectNotValidErrorBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CredentialSubjectNotValidErrorBuilder toBuilder() =>
@@ -257,10 +240,8 @@ class _$CredentialSubjectNotValidError extends CredentialSubjectNotValidError {
 
 class CredentialSubjectNotValidErrorBuilder
     implements
-        Builder<
-          CredentialSubjectNotValidError,
-          CredentialSubjectNotValidErrorBuilder
-        > {
+        Builder<CredentialSubjectNotValidError,
+            CredentialSubjectNotValidErrorBuilder> {
   _$CredentialSubjectNotValidError? _$v;
 
   CredentialSubjectNotValidErrorNameEnum? _name;
@@ -276,8 +257,8 @@ class CredentialSubjectNotValidErrorBuilder
   CredentialSubjectNotValidErrorHttpStatusCodeEnum? get httpStatusCode =>
       _$this._httpStatusCode;
   set httpStatusCode(
-    CredentialSubjectNotValidErrorHttpStatusCodeEnum? httpStatusCode,
-  ) => _$this._httpStatusCode = httpStatusCode;
+          CredentialSubjectNotValidErrorHttpStatusCodeEnum? httpStatusCode) =>
+      _$this._httpStatusCode = httpStatusCode;
 
   String? _traceId;
   String? get traceId => _$this._traceId;
@@ -322,29 +303,18 @@ class CredentialSubjectNotValidErrorBuilder
   _$CredentialSubjectNotValidError _build() {
     _$CredentialSubjectNotValidError _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$CredentialSubjectNotValidError._(
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'CredentialSubjectNotValidError',
-              'name',
-            ),
+                name, r'CredentialSubjectNotValidError', 'name'),
             message: BuiltValueNullFieldError.checkNotNull(
-              message,
-              r'CredentialSubjectNotValidError',
-              'message',
-            ),
+                message, r'CredentialSubjectNotValidError', 'message'),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-              httpStatusCode,
-              r'CredentialSubjectNotValidError',
-              'httpStatusCode',
-            ),
+                httpStatusCode,
+                r'CredentialSubjectNotValidError',
+                'httpStatusCode'),
             traceId: BuiltValueNullFieldError.checkNotNull(
-              traceId,
-              r'CredentialSubjectNotValidError',
-              'traceId',
-            ),
+                traceId, r'CredentialSubjectNotValidError', 'traceId'),
             details: _details?.build(),
           );
     } catch (_) {
@@ -354,10 +324,7 @@ class CredentialSubjectNotValidErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'CredentialSubjectNotValidError',
-          _$failedField,
-          e.toString(),
-        );
+            r'CredentialSubjectNotValidError', _$failedField, e.toString());
       }
       rethrow;
     }

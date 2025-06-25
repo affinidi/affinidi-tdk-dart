@@ -20,8 +20,8 @@ RedirectResponseTypeEnum _$redirectResponseTypeEnumValueOf(String name) {
 
 final BuiltSet<RedirectResponseTypeEnum> _$redirectResponseTypeEnumValues =
     BuiltSet<RedirectResponseTypeEnum>(const <RedirectResponseTypeEnum>[
-      _$redirectResponseTypeEnum_REDIRECT_RESPONSE,
-    ]);
+  _$redirectResponseTypeEnum_REDIRECT_RESPONSE,
+]);
 
 Serializer<RedirectResponseTypeEnum> _$redirectResponseTypeEnumSerializer =
     _$RedirectResponseTypeEnumSerializer();
@@ -41,20 +41,16 @@ class _$RedirectResponseTypeEnumSerializer
   final String wireName = 'RedirectResponseTypeEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    RedirectResponseTypeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers, RedirectResponseTypeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   RedirectResponseTypeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => RedirectResponseTypeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      RedirectResponseTypeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$RedirectResponse extends RedirectResponse {
@@ -63,9 +59,9 @@ class _$RedirectResponse extends RedirectResponse {
   @override
   final String to;
 
-  factory _$RedirectResponse([
-    void Function(RedirectResponseBuilder)? updates,
-  ]) => (RedirectResponseBuilder()..update(updates))._build();
+  factory _$RedirectResponse(
+          [void Function(RedirectResponseBuilder)? updates]) =>
+      (RedirectResponseBuilder()..update(updates))._build();
 
   _$RedirectResponse._({required this.type, required this.to}) : super._();
   @override
@@ -140,19 +136,12 @@ class RedirectResponseBuilder
   RedirectResponse build() => _build();
 
   _$RedirectResponse _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$RedirectResponse._(
           type: BuiltValueNullFieldError.checkNotNull(
-            type,
-            r'RedirectResponse',
-            'type',
-          ),
+              type, r'RedirectResponse', 'type'),
           to: BuiltValueNullFieldError.checkNotNull(
-            to,
-            r'RedirectResponse',
-            'to',
-          ),
+              to, r'RedirectResponse', 'to'),
         );
     replace(_$result);
     return _$result;

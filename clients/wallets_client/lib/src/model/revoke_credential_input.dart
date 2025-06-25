@@ -11,11 +11,10 @@ part 'revoke_credential_input.g.dart';
 /// RevokeCredentialInput
 ///
 /// Properties:
-/// * [revocationReason]
-/// * [credentialId]
+/// * [revocationReason] 
+/// * [credentialId] 
 @BuiltValue()
-abstract class RevokeCredentialInput
-    implements Built<RevokeCredentialInput, RevokeCredentialInputBuilder> {
+abstract class RevokeCredentialInput implements Built<RevokeCredentialInput, RevokeCredentialInputBuilder> {
   @BuiltValueField(wireName: r'revocationReason')
   String? get revocationReason;
 
@@ -24,25 +23,18 @@ abstract class RevokeCredentialInput
 
   RevokeCredentialInput._();
 
-  factory RevokeCredentialInput([
-    void updates(RevokeCredentialInputBuilder b),
-  ]) = _$RevokeCredentialInput;
+  factory RevokeCredentialInput([void updates(RevokeCredentialInputBuilder b)]) = _$RevokeCredentialInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(RevokeCredentialInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<RevokeCredentialInput> get serializer =>
-      _$RevokeCredentialInputSerializer();
+  static Serializer<RevokeCredentialInput> get serializer => _$RevokeCredentialInputSerializer();
 }
 
-class _$RevokeCredentialInputSerializer
-    implements PrimitiveSerializer<RevokeCredentialInput> {
+class _$RevokeCredentialInputSerializer implements PrimitiveSerializer<RevokeCredentialInput> {
   @override
-  final Iterable<Type> types = const [
-    RevokeCredentialInput,
-    _$RevokeCredentialInput,
-  ];
+  final Iterable<Type> types = const [RevokeCredentialInput, _$RevokeCredentialInput];
 
   @override
   final String wireName = r'RevokeCredentialInput';
@@ -74,11 +66,7 @@ class _$RevokeCredentialInputSerializer
     RevokeCredentialInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -94,22 +82,18 @@ class _$RevokeCredentialInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'revocationReason':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType.nullable(String),
-                  )
-                  as String?;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(String),
+          ) as String?;
           if (valueDes == null) continue;
           result.revocationReason = valueDes;
           break;
         case r'credentialId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.credentialId = valueDes;
           break;
         default:
@@ -140,3 +124,4 @@ class _$RevokeCredentialInputSerializer
     return result.build();
   }
 }
+

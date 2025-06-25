@@ -14,8 +14,7 @@ part 'login_session_for_idp_input.g.dart';
 /// * [loginChallenge] - IDP Login Challenge to Associate the Session with
 /// * [clientId] - IDP client id to Associate the Session with
 @BuiltValue()
-abstract class LoginSessionForIDPInput
-    implements Built<LoginSessionForIDPInput, LoginSessionForIDPInputBuilder> {
+abstract class LoginSessionForIDPInput implements Built<LoginSessionForIDPInput, LoginSessionForIDPInputBuilder> {
   /// IDP Login Challenge to Associate the Session with
   @BuiltValueField(wireName: r'loginChallenge')
   String get loginChallenge;
@@ -26,25 +25,18 @@ abstract class LoginSessionForIDPInput
 
   LoginSessionForIDPInput._();
 
-  factory LoginSessionForIDPInput([
-    void updates(LoginSessionForIDPInputBuilder b),
-  ]) = _$LoginSessionForIDPInput;
+  factory LoginSessionForIDPInput([void updates(LoginSessionForIDPInputBuilder b)]) = _$LoginSessionForIDPInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(LoginSessionForIDPInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<LoginSessionForIDPInput> get serializer =>
-      _$LoginSessionForIDPInputSerializer();
+  static Serializer<LoginSessionForIDPInput> get serializer => _$LoginSessionForIDPInputSerializer();
 }
 
-class _$LoginSessionForIDPInputSerializer
-    implements PrimitiveSerializer<LoginSessionForIDPInput> {
+class _$LoginSessionForIDPInputSerializer implements PrimitiveSerializer<LoginSessionForIDPInput> {
   @override
-  final Iterable<Type> types = const [
-    LoginSessionForIDPInput,
-    _$LoginSessionForIDPInput,
-  ];
+  final Iterable<Type> types = const [LoginSessionForIDPInput, _$LoginSessionForIDPInput];
 
   @override
   final String wireName = r'LoginSessionForIDPInput';
@@ -72,11 +64,7 @@ class _$LoginSessionForIDPInputSerializer
     LoginSessionForIDPInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -92,21 +80,17 @@ class _$LoginSessionForIDPInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'loginChallenge':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.loginChallenge = valueDes;
           break;
         case r'clientId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.clientId = valueDes;
           break;
         default:
@@ -137,3 +121,4 @@ class _$LoginSessionForIDPInputSerializer
     return result.build();
   }
 }
+

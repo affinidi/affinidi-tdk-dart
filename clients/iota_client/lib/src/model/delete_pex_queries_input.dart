@@ -12,34 +12,26 @@ part 'delete_pex_queries_input.g.dart';
 /// DeletePexQueriesInput
 ///
 /// Properties:
-/// * [queryIds]
+/// * [queryIds] 
 @BuiltValue()
-abstract class DeletePexQueriesInput
-    implements Built<DeletePexQueriesInput, DeletePexQueriesInputBuilder> {
+abstract class DeletePexQueriesInput implements Built<DeletePexQueriesInput, DeletePexQueriesInputBuilder> {
   @BuiltValueField(wireName: r'queryIds')
   BuiltList<String> get queryIds;
 
   DeletePexQueriesInput._();
 
-  factory DeletePexQueriesInput([
-    void updates(DeletePexQueriesInputBuilder b),
-  ]) = _$DeletePexQueriesInput;
+  factory DeletePexQueriesInput([void updates(DeletePexQueriesInputBuilder b)]) = _$DeletePexQueriesInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(DeletePexQueriesInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<DeletePexQueriesInput> get serializer =>
-      _$DeletePexQueriesInputSerializer();
+  static Serializer<DeletePexQueriesInput> get serializer => _$DeletePexQueriesInputSerializer();
 }
 
-class _$DeletePexQueriesInputSerializer
-    implements PrimitiveSerializer<DeletePexQueriesInput> {
+class _$DeletePexQueriesInputSerializer implements PrimitiveSerializer<DeletePexQueriesInput> {
   @override
-  final Iterable<Type> types = const [
-    DeletePexQueriesInput,
-    _$DeletePexQueriesInput,
-  ];
+  final Iterable<Type> types = const [DeletePexQueriesInput, _$DeletePexQueriesInput];
 
   @override
   final String wireName = r'DeletePexQueriesInput';
@@ -62,11 +54,7 @@ class _$DeletePexQueriesInputSerializer
     DeletePexQueriesInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -82,14 +70,10 @@ class _$DeletePexQueriesInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'queryIds':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.queryIds.replace(valueDes);
           break;
         default:
@@ -120,3 +104,4 @@ class _$DeletePexQueriesInputSerializer
     return result.build();
   }
 }
+

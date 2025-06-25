@@ -13,14 +13,13 @@ part 'resource_creation_error.g.dart';
 /// ResourceCreationError
 ///
 /// Properties:
-/// * [name]
-/// * [message]
-/// * [httpStatusCode]
-/// * [traceId]
-/// * [details]
+/// * [name] 
+/// * [message] 
+/// * [httpStatusCode] 
+/// * [traceId] 
+/// * [details] 
 @BuiltValue()
-abstract class ResourceCreationError
-    implements Built<ResourceCreationError, ResourceCreationErrorBuilder> {
+abstract class ResourceCreationError implements Built<ResourceCreationError, ResourceCreationErrorBuilder> {
   @BuiltValueField(wireName: r'name')
   ResourceCreationErrorNameEnum get name;
   // enum nameEnum {  ResourceCreationError,  };
@@ -41,25 +40,18 @@ abstract class ResourceCreationError
 
   ResourceCreationError._();
 
-  factory ResourceCreationError([
-    void updates(ResourceCreationErrorBuilder b),
-  ]) = _$ResourceCreationError;
+  factory ResourceCreationError([void updates(ResourceCreationErrorBuilder b)]) = _$ResourceCreationError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ResourceCreationErrorBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ResourceCreationError> get serializer =>
-      _$ResourceCreationErrorSerializer();
+  static Serializer<ResourceCreationError> get serializer => _$ResourceCreationErrorSerializer();
 }
 
-class _$ResourceCreationErrorSerializer
-    implements PrimitiveSerializer<ResourceCreationError> {
+class _$ResourceCreationErrorSerializer implements PrimitiveSerializer<ResourceCreationError> {
   @override
-  final Iterable<Type> types = const [
-    ResourceCreationError,
-    _$ResourceCreationError,
-  ];
+  final Iterable<Type> types = const [ResourceCreationError, _$ResourceCreationError];
 
   @override
   final String wireName = r'ResourceCreationError';
@@ -93,9 +85,7 @@ class _$ResourceCreationErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(InvalidParameterErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
       );
     }
   }
@@ -106,11 +96,7 @@ class _$ResourceCreationErrorSerializer
     ResourceCreationError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -126,56 +112,38 @@ class _$ResourceCreationErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      ResourceCreationErrorNameEnum,
-                    ),
-                  )
-                  as ResourceCreationErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(ResourceCreationErrorNameEnum),
+          ) as ResourceCreationErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      ResourceCreationErrorMessageEnum,
-                    ),
-                  )
-                  as ResourceCreationErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(ResourceCreationErrorMessageEnum),
+          ) as ResourceCreationErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      ResourceCreationErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as ResourceCreationErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(ResourceCreationErrorHttpStatusCodeEnum),
+          ) as ResourceCreationErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(InvalidParameterErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<InvalidParameterErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
+          ) as BuiltList<InvalidParameterErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -208,49 +176,41 @@ class _$ResourceCreationErrorSerializer
 }
 
 class ResourceCreationErrorNameEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireName: r'ResourceCreationError')
-  static const ResourceCreationErrorNameEnum resourceCreationError =
-      _$resourceCreationErrorNameEnum_resourceCreationError;
+  static const ResourceCreationErrorNameEnum resourceCreationError = _$resourceCreationErrorNameEnum_resourceCreationError;
 
-  static Serializer<ResourceCreationErrorNameEnum> get serializer =>
-      _$resourceCreationErrorNameEnumSerializer;
+  static Serializer<ResourceCreationErrorNameEnum> get serializer => _$resourceCreationErrorNameEnumSerializer;
 
-  const ResourceCreationErrorNameEnum._(String name) : super(name);
+  const ResourceCreationErrorNameEnum._(String name): super(name);
 
-  static BuiltSet<ResourceCreationErrorNameEnum> get values =>
-      _$resourceCreationErrorNameEnumValues;
-  static ResourceCreationErrorNameEnum valueOf(String name) =>
-      _$resourceCreationErrorNameEnumValueOf(name);
+  static BuiltSet<ResourceCreationErrorNameEnum> get values => _$resourceCreationErrorNameEnumValues;
+  static ResourceCreationErrorNameEnum valueOf(String name) => _$resourceCreationErrorNameEnumValueOf(name);
 }
 
 class ResourceCreationErrorMessageEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireName: r'Failed to create resources.')
-  static const ResourceCreationErrorMessageEnum failedToCreateResourcesPeriod =
-      _$resourceCreationErrorMessageEnum_failedToCreateResourcesPeriod;
+  static const ResourceCreationErrorMessageEnum failedToCreateResourcesPeriod = _$resourceCreationErrorMessageEnum_failedToCreateResourcesPeriod;
 
-  static Serializer<ResourceCreationErrorMessageEnum> get serializer =>
-      _$resourceCreationErrorMessageEnumSerializer;
+  static Serializer<ResourceCreationErrorMessageEnum> get serializer => _$resourceCreationErrorMessageEnumSerializer;
 
-  const ResourceCreationErrorMessageEnum._(String name) : super(name);
+  const ResourceCreationErrorMessageEnum._(String name): super(name);
 
-  static BuiltSet<ResourceCreationErrorMessageEnum> get values =>
-      _$resourceCreationErrorMessageEnumValues;
-  static ResourceCreationErrorMessageEnum valueOf(String name) =>
-      _$resourceCreationErrorMessageEnumValueOf(name);
+  static BuiltSet<ResourceCreationErrorMessageEnum> get values => _$resourceCreationErrorMessageEnumValues;
+  static ResourceCreationErrorMessageEnum valueOf(String name) => _$resourceCreationErrorMessageEnumValueOf(name);
 }
 
 class ResourceCreationErrorHttpStatusCodeEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireNumber: 424)
-  static const ResourceCreationErrorHttpStatusCodeEnum number424 =
-      _$resourceCreationErrorHttpStatusCodeEnum_number424;
+  static const ResourceCreationErrorHttpStatusCodeEnum number424 = _$resourceCreationErrorHttpStatusCodeEnum_number424;
 
-  static Serializer<ResourceCreationErrorHttpStatusCodeEnum> get serializer =>
-      _$resourceCreationErrorHttpStatusCodeEnumSerializer;
+  static Serializer<ResourceCreationErrorHttpStatusCodeEnum> get serializer => _$resourceCreationErrorHttpStatusCodeEnumSerializer;
 
-  const ResourceCreationErrorHttpStatusCodeEnum._(String name) : super(name);
+  const ResourceCreationErrorHttpStatusCodeEnum._(String name): super(name);
 
-  static BuiltSet<ResourceCreationErrorHttpStatusCodeEnum> get values =>
-      _$resourceCreationErrorHttpStatusCodeEnumValues;
-  static ResourceCreationErrorHttpStatusCodeEnum valueOf(String name) =>
-      _$resourceCreationErrorHttpStatusCodeEnumValueOf(name);
+  static BuiltSet<ResourceCreationErrorHttpStatusCodeEnum> get values => _$resourceCreationErrorHttpStatusCodeEnumValues;
+  static ResourceCreationErrorHttpStatusCodeEnum valueOf(String name) => _$resourceCreationErrorHttpStatusCodeEnumValueOf(name);
 }
+

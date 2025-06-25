@@ -165,20 +165,16 @@ part 'serializers.g.dart';
   WellKnownOpenIdCredentialIssuerResponse,
   WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner,
 ])
-Serializers serializers =
-    (_$serializers.toBuilder()
-          ..addBuilderFactory(
-            const FullType(BuiltMap, [
-              FullType(String),
-              FullType.nullable(JsonObject),
-            ]),
-            () => MapBuilder<String, JsonObject>(),
-          )
-          ..add(const OneOfSerializer())
-          ..add(const AnyOfSerializer())
-          ..add(const DateSerializer())
-          ..add(Iso8601DateTimeSerializer()))
-        .build();
+Serializers serializers = (_$serializers.toBuilder()
+      ..addBuilderFactory(
+        const FullType(BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
+        () => MapBuilder<String, JsonObject>(),
+      )
+      ..add(const OneOfSerializer())
+      ..add(const AnyOfSerializer())
+      ..add(const DateSerializer())
+      ..add(Iso8601DateTimeSerializer())
+    ).build();
 
 Serializers standardSerializers =
     (serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

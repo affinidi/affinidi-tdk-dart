@@ -13,14 +13,13 @@ part 'signing_failed_error.g.dart';
 /// SigningFailedError
 ///
 /// Properties:
-/// * [name]
-/// * [message]
-/// * [httpStatusCode]
-/// * [traceId]
-/// * [details]
+/// * [name] 
+/// * [message] 
+/// * [httpStatusCode] 
+/// * [traceId] 
+/// * [details] 
 @BuiltValue()
-abstract class SigningFailedError
-    implements Built<SigningFailedError, SigningFailedErrorBuilder> {
+abstract class SigningFailedError implements Built<SigningFailedError, SigningFailedErrorBuilder> {
   @BuiltValueField(wireName: r'name')
   SigningFailedErrorNameEnum get name;
   // enum nameEnum {  SigningFailedError,  };
@@ -41,19 +40,16 @@ abstract class SigningFailedError
 
   SigningFailedError._();
 
-  factory SigningFailedError([void updates(SigningFailedErrorBuilder b)]) =
-      _$SigningFailedError;
+  factory SigningFailedError([void updates(SigningFailedErrorBuilder b)]) = _$SigningFailedError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SigningFailedErrorBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<SigningFailedError> get serializer =>
-      _$SigningFailedErrorSerializer();
+  static Serializer<SigningFailedError> get serializer => _$SigningFailedErrorSerializer();
 }
 
-class _$SigningFailedErrorSerializer
-    implements PrimitiveSerializer<SigningFailedError> {
+class _$SigningFailedErrorSerializer implements PrimitiveSerializer<SigningFailedError> {
   @override
   final Iterable<Type> types = const [SigningFailedError, _$SigningFailedError];
 
@@ -89,9 +85,7 @@ class _$SigningFailedErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ServiceErrorResponseDetailsInner),
-        ]),
+        specifiedType: const FullType(BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
       );
     }
   }
@@ -102,11 +96,7 @@ class _$SigningFailedErrorSerializer
     SigningFailedError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -122,54 +112,38 @@ class _$SigningFailedErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(SigningFailedErrorNameEnum),
-                  )
-                  as SigningFailedErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(SigningFailedErrorNameEnum),
+          ) as SigningFailedErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      SigningFailedErrorMessageEnum,
-                    ),
-                  )
-                  as SigningFailedErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(SigningFailedErrorMessageEnum),
+          ) as SigningFailedErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      SigningFailedErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as SigningFailedErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(SigningFailedErrorHttpStatusCodeEnum),
+          ) as SigningFailedErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ServiceErrorResponseDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ServiceErrorResponseDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
+          ) as BuiltList<ServiceErrorResponseDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -202,49 +176,41 @@ class _$SigningFailedErrorSerializer
 }
 
 class SigningFailedErrorNameEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireName: r'SigningFailedError')
-  static const SigningFailedErrorNameEnum signingFailedError =
-      _$signingFailedErrorNameEnum_signingFailedError;
+  static const SigningFailedErrorNameEnum signingFailedError = _$signingFailedErrorNameEnum_signingFailedError;
 
-  static Serializer<SigningFailedErrorNameEnum> get serializer =>
-      _$signingFailedErrorNameEnumSerializer;
+  static Serializer<SigningFailedErrorNameEnum> get serializer => _$signingFailedErrorNameEnumSerializer;
 
-  const SigningFailedErrorNameEnum._(String name) : super(name);
+  const SigningFailedErrorNameEnum._(String name): super(name);
 
-  static BuiltSet<SigningFailedErrorNameEnum> get values =>
-      _$signingFailedErrorNameEnumValues;
-  static SigningFailedErrorNameEnum valueOf(String name) =>
-      _$signingFailedErrorNameEnumValueOf(name);
+  static BuiltSet<SigningFailedErrorNameEnum> get values => _$signingFailedErrorNameEnumValues;
+  static SigningFailedErrorNameEnum valueOf(String name) => _$signingFailedErrorNameEnumValueOf(name);
 }
 
 class SigningFailedErrorMessageEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireName: r'Signing failed.')
-  static const SigningFailedErrorMessageEnum signingFailedPeriod =
-      _$signingFailedErrorMessageEnum_signingFailedPeriod;
+  static const SigningFailedErrorMessageEnum signingFailedPeriod = _$signingFailedErrorMessageEnum_signingFailedPeriod;
 
-  static Serializer<SigningFailedErrorMessageEnum> get serializer =>
-      _$signingFailedErrorMessageEnumSerializer;
+  static Serializer<SigningFailedErrorMessageEnum> get serializer => _$signingFailedErrorMessageEnumSerializer;
 
-  const SigningFailedErrorMessageEnum._(String name) : super(name);
+  const SigningFailedErrorMessageEnum._(String name): super(name);
 
-  static BuiltSet<SigningFailedErrorMessageEnum> get values =>
-      _$signingFailedErrorMessageEnumValues;
-  static SigningFailedErrorMessageEnum valueOf(String name) =>
-      _$signingFailedErrorMessageEnumValueOf(name);
+  static BuiltSet<SigningFailedErrorMessageEnum> get values => _$signingFailedErrorMessageEnumValues;
+  static SigningFailedErrorMessageEnum valueOf(String name) => _$signingFailedErrorMessageEnumValueOf(name);
 }
 
 class SigningFailedErrorHttpStatusCodeEnum extends EnumClass {
+
   @BuiltValueEnumConst(wireNumber: 400)
-  static const SigningFailedErrorHttpStatusCodeEnum number400 =
-      _$signingFailedErrorHttpStatusCodeEnum_number400;
+  static const SigningFailedErrorHttpStatusCodeEnum number400 = _$signingFailedErrorHttpStatusCodeEnum_number400;
 
-  static Serializer<SigningFailedErrorHttpStatusCodeEnum> get serializer =>
-      _$signingFailedErrorHttpStatusCodeEnumSerializer;
+  static Serializer<SigningFailedErrorHttpStatusCodeEnum> get serializer => _$signingFailedErrorHttpStatusCodeEnumSerializer;
 
-  const SigningFailedErrorHttpStatusCodeEnum._(String name) : super(name);
+  const SigningFailedErrorHttpStatusCodeEnum._(String name): super(name);
 
-  static BuiltSet<SigningFailedErrorHttpStatusCodeEnum> get values =>
-      _$signingFailedErrorHttpStatusCodeEnumValues;
-  static SigningFailedErrorHttpStatusCodeEnum valueOf(String name) =>
-      _$signingFailedErrorHttpStatusCodeEnumValueOf(name);
+  static BuiltSet<SigningFailedErrorHttpStatusCodeEnum> get values => _$signingFailedErrorHttpStatusCodeEnumValues;
+  static SigningFailedErrorHttpStatusCodeEnum valueOf(String name) => _$signingFailedErrorHttpStatusCodeEnumValueOf(name);
 }
+

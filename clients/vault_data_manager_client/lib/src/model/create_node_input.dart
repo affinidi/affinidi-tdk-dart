@@ -14,15 +14,14 @@ part 'create_node_input.g.dart';
 ///
 /// Properties:
 /// * [name] - Name of the item
-/// * [type]
+/// * [type] 
 /// * [description] - description of profile if creating a new profile
 /// * [parentNodeId] - parent node id, if not provided then root element is used
-/// * [edekInfo]
+/// * [edekInfo] 
 /// * [dek] - A base64 encoded data encryption key, encrypted using VFS public key, required for node types [FILE, PROFILE]
 /// * [metadata] - metadata of the node in stringified json format
 @BuiltValue()
-abstract class CreateNodeInput
-    implements Built<CreateNodeInput, CreateNodeInputBuilder> {
+abstract class CreateNodeInput implements Built<CreateNodeInput, CreateNodeInputBuilder> {
   /// Name of the item
   @BuiltValueField(wireName: r'name')
   String get name;
@@ -52,19 +51,16 @@ abstract class CreateNodeInput
 
   CreateNodeInput._();
 
-  factory CreateNodeInput([void updates(CreateNodeInputBuilder b)]) =
-      _$CreateNodeInput;
+  factory CreateNodeInput([void updates(CreateNodeInputBuilder b)]) = _$CreateNodeInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateNodeInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateNodeInput> get serializer =>
-      _$CreateNodeInputSerializer();
+  static Serializer<CreateNodeInput> get serializer => _$CreateNodeInputSerializer();
 }
 
-class _$CreateNodeInputSerializer
-    implements PrimitiveSerializer<CreateNodeInput> {
+class _$CreateNodeInputSerializer implements PrimitiveSerializer<CreateNodeInput> {
   @override
   final Iterable<Type> types = const [CreateNodeInput, _$CreateNodeInput];
 
@@ -129,11 +125,7 @@ class _$CreateNodeInputSerializer
     CreateNodeInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -149,66 +141,52 @@ class _$CreateNodeInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'type':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(NodeType),
-                  )
-                  as NodeType;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(NodeType),
+          ) as NodeType;
           result.type = valueDes;
           break;
         case r'description':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.description = valueDes;
           break;
         case r'parentNodeId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.parentNodeId = valueDes;
           break;
         case r'edekInfo':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(EdekInfo),
-                  )
-                  as EdekInfo;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(EdekInfo),
+          ) as EdekInfo;
           result.edekInfo.replace(valueDes);
           break;
         case r'dek':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.dek = valueDes;
           break;
         case r'metadata':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.metadata = valueDes;
           break;
         default:
@@ -239,3 +217,4 @@ class _$CreateNodeInputSerializer
     return result.build();
   }
 }
+

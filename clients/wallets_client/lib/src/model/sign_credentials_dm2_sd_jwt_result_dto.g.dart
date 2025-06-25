@@ -11,15 +11,15 @@ class _$SignCredentialsDm2SdJwtResultDto
   @override
   final String credential;
 
-  factory _$SignCredentialsDm2SdJwtResultDto([
-    void Function(SignCredentialsDm2SdJwtResultDtoBuilder)? updates,
-  ]) => (SignCredentialsDm2SdJwtResultDtoBuilder()..update(updates))._build();
+  factory _$SignCredentialsDm2SdJwtResultDto(
+          [void Function(SignCredentialsDm2SdJwtResultDtoBuilder)? updates]) =>
+      (SignCredentialsDm2SdJwtResultDtoBuilder()..update(updates))._build();
 
   _$SignCredentialsDm2SdJwtResultDto._({required this.credential}) : super._();
   @override
   SignCredentialsDm2SdJwtResultDto rebuild(
-    void Function(SignCredentialsDm2SdJwtResultDtoBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(SignCredentialsDm2SdJwtResultDtoBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   SignCredentialsDm2SdJwtResultDtoBuilder toBuilder() =>
@@ -42,18 +42,16 @@ class _$SignCredentialsDm2SdJwtResultDto
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'SignCredentialsDm2SdJwtResultDto',
-    )..add('credential', credential)).toString();
+    return (newBuiltValueToStringHelper(r'SignCredentialsDm2SdJwtResultDto')
+          ..add('credential', credential))
+        .toString();
   }
 }
 
 class SignCredentialsDm2SdJwtResultDtoBuilder
     implements
-        Builder<
-          SignCredentialsDm2SdJwtResultDto,
-          SignCredentialsDm2SdJwtResultDtoBuilder
-        > {
+        Builder<SignCredentialsDm2SdJwtResultDto,
+            SignCredentialsDm2SdJwtResultDtoBuilder> {
   _$SignCredentialsDm2SdJwtResultDto? _$v;
 
   String? _credential;
@@ -87,14 +85,10 @@ class SignCredentialsDm2SdJwtResultDtoBuilder
   SignCredentialsDm2SdJwtResultDto build() => _build();
 
   _$SignCredentialsDm2SdJwtResultDto _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$SignCredentialsDm2SdJwtResultDto._(
           credential: BuiltValueNullFieldError.checkNotNull(
-            credential,
-            r'SignCredentialsDm2SdJwtResultDto',
-            'credential',
-          ),
+              credential, r'SignCredentialsDm2SdJwtResultDto', 'credential'),
         );
     replace(_$result);
     return _$result;

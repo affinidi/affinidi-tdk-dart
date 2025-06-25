@@ -23,14 +23,14 @@ class _$Error extends Error {
   factory _$Error([void Function(ErrorBuilder)? updates]) =>
       (ErrorBuilder()..update(updates))._build();
 
-  _$Error._({
-    this.errorCode,
-    this.errorMessage,
-    this.message,
-    this.name,
-    this.debugId,
-    this.details,
-  }) : super._();
+  _$Error._(
+      {this.errorCode,
+      this.errorMessage,
+      this.message,
+      this.name,
+      this.debugId,
+      this.details})
+      : super._();
   @override
   Error rebuild(void Function(ErrorBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -138,8 +138,7 @@ class ErrorBuilder implements Builder<Error, ErrorBuilder> {
   _$Error _build() {
     _$Error _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$Error._(
             errorCode: errorCode,
             errorMessage: errorMessage,

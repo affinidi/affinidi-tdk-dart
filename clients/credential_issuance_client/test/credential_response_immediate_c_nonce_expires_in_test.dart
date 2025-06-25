@@ -6,5 +6,6 @@ void main() {
   final instance = CredentialResponseImmediateCNonceExpiresInBuilder();
   // TODO add properties to the builder and call build()
 
-  group(CredentialResponseImmediateCNonceExpiresIn, () {});
+  group(CredentialResponseImmediateCNonceExpiresIn, () {
+  });
 }

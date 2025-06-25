@@ -15,24 +15,24 @@ part 'filter.g.dart';
 /// Filter
 ///
 /// Properties:
-/// * [const_]
-/// * [enum_]
-/// * [exclusiveMinimum]
-/// * [exclusiveMaximum]
-/// * [format]
-/// * [formatMaximum]
-/// * [formatMinimum]
-/// * [formatExclusiveMaximum]
-/// * [formatExclusiveMinimum]
-/// * [minLength]
-/// * [maxLength]
-/// * [minimum]
-/// * [maximum]
-/// * [not]
-/// * [pattern]
-/// * [contains]
-/// * [items]
-/// * [type]
+/// * [const_] 
+/// * [enum_] 
+/// * [exclusiveMinimum] 
+/// * [exclusiveMaximum] 
+/// * [format] 
+/// * [formatMaximum] 
+/// * [formatMinimum] 
+/// * [formatExclusiveMaximum] 
+/// * [formatExclusiveMinimum] 
+/// * [minLength] 
+/// * [maxLength] 
+/// * [minimum] 
+/// * [maximum] 
+/// * [not] 
+/// * [pattern] 
+/// * [contains] 
+/// * [items] 
+/// * [type] 
 @BuiltValue()
 abstract class Filter implements Built<Filter, FilterBuilder> {
   @BuiltValueField(wireName: r'_const')
@@ -246,11 +246,7 @@ class _$FilterSerializer implements PrimitiveSerializer<Filter> {
     Filter object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -266,161 +262,129 @@ class _$FilterSerializer implements PrimitiveSerializer<Filter> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'_const':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(FilterConst),
-                  )
-                  as FilterConst;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(FilterConst),
+          ) as FilterConst;
           result.const_.replace(valueDes);
           break;
         case r'_enum':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(FilterConst),
-                    ]),
-                  )
-                  as BuiltList<FilterConst>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(FilterConst)]),
+          ) as BuiltList<FilterConst>;
           result.enum_.replace(valueDes);
           break;
         case r'exclusiveMinimum':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(FilterConst),
-                  )
-                  as FilterConst;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(FilterConst),
+          ) as FilterConst;
           result.exclusiveMinimum.replace(valueDes);
           break;
         case r'exclusiveMaximum':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(FilterConst),
-                  )
-                  as FilterConst;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(FilterConst),
+          ) as FilterConst;
           result.exclusiveMaximum.replace(valueDes);
           break;
         case r'format':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.format = valueDes;
           break;
         case r'formatMaximum':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.formatMaximum = valueDes;
           break;
         case r'formatMinimum':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.formatMinimum = valueDes;
           break;
         case r'formatExclusiveMaximum':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.formatExclusiveMaximum = valueDes;
           break;
         case r'formatExclusiveMinimum':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.formatExclusiveMinimum = valueDes;
           break;
         case r'minLength':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.minLength = valueDes;
           break;
         case r'maxLength':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.maxLength = valueDes;
           break;
         case r'minimum':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(FilterConst),
-                  )
-                  as FilterConst;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(FilterConst),
+          ) as FilterConst;
           result.minimum.replace(valueDes);
           break;
         case r'maximum':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(FilterConst),
-                  )
-                  as FilterConst;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(FilterConst),
+          ) as FilterConst;
           result.maximum.replace(valueDes);
           break;
         case r'not':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.not = valueDes;
           break;
         case r'pattern':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.pattern = valueDes;
           break;
         case r'contains':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(Filter),
-                  )
-                  as Filter;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(Filter),
+          ) as Filter;
           result.contains.replace(valueDes);
           break;
         case r'items':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(FilterItems),
-                  )
-                  as FilterItems;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(FilterItems),
+          ) as FilterItems;
           result.items.replace(valueDes);
           break;
         case r'type':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.type = valueDes;
           break;
         default:
@@ -451,3 +415,4 @@ class _$FilterSerializer implements PrimitiveSerializer<Filter> {
     return result.build();
   }
 }
+

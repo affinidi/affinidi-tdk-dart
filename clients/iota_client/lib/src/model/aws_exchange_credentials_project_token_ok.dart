@@ -12,15 +12,10 @@ part 'aws_exchange_credentials_project_token_ok.g.dart';
 /// AwsExchangeCredentialsProjectTokenOK
 ///
 /// Properties:
-/// * [connectionClientId]
-/// * [credentials]
+/// * [connectionClientId] 
+/// * [credentials] 
 @BuiltValue()
-abstract class AwsExchangeCredentialsProjectTokenOK
-    implements
-        Built<
-          AwsExchangeCredentialsProjectTokenOK,
-          AwsExchangeCredentialsProjectTokenOKBuilder
-        > {
+abstract class AwsExchangeCredentialsProjectTokenOK implements Built<AwsExchangeCredentialsProjectTokenOK, AwsExchangeCredentialsProjectTokenOKBuilder> {
   @BuiltValueField(wireName: r'connectionClientId')
   String get connectionClientId;
 
@@ -29,25 +24,18 @@ abstract class AwsExchangeCredentialsProjectTokenOK
 
   AwsExchangeCredentialsProjectTokenOK._();
 
-  factory AwsExchangeCredentialsProjectTokenOK([
-    void updates(AwsExchangeCredentialsProjectTokenOKBuilder b),
-  ]) = _$AwsExchangeCredentialsProjectTokenOK;
+  factory AwsExchangeCredentialsProjectTokenOK([void updates(AwsExchangeCredentialsProjectTokenOKBuilder b)]) = _$AwsExchangeCredentialsProjectTokenOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AwsExchangeCredentialsProjectTokenOKBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<AwsExchangeCredentialsProjectTokenOK> get serializer =>
-      _$AwsExchangeCredentialsProjectTokenOKSerializer();
+  static Serializer<AwsExchangeCredentialsProjectTokenOK> get serializer => _$AwsExchangeCredentialsProjectTokenOKSerializer();
 }
 
-class _$AwsExchangeCredentialsProjectTokenOKSerializer
-    implements PrimitiveSerializer<AwsExchangeCredentialsProjectTokenOK> {
+class _$AwsExchangeCredentialsProjectTokenOKSerializer implements PrimitiveSerializer<AwsExchangeCredentialsProjectTokenOK> {
   @override
-  final Iterable<Type> types = const [
-    AwsExchangeCredentialsProjectTokenOK,
-    _$AwsExchangeCredentialsProjectTokenOK,
-  ];
+  final Iterable<Type> types = const [AwsExchangeCredentialsProjectTokenOK, _$AwsExchangeCredentialsProjectTokenOK];
 
   @override
   final String wireName = r'AwsExchangeCredentialsProjectTokenOK';
@@ -65,9 +53,7 @@ class _$AwsExchangeCredentialsProjectTokenOKSerializer
     yield r'credentials';
     yield serializers.serialize(
       object.credentials,
-      specifiedType: const FullType(
-        AwsExchangeCredentialsProjectTokenOKCredentials,
-      ),
+      specifiedType: const FullType(AwsExchangeCredentialsProjectTokenOKCredentials),
     );
   }
 
@@ -77,11 +63,7 @@ class _$AwsExchangeCredentialsProjectTokenOKSerializer
     AwsExchangeCredentialsProjectTokenOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -97,23 +79,17 @@ class _$AwsExchangeCredentialsProjectTokenOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'connectionClientId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.connectionClientId = valueDes;
           break;
         case r'credentials':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      AwsExchangeCredentialsProjectTokenOKCredentials,
-                    ),
-                  )
-                  as AwsExchangeCredentialsProjectTokenOKCredentials;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(AwsExchangeCredentialsProjectTokenOKCredentials),
+          ) as AwsExchangeCredentialsProjectTokenOKCredentials;
           result.credentials.replace(valueDes);
           break;
         default:
@@ -144,3 +120,4 @@ class _$AwsExchangeCredentialsProjectTokenOKSerializer
     return result.build();
   }
 }
+

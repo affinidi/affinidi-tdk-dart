@@ -22,6 +22,7 @@ import 'package:affinidi_tdk_login_configuration_client/src/model/resource_creat
 import 'package:affinidi_tdk_login_configuration_client/src/model/update_login_configuration_input.dart';
 
 class ConfigurationApi {
+
   final Dio _dio;
 
   final Serializers _serializers;
@@ -29,7 +30,7 @@ class ConfigurationApi {
   const ConfigurationApi(this._dio, this._serializers);
 
   /// Create a new login configuration
-  /// Create a new login configuration  &#x60;vpDefinition&#x60; and &#x60;idTokenMapping&#x60; have default settings that provide user email VP presentation definitions.  An essential default definition is in place when it comes to the login process for end users using the Chrome extension.  This definition requires users to input their email address as OIDCVP compliant, which is then verified by the Affinidi verification service.
+  /// Create a new login configuration  &#x60;vpDefinition&#x60; and &#x60;idTokenMapping&#x60; have default settings that provide user email VP presentation definitions.  An essential default definition is in place when it comes to the login process for end users using the Chrome extension.  This definition requires users to input their email address as OIDCVP compliant, which is then verified by the Affinidi verification service. 
   ///
   /// Parameters:
   /// * [createLoginConfigurationInput] - CreateLoginConfigurations
@@ -42,7 +43,7 @@ class ConfigurationApi {
   ///
   /// Returns a [Future] containing a [Response] with a [CreateLoginConfigurationOutput] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<CreateLoginConfigurationOutput>> createLoginConfigurations({
+  Future<Response<CreateLoginConfigurationOutput>> createLoginConfigurations({ 
     CreateLoginConfigurationInput? createLoginConfigurationInput,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -54,7 +55,9 @@ class ConfigurationApi {
     final _path = r'/v1/login/configurations';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -74,15 +77,14 @@ class ConfigurationApi {
 
     try {
       const _type = FullType(CreateLoginConfigurationInput);
-      _bodyData = createLoginConfigurationInput == null
-          ? null
-          : _serializers.serialize(
-              createLoginConfigurationInput,
-              specifiedType: _type,
-            );
-    } catch (error, stackTrace) {
+      _bodyData = createLoginConfigurationInput == null ? null : _serializers.serialize(createLoginConfigurationInput, specifiedType: _type);
+
+    } catch(error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+         requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -102,13 +104,11 @@ class ConfigurationApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(CreateLoginConfigurationOutput),
-                )
-                as CreateLoginConfigurationOutput;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(CreateLoginConfigurationOutput),
+      ) as CreateLoginConfigurationOutput;
+
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -145,7 +145,7 @@ class ConfigurationApi {
   ///
   /// Returns a [Future]
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<void>> deleteLoginConfigurationsById({
+  Future<Response<void>> deleteLoginConfigurationsById({ 
     required String configurationId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -154,19 +154,12 @@ class ConfigurationApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/v1/login/configurations/{configurationId}'.replaceAll(
-      '{'
-      r'configurationId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        configurationId,
-        const FullType(String),
-      ).toString(),
-    );
+    final _path = r'/v1/login/configurations/{configurationId}'.replaceAll('{' r'configurationId' '}', encodeQueryParameter(_serializers, configurationId, const FullType(String)).toString());
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -206,8 +199,7 @@ class ConfigurationApi {
   ///
   /// Returns a [Future] containing a [Response] with a [LoginConfigurationClientMetadataOutput] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<LoginConfigurationClientMetadataOutput>>
-  getClientMetadataByClientId({
+  Future<Response<LoginConfigurationClientMetadataOutput>> getClientMetadataByClientId({ 
     required String clientId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -216,20 +208,16 @@ class ConfigurationApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/v1/login/configurations/metadata/{clientId}'.replaceAll(
-      '{'
-      r'clientId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        clientId,
-        const FullType(String),
-      ).toString(),
-    );
+    final _path = r'/v1/login/configurations/metadata/{clientId}'.replaceAll('{' r'clientId' '}', encodeQueryParameter(_serializers, clientId, const FullType(String)).toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
-      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[],
+        ...?extra,
+      },
       validateStatus: validateStatus,
     );
 
@@ -245,15 +233,11 @@ class ConfigurationApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(
-                    LoginConfigurationClientMetadataOutput,
-                  ),
-                )
-                as LoginConfigurationClientMetadataOutput;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(LoginConfigurationClientMetadataOutput),
+      ) as LoginConfigurationClientMetadataOutput;
+
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -290,7 +274,7 @@ class ConfigurationApi {
   ///
   /// Returns a [Future] containing a [Response] with a [LoginConfigurationObject] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<LoginConfigurationObject>> getLoginConfigurationsById({
+  Future<Response<LoginConfigurationObject>> getLoginConfigurationsById({ 
     required String configurationId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -299,19 +283,12 @@ class ConfigurationApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/v1/login/configurations/{configurationId}'.replaceAll(
-      '{'
-      r'configurationId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        configurationId,
-        const FullType(String),
-      ).toString(),
-    );
+    final _path = r'/v1/login/configurations/{configurationId}'.replaceAll('{' r'configurationId' '}', encodeQueryParameter(_serializers, configurationId, const FullType(String)).toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -338,13 +315,11 @@ class ConfigurationApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(LoginConfigurationObject),
-                )
-                as LoginConfigurationObject;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(LoginConfigurationObject),
+      ) as LoginConfigurationObject;
+
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -382,7 +357,7 @@ class ConfigurationApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ListLoginConfigurationOutput] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ListLoginConfigurationOutput>> listLoginConfigurations({
+  Future<Response<ListLoginConfigurationOutput>> listLoginConfigurations({ 
     int? limit,
     String? exclusiveStartKey,
     CancelToken? cancelToken,
@@ -395,7 +370,9 @@ class ConfigurationApi {
     final _path = r'/v1/login/configurations';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -411,18 +388,8 @@ class ConfigurationApi {
     );
 
     final _queryParameters = <String, dynamic>{
-      if (limit != null)
-        r'limit': encodeQueryParameter(
-          _serializers,
-          limit,
-          const FullType(int),
-        ),
-      if (exclusiveStartKey != null)
-        r'exclusiveStartKey': encodeQueryParameter(
-          _serializers,
-          exclusiveStartKey,
-          const FullType(String),
-        ),
+      if (limit != null) r'limit': encodeQueryParameter(_serializers, limit, const FullType(int)),
+      if (exclusiveStartKey != null) r'exclusiveStartKey': encodeQueryParameter(_serializers, exclusiveStartKey, const FullType(String)),
     };
 
     final _response = await _dio.request<Object>(
@@ -438,13 +405,11 @@ class ConfigurationApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(ListLoginConfigurationOutput),
-                )
-                as ListLoginConfigurationOutput;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(ListLoginConfigurationOutput),
+      ) as ListLoginConfigurationOutput;
+
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -482,7 +447,7 @@ class ConfigurationApi {
   ///
   /// Returns a [Future] containing a [Response] with a [LoginConfigurationObject] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<LoginConfigurationObject>> updateLoginConfigurationsById({
+  Future<Response<LoginConfigurationObject>> updateLoginConfigurationsById({ 
     required String configurationId,
     UpdateLoginConfigurationInput? updateLoginConfigurationInput,
     CancelToken? cancelToken,
@@ -492,19 +457,12 @@ class ConfigurationApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/v1/login/configurations/{configurationId}'.replaceAll(
-      '{'
-      r'configurationId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        configurationId,
-        const FullType(String),
-      ).toString(),
-    );
+    final _path = r'/v1/login/configurations/{configurationId}'.replaceAll('{' r'configurationId' '}', encodeQueryParameter(_serializers, configurationId, const FullType(String)).toString());
     final _options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -524,15 +482,14 @@ class ConfigurationApi {
 
     try {
       const _type = FullType(UpdateLoginConfigurationInput);
-      _bodyData = updateLoginConfigurationInput == null
-          ? null
-          : _serializers.serialize(
-              updateLoginConfigurationInput,
-              specifiedType: _type,
-            );
-    } catch (error, stackTrace) {
+      _bodyData = updateLoginConfigurationInput == null ? null : _serializers.serialize(updateLoginConfigurationInput, specifiedType: _type);
+
+    } catch(error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+         requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -552,13 +509,11 @@ class ConfigurationApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null
-          ? null
-          : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(LoginConfigurationObject),
-                )
-                as LoginConfigurationObject;
+      _responseData = rawResponse == null ? null : _serializers.deserialize(
+        rawResponse,
+        specifiedType: const FullType(LoginConfigurationObject),
+      ) as LoginConfigurationObject;
+
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -580,4 +535,5 @@ class ConfigurationApi {
       extra: _response.extra,
     );
   }
+
 }

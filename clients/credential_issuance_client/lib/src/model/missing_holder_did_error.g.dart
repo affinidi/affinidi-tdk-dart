@@ -7,12 +7,11 @@ part of 'missing_holder_did_error.dart';
 // **************************************************************************
 
 const MissingHolderDidErrorNameEnum
-_$missingHolderDidErrorNameEnum_missingHolderDidError =
+    _$missingHolderDidErrorNameEnum_missingHolderDidError =
     const MissingHolderDidErrorNameEnum._('missingHolderDidError');
 
 MissingHolderDidErrorNameEnum _$missingHolderDidErrorNameEnumValueOf(
-  String name,
-) {
+    String name) {
   switch (name) {
     case 'missingHolderDidError':
       return _$missingHolderDidErrorNameEnum_missingHolderDidError;
@@ -22,21 +21,18 @@ MissingHolderDidErrorNameEnum _$missingHolderDidErrorNameEnumValueOf(
 }
 
 final BuiltSet<MissingHolderDidErrorNameEnum>
-_$missingHolderDidErrorNameEnumValues = BuiltSet<MissingHolderDidErrorNameEnum>(
-  const <MissingHolderDidErrorNameEnum>[
-    _$missingHolderDidErrorNameEnum_missingHolderDidError,
-  ],
-);
+    _$missingHolderDidErrorNameEnumValues = BuiltSet<
+        MissingHolderDidErrorNameEnum>(const <MissingHolderDidErrorNameEnum>[
+  _$missingHolderDidErrorNameEnum_missingHolderDidError,
+]);
 
 const MissingHolderDidErrorMessageEnum
-_$missingHolderDidErrorMessageEnum_holderDIDIsRequiredInThisClaimMode =
+    _$missingHolderDidErrorMessageEnum_holderDIDIsRequiredInThisClaimMode =
     const MissingHolderDidErrorMessageEnum._(
-      'holderDIDIsRequiredInThisClaimMode',
-    );
+        'holderDIDIsRequiredInThisClaimMode');
 
 MissingHolderDidErrorMessageEnum _$missingHolderDidErrorMessageEnumValueOf(
-  String name,
-) {
+    String name) {
   switch (name) {
     case 'holderDIDIsRequiredInThisClaimMode':
       return _$missingHolderDidErrorMessageEnum_holderDIDIsRequiredInThisClaimMode;
@@ -46,19 +42,17 @@ MissingHolderDidErrorMessageEnum _$missingHolderDidErrorMessageEnumValueOf(
 }
 
 final BuiltSet<MissingHolderDidErrorMessageEnum>
-_$missingHolderDidErrorMessageEnumValues =
-    BuiltSet<MissingHolderDidErrorMessageEnum>(
-      const <MissingHolderDidErrorMessageEnum>[
-        _$missingHolderDidErrorMessageEnum_holderDIDIsRequiredInThisClaimMode,
-      ],
-    );
+    _$missingHolderDidErrorMessageEnumValues = BuiltSet<
+        MissingHolderDidErrorMessageEnum>(const <MissingHolderDidErrorMessageEnum>[
+  _$missingHolderDidErrorMessageEnum_holderDIDIsRequiredInThisClaimMode,
+]);
 
 const MissingHolderDidErrorHttpStatusCodeEnum
-_$missingHolderDidErrorHttpStatusCodeEnum_number400 =
+    _$missingHolderDidErrorHttpStatusCodeEnum_number400 =
     const MissingHolderDidErrorHttpStatusCodeEnum._('number400');
 
 MissingHolderDidErrorHttpStatusCodeEnum
-_$missingHolderDidErrorHttpStatusCodeEnumValueOf(String name) {
+    _$missingHolderDidErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$missingHolderDidErrorHttpStatusCodeEnum_number400;
@@ -68,21 +62,19 @@ _$missingHolderDidErrorHttpStatusCodeEnumValueOf(String name) {
 }
 
 final BuiltSet<MissingHolderDidErrorHttpStatusCodeEnum>
-_$missingHolderDidErrorHttpStatusCodeEnumValues =
-    BuiltSet<MissingHolderDidErrorHttpStatusCodeEnum>(
-      const <MissingHolderDidErrorHttpStatusCodeEnum>[
-        _$missingHolderDidErrorHttpStatusCodeEnum_number400,
-      ],
-    );
+    _$missingHolderDidErrorHttpStatusCodeEnumValues = BuiltSet<
+        MissingHolderDidErrorHttpStatusCodeEnum>(const <MissingHolderDidErrorHttpStatusCodeEnum>[
+  _$missingHolderDidErrorHttpStatusCodeEnum_number400,
+]);
 
 Serializer<MissingHolderDidErrorNameEnum>
-_$missingHolderDidErrorNameEnumSerializer =
+    _$missingHolderDidErrorNameEnumSerializer =
     _$MissingHolderDidErrorNameEnumSerializer();
 Serializer<MissingHolderDidErrorMessageEnum>
-_$missingHolderDidErrorMessageEnumSerializer =
+    _$missingHolderDidErrorMessageEnumSerializer =
     _$MissingHolderDidErrorMessageEnumSerializer();
 Serializer<MissingHolderDidErrorHttpStatusCodeEnum>
-_$missingHolderDidErrorHttpStatusCodeEnumSerializer =
+    _$missingHolderDidErrorHttpStatusCodeEnumSerializer =
     _$MissingHolderDidErrorHttpStatusCodeEnumSerializer();
 
 class _$MissingHolderDidErrorNameEnumSerializer
@@ -101,19 +93,16 @@ class _$MissingHolderDidErrorNameEnumSerializer
 
   @override
   Object serialize(
-    Serializers serializers,
-    MissingHolderDidErrorNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, MissingHolderDidErrorNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   MissingHolderDidErrorNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => MissingHolderDidErrorNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      MissingHolderDidErrorNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$MissingHolderDidErrorMessageEnumSerializer
@@ -134,19 +123,16 @@ class _$MissingHolderDidErrorMessageEnumSerializer
 
   @override
   Object serialize(
-    Serializers serializers,
-    MissingHolderDidErrorMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, MissingHolderDidErrorMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   MissingHolderDidErrorMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => MissingHolderDidErrorMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      MissingHolderDidErrorMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$MissingHolderDidErrorHttpStatusCodeEnumSerializer
@@ -160,26 +146,23 @@ class _$MissingHolderDidErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    MissingHolderDidErrorHttpStatusCodeEnum,
+    MissingHolderDidErrorHttpStatusCodeEnum
   ];
   @override
   final String wireName = 'MissingHolderDidErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    MissingHolderDidErrorHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          MissingHolderDidErrorHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   MissingHolderDidErrorHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => MissingHolderDidErrorHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      MissingHolderDidErrorHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$MissingHolderDidError extends MissingHolderDidError {
@@ -194,21 +177,21 @@ class _$MissingHolderDidError extends MissingHolderDidError {
   @override
   final BuiltList<ActionForbiddenErrorDetailsInner>? details;
 
-  factory _$MissingHolderDidError([
-    void Function(MissingHolderDidErrorBuilder)? updates,
-  ]) => (MissingHolderDidErrorBuilder()..update(updates))._build();
+  factory _$MissingHolderDidError(
+          [void Function(MissingHolderDidErrorBuilder)? updates]) =>
+      (MissingHolderDidErrorBuilder()..update(updates))._build();
 
-  _$MissingHolderDidError._({
-    required this.name,
-    required this.message,
-    required this.httpStatusCode,
-    required this.traceId,
-    this.details,
-  }) : super._();
+  _$MissingHolderDidError._(
+      {required this.name,
+      required this.message,
+      required this.httpStatusCode,
+      required this.traceId,
+      this.details})
+      : super._();
   @override
   MissingHolderDidError rebuild(
-    void Function(MissingHolderDidErrorBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(MissingHolderDidErrorBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   MissingHolderDidErrorBuilder toBuilder() =>
@@ -311,29 +294,16 @@ class MissingHolderDidErrorBuilder
   _$MissingHolderDidError _build() {
     _$MissingHolderDidError _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$MissingHolderDidError._(
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'MissingHolderDidError',
-              'name',
-            ),
+                name, r'MissingHolderDidError', 'name'),
             message: BuiltValueNullFieldError.checkNotNull(
-              message,
-              r'MissingHolderDidError',
-              'message',
-            ),
+                message, r'MissingHolderDidError', 'message'),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-              httpStatusCode,
-              r'MissingHolderDidError',
-              'httpStatusCode',
-            ),
+                httpStatusCode, r'MissingHolderDidError', 'httpStatusCode'),
             traceId: BuiltValueNullFieldError.checkNotNull(
-              traceId,
-              r'MissingHolderDidError',
-              'traceId',
-            ),
+                traceId, r'MissingHolderDidError', 'traceId'),
             details: _details?.build(),
           );
     } catch (_) {
@@ -343,10 +313,7 @@ class MissingHolderDidErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'MissingHolderDidError',
-          _$failedField,
-          e.toString(),
-        );
+            r'MissingHolderDidError', _$failedField, e.toString());
       }
       rethrow;
     }

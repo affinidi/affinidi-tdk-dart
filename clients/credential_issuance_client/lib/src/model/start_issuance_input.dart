@@ -16,10 +16,9 @@ part 'start_issuance_input.g.dart';
 /// * [claimMode] - In TX_CODE claim mode, additional transaction code will be generated and the Authorization Server expects presentation of the transaction Code by the end-user. If FIXED_HOLDER claim mode is defined, holderDid must be present and service will not generate additional transaction code (NORMAL claimMode is deprecated).
 /// * [holderDid] - Holder DID
 /// * [issuanceId] - Website's internal identifier. Website may use to get info about the status of issuance flow. If it is not provided, CIS will generate one.
-/// * [data]
+/// * [data] 
 @BuiltValue()
-abstract class StartIssuanceInput
-    implements Built<StartIssuanceInput, StartIssuanceInputBuilder> {
+abstract class StartIssuanceInput implements Built<StartIssuanceInput, StartIssuanceInputBuilder> {
   /// In TX_CODE claim mode, additional transaction code will be generated and the Authorization Server expects presentation of the transaction Code by the end-user. If FIXED_HOLDER claim mode is defined, holderDid must be present and service will not generate additional transaction code (NORMAL claimMode is deprecated).
   @BuiltValueField(wireName: r'claimMode')
   StartIssuanceInputClaimModeEnum? get claimMode;
@@ -38,19 +37,16 @@ abstract class StartIssuanceInput
 
   StartIssuanceInput._();
 
-  factory StartIssuanceInput([void updates(StartIssuanceInputBuilder b)]) =
-      _$StartIssuanceInput;
+  factory StartIssuanceInput([void updates(StartIssuanceInputBuilder b)]) = _$StartIssuanceInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(StartIssuanceInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<StartIssuanceInput> get serializer =>
-      _$StartIssuanceInputSerializer();
+  static Serializer<StartIssuanceInput> get serializer => _$StartIssuanceInputSerializer();
 }
 
-class _$StartIssuanceInputSerializer
-    implements PrimitiveSerializer<StartIssuanceInput> {
+class _$StartIssuanceInputSerializer implements PrimitiveSerializer<StartIssuanceInput> {
   @override
   final Iterable<Type> types = const [StartIssuanceInput, _$StartIssuanceInput];
 
@@ -86,9 +82,7 @@ class _$StartIssuanceInputSerializer
     yield r'data';
     yield serializers.serialize(
       object.data,
-      specifiedType: const FullType(BuiltList, [
-        FullType(StartIssuanceInputDataInner),
-      ]),
+      specifiedType: const FullType(BuiltList, [FullType(StartIssuanceInputDataInner)]),
     );
   }
 
@@ -98,11 +92,7 @@ class _$StartIssuanceInputSerializer
     StartIssuanceInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -118,43 +108,31 @@ class _$StartIssuanceInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'claimMode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      StartIssuanceInputClaimModeEnum,
-                    ),
-                  )
-                  as StartIssuanceInputClaimModeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(StartIssuanceInputClaimModeEnum),
+          ) as StartIssuanceInputClaimModeEnum;
           result.claimMode = valueDes;
           break;
         case r'holderDid':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.holderDid = valueDes;
           break;
         case r'issuanceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.issuanceId = valueDes;
           break;
         case r'data':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(StartIssuanceInputDataInner),
-                    ]),
-                  )
-                  as BuiltList<StartIssuanceInputDataInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(StartIssuanceInputDataInner)]),
+          ) as BuiltList<StartIssuanceInputDataInner>;
           result.data.replace(valueDes);
           break;
         default:
@@ -187,28 +165,22 @@ class _$StartIssuanceInputSerializer
 }
 
 class StartIssuanceInputClaimModeEnum extends EnumClass {
+
   /// In TX_CODE claim mode, additional transaction code will be generated and the Authorization Server expects presentation of the transaction Code by the end-user. If FIXED_HOLDER claim mode is defined, holderDid must be present and service will not generate additional transaction code (NORMAL claimMode is deprecated).
   @BuiltValueEnumConst(wireName: r'NORMAL')
-  static const StartIssuanceInputClaimModeEnum NORMAL =
-      _$startIssuanceInputClaimModeEnum_NORMAL;
-
+  static const StartIssuanceInputClaimModeEnum NORMAL = _$startIssuanceInputClaimModeEnum_NORMAL;
   /// In TX_CODE claim mode, additional transaction code will be generated and the Authorization Server expects presentation of the transaction Code by the end-user. If FIXED_HOLDER claim mode is defined, holderDid must be present and service will not generate additional transaction code (NORMAL claimMode is deprecated).
   @BuiltValueEnumConst(wireName: r'TX_CODE')
-  static const StartIssuanceInputClaimModeEnum TX_CODE =
-      _$startIssuanceInputClaimModeEnum_TX_CODE;
-
+  static const StartIssuanceInputClaimModeEnum TX_CODE = _$startIssuanceInputClaimModeEnum_TX_CODE;
   /// In TX_CODE claim mode, additional transaction code will be generated and the Authorization Server expects presentation of the transaction Code by the end-user. If FIXED_HOLDER claim mode is defined, holderDid must be present and service will not generate additional transaction code (NORMAL claimMode is deprecated).
   @BuiltValueEnumConst(wireName: r'FIXED_HOLDER')
-  static const StartIssuanceInputClaimModeEnum FIXED_HOLDER =
-      _$startIssuanceInputClaimModeEnum_FIXED_HOLDER;
+  static const StartIssuanceInputClaimModeEnum FIXED_HOLDER = _$startIssuanceInputClaimModeEnum_FIXED_HOLDER;
 
-  static Serializer<StartIssuanceInputClaimModeEnum> get serializer =>
-      _$startIssuanceInputClaimModeEnumSerializer;
+  static Serializer<StartIssuanceInputClaimModeEnum> get serializer => _$startIssuanceInputClaimModeEnumSerializer;
 
-  const StartIssuanceInputClaimModeEnum._(String name) : super(name);
+  const StartIssuanceInputClaimModeEnum._(String name): super(name);
 
-  static BuiltSet<StartIssuanceInputClaimModeEnum> get values =>
-      _$startIssuanceInputClaimModeEnumValues;
-  static StartIssuanceInputClaimModeEnum valueOf(String name) =>
-      _$startIssuanceInputClaimModeEnumValueOf(name);
+  static BuiltSet<StartIssuanceInputClaimModeEnum> get values => _$startIssuanceInputClaimModeEnumValues;
+  static StartIssuanceInputClaimModeEnum valueOf(String name) => _$startIssuanceInputClaimModeEnumValueOf(name);
 }
+

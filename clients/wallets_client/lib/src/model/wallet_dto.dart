@@ -20,9 +20,9 @@ part 'wallet_dto.g.dart';
 /// * [description] - The description of the wallet
 /// * [didDocument] - did document of the wallet
 /// * [ari] - ARI of the wallet
-/// * [keys]
-/// * [createdAt]
-/// * [modifiedAt]
+/// * [keys] 
+/// * [createdAt] 
+/// * [modifiedAt] 
 @BuiltValue()
 abstract class WalletDto implements Built<WalletDto, WalletDtoBuilder> {
   /// id of the wallet in uuidV4 format
@@ -127,9 +127,7 @@ class _$WalletDtoSerializer implements PrimitiveSerializer<WalletDto> {
       yield r'keys';
       yield serializers.serialize(
         object.keys,
-        specifiedType: const FullType(BuiltList, [
-          FullType(WalletDtoKeysInner),
-        ]),
+        specifiedType: const FullType(BuiltList, [FullType(WalletDtoKeysInner)]),
       );
     }
     if (object.createdAt != null) {
@@ -154,11 +152,7 @@ class _$WalletDtoSerializer implements PrimitiveSerializer<WalletDto> {
     WalletDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -174,86 +168,66 @@ class _$WalletDtoSerializer implements PrimitiveSerializer<WalletDto> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.id = valueDes;
           break;
         case r'did':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.did = valueDes;
           break;
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.description = valueDes;
           break;
         case r'didDocument':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.didDocument = valueDes;
           break;
         case r'ari':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.ari = valueDes;
           break;
         case r'keys':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(WalletDtoKeysInner),
-                    ]),
-                  )
-                  as BuiltList<WalletDtoKeysInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(WalletDtoKeysInner)]),
+          ) as BuiltList<WalletDtoKeysInner>;
           result.keys.replace(valueDes);
           break;
         case r'createdAt':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.createdAt = valueDes;
           break;
         case r'modifiedAt':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.modifiedAt = valueDes;
           break;
         default:
@@ -284,3 +258,4 @@ class _$WalletDtoSerializer implements PrimitiveSerializer<WalletDto> {
     return result.build();
   }
 }
+

@@ -15,8 +15,7 @@ part 'validate_jwt_output.g.dart';
 /// * [isValid] - Defines if jwt is valid
 /// * [payload] - Decoded payload of the token
 @BuiltValue()
-abstract class ValidateJwtOutput
-    implements Built<ValidateJwtOutput, ValidateJwtOutputBuilder> {
+abstract class ValidateJwtOutput implements Built<ValidateJwtOutput, ValidateJwtOutputBuilder> {
   /// Defines if jwt is valid
   @BuiltValueField(wireName: r'isValid')
   bool get isValid;
@@ -27,19 +26,16 @@ abstract class ValidateJwtOutput
 
   ValidateJwtOutput._();
 
-  factory ValidateJwtOutput([void updates(ValidateJwtOutputBuilder b)]) =
-      _$ValidateJwtOutput;
+  factory ValidateJwtOutput([void updates(ValidateJwtOutputBuilder b)]) = _$ValidateJwtOutput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ValidateJwtOutputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ValidateJwtOutput> get serializer =>
-      _$ValidateJwtOutputSerializer();
+  static Serializer<ValidateJwtOutput> get serializer => _$ValidateJwtOutputSerializer();
 }
 
-class _$ValidateJwtOutputSerializer
-    implements PrimitiveSerializer<ValidateJwtOutput> {
+class _$ValidateJwtOutputSerializer implements PrimitiveSerializer<ValidateJwtOutput> {
   @override
   final Iterable<Type> types = const [ValidateJwtOutput, _$ValidateJwtOutput];
 
@@ -69,11 +65,7 @@ class _$ValidateJwtOutputSerializer
     ValidateJwtOutput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -89,21 +81,17 @@ class _$ValidateJwtOutputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'isValid':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.isValid = valueDes;
           break;
         case r'payload':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.payload = valueDes;
           break;
         default:
@@ -134,3 +122,4 @@ class _$ValidateJwtOutputSerializer
     return result.build();
   }
 }
+

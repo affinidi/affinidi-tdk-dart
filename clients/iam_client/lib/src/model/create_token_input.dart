@@ -12,12 +12,11 @@ part 'create_token_input.g.dart';
 /// CreateTokenInput
 ///
 /// Properties:
-/// * [name]
-/// * [authenticationMethod]
-/// * [description]
+/// * [name] 
+/// * [authenticationMethod] 
+/// * [description] 
 @BuiltValue()
-abstract class CreateTokenInput
-    implements Built<CreateTokenInput, CreateTokenInputBuilder> {
+abstract class CreateTokenInput implements Built<CreateTokenInput, CreateTokenInputBuilder> {
   @BuiltValueField(wireName: r'name')
   String get name;
 
@@ -29,19 +28,16 @@ abstract class CreateTokenInput
 
   CreateTokenInput._();
 
-  factory CreateTokenInput([void updates(CreateTokenInputBuilder b)]) =
-      _$CreateTokenInput;
+  factory CreateTokenInput([void updates(CreateTokenInputBuilder b)]) = _$CreateTokenInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateTokenInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<CreateTokenInput> get serializer =>
-      _$CreateTokenInputSerializer();
+  static Serializer<CreateTokenInput> get serializer => _$CreateTokenInputSerializer();
 }
 
-class _$CreateTokenInputSerializer
-    implements PrimitiveSerializer<CreateTokenInput> {
+class _$CreateTokenInputSerializer implements PrimitiveSerializer<CreateTokenInput> {
   @override
   final Iterable<Type> types = const [CreateTokenInput, _$CreateTokenInput];
 
@@ -78,11 +74,7 @@ class _$CreateTokenInputSerializer
     CreateTokenInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -98,32 +90,24 @@ class _$CreateTokenInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'authenticationMethod':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      TokenPrivateKeyAuthenticationMethodDto,
-                    ),
-                  )
-                  as TokenPrivateKeyAuthenticationMethodDto;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(TokenPrivateKeyAuthenticationMethodDto),
+          ) as TokenPrivateKeyAuthenticationMethodDto;
           result.authenticationMethod.replace(valueDes);
           break;
         case r'description':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.description = valueDes;
           break;
         default:
@@ -154,3 +138,4 @@ class _$CreateTokenInputSerializer
     return result.build();
   }
 }
+

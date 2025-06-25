@@ -11,15 +11,15 @@ class _$CredentialRequirementsConstraints
   @override
   final AnyOf anyOf;
 
-  factory _$CredentialRequirementsConstraints([
-    void Function(CredentialRequirementsConstraintsBuilder)? updates,
-  ]) => (CredentialRequirementsConstraintsBuilder()..update(updates))._build();
+  factory _$CredentialRequirementsConstraints(
+          [void Function(CredentialRequirementsConstraintsBuilder)? updates]) =>
+      (CredentialRequirementsConstraintsBuilder()..update(updates))._build();
 
   _$CredentialRequirementsConstraints._({required this.anyOf}) : super._();
   @override
   CredentialRequirementsConstraints rebuild(
-    void Function(CredentialRequirementsConstraintsBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CredentialRequirementsConstraintsBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CredentialRequirementsConstraintsBuilder toBuilder() =>
@@ -41,18 +41,16 @@ class _$CredentialRequirementsConstraints
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'CredentialRequirementsConstraints',
-    )..add('anyOf', anyOf)).toString();
+    return (newBuiltValueToStringHelper(r'CredentialRequirementsConstraints')
+          ..add('anyOf', anyOf))
+        .toString();
   }
 }
 
 class CredentialRequirementsConstraintsBuilder
     implements
-        Builder<
-          CredentialRequirementsConstraints,
-          CredentialRequirementsConstraintsBuilder
-        > {
+        Builder<CredentialRequirementsConstraints,
+            CredentialRequirementsConstraintsBuilder> {
   _$CredentialRequirementsConstraints? _$v;
 
   AnyOf? _anyOf;
@@ -79,8 +77,7 @@ class CredentialRequirementsConstraintsBuilder
 
   @override
   void update(
-    void Function(CredentialRequirementsConstraintsBuilder)? updates,
-  ) {
+      void Function(CredentialRequirementsConstraintsBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -88,14 +85,10 @@ class CredentialRequirementsConstraintsBuilder
   CredentialRequirementsConstraints build() => _build();
 
   _$CredentialRequirementsConstraints _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CredentialRequirementsConstraints._(
           anyOf: BuiltValueNullFieldError.checkNotNull(
-            anyOf,
-            r'CredentialRequirementsConstraints',
-            'anyOf',
-          ),
+              anyOf, r'CredentialRequirementsConstraints', 'anyOf'),
         );
     replace(_$result);
     return _$result;
