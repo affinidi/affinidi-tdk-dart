@@ -5,7 +5,7 @@ on:
      
 jobs:
   dart-pipeline:
-    uses: affinidi/pipeline-dart/.github/workflows/check.yaml@feat/add-integration-tests-workflow
+    uses: affinidi/pipeline-dart/.github/workflows/check.yaml@main
     secrets: inherit
     with:
       flutter-version: '3.32.4'
