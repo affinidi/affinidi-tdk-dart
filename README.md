@@ -92,33 +92,37 @@ void main() async {
 
 Packages are commonly used utilities/helpers that are self-contained and composable.
 
-| Client        | Reference        | Package name      |
-|---------------|---------------|-------------------|
-| auth_provider    | [Source code](./packages/auth_provider/)  | [affinidi_tdk_auth_provider](https://pub.dev/packages/affinidi_tdk_auth_provider)   |
-| consumer_auth_provider    | [Source code](./packages/consumer_auth_provider/) | [affinidi_tdk_consumer_auth_provider](https://pub.dev/packages/affinidi_tdk_consumer_auth_provider)   |
-| claim_verifiable_credential   | [Source code](./packages/claim_verifiable_credential/)    | [affinidi_tdk_claim_verifiable_credential](https://pub.dev/packages/affinidi_tdk_claim_verifiable_credential) |
-| common    | [Source code](./packages/common/) | [affinidi_tdk_common](https://pub.dev/packages/affinidi_tdk_common)   |
-| cryptography  | [Source code](./packages/cryptography/) | [affinidi_tdk_cryptography](https://pub.dev/packages/affinidi_tdk_cryptography) |
-| vault | [Source code](./packages/vault/)  | [affinidi_tdk_vault](https://pub.dev/packages/affinidi_tdk_vault) |
-| vault_data_manager    | [Source code](./packages/vault_data_manager/) | [affinidi_tdk_vault_data_manager](https://pub.dev/packages/affinidi_tdk_vault_data_manager)   |
-| vault_flutter_utls    | [Source code](./packages/vault_flutter_utils/)    | [affinidi_tdk_vault_flutter_utils](https://pub.dev/packages/affinidi_tdk_vault_flutter_utils) |
-| test_utilities    | [Source code](./packages/test_utilities/) | [affinidi_tdk_test_utilities](https://pub.dev/packages/affinidi_tdk_test_utilities)   |
+| Client        | Reference        | Package name      | Status |
+|---------------|---------------|-------------------|-----------|
+| auth_provider    | [Source code](./packages/auth_provider/)  | [affinidi_tdk_auth_provider](https://pub.dev/packages/affinidi_tdk_auth_provider)   | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
+| consumer_auth_provider    | [Source code](./packages/consumer_auth_provider/) | [affinidi_tdk_consumer_auth_provider](https://pub.dev/packages/affinidi_tdk_consumer_auth_provider)   | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
+| claim_verifiable_credential   | [Source code](./packages/claim_verifiable_credential/)    | [affinidi_tdk_claim_verifiable_credential](https://pub.dev/packages/affinidi_tdk_claim_verifiable_credential) | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
+| common    | [Source code](./packages/common/) | [affinidi_tdk_common](https://pub.dev/packages/affinidi_tdk_common)   | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
+| cryptography  | [Source code](./packages/cryptography/) | [affinidi_tdk_cryptography](https://pub.dev/packages/affinidi_tdk_cryptography) | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
+| vault | [Source code](./packages/vault/)  | [affinidi_tdk_vault](https://pub.dev/packages/affinidi_tdk_vault) | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
+| vault_data_manager    | [Source code](./packages/vault_data_manager/) | [affinidi_tdk_vault_data_manager](https://pub.dev/packages/affinidi_tdk_vault_data_manager)   | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
+| vault_flutter_utls    | [Source code](./packages/vault_flutter_utils/)    | [affinidi_tdk_vault_flutter_utils](https://pub.dev/packages/affinidi_tdk_vault_flutter_utils) | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
+| test_utilities    | [Source code](./packages/test_utilities/) | [affinidi_tdk_test_utilities](https://pub.dev/packages/affinidi_tdk_test_utilities)   | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
 | iota_core | [Source code](./packages/iota_core/)  | Not published |
 
 ### Clients
 
 Clients provide methods to access Affinidi Elements services such as Credential Issuance, Credential Verification, and Iota Framework.
 
-| Client        | Reference        | Package name      |
-|---------------|---------------|-------------------|
-| credential_issuance_client    | [Source code](./clients/credential_issuance_client/)  | [affinidi_tdk_credential_issuance_client](https://pub.dev/packages/affinidi_tdk_credential_issuance_client)   |
-| credential_verification_client   | [Source code](./clients/credential_verification_client/)  | [affinidi_tdk_credential_verification_client](https://pub.dev/packages/affinidi_tdk_credential_verification_client)   |
-| affinidi_tdk_iam_client   | [Source code](./clients/iam_client/)  | [affinidi_tdk_iam_client](https://pub.dev/packages/affinidi_tdk_iam_client)   |
-| iota_client  | [Source code](./clients/iota_client/) | [affinidi_tdk_iota_client](https://pub.dev/packages/affinidi_tdk_iota_client)  |
-| logic_configuration_client   | [Source code](./clients/login_configuration_client/)  | [affinidi_tdk_logic_configuration_client](https://pub.dev/packages/affinidi_tdk_login_configuration_client)   |
-| vault_data_manager   | [Source code](./clients/vault_data_manager_client/)   | [affinidi_tdk_vault_data_manager](https://pub.dev/packages/affinidi_tdk_vault_data_manager_client)    |
-| wallets_client   | [Source code](./clients/wallets_client/)  | [affinidi_tdk_wallets_client](https://pub.dev/packages/affinidi_tdk_wallets_client)   |
+| Client        | Reference        | Package name      | Status |
+|---------------|---------------|-------------------|-----------|
+| credential_issuance_client    | [Source code](./clients/credential_issuance_client/)  | [affinidi_tdk_credential_issuance_client](https://pub.dev/packages/affinidi_tdk_credential_issuance_client)   | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
+| credential_verification_client   | [Source code](./clients/credential_verification_client/)  | [affinidi_tdk_credential_verification_client](https://pub.dev/packages/affinidi_tdk_credential_verification_client)   | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
+| affinidi_tdk_iam_client   | [Source code](./clients/iam_client/)  | [affinidi_tdk_iam_client](https://pub.dev/packages/affinidi_tdk_iam_client)   | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
+| iota_client  | [Source code](./clients/iota_client/) | [affinidi_tdk_iota_client](https://pub.dev/packages/affinidi_tdk_iota_client)  | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
+| logic_configuration_client   | [Source code](./clients/login_configuration_client/)  | [affinidi_tdk_logic_configuration_client](https://pub.dev/packages/affinidi_tdk_login_configuration_client)   | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
+| vault_data_manager_client   | [Source code](./clients/vault_data_manager_client/)   | [affinidi_tdk_vault_data_manager](https://pub.dev/packages/affinidi_tdk_vault_data_manager_client)    | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
+| wallets_client   | [Source code](./clients/wallets_client/)  | [affinidi_tdk_wallets_client](https://pub.dev/packages/affinidi_tdk_wallets_client)   | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
 
+
+![◯](https://img.shields.io/badge/%E2%97%AF-Supported-2ecc71?labelColor=52a447&style=flat)
+![◯](https://img.shields.io/badge/%E2%97%AF-Experimental-f9e79f?labelColor=FFEA00&style=flat)
+![◯](https://img.shields.io/badge/%E2%97%AF-Unsupported-ec7063?labelColor=e74c3c&style=flat)
 
 ## Support & feedback
 
