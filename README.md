@@ -88,11 +88,13 @@ void main() async {
 
 ## Available Packages and Clients
 
+See the list of available packages and clients of Affinidi TDK for Dart.
+
 ### Packages
 
 Packages are commonly used utilities/helpers that are self-contained and composable.
 
-| Client        | Reference        | Package name      | Status |
+| Name        | Reference        | Package name      | Status |
 |---------------|---------------|-------------------|-----------|
 | auth_provider    | [Source code](./packages/auth_provider/)  | [affinidi_tdk_auth_provider](https://pub.dev/packages/affinidi_tdk_auth_provider)   | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
 | consumer_auth_provider    | [Source code](./packages/consumer_auth_provider/) | [affinidi_tdk_consumer_auth_provider](https://pub.dev/packages/affinidi_tdk_consumer_auth_provider)   | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
@@ -103,13 +105,13 @@ Packages are commonly used utilities/helpers that are self-contained and composa
 | vault_data_manager    | [Source code](./packages/vault_data_manager/) | [affinidi_tdk_vault_data_manager](https://pub.dev/packages/affinidi_tdk_vault_data_manager)   | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
 | vault_flutter_utls    | [Source code](./packages/vault_flutter_utils/)    | [affinidi_tdk_vault_flutter_utils](https://pub.dev/packages/affinidi_tdk_vault_flutter_utils) | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
 | test_utilities    | [Source code](./packages/test_utilities/) | [affinidi_tdk_test_utilities](https://pub.dev/packages/affinidi_tdk_test_utilities)   | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
-| iota_core | [Source code](./packages/iota_core/)  | Not published |
+| iota_core | [Source code](./packages/iota_core/)  | Not published | - |
 
 ### Clients
 
 Clients provide methods to access Affinidi Elements services such as Credential Issuance, Credential Verification, and Iota Framework.
 
-| Client        | Reference        | Package name      | Status |
+| Name        | Reference        | Package name      | Status |
 |---------------|---------------|-------------------|-----------|
 | credential_issuance_client    | [Source code](./clients/credential_issuance_client/)  | [affinidi_tdk_credential_issuance_client](https://pub.dev/packages/affinidi_tdk_credential_issuance_client)   | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
 | credential_verification_client   | [Source code](./clients/credential_verification_client/)  | [affinidi_tdk_credential_verification_client](https://pub.dev/packages/affinidi_tdk_credential_verification_client)   | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
@@ -119,6 +121,8 @@ Clients provide methods to access Affinidi Elements services such as Credential 
 | vault_data_manager_client   | [Source code](./clients/vault_data_manager_client/)   | [affinidi_tdk_vault_data_manager](https://pub.dev/packages/affinidi_tdk_vault_data_manager_client)    | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
 | wallets_client   | [Source code](./clients/wallets_client/)  | [affinidi_tdk_wallets_client](https://pub.dev/packages/affinidi_tdk_wallets_client)   | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
 
+
+**Status definition:**
 
 ![◯](https://img.shields.io/badge/%E2%97%AF-Supported-2ecc71?labelColor=52a447&style=flat)
 ![◯](https://img.shields.io/badge/%E2%97%AF-Experimental-f9e79f?labelColor=FFEA00&style=flat)
