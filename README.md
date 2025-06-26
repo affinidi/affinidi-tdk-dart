@@ -38,7 +38,7 @@ and then run the command below to install the package:
 dart pub get
 ```
 
-Refer to the [available clients and packages](#available-clients-and-packages) for package names and relevant references.
+Refer to the [available clients and packages](#available-packages-and-clients) for package names and relevant references.
 
 ## Usage
 
