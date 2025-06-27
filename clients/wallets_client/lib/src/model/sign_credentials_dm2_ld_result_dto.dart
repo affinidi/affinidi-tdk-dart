@@ -16,19 +16,17 @@ part 'sign_credentials_dm2_ld_result_dto.g.dart';
 @BuiltValue()
 abstract class SignCredentialsDm2LdResultDto
     implements
-        Built<
-          SignCredentialsDm2LdResultDto,
-          SignCredentialsDm2LdResultDtoBuilder
-        > {
+        Built<SignCredentialsDm2LdResultDto,
+            SignCredentialsDm2LdResultDtoBuilder> {
   /// Signed credential can be in Dm2Ld format
   @BuiltValueField(wireName: r'credential')
   JsonObject get credential;
 
   SignCredentialsDm2LdResultDto._();
 
-  factory SignCredentialsDm2LdResultDto([
-    void updates(SignCredentialsDm2LdResultDtoBuilder b),
-  ]) = _$SignCredentialsDm2LdResultDto;
+  factory SignCredentialsDm2LdResultDto(
+          [void updates(SignCredentialsDm2LdResultDtoBuilder b)]) =
+      _$SignCredentialsDm2LdResultDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SignCredentialsDm2LdResultDtoBuilder b) => b;
@@ -43,7 +41,7 @@ class _$SignCredentialsDm2LdResultDtoSerializer
   @override
   final Iterable<Type> types = const [
     SignCredentialsDm2LdResultDto,
-    _$SignCredentialsDm2LdResultDto,
+    _$SignCredentialsDm2LdResultDto
   ];
 
   @override
@@ -67,11 +65,9 @@ class _$SignCredentialsDm2LdResultDtoSerializer
     SignCredentialsDm2LdResultDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -87,12 +83,10 @@ class _$SignCredentialsDm2LdResultDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'credential':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.credential = valueDes;
           break;
         default:

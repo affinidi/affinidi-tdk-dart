@@ -14,19 +14,17 @@ class _$GroupUserMappingsList extends GroupUserMappingsList {
   @override
   final int? totalUserCount;
 
-  factory _$GroupUserMappingsList([
-    void Function(GroupUserMappingsListBuilder)? updates,
-  ]) => (GroupUserMappingsListBuilder()..update(updates))._build();
+  factory _$GroupUserMappingsList(
+          [void Function(GroupUserMappingsListBuilder)? updates]) =>
+      (GroupUserMappingsListBuilder()..update(updates))._build();
 
-  _$GroupUserMappingsList._({
-    this.users,
-    this.lastEvaluatedKey,
-    this.totalUserCount,
-  }) : super._();
+  _$GroupUserMappingsList._(
+      {this.users, this.lastEvaluatedKey, this.totalUserCount})
+      : super._();
   @override
   GroupUserMappingsList rebuild(
-    void Function(GroupUserMappingsListBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(GroupUserMappingsListBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   GroupUserMappingsListBuilder toBuilder() =>
@@ -111,8 +109,7 @@ class GroupUserMappingsListBuilder
   _$GroupUserMappingsList _build() {
     _$GroupUserMappingsList _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$GroupUserMappingsList._(
             users: _users?.build(),
             lastEvaluatedKey: lastEvaluatedKey,
@@ -125,10 +122,7 @@ class GroupUserMappingsListBuilder
         _users?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'GroupUserMappingsList',
-          _$failedField,
-          e.toString(),
-        );
+            r'GroupUserMappingsList', _$failedField, e.toString());
       }
       rethrow;
     }

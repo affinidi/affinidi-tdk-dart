@@ -49,18 +49,14 @@ class ProfileDataApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/nodes/{nodeId}/profile-data'.replaceAll(
-      '{'
-      r'nodeId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        nodeId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'nodeId' '}',
+        encodeQueryParameter(_serializers, nodeId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -77,11 +73,8 @@ class ProfileDataApi {
 
     final _queryParameters = <String, dynamic>{
       if (query != null)
-        r'query': encodeQueryParameter(
-          _serializers,
-          query,
-          const FullType(String),
-        ),
+        r'query':
+            encodeQueryParameter(_serializers, query, const FullType(String)),
       r'dek': encodeQueryParameter(_serializers, dek, const FullType(String)),
     };
 
@@ -101,10 +94,9 @@ class ProfileDataApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(QueryProfileDataOK),
-                )
-                as QueryProfileDataOK;
+              rawResponse,
+              specifiedType: const FullType(QueryProfileDataOK),
+            ) as QueryProfileDataOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -153,18 +145,14 @@ class ProfileDataApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/nodes/{nodeId}/profile-data'.replaceAll(
-      '{'
-      r'nodeId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        nodeId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'nodeId' '}',
+        encodeQueryParameter(_serializers, nodeId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -184,13 +172,14 @@ class ProfileDataApi {
 
     try {
       const _type = FullType(UpdateProfileDataInput);
-      _bodyData = _serializers.serialize(
-        updateProfileDataInput,
-        specifiedType: _type,
-      );
+      _bodyData =
+          _serializers.serialize(updateProfileDataInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -213,10 +202,9 @@ class ProfileDataApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(UpdateProfileDataOK),
-                )
-                as UpdateProfileDataOK;
+              rawResponse,
+              specifiedType: const FullType(UpdateProfileDataOK),
+            ) as UpdateProfileDataOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

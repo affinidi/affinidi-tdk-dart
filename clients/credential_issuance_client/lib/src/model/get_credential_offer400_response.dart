@@ -27,18 +27,16 @@ part 'get_credential_offer400_response.g.dart';
 @BuiltValue()
 abstract class GetCredentialOffer400Response
     implements
-        Built<
-          GetCredentialOffer400Response,
-          GetCredentialOffer400ResponseBuilder
-        > {
+        Built<GetCredentialOffer400Response,
+            GetCredentialOffer400ResponseBuilder> {
   /// One Of [CredentialOfferClaimedError], [CredentialOfferExpiredError], [InvalidParameterError], [ProjectCredentialConfigNotExistError], [VcClaimedError]
   OneOf get oneOf;
 
   GetCredentialOffer400Response._();
 
-  factory GetCredentialOffer400Response([
-    void updates(GetCredentialOffer400ResponseBuilder b),
-  ]) = _$GetCredentialOffer400Response;
+  factory GetCredentialOffer400Response(
+          [void updates(GetCredentialOffer400ResponseBuilder b)]) =
+      _$GetCredentialOffer400Response;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetCredentialOffer400ResponseBuilder b) => b;
@@ -53,16 +51,14 @@ class _$GetCredentialOffer400ResponseSerializer
   @override
   final Iterable<Type> types = const [
     GetCredentialOffer400Response,
-    _$GetCredentialOffer400Response,
+    _$GetCredentialOffer400Response
   ];
 
   @override
   final String wireName = r'GetCredentialOffer400Response';
 
   Iterable<Object?> _serializeProperties(
-    Serializers serializers,
-    GetCredentialOffer400Response object,
-  ) sync* {}
+      Serializers serializers, GetCredentialOffer400Response object) sync* {}
 
   @override
   Object serialize(
@@ -71,10 +67,8 @@ class _$GetCredentialOffer400ResponseSerializer
     FullType specifiedType = FullType.unspecified,
   }) {
     final oneOf = object.oneOf;
-    return serializers.serialize(
-      oneOf.value,
-      specifiedType: FullType(oneOf.valueType),
-    )!;
+    return serializers.serialize(oneOf.value,
+        specifiedType: FullType(oneOf.valueType))!;
   }
 
   @override
@@ -93,9 +87,8 @@ class _$GetCredentialOffer400ResponseSerializer
       FullType(VcClaimedError),
     ]);
     oneOfDataSrc = serialized;
-    result.oneOf =
-        serializers.deserialize(oneOfDataSrc, specifiedType: targetType)
-            as OneOf;
+    result.oneOf = serializers.deserialize(oneOfDataSrc,
+        specifiedType: targetType) as OneOf;
     return result.build();
   }
 }
@@ -118,10 +111,9 @@ class GetCredentialOffer400ResponseNameEnum extends EnumClass {
 
 class GetCredentialOffer400ResponseMessageEnum extends EnumClass {
   @BuiltValueEnumConst(
-    wireName: r'The requested VC has already been claimed by the user',
-  )
+      wireName: r'The requested VC has already been claimed by the user')
   static const GetCredentialOffer400ResponseMessageEnum
-  theRequestedVCHasAlreadyBeenClaimedByTheUser =
+      theRequestedVCHasAlreadyBeenClaimedByTheUser =
       _$getCredentialOffer400ResponseMessageEnum_theRequestedVCHasAlreadyBeenClaimedByTheUser;
 
   static Serializer<GetCredentialOffer400ResponseMessageEnum> get serializer =>
@@ -141,10 +133,11 @@ class GetCredentialOffer400ResponseHttpStatusCodeEnum extends EnumClass {
       _$getCredentialOffer400ResponseHttpStatusCodeEnum_number400;
 
   static Serializer<GetCredentialOffer400ResponseHttpStatusCodeEnum>
-  get serializer => _$getCredentialOffer400ResponseHttpStatusCodeEnumSerializer;
+      get serializer =>
+          _$getCredentialOffer400ResponseHttpStatusCodeEnumSerializer;
 
   const GetCredentialOffer400ResponseHttpStatusCodeEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<GetCredentialOffer400ResponseHttpStatusCodeEnum> get values =>
       _$getCredentialOffer400ResponseHttpStatusCodeEnumValues;

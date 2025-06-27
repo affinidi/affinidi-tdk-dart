@@ -42,9 +42,9 @@ abstract class ChangeStatusForbiddenError
 
   ChangeStatusForbiddenError._();
 
-  factory ChangeStatusForbiddenError([
-    void updates(ChangeStatusForbiddenErrorBuilder b),
-  ]) = _$ChangeStatusForbiddenError;
+  factory ChangeStatusForbiddenError(
+          [void updates(ChangeStatusForbiddenErrorBuilder b)]) =
+      _$ChangeStatusForbiddenError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ChangeStatusForbiddenErrorBuilder b) => b;
@@ -59,7 +59,7 @@ class _$ChangeStatusForbiddenErrorSerializer
   @override
   final Iterable<Type> types = const [
     ChangeStatusForbiddenError,
-    _$ChangeStatusForbiddenError,
+    _$ChangeStatusForbiddenError
   ];
 
   @override
@@ -83,9 +83,8 @@ class _$ChangeStatusForbiddenErrorSerializer
     yield r'httpStatusCode';
     yield serializers.serialize(
       object.httpStatusCode,
-      specifiedType: const FullType(
-        ChangeStatusForbiddenErrorHttpStatusCodeEnum,
-      ),
+      specifiedType:
+          const FullType(ChangeStatusForbiddenErrorHttpStatusCodeEnum),
     );
     yield r'traceId';
     yield serializers.serialize(
@@ -96,9 +95,8 @@ class _$ChangeStatusForbiddenErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ActionForbiddenErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
       );
     }
   }
@@ -109,11 +107,9 @@ class _$ChangeStatusForbiddenErrorSerializer
     ChangeStatusForbiddenError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -129,56 +125,41 @@ class _$ChangeStatusForbiddenErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      ChangeStatusForbiddenErrorNameEnum,
-                    ),
-                  )
-                  as ChangeStatusForbiddenErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(ChangeStatusForbiddenErrorNameEnum),
+          ) as ChangeStatusForbiddenErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      ChangeStatusForbiddenErrorMessageEnum,
-                    ),
-                  )
-                  as ChangeStatusForbiddenErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(ChangeStatusForbiddenErrorMessageEnum),
+          ) as ChangeStatusForbiddenErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      ChangeStatusForbiddenErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as ChangeStatusForbiddenErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(ChangeStatusForbiddenErrorHttpStatusCodeEnum),
+          ) as ChangeStatusForbiddenErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ActionForbiddenErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ActionForbiddenErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
+          ) as BuiltList<ActionForbiddenErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -229,7 +210,7 @@ class ChangeStatusForbiddenErrorNameEnum extends EnumClass {
 class ChangeStatusForbiddenErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'Related VC status cannot be changed')
   static const ChangeStatusForbiddenErrorMessageEnum
-  relatedVCStatusCannotBeChanged =
+      relatedVCStatusCannotBeChanged =
       _$changeStatusForbiddenErrorMessageEnum_relatedVCStatusCannotBeChanged;
 
   static Serializer<ChangeStatusForbiddenErrorMessageEnum> get serializer =>
@@ -249,10 +230,11 @@ class ChangeStatusForbiddenErrorHttpStatusCodeEnum extends EnumClass {
       _$changeStatusForbiddenErrorHttpStatusCodeEnum_number400;
 
   static Serializer<ChangeStatusForbiddenErrorHttpStatusCodeEnum>
-  get serializer => _$changeStatusForbiddenErrorHttpStatusCodeEnumSerializer;
+      get serializer =>
+          _$changeStatusForbiddenErrorHttpStatusCodeEnumSerializer;
 
   const ChangeStatusForbiddenErrorHttpStatusCodeEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<ChangeStatusForbiddenErrorHttpStatusCodeEnum> get values =>
       _$changeStatusForbiddenErrorHttpStatusCodeEnumValues;

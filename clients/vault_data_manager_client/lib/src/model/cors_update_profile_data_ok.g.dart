@@ -10,15 +10,15 @@ class _$CorsUpdateProfileDataOK extends CorsUpdateProfileDataOK {
   @override
   final String? corsUpdateProfileDataOk;
 
-  factory _$CorsUpdateProfileDataOK([
-    void Function(CorsUpdateProfileDataOKBuilder)? updates,
-  ]) => (CorsUpdateProfileDataOKBuilder()..update(updates))._build();
+  factory _$CorsUpdateProfileDataOK(
+          [void Function(CorsUpdateProfileDataOKBuilder)? updates]) =>
+      (CorsUpdateProfileDataOKBuilder()..update(updates))._build();
 
   _$CorsUpdateProfileDataOK._({this.corsUpdateProfileDataOk}) : super._();
   @override
   CorsUpdateProfileDataOK rebuild(
-    void Function(CorsUpdateProfileDataOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CorsUpdateProfileDataOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CorsUpdateProfileDataOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$CorsUpdateProfileDataOK extends CorsUpdateProfileDataOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'CorsUpdateProfileDataOK',
-    )..add('corsUpdateProfileDataOk', corsUpdateProfileDataOk)).toString();
+    return (newBuiltValueToStringHelper(r'CorsUpdateProfileDataOK')
+          ..add('corsUpdateProfileDataOk', corsUpdateProfileDataOk))
+        .toString();
   }
 }
 
@@ -84,8 +84,7 @@ class CorsUpdateProfileDataOKBuilder
   CorsUpdateProfileDataOK build() => _build();
 
   _$CorsUpdateProfileDataOK _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CorsUpdateProfileDataOK._(
           corsUpdateProfileDataOk: corsUpdateProfileDataOk,
         );

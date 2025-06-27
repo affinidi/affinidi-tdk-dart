@@ -28,9 +28,8 @@ abstract class CreateCredentialInput
 
   CreateCredentialInput._();
 
-  factory CreateCredentialInput([
-    void updates(CreateCredentialInputBuilder b),
-  ]) = _$CreateCredentialInput;
+  factory CreateCredentialInput(
+      [void updates(CreateCredentialInputBuilder b)]) = _$CreateCredentialInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateCredentialInputBuilder b) => b;
@@ -45,7 +44,7 @@ class _$CreateCredentialInputSerializer
   @override
   final Iterable<Type> types = const [
     CreateCredentialInput,
-    _$CreateCredentialInput,
+    _$CreateCredentialInput
   ];
 
   @override
@@ -76,11 +75,9 @@ class _$CreateCredentialInputSerializer
     CreateCredentialInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -96,21 +93,17 @@ class _$CreateCredentialInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'credential_identifier':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.credentialIdentifier = valueDes;
           break;
         case r'proof':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(CredentialProof),
-                  )
-                  as CredentialProof;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CredentialProof),
+          ) as CredentialProof;
           result.proof.replace(valueDes);
           break;
         default:

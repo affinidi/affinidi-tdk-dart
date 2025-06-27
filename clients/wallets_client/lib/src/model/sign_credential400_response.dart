@@ -30,9 +30,9 @@ abstract class SignCredential400Response
 
   SignCredential400Response._();
 
-  factory SignCredential400Response([
-    void updates(SignCredential400ResponseBuilder b),
-  ]) = _$SignCredential400Response;
+  factory SignCredential400Response(
+          [void updates(SignCredential400ResponseBuilder b)]) =
+      _$SignCredential400Response;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SignCredential400ResponseBuilder b) => b;
@@ -47,16 +47,14 @@ class _$SignCredential400ResponseSerializer
   @override
   final Iterable<Type> types = const [
     SignCredential400Response,
-    _$SignCredential400Response,
+    _$SignCredential400Response
   ];
 
   @override
   final String wireName = r'SignCredential400Response';
 
   Iterable<Object?> _serializeProperties(
-    Serializers serializers,
-    SignCredential400Response object,
-  ) sync* {}
+      Serializers serializers, SignCredential400Response object) sync* {}
 
   @override
   Object serialize(
@@ -65,10 +63,8 @@ class _$SignCredential400ResponseSerializer
     FullType specifiedType = FullType.unspecified,
   }) {
     final oneOf = object.oneOf;
-    return serializers.serialize(
-      oneOf.value,
-      specifiedType: FullType(oneOf.valueType),
-    )!;
+    return serializers.serialize(oneOf.value,
+        specifiedType: FullType(oneOf.valueType))!;
   }
 
   @override
@@ -84,9 +80,8 @@ class _$SignCredential400ResponseSerializer
       FullType(SigningFailedError),
     ]);
     oneOfDataSrc = serialized;
-    result.oneOf =
-        serializers.deserialize(oneOfDataSrc, specifiedType: targetType)
-            as OneOf;
+    result.oneOf = serializers.deserialize(oneOfDataSrc,
+        specifiedType: targetType) as OneOf;
     return result.build();
   }
 }
@@ -129,10 +124,10 @@ class SignCredential400ResponseHttpStatusCodeEnum extends EnumClass {
       _$signCredential400ResponseHttpStatusCodeEnum_number400;
 
   static Serializer<SignCredential400ResponseHttpStatusCodeEnum>
-  get serializer => _$signCredential400ResponseHttpStatusCodeEnumSerializer;
+      get serializer => _$signCredential400ResponseHttpStatusCodeEnumSerializer;
 
   const SignCredential400ResponseHttpStatusCodeEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<SignCredential400ResponseHttpStatusCodeEnum> get values =>
       _$signCredential400ResponseHttpStatusCodeEnumValues;

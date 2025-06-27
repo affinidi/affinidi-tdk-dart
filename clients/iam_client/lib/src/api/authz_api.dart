@@ -47,18 +47,14 @@ class AuthzApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/authz/vfs/access/{granteeDid}'.replaceAll(
-      '{'
-      r'granteeDid'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        granteeDid,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'granteeDid' '}',
+        encodeQueryParameter(_serializers, granteeDid, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -110,7 +106,9 @@ class AuthzApi {
     final _path = r'/v1/authz/vfs/access';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -130,13 +128,14 @@ class AuthzApi {
 
     try {
       const _type = FullType(GrantAccessInput);
-      _bodyData = _serializers.serialize(
-        grantAccessInput,
-        specifiedType: _type,
-      );
+      _bodyData =
+          _serializers.serialize(grantAccessInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -159,10 +158,9 @@ class AuthzApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(GrantAccessOutput),
-                )
-                as GrantAccessOutput;
+              rawResponse,
+              specifiedType: const FullType(GrantAccessOutput),
+            ) as GrantAccessOutput;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -211,18 +209,14 @@ class AuthzApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/authz/vfs/access/{granteeDid}'.replaceAll(
-      '{'
-      r'granteeDid'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        granteeDid,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'granteeDid' '}',
+        encodeQueryParameter(_serializers, granteeDid, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'PUT',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -242,13 +236,14 @@ class AuthzApi {
 
     try {
       const _type = FullType(UpdateAccessInput);
-      _bodyData = _serializers.serialize(
-        updateAccessInput,
-        specifiedType: _type,
-      );
+      _bodyData =
+          _serializers.serialize(updateAccessInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -271,10 +266,9 @@ class AuthzApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(UpdateAccessOutput),
-                )
-                as UpdateAccessOutput;
+              rawResponse,
+              specifiedType: const FullType(UpdateAccessOutput),
+            ) as UpdateAccessOutput;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

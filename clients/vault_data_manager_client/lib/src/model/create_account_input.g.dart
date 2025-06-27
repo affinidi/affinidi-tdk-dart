@@ -20,22 +20,22 @@ class _$CreateAccountInput extends CreateAccountInput {
   @override
   final String? description;
 
-  factory _$CreateAccountInput([
-    void Function(CreateAccountInputBuilder)? updates,
-  ]) => (CreateAccountInputBuilder()..update(updates))._build();
+  factory _$CreateAccountInput(
+          [void Function(CreateAccountInputBuilder)? updates]) =>
+      (CreateAccountInputBuilder()..update(updates))._build();
 
-  _$CreateAccountInput._({
-    required this.accountIndex,
-    required this.accountDid,
-    required this.didProof,
-    this.alias,
-    this.metadata,
-    this.description,
-  }) : super._();
+  _$CreateAccountInput._(
+      {required this.accountIndex,
+      required this.accountDid,
+      required this.didProof,
+      this.alias,
+      this.metadata,
+      this.description})
+      : super._();
   @override
   CreateAccountInput rebuild(
-    void Function(CreateAccountInputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CreateAccountInputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CreateAccountInputBuilder toBuilder() =>
@@ -139,24 +139,14 @@ class CreateAccountInputBuilder
   CreateAccountInput build() => _build();
 
   _$CreateAccountInput _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CreateAccountInput._(
           accountIndex: BuiltValueNullFieldError.checkNotNull(
-            accountIndex,
-            r'CreateAccountInput',
-            'accountIndex',
-          ),
+              accountIndex, r'CreateAccountInput', 'accountIndex'),
           accountDid: BuiltValueNullFieldError.checkNotNull(
-            accountDid,
-            r'CreateAccountInput',
-            'accountDid',
-          ),
+              accountDid, r'CreateAccountInput', 'accountDid'),
           didProof: BuiltValueNullFieldError.checkNotNull(
-            didProof,
-            r'CreateAccountInput',
-            'didProof',
-          ),
+              didProof, r'CreateAccountInput', 'didProof'),
           alias: alias,
           metadata: metadata,
           description: description,

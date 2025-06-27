@@ -17,10 +17,8 @@ part 'save_pex_queries_update_input_queries_inner.g.dart';
 @BuiltValue()
 abstract class SavePexQueriesUpdateInputQueriesInner
     implements
-        Built<
-          SavePexQueriesUpdateInputQueriesInner,
-          SavePexQueriesUpdateInputQueriesInnerBuilder
-        > {
+        Built<SavePexQueriesUpdateInputQueriesInner,
+            SavePexQueriesUpdateInputQueriesInnerBuilder> {
   /// The ID of the query.
   @BuiltValueField(wireName: r'queryId')
   String get queryId;
@@ -35,9 +33,9 @@ abstract class SavePexQueriesUpdateInputQueriesInner
 
   SavePexQueriesUpdateInputQueriesInner._();
 
-  factory SavePexQueriesUpdateInputQueriesInner([
-    void updates(SavePexQueriesUpdateInputQueriesInnerBuilder b),
-  ]) = _$SavePexQueriesUpdateInputQueriesInner;
+  factory SavePexQueriesUpdateInputQueriesInner(
+          [void updates(SavePexQueriesUpdateInputQueriesInnerBuilder b)]) =
+      _$SavePexQueriesUpdateInputQueriesInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SavePexQueriesUpdateInputQueriesInnerBuilder b) => b;
@@ -52,7 +50,7 @@ class _$SavePexQueriesUpdateInputQueriesInnerSerializer
   @override
   final Iterable<Type> types = const [
     SavePexQueriesUpdateInputQueriesInner,
-    _$SavePexQueriesUpdateInputQueriesInner,
+    _$SavePexQueriesUpdateInputQueriesInner
   ];
 
   @override
@@ -90,11 +88,9 @@ class _$SavePexQueriesUpdateInputQueriesInnerSerializer
     SavePexQueriesUpdateInputQueriesInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -110,30 +106,24 @@ class _$SavePexQueriesUpdateInputQueriesInnerSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'queryId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.queryId = valueDes;
           break;
         case r'vpDefinition':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.vpDefinition = valueDes;
           break;
         case r'description':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.description = valueDes;
           break;
         default:

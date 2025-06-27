@@ -53,21 +53,21 @@ class CredentialsApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/{projectId}/batch_credential'.replaceAll(
-      '{'
-      r'projectId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        projectId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'projectId' '}',
+        encodeQueryParameter(_serializers, projectId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {'type': 'http', 'scheme': 'bearer', 'name': 'bearerAuth'},
+          {
+            'type': 'http',
+            'scheme': 'bearer',
+            'name': 'bearerAuth',
+          },
         ],
         ...?extra,
       },
@@ -79,13 +79,14 @@ class CredentialsApi {
 
     try {
       const _type = FullType(BatchCredentialInput);
-      _bodyData = _serializers.serialize(
-        batchCredentialInput,
-        specifiedType: _type,
-      );
+      _bodyData =
+          _serializers.serialize(batchCredentialInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -108,10 +109,9 @@ class CredentialsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(BatchCredentialResponse),
-                )
-                as BatchCredentialResponse;
+              rawResponse,
+              specifiedType: const FullType(BatchCredentialResponse),
+            ) as BatchCredentialResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -160,21 +160,21 @@ class CredentialsApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/{projectId}/credential'.replaceAll(
-      '{'
-      r'projectId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        projectId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'projectId' '}',
+        encodeQueryParameter(_serializers, projectId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
-          {'type': 'http', 'scheme': 'bearer', 'name': 'bearerAuth'},
+          {
+            'type': 'http',
+            'scheme': 'bearer',
+            'name': 'bearerAuth',
+          },
         ],
         ...?extra,
       },
@@ -186,13 +186,14 @@ class CredentialsApi {
 
     try {
       const _type = FullType(CreateCredentialInput);
-      _bodyData = _serializers.serialize(
-        createCredentialInput,
-        specifiedType: _type,
-      );
+      _bodyData =
+          _serializers.serialize(createCredentialInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -215,10 +216,9 @@ class CredentialsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(CredentialResponse),
-                )
-                as CredentialResponse;
+              rawResponse,
+              specifiedType: const FullType(CredentialResponse),
+            ) as CredentialResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -277,28 +277,20 @@ class CredentialsApi {
     final _path =
         r'/v1/{projectId}/configurations/{configurationId}/credentials'
             .replaceAll(
-              '{'
-              r'projectId'
-              '}',
-              encodeQueryParameter(
-                _serializers,
-                projectId,
-                const FullType(String),
-              ).toString(),
-            )
+                '{' r'projectId' '}',
+                encodeQueryParameter(
+                        _serializers, projectId, const FullType(String))
+                    .toString())
             .replaceAll(
-              '{'
-              r'configurationId'
-              '}',
-              encodeQueryParameter(
-                _serializers,
-                configurationId,
-                const FullType(String),
-              ).toString(),
-            );
+                '{' r'configurationId' '}',
+                encodeQueryParameter(
+                        _serializers, configurationId, const FullType(String))
+                    .toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -315,28 +307,16 @@ class CredentialsApi {
 
     final _queryParameters = <String, dynamic>{
       r'rangeStartTime': encodeQueryParameter(
-        _serializers,
-        rangeStartTime,
-        const FullType(String),
-      ),
+          _serializers, rangeStartTime, const FullType(String)),
       if (rangeEndTime != null)
         r'rangeEndTime': encodeQueryParameter(
-          _serializers,
-          rangeEndTime,
-          const FullType(String),
-        ),
+            _serializers, rangeEndTime, const FullType(String)),
       if (exclusiveStartKey != null)
         r'exclusiveStartKey': encodeQueryParameter(
-          _serializers,
-          exclusiveStartKey,
-          const FullType(String),
-        ),
+            _serializers, exclusiveStartKey, const FullType(String)),
       if (limit != null)
-        r'limit': encodeQueryParameter(
-          _serializers,
-          limit,
-          const FullType(int),
-        ),
+        r'limit':
+            encodeQueryParameter(_serializers, limit, const FullType(int)),
     };
 
     final _response = await _dio.request<Object>(
@@ -355,10 +335,9 @@ class CredentialsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(ClaimedCredentialListResponse),
-                )
-                as ClaimedCredentialListResponse;
+              rawResponse,
+              specifiedType: const FullType(ClaimedCredentialListResponse),
+            ) as ClaimedCredentialListResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -411,38 +390,25 @@ class CredentialsApi {
     final _path =
         r'/v1/{projectId}/configurations/{configurationId}/issuances/{issuanceId}/credentials'
             .replaceAll(
-              '{'
-              r'projectId'
-              '}',
-              encodeQueryParameter(
-                _serializers,
-                projectId,
-                const FullType(String),
-              ).toString(),
-            )
+                '{' r'projectId' '}',
+                encodeQueryParameter(
+                        _serializers, projectId, const FullType(String))
+                    .toString())
             .replaceAll(
-              '{'
-              r'configurationId'
-              '}',
-              encodeQueryParameter(
-                _serializers,
-                configurationId,
-                const FullType(String),
-              ).toString(),
-            )
+                '{' r'configurationId' '}',
+                encodeQueryParameter(
+                        _serializers, configurationId, const FullType(String))
+                    .toString())
             .replaceAll(
-              '{'
-              r'issuanceId'
-              '}',
-              encodeQueryParameter(
-                _serializers,
-                issuanceId,
-                const FullType(String),
-              ).toString(),
-            );
+                '{' r'issuanceId' '}',
+                encodeQueryParameter(
+                        _serializers, issuanceId, const FullType(String))
+                    .toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -472,10 +438,9 @@ class CredentialsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(ClaimedCredentialResponse),
-                )
-                as ClaimedCredentialResponse;
+              rawResponse,
+              specifiedType: const FullType(ClaimedCredentialResponse),
+            ) as ClaimedCredentialResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

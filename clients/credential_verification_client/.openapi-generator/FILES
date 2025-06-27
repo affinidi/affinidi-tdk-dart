@@ -84,7 +84,6 @@ lib/src/model/w3c_proof.dart
 lib/src/serializers.dart
 project.json
 pubspec.yaml
-pubspec.yaml
 test/constraints_statuses_test.dart
 test/constraints_test.dart
 test/credential_requirements_constraints_test.dart

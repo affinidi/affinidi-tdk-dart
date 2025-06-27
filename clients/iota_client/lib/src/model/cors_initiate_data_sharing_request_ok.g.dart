@@ -11,16 +11,16 @@ class _$CorsInitiateDataSharingRequestOK
   @override
   final String? corsInitiateDataSharingRequestOk;
 
-  factory _$CorsInitiateDataSharingRequestOK([
-    void Function(CorsInitiateDataSharingRequestOKBuilder)? updates,
-  ]) => (CorsInitiateDataSharingRequestOKBuilder()..update(updates))._build();
+  factory _$CorsInitiateDataSharingRequestOK(
+          [void Function(CorsInitiateDataSharingRequestOKBuilder)? updates]) =>
+      (CorsInitiateDataSharingRequestOKBuilder()..update(updates))._build();
 
   _$CorsInitiateDataSharingRequestOK._({this.corsInitiateDataSharingRequestOk})
-    : super._();
+      : super._();
   @override
   CorsInitiateDataSharingRequestOK rebuild(
-    void Function(CorsInitiateDataSharingRequestOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CorsInitiateDataSharingRequestOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CorsInitiateDataSharingRequestOKBuilder toBuilder() =>
@@ -45,29 +45,25 @@ class _$CorsInitiateDataSharingRequestOK
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'CorsInitiateDataSharingRequestOK')
-          ..add(
-            'corsInitiateDataSharingRequestOk',
-            corsInitiateDataSharingRequestOk,
-          ))
+          ..add('corsInitiateDataSharingRequestOk',
+              corsInitiateDataSharingRequestOk))
         .toString();
   }
 }
 
 class CorsInitiateDataSharingRequestOKBuilder
     implements
-        Builder<
-          CorsInitiateDataSharingRequestOK,
-          CorsInitiateDataSharingRequestOKBuilder
-        > {
+        Builder<CorsInitiateDataSharingRequestOK,
+            CorsInitiateDataSharingRequestOKBuilder> {
   _$CorsInitiateDataSharingRequestOK? _$v;
 
   String? _corsInitiateDataSharingRequestOk;
   String? get corsInitiateDataSharingRequestOk =>
       _$this._corsInitiateDataSharingRequestOk;
   set corsInitiateDataSharingRequestOk(
-    String? corsInitiateDataSharingRequestOk,
-  ) => _$this._corsInitiateDataSharingRequestOk =
-      corsInitiateDataSharingRequestOk;
+          String? corsInitiateDataSharingRequestOk) =>
+      _$this._corsInitiateDataSharingRequestOk =
+          corsInitiateDataSharingRequestOk;
 
   CorsInitiateDataSharingRequestOKBuilder() {
     CorsInitiateDataSharingRequestOK._defaults(this);
@@ -96,8 +92,7 @@ class CorsInitiateDataSharingRequestOKBuilder
   CorsInitiateDataSharingRequestOK build() => _build();
 
   _$CorsInitiateDataSharingRequestOK _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CorsInitiateDataSharingRequestOK._(
           corsInitiateDataSharingRequestOk: corsInitiateDataSharingRequestOk,
         );

@@ -18,10 +18,8 @@ part 'action_forbidden_error_details_inner.g.dart';
 @BuiltValue()
 abstract class ActionForbiddenErrorDetailsInner
     implements
-        Built<
-          ActionForbiddenErrorDetailsInner,
-          ActionForbiddenErrorDetailsInnerBuilder
-        > {
+        Built<ActionForbiddenErrorDetailsInner,
+            ActionForbiddenErrorDetailsInnerBuilder> {
   @BuiltValueField(wireName: r'issue')
   String get issue;
 
@@ -36,9 +34,9 @@ abstract class ActionForbiddenErrorDetailsInner
 
   ActionForbiddenErrorDetailsInner._();
 
-  factory ActionForbiddenErrorDetailsInner([
-    void updates(ActionForbiddenErrorDetailsInnerBuilder b),
-  ]) = _$ActionForbiddenErrorDetailsInner;
+  factory ActionForbiddenErrorDetailsInner(
+          [void updates(ActionForbiddenErrorDetailsInnerBuilder b)]) =
+      _$ActionForbiddenErrorDetailsInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ActionForbiddenErrorDetailsInnerBuilder b) => b;
@@ -53,7 +51,7 @@ class _$ActionForbiddenErrorDetailsInnerSerializer
   @override
   final Iterable<Type> types = const [
     ActionForbiddenErrorDetailsInner,
-    _$ActionForbiddenErrorDetailsInner,
+    _$ActionForbiddenErrorDetailsInner
   ];
 
   @override
@@ -98,11 +96,9 @@ class _$ActionForbiddenErrorDetailsInnerSerializer
     ActionForbiddenErrorDetailsInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -118,39 +114,31 @@ class _$ActionForbiddenErrorDetailsInnerSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'issue':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.issue = valueDes;
           break;
         case r'field':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.field = valueDes;
           break;
         case r'value':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.value = valueDes;
           break;
         case r'location':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.location = valueDes;
           break;
         default:

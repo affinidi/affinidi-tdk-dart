@@ -7,13 +7,12 @@ part of 'public_key_cannot_be_resolved_from_did_error.dart';
 // **************************************************************************
 
 const PublicKeyCannotBeResolvedFromDidErrorNameEnum
-_$publicKeyCannotBeResolvedFromDidErrorNameEnum_publicKeyCannotBeResolvedFromDidError =
+    _$publicKeyCannotBeResolvedFromDidErrorNameEnum_publicKeyCannotBeResolvedFromDidError =
     const PublicKeyCannotBeResolvedFromDidErrorNameEnum._(
-      'publicKeyCannotBeResolvedFromDidError',
-    );
+        'publicKeyCannotBeResolvedFromDidError');
 
 PublicKeyCannotBeResolvedFromDidErrorNameEnum
-_$publicKeyCannotBeResolvedFromDidErrorNameEnumValueOf(String name) {
+    _$publicKeyCannotBeResolvedFromDidErrorNameEnumValueOf(String name) {
   switch (name) {
     case 'publicKeyCannotBeResolvedFromDidError':
       return _$publicKeyCannotBeResolvedFromDidErrorNameEnum_publicKeyCannotBeResolvedFromDidError;
@@ -23,21 +22,18 @@ _$publicKeyCannotBeResolvedFromDidErrorNameEnumValueOf(String name) {
 }
 
 final BuiltSet<PublicKeyCannotBeResolvedFromDidErrorNameEnum>
-_$publicKeyCannotBeResolvedFromDidErrorNameEnumValues =
-    BuiltSet<PublicKeyCannotBeResolvedFromDidErrorNameEnum>(const <
-      PublicKeyCannotBeResolvedFromDidErrorNameEnum
-    >[
-      _$publicKeyCannotBeResolvedFromDidErrorNameEnum_publicKeyCannotBeResolvedFromDidError,
-    ]);
+    _$publicKeyCannotBeResolvedFromDidErrorNameEnumValues = BuiltSet<
+        PublicKeyCannotBeResolvedFromDidErrorNameEnum>(const <PublicKeyCannotBeResolvedFromDidErrorNameEnum>[
+  _$publicKeyCannotBeResolvedFromDidErrorNameEnum_publicKeyCannotBeResolvedFromDidError,
+]);
 
 const PublicKeyCannotBeResolvedFromDidErrorMessageEnum
-_$publicKeyCannotBeResolvedFromDidErrorMessageEnum_unableToResolveDIDMethodPeriodInvalidPublicKey =
+    _$publicKeyCannotBeResolvedFromDidErrorMessageEnum_unableToResolveDIDMethodPeriodInvalidPublicKey =
     const PublicKeyCannotBeResolvedFromDidErrorMessageEnum._(
-      'unableToResolveDIDMethodPeriodInvalidPublicKey',
-    );
+        'unableToResolveDIDMethodPeriodInvalidPublicKey');
 
 PublicKeyCannotBeResolvedFromDidErrorMessageEnum
-_$publicKeyCannotBeResolvedFromDidErrorMessageEnumValueOf(String name) {
+    _$publicKeyCannotBeResolvedFromDidErrorMessageEnumValueOf(String name) {
   switch (name) {
     case 'unableToResolveDIDMethodPeriodInvalidPublicKey':
       return _$publicKeyCannotBeResolvedFromDidErrorMessageEnum_unableToResolveDIDMethodPeriodInvalidPublicKey;
@@ -47,21 +43,19 @@ _$publicKeyCannotBeResolvedFromDidErrorMessageEnumValueOf(String name) {
 }
 
 final BuiltSet<PublicKeyCannotBeResolvedFromDidErrorMessageEnum>
-_$publicKeyCannotBeResolvedFromDidErrorMessageEnumValues =
-    BuiltSet<PublicKeyCannotBeResolvedFromDidErrorMessageEnum>(const <
-      PublicKeyCannotBeResolvedFromDidErrorMessageEnum
-    >[
-      _$publicKeyCannotBeResolvedFromDidErrorMessageEnum_unableToResolveDIDMethodPeriodInvalidPublicKey,
-    ]);
+    _$publicKeyCannotBeResolvedFromDidErrorMessageEnumValues = BuiltSet<
+        PublicKeyCannotBeResolvedFromDidErrorMessageEnum>(const <PublicKeyCannotBeResolvedFromDidErrorMessageEnum>[
+  _$publicKeyCannotBeResolvedFromDidErrorMessageEnum_unableToResolveDIDMethodPeriodInvalidPublicKey,
+]);
 
 const PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum
-_$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum_number400 =
+    _$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum_number400 =
     const PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum._(
-      'number400',
-    );
+        'number400');
 
 PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum
-_$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnumValueOf(String name) {
+    _$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnumValueOf(
+        String name) {
   switch (name) {
     case 'number400':
       return _$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum_number400;
@@ -71,21 +65,19 @@ _$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnumValueOf(String name) {
 }
 
 final BuiltSet<PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum>
-_$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnumValues =
-    BuiltSet<PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum>(
-      const <PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum>[
-        _$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum_number400,
-      ],
-    );
+    _$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnumValues = BuiltSet<
+        PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum>(const <PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum>[
+  _$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum_number400,
+]);
 
 Serializer<PublicKeyCannotBeResolvedFromDidErrorNameEnum>
-_$publicKeyCannotBeResolvedFromDidErrorNameEnumSerializer =
+    _$publicKeyCannotBeResolvedFromDidErrorNameEnumSerializer =
     _$PublicKeyCannotBeResolvedFromDidErrorNameEnumSerializer();
 Serializer<PublicKeyCannotBeResolvedFromDidErrorMessageEnum>
-_$publicKeyCannotBeResolvedFromDidErrorMessageEnumSerializer =
+    _$publicKeyCannotBeResolvedFromDidErrorMessageEnumSerializer =
     _$PublicKeyCannotBeResolvedFromDidErrorMessageEnumSerializer();
 Serializer<PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum>
-_$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnumSerializer =
+    _$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnumSerializer =
     _$PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnumSerializer();
 
 class _$PublicKeyCannotBeResolvedFromDidErrorNameEnumSerializer
@@ -102,26 +94,23 @@ class _$PublicKeyCannotBeResolvedFromDidErrorNameEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    PublicKeyCannotBeResolvedFromDidErrorNameEnum,
+    PublicKeyCannotBeResolvedFromDidErrorNameEnum
   ];
   @override
   final String wireName = 'PublicKeyCannotBeResolvedFromDidErrorNameEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    PublicKeyCannotBeResolvedFromDidErrorNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          PublicKeyCannotBeResolvedFromDidErrorNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   PublicKeyCannotBeResolvedFromDidErrorNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => PublicKeyCannotBeResolvedFromDidErrorNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      PublicKeyCannotBeResolvedFromDidErrorNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$PublicKeyCannotBeResolvedFromDidErrorMessageEnumSerializer
@@ -138,33 +127,29 @@ class _$PublicKeyCannotBeResolvedFromDidErrorMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    PublicKeyCannotBeResolvedFromDidErrorMessageEnum,
+    PublicKeyCannotBeResolvedFromDidErrorMessageEnum
   ];
   @override
   final String wireName = 'PublicKeyCannotBeResolvedFromDidErrorMessageEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    PublicKeyCannotBeResolvedFromDidErrorMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          PublicKeyCannotBeResolvedFromDidErrorMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   PublicKeyCannotBeResolvedFromDidErrorMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => PublicKeyCannotBeResolvedFromDidErrorMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      PublicKeyCannotBeResolvedFromDidErrorMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnumSerializer
     implements
         PrimitiveSerializer<
-          PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum
-        > {
+            PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum> {
   static const Map<String, Object> _toWire = const <String, Object>{
     'number400': 400,
   };
@@ -174,27 +159,24 @@ class _$PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum,
+    PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum
   ];
   @override
   final String wireName =
       'PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$PublicKeyCannotBeResolvedFromDidError
@@ -210,22 +192,24 @@ class _$PublicKeyCannotBeResolvedFromDidError
   @override
   final BuiltList<ServiceErrorResponseDetailsInner>? details;
 
-  factory _$PublicKeyCannotBeResolvedFromDidError([
-    void Function(PublicKeyCannotBeResolvedFromDidErrorBuilder)? updates,
-  ]) => (PublicKeyCannotBeResolvedFromDidErrorBuilder()..update(updates))
-      ._build();
+  factory _$PublicKeyCannotBeResolvedFromDidError(
+          [void Function(PublicKeyCannotBeResolvedFromDidErrorBuilder)?
+              updates]) =>
+      (PublicKeyCannotBeResolvedFromDidErrorBuilder()..update(updates))
+          ._build();
 
-  _$PublicKeyCannotBeResolvedFromDidError._({
-    required this.name,
-    required this.message,
-    required this.httpStatusCode,
-    required this.traceId,
-    this.details,
-  }) : super._();
+  _$PublicKeyCannotBeResolvedFromDidError._(
+      {required this.name,
+      required this.message,
+      required this.httpStatusCode,
+      required this.traceId,
+      this.details})
+      : super._();
   @override
   PublicKeyCannotBeResolvedFromDidError rebuild(
-    void Function(PublicKeyCannotBeResolvedFromDidErrorBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(PublicKeyCannotBeResolvedFromDidErrorBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   PublicKeyCannotBeResolvedFromDidErrorBuilder toBuilder() =>
@@ -257,8 +241,7 @@ class _$PublicKeyCannotBeResolvedFromDidError
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'PublicKeyCannotBeResolvedFromDidError',
-          )
+            r'PublicKeyCannotBeResolvedFromDidError')
           ..add('name', name)
           ..add('message', message)
           ..add('httpStatusCode', httpStatusCode)
@@ -270,10 +253,8 @@ class _$PublicKeyCannotBeResolvedFromDidError
 
 class PublicKeyCannotBeResolvedFromDidErrorBuilder
     implements
-        Builder<
-          PublicKeyCannotBeResolvedFromDidError,
-          PublicKeyCannotBeResolvedFromDidErrorBuilder
-        > {
+        Builder<PublicKeyCannotBeResolvedFromDidError,
+            PublicKeyCannotBeResolvedFromDidErrorBuilder> {
   _$PublicKeyCannotBeResolvedFromDidError? _$v;
 
   PublicKeyCannotBeResolvedFromDidErrorNameEnum? _name;
@@ -291,8 +272,9 @@ class PublicKeyCannotBeResolvedFromDidErrorBuilder
   PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum? get httpStatusCode =>
       _$this._httpStatusCode;
   set httpStatusCode(
-    PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum? httpStatusCode,
-  ) => _$this._httpStatusCode = httpStatusCode;
+          PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum?
+              httpStatusCode) =>
+      _$this._httpStatusCode = httpStatusCode;
 
   String? _traceId;
   String? get traceId => _$this._traceId;
@@ -328,8 +310,7 @@ class PublicKeyCannotBeResolvedFromDidErrorBuilder
 
   @override
   void update(
-    void Function(PublicKeyCannotBeResolvedFromDidErrorBuilder)? updates,
-  ) {
+      void Function(PublicKeyCannotBeResolvedFromDidErrorBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -339,29 +320,18 @@ class PublicKeyCannotBeResolvedFromDidErrorBuilder
   _$PublicKeyCannotBeResolvedFromDidError _build() {
     _$PublicKeyCannotBeResolvedFromDidError _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$PublicKeyCannotBeResolvedFromDidError._(
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'PublicKeyCannotBeResolvedFromDidError',
-              'name',
-            ),
+                name, r'PublicKeyCannotBeResolvedFromDidError', 'name'),
             message: BuiltValueNullFieldError.checkNotNull(
-              message,
-              r'PublicKeyCannotBeResolvedFromDidError',
-              'message',
-            ),
+                message, r'PublicKeyCannotBeResolvedFromDidError', 'message'),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-              httpStatusCode,
-              r'PublicKeyCannotBeResolvedFromDidError',
-              'httpStatusCode',
-            ),
+                httpStatusCode,
+                r'PublicKeyCannotBeResolvedFromDidError',
+                'httpStatusCode'),
             traceId: BuiltValueNullFieldError.checkNotNull(
-              traceId,
-              r'PublicKeyCannotBeResolvedFromDidError',
-              'traceId',
-            ),
+                traceId, r'PublicKeyCannotBeResolvedFromDidError', 'traceId'),
             details: _details?.build(),
           );
     } catch (_) {
@@ -371,10 +341,9 @@ class PublicKeyCannotBeResolvedFromDidErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'PublicKeyCannotBeResolvedFromDidError',
-          _$failedField,
-          e.toString(),
-        );
+            r'PublicKeyCannotBeResolvedFromDidError',
+            _$failedField,
+            e.toString());
       }
       rethrow;
     }

@@ -21,9 +21,9 @@ abstract class CorsGenerateCredentialsOK
 
   CorsGenerateCredentialsOK._();
 
-  factory CorsGenerateCredentialsOK([
-    void updates(CorsGenerateCredentialsOKBuilder b),
-  ]) = _$CorsGenerateCredentialsOK;
+  factory CorsGenerateCredentialsOK(
+          [void updates(CorsGenerateCredentialsOKBuilder b)]) =
+      _$CorsGenerateCredentialsOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsGenerateCredentialsOKBuilder b) => b;
@@ -38,7 +38,7 @@ class _$CorsGenerateCredentialsOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsGenerateCredentialsOK,
-    _$CorsGenerateCredentialsOK,
+    _$CorsGenerateCredentialsOK
   ];
 
   @override
@@ -64,11 +64,9 @@ class _$CorsGenerateCredentialsOKSerializer
     CorsGenerateCredentialsOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -84,12 +82,10 @@ class _$CorsGenerateCredentialsOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsGenerateCredentialsOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsGenerateCredentialsOk = valueDes;
           break;
         default:

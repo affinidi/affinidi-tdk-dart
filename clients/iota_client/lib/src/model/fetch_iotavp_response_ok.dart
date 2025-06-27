@@ -33,9 +33,8 @@ abstract class FetchIOTAVPResponseOK
 
   FetchIOTAVPResponseOK._();
 
-  factory FetchIOTAVPResponseOK([
-    void updates(FetchIOTAVPResponseOKBuilder b),
-  ]) = _$FetchIOTAVPResponseOK;
+  factory FetchIOTAVPResponseOK(
+      [void updates(FetchIOTAVPResponseOKBuilder b)]) = _$FetchIOTAVPResponseOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(FetchIOTAVPResponseOKBuilder b) => b;
@@ -50,7 +49,7 @@ class _$FetchIOTAVPResponseOKSerializer
   @override
   final Iterable<Type> types = const [
     FetchIOTAVPResponseOK,
-    _$FetchIOTAVPResponseOK,
+    _$FetchIOTAVPResponseOK
   ];
 
   @override
@@ -90,11 +89,9 @@ class _$FetchIOTAVPResponseOKSerializer
     FetchIOTAVPResponseOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -110,30 +107,24 @@ class _$FetchIOTAVPResponseOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'correlationId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.correlationId = valueDes;
           break;
         case r'presentation_submission':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.presentationSubmission = valueDes;
           break;
         case r'vp_token':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.vpToken = valueDes;
           break;
         default:

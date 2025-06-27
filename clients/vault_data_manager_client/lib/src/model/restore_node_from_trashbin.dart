@@ -21,9 +21,9 @@ abstract class RestoreNodeFromTrashbin
 
   RestoreNodeFromTrashbin._();
 
-  factory RestoreNodeFromTrashbin([
-    void updates(RestoreNodeFromTrashbinBuilder b),
-  ]) = _$RestoreNodeFromTrashbin;
+  factory RestoreNodeFromTrashbin(
+          [void updates(RestoreNodeFromTrashbinBuilder b)]) =
+      _$RestoreNodeFromTrashbin;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(RestoreNodeFromTrashbinBuilder b) => b;
@@ -38,7 +38,7 @@ class _$RestoreNodeFromTrashbinSerializer
   @override
   final Iterable<Type> types = const [
     RestoreNodeFromTrashbin,
-    _$RestoreNodeFromTrashbin,
+    _$RestoreNodeFromTrashbin
   ];
 
   @override
@@ -64,11 +64,9 @@ class _$RestoreNodeFromTrashbinSerializer
     RestoreNodeFromTrashbin object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -84,12 +82,10 @@ class _$RestoreNodeFromTrashbinSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'restoreToProfileId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.restoreToProfileId = valueDes;
           break;
         default:

@@ -54,28 +54,20 @@ class IssuanceApi {
   }) async {
     final _path = r'/v1/{projectId}/issuance/state/{issuanceId}'
         .replaceAll(
-          '{'
-          r'issuanceId'
-          '}',
-          encodeQueryParameter(
-            _serializers,
-            issuanceId,
-            const FullType(String),
-          ).toString(),
-        )
+            '{' r'issuanceId' '}',
+            encodeQueryParameter(
+                    _serializers, issuanceId, const FullType(String))
+                .toString())
         .replaceAll(
-          '{'
-          r'projectId'
-          '}',
-          encodeQueryParameter(
-            _serializers,
-            projectId,
-            const FullType(String),
-          ).toString(),
-        );
+            '{' r'projectId' '}',
+            encodeQueryParameter(
+                    _serializers, projectId, const FullType(String))
+                .toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -105,10 +97,9 @@ class IssuanceApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(IssuanceStateResponse),
-                )
-                as IssuanceStateResponse;
+              rawResponse,
+              specifiedType: const FullType(IssuanceStateResponse),
+            ) as IssuanceStateResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -157,18 +148,14 @@ class IssuanceApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/{projectId}/credential/issue'.replaceAll(
-      '{'
-      r'projectId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        projectId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'projectId' '}',
+        encodeQueryParameter(_serializers, projectId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -188,13 +175,14 @@ class IssuanceApi {
 
     try {
       const _type = FullType(StartIssuanceInput);
-      _bodyData = _serializers.serialize(
-        startIssuanceInput,
-        specifiedType: _type,
-      );
+      _bodyData =
+          _serializers.serialize(startIssuanceInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -217,10 +205,9 @@ class IssuanceApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(CredentialResponse),
-                )
-                as CredentialResponse;
+              rawResponse,
+              specifiedType: const FullType(CredentialResponse),
+            ) as CredentialResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -267,18 +254,14 @@ class IssuanceApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/{projectId}/issuance'.replaceAll(
-      '{'
-      r'projectId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        projectId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'projectId' '}',
+        encodeQueryParameter(_serializers, projectId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -308,10 +291,9 @@ class IssuanceApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(ListIssuanceResponse),
-                )
-                as ListIssuanceResponse;
+              rawResponse,
+              specifiedType: const FullType(ListIssuanceResponse),
+            ) as ListIssuanceResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -360,18 +342,14 @@ class IssuanceApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/{projectId}/issuance/start'.replaceAll(
-      '{'
-      r'projectId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        projectId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'projectId' '}',
+        encodeQueryParameter(_serializers, projectId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -391,13 +369,14 @@ class IssuanceApi {
 
     try {
       const _type = FullType(StartIssuanceInput);
-      _bodyData = _serializers.serialize(
-        startIssuanceInput,
-        specifiedType: _type,
-      );
+      _bodyData =
+          _serializers.serialize(startIssuanceInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -420,10 +399,9 @@ class IssuanceApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(StartIssuanceResponse),
-                )
-                as StartIssuanceResponse;
+              rawResponse,
+              specifiedType: const FullType(StartIssuanceResponse),
+            ) as StartIssuanceResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

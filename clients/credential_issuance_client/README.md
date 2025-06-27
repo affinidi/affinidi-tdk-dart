@@ -1,11 +1,11 @@
-# affinidi_tdk_credential_issuance_client (EXPERIMENTAL)
+# affinidi_tdk_credential_issuance_client
 
 Affinidi TDK dart client for Affinidi CREDENTIAL ISSUANCE
 
 
 ## Requirements
 
-* Dart 2.15.0+
+* Dart 3.6.0+
 * Dio 5.0.0+ (https://pub.dev/packages/dio)
 
 ## Installation & Usage
@@ -14,7 +14,7 @@ Affinidi TDK dart client for Affinidi CREDENTIAL ISSUANCE
 To use the package from [pub.dev](https://pub.dev), please include the following in pubspec.yaml
 ```yaml
 dependencies:
-  affinidi_tdk_credential_issuance_client: ^1.0.0
+  affinidi_tdk_credential_issuance_client: ^1.11.0
 ```
 
 ### Github

@@ -69,11 +69,9 @@ class _$CredentialProofSerializer
     CredentialProof object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -89,21 +87,17 @@ class _$CredentialProofSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'proof_type':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(CredentialProofProofTypeEnum),
-                  )
-                  as CredentialProofProofTypeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CredentialProofProofTypeEnum),
+          ) as CredentialProofProofTypeEnum;
           result.proofType = valueDes;
           break;
         case r'jwt':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.jwt = valueDes;
           break;
         default:

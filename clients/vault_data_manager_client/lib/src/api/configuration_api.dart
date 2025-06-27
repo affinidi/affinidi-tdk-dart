@@ -42,7 +42,9 @@ class ConfigurationApi {
     final _path = r'/v1/config';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -72,10 +74,9 @@ class ConfigurationApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(GetConfigOK),
-                )
-                as GetConfigOK;
+              rawResponse,
+              specifiedType: const FullType(GetConfigOK),
+            ) as GetConfigOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

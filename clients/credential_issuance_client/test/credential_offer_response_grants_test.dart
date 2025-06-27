@@ -9,10 +9,9 @@ void main() {
   group(CredentialOfferResponseGrants, () {
     // CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCode urnColonIetfColonParamsColonOauthColonGrantTypeColonPreAuthorizedCode
     test(
-      'to test the property `urnColonIetfColonParamsColonOauthColonGrantTypeColonPreAuthorizedCode`',
-      () async {
-        // TODO
-      },
-    );
+        'to test the property `urnColonIetfColonParamsColonOauthColonGrantTypeColonPreAuthorizedCode`',
+        () async {
+      // TODO
+    });
   });
 }

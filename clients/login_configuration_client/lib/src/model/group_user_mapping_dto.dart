@@ -42,7 +42,7 @@ class _$GroupUserMappingDtoSerializer
   @override
   final Iterable<Type> types = const [
     GroupUserMappingDto,
-    _$GroupUserMappingDto,
+    _$GroupUserMappingDto
   ];
 
   @override
@@ -71,11 +71,9 @@ class _$GroupUserMappingDtoSerializer
     GroupUserMappingDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -91,21 +89,17 @@ class _$GroupUserMappingDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'userId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.userId = valueDes;
           break;
         case r'addedAt':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.addedAt = valueDes;
           break;
         default:

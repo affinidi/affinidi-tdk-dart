@@ -52,7 +52,9 @@ class TokensApi {
     final _path = r'/v1/tokens';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -72,13 +74,14 @@ class TokensApi {
 
     try {
       const _type = FullType(CreateTokenInput);
-      _bodyData = _serializers.serialize(
-        createTokenInput,
-        specifiedType: _type,
-      );
+      _bodyData =
+          _serializers.serialize(createTokenInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -101,10 +104,9 @@ class TokensApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(TokenDto),
-                )
-                as TokenDto;
+              rawResponse,
+              specifiedType: const FullType(TokenDto),
+            ) as TokenDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -151,18 +153,14 @@ class TokensApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/tokens/{tokenId}'.replaceAll(
-      '{'
-      r'tokenId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        tokenId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'tokenId' '}',
+        encodeQueryParameter(_serializers, tokenId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -212,18 +210,14 @@ class TokensApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/tokens/{tokenId}'.replaceAll(
-      '{'
-      r'tokenId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        tokenId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'tokenId' '}',
+        encodeQueryParameter(_serializers, tokenId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -253,10 +247,9 @@ class TokensApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(TokenDto),
-                )
-                as TokenDto;
+              rawResponse,
+              specifiedType: const FullType(TokenDto),
+            ) as TokenDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -307,18 +300,14 @@ class TokensApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/tokens/{tokenId}/projects'.replaceAll(
-      '{'
-      r'tokenId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        tokenId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'tokenId' '}',
+        encodeQueryParameter(_serializers, tokenId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -335,17 +324,11 @@ class TokensApi {
 
     final _queryParameters = <String, dynamic>{
       if (limit != null)
-        r'limit': encodeQueryParameter(
-          _serializers,
-          limit,
-          const FullType(int),
-        ),
+        r'limit':
+            encodeQueryParameter(_serializers, limit, const FullType(int)),
       if (exclusiveStartKey != null)
         r'exclusiveStartKey': encodeQueryParameter(
-          _serializers,
-          exclusiveStartKey,
-          const FullType(String),
-        ),
+            _serializers, exclusiveStartKey, const FullType(String)),
     };
 
     final _response = await _dio.request<Object>(
@@ -364,10 +347,9 @@ class TokensApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(ProjectWithPolicyList),
-                )
-                as ProjectWithPolicyList;
+              rawResponse,
+              specifiedType: const FullType(ProjectWithPolicyList),
+            ) as ProjectWithPolicyList;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -418,7 +400,9 @@ class TokensApi {
     final _path = r'/v1/tokens';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -435,17 +419,11 @@ class TokensApi {
 
     final _queryParameters = <String, dynamic>{
       if (limit != null)
-        r'limit': encodeQueryParameter(
-          _serializers,
-          limit,
-          const FullType(int),
-        ),
+        r'limit':
+            encodeQueryParameter(_serializers, limit, const FullType(int)),
       if (exclusiveStartKey != null)
         r'exclusiveStartKey': encodeQueryParameter(
-          _serializers,
-          exclusiveStartKey,
-          const FullType(String),
-        ),
+            _serializers, exclusiveStartKey, const FullType(String)),
     };
 
     final _response = await _dio.request<Object>(
@@ -464,10 +442,9 @@ class TokensApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(TokenList),
-                )
-                as TokenList;
+              rawResponse,
+              specifiedType: const FullType(TokenList),
+            ) as TokenList;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -516,18 +493,14 @@ class TokensApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/tokens/{tokenId}'.replaceAll(
-      '{'
-      r'tokenId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        tokenId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'tokenId' '}',
+        encodeQueryParameter(_serializers, tokenId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -547,13 +520,14 @@ class TokensApi {
 
     try {
       const _type = FullType(UpdateTokenInput);
-      _bodyData = _serializers.serialize(
-        updateTokenInput,
-        specifiedType: _type,
-      );
+      _bodyData =
+          _serializers.serialize(updateTokenInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -576,10 +550,9 @@ class TokensApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(TokenDto),
-                )
-                as TokenDto;
+              rawResponse,
+              specifiedType: const FullType(TokenDto),
+            ) as TokenDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

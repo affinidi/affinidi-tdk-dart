@@ -34,9 +34,9 @@ abstract class StartIssuance400Response
 
   StartIssuance400Response._();
 
-  factory StartIssuance400Response([
-    void updates(StartIssuance400ResponseBuilder b),
-  ]) = _$StartIssuance400Response;
+  factory StartIssuance400Response(
+          [void updates(StartIssuance400ResponseBuilder b)]) =
+      _$StartIssuance400Response;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(StartIssuance400ResponseBuilder b) => b;
@@ -51,16 +51,14 @@ class _$StartIssuance400ResponseSerializer
   @override
   final Iterable<Type> types = const [
     StartIssuance400Response,
-    _$StartIssuance400Response,
+    _$StartIssuance400Response
   ];
 
   @override
   final String wireName = r'StartIssuance400Response';
 
   Iterable<Object?> _serializeProperties(
-    Serializers serializers,
-    StartIssuance400Response object,
-  ) sync* {}
+      Serializers serializers, StartIssuance400Response object) sync* {}
 
   @override
   Object serialize(
@@ -69,10 +67,8 @@ class _$StartIssuance400ResponseSerializer
     FullType specifiedType = FullType.unspecified,
   }) {
     final oneOf = object.oneOf;
-    return serializers.serialize(
-      oneOf.value,
-      specifiedType: FullType(oneOf.valueType),
-    )!;
+    return serializers.serialize(oneOf.value,
+        specifiedType: FullType(oneOf.valueType))!;
   }
 
   @override
@@ -92,9 +88,8 @@ class _$StartIssuance400ResponseSerializer
       FullType(MissingHolderDidError),
     ]);
     oneOfDataSrc = serialized;
-    result.oneOf =
-        serializers.deserialize(oneOfDataSrc, specifiedType: targetType)
-            as OneOf;
+    result.oneOf = serializers.deserialize(oneOfDataSrc,
+        specifiedType: targetType) as OneOf;
     return result.build();
   }
 }
@@ -118,7 +113,7 @@ class StartIssuance400ResponseNameEnum extends EnumClass {
 class StartIssuance400ResponseMessageEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'holderDID is required in this claimMode')
   static const StartIssuance400ResponseMessageEnum
-  holderDIDIsRequiredInThisClaimMode =
+      holderDIDIsRequiredInThisClaimMode =
       _$startIssuance400ResponseMessageEnum_holderDIDIsRequiredInThisClaimMode;
 
   static Serializer<StartIssuance400ResponseMessageEnum> get serializer =>
@@ -138,7 +133,7 @@ class StartIssuance400ResponseHttpStatusCodeEnum extends EnumClass {
       _$startIssuance400ResponseHttpStatusCodeEnum_number400;
 
   static Serializer<StartIssuance400ResponseHttpStatusCodeEnum>
-  get serializer => _$startIssuance400ResponseHttpStatusCodeEnumSerializer;
+      get serializer => _$startIssuance400ResponseHttpStatusCodeEnumSerializer;
 
   const StartIssuance400ResponseHttpStatusCodeEnum._(String name) : super(name);
 

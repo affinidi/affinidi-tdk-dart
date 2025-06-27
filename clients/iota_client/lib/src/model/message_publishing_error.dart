@@ -41,9 +41,9 @@ abstract class MessagePublishingError
 
   MessagePublishingError._();
 
-  factory MessagePublishingError([
-    void updates(MessagePublishingErrorBuilder b),
-  ]) = _$MessagePublishingError;
+  factory MessagePublishingError(
+          [void updates(MessagePublishingErrorBuilder b)]) =
+      _$MessagePublishingError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(MessagePublishingErrorBuilder b) => b;
@@ -58,7 +58,7 @@ class _$MessagePublishingErrorSerializer
   @override
   final Iterable<Type> types = const [
     MessagePublishingError,
-    _$MessagePublishingError,
+    _$MessagePublishingError
   ];
 
   @override
@@ -93,9 +93,8 @@ class _$MessagePublishingErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(InvalidParameterErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
       );
     }
   }
@@ -106,11 +105,9 @@ class _$MessagePublishingErrorSerializer
     MessagePublishingError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -126,56 +123,40 @@ class _$MessagePublishingErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      MessagePublishingErrorNameEnum,
-                    ),
-                  )
-                  as MessagePublishingErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(MessagePublishingErrorNameEnum),
+          ) as MessagePublishingErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      MessagePublishingErrorMessageEnum,
-                    ),
-                  )
-                  as MessagePublishingErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(MessagePublishingErrorMessageEnum),
+          ) as MessagePublishingErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      MessagePublishingErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as MessagePublishingErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(MessagePublishingErrorHttpStatusCodeEnum),
+          ) as MessagePublishingErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(InvalidParameterErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<InvalidParameterErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
+          ) as BuiltList<InvalidParameterErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -226,7 +207,7 @@ class MessagePublishingErrorNameEnum extends EnumClass {
 class MessagePublishingErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'Not able to publish messages to topic')
   static const MessagePublishingErrorMessageEnum
-  notAbleToPublishMessagesToTopic =
+      notAbleToPublishMessagesToTopic =
       _$messagePublishingErrorMessageEnum_notAbleToPublishMessagesToTopic;
 
   static Serializer<MessagePublishingErrorMessageEnum> get serializer =>

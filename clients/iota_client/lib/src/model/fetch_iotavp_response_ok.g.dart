@@ -14,19 +14,17 @@ class _$FetchIOTAVPResponseOK extends FetchIOTAVPResponseOK {
   @override
   final String? vpToken;
 
-  factory _$FetchIOTAVPResponseOK([
-    void Function(FetchIOTAVPResponseOKBuilder)? updates,
-  ]) => (FetchIOTAVPResponseOKBuilder()..update(updates))._build();
+  factory _$FetchIOTAVPResponseOK(
+          [void Function(FetchIOTAVPResponseOKBuilder)? updates]) =>
+      (FetchIOTAVPResponseOKBuilder()..update(updates))._build();
 
-  _$FetchIOTAVPResponseOK._({
-    this.correlationId,
-    this.presentationSubmission,
-    this.vpToken,
-  }) : super._();
+  _$FetchIOTAVPResponseOK._(
+      {this.correlationId, this.presentationSubmission, this.vpToken})
+      : super._();
   @override
   FetchIOTAVPResponseOK rebuild(
-    void Function(FetchIOTAVPResponseOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(FetchIOTAVPResponseOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   FetchIOTAVPResponseOKBuilder toBuilder() =>
@@ -108,8 +106,7 @@ class FetchIOTAVPResponseOKBuilder
   FetchIOTAVPResponseOK build() => _build();
 
   _$FetchIOTAVPResponseOK _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$FetchIOTAVPResponseOK._(
           correlationId: correlationId,
           presentationSubmission: presentationSubmission,

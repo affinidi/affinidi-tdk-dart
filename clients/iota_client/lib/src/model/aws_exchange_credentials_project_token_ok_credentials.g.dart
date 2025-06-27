@@ -13,23 +13,22 @@ class _$AwsExchangeCredentialsProjectTokenOKCredentials
   @override
   final String token;
 
-  factory _$AwsExchangeCredentialsProjectTokenOKCredentials([
-    void Function(AwsExchangeCredentialsProjectTokenOKCredentialsBuilder)?
-    updates,
-  ]) =>
+  factory _$AwsExchangeCredentialsProjectTokenOKCredentials(
+          [void Function(
+                  AwsExchangeCredentialsProjectTokenOKCredentialsBuilder)?
+              updates]) =>
       (AwsExchangeCredentialsProjectTokenOKCredentialsBuilder()
             ..update(updates))
           ._build();
 
-  _$AwsExchangeCredentialsProjectTokenOKCredentials._({
-    required this.identityId,
-    required this.token,
-  }) : super._();
+  _$AwsExchangeCredentialsProjectTokenOKCredentials._(
+      {required this.identityId, required this.token})
+      : super._();
   @override
   AwsExchangeCredentialsProjectTokenOKCredentials rebuild(
-    void Function(AwsExchangeCredentialsProjectTokenOKCredentialsBuilder)
-    updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(AwsExchangeCredentialsProjectTokenOKCredentialsBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   AwsExchangeCredentialsProjectTokenOKCredentialsBuilder toBuilder() =>
@@ -55,8 +54,7 @@ class _$AwsExchangeCredentialsProjectTokenOKCredentials
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'AwsExchangeCredentialsProjectTokenOKCredentials',
-          )
+            r'AwsExchangeCredentialsProjectTokenOKCredentials')
           ..add('identityId', identityId)
           ..add('token', token))
         .toString();
@@ -65,10 +63,8 @@ class _$AwsExchangeCredentialsProjectTokenOKCredentials
 
 class AwsExchangeCredentialsProjectTokenOKCredentialsBuilder
     implements
-        Builder<
-          AwsExchangeCredentialsProjectTokenOKCredentials,
-          AwsExchangeCredentialsProjectTokenOKCredentialsBuilder
-        > {
+        Builder<AwsExchangeCredentialsProjectTokenOKCredentials,
+            AwsExchangeCredentialsProjectTokenOKCredentialsBuilder> {
   _$AwsExchangeCredentialsProjectTokenOKCredentials? _$v;
 
   String? _identityId;
@@ -100,9 +96,8 @@ class AwsExchangeCredentialsProjectTokenOKCredentialsBuilder
 
   @override
   void update(
-    void Function(AwsExchangeCredentialsProjectTokenOKCredentialsBuilder)?
-    updates,
-  ) {
+      void Function(AwsExchangeCredentialsProjectTokenOKCredentialsBuilder)?
+          updates) {
     if (updates != null) updates(this);
   }
 
@@ -110,19 +105,12 @@ class AwsExchangeCredentialsProjectTokenOKCredentialsBuilder
   AwsExchangeCredentialsProjectTokenOKCredentials build() => _build();
 
   _$AwsExchangeCredentialsProjectTokenOKCredentials _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$AwsExchangeCredentialsProjectTokenOKCredentials._(
-          identityId: BuiltValueNullFieldError.checkNotNull(
-            identityId,
-            r'AwsExchangeCredentialsProjectTokenOKCredentials',
-            'identityId',
-          ),
-          token: BuiltValueNullFieldError.checkNotNull(
-            token,
-            r'AwsExchangeCredentialsProjectTokenOKCredentials',
-            'token',
-          ),
+          identityId: BuiltValueNullFieldError.checkNotNull(identityId,
+              r'AwsExchangeCredentialsProjectTokenOKCredentials', 'identityId'),
+          token: BuiltValueNullFieldError.checkNotNull(token,
+              r'AwsExchangeCredentialsProjectTokenOKCredentials', 'token'),
         );
     replace(_$result);
     return _$result;

@@ -15,19 +15,19 @@ class _$InitiateDataSharingRequestOKData
   @override
   final String transactionId;
 
-  factory _$InitiateDataSharingRequestOKData([
-    void Function(InitiateDataSharingRequestOKDataBuilder)? updates,
-  ]) => (InitiateDataSharingRequestOKDataBuilder()..update(updates))._build();
+  factory _$InitiateDataSharingRequestOKData(
+          [void Function(InitiateDataSharingRequestOKDataBuilder)? updates]) =>
+      (InitiateDataSharingRequestOKDataBuilder()..update(updates))._build();
 
-  _$InitiateDataSharingRequestOKData._({
-    required this.jwt,
-    required this.correlationId,
-    required this.transactionId,
-  }) : super._();
+  _$InitiateDataSharingRequestOKData._(
+      {required this.jwt,
+      required this.correlationId,
+      required this.transactionId})
+      : super._();
   @override
   InitiateDataSharingRequestOKData rebuild(
-    void Function(InitiateDataSharingRequestOKDataBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(InitiateDataSharingRequestOKDataBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   InitiateDataSharingRequestOKDataBuilder toBuilder() =>
@@ -64,10 +64,8 @@ class _$InitiateDataSharingRequestOKData
 
 class InitiateDataSharingRequestOKDataBuilder
     implements
-        Builder<
-          InitiateDataSharingRequestOKData,
-          InitiateDataSharingRequestOKDataBuilder
-        > {
+        Builder<InitiateDataSharingRequestOKData,
+            InitiateDataSharingRequestOKDataBuilder> {
   _$InitiateDataSharingRequestOKData? _$v;
 
   String? _jwt;
@@ -113,24 +111,14 @@ class InitiateDataSharingRequestOKDataBuilder
   InitiateDataSharingRequestOKData build() => _build();
 
   _$InitiateDataSharingRequestOKData _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$InitiateDataSharingRequestOKData._(
           jwt: BuiltValueNullFieldError.checkNotNull(
-            jwt,
-            r'InitiateDataSharingRequestOKData',
-            'jwt',
-          ),
-          correlationId: BuiltValueNullFieldError.checkNotNull(
-            correlationId,
-            r'InitiateDataSharingRequestOKData',
-            'correlationId',
-          ),
-          transactionId: BuiltValueNullFieldError.checkNotNull(
-            transactionId,
-            r'InitiateDataSharingRequestOKData',
-            'transactionId',
-          ),
+              jwt, r'InitiateDataSharingRequestOKData', 'jwt'),
+          correlationId: BuiltValueNullFieldError.checkNotNull(correlationId,
+              r'InitiateDataSharingRequestOKData', 'correlationId'),
+          transactionId: BuiltValueNullFieldError.checkNotNull(transactionId,
+              r'InitiateDataSharingRequestOKData', 'transactionId'),
         );
     replace(_$result);
     return _$result;

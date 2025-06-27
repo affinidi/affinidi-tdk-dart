@@ -84,7 +84,6 @@ lib/src/model/wallets_list_dto.dart
 lib/src/serializers.dart
 project.json
 pubspec.yaml
-pubspec.yaml
 test/create_wallet_input_test.dart
 test/create_wallet_response_test.dart
 test/entity_not_found_error_test.dart

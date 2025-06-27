@@ -50,9 +50,8 @@ abstract class SubmissionRequirement
 
   SubmissionRequirement._();
 
-  factory SubmissionRequirement([
-    void updates(SubmissionRequirementBuilder b),
-  ]) = _$SubmissionRequirement;
+  factory SubmissionRequirement(
+      [void updates(SubmissionRequirementBuilder b)]) = _$SubmissionRequirement;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SubmissionRequirementBuilder b) => b;
@@ -67,7 +66,7 @@ class _$SubmissionRequirementSerializer
   @override
   final Iterable<Type> types = const [
     SubmissionRequirement,
-    _$SubmissionRequirement,
+    _$SubmissionRequirement
   ];
 
   @override
@@ -129,9 +128,8 @@ class _$SubmissionRequirementSerializer
       yield r'from_nested';
       yield serializers.serialize(
         object.fromNested,
-        specifiedType: const FullType(BuiltList, [
-          FullType(SubmissionRequirement),
-        ]),
+        specifiedType:
+            const FullType(BuiltList, [FullType(SubmissionRequirement)]),
       );
     }
   }
@@ -142,11 +140,9 @@ class _$SubmissionRequirementSerializer
     SubmissionRequirement object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -162,70 +158,60 @@ class _$SubmissionRequirementSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'purpose':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.purpose = valueDes;
           break;
         case r'rule':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      SubmissionRequirementRuleEnum,
-                    ),
-                  )
-                  as SubmissionRequirementRuleEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(SubmissionRequirementRuleEnum),
+          ) as SubmissionRequirementRuleEnum;
           result.rule = valueDes;
           break;
         case r'count':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.count = valueDes;
           break;
         case r'min':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.min = valueDes;
           break;
         case r'max':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.max = valueDes;
           break;
         case r'from':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.from = valueDes;
           break;
         case r'from_nested':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(SubmissionRequirement),
-                    ]),
-                  )
-                  as BuiltList<SubmissionRequirement>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(BuiltList, [FullType(SubmissionRequirement)]),
+          ) as BuiltList<SubmissionRequirement>;
           result.fromNested.replace(valueDes);
           break;
         default:

@@ -89,19 +89,12 @@ class SignJwtTokenBuilder
   SignJwtToken build() => _build();
 
   _$SignJwtToken _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$SignJwtToken._(
           header: BuiltValueNullFieldError.checkNotNull(
-            header,
-            r'SignJwtToken',
-            'header',
-          ),
+              header, r'SignJwtToken', 'header'),
           payload: BuiltValueNullFieldError.checkNotNull(
-            payload,
-            r'SignJwtToken',
-            'payload',
-          ),
+              payload, r'SignJwtToken', 'payload'),
         );
     replace(_$result);
     return _$result;

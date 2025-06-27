@@ -8,18 +8,17 @@ void main() {
   // TODO add properties to the builder and call build()
 
   group(
-    CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCode,
-    () {
-      // pre authorized code to be exchanged with jwt token
-      // String preAuthorizedCode
-      test('to test the property `preAuthorizedCode`', () async {
-        // TODO
-      });
+      CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCode,
+      () {
+    // pre authorized code to be exchanged with jwt token
+    // String preAuthorizedCode
+    test('to test the property `preAuthorizedCode`', () async {
+      // TODO
+    });
 
-      // CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode txCode
-      test('to test the property `txCode`', () async {
-        // TODO
-      });
-    },
-  );
+    // CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode txCode
+    test('to test the property `txCode`', () async {
+      // TODO
+    });
+  });
 }

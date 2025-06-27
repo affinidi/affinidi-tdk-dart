@@ -65,11 +65,9 @@ void main() {
     // A mechanism for an OpenID Connect Relying Party to discover the End-User's  OpenID Provider and obtain information needed to interact with it, including  its OAuth 2.0 endpoint locations.
     //
     //Future<OIDCConfig> v1LoginProjectProjectIdWellKnownOpenidConfigurationGet(String projectId) async
-    test(
-      'test v1LoginProjectProjectIdWellKnownOpenidConfigurationGet',
-      () async {
-        // TODO
-      },
-    );
+    test('test v1LoginProjectProjectIdWellKnownOpenidConfigurationGet',
+        () async {
+      // TODO
+    });
   });
 }

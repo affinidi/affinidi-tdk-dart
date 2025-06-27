@@ -38,14 +38,12 @@ melos:
       packageFilters:
         flutter: true
         includePrivatePackages: false
-        diff: 'origin/main'
-
+        diff: origin/main
     test:
       run: |
         melos run test-flutter
         melos run test-dart
         melos run coverage-report
-
     test-flutter:
       description: Run tests in each flutter package
       exec: flutter test --coverage
@@ -56,10 +54,9 @@ melos:
       packageFilters:
         flutter: true
         includePrivatePackages: false
-        diff: 'origin/main'
-        ignore: 
-         - "*_example*"
-
+        diff: origin/main
+        ignore:
+          - "*_example*"
     test-dart:
       description: Run tests in each dart package
       exec: dart run coverage:test_with_coverage
@@ -70,10 +67,9 @@ melos:
       packageFilters:
         flutter: false
         private: false
-        diff: 'origin/main'
-        ignore: 
-         - "*_example*"
-
+        diff: origin/main
+        ignore:
+          - "*_example*"
     test-integration:
       description: Run integration tests
       exec: dart test
@@ -84,9 +80,8 @@ melos:
       packageFilters:
         flutter: false
         private: true
-        scope: 
-         - "*integration_tests*"
-
+        scope:
+          - "*integration_tests*"
     coverage-report:
       run: >
         mkdir -p coverage

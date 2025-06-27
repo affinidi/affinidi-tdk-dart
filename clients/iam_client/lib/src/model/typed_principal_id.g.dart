@@ -10,9 +10,9 @@ class _$TypedPrincipalId extends TypedPrincipalId {
   @override
   final String principalId;
 
-  factory _$TypedPrincipalId([
-    void Function(TypedPrincipalIdBuilder)? updates,
-  ]) => (TypedPrincipalIdBuilder()..update(updates))._build();
+  factory _$TypedPrincipalId(
+          [void Function(TypedPrincipalIdBuilder)? updates]) =>
+      (TypedPrincipalIdBuilder()..update(updates))._build();
 
   _$TypedPrincipalId._({required this.principalId}) : super._();
   @override
@@ -39,9 +39,9 @@ class _$TypedPrincipalId extends TypedPrincipalId {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'TypedPrincipalId',
-    )..add('principalId', principalId)).toString();
+    return (newBuiltValueToStringHelper(r'TypedPrincipalId')
+          ..add('principalId', principalId))
+        .toString();
   }
 }
 
@@ -80,14 +80,10 @@ class TypedPrincipalIdBuilder
   TypedPrincipalId build() => _build();
 
   _$TypedPrincipalId _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$TypedPrincipalId._(
           principalId: BuiltValueNullFieldError.checkNotNull(
-            principalId,
-            r'TypedPrincipalId',
-            'principalId',
-          ),
+              principalId, r'TypedPrincipalId', 'principalId'),
         );
     replace(_$result);
     return _$result;

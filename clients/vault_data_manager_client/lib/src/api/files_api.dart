@@ -48,18 +48,15 @@ class FilesApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/scanned-files/{scannedFileJobId}'.replaceAll(
-      '{'
-      r'scannedFileJobId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        scannedFileJobId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'scannedFileJobId' '}',
+        encodeQueryParameter(
+                _serializers, scannedFileJobId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -77,10 +74,7 @@ class FilesApi {
     final _queryParameters = <String, dynamic>{
       if (exclusiveStartKey != null)
         r'exclusiveStartKey': encodeQueryParameter(
-          _serializers,
-          exclusiveStartKey,
-          const FullType(String),
-        ),
+            _serializers, exclusiveStartKey, const FullType(String)),
     };
 
     final _response = await _dio.request<Object>(
@@ -99,10 +93,9 @@ class FilesApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(GetScannedFileInfoOK),
-                )
-                as GetScannedFileInfoOK;
+              rawResponse,
+              specifiedType: const FullType(GetScannedFileInfoOK),
+            ) as GetScannedFileInfoOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -149,7 +142,9 @@ class FilesApi {
     final _path = r'/v1/scanned-files/';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -179,10 +174,9 @@ class FilesApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(ListScannedFilesOK),
-                )
-                as ListScannedFilesOK;
+              rawResponse,
+              specifiedType: const FullType(ListScannedFilesOK),
+            ) as ListScannedFilesOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -231,18 +225,14 @@ class FilesApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/nodes/{nodeId}/file/scan'.replaceAll(
-      '{'
-      r'nodeId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        nodeId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'nodeId' '}',
+        encodeQueryParameter(_serializers, nodeId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -262,13 +252,14 @@ class FilesApi {
 
     try {
       const _type = FullType(StartFileScanInput);
-      _bodyData = _serializers.serialize(
-        startFileScanInput,
-        specifiedType: _type,
-      );
+      _bodyData =
+          _serializers.serialize(startFileScanInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -291,10 +282,9 @@ class FilesApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(StartFileScanOK),
-                )
-                as StartFileScanOK;
+              rawResponse,
+              specifiedType: const FullType(StartFileScanOK),
+            ) as StartFileScanOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

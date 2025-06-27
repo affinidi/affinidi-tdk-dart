@@ -41,9 +41,9 @@ abstract class VPTokenValidationError
 
   VPTokenValidationError._();
 
-  factory VPTokenValidationError([
-    void updates(VPTokenValidationErrorBuilder b),
-  ]) = _$VPTokenValidationError;
+  factory VPTokenValidationError(
+          [void updates(VPTokenValidationErrorBuilder b)]) =
+      _$VPTokenValidationError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(VPTokenValidationErrorBuilder b) => b;
@@ -58,7 +58,7 @@ class _$VPTokenValidationErrorSerializer
   @override
   final Iterable<Type> types = const [
     VPTokenValidationError,
-    _$VPTokenValidationError,
+    _$VPTokenValidationError
   ];
 
   @override
@@ -93,9 +93,8 @@ class _$VPTokenValidationErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(InvalidParameterErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
       );
     }
   }
@@ -106,11 +105,9 @@ class _$VPTokenValidationErrorSerializer
     VPTokenValidationError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -126,56 +123,40 @@ class _$VPTokenValidationErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      VPTokenValidationErrorNameEnum,
-                    ),
-                  )
-                  as VPTokenValidationErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(VPTokenValidationErrorNameEnum),
+          ) as VPTokenValidationErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      VPTokenValidationErrorMessageEnum,
-                    ),
-                  )
-                  as VPTokenValidationErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(VPTokenValidationErrorMessageEnum),
+          ) as VPTokenValidationErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      VPTokenValidationErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as VPTokenValidationErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(VPTokenValidationErrorHttpStatusCodeEnum),
+          ) as VPTokenValidationErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(InvalidParameterErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<InvalidParameterErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
+          ) as BuiltList<InvalidParameterErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -226,7 +207,7 @@ class VPTokenValidationErrorNameEnum extends EnumClass {
 class VPTokenValidationErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'VP token validation ended with an error')
   static const VPTokenValidationErrorMessageEnum
-  vPTokenValidationEndedWithAnError =
+      vPTokenValidationEndedWithAnError =
       _$vPTokenValidationErrorMessageEnum_vPTokenValidationEndedWithAnError;
 
   static Serializer<VPTokenValidationErrorMessageEnum> get serializer =>

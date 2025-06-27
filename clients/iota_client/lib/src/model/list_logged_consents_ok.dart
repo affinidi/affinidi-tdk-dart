@@ -42,7 +42,7 @@ class _$ListLoggedConsentsOKSerializer
   @override
   final Iterable<Type> types = const [
     ListLoggedConsentsOK,
-    _$ListLoggedConsentsOK,
+    _$ListLoggedConsentsOK
   ];
 
   @override
@@ -73,11 +73,9 @@ class _$ListLoggedConsentsOKSerializer
     ListLoggedConsentsOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -93,23 +91,17 @@ class _$ListLoggedConsentsOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'consents':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ConsentDto),
-                    ]),
-                  )
-                  as BuiltList<ConsentDto>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(ConsentDto)]),
+          ) as BuiltList<ConsentDto>;
           result.consents.replace(valueDes);
           break;
         case r'lastEvaluatedKey':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.lastEvaluatedKey = valueDes;
           break;
         default:

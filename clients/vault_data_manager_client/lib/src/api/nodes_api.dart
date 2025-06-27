@@ -56,7 +56,9 @@ class NodesApi {
     final _path = r'/v1/nodes';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -79,7 +81,10 @@ class NodesApi {
       _bodyData = _serializers.serialize(createNodeInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -102,10 +107,9 @@ class NodesApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(CreateNodeOK),
-                )
-                as CreateNodeOK;
+              rawResponse,
+              specifiedType: const FullType(CreateNodeOK),
+            ) as CreateNodeOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -152,18 +156,14 @@ class NodesApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/nodes/{nodeId}'.replaceAll(
-      '{'
-      r'nodeId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        nodeId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'nodeId' '}',
+        encodeQueryParameter(_serializers, nodeId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -193,10 +193,9 @@ class NodesApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(DeleteNodeDto),
-                )
-                as DeleteNodeDto;
+              rawResponse,
+              specifiedType: const FullType(DeleteNodeDto),
+            ) as DeleteNodeDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -245,18 +244,14 @@ class NodesApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/nodes/{nodeId}'.replaceAll(
-      '{'
-      r'nodeId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        nodeId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'nodeId' '}',
+        encodeQueryParameter(_serializers, nodeId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -292,10 +287,9 @@ class NodesApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(GetDetailedNodeInfoOK),
-                )
-                as GetDetailedNodeInfoOK;
+              rawResponse,
+              specifiedType: const FullType(GetDetailedNodeInfoOK),
+            ) as GetDetailedNodeInfoOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -343,7 +337,9 @@ class NodesApi {
     final _path = r'/v1/nodes/init';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -373,10 +369,9 @@ class NodesApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(InitNodesOK),
-                )
-                as InitNodesOK;
+              rawResponse,
+              specifiedType: const FullType(InitNodesOK),
+            ) as InitNodesOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -427,18 +422,14 @@ class NodesApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/nodes/{nodeId}/children'.replaceAll(
-      '{'
-      r'nodeId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        nodeId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'nodeId' '}',
+        encodeQueryParameter(_serializers, nodeId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -455,17 +446,11 @@ class NodesApi {
 
     final _queryParameters = <String, dynamic>{
       if (limit != null)
-        r'limit': encodeQueryParameter(
-          _serializers,
-          limit,
-          const FullType(int),
-        ),
+        r'limit':
+            encodeQueryParameter(_serializers, limit, const FullType(int)),
       if (exclusiveStartKey != null)
         r'exclusiveStartKey': encodeQueryParameter(
-          _serializers,
-          exclusiveStartKey,
-          const FullType(String),
-        ),
+            _serializers, exclusiveStartKey, const FullType(String)),
     };
 
     final _response = await _dio.request<Object>(
@@ -484,10 +469,9 @@ class NodesApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(ListNodeChildrenOK),
-                )
-                as ListNodeChildrenOK;
+              rawResponse,
+              specifiedType: const FullType(ListNodeChildrenOK),
+            ) as ListNodeChildrenOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -534,7 +518,9 @@ class NodesApi {
     final _path = r'/v1/nodes';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -564,10 +550,9 @@ class NodesApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(ListRootNodeChildrenOK),
-                )
-                as ListRootNodeChildrenOK;
+              rawResponse,
+              specifiedType: const FullType(ListRootNodeChildrenOK),
+            ) as ListRootNodeChildrenOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -616,18 +601,14 @@ class NodesApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/nodes/{nodeId}/move'.replaceAll(
-      '{'
-      r'nodeId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        nodeId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'nodeId' '}',
+        encodeQueryParameter(_serializers, nodeId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -650,7 +631,10 @@ class NodesApi {
       _bodyData = _serializers.serialize(moveNodeInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -673,10 +657,9 @@ class NodesApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(MoveNodeDto),
-                )
-                as MoveNodeDto;
+              rawResponse,
+              specifiedType: const FullType(MoveNodeDto),
+            ) as MoveNodeDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -726,28 +709,19 @@ class NodesApi {
   }) async {
     final _path = r'/v1/nodes/{nodeId}/remove/{nodeIdToRemove}'
         .replaceAll(
-          '{'
-          r'nodeId'
-          '}',
-          encodeQueryParameter(
-            _serializers,
-            nodeId,
-            const FullType(String),
-          ).toString(),
-        )
+            '{' r'nodeId' '}',
+            encodeQueryParameter(_serializers, nodeId, const FullType(String))
+                .toString())
         .replaceAll(
-          '{'
-          r'nodeIdToRemove'
-          '}',
-          encodeQueryParameter(
-            _serializers,
-            nodeIdToRemove,
-            const FullType(String),
-          ).toString(),
-        );
+            '{' r'nodeIdToRemove' '}',
+            encodeQueryParameter(
+                    _serializers, nodeIdToRemove, const FullType(String))
+                .toString());
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -802,28 +776,19 @@ class NodesApi {
   }) async {
     final _path = r'/v1/nodes/{nodeId}/restore/{nodeIdToRestore}'
         .replaceAll(
-          '{'
-          r'nodeId'
-          '}',
-          encodeQueryParameter(
-            _serializers,
-            nodeId,
-            const FullType(String),
-          ).toString(),
-        )
+            '{' r'nodeId' '}',
+            encodeQueryParameter(_serializers, nodeId, const FullType(String))
+                .toString())
         .replaceAll(
-          '{'
-          r'nodeIdToRestore'
-          '}',
-          encodeQueryParameter(
-            _serializers,
-            nodeIdToRestore,
-            const FullType(String),
-          ).toString(),
-        );
+            '{' r'nodeIdToRestore' '}',
+            encodeQueryParameter(
+                    _serializers, nodeIdToRestore, const FullType(String))
+                .toString());
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -843,13 +808,14 @@ class NodesApi {
 
     try {
       const _type = FullType(RestoreNodeFromTrashbin);
-      _bodyData = _serializers.serialize(
-        restoreNodeFromTrashbin,
-        specifiedType: _type,
-      );
+      _bodyData =
+          _serializers.serialize(restoreNodeFromTrashbin, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -872,10 +838,9 @@ class NodesApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(MoveNodeDto),
-                )
-                as MoveNodeDto;
+              rawResponse,
+              specifiedType: const FullType(MoveNodeDto),
+            ) as MoveNodeDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -924,18 +889,14 @@ class NodesApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/nodes/{nodeId}'.replaceAll(
-      '{'
-      r'nodeId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        nodeId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'nodeId' '}',
+        encodeQueryParameter(_serializers, nodeId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -958,7 +919,10 @@ class NodesApi {
       _bodyData = _serializers.serialize(updateNodeInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -981,10 +945,9 @@ class NodesApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(NodeDto),
-                )
-                as NodeDto;
+              rawResponse,
+              specifiedType: const FullType(NodeDto),
+            ) as NodeDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

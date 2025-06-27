@@ -21,10 +21,8 @@ part 'principal_does_not_belong_to_project_error.g.dart';
 @BuiltValue()
 abstract class PrincipalDoesNotBelongToProjectError
     implements
-        Built<
-          PrincipalDoesNotBelongToProjectError,
-          PrincipalDoesNotBelongToProjectErrorBuilder
-        > {
+        Built<PrincipalDoesNotBelongToProjectError,
+            PrincipalDoesNotBelongToProjectErrorBuilder> {
   @BuiltValueField(wireName: r'name')
   PrincipalDoesNotBelongToProjectErrorNameEnum get name;
   // enum nameEnum {  PrincipalDoesNotBelongToProjectError,  };
@@ -45,9 +43,9 @@ abstract class PrincipalDoesNotBelongToProjectError
 
   PrincipalDoesNotBelongToProjectError._();
 
-  factory PrincipalDoesNotBelongToProjectError([
-    void updates(PrincipalDoesNotBelongToProjectErrorBuilder b),
-  ]) = _$PrincipalDoesNotBelongToProjectError;
+  factory PrincipalDoesNotBelongToProjectError(
+          [void updates(PrincipalDoesNotBelongToProjectErrorBuilder b)]) =
+      _$PrincipalDoesNotBelongToProjectError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(PrincipalDoesNotBelongToProjectErrorBuilder b) => b;
@@ -62,7 +60,7 @@ class _$PrincipalDoesNotBelongToProjectErrorSerializer
   @override
   final Iterable<Type> types = const [
     PrincipalDoesNotBelongToProjectError,
-    _$PrincipalDoesNotBelongToProjectError,
+    _$PrincipalDoesNotBelongToProjectError
   ];
 
   @override
@@ -76,23 +74,20 @@ class _$PrincipalDoesNotBelongToProjectErrorSerializer
     yield r'name';
     yield serializers.serialize(
       object.name,
-      specifiedType: const FullType(
-        PrincipalDoesNotBelongToProjectErrorNameEnum,
-      ),
+      specifiedType:
+          const FullType(PrincipalDoesNotBelongToProjectErrorNameEnum),
     );
     yield r'message';
     yield serializers.serialize(
       object.message,
-      specifiedType: const FullType(
-        PrincipalDoesNotBelongToProjectErrorMessageEnum,
-      ),
+      specifiedType:
+          const FullType(PrincipalDoesNotBelongToProjectErrorMessageEnum),
     );
     yield r'httpStatusCode';
     yield serializers.serialize(
       object.httpStatusCode,
       specifiedType: const FullType(
-        PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum,
-      ),
+          PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum),
     );
     yield r'traceId';
     yield serializers.serialize(
@@ -103,9 +98,8 @@ class _$PrincipalDoesNotBelongToProjectErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ServiceErrorResponseDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
       );
     }
   }
@@ -116,11 +110,9 @@ class _$PrincipalDoesNotBelongToProjectErrorSerializer
     PrincipalDoesNotBelongToProjectError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -136,56 +128,42 @@ class _$PrincipalDoesNotBelongToProjectErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      PrincipalDoesNotBelongToProjectErrorNameEnum,
-                    ),
-                  )
-                  as PrincipalDoesNotBelongToProjectErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(PrincipalDoesNotBelongToProjectErrorNameEnum),
+          ) as PrincipalDoesNotBelongToProjectErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      PrincipalDoesNotBelongToProjectErrorMessageEnum,
-                    ),
-                  )
-                  as PrincipalDoesNotBelongToProjectErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(PrincipalDoesNotBelongToProjectErrorMessageEnum),
+          ) as PrincipalDoesNotBelongToProjectErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum),
+          ) as PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ServiceErrorResponseDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ServiceErrorResponseDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
+          ) as BuiltList<ServiceErrorResponseDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -220,14 +198,15 @@ class _$PrincipalDoesNotBelongToProjectErrorSerializer
 class PrincipalDoesNotBelongToProjectErrorNameEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'PrincipalDoesNotBelongToProjectError')
   static const PrincipalDoesNotBelongToProjectErrorNameEnum
-  principalDoesNotBelongToProjectError =
+      principalDoesNotBelongToProjectError =
       _$principalDoesNotBelongToProjectErrorNameEnum_principalDoesNotBelongToProjectError;
 
   static Serializer<PrincipalDoesNotBelongToProjectErrorNameEnum>
-  get serializer => _$principalDoesNotBelongToProjectErrorNameEnumSerializer;
+      get serializer =>
+          _$principalDoesNotBelongToProjectErrorNameEnumSerializer;
 
   const PrincipalDoesNotBelongToProjectErrorNameEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<PrincipalDoesNotBelongToProjectErrorNameEnum> get values =>
       _$principalDoesNotBelongToProjectErrorNameEnumValues;
@@ -237,17 +216,17 @@ class PrincipalDoesNotBelongToProjectErrorNameEnum extends EnumClass {
 
 class PrincipalDoesNotBelongToProjectErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(
-    wireName: r'Principal does not belong to the given project',
-  )
+      wireName: r'Principal does not belong to the given project')
   static const PrincipalDoesNotBelongToProjectErrorMessageEnum
-  principalDoesNotBelongToTheGivenProject =
+      principalDoesNotBelongToTheGivenProject =
       _$principalDoesNotBelongToProjectErrorMessageEnum_principalDoesNotBelongToTheGivenProject;
 
   static Serializer<PrincipalDoesNotBelongToProjectErrorMessageEnum>
-  get serializer => _$principalDoesNotBelongToProjectErrorMessageEnumSerializer;
+      get serializer =>
+          _$principalDoesNotBelongToProjectErrorMessageEnumSerializer;
 
   const PrincipalDoesNotBelongToProjectErrorMessageEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<PrincipalDoesNotBelongToProjectErrorMessageEnum> get values =>
       _$principalDoesNotBelongToProjectErrorMessageEnumValues;
@@ -258,19 +237,20 @@ class PrincipalDoesNotBelongToProjectErrorMessageEnum extends EnumClass {
 class PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum extends EnumClass {
   @BuiltValueEnumConst(wireNumber: 403)
   static const PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum
-  number403 =
+      number403 =
       _$principalDoesNotBelongToProjectErrorHttpStatusCodeEnum_number403;
 
   static Serializer<PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum>
-  get serializer =>
-      _$principalDoesNotBelongToProjectErrorHttpStatusCodeEnumSerializer;
+      get serializer =>
+          _$principalDoesNotBelongToProjectErrorHttpStatusCodeEnumSerializer;
 
   const PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum>
-  get values => _$principalDoesNotBelongToProjectErrorHttpStatusCodeEnumValues;
+      get values =>
+          _$principalDoesNotBelongToProjectErrorHttpStatusCodeEnumValues;
   static PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum valueOf(
-    String name,
-  ) => _$principalDoesNotBelongToProjectErrorHttpStatusCodeEnumValueOf(name);
+          String name) =>
+      _$principalDoesNotBelongToProjectErrorHttpStatusCodeEnumValueOf(name);
 }

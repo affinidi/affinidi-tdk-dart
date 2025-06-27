@@ -13,24 +13,24 @@ class _$StartIssuanceInputDataInner extends StartIssuanceInputDataInner {
   final BuiltMap<String, JsonObject?> credentialData;
   @override
   final BuiltList<StartIssuanceInputDataInnerStatusListDetailsInner>?
-  statusListDetails;
+      statusListDetails;
   @override
   final StartIssuanceInputDataInnerMetaData? metaData;
 
-  factory _$StartIssuanceInputDataInner([
-    void Function(StartIssuanceInputDataInnerBuilder)? updates,
-  ]) => (StartIssuanceInputDataInnerBuilder()..update(updates))._build();
+  factory _$StartIssuanceInputDataInner(
+          [void Function(StartIssuanceInputDataInnerBuilder)? updates]) =>
+      (StartIssuanceInputDataInnerBuilder()..update(updates))._build();
 
-  _$StartIssuanceInputDataInner._({
-    required this.credentialTypeId,
-    required this.credentialData,
-    this.statusListDetails,
-    this.metaData,
-  }) : super._();
+  _$StartIssuanceInputDataInner._(
+      {required this.credentialTypeId,
+      required this.credentialData,
+      this.statusListDetails,
+      this.metaData})
+      : super._();
   @override
   StartIssuanceInputDataInner rebuild(
-    void Function(StartIssuanceInputDataInnerBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(StartIssuanceInputDataInnerBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   StartIssuanceInputDataInnerBuilder toBuilder() =>
@@ -70,10 +70,8 @@ class _$StartIssuanceInputDataInner extends StartIssuanceInputDataInner {
 
 class StartIssuanceInputDataInnerBuilder
     implements
-        Builder<
-          StartIssuanceInputDataInner,
-          StartIssuanceInputDataInnerBuilder
-        > {
+        Builder<StartIssuanceInputDataInner,
+            StartIssuanceInputDataInnerBuilder> {
   _$StartIssuanceInputDataInner? _$v;
 
   String? _credentialTypeId;
@@ -88,14 +86,14 @@ class StartIssuanceInputDataInnerBuilder
       _$this._credentialData = credentialData;
 
   ListBuilder<StartIssuanceInputDataInnerStatusListDetailsInner>?
-  _statusListDetails;
+      _statusListDetails;
   ListBuilder<StartIssuanceInputDataInnerStatusListDetailsInner>
-  get statusListDetails => _$this._statusListDetails ??=
-      ListBuilder<StartIssuanceInputDataInnerStatusListDetailsInner>();
+      get statusListDetails => _$this._statusListDetails ??=
+          ListBuilder<StartIssuanceInputDataInnerStatusListDetailsInner>();
   set statusListDetails(
-    ListBuilder<StartIssuanceInputDataInnerStatusListDetailsInner>?
-    statusListDetails,
-  ) => _$this._statusListDetails = statusListDetails;
+          ListBuilder<StartIssuanceInputDataInnerStatusListDetailsInner>?
+              statusListDetails) =>
+      _$this._statusListDetails = statusListDetails;
 
   StartIssuanceInputDataInnerMetaDataBuilder? _metaData;
   StartIssuanceInputDataInnerMetaDataBuilder get metaData =>
@@ -135,14 +133,12 @@ class StartIssuanceInputDataInnerBuilder
   _$StartIssuanceInputDataInner _build() {
     _$StartIssuanceInputDataInner _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$StartIssuanceInputDataInner._(
             credentialTypeId: BuiltValueNullFieldError.checkNotNull(
-              credentialTypeId,
-              r'StartIssuanceInputDataInner',
-              'credentialTypeId',
-            ),
+                credentialTypeId,
+                r'StartIssuanceInputDataInner',
+                'credentialTypeId'),
             credentialData: credentialData.build(),
             statusListDetails: _statusListDetails?.build(),
             metaData: _metaData?.build(),
@@ -158,10 +154,7 @@ class StartIssuanceInputDataInnerBuilder
         _metaData?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'StartIssuanceInputDataInner',
-          _$failedField,
-          e.toString(),
-        );
+            r'StartIssuanceInputDataInner', _$failedField, e.toString());
       }
       rethrow;
     }

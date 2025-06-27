@@ -10,15 +10,15 @@ class _$CorsIotOidc4vpcallbackOK extends CorsIotOidc4vpcallbackOK {
   @override
   final String? corsIotOidc4vpcallbackOk;
 
-  factory _$CorsIotOidc4vpcallbackOK([
-    void Function(CorsIotOidc4vpcallbackOKBuilder)? updates,
-  ]) => (CorsIotOidc4vpcallbackOKBuilder()..update(updates))._build();
+  factory _$CorsIotOidc4vpcallbackOK(
+          [void Function(CorsIotOidc4vpcallbackOKBuilder)? updates]) =>
+      (CorsIotOidc4vpcallbackOKBuilder()..update(updates))._build();
 
   _$CorsIotOidc4vpcallbackOK._({this.corsIotOidc4vpcallbackOk}) : super._();
   @override
   CorsIotOidc4vpcallbackOK rebuild(
-    void Function(CorsIotOidc4vpcallbackOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CorsIotOidc4vpcallbackOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CorsIotOidc4vpcallbackOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$CorsIotOidc4vpcallbackOK extends CorsIotOidc4vpcallbackOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'CorsIotOidc4vpcallbackOK',
-    )..add('corsIotOidc4vpcallbackOk', corsIotOidc4vpcallbackOk)).toString();
+    return (newBuiltValueToStringHelper(r'CorsIotOidc4vpcallbackOK')
+          ..add('corsIotOidc4vpcallbackOk', corsIotOidc4vpcallbackOk))
+        .toString();
   }
 }
 
@@ -84,8 +84,7 @@ class CorsIotOidc4vpcallbackOKBuilder
   CorsIotOidc4vpcallbackOK build() => _build();
 
   _$CorsIotOidc4vpcallbackOK _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CorsIotOidc4vpcallbackOK._(
           corsIotOidc4vpcallbackOk: corsIotOidc4vpcallbackOk,
         );

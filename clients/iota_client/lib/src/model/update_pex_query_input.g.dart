@@ -12,15 +12,15 @@ class _$UpdatePexQueryInput extends UpdatePexQueryInput {
   @override
   final String? description;
 
-  factory _$UpdatePexQueryInput([
-    void Function(UpdatePexQueryInputBuilder)? updates,
-  ]) => (UpdatePexQueryInputBuilder()..update(updates))._build();
+  factory _$UpdatePexQueryInput(
+          [void Function(UpdatePexQueryInputBuilder)? updates]) =>
+      (UpdatePexQueryInputBuilder()..update(updates))._build();
 
   _$UpdatePexQueryInput._({this.vpDefinition, this.description}) : super._();
   @override
   UpdatePexQueryInput rebuild(
-    void Function(UpdatePexQueryInputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(UpdatePexQueryInputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   UpdatePexQueryInputBuilder toBuilder() =>
@@ -92,8 +92,7 @@ class UpdatePexQueryInputBuilder
   UpdatePexQueryInput build() => _build();
 
   _$UpdatePexQueryInput _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$UpdatePexQueryInput._(
           vpDefinition: vpDefinition,
           description: description,

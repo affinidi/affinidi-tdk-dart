@@ -21,26 +21,25 @@ class _$SignCredentialInputDtoUnsignedCredentialParams
   @override
   final String expiresAt;
 
-  factory _$SignCredentialInputDtoUnsignedCredentialParams([
-    void Function(SignCredentialInputDtoUnsignedCredentialParamsBuilder)?
-    updates,
-  ]) =>
+  factory _$SignCredentialInputDtoUnsignedCredentialParams(
+          [void Function(SignCredentialInputDtoUnsignedCredentialParamsBuilder)?
+              updates]) =>
       (SignCredentialInputDtoUnsignedCredentialParamsBuilder()..update(updates))
           ._build();
 
-  _$SignCredentialInputDtoUnsignedCredentialParams._({
-    required this.jsonLdContextUrl,
-    required this.jsonSchemaUrl,
-    required this.typeName,
-    required this.credentialSubject,
-    required this.holderDid,
-    required this.expiresAt,
-  }) : super._();
+  _$SignCredentialInputDtoUnsignedCredentialParams._(
+      {required this.jsonLdContextUrl,
+      required this.jsonSchemaUrl,
+      required this.typeName,
+      required this.credentialSubject,
+      required this.holderDid,
+      required this.expiresAt})
+      : super._();
   @override
   SignCredentialInputDtoUnsignedCredentialParams rebuild(
-    void Function(SignCredentialInputDtoUnsignedCredentialParamsBuilder)
-    updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(SignCredentialInputDtoUnsignedCredentialParamsBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   SignCredentialInputDtoUnsignedCredentialParamsBuilder toBuilder() =>
@@ -74,8 +73,7 @@ class _$SignCredentialInputDtoUnsignedCredentialParams
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'SignCredentialInputDtoUnsignedCredentialParams',
-          )
+            r'SignCredentialInputDtoUnsignedCredentialParams')
           ..add('jsonLdContextUrl', jsonLdContextUrl)
           ..add('jsonSchemaUrl', jsonSchemaUrl)
           ..add('typeName', typeName)
@@ -88,10 +86,8 @@ class _$SignCredentialInputDtoUnsignedCredentialParams
 
 class SignCredentialInputDtoUnsignedCredentialParamsBuilder
     implements
-        Builder<
-          SignCredentialInputDtoUnsignedCredentialParams,
-          SignCredentialInputDtoUnsignedCredentialParamsBuilder
-        > {
+        Builder<SignCredentialInputDtoUnsignedCredentialParams,
+            SignCredentialInputDtoUnsignedCredentialParamsBuilder> {
   _$SignCredentialInputDtoUnsignedCredentialParams? _$v;
 
   String? _jsonLdContextUrl;
@@ -147,9 +143,8 @@ class SignCredentialInputDtoUnsignedCredentialParamsBuilder
 
   @override
   void update(
-    void Function(SignCredentialInputDtoUnsignedCredentialParamsBuilder)?
-    updates,
-  ) {
+      void Function(SignCredentialInputDtoUnsignedCredentialParamsBuilder)?
+          updates) {
     if (updates != null) updates(this);
   }
 
@@ -159,35 +154,23 @@ class SignCredentialInputDtoUnsignedCredentialParamsBuilder
   _$SignCredentialInputDtoUnsignedCredentialParams _build() {
     _$SignCredentialInputDtoUnsignedCredentialParams _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$SignCredentialInputDtoUnsignedCredentialParams._(
             jsonLdContextUrl: BuiltValueNullFieldError.checkNotNull(
-              jsonLdContextUrl,
-              r'SignCredentialInputDtoUnsignedCredentialParams',
-              'jsonLdContextUrl',
-            ),
+                jsonLdContextUrl,
+                r'SignCredentialInputDtoUnsignedCredentialParams',
+                'jsonLdContextUrl'),
             jsonSchemaUrl: BuiltValueNullFieldError.checkNotNull(
-              jsonSchemaUrl,
-              r'SignCredentialInputDtoUnsignedCredentialParams',
-              'jsonSchemaUrl',
-            ),
-            typeName: BuiltValueNullFieldError.checkNotNull(
-              typeName,
-              r'SignCredentialInputDtoUnsignedCredentialParams',
-              'typeName',
-            ),
+                jsonSchemaUrl,
+                r'SignCredentialInputDtoUnsignedCredentialParams',
+                'jsonSchemaUrl'),
+            typeName: BuiltValueNullFieldError.checkNotNull(typeName,
+                r'SignCredentialInputDtoUnsignedCredentialParams', 'typeName'),
             credentialSubject: credentialSubject.build(),
-            holderDid: BuiltValueNullFieldError.checkNotNull(
-              holderDid,
-              r'SignCredentialInputDtoUnsignedCredentialParams',
-              'holderDid',
-            ),
-            expiresAt: BuiltValueNullFieldError.checkNotNull(
-              expiresAt,
-              r'SignCredentialInputDtoUnsignedCredentialParams',
-              'expiresAt',
-            ),
+            holderDid: BuiltValueNullFieldError.checkNotNull(holderDid,
+                r'SignCredentialInputDtoUnsignedCredentialParams', 'holderDid'),
+            expiresAt: BuiltValueNullFieldError.checkNotNull(expiresAt,
+                r'SignCredentialInputDtoUnsignedCredentialParams', 'expiresAt'),
           );
     } catch (_) {
       late String _$failedField;
@@ -196,10 +179,9 @@ class SignCredentialInputDtoUnsignedCredentialParamsBuilder
         credentialSubject.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'SignCredentialInputDtoUnsignedCredentialParams',
-          _$failedField,
-          e.toString(),
-        );
+            r'SignCredentialInputDtoUnsignedCredentialParams',
+            _$failedField,
+            e.toString());
       }
       rethrow;
     }

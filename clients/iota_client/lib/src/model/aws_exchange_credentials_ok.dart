@@ -26,9 +26,9 @@ abstract class AwsExchangeCredentialsOK
 
   AwsExchangeCredentialsOK._();
 
-  factory AwsExchangeCredentialsOK([
-    void updates(AwsExchangeCredentialsOKBuilder b),
-  ]) = _$AwsExchangeCredentialsOK;
+  factory AwsExchangeCredentialsOK(
+          [void updates(AwsExchangeCredentialsOKBuilder b)]) =
+      _$AwsExchangeCredentialsOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AwsExchangeCredentialsOKBuilder b) => b;
@@ -43,7 +43,7 @@ class _$AwsExchangeCredentialsOKSerializer
   @override
   final Iterable<Type> types = const [
     AwsExchangeCredentialsOK,
-    _$AwsExchangeCredentialsOK,
+    _$AwsExchangeCredentialsOK
   ];
 
   @override
@@ -62,9 +62,8 @@ class _$AwsExchangeCredentialsOKSerializer
     yield r'credentials';
     yield serializers.serialize(
       object.credentials,
-      specifiedType: const FullType(
-        AwsExchangeCredentialsProjectTokenOKCredentials,
-      ),
+      specifiedType:
+          const FullType(AwsExchangeCredentialsProjectTokenOKCredentials),
     );
   }
 
@@ -74,11 +73,9 @@ class _$AwsExchangeCredentialsOKSerializer
     AwsExchangeCredentialsOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -94,23 +91,18 @@ class _$AwsExchangeCredentialsOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'connectionClientId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.connectionClientId = valueDes;
           break;
         case r'credentials':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      AwsExchangeCredentialsProjectTokenOKCredentials,
-                    ),
-                  )
-                  as AwsExchangeCredentialsProjectTokenOKCredentials;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(AwsExchangeCredentialsProjectTokenOKCredentials),
+          ) as AwsExchangeCredentialsProjectTokenOKCredentials;
           result.credentials.replace(valueDes);
           break;
         default:

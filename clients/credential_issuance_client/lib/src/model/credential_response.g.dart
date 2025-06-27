@@ -10,15 +10,15 @@ class _$CredentialResponse extends CredentialResponse {
   @override
   final OneOf oneOf;
 
-  factory _$CredentialResponse([
-    void Function(CredentialResponseBuilder)? updates,
-  ]) => (CredentialResponseBuilder()..update(updates))._build();
+  factory _$CredentialResponse(
+          [void Function(CredentialResponseBuilder)? updates]) =>
+      (CredentialResponseBuilder()..update(updates))._build();
 
   _$CredentialResponse._({required this.oneOf}) : super._();
   @override
   CredentialResponse rebuild(
-    void Function(CredentialResponseBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CredentialResponseBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CredentialResponseBuilder toBuilder() =>
@@ -40,9 +40,9 @@ class _$CredentialResponse extends CredentialResponse {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'CredentialResponse',
-    )..add('oneOf', oneOf)).toString();
+    return (newBuiltValueToStringHelper(r'CredentialResponse')
+          ..add('oneOf', oneOf))
+        .toString();
   }
 }
 
@@ -81,14 +81,10 @@ class CredentialResponseBuilder
   CredentialResponse build() => _build();
 
   _$CredentialResponse _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CredentialResponse._(
           oneOf: BuiltValueNullFieldError.checkNotNull(
-            oneOf,
-            r'CredentialResponse',
-            'oneOf',
-          ),
+              oneOf, r'CredentialResponse', 'oneOf'),
         );
     replace(_$result);
     return _$result;

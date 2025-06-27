@@ -15,18 +15,16 @@ part 'cors_iota_exchange_credentials_ok.g.dart';
 @BuiltValue()
 abstract class CorsIotaExchangeCredentialsOK
     implements
-        Built<
-          CorsIotaExchangeCredentialsOK,
-          CorsIotaExchangeCredentialsOKBuilder
-        > {
+        Built<CorsIotaExchangeCredentialsOK,
+            CorsIotaExchangeCredentialsOKBuilder> {
   @BuiltValueField(wireName: r'corsIotaExchangeCredentialsOk')
   String? get corsIotaExchangeCredentialsOk;
 
   CorsIotaExchangeCredentialsOK._();
 
-  factory CorsIotaExchangeCredentialsOK([
-    void updates(CorsIotaExchangeCredentialsOKBuilder b),
-  ]) = _$CorsIotaExchangeCredentialsOK;
+  factory CorsIotaExchangeCredentialsOK(
+          [void updates(CorsIotaExchangeCredentialsOKBuilder b)]) =
+      _$CorsIotaExchangeCredentialsOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsIotaExchangeCredentialsOKBuilder b) => b;
@@ -41,7 +39,7 @@ class _$CorsIotaExchangeCredentialsOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsIotaExchangeCredentialsOK,
-    _$CorsIotaExchangeCredentialsOK,
+    _$CorsIotaExchangeCredentialsOK
   ];
 
   @override
@@ -67,11 +65,9 @@ class _$CorsIotaExchangeCredentialsOKSerializer
     CorsIotaExchangeCredentialsOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -87,12 +83,10 @@ class _$CorsIotaExchangeCredentialsOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsIotaExchangeCredentialsOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsIotaExchangeCredentialsOk = valueDes;
           break;
         default:

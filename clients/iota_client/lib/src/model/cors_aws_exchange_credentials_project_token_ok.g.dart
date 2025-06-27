@@ -11,18 +11,20 @@ class _$CorsAwsExchangeCredentialsProjectTokenOK
   @override
   final String? corsAwsExchangeCredentialsProjectTokenOk;
 
-  factory _$CorsAwsExchangeCredentialsProjectTokenOK([
-    void Function(CorsAwsExchangeCredentialsProjectTokenOKBuilder)? updates,
-  ]) => (CorsAwsExchangeCredentialsProjectTokenOKBuilder()..update(updates))
-      ._build();
+  factory _$CorsAwsExchangeCredentialsProjectTokenOK(
+          [void Function(CorsAwsExchangeCredentialsProjectTokenOKBuilder)?
+              updates]) =>
+      (CorsAwsExchangeCredentialsProjectTokenOKBuilder()..update(updates))
+          ._build();
 
-  _$CorsAwsExchangeCredentialsProjectTokenOK._({
-    this.corsAwsExchangeCredentialsProjectTokenOk,
-  }) : super._();
+  _$CorsAwsExchangeCredentialsProjectTokenOK._(
+      {this.corsAwsExchangeCredentialsProjectTokenOk})
+      : super._();
   @override
   CorsAwsExchangeCredentialsProjectTokenOK rebuild(
-    void Function(CorsAwsExchangeCredentialsProjectTokenOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CorsAwsExchangeCredentialsProjectTokenOKBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CorsAwsExchangeCredentialsProjectTokenOKBuilder toBuilder() =>
@@ -47,30 +49,26 @@ class _$CorsAwsExchangeCredentialsProjectTokenOK
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-          r'CorsAwsExchangeCredentialsProjectTokenOK',
-        )..add(
-          'corsAwsExchangeCredentialsProjectTokenOk',
-          corsAwsExchangeCredentialsProjectTokenOk,
-        ))
+            r'CorsAwsExchangeCredentialsProjectTokenOK')
+          ..add('corsAwsExchangeCredentialsProjectTokenOk',
+              corsAwsExchangeCredentialsProjectTokenOk))
         .toString();
   }
 }
 
 class CorsAwsExchangeCredentialsProjectTokenOKBuilder
     implements
-        Builder<
-          CorsAwsExchangeCredentialsProjectTokenOK,
-          CorsAwsExchangeCredentialsProjectTokenOKBuilder
-        > {
+        Builder<CorsAwsExchangeCredentialsProjectTokenOK,
+            CorsAwsExchangeCredentialsProjectTokenOKBuilder> {
   _$CorsAwsExchangeCredentialsProjectTokenOK? _$v;
 
   String? _corsAwsExchangeCredentialsProjectTokenOk;
   String? get corsAwsExchangeCredentialsProjectTokenOk =>
       _$this._corsAwsExchangeCredentialsProjectTokenOk;
   set corsAwsExchangeCredentialsProjectTokenOk(
-    String? corsAwsExchangeCredentialsProjectTokenOk,
-  ) => _$this._corsAwsExchangeCredentialsProjectTokenOk =
-      corsAwsExchangeCredentialsProjectTokenOk;
+          String? corsAwsExchangeCredentialsProjectTokenOk) =>
+      _$this._corsAwsExchangeCredentialsProjectTokenOk =
+          corsAwsExchangeCredentialsProjectTokenOk;
 
   CorsAwsExchangeCredentialsProjectTokenOKBuilder() {
     CorsAwsExchangeCredentialsProjectTokenOK._defaults(this);
@@ -93,8 +91,7 @@ class CorsAwsExchangeCredentialsProjectTokenOKBuilder
 
   @override
   void update(
-    void Function(CorsAwsExchangeCredentialsProjectTokenOKBuilder)? updates,
-  ) {
+      void Function(CorsAwsExchangeCredentialsProjectTokenOKBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -102,8 +99,7 @@ class CorsAwsExchangeCredentialsProjectTokenOKBuilder
   CorsAwsExchangeCredentialsProjectTokenOK build() => _build();
 
   _$CorsAwsExchangeCredentialsProjectTokenOK _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CorsAwsExchangeCredentialsProjectTokenOK._(
           corsAwsExchangeCredentialsProjectTokenOk:
               corsAwsExchangeCredentialsProjectTokenOk,

@@ -25,18 +25,16 @@ part 'create_issuance_config400_response.g.dart';
 @BuiltValue()
 abstract class CreateIssuanceConfig400Response
     implements
-        Built<
-          CreateIssuanceConfig400Response,
-          CreateIssuanceConfig400ResponseBuilder
-        > {
+        Built<CreateIssuanceConfig400Response,
+            CreateIssuanceConfig400ResponseBuilder> {
   /// One Of [InvalidIssuerWalletError], [ProjectCredentialConfigExistError], [ProjectCredentialConfigNotExistError]
   OneOf get oneOf;
 
   CreateIssuanceConfig400Response._();
 
-  factory CreateIssuanceConfig400Response([
-    void updates(CreateIssuanceConfig400ResponseBuilder b),
-  ]) = _$CreateIssuanceConfig400Response;
+  factory CreateIssuanceConfig400Response(
+          [void updates(CreateIssuanceConfig400ResponseBuilder b)]) =
+      _$CreateIssuanceConfig400Response;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateIssuanceConfig400ResponseBuilder b) => b;
@@ -51,16 +49,14 @@ class _$CreateIssuanceConfig400ResponseSerializer
   @override
   final Iterable<Type> types = const [
     CreateIssuanceConfig400Response,
-    _$CreateIssuanceConfig400Response,
+    _$CreateIssuanceConfig400Response
   ];
 
   @override
   final String wireName = r'CreateIssuanceConfig400Response';
 
   Iterable<Object?> _serializeProperties(
-    Serializers serializers,
-    CreateIssuanceConfig400Response object,
-  ) sync* {}
+      Serializers serializers, CreateIssuanceConfig400Response object) sync* {}
 
   @override
   Object serialize(
@@ -69,10 +65,8 @@ class _$CreateIssuanceConfig400ResponseSerializer
     FullType specifiedType = FullType.unspecified,
   }) {
     final oneOf = object.oneOf;
-    return serializers.serialize(
-      oneOf.value,
-      specifiedType: FullType(oneOf.valueType),
-    )!;
+    return serializers.serialize(oneOf.value,
+        specifiedType: FullType(oneOf.valueType))!;
   }
 
   @override
@@ -89,9 +83,8 @@ class _$CreateIssuanceConfig400ResponseSerializer
       FullType(InvalidIssuerWalletError),
     ]);
     oneOfDataSrc = serialized;
-    result.oneOf =
-        serializers.deserialize(oneOfDataSrc, specifiedType: targetType)
-            as OneOf;
+    result.oneOf = serializers.deserialize(oneOfDataSrc,
+        specifiedType: targetType) as OneOf;
     return result.build();
   }
 }
@@ -99,7 +92,7 @@ class _$CreateIssuanceConfig400ResponseSerializer
 class CreateIssuanceConfig400ResponseNameEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'InvalidIssuerWalletError')
   static const CreateIssuanceConfig400ResponseNameEnum
-  invalidIssuerWalletError =
+      invalidIssuerWalletError =
       _$createIssuanceConfig400ResponseNameEnum_invalidIssuerWalletError;
 
   static Serializer<CreateIssuanceConfig400ResponseNameEnum> get serializer =>
@@ -116,11 +109,11 @@ class CreateIssuanceConfig400ResponseNameEnum extends EnumClass {
 class CreateIssuanceConfig400ResponseMessageEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'issuer wallet id is invalid')
   static const CreateIssuanceConfig400ResponseMessageEnum
-  issuerWalletIdIsInvalid =
+      issuerWalletIdIsInvalid =
       _$createIssuanceConfig400ResponseMessageEnum_issuerWalletIdIsInvalid;
 
   static Serializer<CreateIssuanceConfig400ResponseMessageEnum>
-  get serializer => _$createIssuanceConfig400ResponseMessageEnumSerializer;
+      get serializer => _$createIssuanceConfig400ResponseMessageEnumSerializer;
 
   const CreateIssuanceConfig400ResponseMessageEnum._(String name) : super(name);
 
@@ -136,15 +129,15 @@ class CreateIssuanceConfig400ResponseHttpStatusCodeEnum extends EnumClass {
       _$createIssuanceConfig400ResponseHttpStatusCodeEnum_number400;
 
   static Serializer<CreateIssuanceConfig400ResponseHttpStatusCodeEnum>
-  get serializer =>
-      _$createIssuanceConfig400ResponseHttpStatusCodeEnumSerializer;
+      get serializer =>
+          _$createIssuanceConfig400ResponseHttpStatusCodeEnumSerializer;
 
   const CreateIssuanceConfig400ResponseHttpStatusCodeEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<CreateIssuanceConfig400ResponseHttpStatusCodeEnum>
-  get values => _$createIssuanceConfig400ResponseHttpStatusCodeEnumValues;
+      get values => _$createIssuanceConfig400ResponseHttpStatusCodeEnumValues;
   static CreateIssuanceConfig400ResponseHttpStatusCodeEnum valueOf(
-    String name,
-  ) => _$createIssuanceConfig400ResponseHttpStatusCodeEnumValueOf(name);
+          String name) =>
+      _$createIssuanceConfig400ResponseHttpStatusCodeEnumValueOf(name);
 }

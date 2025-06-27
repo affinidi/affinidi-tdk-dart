@@ -16,18 +16,16 @@ part 'credential_response_immediate_credential.g.dart';
 @BuiltValue()
 abstract class CredentialResponseImmediateCredential
     implements
-        Built<
-          CredentialResponseImmediateCredential,
-          CredentialResponseImmediateCredentialBuilder
-        > {
+        Built<CredentialResponseImmediateCredential,
+            CredentialResponseImmediateCredentialBuilder> {
   /// One Of [BuiltMap<String, JsonObject>], [String]
   OneOf get oneOf;
 
   CredentialResponseImmediateCredential._();
 
-  factory CredentialResponseImmediateCredential([
-    void updates(CredentialResponseImmediateCredentialBuilder b),
-  ]) = _$CredentialResponseImmediateCredential;
+  factory CredentialResponseImmediateCredential(
+          [void updates(CredentialResponseImmediateCredentialBuilder b)]) =
+      _$CredentialResponseImmediateCredential;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CredentialResponseImmediateCredentialBuilder b) => b;
@@ -42,16 +40,14 @@ class _$CredentialResponseImmediateCredentialSerializer
   @override
   final Iterable<Type> types = const [
     CredentialResponseImmediateCredential,
-    _$CredentialResponseImmediateCredential,
+    _$CredentialResponseImmediateCredential
   ];
 
   @override
   final String wireName = r'CredentialResponseImmediateCredential';
 
-  Iterable<Object?> _serializeProperties(
-    Serializers serializers,
-    CredentialResponseImmediateCredential object,
-  ) sync* {}
+  Iterable<Object?> _serializeProperties(Serializers serializers,
+      CredentialResponseImmediateCredential object) sync* {}
 
   @override
   Object serialize(
@@ -60,10 +56,8 @@ class _$CredentialResponseImmediateCredentialSerializer
     FullType specifiedType = FullType.unspecified,
   }) {
     final oneOf = object.oneOf;
-    return serializers.serialize(
-      oneOf.value,
-      specifiedType: FullType(oneOf.valueType),
-    )!;
+    return serializers.serialize(oneOf.value,
+        specifiedType: FullType(oneOf.valueType))!;
   }
 
   @override
@@ -79,9 +73,8 @@ class _$CredentialResponseImmediateCredentialSerializer
       FullType(String),
     ]);
     oneOfDataSrc = serialized;
-    result.oneOf =
-        serializers.deserialize(oneOfDataSrc, specifiedType: targetType)
-            as OneOf;
+    result.oneOf = serializers.deserialize(oneOfDataSrc,
+        specifiedType: targetType) as OneOf;
     return result.build();
   }
 }

@@ -58,9 +58,7 @@ class _$FilterItemsSerializer implements PrimitiveSerializer<FilterItems> {
   final String wireName = r'FilterItems';
 
   Iterable<Object?> _serializeProperties(
-    Serializers serializers,
-    FilterItems object,
-  ) sync* {}
+      Serializers serializers, FilterItems object) sync* {}
 
   @override
   Object serialize(
@@ -69,10 +67,8 @@ class _$FilterItemsSerializer implements PrimitiveSerializer<FilterItems> {
     FullType specifiedType = FullType.unspecified,
   }) {
     final oneOf = object.oneOf;
-    return serializers.serialize(
-      oneOf.value,
-      specifiedType: FullType(oneOf.valueType),
-    )!;
+    return serializers.serialize(oneOf.value,
+        specifiedType: FullType(oneOf.valueType))!;
   }
 
   @override
@@ -88,9 +84,8 @@ class _$FilterItemsSerializer implements PrimitiveSerializer<FilterItems> {
       FullType(BuiltList, [FullType(Filter)]),
     ]);
     oneOfDataSrc = serialized;
-    result.oneOf =
-        serializers.deserialize(oneOfDataSrc, specifiedType: targetType)
-            as OneOf;
+    result.oneOf = serializers.deserialize(oneOfDataSrc,
+        specifiedType: targetType) as OneOf;
     return result.build();
   }
 }

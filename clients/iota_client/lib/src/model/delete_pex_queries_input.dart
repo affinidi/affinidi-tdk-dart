@@ -21,9 +21,8 @@ abstract class DeletePexQueriesInput
 
   DeletePexQueriesInput._();
 
-  factory DeletePexQueriesInput([
-    void updates(DeletePexQueriesInputBuilder b),
-  ]) = _$DeletePexQueriesInput;
+  factory DeletePexQueriesInput(
+      [void updates(DeletePexQueriesInputBuilder b)]) = _$DeletePexQueriesInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(DeletePexQueriesInputBuilder b) => b;
@@ -38,7 +37,7 @@ class _$DeletePexQueriesInputSerializer
   @override
   final Iterable<Type> types = const [
     DeletePexQueriesInput,
-    _$DeletePexQueriesInput,
+    _$DeletePexQueriesInput
   ];
 
   @override
@@ -62,11 +61,9 @@ class _$DeletePexQueriesInputSerializer
     DeletePexQueriesInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -82,14 +79,10 @@ class _$DeletePexQueriesInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'queryIds':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.queryIds.replace(valueDes);
           break;
         default:

@@ -64,11 +64,9 @@ class _$SignJwtTokenSerializer implements PrimitiveSerializer<SignJwtToken> {
     SignJwtToken object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -84,21 +82,17 @@ class _$SignJwtTokenSerializer implements PrimitiveSerializer<SignJwtToken> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'header':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.header = valueDes;
           break;
         case r'payload':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.payload = valueDes;
           break;
         default:

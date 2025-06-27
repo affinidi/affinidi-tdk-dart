@@ -15,18 +15,16 @@ part 'cors_aws_exchange_credentials_project_token_ok.g.dart';
 @BuiltValue()
 abstract class CorsAwsExchangeCredentialsProjectTokenOK
     implements
-        Built<
-          CorsAwsExchangeCredentialsProjectTokenOK,
-          CorsAwsExchangeCredentialsProjectTokenOKBuilder
-        > {
+        Built<CorsAwsExchangeCredentialsProjectTokenOK,
+            CorsAwsExchangeCredentialsProjectTokenOKBuilder> {
   @BuiltValueField(wireName: r'corsAwsExchangeCredentialsProjectTokenOk')
   String? get corsAwsExchangeCredentialsProjectTokenOk;
 
   CorsAwsExchangeCredentialsProjectTokenOK._();
 
-  factory CorsAwsExchangeCredentialsProjectTokenOK([
-    void updates(CorsAwsExchangeCredentialsProjectTokenOKBuilder b),
-  ]) = _$CorsAwsExchangeCredentialsProjectTokenOK;
+  factory CorsAwsExchangeCredentialsProjectTokenOK(
+          [void updates(CorsAwsExchangeCredentialsProjectTokenOKBuilder b)]) =
+      _$CorsAwsExchangeCredentialsProjectTokenOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsAwsExchangeCredentialsProjectTokenOKBuilder b) => b;
@@ -41,7 +39,7 @@ class _$CorsAwsExchangeCredentialsProjectTokenOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsAwsExchangeCredentialsProjectTokenOK,
-    _$CorsAwsExchangeCredentialsProjectTokenOK,
+    _$CorsAwsExchangeCredentialsProjectTokenOK
   ];
 
   @override
@@ -67,11 +65,9 @@ class _$CorsAwsExchangeCredentialsProjectTokenOKSerializer
     CorsAwsExchangeCredentialsProjectTokenOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -87,12 +83,10 @@ class _$CorsAwsExchangeCredentialsProjectTokenOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsAwsExchangeCredentialsProjectTokenOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsAwsExchangeCredentialsProjectTokenOk = valueDes;
           break;
         default:

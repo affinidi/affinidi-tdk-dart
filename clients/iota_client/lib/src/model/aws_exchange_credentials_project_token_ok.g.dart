@@ -13,19 +13,18 @@ class _$AwsExchangeCredentialsProjectTokenOK
   @override
   final AwsExchangeCredentialsProjectTokenOKCredentials credentials;
 
-  factory _$AwsExchangeCredentialsProjectTokenOK([
-    void Function(AwsExchangeCredentialsProjectTokenOKBuilder)? updates,
-  ]) =>
+  factory _$AwsExchangeCredentialsProjectTokenOK(
+          [void Function(AwsExchangeCredentialsProjectTokenOKBuilder)?
+              updates]) =>
       (AwsExchangeCredentialsProjectTokenOKBuilder()..update(updates))._build();
 
-  _$AwsExchangeCredentialsProjectTokenOK._({
-    required this.connectionClientId,
-    required this.credentials,
-  }) : super._();
+  _$AwsExchangeCredentialsProjectTokenOK._(
+      {required this.connectionClientId, required this.credentials})
+      : super._();
   @override
   AwsExchangeCredentialsProjectTokenOK rebuild(
-    void Function(AwsExchangeCredentialsProjectTokenOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(AwsExchangeCredentialsProjectTokenOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   AwsExchangeCredentialsProjectTokenOKBuilder toBuilder() =>
@@ -59,10 +58,8 @@ class _$AwsExchangeCredentialsProjectTokenOK
 
 class AwsExchangeCredentialsProjectTokenOKBuilder
     implements
-        Builder<
-          AwsExchangeCredentialsProjectTokenOK,
-          AwsExchangeCredentialsProjectTokenOKBuilder
-        > {
+        Builder<AwsExchangeCredentialsProjectTokenOK,
+            AwsExchangeCredentialsProjectTokenOKBuilder> {
   _$AwsExchangeCredentialsProjectTokenOK? _$v;
 
   String? _connectionClientId;
@@ -75,8 +72,9 @@ class AwsExchangeCredentialsProjectTokenOKBuilder
       _$this._credentials ??=
           AwsExchangeCredentialsProjectTokenOKCredentialsBuilder();
   set credentials(
-    AwsExchangeCredentialsProjectTokenOKCredentialsBuilder? credentials,
-  ) => _$this._credentials = credentials;
+          AwsExchangeCredentialsProjectTokenOKCredentialsBuilder?
+              credentials) =>
+      _$this._credentials = credentials;
 
   AwsExchangeCredentialsProjectTokenOKBuilder() {
     AwsExchangeCredentialsProjectTokenOK._defaults(this);
@@ -99,8 +97,7 @@ class AwsExchangeCredentialsProjectTokenOKBuilder
 
   @override
   void update(
-    void Function(AwsExchangeCredentialsProjectTokenOKBuilder)? updates,
-  ) {
+      void Function(AwsExchangeCredentialsProjectTokenOKBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -110,14 +107,12 @@ class AwsExchangeCredentialsProjectTokenOKBuilder
   _$AwsExchangeCredentialsProjectTokenOK _build() {
     _$AwsExchangeCredentialsProjectTokenOK _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$AwsExchangeCredentialsProjectTokenOK._(
             connectionClientId: BuiltValueNullFieldError.checkNotNull(
-              connectionClientId,
-              r'AwsExchangeCredentialsProjectTokenOK',
-              'connectionClientId',
-            ),
+                connectionClientId,
+                r'AwsExchangeCredentialsProjectTokenOK',
+                'connectionClientId'),
             credentials: credentials.build(),
           );
     } catch (_) {
@@ -127,10 +122,9 @@ class AwsExchangeCredentialsProjectTokenOKBuilder
         credentials.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'AwsExchangeCredentialsProjectTokenOK',
-          _$failedField,
-          e.toString(),
-        );
+            r'AwsExchangeCredentialsProjectTokenOK',
+            _$failedField,
+            e.toString());
       }
       rethrow;
     }

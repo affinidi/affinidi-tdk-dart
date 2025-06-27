@@ -21,9 +21,9 @@ abstract class CorsIotOidc4vpcallbackOK
 
   CorsIotOidc4vpcallbackOK._();
 
-  factory CorsIotOidc4vpcallbackOK([
-    void updates(CorsIotOidc4vpcallbackOKBuilder b),
-  ]) = _$CorsIotOidc4vpcallbackOK;
+  factory CorsIotOidc4vpcallbackOK(
+          [void updates(CorsIotOidc4vpcallbackOKBuilder b)]) =
+      _$CorsIotOidc4vpcallbackOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsIotOidc4vpcallbackOKBuilder b) => b;
@@ -38,7 +38,7 @@ class _$CorsIotOidc4vpcallbackOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsIotOidc4vpcallbackOK,
-    _$CorsIotOidc4vpcallbackOK,
+    _$CorsIotOidc4vpcallbackOK
   ];
 
   @override
@@ -64,11 +64,9 @@ class _$CorsIotOidc4vpcallbackOKSerializer
     CorsIotOidc4vpcallbackOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -84,12 +82,10 @@ class _$CorsIotOidc4vpcallbackOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsIotOidc4vpcallbackOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsIotOidc4vpcallbackOk = valueDes;
           break;
         default:

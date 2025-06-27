@@ -15,18 +15,16 @@ part 'credential_requirements_constraints.g.dart';
 @BuiltValue()
 abstract class CredentialRequirementsConstraints
     implements
-        Built<
-          CredentialRequirementsConstraints,
-          CredentialRequirementsConstraintsBuilder
-        > {
+        Built<CredentialRequirementsConstraints,
+            CredentialRequirementsConstraintsBuilder> {
   /// Any Of [BuiltList<BuiltMap<String, BuiltList<JsonObject>>>], [BuiltList<String>]
   AnyOf get anyOf;
 
   CredentialRequirementsConstraints._();
 
-  factory CredentialRequirementsConstraints([
-    void updates(CredentialRequirementsConstraintsBuilder b),
-  ]) = _$CredentialRequirementsConstraints;
+  factory CredentialRequirementsConstraints(
+          [void updates(CredentialRequirementsConstraintsBuilder b)]) =
+      _$CredentialRequirementsConstraints;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CredentialRequirementsConstraintsBuilder b) => b;
@@ -41,16 +39,14 @@ class _$CredentialRequirementsConstraintsSerializer
   @override
   final Iterable<Type> types = const [
     CredentialRequirementsConstraints,
-    _$CredentialRequirementsConstraints,
+    _$CredentialRequirementsConstraints
   ];
 
   @override
   final String wireName = r'CredentialRequirementsConstraints';
 
-  Iterable<Object?> _serializeProperties(
-    Serializers serializers,
-    CredentialRequirementsConstraints object,
-  ) sync* {}
+  Iterable<Object?> _serializeProperties(Serializers serializers,
+      CredentialRequirementsConstraints object) sync* {}
 
   @override
   Object serialize(
@@ -59,13 +55,9 @@ class _$CredentialRequirementsConstraintsSerializer
     FullType specifiedType = FullType.unspecified,
   }) {
     final anyOf = object.anyOf;
-    return serializers.serialize(
-      anyOf,
-      specifiedType: FullType(
-        AnyOf,
-        anyOf.valueTypes.map((type) => FullType(type)).toList(),
-      ),
-    )!;
+    return serializers.serialize(anyOf,
+        specifiedType: FullType(
+            AnyOf, anyOf.valueTypes.map((type) => FullType(type)).toList()))!;
   }
 
   @override
@@ -81,14 +73,13 @@ class _$CredentialRequirementsConstraintsSerializer
       FullType(BuiltList, [
         FullType(BuiltMap, [
           FullType(String),
-          FullType(BuiltList, [FullType.nullable(JsonObject)]),
-        ]),
+          FullType(BuiltList, [FullType.nullable(JsonObject)])
+        ])
       ]),
     ]);
     anyOfDataSrc = serialized;
-    result.anyOf =
-        serializers.deserialize(anyOfDataSrc, specifiedType: targetType)
-            as AnyOf;
+    result.anyOf = serializers.deserialize(anyOfDataSrc,
+        specifiedType: targetType) as AnyOf;
     return result.build();
   }
 }

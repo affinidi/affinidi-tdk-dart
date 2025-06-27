@@ -48,7 +48,9 @@ class DefaultApi {
     final _path = r'/v1/verifier/verify-vcs';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -68,13 +70,14 @@ class DefaultApi {
 
     try {
       const _type = FullType(VerifyCredentialInput);
-      _bodyData = _serializers.serialize(
-        verifyCredentialInput,
-        specifiedType: _type,
-      );
+      _bodyData =
+          _serializers.serialize(verifyCredentialInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -97,10 +100,9 @@ class DefaultApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(VerifyCredentialOutput),
-                )
-                as VerifyCredentialOutput;
+              rawResponse,
+              specifiedType: const FullType(VerifyCredentialOutput),
+            ) as VerifyCredentialOutput;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -149,7 +151,9 @@ class DefaultApi {
     final _path = r'/v1/verifier/verify-vp';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -169,13 +173,14 @@ class DefaultApi {
 
     try {
       const _type = FullType(VerifyPresentationInput);
-      _bodyData = _serializers.serialize(
-        verifyPresentationInput,
-        specifiedType: _type,
-      );
+      _bodyData =
+          _serializers.serialize(verifyPresentationInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -198,10 +203,9 @@ class DefaultApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(VerifyPresentationOutput),
-                )
-                as VerifyPresentationOutput;
+              rawResponse,
+              specifiedType: const FullType(VerifyPresentationOutput),
+            ) as VerifyPresentationOutput;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

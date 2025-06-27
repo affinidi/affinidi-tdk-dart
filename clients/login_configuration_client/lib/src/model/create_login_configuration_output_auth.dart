@@ -18,10 +18,8 @@ part 'create_login_configuration_output_auth.g.dart';
 @BuiltValue()
 abstract class CreateLoginConfigurationOutputAuth
     implements
-        Built<
-          CreateLoginConfigurationOutputAuth,
-          CreateLoginConfigurationOutputAuthBuilder
-        > {
+        Built<CreateLoginConfigurationOutputAuth,
+            CreateLoginConfigurationOutputAuthBuilder> {
   /// OAuth 2.0 Client ID
   @BuiltValueField(wireName: r'clientId')
   String get clientId;
@@ -40,9 +38,9 @@ abstract class CreateLoginConfigurationOutputAuth
 
   CreateLoginConfigurationOutputAuth._();
 
-  factory CreateLoginConfigurationOutputAuth([
-    void updates(CreateLoginConfigurationOutputAuthBuilder b),
-  ]) = _$CreateLoginConfigurationOutputAuth;
+  factory CreateLoginConfigurationOutputAuth(
+          [void updates(CreateLoginConfigurationOutputAuthBuilder b)]) =
+      _$CreateLoginConfigurationOutputAuth;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateLoginConfigurationOutputAuthBuilder b) => b;
@@ -57,7 +55,7 @@ class _$CreateLoginConfigurationOutputAuthSerializer
   @override
   final Iterable<Type> types = const [
     CreateLoginConfigurationOutputAuth,
-    _$CreateLoginConfigurationOutputAuth,
+    _$CreateLoginConfigurationOutputAuth
   ];
 
   @override
@@ -102,11 +100,9 @@ class _$CreateLoginConfigurationOutputAuthSerializer
     CreateLoginConfigurationOutputAuth object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -122,39 +118,31 @@ class _$CreateLoginConfigurationOutputAuthSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'clientId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.clientId = valueDes;
           break;
         case r'clientSecret':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.clientSecret = valueDes;
           break;
         case r'scope':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.scope = valueDes;
           break;
         case r'issuer':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.issuer = valueDes;
           break;
         default:

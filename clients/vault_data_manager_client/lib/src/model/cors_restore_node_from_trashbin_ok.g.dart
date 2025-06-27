@@ -10,16 +10,16 @@ class _$CorsRestoreNodeFromTrashbinOK extends CorsRestoreNodeFromTrashbinOK {
   @override
   final String? corsRestoreNodeFromTrashbinOk;
 
-  factory _$CorsRestoreNodeFromTrashbinOK([
-    void Function(CorsRestoreNodeFromTrashbinOKBuilder)? updates,
-  ]) => (CorsRestoreNodeFromTrashbinOKBuilder()..update(updates))._build();
+  factory _$CorsRestoreNodeFromTrashbinOK(
+          [void Function(CorsRestoreNodeFromTrashbinOKBuilder)? updates]) =>
+      (CorsRestoreNodeFromTrashbinOKBuilder()..update(updates))._build();
 
   _$CorsRestoreNodeFromTrashbinOK._({this.corsRestoreNodeFromTrashbinOk})
-    : super._();
+      : super._();
   @override
   CorsRestoreNodeFromTrashbinOK rebuild(
-    void Function(CorsRestoreNodeFromTrashbinOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CorsRestoreNodeFromTrashbinOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CorsRestoreNodeFromTrashbinOKBuilder toBuilder() =>
@@ -50,10 +50,8 @@ class _$CorsRestoreNodeFromTrashbinOK extends CorsRestoreNodeFromTrashbinOK {
 
 class CorsRestoreNodeFromTrashbinOKBuilder
     implements
-        Builder<
-          CorsRestoreNodeFromTrashbinOK,
-          CorsRestoreNodeFromTrashbinOKBuilder
-        > {
+        Builder<CorsRestoreNodeFromTrashbinOK,
+            CorsRestoreNodeFromTrashbinOKBuilder> {
   _$CorsRestoreNodeFromTrashbinOK? _$v;
 
   String? _corsRestoreNodeFromTrashbinOk;
@@ -89,8 +87,7 @@ class CorsRestoreNodeFromTrashbinOKBuilder
   CorsRestoreNodeFromTrashbinOK build() => _build();
 
   _$CorsRestoreNodeFromTrashbinOK _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CorsRestoreNodeFromTrashbinOK._(
           corsRestoreNodeFromTrashbinOk: corsRestoreNodeFromTrashbinOk,
         );

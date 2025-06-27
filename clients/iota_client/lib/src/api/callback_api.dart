@@ -46,8 +46,13 @@ class CallbackApi {
     final _path = r'/v1/callback';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
-      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[],
+        ...?extra,
+      },
       contentType: 'application/json',
       validateStatus: validateStatus,
     );
@@ -59,7 +64,10 @@ class CallbackApi {
       _bodyData = _serializers.serialize(callbackInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -82,10 +90,9 @@ class CallbackApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(CallbackResponseOK),
-                )
-                as CallbackResponseOK;
+              rawResponse,
+              specifiedType: const FullType(CallbackResponseOK),
+            ) as CallbackResponseOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

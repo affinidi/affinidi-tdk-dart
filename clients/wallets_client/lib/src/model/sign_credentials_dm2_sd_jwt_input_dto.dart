@@ -18,10 +18,8 @@ part 'sign_credentials_dm2_sd_jwt_input_dto.g.dart';
 @BuiltValue()
 abstract class SignCredentialsDm2SdJwtInputDto
     implements
-        Built<
-          SignCredentialsDm2SdJwtInputDto,
-          SignCredentialsDm2SdJwtInputDtoBuilder
-        > {
+        Built<SignCredentialsDm2SdJwtInputDto,
+            SignCredentialsDm2SdJwtInputDtoBuilder> {
   /// Unsigned Credential in Dm2 format
   @BuiltValueField(wireName: r'unsignedCredential')
   JsonObject get unsignedCredential;
@@ -34,9 +32,9 @@ abstract class SignCredentialsDm2SdJwtInputDto
 
   SignCredentialsDm2SdJwtInputDto._();
 
-  factory SignCredentialsDm2SdJwtInputDto([
-    void updates(SignCredentialsDm2SdJwtInputDtoBuilder b),
-  ]) = _$SignCredentialsDm2SdJwtInputDto;
+  factory SignCredentialsDm2SdJwtInputDto(
+          [void updates(SignCredentialsDm2SdJwtInputDtoBuilder b)]) =
+      _$SignCredentialsDm2SdJwtInputDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SignCredentialsDm2SdJwtInputDtoBuilder b) => b;
@@ -51,7 +49,7 @@ class _$SignCredentialsDm2SdJwtInputDtoSerializer
   @override
   final Iterable<Type> types = const [
     SignCredentialsDm2SdJwtInputDto,
-    _$SignCredentialsDm2SdJwtInputDto,
+    _$SignCredentialsDm2SdJwtInputDto
   ];
 
   @override
@@ -87,11 +85,9 @@ class _$SignCredentialsDm2SdJwtInputDtoSerializer
     SignCredentialsDm2SdJwtInputDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -107,30 +103,24 @@ class _$SignCredentialsDm2SdJwtInputDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'unsignedCredential':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.unsignedCredential = valueDes;
           break;
         case r'revocable':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.revocable = valueDes;
           break;
         case r'disclosureFrame':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.disclosureFrame = valueDes;
           break;
         default:

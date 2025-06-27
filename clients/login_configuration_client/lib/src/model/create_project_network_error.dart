@@ -42,9 +42,9 @@ abstract class CreateProjectNetworkError
 
   CreateProjectNetworkError._();
 
-  factory CreateProjectNetworkError([
-    void updates(CreateProjectNetworkErrorBuilder b),
-  ]) = _$CreateProjectNetworkError;
+  factory CreateProjectNetworkError(
+          [void updates(CreateProjectNetworkErrorBuilder b)]) =
+      _$CreateProjectNetworkError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateProjectNetworkErrorBuilder b) => b;
@@ -59,7 +59,7 @@ class _$CreateProjectNetworkErrorSerializer
   @override
   final Iterable<Type> types = const [
     CreateProjectNetworkError,
-    _$CreateProjectNetworkError,
+    _$CreateProjectNetworkError
   ];
 
   @override
@@ -83,9 +83,8 @@ class _$CreateProjectNetworkErrorSerializer
     yield r'httpStatusCode';
     yield serializers.serialize(
       object.httpStatusCode,
-      specifiedType: const FullType(
-        CreateProjectNetworkErrorHttpStatusCodeEnum,
-      ),
+      specifiedType:
+          const FullType(CreateProjectNetworkErrorHttpStatusCodeEnum),
     );
     yield r'traceId';
     yield serializers.serialize(
@@ -96,9 +95,8 @@ class _$CreateProjectNetworkErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(InvalidParameterErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
       );
     }
   }
@@ -109,11 +107,9 @@ class _$CreateProjectNetworkErrorSerializer
     CreateProjectNetworkError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -129,56 +125,40 @@ class _$CreateProjectNetworkErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CreateProjectNetworkErrorNameEnum,
-                    ),
-                  )
-                  as CreateProjectNetworkErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CreateProjectNetworkErrorNameEnum),
+          ) as CreateProjectNetworkErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CreateProjectNetworkErrorMessageEnum,
-                    ),
-                  )
-                  as CreateProjectNetworkErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CreateProjectNetworkErrorMessageEnum),
+          ) as CreateProjectNetworkErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CreateProjectNetworkErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as CreateProjectNetworkErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(CreateProjectNetworkErrorHttpStatusCodeEnum),
+          ) as CreateProjectNetworkErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(InvalidParameterErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<InvalidParameterErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
+          ) as BuiltList<InvalidParameterErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -248,10 +228,10 @@ class CreateProjectNetworkErrorHttpStatusCodeEnum extends EnumClass {
       _$createProjectNetworkErrorHttpStatusCodeEnum_number400;
 
   static Serializer<CreateProjectNetworkErrorHttpStatusCodeEnum>
-  get serializer => _$createProjectNetworkErrorHttpStatusCodeEnumSerializer;
+      get serializer => _$createProjectNetworkErrorHttpStatusCodeEnumSerializer;
 
   const CreateProjectNetworkErrorHttpStatusCodeEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<CreateProjectNetworkErrorHttpStatusCodeEnum> get values =>
       _$createProjectNetworkErrorHttpStatusCodeEnumValues;

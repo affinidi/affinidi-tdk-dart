@@ -12,18 +12,17 @@ class _$SignCredentialsDm2LdInputDto extends SignCredentialsDm2LdInputDto {
   @override
   final bool? revocable;
 
-  factory _$SignCredentialsDm2LdInputDto([
-    void Function(SignCredentialsDm2LdInputDtoBuilder)? updates,
-  ]) => (SignCredentialsDm2LdInputDtoBuilder()..update(updates))._build();
+  factory _$SignCredentialsDm2LdInputDto(
+          [void Function(SignCredentialsDm2LdInputDtoBuilder)? updates]) =>
+      (SignCredentialsDm2LdInputDtoBuilder()..update(updates))._build();
 
-  _$SignCredentialsDm2LdInputDto._({
-    required this.unsignedCredential,
-    this.revocable,
-  }) : super._();
+  _$SignCredentialsDm2LdInputDto._(
+      {required this.unsignedCredential, this.revocable})
+      : super._();
   @override
   SignCredentialsDm2LdInputDto rebuild(
-    void Function(SignCredentialsDm2LdInputDtoBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(SignCredentialsDm2LdInputDtoBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   SignCredentialsDm2LdInputDtoBuilder toBuilder() =>
@@ -57,10 +56,8 @@ class _$SignCredentialsDm2LdInputDto extends SignCredentialsDm2LdInputDto {
 
 class SignCredentialsDm2LdInputDtoBuilder
     implements
-        Builder<
-          SignCredentialsDm2LdInputDto,
-          SignCredentialsDm2LdInputDtoBuilder
-        > {
+        Builder<SignCredentialsDm2LdInputDto,
+            SignCredentialsDm2LdInputDtoBuilder> {
   _$SignCredentialsDm2LdInputDto? _$v;
 
   JsonObject? _unsignedCredential;
@@ -100,14 +97,12 @@ class SignCredentialsDm2LdInputDtoBuilder
   SignCredentialsDm2LdInputDto build() => _build();
 
   _$SignCredentialsDm2LdInputDto _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$SignCredentialsDm2LdInputDto._(
           unsignedCredential: BuiltValueNullFieldError.checkNotNull(
-            unsignedCredential,
-            r'SignCredentialsDm2LdInputDto',
-            'unsignedCredential',
-          ),
+              unsignedCredential,
+              r'SignCredentialsDm2LdInputDto',
+              'unsignedCredential'),
           revocable: revocable,
         );
     replace(_$result);

@@ -41,9 +41,8 @@ abstract class ResourceCreationError
 
   ResourceCreationError._();
 
-  factory ResourceCreationError([
-    void updates(ResourceCreationErrorBuilder b),
-  ]) = _$ResourceCreationError;
+  factory ResourceCreationError(
+      [void updates(ResourceCreationErrorBuilder b)]) = _$ResourceCreationError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ResourceCreationErrorBuilder b) => b;
@@ -58,7 +57,7 @@ class _$ResourceCreationErrorSerializer
   @override
   final Iterable<Type> types = const [
     ResourceCreationError,
-    _$ResourceCreationError,
+    _$ResourceCreationError
   ];
 
   @override
@@ -93,9 +92,8 @@ class _$ResourceCreationErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(InvalidParameterErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
       );
     }
   }
@@ -106,11 +104,9 @@ class _$ResourceCreationErrorSerializer
     ResourceCreationError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -126,56 +122,40 @@ class _$ResourceCreationErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      ResourceCreationErrorNameEnum,
-                    ),
-                  )
-                  as ResourceCreationErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(ResourceCreationErrorNameEnum),
+          ) as ResourceCreationErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      ResourceCreationErrorMessageEnum,
-                    ),
-                  )
-                  as ResourceCreationErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(ResourceCreationErrorMessageEnum),
+          ) as ResourceCreationErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      ResourceCreationErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as ResourceCreationErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(ResourceCreationErrorHttpStatusCodeEnum),
+          ) as ResourceCreationErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(InvalidParameterErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<InvalidParameterErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
+          ) as BuiltList<InvalidParameterErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:

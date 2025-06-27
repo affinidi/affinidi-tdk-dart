@@ -7,7 +7,7 @@ part of 'inline_object.dart';
 // **************************************************************************
 
 const InlineObjectNameEnum
-_$inlineObjectNameEnum_invalidVPTokenCreationTimeError =
+    _$inlineObjectNameEnum_invalidVPTokenCreationTimeError =
     const InlineObjectNameEnum._('invalidVPTokenCreationTimeError');
 
 InlineObjectNameEnum _$inlineObjectNameEnumValueOf(String name) {
@@ -21,8 +21,8 @@ InlineObjectNameEnum _$inlineObjectNameEnumValueOf(String name) {
 
 final BuiltSet<InlineObjectNameEnum> _$inlineObjectNameEnumValues =
     BuiltSet<InlineObjectNameEnum>(const <InlineObjectNameEnum>[
-      _$inlineObjectNameEnum_invalidVPTokenCreationTimeError,
-    ]);
+  _$inlineObjectNameEnum_invalidVPTokenCreationTimeError,
+]);
 
 const InlineObjectMessageEnum _$inlineObjectMessageEnum_vPTokenHasExpired =
     const InlineObjectMessageEnum._('vPTokenHasExpired');
@@ -38,16 +38,15 @@ InlineObjectMessageEnum _$inlineObjectMessageEnumValueOf(String name) {
 
 final BuiltSet<InlineObjectMessageEnum> _$inlineObjectMessageEnumValues =
     BuiltSet<InlineObjectMessageEnum>(const <InlineObjectMessageEnum>[
-      _$inlineObjectMessageEnum_vPTokenHasExpired,
-    ]);
+  _$inlineObjectMessageEnum_vPTokenHasExpired,
+]);
 
 const InlineObjectHttpStatusCodeEnum
-_$inlineObjectHttpStatusCodeEnum_number400 =
+    _$inlineObjectHttpStatusCodeEnum_number400 =
     const InlineObjectHttpStatusCodeEnum._('number400');
 
 InlineObjectHttpStatusCodeEnum _$inlineObjectHttpStatusCodeEnumValueOf(
-  String name,
-) {
+    String name) {
   switch (name) {
     case 'number400':
       return _$inlineObjectHttpStatusCodeEnum_number400;
@@ -57,19 +56,17 @@ InlineObjectHttpStatusCodeEnum _$inlineObjectHttpStatusCodeEnumValueOf(
 }
 
 final BuiltSet<InlineObjectHttpStatusCodeEnum>
-_$inlineObjectHttpStatusCodeEnumValues =
-    BuiltSet<InlineObjectHttpStatusCodeEnum>(
-      const <InlineObjectHttpStatusCodeEnum>[
-        _$inlineObjectHttpStatusCodeEnum_number400,
-      ],
-    );
+    _$inlineObjectHttpStatusCodeEnumValues = BuiltSet<
+        InlineObjectHttpStatusCodeEnum>(const <InlineObjectHttpStatusCodeEnum>[
+  _$inlineObjectHttpStatusCodeEnum_number400,
+]);
 
 Serializer<InlineObjectNameEnum> _$inlineObjectNameEnumSerializer =
     _$InlineObjectNameEnumSerializer();
 Serializer<InlineObjectMessageEnum> _$inlineObjectMessageEnumSerializer =
     _$InlineObjectMessageEnumSerializer();
 Serializer<InlineObjectHttpStatusCodeEnum>
-_$inlineObjectHttpStatusCodeEnumSerializer =
+    _$inlineObjectHttpStatusCodeEnumSerializer =
     _$InlineObjectHttpStatusCodeEnumSerializer();
 
 class _$InlineObjectNameEnumSerializer
@@ -87,20 +84,15 @@ class _$InlineObjectNameEnumSerializer
   final String wireName = 'InlineObjectNameEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    InlineObjectNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers, InlineObjectNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
-  InlineObjectNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InlineObjectNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+  InlineObjectNameEnum deserialize(Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InlineObjectNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InlineObjectMessageEnumSerializer
@@ -118,20 +110,16 @@ class _$InlineObjectMessageEnumSerializer
   final String wireName = 'InlineObjectMessageEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    InlineObjectMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers, InlineObjectMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InlineObjectMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InlineObjectMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InlineObjectMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InlineObjectHttpStatusCodeEnumSerializer
@@ -150,19 +138,16 @@ class _$InlineObjectHttpStatusCodeEnumSerializer
 
   @override
   Object serialize(
-    Serializers serializers,
-    InlineObjectHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, InlineObjectHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InlineObjectHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InlineObjectHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InlineObjectHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InlineObject extends InlineObject {
@@ -196,9 +181,8 @@ class _$InlineObject extends InlineObject {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'InlineObject',
-    )..add('oneOf', oneOf)).toString();
+    return (newBuiltValueToStringHelper(r'InlineObject')..add('oneOf', oneOf))
+        .toString();
   }
 }
 
@@ -237,14 +221,10 @@ class InlineObjectBuilder
   InlineObject build() => _build();
 
   _$InlineObject _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$InlineObject._(
           oneOf: BuiltValueNullFieldError.checkNotNull(
-            oneOf,
-            r'InlineObject',
-            'oneOf',
-          ),
+              oneOf, r'InlineObject', 'oneOf'),
         );
     replace(_$result);
     return _$result;

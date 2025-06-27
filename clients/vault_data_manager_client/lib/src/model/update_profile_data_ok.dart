@@ -37,7 +37,7 @@ class _$UpdateProfileDataOKSerializer
   @override
   final Iterable<Type> types = const [
     UpdateProfileDataOK,
-    _$UpdateProfileDataOK,
+    _$UpdateProfileDataOK
   ];
 
   @override
@@ -63,11 +63,9 @@ class _$UpdateProfileDataOKSerializer
     UpdateProfileDataOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -83,12 +81,10 @@ class _$UpdateProfileDataOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'data':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.data = valueDes;
           break;
         default:

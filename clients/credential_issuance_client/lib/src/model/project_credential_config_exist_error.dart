@@ -21,10 +21,8 @@ part 'project_credential_config_exist_error.g.dart';
 @BuiltValue()
 abstract class ProjectCredentialConfigExistError
     implements
-        Built<
-          ProjectCredentialConfigExistError,
-          ProjectCredentialConfigExistErrorBuilder
-        > {
+        Built<ProjectCredentialConfigExistError,
+            ProjectCredentialConfigExistErrorBuilder> {
   @BuiltValueField(wireName: r'name')
   ProjectCredentialConfigExistErrorNameEnum get name;
   // enum nameEnum {  ProjectCredentialConfigExistError,  };
@@ -45,9 +43,9 @@ abstract class ProjectCredentialConfigExistError
 
   ProjectCredentialConfigExistError._();
 
-  factory ProjectCredentialConfigExistError([
-    void updates(ProjectCredentialConfigExistErrorBuilder b),
-  ]) = _$ProjectCredentialConfigExistError;
+  factory ProjectCredentialConfigExistError(
+          [void updates(ProjectCredentialConfigExistErrorBuilder b)]) =
+      _$ProjectCredentialConfigExistError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ProjectCredentialConfigExistErrorBuilder b) => b;
@@ -62,7 +60,7 @@ class _$ProjectCredentialConfigExistErrorSerializer
   @override
   final Iterable<Type> types = const [
     ProjectCredentialConfigExistError,
-    _$ProjectCredentialConfigExistError,
+    _$ProjectCredentialConfigExistError
   ];
 
   @override
@@ -81,16 +79,14 @@ class _$ProjectCredentialConfigExistErrorSerializer
     yield r'message';
     yield serializers.serialize(
       object.message,
-      specifiedType: const FullType(
-        ProjectCredentialConfigExistErrorMessageEnum,
-      ),
+      specifiedType:
+          const FullType(ProjectCredentialConfigExistErrorMessageEnum),
     );
     yield r'httpStatusCode';
     yield serializers.serialize(
       object.httpStatusCode,
-      specifiedType: const FullType(
-        ProjectCredentialConfigExistErrorHttpStatusCodeEnum,
-      ),
+      specifiedType:
+          const FullType(ProjectCredentialConfigExistErrorHttpStatusCodeEnum),
     );
     yield r'traceId';
     yield serializers.serialize(
@@ -101,9 +97,8 @@ class _$ProjectCredentialConfigExistErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ActionForbiddenErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
       );
     }
   }
@@ -114,11 +109,9 @@ class _$ProjectCredentialConfigExistErrorSerializer
     ProjectCredentialConfigExistError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -134,56 +127,42 @@ class _$ProjectCredentialConfigExistErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      ProjectCredentialConfigExistErrorNameEnum,
-                    ),
-                  )
-                  as ProjectCredentialConfigExistErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(ProjectCredentialConfigExistErrorNameEnum),
+          ) as ProjectCredentialConfigExistErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      ProjectCredentialConfigExistErrorMessageEnum,
-                    ),
-                  )
-                  as ProjectCredentialConfigExistErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(ProjectCredentialConfigExistErrorMessageEnum),
+          ) as ProjectCredentialConfigExistErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      ProjectCredentialConfigExistErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as ProjectCredentialConfigExistErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                ProjectCredentialConfigExistErrorHttpStatusCodeEnum),
+          ) as ProjectCredentialConfigExistErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ActionForbiddenErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ActionForbiddenErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
+          ) as BuiltList<ActionForbiddenErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -218,7 +197,7 @@ class _$ProjectCredentialConfigExistErrorSerializer
 class ProjectCredentialConfigExistErrorNameEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'ProjectCredentialConfigExistError')
   static const ProjectCredentialConfigExistErrorNameEnum
-  projectCredentialConfigExistError =
+      projectCredentialConfigExistError =
       _$projectCredentialConfigExistErrorNameEnum_projectCredentialConfigExistError;
 
   static Serializer<ProjectCredentialConfigExistErrorNameEnum> get serializer =>
@@ -234,18 +213,18 @@ class ProjectCredentialConfigExistErrorNameEnum extends EnumClass {
 
 class ProjectCredentialConfigExistErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(
-    wireName:
-        r'Credential config is exist for the project, one config is allowed for each project',
-  )
+      wireName:
+          r'Credential config is exist for the project, one config is allowed for each project')
   static const ProjectCredentialConfigExistErrorMessageEnum
-  credentialConfigIsExistForTheProjectCommaOneConfigIsAllowedForEachProject =
+      credentialConfigIsExistForTheProjectCommaOneConfigIsAllowedForEachProject =
       _$projectCredentialConfigExistErrorMessageEnum_credentialConfigIsExistForTheProjectCommaOneConfigIsAllowedForEachProject;
 
   static Serializer<ProjectCredentialConfigExistErrorMessageEnum>
-  get serializer => _$projectCredentialConfigExistErrorMessageEnumSerializer;
+      get serializer =>
+          _$projectCredentialConfigExistErrorMessageEnumSerializer;
 
   const ProjectCredentialConfigExistErrorMessageEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<ProjectCredentialConfigExistErrorMessageEnum> get values =>
       _$projectCredentialConfigExistErrorMessageEnumValues;
@@ -259,15 +238,15 @@ class ProjectCredentialConfigExistErrorHttpStatusCodeEnum extends EnumClass {
       _$projectCredentialConfigExistErrorHttpStatusCodeEnum_number400;
 
   static Serializer<ProjectCredentialConfigExistErrorHttpStatusCodeEnum>
-  get serializer =>
-      _$projectCredentialConfigExistErrorHttpStatusCodeEnumSerializer;
+      get serializer =>
+          _$projectCredentialConfigExistErrorHttpStatusCodeEnumSerializer;
 
   const ProjectCredentialConfigExistErrorHttpStatusCodeEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<ProjectCredentialConfigExistErrorHttpStatusCodeEnum>
-  get values => _$projectCredentialConfigExistErrorHttpStatusCodeEnumValues;
+      get values => _$projectCredentialConfigExistErrorHttpStatusCodeEnumValues;
   static ProjectCredentialConfigExistErrorHttpStatusCodeEnum valueOf(
-    String name,
-  ) => _$projectCredentialConfigExistErrorHttpStatusCodeEnumValueOf(name);
+          String name) =>
+      _$projectCredentialConfigExistErrorHttpStatusCodeEnumValueOf(name);
 }

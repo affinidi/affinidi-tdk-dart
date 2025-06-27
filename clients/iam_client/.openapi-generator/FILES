@@ -132,7 +132,6 @@ lib/src/model/whoami_dto.dart
 lib/src/serializers.dart
 project.json
 pubspec.yaml
-pubspec.yaml
 test/action_forbidden_error_test.dart
 test/add_user_to_project_input_test.dart
 test/authz_api_test.dart

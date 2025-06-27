@@ -25,15 +25,15 @@ class _$W3cProof extends W3cProof {
   factory _$W3cProof([void Function(W3cProofBuilder)? updates]) =>
       (W3cProofBuilder()..update(updates))._build();
 
-  _$W3cProof._({
-    this.type,
-    this.created,
-    required this.verificationMethod,
-    required this.proofPurpose,
-    this.jws,
-    this.proofValue,
-    this.nonce,
-  }) : super._();
+  _$W3cProof._(
+      {this.type,
+      this.created,
+      required this.verificationMethod,
+      required this.proofPurpose,
+      this.jws,
+      this.proofValue,
+      this.nonce})
+      : super._();
   @override
   W3cProof rebuild(void Function(W3cProofBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -147,21 +147,14 @@ class W3cProofBuilder implements Builder<W3cProof, W3cProofBuilder> {
   W3cProof build() => _build();
 
   _$W3cProof _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$W3cProof._(
           type: type,
           created: created,
           verificationMethod: BuiltValueNullFieldError.checkNotNull(
-            verificationMethod,
-            r'W3cProof',
-            'verificationMethod',
-          ),
+              verificationMethod, r'W3cProof', 'verificationMethod'),
           proofPurpose: BuiltValueNullFieldError.checkNotNull(
-            proofPurpose,
-            r'W3cProof',
-            'proofPurpose',
-          ),
+              proofPurpose, r'W3cProof', 'proofPurpose'),
           jws: jws,
           proofValue: proofValue,
           nonce: nonce,

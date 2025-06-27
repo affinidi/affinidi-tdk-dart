@@ -10,15 +10,15 @@ class _$SavePexQueriesUpdateInput extends SavePexQueriesUpdateInput {
   @override
   final BuiltList<SavePexQueriesUpdateInputQueriesInner>? queries;
 
-  factory _$SavePexQueriesUpdateInput([
-    void Function(SavePexQueriesUpdateInputBuilder)? updates,
-  ]) => (SavePexQueriesUpdateInputBuilder()..update(updates))._build();
+  factory _$SavePexQueriesUpdateInput(
+          [void Function(SavePexQueriesUpdateInputBuilder)? updates]) =>
+      (SavePexQueriesUpdateInputBuilder()..update(updates))._build();
 
   _$SavePexQueriesUpdateInput._({this.queries}) : super._();
   @override
   SavePexQueriesUpdateInput rebuild(
-    void Function(SavePexQueriesUpdateInputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(SavePexQueriesUpdateInputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   SavePexQueriesUpdateInputBuilder toBuilder() =>
@@ -40,9 +40,9 @@ class _$SavePexQueriesUpdateInput extends SavePexQueriesUpdateInput {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'SavePexQueriesUpdateInput',
-    )..add('queries', queries)).toString();
+    return (newBuiltValueToStringHelper(r'SavePexQueriesUpdateInput')
+          ..add('queries', queries))
+        .toString();
   }
 }
 
@@ -86,8 +86,10 @@ class SavePexQueriesUpdateInputBuilder
   _$SavePexQueriesUpdateInput _build() {
     _$SavePexQueriesUpdateInput _$result;
     try {
-      _$result =
-          _$v ?? _$SavePexQueriesUpdateInput._(queries: _queries?.build());
+      _$result = _$v ??
+          _$SavePexQueriesUpdateInput._(
+            queries: _queries?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -95,10 +97,7 @@ class SavePexQueriesUpdateInputBuilder
         _queries?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'SavePexQueriesUpdateInput',
-          _$failedField,
-          e.toString(),
-        );
+            r'SavePexQueriesUpdateInput', _$failedField, e.toString());
       }
       rethrow;
     }

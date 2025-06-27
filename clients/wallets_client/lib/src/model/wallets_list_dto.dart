@@ -61,11 +61,9 @@ class _$WalletsListDtoSerializer
     WalletsListDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -81,14 +79,10 @@ class _$WalletsListDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'wallets':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(WalletDto),
-                    ]),
-                  )
-                  as BuiltList<WalletDto>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(WalletDto)]),
+          ) as BuiltList<WalletDto>;
           result.wallets.replace(valueDes);
           break;
         default:

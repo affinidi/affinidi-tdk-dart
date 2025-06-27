@@ -59,11 +59,9 @@ class _$JsonWebKeySetDtoSerializer
     JsonWebKeySetDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -79,14 +77,10 @@ class _$JsonWebKeySetDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'keys':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(JsonWebKeyDto),
-                    ]),
-                  )
-                  as BuiltList<JsonWebKeyDto>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(JsonWebKeyDto)]),
+          ) as BuiltList<JsonWebKeyDto>;
           result.keys.replace(valueDes);
           break;
         default:

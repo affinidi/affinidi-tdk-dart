@@ -7,11 +7,11 @@ part of 'get_credential_offer400_response.dart';
 // **************************************************************************
 
 const GetCredentialOffer400ResponseNameEnum
-_$getCredentialOffer400ResponseNameEnum_vcClaimedError =
+    _$getCredentialOffer400ResponseNameEnum_vcClaimedError =
     const GetCredentialOffer400ResponseNameEnum._('vcClaimedError');
 
 GetCredentialOffer400ResponseNameEnum
-_$getCredentialOffer400ResponseNameEnumValueOf(String name) {
+    _$getCredentialOffer400ResponseNameEnumValueOf(String name) {
   switch (name) {
     case 'vcClaimedError':
       return _$getCredentialOffer400ResponseNameEnum_vcClaimedError;
@@ -21,21 +21,18 @@ _$getCredentialOffer400ResponseNameEnumValueOf(String name) {
 }
 
 final BuiltSet<GetCredentialOffer400ResponseNameEnum>
-_$getCredentialOffer400ResponseNameEnumValues =
-    BuiltSet<GetCredentialOffer400ResponseNameEnum>(
-      const <GetCredentialOffer400ResponseNameEnum>[
-        _$getCredentialOffer400ResponseNameEnum_vcClaimedError,
-      ],
-    );
+    _$getCredentialOffer400ResponseNameEnumValues = BuiltSet<
+        GetCredentialOffer400ResponseNameEnum>(const <GetCredentialOffer400ResponseNameEnum>[
+  _$getCredentialOffer400ResponseNameEnum_vcClaimedError,
+]);
 
 const GetCredentialOffer400ResponseMessageEnum
-_$getCredentialOffer400ResponseMessageEnum_theRequestedVCHasAlreadyBeenClaimedByTheUser =
+    _$getCredentialOffer400ResponseMessageEnum_theRequestedVCHasAlreadyBeenClaimedByTheUser =
     const GetCredentialOffer400ResponseMessageEnum._(
-      'theRequestedVCHasAlreadyBeenClaimedByTheUser',
-    );
+        'theRequestedVCHasAlreadyBeenClaimedByTheUser');
 
 GetCredentialOffer400ResponseMessageEnum
-_$getCredentialOffer400ResponseMessageEnumValueOf(String name) {
+    _$getCredentialOffer400ResponseMessageEnumValueOf(String name) {
   switch (name) {
     case 'theRequestedVCHasAlreadyBeenClaimedByTheUser':
       return _$getCredentialOffer400ResponseMessageEnum_theRequestedVCHasAlreadyBeenClaimedByTheUser;
@@ -45,19 +42,17 @@ _$getCredentialOffer400ResponseMessageEnumValueOf(String name) {
 }
 
 final BuiltSet<GetCredentialOffer400ResponseMessageEnum>
-_$getCredentialOffer400ResponseMessageEnumValues =
-    BuiltSet<GetCredentialOffer400ResponseMessageEnum>(const <
-      GetCredentialOffer400ResponseMessageEnum
-    >[
-      _$getCredentialOffer400ResponseMessageEnum_theRequestedVCHasAlreadyBeenClaimedByTheUser,
-    ]);
+    _$getCredentialOffer400ResponseMessageEnumValues = BuiltSet<
+        GetCredentialOffer400ResponseMessageEnum>(const <GetCredentialOffer400ResponseMessageEnum>[
+  _$getCredentialOffer400ResponseMessageEnum_theRequestedVCHasAlreadyBeenClaimedByTheUser,
+]);
 
 const GetCredentialOffer400ResponseHttpStatusCodeEnum
-_$getCredentialOffer400ResponseHttpStatusCodeEnum_number400 =
+    _$getCredentialOffer400ResponseHttpStatusCodeEnum_number400 =
     const GetCredentialOffer400ResponseHttpStatusCodeEnum._('number400');
 
 GetCredentialOffer400ResponseHttpStatusCodeEnum
-_$getCredentialOffer400ResponseHttpStatusCodeEnumValueOf(String name) {
+    _$getCredentialOffer400ResponseHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$getCredentialOffer400ResponseHttpStatusCodeEnum_number400;
@@ -67,21 +62,19 @@ _$getCredentialOffer400ResponseHttpStatusCodeEnumValueOf(String name) {
 }
 
 final BuiltSet<GetCredentialOffer400ResponseHttpStatusCodeEnum>
-_$getCredentialOffer400ResponseHttpStatusCodeEnumValues =
-    BuiltSet<GetCredentialOffer400ResponseHttpStatusCodeEnum>(
-      const <GetCredentialOffer400ResponseHttpStatusCodeEnum>[
-        _$getCredentialOffer400ResponseHttpStatusCodeEnum_number400,
-      ],
-    );
+    _$getCredentialOffer400ResponseHttpStatusCodeEnumValues = BuiltSet<
+        GetCredentialOffer400ResponseHttpStatusCodeEnum>(const <GetCredentialOffer400ResponseHttpStatusCodeEnum>[
+  _$getCredentialOffer400ResponseHttpStatusCodeEnum_number400,
+]);
 
 Serializer<GetCredentialOffer400ResponseNameEnum>
-_$getCredentialOffer400ResponseNameEnumSerializer =
+    _$getCredentialOffer400ResponseNameEnumSerializer =
     _$GetCredentialOffer400ResponseNameEnumSerializer();
 Serializer<GetCredentialOffer400ResponseMessageEnum>
-_$getCredentialOffer400ResponseMessageEnumSerializer =
+    _$getCredentialOffer400ResponseMessageEnumSerializer =
     _$GetCredentialOffer400ResponseMessageEnumSerializer();
 Serializer<GetCredentialOffer400ResponseHttpStatusCodeEnum>
-_$getCredentialOffer400ResponseHttpStatusCodeEnumSerializer =
+    _$getCredentialOffer400ResponseHttpStatusCodeEnumSerializer =
     _$GetCredentialOffer400ResponseHttpStatusCodeEnumSerializer();
 
 class _$GetCredentialOffer400ResponseNameEnumSerializer
@@ -95,26 +88,23 @@ class _$GetCredentialOffer400ResponseNameEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    GetCredentialOffer400ResponseNameEnum,
+    GetCredentialOffer400ResponseNameEnum
   ];
   @override
   final String wireName = 'GetCredentialOffer400ResponseNameEnum';
 
   @override
   Object serialize(
-    Serializers serializers,
-    GetCredentialOffer400ResponseNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, GetCredentialOffer400ResponseNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   GetCredentialOffer400ResponseNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => GetCredentialOffer400ResponseNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      GetCredentialOffer400ResponseNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$GetCredentialOffer400ResponseMessageEnumSerializer
@@ -130,26 +120,23 @@ class _$GetCredentialOffer400ResponseMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    GetCredentialOffer400ResponseMessageEnum,
+    GetCredentialOffer400ResponseMessageEnum
   ];
   @override
   final String wireName = 'GetCredentialOffer400ResponseMessageEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    GetCredentialOffer400ResponseMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          GetCredentialOffer400ResponseMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   GetCredentialOffer400ResponseMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => GetCredentialOffer400ResponseMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      GetCredentialOffer400ResponseMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$GetCredentialOffer400ResponseHttpStatusCodeEnumSerializer
@@ -164,41 +151,38 @@ class _$GetCredentialOffer400ResponseHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    GetCredentialOffer400ResponseHttpStatusCodeEnum,
+    GetCredentialOffer400ResponseHttpStatusCodeEnum
   ];
   @override
   final String wireName = 'GetCredentialOffer400ResponseHttpStatusCodeEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    GetCredentialOffer400ResponseHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          GetCredentialOffer400ResponseHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   GetCredentialOffer400ResponseHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => GetCredentialOffer400ResponseHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      GetCredentialOffer400ResponseHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$GetCredentialOffer400Response extends GetCredentialOffer400Response {
   @override
   final OneOf oneOf;
 
-  factory _$GetCredentialOffer400Response([
-    void Function(GetCredentialOffer400ResponseBuilder)? updates,
-  ]) => (GetCredentialOffer400ResponseBuilder()..update(updates))._build();
+  factory _$GetCredentialOffer400Response(
+          [void Function(GetCredentialOffer400ResponseBuilder)? updates]) =>
+      (GetCredentialOffer400ResponseBuilder()..update(updates))._build();
 
   _$GetCredentialOffer400Response._({required this.oneOf}) : super._();
   @override
   GetCredentialOffer400Response rebuild(
-    void Function(GetCredentialOffer400ResponseBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(GetCredentialOffer400ResponseBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   GetCredentialOffer400ResponseBuilder toBuilder() =>
@@ -220,18 +204,16 @@ class _$GetCredentialOffer400Response extends GetCredentialOffer400Response {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'GetCredentialOffer400Response',
-    )..add('oneOf', oneOf)).toString();
+    return (newBuiltValueToStringHelper(r'GetCredentialOffer400Response')
+          ..add('oneOf', oneOf))
+        .toString();
   }
 }
 
 class GetCredentialOffer400ResponseBuilder
     implements
-        Builder<
-          GetCredentialOffer400Response,
-          GetCredentialOffer400ResponseBuilder
-        > {
+        Builder<GetCredentialOffer400Response,
+            GetCredentialOffer400ResponseBuilder> {
   _$GetCredentialOffer400Response? _$v;
 
   OneOf? _oneOf;
@@ -265,14 +247,10 @@ class GetCredentialOffer400ResponseBuilder
   GetCredentialOffer400Response build() => _build();
 
   _$GetCredentialOffer400Response _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$GetCredentialOffer400Response._(
           oneOf: BuiltValueNullFieldError.checkNotNull(
-            oneOf,
-            r'GetCredentialOffer400Response',
-            'oneOf',
-          ),
+              oneOf, r'GetCredentialOffer400Response', 'oneOf'),
         );
     replace(_$result);
     return _$result;

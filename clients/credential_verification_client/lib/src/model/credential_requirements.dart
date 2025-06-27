@@ -27,9 +27,9 @@ abstract class CredentialRequirements
 
   CredentialRequirements._();
 
-  factory CredentialRequirements([
-    void updates(CredentialRequirementsBuilder b),
-  ]) = _$CredentialRequirements;
+  factory CredentialRequirements(
+          [void updates(CredentialRequirementsBuilder b)]) =
+      _$CredentialRequirements;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CredentialRequirementsBuilder b) => b;
@@ -44,7 +44,7 @@ class _$CredentialRequirementsSerializer
   @override
   final Iterable<Type> types = const [
     CredentialRequirements,
-    _$CredentialRequirements,
+    _$CredentialRequirements
   ];
 
   @override
@@ -75,11 +75,9 @@ class _$CredentialRequirementsSerializer
     CredentialRequirements object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -95,25 +93,17 @@ class _$CredentialRequirementsSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'type':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.type.replace(valueDes);
           break;
         case r'constraints':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CredentialRequirementsConstraints,
-                    ),
-                  )
-                  as CredentialRequirementsConstraints;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CredentialRequirementsConstraints),
+          ) as CredentialRequirementsConstraints;
           result.constraints.replace(valueDes);
           break;
         default:

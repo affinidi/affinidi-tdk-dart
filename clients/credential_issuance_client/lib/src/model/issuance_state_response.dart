@@ -28,9 +28,8 @@ abstract class IssuanceStateResponse
 
   IssuanceStateResponse._();
 
-  factory IssuanceStateResponse([
-    void updates(IssuanceStateResponseBuilder b),
-  ]) = _$IssuanceStateResponse;
+  factory IssuanceStateResponse(
+      [void updates(IssuanceStateResponseBuilder b)]) = _$IssuanceStateResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(IssuanceStateResponseBuilder b) => b;
@@ -45,7 +44,7 @@ class _$IssuanceStateResponseSerializer
   @override
   final Iterable<Type> types = const [
     IssuanceStateResponse,
-    _$IssuanceStateResponse,
+    _$IssuanceStateResponse
   ];
 
   @override
@@ -74,11 +73,9 @@ class _$IssuanceStateResponseSerializer
     IssuanceStateResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -94,23 +91,17 @@ class _$IssuanceStateResponseSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'issuanceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.issuanceId = valueDes;
           break;
         case r'status':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      IssuanceStateResponseStatusEnum,
-                    ),
-                  )
-                  as IssuanceStateResponseStatusEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(IssuanceStateResponseStatusEnum),
+          ) as IssuanceStateResponseStatusEnum;
           result.status = valueDes;
           break;
         default:

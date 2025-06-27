@@ -7,13 +7,12 @@ part of 'invalid_vp_token_creation_time_error.dart';
 // **************************************************************************
 
 const InvalidVPTokenCreationTimeErrorNameEnum
-_$invalidVPTokenCreationTimeErrorNameEnum_invalidVPTokenCreationTimeError =
+    _$invalidVPTokenCreationTimeErrorNameEnum_invalidVPTokenCreationTimeError =
     const InvalidVPTokenCreationTimeErrorNameEnum._(
-      'invalidVPTokenCreationTimeError',
-    );
+        'invalidVPTokenCreationTimeError');
 
 InvalidVPTokenCreationTimeErrorNameEnum
-_$invalidVPTokenCreationTimeErrorNameEnumValueOf(String name) {
+    _$invalidVPTokenCreationTimeErrorNameEnumValueOf(String name) {
   switch (name) {
     case 'invalidVPTokenCreationTimeError':
       return _$invalidVPTokenCreationTimeErrorNameEnum_invalidVPTokenCreationTimeError;
@@ -23,19 +22,17 @@ _$invalidVPTokenCreationTimeErrorNameEnumValueOf(String name) {
 }
 
 final BuiltSet<InvalidVPTokenCreationTimeErrorNameEnum>
-_$invalidVPTokenCreationTimeErrorNameEnumValues =
-    BuiltSet<InvalidVPTokenCreationTimeErrorNameEnum>(const <
-      InvalidVPTokenCreationTimeErrorNameEnum
-    >[
-      _$invalidVPTokenCreationTimeErrorNameEnum_invalidVPTokenCreationTimeError,
-    ]);
+    _$invalidVPTokenCreationTimeErrorNameEnumValues = BuiltSet<
+        InvalidVPTokenCreationTimeErrorNameEnum>(const <InvalidVPTokenCreationTimeErrorNameEnum>[
+  _$invalidVPTokenCreationTimeErrorNameEnum_invalidVPTokenCreationTimeError,
+]);
 
 const InvalidVPTokenCreationTimeErrorMessageEnum
-_$invalidVPTokenCreationTimeErrorMessageEnum_vPTokenHasExpired =
+    _$invalidVPTokenCreationTimeErrorMessageEnum_vPTokenHasExpired =
     const InvalidVPTokenCreationTimeErrorMessageEnum._('vPTokenHasExpired');
 
 InvalidVPTokenCreationTimeErrorMessageEnum
-_$invalidVPTokenCreationTimeErrorMessageEnumValueOf(String name) {
+    _$invalidVPTokenCreationTimeErrorMessageEnumValueOf(String name) {
   switch (name) {
     case 'vPTokenHasExpired':
       return _$invalidVPTokenCreationTimeErrorMessageEnum_vPTokenHasExpired;
@@ -45,19 +42,17 @@ _$invalidVPTokenCreationTimeErrorMessageEnumValueOf(String name) {
 }
 
 final BuiltSet<InvalidVPTokenCreationTimeErrorMessageEnum>
-_$invalidVPTokenCreationTimeErrorMessageEnumValues =
-    BuiltSet<InvalidVPTokenCreationTimeErrorMessageEnum>(
-      const <InvalidVPTokenCreationTimeErrorMessageEnum>[
-        _$invalidVPTokenCreationTimeErrorMessageEnum_vPTokenHasExpired,
-      ],
-    );
+    _$invalidVPTokenCreationTimeErrorMessageEnumValues = BuiltSet<
+        InvalidVPTokenCreationTimeErrorMessageEnum>(const <InvalidVPTokenCreationTimeErrorMessageEnum>[
+  _$invalidVPTokenCreationTimeErrorMessageEnum_vPTokenHasExpired,
+]);
 
 const InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum
-_$invalidVPTokenCreationTimeErrorHttpStatusCodeEnum_number400 =
+    _$invalidVPTokenCreationTimeErrorHttpStatusCodeEnum_number400 =
     const InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum._('number400');
 
 InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum
-_$invalidVPTokenCreationTimeErrorHttpStatusCodeEnumValueOf(String name) {
+    _$invalidVPTokenCreationTimeErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$invalidVPTokenCreationTimeErrorHttpStatusCodeEnum_number400;
@@ -67,21 +62,19 @@ _$invalidVPTokenCreationTimeErrorHttpStatusCodeEnumValueOf(String name) {
 }
 
 final BuiltSet<InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum>
-_$invalidVPTokenCreationTimeErrorHttpStatusCodeEnumValues =
-    BuiltSet<InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum>(
-      const <InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum>[
-        _$invalidVPTokenCreationTimeErrorHttpStatusCodeEnum_number400,
-      ],
-    );
+    _$invalidVPTokenCreationTimeErrorHttpStatusCodeEnumValues = BuiltSet<
+        InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum>(const <InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum>[
+  _$invalidVPTokenCreationTimeErrorHttpStatusCodeEnum_number400,
+]);
 
 Serializer<InvalidVPTokenCreationTimeErrorNameEnum>
-_$invalidVPTokenCreationTimeErrorNameEnumSerializer =
+    _$invalidVPTokenCreationTimeErrorNameEnumSerializer =
     _$InvalidVPTokenCreationTimeErrorNameEnumSerializer();
 Serializer<InvalidVPTokenCreationTimeErrorMessageEnum>
-_$invalidVPTokenCreationTimeErrorMessageEnumSerializer =
+    _$invalidVPTokenCreationTimeErrorMessageEnumSerializer =
     _$InvalidVPTokenCreationTimeErrorMessageEnumSerializer();
 Serializer<InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum>
-_$invalidVPTokenCreationTimeErrorHttpStatusCodeEnumSerializer =
+    _$invalidVPTokenCreationTimeErrorHttpStatusCodeEnumSerializer =
     _$InvalidVPTokenCreationTimeErrorHttpStatusCodeEnumSerializer();
 
 class _$InvalidVPTokenCreationTimeErrorNameEnumSerializer
@@ -95,26 +88,23 @@ class _$InvalidVPTokenCreationTimeErrorNameEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    InvalidVPTokenCreationTimeErrorNameEnum,
+    InvalidVPTokenCreationTimeErrorNameEnum
   ];
   @override
   final String wireName = 'InvalidVPTokenCreationTimeErrorNameEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    InvalidVPTokenCreationTimeErrorNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          InvalidVPTokenCreationTimeErrorNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InvalidVPTokenCreationTimeErrorNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InvalidVPTokenCreationTimeErrorNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InvalidVPTokenCreationTimeErrorNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InvalidVPTokenCreationTimeErrorMessageEnumSerializer
@@ -128,26 +118,23 @@ class _$InvalidVPTokenCreationTimeErrorMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    InvalidVPTokenCreationTimeErrorMessageEnum,
+    InvalidVPTokenCreationTimeErrorMessageEnum
   ];
   @override
   final String wireName = 'InvalidVPTokenCreationTimeErrorMessageEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    InvalidVPTokenCreationTimeErrorMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          InvalidVPTokenCreationTimeErrorMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InvalidVPTokenCreationTimeErrorMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InvalidVPTokenCreationTimeErrorMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InvalidVPTokenCreationTimeErrorMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InvalidVPTokenCreationTimeErrorHttpStatusCodeEnumSerializer
@@ -162,26 +149,23 @@ class _$InvalidVPTokenCreationTimeErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum,
+    InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum
   ];
   @override
   final String wireName = 'InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InvalidVPTokenCreationTimeError
@@ -197,21 +181,21 @@ class _$InvalidVPTokenCreationTimeError
   @override
   final BuiltList<InvalidParameterErrorDetailsInner>? details;
 
-  factory _$InvalidVPTokenCreationTimeError([
-    void Function(InvalidVPTokenCreationTimeErrorBuilder)? updates,
-  ]) => (InvalidVPTokenCreationTimeErrorBuilder()..update(updates))._build();
+  factory _$InvalidVPTokenCreationTimeError(
+          [void Function(InvalidVPTokenCreationTimeErrorBuilder)? updates]) =>
+      (InvalidVPTokenCreationTimeErrorBuilder()..update(updates))._build();
 
-  _$InvalidVPTokenCreationTimeError._({
-    required this.name,
-    required this.message,
-    required this.httpStatusCode,
-    required this.traceId,
-    this.details,
-  }) : super._();
+  _$InvalidVPTokenCreationTimeError._(
+      {required this.name,
+      required this.message,
+      required this.httpStatusCode,
+      required this.traceId,
+      this.details})
+      : super._();
   @override
   InvalidVPTokenCreationTimeError rebuild(
-    void Function(InvalidVPTokenCreationTimeErrorBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(InvalidVPTokenCreationTimeErrorBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   InvalidVPTokenCreationTimeErrorBuilder toBuilder() =>
@@ -254,10 +238,8 @@ class _$InvalidVPTokenCreationTimeError
 
 class InvalidVPTokenCreationTimeErrorBuilder
     implements
-        Builder<
-          InvalidVPTokenCreationTimeError,
-          InvalidVPTokenCreationTimeErrorBuilder
-        > {
+        Builder<InvalidVPTokenCreationTimeError,
+            InvalidVPTokenCreationTimeErrorBuilder> {
   _$InvalidVPTokenCreationTimeError? _$v;
 
   InvalidVPTokenCreationTimeErrorNameEnum? _name;
@@ -274,8 +256,8 @@ class InvalidVPTokenCreationTimeErrorBuilder
   InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum? get httpStatusCode =>
       _$this._httpStatusCode;
   set httpStatusCode(
-    InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum? httpStatusCode,
-  ) => _$this._httpStatusCode = httpStatusCode;
+          InvalidVPTokenCreationTimeErrorHttpStatusCodeEnum? httpStatusCode) =>
+      _$this._httpStatusCode = httpStatusCode;
 
   String? _traceId;
   String? get traceId => _$this._traceId;
@@ -320,29 +302,18 @@ class InvalidVPTokenCreationTimeErrorBuilder
   _$InvalidVPTokenCreationTimeError _build() {
     _$InvalidVPTokenCreationTimeError _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$InvalidVPTokenCreationTimeError._(
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'InvalidVPTokenCreationTimeError',
-              'name',
-            ),
+                name, r'InvalidVPTokenCreationTimeError', 'name'),
             message: BuiltValueNullFieldError.checkNotNull(
-              message,
-              r'InvalidVPTokenCreationTimeError',
-              'message',
-            ),
+                message, r'InvalidVPTokenCreationTimeError', 'message'),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-              httpStatusCode,
-              r'InvalidVPTokenCreationTimeError',
-              'httpStatusCode',
-            ),
+                httpStatusCode,
+                r'InvalidVPTokenCreationTimeError',
+                'httpStatusCode'),
             traceId: BuiltValueNullFieldError.checkNotNull(
-              traceId,
-              r'InvalidVPTokenCreationTimeError',
-              'traceId',
-            ),
+                traceId, r'InvalidVPTokenCreationTimeError', 'traceId'),
             details: _details?.build(),
           );
     } catch (_) {
@@ -352,10 +323,7 @@ class InvalidVPTokenCreationTimeErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'InvalidVPTokenCreationTimeError',
-          _$failedField,
-          e.toString(),
-        );
+            r'InvalidVPTokenCreationTimeError', _$failedField, e.toString());
       }
       rethrow;
     }

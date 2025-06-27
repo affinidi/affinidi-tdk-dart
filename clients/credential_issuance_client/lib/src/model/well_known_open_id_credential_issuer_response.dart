@@ -28,10 +28,8 @@ part 'well_known_open_id_credential_issuer_response.g.dart';
 @BuiltValue()
 abstract class WellKnownOpenIdCredentialIssuerResponse
     implements
-        Built<
-          WellKnownOpenIdCredentialIssuerResponse,
-          WellKnownOpenIdCredentialIssuerResponseBuilder
-        > {
+        Built<WellKnownOpenIdCredentialIssuerResponse,
+            WellKnownOpenIdCredentialIssuerResponseBuilder> {
   @BuiltValueField(wireName: r'authorization_endpoint')
   String? get authorizationEndpoint;
 
@@ -46,14 +44,14 @@ abstract class WellKnownOpenIdCredentialIssuerResponse
 
   @BuiltValueField(wireName: r'credentials_supported')
   BuiltList<WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner>?
-  get credentialsSupported;
+      get credentialsSupported;
 
   @BuiltValueField(wireName: r'deferred_credential_endpoint')
   String? get deferredCredentialEndpoint;
 
   @BuiltValueField(wireName: r'grant_types_supported')
   BuiltList<WellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum>?
-  get grantTypesSupported;
+      get grantTypesSupported;
   // enum grantTypesSupportedEnum {  authorization_code,  urn:ietf:params:oauth:grant-type:pre-authorized_code,  };
 
   @BuiltValueField(wireName: r'jwks_uri')
@@ -61,7 +59,7 @@ abstract class WellKnownOpenIdCredentialIssuerResponse
 
   @BuiltValueField(wireName: r'scopes_supported')
   BuiltList<WellKnownOpenIdCredentialIssuerResponseScopesSupportedEnum>?
-  get scopesSupported;
+      get scopesSupported;
   // enum scopesSupportedEnum {  openid,  };
 
   @BuiltValueField(wireName: r'token_endpoint')
@@ -69,16 +67,15 @@ abstract class WellKnownOpenIdCredentialIssuerResponse
 
   @BuiltValueField(wireName: r'token_endpoint_auth_methods_supported')
   BuiltList<
-    WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum
-  >?
-  get tokenEndpointAuthMethodsSupported;
+          WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum>?
+      get tokenEndpointAuthMethodsSupported;
   // enum tokenEndpointAuthMethodsSupportedEnum {  client_secret_post,  client_secret_basic,  none,  };
 
   WellKnownOpenIdCredentialIssuerResponse._();
 
-  factory WellKnownOpenIdCredentialIssuerResponse([
-    void updates(WellKnownOpenIdCredentialIssuerResponseBuilder b),
-  ]) = _$WellKnownOpenIdCredentialIssuerResponse;
+  factory WellKnownOpenIdCredentialIssuerResponse(
+          [void updates(WellKnownOpenIdCredentialIssuerResponseBuilder b)]) =
+      _$WellKnownOpenIdCredentialIssuerResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(WellKnownOpenIdCredentialIssuerResponseBuilder b) => b;
@@ -93,7 +90,7 @@ class _$WellKnownOpenIdCredentialIssuerResponseSerializer
   @override
   final Iterable<Type> types = const [
     WellKnownOpenIdCredentialIssuerResponse,
-    _$WellKnownOpenIdCredentialIssuerResponse,
+    _$WellKnownOpenIdCredentialIssuerResponse
   ];
 
   @override
@@ -138,8 +135,7 @@ class _$WellKnownOpenIdCredentialIssuerResponseSerializer
         object.credentialsSupported,
         specifiedType: const FullType(BuiltList, [
           FullType(
-            WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner,
-          ),
+              WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner)
         ]),
       );
     }
@@ -156,8 +152,7 @@ class _$WellKnownOpenIdCredentialIssuerResponseSerializer
         object.grantTypesSupported,
         specifiedType: const FullType(BuiltList, [
           FullType(
-            WellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum,
-          ),
+              WellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum)
         ]),
       );
     }
@@ -173,7 +168,7 @@ class _$WellKnownOpenIdCredentialIssuerResponseSerializer
       yield serializers.serialize(
         object.scopesSupported,
         specifiedType: const FullType(BuiltList, [
-          FullType(WellKnownOpenIdCredentialIssuerResponseScopesSupportedEnum),
+          FullType(WellKnownOpenIdCredentialIssuerResponseScopesSupportedEnum)
         ]),
       );
     }
@@ -190,8 +185,7 @@ class _$WellKnownOpenIdCredentialIssuerResponseSerializer
         object.tokenEndpointAuthMethodsSupported,
         specifiedType: const FullType(BuiltList, [
           FullType(
-            WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum,
-          ),
+              WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum)
         ]),
       );
     }
@@ -203,11 +197,9 @@ class _$WellKnownOpenIdCredentialIssuerResponseSerializer
     WellKnownOpenIdCredentialIssuerResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -223,126 +215,96 @@ class _$WellKnownOpenIdCredentialIssuerResponseSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'authorization_endpoint':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.authorizationEndpoint = valueDes;
           break;
         case r'credential_endpoint':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.credentialEndpoint = valueDes;
           break;
         case r'credential_issuer':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.credentialIssuer = valueDes;
           break;
         case r'batch_credential_endpoint':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.batchCredentialEndpoint = valueDes;
           break;
         case r'credentials_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(
-                        WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner,
-                      ),
-                    ]),
-                  )
-                  as BuiltList<
-                    WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner
-                  >;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [
+              FullType(
+                  WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner)
+            ]),
+          ) as BuiltList<
+              WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner>;
           result.credentialsSupported.replace(valueDes);
           break;
         case r'deferred_credential_endpoint':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.deferredCredentialEndpoint = valueDes;
           break;
         case r'grant_types_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(
-                        WellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum,
-                      ),
-                    ]),
-                  )
-                  as BuiltList<
-                    WellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum
-                  >;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [
+              FullType(
+                  WellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum)
+            ]),
+          ) as BuiltList<
+              WellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum>;
           result.grantTypesSupported.replace(valueDes);
           break;
         case r'jwks_uri':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.jwksUri = valueDes;
           break;
         case r'scopes_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(
-                        WellKnownOpenIdCredentialIssuerResponseScopesSupportedEnum,
-                      ),
-                    ]),
-                  )
-                  as BuiltList<
-                    WellKnownOpenIdCredentialIssuerResponseScopesSupportedEnum
-                  >;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [
+              FullType(
+                  WellKnownOpenIdCredentialIssuerResponseScopesSupportedEnum)
+            ]),
+          ) as BuiltList<
+              WellKnownOpenIdCredentialIssuerResponseScopesSupportedEnum>;
           result.scopesSupported.replace(valueDes);
           break;
         case r'token_endpoint':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.tokenEndpoint = valueDes;
           break;
         case r'token_endpoint_auth_methods_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(
-                        WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum,
-                      ),
-                    ]),
-                  )
-                  as BuiltList<
-                    WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum
-                  >;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [
+              FullType(
+                  WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum)
+            ]),
+          ) as BuiltList<
+              WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum>;
           result.tokenEndpointAuthMethodsSupported.replace(valueDes);
           break;
         default:
@@ -378,57 +340,53 @@ class WellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum
     extends EnumClass {
   @BuiltValueEnumConst(wireName: r'authorization_code')
   static const WellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum
-  authorizationCode =
+      authorizationCode =
       _$wellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum_authorizationCode;
   @BuiltValueEnumConst(
-    wireName: r'urn:ietf:params:oauth:grant-type:pre-authorized_code',
-  )
+      wireName: r'urn:ietf:params:oauth:grant-type:pre-authorized_code')
   static const WellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum
-  urnColonIetfColonParamsColonOauthColonGrantTypeColonPreAuthorizedCode =
+      urnColonIetfColonParamsColonOauthColonGrantTypeColonPreAuthorizedCode =
       _$wellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum_urnColonIetfColonParamsColonOauthColonGrantTypeColonPreAuthorizedCode;
 
   static Serializer<
-    WellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum
-  >
-  get serializer =>
-      _$wellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnumSerializer;
+          WellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum>
+      get serializer =>
+          _$wellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnumSerializer;
 
   const WellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum._(
-    String name,
-  ) : super(name);
+      String name)
+      : super(name);
 
   static BuiltSet<
-    WellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum
-  >
-  get values =>
-      _$wellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnumValues;
+          WellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum>
+      get values =>
+          _$wellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnumValues;
   static WellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum valueOf(
-    String name,
-  ) => _$wellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnumValueOf(
-    name,
-  );
+          String name) =>
+      _$wellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnumValueOf(
+          name);
 }
 
 class WellKnownOpenIdCredentialIssuerResponseScopesSupportedEnum
     extends EnumClass {
   @BuiltValueEnumConst(wireName: r'openid')
   static const WellKnownOpenIdCredentialIssuerResponseScopesSupportedEnum
-  openid = _$wellKnownOpenIdCredentialIssuerResponseScopesSupportedEnum_openid;
+      openid =
+      _$wellKnownOpenIdCredentialIssuerResponseScopesSupportedEnum_openid;
 
   static Serializer<WellKnownOpenIdCredentialIssuerResponseScopesSupportedEnum>
-  get serializer =>
-      _$wellKnownOpenIdCredentialIssuerResponseScopesSupportedEnumSerializer;
+      get serializer =>
+          _$wellKnownOpenIdCredentialIssuerResponseScopesSupportedEnumSerializer;
 
   const WellKnownOpenIdCredentialIssuerResponseScopesSupportedEnum._(
-    String name,
-  ) : super(name);
+      String name)
+      : super(name);
 
   static BuiltSet<WellKnownOpenIdCredentialIssuerResponseScopesSupportedEnum>
-  get values =>
-      _$wellKnownOpenIdCredentialIssuerResponseScopesSupportedEnumValues;
+      get values =>
+          _$wellKnownOpenIdCredentialIssuerResponseScopesSupportedEnumValues;
   static WellKnownOpenIdCredentialIssuerResponseScopesSupportedEnum valueOf(
-    String name,
-  ) =>
+          String name) =>
       _$wellKnownOpenIdCredentialIssuerResponseScopesSupportedEnumValueOf(name);
 }
 
@@ -436,35 +394,32 @@ class WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEn
     extends EnumClass {
   @BuiltValueEnumConst(wireName: r'client_secret_post')
   static const WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum
-  clientSecretPost =
+      clientSecretPost =
       _$wellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum_clientSecretPost;
   @BuiltValueEnumConst(wireName: r'client_secret_basic')
   static const WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum
-  clientSecretBasic =
+      clientSecretBasic =
       _$wellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum_clientSecretBasic;
   @BuiltValueEnumConst(wireName: r'none')
   static const WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum
-  none =
+      none =
       _$wellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum_none;
 
   static Serializer<
-    WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum
-  >
-  get serializer =>
-      _$wellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnumSerializer;
+          WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum>
+      get serializer =>
+          _$wellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnumSerializer;
 
   const WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum._(
-    String name,
-  ) : super(name);
+      String name)
+      : super(name);
 
   static BuiltSet<
-    WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum
-  >
-  get values =>
-      _$wellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnumValues;
+          WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum>
+      get values =>
+          _$wellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnumValues;
   static WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum
-  valueOf(String name) =>
-      _$wellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnumValueOf(
-        name,
-      );
+      valueOf(String name) =>
+          _$wellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnumValueOf(
+              name);
 }

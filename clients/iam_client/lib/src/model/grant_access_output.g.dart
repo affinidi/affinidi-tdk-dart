@@ -12,9 +12,9 @@ class _$GrantAccessOutput extends GrantAccessOutput {
   @override
   final String? grantId;
 
-  factory _$GrantAccessOutput([
-    void Function(GrantAccessOutputBuilder)? updates,
-  ]) => (GrantAccessOutputBuilder()..update(updates))._build();
+  factory _$GrantAccessOutput(
+          [void Function(GrantAccessOutputBuilder)? updates]) =>
+      (GrantAccessOutputBuilder()..update(updates))._build();
 
   _$GrantAccessOutput._({required this.success, this.grantId}) : super._();
   @override
@@ -91,14 +91,10 @@ class GrantAccessOutputBuilder
   GrantAccessOutput build() => _build();
 
   _$GrantAccessOutput _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$GrantAccessOutput._(
           success: BuiltValueNullFieldError.checkNotNull(
-            success,
-            r'GrantAccessOutput',
-            'success',
-          ),
+              success, r'GrantAccessOutput', 'success'),
           grantId: grantId,
         );
     replace(_$result);
