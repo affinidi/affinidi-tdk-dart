@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
-import '../../affinidi_tdk_claim_verifiable_credential.dart';
+import '../../oid4vci_claim_verifiable_credential.dart';
 import '../exceptions/tdk_exception_type.dart';
 
 /// Extension on `DioException` to provide additional functionality

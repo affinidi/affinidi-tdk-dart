@@ -61,7 +61,7 @@ class TestDataFixtures {
     'maximumProfiles': 10,
     'maximumFiles': 100,
     'maximumFolders': 50,
-    'maximumVCs': 20
+    'maximumVCs': 20,
   };
 
   static final testErrorResponse = {
@@ -97,7 +97,7 @@ class TestDataFixtures {
     'parentNodeId': 'NzY3ZjY=',
     'profileId': 'NzY3ZjY=',
     'edekInfo': <String, String>{'dekekId': testDekekId, 'edek': testEdek},
-    'metadata': '{"pictureURI":""}'
+    'metadata': '{"pictureURI":""}',
   };
 
   static final Map<String, List<Map<String, dynamic>>> testChildrenData = {
@@ -121,7 +121,7 @@ class TestDataFixtures {
         'type': 'FOLDER',
         'nodeId': 'NzY3ZjYjY2hpbGQx',
         'edekInfo': <String, String>{'dekekId': testDekekId, 'edek': testEdek},
-        'metadata': '{"pictureURI":""}'
+        'metadata': '{"pictureURI":""}',
       },
       {
         'name': 'Child Node 2',
@@ -142,9 +142,9 @@ class TestDataFixtures {
         'type': 'FOLDER',
         'nodeId': 'NzY3ZjYjY2hpbGQy',
         'edekInfo': <String, String>{'dekekId': testDekekId, 'edek': testEdek},
-        'metadata': '{"pictureURI":""}'
-      }
-    ]
+        'metadata': '{"pictureURI":""}',
+      },
+    ],
   };
 
   static final Map<String, List<Map<String, dynamic>>> testVcData = {
@@ -167,8 +167,8 @@ class TestDataFixtures {
         'parentNodeId': 'NzY3ZjY=',
         'profileId': 'NzY3ZjYjY2hpbGQx',
         'edekInfo': <String, String>{'dekekId': testDekekId, 'edek': testEdek},
-        'metadata': '{"pictureURI":""}'
-      }
-    ]
+        'metadata': '{"pictureURI":""}',
+      },
+    ],
   };
 }

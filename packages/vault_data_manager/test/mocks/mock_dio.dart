@@ -26,26 +26,30 @@ class MockDio extends Mock implements Dio {
   }) async {
     if (path == TestDataFixtures.schemaUrl) {
       return Response<T>(
-        data: {
-          'person': {'type': 'object'}
-        } as T,
+        data:
+            {
+                  'person': {'type': 'object'},
+                }
+                as T,
         statusCode: 200,
         requestOptions: RequestOptions(path: path),
       );
     }
     if (path == TestDataFixtures.jwksUrl) {
       return Response<T>(
-        data: {
-          'keys': [
+        data:
             {
-              'kty': 'RSA',
-              'kid': TestDataFixtures.testKid,
-              'use': 'sig',
-              'n': 'test-n',
-              'e': 'AQAB',
-            }
-          ]
-        } as T,
+                  'keys': [
+                    {
+                      'kty': 'RSA',
+                      'kid': TestDataFixtures.testKid,
+                      'use': 'sig',
+                      'n': 'test-n',
+                      'e': 'AQAB',
+                    },
+                  ],
+                }
+                as T,
         statusCode: 200,
         requestOptions: RequestOptions(path: path),
       );
@@ -83,7 +87,14 @@ class MockDio extends Mock implements Dio {
         );
       }
       return Response<T>(
-        data: null as T,
+        data:
+            {
+                  'nodeId': 'test-node-id',
+                  'name': 'test-vc',
+                  'nodeType': 'VC',
+                  'status': 'CREATED',
+                }
+                as T,
         statusCode: 200,
         requestOptions: requestOptions,
       );
@@ -93,6 +104,48 @@ class MockDio extends Mock implements Dio {
       data: null as T,
       statusCode: 200,
       requestOptions: requestOptions,
+    );
+  }
+
+  @override
+  Future<Response<T>> post<T>(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    if (path.contains(TestDataFixtures.uploadUrl)) {
+      if (_shouldThrowError) {
+        throw DioException(
+          requestOptions: RequestOptions(path: path),
+          error: TestDataFixtures.uploadFailed,
+          response: Response(
+            requestOptions: RequestOptions(path: path),
+            statusCode: 500,
+            data: {'error': TestDataFixtures.uploadFailed},
+          ),
+        );
+      }
+      return Response<T>(
+        data:
+            {
+                  'nodeId': 'test-node-id',
+                  'name': 'test-vc',
+                  'nodeType': 'VC',
+                  'status': 'CREATED',
+                }
+                as T,
+        statusCode: 200,
+        requestOptions: RequestOptions(path: path),
+      );
+    }
+    return Response<T>(
+      data: null as T,
+      statusCode: 200,
+      requestOptions: RequestOptions(path: path),
     );
   }
 }

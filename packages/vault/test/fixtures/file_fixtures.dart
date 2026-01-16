@@ -20,13 +20,11 @@ class FileFixtures {
   }
 
   static File get testFile => createFile(
-        id: 'test-file-id',
-        name: 'test-file.txt',
-        parentId: 'test-folder-id',
-      );
+    id: 'test-file-id',
+    name: 'test-file.txt',
+    parentId: 'test-folder-id',
+  );
 
-  static File get rootFile => createFile(
-        id: 'root-file-id',
-        name: 'root-file.txt',
-      );
+  static File get rootFile =>
+      createFile(id: 'root-file-id', name: 'root-file.txt');
 }

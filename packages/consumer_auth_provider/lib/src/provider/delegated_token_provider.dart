@@ -11,26 +11,43 @@ import '../mixins/jwt_token_did_checker.dart';
 class DelegatedTokenProvider extends TokenProvider with JwtTokenDidChecker {
   final DidSigner _signer;
   final Dio _dioInstance;
+  final String _tokenEndpoint;
 
-  static final String _tokenEndpoint = Environment.fetchConsumerAudienceUrl();
   static final int _delegatedTokenExpiration = 5 * 60; // 5 minutes
   static final int? _apiTimeOutInMilliseconds =
       Environment.apiTimeOutInMilliseconds;
 
-  /// Constructor for [DelegatedTokenProvider] using the [signer] and optional [Dio] http client.
+  /// Constructor for [DelegatedTokenProvider].
+  ///
+  /// - [signer] (required): Instance of [DidSigner] used for signing operations.
+  /// - [client] (optional): Optional instance of [Dio] for handling HTTP requests. If not provided,
+  ///   a default client will be used.
+  /// - [region] (optional): The [ElementsRegion] to specify the AWS region (e.g., apSoutheast1, apSouth1).
+  ///   Defaults to [ElementsRegion.apSoutheast1] if not provided.
   DelegatedTokenProvider({
     required DidSigner signer,
     Dio? client,
-  })  : _signer = signer,
-        _dioInstance = client ??
-            ((_apiTimeOutInMilliseconds != null)
-                ? Dio(BaseOptions(
-                    connectTimeout:
-                        Duration(milliseconds: _apiTimeOutInMilliseconds!),
-                    receiveTimeout:
-                        Duration(milliseconds: _apiTimeOutInMilliseconds!),
-                  ))
-                : Dio());
+    ElementsRegion region = ElementsRegion.apSoutheast1,
+  }) : _signer = signer,
+       _dioInstance =
+           client ??
+           ((_apiTimeOutInMilliseconds != null)
+               ? Dio(
+                   BaseOptions(
+                     connectTimeout: Duration(
+                       milliseconds: _apiTimeOutInMilliseconds!,
+                     ),
+                     receiveTimeout: Duration(
+                       milliseconds: _apiTimeOutInMilliseconds!,
+                     ),
+                   ),
+                 )
+               : Dio()),
+       _tokenEndpoint = Environment.fetchConsumerAudienceUrl(
+         null,
+         null,
+         region,
+       );
 
   /// Retrieves a token for the specified profile DID.
   ///
@@ -45,18 +62,18 @@ class DelegatedTokenProvider extends TokenProvider with JwtTokenDidChecker {
       subject: profileDid,
     );
     final did = _signer.did;
-    final delegatedToken =
-        await _fetchDelegatedToken(clientAssertion: token, did: did);
+    final delegatedToken = await _fetchDelegatedToken(
+      clientAssertion: token,
+      did: did,
+    );
 
     final decodedToken = JwtDecoder.decode(delegatedToken);
-    if (!hasMatchingDid(
-      decodedToken: decodedToken,
-      did: profileDid,
-    )) {
+    if (!hasMatchingDid(decodedToken: decodedToken, did: profileDid)) {
       Error.throwWithStackTrace(
         TdkException(
-            message: 'Delegated token DID does not match profile DID',
-            code: TdkExceptionType.delegatedTokenDidMismatch.code),
+          message: 'Delegated token DID does not match profile DID',
+          code: TdkExceptionType.delegatedTokenDidMismatch.code,
+        ),
         StackTrace.current,
       );
     }
@@ -67,8 +84,9 @@ class DelegatedTokenProvider extends TokenProvider with JwtTokenDidChecker {
     )) {
       Error.throwWithStackTrace(
         TdkException(
-            message: 'Delegated token DID does not match grantee DID',
-            code: TdkExceptionType.delegatedTokenGranteeDidMismatch.code),
+          message: 'Delegated token DID does not match grantee DID',
+          code: TdkExceptionType.delegatedTokenGranteeDidMismatch.code,
+        ),
         StackTrace.current,
       );
     }

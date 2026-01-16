@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:affinidi_tdk_claim_verifiable_credential/affinidi_tdk_claim_verifiable_credential.dart';
+import 'package:affinidi_tdk_claim_verifiable_credential/oid4vci_claim_verifiable_credential.dart';
 import 'package:ssi/ssi.dart';
 
 /// This example shows how to claim a credential that doesn't require
@@ -20,7 +20,7 @@ Future<void> main() async {
 
     final didDocument = DidKey.generateDocument(keyPair.publicKey);
     final signer = DidSigner(
-      didDocument: didDocument,
+      did: didDocument.id,
       didKeyId: didDocument.verificationMethod.first.id,
       keyPair: keyPair,
       signatureScheme: SignatureScheme.ecdsa_secp256k1_sha256,
@@ -28,21 +28,21 @@ Future<void> main() async {
 
     // Create a new instance of ClaimVerifiableCredentialService
     final claimVerifiableCredentialService =
-        OID4VCIClaimVerifiableCredentialService(
-      didSigner: signer,
-    );
+        OID4VCIClaimVerifiableCredentialService(didSigner: signer);
 
     final uri = Uri.parse(
       'https://example.com/callback?credential_offer_uri=https://issuer.example.com/offer/123',
     );
 
     print('Loading credential offer...');
-    final context =
-        await claimVerifiableCredentialService.loadCredentialOffer(uri);
+    final context = await claimVerifiableCredentialService.loadCredentialOffer(
+      uri,
+    );
 
     if (context.credentialOffer.isTxCodeRequired) {
       print(
-          'This credential requires a transaction code. Use claimCredentialWithTxCode instead.');
+        'This credential requires a transaction code. Use claimCredentialWithTxCode instead.',
+      );
       return;
     }
 

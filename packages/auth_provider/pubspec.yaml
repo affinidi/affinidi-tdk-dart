@@ -1,21 +1,17 @@
 name: affinidi_tdk_auth_provider
 description: Auth provider that allows creating project scoped tokens to access Affinidi services
-version: 1.6.0
-repository: https://github.com/affinidi/affinidi-tdk
-
+version: 1.4.3
+repository: https://github.com/affinidi/affinidi-tdk-dart
 environment:
   sdk: ^3.6.0
-
 resolution: workspace
-
 dependencies:
-  affinidi_tdk_common: ^1.7.0
+  affinidi_tdk_common: ^1.6.0
   dart_jsonwebtoken: ^3.2.0
   pointycastle: ^4.0.0
   asn1lib: ^1.5.9
   http: ^1.1.0
   uuid: ^4.5.1
-
 dev_dependencies:
   lints: ^5.0.0
   test: ^1.24.0

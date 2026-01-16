@@ -6,10 +6,7 @@ class AuthProviderParams {
   final String region;
   final String apiGW;
 
-  AuthProviderParams({
-    required this.region,
-    required this.apiGW,
-  });
+  AuthProviderParams({required this.region, required this.apiGW});
 }
 
 class IotaCredentials {
@@ -40,10 +37,7 @@ class IdentityCredentials {
   final String identityId;
   final String token;
 
-  IdentityCredentials({
-    required this.identityId,
-    required this.token,
-  });
+  IdentityCredentials({required this.identityId, required this.token});
 
   factory IdentityCredentials.fromJson(Map<String, dynamic> json) {
     return IdentityCredentials(
@@ -63,7 +57,8 @@ class IotaAuthProvider {
   }
 
   Future<IotaCredentials> limitedTokenToIotaCredentials(
-      String limitedToken) async {
+    String limitedToken,
+  ) async {
     final response = await http.post(
       Uri.parse('$apiGW/ais/v1/aws-exchange-credentials'),
       headers: {'Content-Type': 'application/json'},
@@ -77,8 +72,9 @@ class IotaAuthProvider {
     final Map<String, dynamic> data = jsonDecode(response.body);
     final connectionClientId = data['connectionClientId'] as String;
 
-    final identityCredentials =
-        IdentityCredentials.fromJson(data['credentials']);
+    final identityCredentials = IdentityCredentials.fromJson(
+      data['credentials'],
+    );
 
     final credentials = await exchangeIdentityCredentials(identityCredentials);
 
@@ -89,15 +85,17 @@ class IotaAuthProvider {
   }
 
   Future<Credentials> exchangeIdentityCredentials(
-      IdentityCredentials identityCredentials) async {
+    IdentityCredentials identityCredentials,
+  ) async {
     final cognitoResponse = await fetchCognitoCredentials(identityCredentials);
     final creds = cognitoResponse['Credentials'];
     if (creds == null) {
       throw Exception('Error fetching credentials');
     }
     final expirationSeconds = creds['Expiration'] as double;
-    final expirationDate =
-        DateTime.fromMillisecondsSinceEpoch((expirationSeconds * 1000).toInt());
+    final expirationDate = DateTime.fromMillisecondsSinceEpoch(
+      (expirationSeconds * 1000).toInt(),
+    );
 
     return Credentials(
       accessKeyId: creds['AccessKeyId'],
@@ -108,13 +106,12 @@ class IotaAuthProvider {
   }
 
   Future<Map<String, dynamic>> fetchCognitoCredentials(
-      IdentityCredentials identityCredentials) async {
+    IdentityCredentials identityCredentials,
+  ) async {
     final url = 'https://cognito-identity.$region.amazonaws.com/';
     final payload = jsonEncode({
       'IdentityId': identityCredentials.identityId,
-      'Logins': {
-        'cognito-identity.amazonaws.com': identityCredentials.token,
-      },
+      'Logins': {'cognito-identity.amazonaws.com': identityCredentials.token},
     });
 
     final response = await http.post(

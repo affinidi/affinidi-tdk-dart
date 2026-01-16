@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:affinidi_tdk_claim_verifiable_credential/affinidi_tdk_claim_verifiable_credential.dart';
+import 'package:affinidi_tdk_claim_verifiable_credential/oid4vci_claim_verifiable_credential.dart';
 import 'package:ssi/ssi.dart';
 
 /// This example demonstrates how to load and inspect a credential offer from a URL.
@@ -15,7 +15,7 @@ Future<void> main() async {
 
     final didDocument = DidKey.generateDocument(keyPair.publicKey);
     final signer = DidSigner(
-      didDocument: didDocument,
+      did: didDocument.id,
       didKeyId: didDocument.verificationMethod.first.id,
       keyPair: keyPair,
       signatureScheme: SignatureScheme.ecdsa_secp256k1_sha256,
@@ -23,9 +23,7 @@ Future<void> main() async {
 
     // Create a new instance of ClaimVerifiableCredentialService
     final claimVerifiableCredentialService =
-        OID4VCIClaimVerifiableCredentialService(
-      didSigner: signer,
-    );
+        OID4VCIClaimVerifiableCredentialService(didSigner: signer);
 
     // The credential offer URL typically comes from:
     // - A QR code scan
@@ -35,14 +33,16 @@ Future<void> main() async {
       'https://example.com/callback?credential_offer_uri=https://issuer.example.com/offer/123',
     );
 
-    final context =
-        await claimVerifiableCredentialService.loadCredentialOffer(uri);
+    final context = await claimVerifiableCredentialService.loadCredentialOffer(
+      uri,
+    );
 
     // The credential is now ready to be stored or used
     print('Credential Details:');
     print('Identifier: ${context.credentialOffer.credentialIdentifier}');
     print(
-        'Requires Transaction Code: ${context.credentialOffer.isTxCodeRequired}');
+      'Requires Transaction Code: ${context.credentialOffer.isTxCodeRequired}',
+    );
     print('Issuer Details:');
     print('Token Endpoint: ${context.issuerMetadata.tokenEndpoint}');
     print('Credential Endpoint: ${context.issuerMetadata.credentialEndpoint}');

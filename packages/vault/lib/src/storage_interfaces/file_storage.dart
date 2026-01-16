@@ -2,20 +2,24 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import '../helpers/vault_cancel_token.dart';
+import '../helpers/vault_progress_callback.dart';
 import 'item.dart';
+import 'paginated_list.dart';
 
 /// Interface for managing file and folder storage operations.
 abstract class FileStorage {
   /// Unique identifier for file storage.
   String get id;
 
-  /// Allows retrieving all items within a folder
-  /// Returned list can be empty
+  /// Allows retrieving items within a folder with pagination support
+  /// Returns a [PaginatedList] containing the items and pagination information
   /// Throws if the folder does not exist
   /// Throws if the folderId does not match a folder
   /// Throws for network connectivity
-  Future<List<Item>> getFolder({
+  Future<PaginatedList<Item>> getFolder({
     String? folderId,
+    int? limit,
+    String? exclusiveStartItemId,
     VaultCancelToken? cancelToken,
   });
 
@@ -58,10 +62,7 @@ abstract class FileStorage {
   /// Throws if the file does not exist
   /// Throws if the file is not a file
   /// Throws for network connectivity
-  Future<File> getFile({
-    required String fileId,
-    VaultCancelToken? cancelToken,
-  });
+  Future<File> getFile({required String fileId, VaultCancelToken? cancelToken});
 
   /// Allows retrieving file content
   /// Throws if the file does not exist
@@ -70,6 +71,7 @@ abstract class FileStorage {
   Future<Uint8List> getFileContent({
     required String fileId,
     VaultCancelToken? cancelToken,
+    VaultProgressCallback? onReceiveProgress,
   });
 
   /// Allows adding a new file
@@ -82,6 +84,7 @@ abstract class FileStorage {
     required Uint8List data,
     String? parentFolderId,
     VaultCancelToken? cancelToken,
+    VaultProgressCallback? onSendProgress,
   });
 
   /// Allows deleting a file
@@ -95,7 +98,7 @@ abstract class FileStorage {
 
   /// Allows renaming a file
   /// Throws if there is another file with same name
-  /// Throws if the nodeId does not match a file, IE is a folder.
+  /// Throws if the nodeId does not match a file, i.e. is a folder.
   /// Throws for network connectivity
   Future<void> renameFile({
     required String fileId,

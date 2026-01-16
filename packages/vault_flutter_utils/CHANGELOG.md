@@ -1,8 +1,155 @@
-## 1.1.0-dev.10
+# Change Log
 
- - **FIX**: rename lib according to checks (#4).
- - **FEAT**: add melos config, workspace pub config, PR checks, update code (#2).
- - **FEAT**: add initial directory structure (#1).
+## 1.15.0
+
+### Changes
+
+---
+
+Chore: Dependencies Update 
+
+---
+
+## 1.14.0
+
+### Changes
+
+---
+
+Chore: Dependencies Update 
+
+---
+
+## 1.11.3
+
+### Changes
+
+---
+
+Chore: Dependencies Update 
+
+---
+
+## 1.11.2
+
+### Changes
+
+---
+
+Chore: Dependencies Update 
+
+---
+
+
+## 1.11.1
+
+### Changes
+
+---
+
+Chore: Dependencies Update 
+
+---
+
+## 1.11.0
+
+### Changes
+
+---
+
+Chore: Dependencies Update 
+
+---
+
+## 1.10.2
+
+### Changes
+
+---
+
+Chore: Dependencies Update 
+
+---
+
+## 1.10.0
+
+### Changes
+
+---
+
+Chore: Dependencies Update 
+
+---
+
+## 1.9.0
+
+### Changes
+
+---
+
+Fix: Dependencies Update
+
+---
+
+## 1.8.0
+
+### Changes
+
+---
+
+Fix: Remove depdendency override for meta package
+
+---
+
+
+
+## 1.7.0
+
+### Changes
+
+---
+
+Fix: Dependencies Update (ssi)
+
+---
+
+
+## 1.5.0
+
+### Changes
+
+---
+
+Fix: Dependencies Update
+
+
+## 1.4.0
+
+### Changes
+
+---
+
+Fix: Dependencies Update
+
+## 1.3.0
+
+### Changes
+
+---
+
+Fix: Dependencies Update
+
+## 1.0.0
+
+### Changes
+
+---
+
+Promote package for the stable release, which encapsulates these feature(s):
+
+* Provides the Flutter implementation for secure Vault storage.
+
+---
 
 ## 1.0.0-dev.2
 

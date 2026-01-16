@@ -12,26 +12,41 @@ import 'token_provider.dart';
 class ConsumerTokenProvider extends TokenProvider with JwtTokenDidChecker {
   final DidSigner _signer;
   final Dio _dioInstance;
+  final String _tokenEndpoint;
 
-  static final String _tokenEndpoint = Environment.fetchConsumerAudienceUrl();
   static final int _consumerTokenExpiration = 5 * 60; // 5 minutes
   static final int? _apiTimeOutInMilliseconds =
       Environment.apiTimeOutInMilliseconds;
 
-  /// Constructor for [ConsumerTokenProvider] using the [signer] and optional [Dio] http client.
+  /// Constructor for [ConsumerTokenProvider].
+  ///
+  /// - [signer] (required): Instance of [DidSigner] used for signing operations.
+  /// - [client] (optional): Optional instance of [Dio] for handling HTTP requests. If not provided,
+  ///   a default client will be used.
+  /// - [region] (optional): The [ElementsRegion] to specify the AWS region (e.g., apSoutheast1, apSouth1).
+  ///   Defaults to [ElementsRegion.apSoutheast1] if not provided.
+  /// - [env] (optional): The [Environment] configuration to use. If not provided, the default environment will be used.
   ConsumerTokenProvider({
     required DidSigner signer,
     Dio? client,
-  })  : _signer = signer,
-        _dioInstance = client ??
-            ((_apiTimeOutInMilliseconds != null)
-                ? Dio(BaseOptions(
-                    connectTimeout:
-                        Duration(milliseconds: _apiTimeOutInMilliseconds!),
-                    receiveTimeout:
-                        Duration(milliseconds: _apiTimeOutInMilliseconds!),
-                  ))
-                : Dio());
+    ElementsRegion region = ElementsRegion.apSoutheast1,
+    Environment? env,
+  }) : _signer = signer,
+       _dioInstance =
+           client ??
+           ((_apiTimeOutInMilliseconds != null)
+               ? Dio(
+                   BaseOptions(
+                     connectTimeout: Duration(
+                       milliseconds: _apiTimeOutInMilliseconds!,
+                     ),
+                     receiveTimeout: Duration(
+                       milliseconds: _apiTimeOutInMilliseconds!,
+                     ),
+                   ),
+                 )
+               : Dio()),
+       _tokenEndpoint = Environment.fetchConsumerAudienceUrl(env, null, region);
 
   /// Method to retrieve a consumer token.
   ///
@@ -43,15 +58,18 @@ class ConsumerTokenProvider extends TokenProvider with JwtTokenDidChecker {
       audience: _tokenEndpoint,
     );
     final did = _signer.did;
-    final consumerToken =
-        await _fetchConsumerToken(clientAssertion: token, did: did);
+    final consumerToken = await _fetchConsumerToken(
+      clientAssertion: token,
+      did: did,
+    );
 
     final decodedToken = JwtDecoder.decode(consumerToken);
     if (!hasMatchingDid(decodedToken: decodedToken, did: did)) {
       Error.throwWithStackTrace(
         TdkException(
-            message: 'Consumer token DID does not match user DID',
-            code: TdkExceptionType.consumerTokenDidMismatch.code),
+          message: 'Consumer token DID does not match user DID',
+          code: TdkExceptionType.consumerTokenDidMismatch.code,
+        ),
         StackTrace.current,
       );
     }

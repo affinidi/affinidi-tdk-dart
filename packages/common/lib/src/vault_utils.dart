@@ -20,13 +20,13 @@ class VaultUtils {
   }
 
   /// Builds a credential share link for the given request and client ID.
-  static String buildShareLink(String request, String clientId,
-      [Environment? env]) {
+  static String buildShareLink(
+    String request,
+    String clientId, [
+    Environment? env,
+  ]) {
     final vaultUrl = fetchWebVaultUrl(env);
-    Map<String, String> params = {
-      'request': request,
-      'client_id': clientId,
-    };
+    Map<String, String> params = {'request': request, 'client_id': clientId};
     String queryString = Uri(queryParameters: params).query;
     return '$vaultUrl$_sharePath?$queryString';
   }
@@ -34,9 +34,7 @@ class VaultUtils {
   /// Builds a credential claim link for the given credential offer URI.
   static String buildClaimLink(String credentialOfferUri, [Environment? env]) {
     final vaultUrl = fetchWebVaultUrl(env);
-    Map<String, String> params = {
-      'credential_offer_uri': credentialOfferUri,
-    };
+    Map<String, String> params = {'credential_offer_uri': credentialOfferUri};
     String queryString = Uri(queryParameters: params).query;
     return '$vaultUrl$_claimPath?$queryString';
   }

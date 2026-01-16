@@ -1,8 +1,25 @@
-## 1.0.0-dev.3
+# Change Log
 
- - **FIX**: add homepage to pubspec (#5).
- - **FEAT**: add melos config, workspace pub config, PR checks, update code (#2).
- - **FEAT**: add initial directory structure (#1).
+## 1.1.0
+
+### Changes
+
+---
+
+Chore: Provide a valid pubspec.yaml
+
+
+## 1.0.0
+
+### Changes
+
+---
+
+Promote package for the stable release, which encapsulates these feature(s):
+
+* Utility functions for mocking DIO calls.
+
+---
 
 ## 1.0.0-dev.2
 

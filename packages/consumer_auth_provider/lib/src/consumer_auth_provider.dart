@@ -1,3 +1,4 @@
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:dio/dio.dart';
 import 'package:ssi/ssi.dart';
 
@@ -14,12 +15,19 @@ class ConsumerAuthProvider implements ConsumerAuthProviderInterface {
 
   /// Factory constructor for creating an instance of [ConsumerAuthProvider].
   ///
-  /// - [signer] (required) - instance of [DidSigner] used for signing operations.
-  /// - [client] (optional) - optional instance of [Dio] for handling HTTP requests. If not provided,
+  /// - [signer] (required): instance of [DidSigner] used for signing operations.
+  /// - [client] (optional): optional instance of [Dio] for handling HTTP requests. If not provided,
   ///   a default client will be used.
-  factory ConsumerAuthProvider({required DidSigner signer, Dio? client}) {
+  /// - [region] (optional): the [ElementsRegion] to specify the AWS region (e.g., apSoutheast1, apSouth1).
+  ///   Defaults to [ElementsRegion.apSoutheast1] if not provided.
+  factory ConsumerAuthProvider({
+    required DidSigner signer,
+    Dio? client,
+    ElementsRegion region = ElementsRegion.apSoutheast1,
+  }) {
     return ConsumerAuthProvider._(
-        BaseConsumerAuthProvider(signer: signer, client: client));
+      BaseConsumerAuthProvider(signer: signer, client: client, region: region),
+    );
   }
 
   @override
@@ -49,10 +57,12 @@ class ConsumerAuthProvider implements ConsumerAuthProviderInterface {
   /// Throws an Exception if the exchange request fails
   @override
   Future<({String accessToken, List<dynamic>? authorizationDetails})>
-      exchangePreAuthCodeForToken(
-              {required String tokenEndpoint,
-              required String preAuthCode,
-              String? txCode}) =>
-          _implementation.exchangePreAuthCodeForToken(
-              tokenEndpoint: tokenEndpoint, preAuthCode: preAuthCode);
+  exchangePreAuthCodeForToken({
+    required String tokenEndpoint,
+    required String preAuthCode,
+    String? txCode,
+  }) => _implementation.exchangePreAuthCodeForToken(
+    tokenEndpoint: tokenEndpoint,
+    preAuthCode: preAuthCode,
+  );
 }

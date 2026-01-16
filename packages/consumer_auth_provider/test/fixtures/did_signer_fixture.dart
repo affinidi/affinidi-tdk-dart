@@ -4,16 +4,13 @@ import 'package:ssi/ssi.dart';
 class DidSignerFixture {
   /// Returns a DidSigner constructed from the seed using ecdsa_secp256k1_sha256
   static Future<DidSigner> withSeed(String seed) => _didSignerFromSeed(
-        seed: seed,
-        signatureScheme: SignatureScheme.ecdsa_secp256k1_sha256,
-      );
+    seed: seed,
+    signatureScheme: SignatureScheme.ecdsa_secp256k1_sha256,
+  );
 
-  /// Returns a DidSigner constructed from the seed using ed25519_sha256 which does not have an alg
+  /// Returns a DidSigner constructed from the seed using ed25519 which does not have an alg
   static Future<DidSigner> withInvalidAlgorithm(String seed) =>
-      _didSignerFromSeed(
-        seed: seed,
-        signatureScheme: SignatureScheme.ed25519_sha256,
-      );
+      _didSignerFromSeed(seed: seed, signatureScheme: SignatureScheme.ed25519);
 
   static Future<DidSigner> _didSignerFromSeed({
     required String seed,
@@ -24,7 +21,7 @@ class DidSignerFixture {
 
     final didDoc = DidKey.generateDocument(keyPair.publicKey);
     return DidSigner(
-      didDocument: didDoc,
+      did: didDoc.id,
       didKeyId: didDoc.verificationMethod.first.id,
       keyPair: keyPair,
       signatureScheme: signatureScheme,

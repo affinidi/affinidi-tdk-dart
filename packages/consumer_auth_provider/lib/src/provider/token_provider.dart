@@ -30,31 +30,35 @@ abstract class TokenProvider {
 
     final alg = signatureScheme.alg!;
     final did = signer.did;
-    final kid = signer.didKeyId;
+    final kid = signer.keyId;
 
-    final header = getHeader(
-      alg: alg,
-      kid: kid,
-    );
-    final jwt = await _getSignedJwtToken(
-      signer: signer,
-      did: did,
-      header: header,
-      tokenEndpoint: audience,
-      signatureScheme: signatureScheme,
-      expiration: expiration,
-      subject: subject,
-    );
-    return jwt;
+    final header = getHeader(alg: alg, kid: kid);
+    try {
+      final jwt = await _getSignedJwtToken(
+        signer: signer,
+        did: did,
+        header: header,
+        tokenEndpoint: audience,
+        signatureScheme: signatureScheme,
+        expiration: expiration,
+        subject: subject,
+      );
+      return jwt;
+    } on SsiException catch (e, st) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Signer must define signature scheme.',
+          code: TdkExceptionType.unableToGetSignatureScheme.code,
+        ),
+        st,
+      );
+    }
   }
 
   /// Retrieves the header as a map of key-value pairs.
   ///
   /// Returns `Map<String, dynamic>` representing the header.
-  Map<String, dynamic> getHeader({
-    required String alg,
-    required String kid,
-  }) {
+  Map<String, dynamic> getHeader({required String alg, required String kid}) {
     return {'alg': alg, 'kid': kid};
   }
 
@@ -76,17 +80,17 @@ abstract class TokenProvider {
         exp: expiration,
       ),
     );
-    final b64header =
-        _getBase64Unpadded(base64UrlEncode(utf8.encode(jsonHeader)));
-    final b64payload =
-        _getBase64Unpadded(base64UrlEncode(utf8.encode(payload)));
+    final b64header = _getBase64Unpadded(
+      base64UrlEncode(utf8.encode(jsonHeader)),
+    );
+    final b64payload = _getBase64Unpadded(
+      base64UrlEncode(utf8.encode(payload)),
+    );
     final msgHashHex = utf8.encode('$b64header.$b64payload');
 
     final signedDigest = await signer.sign(Uint8List.fromList(msgHashHex));
 
-    return '$b64header.$b64payload.${_getBase64Unpadded(
-      base64UrlEncode(Uint8List.fromList(signedDigest)),
-    )}';
+    return '$b64header.$b64payload.${_getBase64Unpadded(base64UrlEncode(Uint8List.fromList(signedDigest)))}';
   }
 
   /// Retrieves the payload from a token.
@@ -98,8 +102,8 @@ abstract class TokenProvider {
     required String aud,
     required int exp,
   }) {
-    final issueTimeS =
-        (DateTime.timestamp().millisecondsSinceEpoch / 1000).floor();
+    final issueTimeS = (DateTime.timestamp().millisecondsSinceEpoch / 1000)
+        .floor();
     final payload = {
       'iss': iss,
       'sub': sub,
