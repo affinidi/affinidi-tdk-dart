@@ -1,6 +1,7 @@
 import 'package:uuid/uuid.dart';
 import 'package:test/test.dart';
 import 'package:affinidi_tdk_iam_client/affinidi_tdk_iam_client.dart';
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 
 import 'helpers/helpers.dart';
 
@@ -15,9 +16,13 @@ void main() {
       final env = getProjectEnvironment();
       tokenId = env.tokenId;
 
+      final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
+      String basePathOverride =
+          replaceBaseDomain(AffinidiTdkIamClient.basePath, apiGwUrl);
+
       final iamClient = AffinidiTdkIamClient(
-        authTokenHook: ResourceFactory.getAuthTokenHook(),
-      );
+          authTokenHook: ResourceFactory.getAuthTokenHook(),
+          basePathOverride: basePathOverride);
 
       policiesApi = iamClient.getPoliciesApi();
       projectsApi = iamClient.getProjectsApi();
@@ -34,8 +39,8 @@ void main() {
           ..principalType = principalType;
 
         final statusCode = (await projectsApi.addPrincipalToProject(
-          addUserToProjectInput: addUserToProjectInputBuilder.build(),
-        )).statusCode;
+                addUserToProjectInput: addUserToProjectInputBuilder.build()))
+            .statusCode;
 
         expect(statusCode, 204);
       });
@@ -50,9 +55,8 @@ void main() {
 
       test('Remove principal from project', () async {
         final statusCode = (await projectsApi.deletePrincipalFromProject(
-          principalId: testPrincipalId,
-          principalType: principalType,
-        )).statusCode;
+                principalId: testPrincipalId, principalType: principalType))
+            .statusCode;
 
         expect(statusCode, 204);
       });
@@ -60,9 +64,8 @@ void main() {
 
     test('Reads PAT policies', () async {
       final result = (await policiesApi.getPolicies(
-        principalId: tokenId,
-        principalType: 'token',
-      )).data;
+              principalId: tokenId, principalType: 'token'))
+          .data;
 
       expect(result?.version, isNotNull);
       expect(result?.statement, isNotNull);

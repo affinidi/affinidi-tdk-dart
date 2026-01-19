@@ -16,7 +16,7 @@ void main() {
     final keyPair = await wallet.generateKey(keyId: "m/44'/60'/0'/0'/0'");
     final didDoc = DidKey.generateDocument(keyPair.publicKey);
     final didSigner = DidSigner(
-      didDocument: didDoc,
+      did: didDoc.id,
       didKeyId: didDoc.verificationMethod.first.id,
       keyPair: keyPair,
       signatureScheme: SignatureScheme.ecdsa_secp256k1_sha256,
@@ -27,36 +27,30 @@ void main() {
   });
 
   group('ConsumerAuthProvider Tests', () {
-    test(
-      'with a Dio Client - obtains a consumer scoped token and caches it',
-      () async {
-        final consumerAuthToken1 = await providerWithClient
-            .fetchConsumerToken();
-        expect(consumerAuthToken1, isNotEmpty);
+    test('with a Dio Client - obtains a consumer scoped token and caches it',
+        () async {
+      final consumerAuthToken1 = await providerWithClient.fetchConsumerToken();
+      expect(consumerAuthToken1, isNotEmpty);
 
-        final consumerAuthToken2 = await providerWithClient
-            .fetchConsumerToken();
-        expect(consumerAuthToken2, equals(consumerAuthToken1));
-      },
-    );
+      final consumerAuthToken2 = await providerWithClient.fetchConsumerToken();
+      expect(consumerAuthToken2, equals(consumerAuthToken1));
+    });
 
     test('with a Dio Client - obtains a cis scoped token', () async {
       final cisAuthToken = await providerWithClient.fetchCisToken();
       expect(cisAuthToken, isNotEmpty);
     });
 
-    test(
-      'without a Dio client - obtains a consumer scoped token and caches it',
-      () async {
-        final consumerAuthToken1 = await providerWithoutClient
-            .fetchConsumerToken();
-        expect(consumerAuthToken1, isNotEmpty);
+    test('without a Dio client - obtains a consumer scoped token and caches it',
+        () async {
+      final consumerAuthToken1 =
+          await providerWithoutClient.fetchConsumerToken();
+      expect(consumerAuthToken1, isNotEmpty);
 
-        final consumerAuthToken2 = await providerWithoutClient
-            .fetchConsumerToken();
-        expect(consumerAuthToken2, equals(consumerAuthToken1));
-      },
-    );
+      final consumerAuthToken2 =
+          await providerWithoutClient.fetchConsumerToken();
+      expect(consumerAuthToken2, equals(consumerAuthToken1));
+    });
 
     test('without a Dio client - obtains a cis scoped token', () async {
       final cisAuthToken = await providerWithoutClient.fetchCisToken();

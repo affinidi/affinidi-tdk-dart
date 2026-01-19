@@ -6,3 +6,5 @@ workspace:
   - didcomm_mediator_client
   - vdsp
   - vdip
+repository: https://github.com/affinidi/affinidi-tdk-dart
+resolution: workspace

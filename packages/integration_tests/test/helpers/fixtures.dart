@@ -22,7 +22,7 @@ class Fixtures {
 }
 
 Fixtures getFixtures() {
-  final env = DotEnv()..load(['.env']);
+  final env = DotEnv()..load(['../../.env']);
 
   if (!env.isEveryDefined([
     'IOTA_CONFIGURATION',
@@ -34,8 +34,7 @@ Fixtures getFixtures() {
     'CREDENTIAL_ISSUANCE_DATA',
   ])) {
     throw Exception(
-      'Missing environment variables. Please provide IOTA_CONFIGURATION, IOTA_PRESENTATION_DEFINITION, IOTA_PRESENTATION_SUBMISSION, VERIFIABLE_CREDENTIAL, VERIFIABLE_PRESENTATION, UNSIGNED_CREDENTIAL_PARAMS, CREDENTIAL_ISSUANCE_DATA',
-    );
+        'Missing environment variables. Please provide IOTA_CONFIGURATION, IOTA_PRESENTATION_DEFINITION, IOTA_PRESENTATION_SUBMISSION, VERIFIABLE_CREDENTIAL, VERIFIABLE_PRESENTATION, UNSIGNED_CREDENTIAL_PARAMS, CREDENTIAL_ISSUANCE_DATA');
   }
 
   final iotaConfiguration = env['IOTA_CONFIGURATION']!;
