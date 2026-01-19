@@ -17,14 +17,15 @@ class EdgeFileStorage implements FileStorage {
     required String profileId,
     required EdgeEncryptionServiceInterface encryptionService,
     FileProviderConfiguration? configuration,
-  })  : _repository = repository,
-        _id = id,
-        _profileId = profileId,
-        _encryptionService = encryptionService,
-        _maxFileSize =
-            configuration?.maxFileSize ?? FileUtils.defaultMaxFileSize,
-        _allowedExtensions = configuration?.allowedExtensions ??
-            FileUtils.defaultAllowedExtensions;
+  }) : _repository = repository,
+       _id = id,
+       _profileId = profileId,
+       _encryptionService = encryptionService,
+       _maxFileSize =
+           configuration?.maxFileSize ?? FileUtils.defaultMaxFileSize,
+       _allowedExtensions =
+           configuration?.allowedExtensions ??
+           FileUtils.defaultAllowedExtensions;
 
   final EdgeFileRepositoryInterface _repository;
   final String _id;
@@ -56,8 +57,10 @@ class EdgeFileStorage implements FileStorage {
     if (!FileUtils.isFileSizeValid(data.length, _maxFileSize)) {
       Error.throwWithStackTrace(
         TdkException(
-          message:
-              FileUtils.createFileSizeErrorMessage(data.length, _maxFileSize),
+          message: FileUtils.createFileSizeErrorMessage(
+            data.length,
+            _maxFileSize,
+          ),
           code: TdkExceptionType.invalidFileSize.code,
         ),
         StackTrace.current,
@@ -69,15 +72,18 @@ class EdgeFileStorage implements FileStorage {
       Error.throwWithStackTrace(
         TdkException(
           message: FileUtils.createFileExtensionErrorMessage(
-              fileName, _allowedExtensions),
+            fileName,
+            _allowedExtensions,
+          ),
           code: TdkExceptionType.invalidFileType.code,
         ),
         StackTrace.current,
       );
     }
 
-    final sanitizedParentFolderId =
-        _convertToRootFolderIfNeeded(parentFolderId);
+    final sanitizedParentFolderId = _convertToRootFolderIfNeeded(
+      parentFolderId,
+    );
 
     final encryptedContent = await _encryptionService.encryptData(data);
     final encryptedFileName = await _encryptionService.encryptString(fileName);
@@ -97,11 +103,13 @@ class EdgeFileStorage implements FileStorage {
     required String parentFolderId,
     VaultCancelToken? cancelToken,
   }) async {
-    final sanitizedParentFolderId =
-        _convertToRootFolderIfNeeded(parentFolderId);
+    final sanitizedParentFolderId = _convertToRootFolderIfNeeded(
+      parentFolderId,
+    );
 
-    final encryptedFolderName =
-        await _encryptionService.encryptString(folderName);
+    final encryptedFolderName = await _encryptionService.encryptString(
+      folderName,
+    );
 
     final folderData = await _repository.createFolder(
       profileId: _profileId,
@@ -169,8 +177,9 @@ class EdgeFileStorage implements FileStorage {
   }) async {
     final encryptedContent = await _repository.getFileContent(fileId: fileId);
 
-    final decryptedContent =
-        await _encryptionService.decryptData(encryptedContent);
+    final decryptedContent = await _encryptionService.decryptData(
+      encryptedContent,
+    );
 
     return decryptedContent;
   }
@@ -232,7 +241,9 @@ class EdgeFileStorage implements FileStorage {
       Error.throwWithStackTrace(
         TdkException(
           message: FileUtils.createFileExtensionErrorMessage(
-              newName, _allowedExtensions),
+            newName,
+            _allowedExtensions,
+          ),
           code: TdkExceptionType.invalidFileType.code,
         ),
         StackTrace.current,
@@ -240,10 +251,7 @@ class EdgeFileStorage implements FileStorage {
     }
 
     final encryptedNewName = await _encryptionService.encryptString(newName);
-    await _repository.renameFile(
-      fileId: fileId,
-      newName: encryptedNewName,
-    );
+    await _repository.renameFile(fileId: fileId, newName: encryptedNewName);
   }
 
   @override

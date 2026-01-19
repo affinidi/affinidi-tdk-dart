@@ -10,18 +10,15 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
   EdgeDriftFileRepository._({
     required db.Database database,
     required String profileId,
-  })  : _database = database,
-        _profileId = profileId;
+  }) : _database = database,
+       _profileId = profileId;
 
   /// Creates a new instance of [EdgeDriftFileRepository].
   factory EdgeDriftFileRepository({
     required db.Database database,
     required String profileId,
   }) {
-    return EdgeDriftFileRepository._(
-      database: database,
-      profileId: profileId,
-    );
+    return EdgeDriftFileRepository._(database: database, profileId: profileId);
   }
 
   final db.Database _database;
@@ -35,17 +32,20 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
     String? parentFolderId,
   }) async {
     if (parentFolderId != null) {
-      final parentFolder = await (_database.select(_database.items)
-            ..where((filter) =>
-                filter.id.equals(parentFolderId) &
-                filter.itemType.equals(db.ItemType.folder.value) &
-                filter.profileId.equals(_profileId)))
-          .getSingleOrNull();
+      final parentFolder =
+          await (_database.select(_database.items)..where(
+                (filter) =>
+                    filter.id.equals(parentFolderId) &
+                    filter.itemType.equals(db.ItemType.folder.value) &
+                    filter.profileId.equals(_profileId),
+              ))
+              .getSingleOrNull();
       if (parentFolder == null) {
         Error.throwWithStackTrace(
           TdkException(
-              message: '''Parent folder does not exist''',
-              code: TdkExceptionType.invalidParentFolderId.code),
+            message: '''Parent folder does not exist''',
+            code: TdkExceptionType.invalidParentFolderId.code,
+          ),
           StackTrace.current,
         );
       }
@@ -81,17 +81,20 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
     String? parentFolderId,
   }) async {
     if (parentFolderId != null) {
-      final parentFolder = await (_database.select(_database.items)
-            ..where((filter) =>
-                filter.id.equals(parentFolderId) &
-                filter.itemType.equals(db.ItemType.folder.value) &
-                filter.profileId.equals(_profileId)))
-          .getSingleOrNull();
+      final parentFolder =
+          await (_database.select(_database.items)..where(
+                (filter) =>
+                    filter.id.equals(parentFolderId) &
+                    filter.itemType.equals(db.ItemType.folder.value) &
+                    filter.profileId.equals(_profileId),
+              ))
+              .getSingleOrNull();
       if (parentFolder == null) {
         Error.throwWithStackTrace(
           TdkException(
-              message: '''Parent folder does not exist''',
-              code: TdkExceptionType.invalidParentFolderId.code),
+            message: '''Parent folder does not exist''',
+            code: TdkExceptionType.invalidParentFolderId.code,
+          ),
           StackTrace.current,
         );
       }
@@ -109,18 +112,21 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
     await _database.into(_database.items).insert(folderItem);
 
     // Verify the folder was created with correct parentId
-    final createdFolder = await (_database.select(_database.items)
-          ..where((filter) =>
-              filter.id.equals(folderId) &
-              filter.itemType.equals(db.ItemType.folder.value) &
-              filter.profileId.equals(_profileId)))
-        .getSingleOrNull();
+    final createdFolder =
+        await (_database.select(_database.items)..where(
+              (filter) =>
+                  filter.id.equals(folderId) &
+                  filter.itemType.equals(db.ItemType.folder.value) &
+                  filter.profileId.equals(_profileId),
+            ))
+            .getSingleOrNull();
 
     if (createdFolder == null) {
       Error.throwWithStackTrace(
         TdkException(
-            message: 'Failed to create folder',
-            code: TdkExceptionType.unableToCreateFolder.code),
+          message: 'Failed to create folder',
+          code: TdkExceptionType.unableToCreateFolder.code,
+        ),
         StackTrace.current,
       );
     }
@@ -137,61 +143,64 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
   @override
   Future<void> deleteFile({required String fileId}) async {
     await _database.transaction(() async {
-      await (_database.delete(_database.fileContents)
-            ..where((filter) => filter.id.equals(fileId)))
-          .go();
+      await (_database.delete(
+        _database.fileContents,
+      )..where((filter) => filter.id.equals(fileId))).go();
 
-      await (_database.delete(_database.items)
-            ..where((filter) => filter.id.equals(fileId)))
-          .go();
+      await (_database.delete(
+        _database.items,
+      )..where((filter) => filter.id.equals(fileId))).go();
     });
   }
 
   @override
-  Future<bool> deleteFolder({
-    required String folderId,
-  }) async {
+  Future<bool> deleteFolder({required String folderId}) async {
     final existingFolder = await _getExistingFolder(folderId);
     if (existingFolder == null) {
       Error.throwWithStackTrace(
         TdkException(
-            message: '''Folder does not exist''',
-            code: TdkExceptionType.invalidFolderId.code),
+          message: '''Folder does not exist''',
+          code: TdkExceptionType.invalidFolderId.code,
+        ),
         StackTrace.current,
       );
     }
 
-    final atLeatsOneChild = await (_database.select(_database.items)
-          ..where((filter) => filter.parentId.equals(folderId)))
-        .getSingleOrNull();
+    final atLeatsOneChild = await (_database.select(
+      _database.items,
+    )..where((filter) => filter.parentId.equals(folderId))).getSingleOrNull();
     if (atLeatsOneChild != null) {
       Error.throwWithStackTrace(
         TdkException(
-            message: '''Folder has content and cannot be deleted''',
-            code: TdkExceptionType.unableToDeleteFolderWithContent.code),
+          message: '''Folder has content and cannot be deleted''',
+          code: TdkExceptionType.unableToDeleteFolderWithContent.code,
+        ),
         StackTrace.current,
       );
     }
 
-    final affectedRows = await (_database.delete(_database.items)
-          ..where((filter) => filter.id.equals(folderId)))
-        .go();
+    final affectedRows = await (_database.delete(
+      _database.items,
+    )..where((filter) => filter.id.equals(folderId))).go();
     return affectedRows > 0;
   }
 
   @override
   Future<File> getFile({required String fileId}) async {
-    final file = await (_database.select(_database.items)
-          ..where((filter) =>
-              filter.id.equals(fileId) &
-              filter.itemType.equals(db.ItemType.file.value)))
-        .getSingleOrNull();
+    final file =
+        await (_database.select(_database.items)..where(
+              (filter) =>
+                  filter.id.equals(fileId) &
+                  filter.itemType.equals(db.ItemType.file.value),
+            ))
+            .getSingleOrNull();
 
     if (file == null) {
       Error.throwWithStackTrace(
         TdkException(
-            message: '''File does not exist''',
-            code: TdkExceptionType.invalidFileId.code),
+          message: '''File does not exist''',
+          code: TdkExceptionType.invalidFileId.code,
+        ),
         StackTrace.current,
       );
     }
@@ -207,15 +216,16 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
 
   @override
   Future<Uint8List> getFileContent({required String fileId}) async {
-    final content = await (_database.select(_database.fileContents)
-          ..where((filter) => filter.id.equals(fileId)))
-        .getSingleOrNull();
+    final content = await (_database.select(
+      _database.fileContents,
+    )..where((filter) => filter.id.equals(fileId))).getSingleOrNull();
 
     if (content == null) {
       Error.throwWithStackTrace(
         TdkException(
-            message: '''File content does not exist''',
-            code: TdkExceptionType.invalidFileId.code),
+          message: '''File content does not exist''',
+          code: TdkExceptionType.invalidFileId.code,
+        ),
         StackTrace.current,
       );
     }
@@ -233,16 +243,19 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
       final existingFolder = await _getExistingFolder(folderId);
       if (existingFolder == null) {
         return PaginatedList(
-            items: []); // Return empty paginated list for non-existent folders
+          items: [],
+        ); // Return empty paginated list for non-existent folders
       }
     }
 
     var query = _database.select(_database.items)
-      ..where((filter) =>
-          filter.profileId.equals(_profileId) &
-          (folderId != null && folderId.isNotEmpty
-              ? filter.parentId.equals(folderId)
-              : filter.parentId.isNull()));
+      ..where(
+        (filter) =>
+            filter.profileId.equals(_profileId) &
+            (folderId != null && folderId.isNotEmpty
+                ? filter.parentId.equals(folderId)
+                : filter.parentId.isNull()),
+      );
 
     final offset = int.tryParse(exclusiveStartItemId ?? '') ?? 0;
 
@@ -287,17 +300,20 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
     required String fileId,
     required String newName,
   }) async {
-    final file = await (_database.select(_database.items)
-          ..where((filter) =>
-              filter.id.equals(fileId) &
-              filter.itemType.equals(db.ItemType.file.value)))
-        .getSingleOrNull();
+    final file =
+        await (_database.select(_database.items)..where(
+              (filter) =>
+                  filter.id.equals(fileId) &
+                  filter.itemType.equals(db.ItemType.file.value),
+            ))
+            .getSingleOrNull();
 
     if (file == null) {
       Error.throwWithStackTrace(
         TdkException(
-            message: '''File does not exist''',
-            code: TdkExceptionType.invalidFileId.code),
+          message: '''File does not exist''',
+          code: TdkExceptionType.invalidFileId.code,
+        ),
         StackTrace.current,
       );
     }
@@ -316,25 +332,29 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
     if (existingFolder == null) {
       Error.throwWithStackTrace(
         TdkException(
-            message: '''Folder does not exist''',
-            code: TdkExceptionType.invalidFolderId.code),
+          message: '''Folder does not exist''',
+          code: TdkExceptionType.invalidFolderId.code,
+        ),
         StackTrace.current,
       );
     }
 
-    final affectedRows = await (_database.update(_database.items)
-          ..where((filter) => filter.id.equals(folderId)))
-        .write(db.ItemsCompanion(name: Value(newName)));
+    final affectedRows =
+        await (_database.update(_database.items)
+              ..where((filter) => filter.id.equals(folderId)))
+            .write(db.ItemsCompanion(name: Value(newName)));
 
     return affectedRows > 0;
   }
 
   Future<db.Item?> _getExistingFolder(String folderId) async {
-    final existingFolder = await (_database.select(_database.items)
-          ..where((filter) =>
-              filter.id.equals(folderId) &
-              filter.itemType.equals(db.ItemType.folder.value)))
-        .getSingleOrNull();
+    final existingFolder =
+        await (_database.select(_database.items)..where(
+              (filter) =>
+                  filter.id.equals(folderId) &
+                  filter.itemType.equals(db.ItemType.folder.value),
+            ))
+            .getSingleOrNull();
     return existingFolder;
   }
 }

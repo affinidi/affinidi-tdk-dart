@@ -3,7 +3,7 @@ import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediat
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../../../tests/integration/dart/test/test_config.dart';
+import 'package:integration_tests/test/test_config.dart';
 
 void main() async {
   // Run commands below in your terminal to generate keys for Alice and Bob:
@@ -40,19 +40,13 @@ void main() async {
 
   await aliceKeyStore.set(
     aliceKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: alicePrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: alicePrivateKeyBytes),
   );
 
   await aliceDidManager.addVerificationMethod(aliceKeyId);
   final aliceDidDocument = await aliceDidManager.getDidDocument();
 
-  prettyPrint(
-    'Alice DID',
-    object: aliceDidDocument.id,
-  );
+  prettyPrint('Alice DID', object: aliceDidDocument.id);
 
   final aliceSigner = await aliceDidManager.getSigner(
     aliceDidDocument.assertionMethod.first.id,
@@ -65,25 +59,17 @@ void main() async {
 
   await bobKeyStore.set(
     bobKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: bobPrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: bobPrivateKeyBytes),
   );
 
   await bobDidManager.addVerificationMethod(bobKeyId);
   final bobDidDocument = await bobDidManager.getDidDocument();
 
   // Serialized bobDidDocument needs to shared with sender
-  prettyPrint(
-    'Bob DID Document',
-    object: bobDidDocument,
-  );
+  prettyPrint('Bob DID Document', object: bobDidDocument);
 
-  final bobMediatorDocument =
-      await UniversalDIDResolver.defaultResolver.resolveDid(
-    await readDid(config.mediatorDidPath),
-  );
+  final bobMediatorDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(await readDid(config.mediatorDidPath));
 
   await config.configureAcl(
     mediatorDidDocument: bobMediatorDocument,
@@ -101,20 +87,17 @@ void main() async {
 
   alicePlainTextMassage['custom-header'] = 'custom-value';
 
-  prettyPrint(
-    'Plain Text Message for Bob',
-    object: alicePlainTextMassage,
-  );
+  prettyPrint('Plain Text Message for Bob', object: alicePlainTextMassage);
 
   final aliceSignedAndEncryptedMessage =
       await DidcommMessage.packIntoSignedAndEncryptedMessages(
-    alicePlainTextMassage,
-    keyType: [bobDidDocument].getCommonKeyTypesInKeyAgreements().first,
-    recipientDidDocuments: [bobDidDocument],
-    keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
-    encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
-    signer: aliceSigner,
-  );
+        alicePlainTextMassage,
+        keyType: [bobDidDocument].getCommonKeyTypesInKeyAgreements().first,
+        recipientDidDocuments: [bobDidDocument],
+        keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
+        encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
+        signer: aliceSigner,
+      );
 
   prettyPrint(
     'Encrypted and Signed Message by Alice',
@@ -173,15 +156,15 @@ void main() async {
     (message) async {
       final unpackedMessageByBob =
           await DidcommMessage.unpackToPlainTextMessage(
-        message: message,
-        recipientDidManager: bobDidManager,
-        expectedMessageWrappingTypes: [
-          MessageWrappingType.authcryptPlaintext,
-          MessageWrappingType.authcryptSignPlaintext,
-          MessageWrappingType.anoncryptSignPlaintext,
-          MessageWrappingType.anoncryptAuthcryptPlaintext,
-        ],
-      );
+            message: message,
+            recipientDidManager: bobDidManager,
+            expectedMessageWrappingTypes: [
+              MessageWrappingType.authcryptPlaintext,
+              MessageWrappingType.authcryptSignPlaintext,
+              MessageWrappingType.anoncryptSignPlaintext,
+              MessageWrappingType.anoncryptAuthcryptPlaintext,
+            ],
+          );
 
       prettyPrint(
         'Unpacked Plain Text Message received by Bob via Mediator',
@@ -197,7 +180,5 @@ void main() async {
 
   await ConnectionPool.instance.startConnections();
 
-  await aliceMediatorClient.sendMessage(
-    forwardMessage,
-  );
+  await aliceMediatorClient.sendMessage(forwardMessage);
 }

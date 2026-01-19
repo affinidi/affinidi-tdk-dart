@@ -13,13 +13,14 @@ void main() {
 
     setUp(() {
       final testDir = Directory.current.path;
-      final keyOpensslRSA2048 =
-          File(path.join(testDir, 'test', 'pem', 'openssl-rsa2048.pem'))
-              .readAsStringSync();
+      final keyOpensslRSA2048 = File(
+        path.join(testDir, 'test', 'pem', 'openssl-rsa2048.pem'),
+      ).readAsStringSync();
       authProvider = AuthProvider(
-          projectId: mockProjectId,
-          tokenId: mockTokenId,
-          privateKey: keyOpensslRSA2048);
+        projectId: mockProjectId,
+        tokenId: mockTokenId,
+        privateKey: keyOpensslRSA2048,
+      );
     });
 
     test('createIotaToken returns valid token and session', () {
@@ -28,7 +29,10 @@ void main() {
       final sessionId = 'test-session';
 
       final result = authProvider.createIotaToken(
-          iotaConfigId: iotaConfigId, did: did, iotaSessionId: sessionId);
+        iotaConfigId: iotaConfigId,
+        did: did,
+        iotaSessionId: sessionId,
+      );
 
       expect(result.iotaSessionId, equals(sessionId));
       expect(result.iotaJwt, isNotEmpty);
@@ -51,8 +55,10 @@ void main() {
       final iotaConfigId = 'test-iota-config';
       final did = 'did:test:123';
 
-      final result =
-          authProvider.createIotaToken(iotaConfigId: iotaConfigId, did: did);
+      final result = authProvider.createIotaToken(
+        iotaConfigId: iotaConfigId,
+        did: did,
+      );
 
       expect(result.iotaSessionId, isNotEmpty);
       expect(result.iotaJwt, isNotEmpty);

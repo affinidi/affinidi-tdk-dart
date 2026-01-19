@@ -26,32 +26,38 @@ void main() {
 
     group('and setting the seed', () {
       test('it stores it as base64', () async {
-        when(() => mockStorage.write(
-              key: any(named: 'key'),
-              value: any(named: 'value'),
-            )).thenAnswer((_) async {});
+        when(
+          () => mockStorage.write(
+            key: any(named: 'key'),
+            value: any(named: 'value'),
+          ),
+        ).thenAnswer((_) async {});
 
         await vaultStore.setSeed(testSeed);
 
-        verify(() => mockStorage.write(
-              key: '${vaultId}_seed',
-              value: base64Encode(testSeed),
-            )).called(1);
+        verify(
+          () => mockStorage.write(
+            key: '${vaultId}_seed',
+            value: base64Encode(testSeed),
+          ),
+        ).called(1);
       });
     });
 
     group('and getting the seed', () {
       test('it returns the stored seed', () async {
-        when(() => mockStorage.read(key: '${vaultId}_seed'))
-            .thenAnswer((_) async => base64Encode(testSeed));
+        when(
+          () => mockStorage.read(key: '${vaultId}_seed'),
+        ).thenAnswer((_) async => base64Encode(testSeed));
 
         final result = await vaultStore.getSeed();
         expect(result, testSeed);
       });
 
       test('it returns null if no seed is stored', () async {
-        when(() => mockStorage.read(key: '${vaultId}_seed'))
-            .thenAnswer((_) async => null);
+        when(
+          () => mockStorage.read(key: '${vaultId}_seed'),
+        ).thenAnswer((_) async => null);
         expect(await vaultStore.getSeed(), isNull);
       });
     });
@@ -60,34 +66,38 @@ void main() {
   group('When managing account index', () {
     group('and storing the index', () {
       test('it stores it as a string', () async {
-        when(() => mockStorage.write(
-              key: any(named: 'key'),
-              value: any(named: 'value'),
-            )).thenAnswer((_) async {});
+        when(
+          () => mockStorage.write(
+            key: any(named: 'key'),
+            value: any(named: 'value'),
+          ),
+        ).thenAnswer((_) async {});
 
         await vaultStore.setAccountIndex(5);
-        verify(() => mockStorage.write(
-              key: '${vaultId}_accountIndex',
-              value: '5',
-            )).called(1);
+        verify(
+          () => mockStorage.write(key: '${vaultId}_accountIndex', value: '5'),
+        ).called(1);
       });
     });
 
     group('and reading the index', () {
       test('it returns the stored integer', () async {
-        when(() => mockStorage.read(key: '${vaultId}_accountIndex'))
-            .thenAnswer((_) async => '7');
+        when(
+          () => mockStorage.read(key: '${vaultId}_accountIndex'),
+        ).thenAnswer((_) async => '7');
         final index = await vaultStore.getAccountIndex();
         expect(index, 7);
       });
 
       test('it returns 0 if null or invalid', () async {
-        when(() => mockStorage.read(key: '${vaultId}_accountIndex'))
-            .thenAnswer((_) async => null);
+        when(
+          () => mockStorage.read(key: '${vaultId}_accountIndex'),
+        ).thenAnswer((_) async => null);
         expect(await vaultStore.getAccountIndex(), 0);
 
-        when(() => mockStorage.read(key: '${vaultId}_accountIndex'))
-            .thenAnswer((_) async => 'invalid');
+        when(
+          () => mockStorage.read(key: '${vaultId}_accountIndex'),
+        ).thenAnswer((_) async => 'invalid');
         expect(await vaultStore.getAccountIndex(), 0);
       });
     });
@@ -98,32 +108,38 @@ void main() {
 
     group('and setting the content key', () {
       test('it stores it as base64', () async {
-        when(() => mockStorage.write(
-              key: any(named: 'key'),
-              value: any(named: 'value'),
-            )).thenAnswer((_) async {});
+        when(
+          () => mockStorage.write(
+            key: any(named: 'key'),
+            value: any(named: 'value'),
+          ),
+        ).thenAnswer((_) async {});
 
         await vaultStore.setContentKey(testContentKey);
 
-        verify(() => mockStorage.write(
-              key: '${vaultId}_contentKey',
-              value: base64Encode(testContentKey),
-            )).called(1);
+        verify(
+          () => mockStorage.write(
+            key: '${vaultId}_contentKey',
+            value: base64Encode(testContentKey),
+          ),
+        ).called(1);
       });
     });
 
     group('and getting the contentKey', () {
       test('it returns the stored content key', () async {
-        when(() => mockStorage.read(key: '${vaultId}_contentKey'))
-            .thenAnswer((_) async => base64Encode(testContentKey));
+        when(
+          () => mockStorage.read(key: '${vaultId}_contentKey'),
+        ).thenAnswer((_) async => base64Encode(testContentKey));
 
         final result = await vaultStore.getContentKey();
         expect(result, testContentKey);
       });
 
       test('it returns null if no contentKey is stored', () async {
-        when(() => mockStorage.read(key: '${vaultId}_contentKey'))
-            .thenAnswer((_) async => null);
+        when(
+          () => mockStorage.read(key: '${vaultId}_contentKey'),
+        ).thenAnswer((_) async => null);
         expect(await vaultStore.getContentKey(), isNull);
       });
     });
@@ -131,12 +147,14 @@ void main() {
 
   group('When clearing vault data', () {
     test('it removes accountIndex and seed', () async {
-      when(() => mockStorage.delete(key: any(named: 'key')))
-          .thenAnswer((_) async {});
+      when(
+        () => mockStorage.delete(key: any(named: 'key')),
+      ).thenAnswer((_) async {});
 
       await vaultStore.clear();
-      verify(() => mockStorage.delete(key: '${vaultId}_accountIndex'))
-          .called(1);
+      verify(
+        () => mockStorage.delete(key: '${vaultId}_accountIndex'),
+      ).called(1);
       verify(() => mockStorage.delete(key: '${vaultId}_seed')).called(1);
       verify(() => mockStorage.delete(key: '${vaultId}_contentKey')).called(1);
     });

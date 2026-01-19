@@ -20,13 +20,11 @@ class FolderFixtures {
   }
 
   static Folder get testFolder => createFolder(
-        id: 'test-folder-id',
-        name: 'test-folder',
-        parentId: 'parent-folder-id',
-      );
+    id: 'test-folder-id',
+    name: 'test-folder',
+    parentId: 'parent-folder-id',
+  );
 
-  static Folder get rootFolder => createFolder(
-        id: 'root-folder-id',
-        name: 'root-folder',
-      );
+  static Folder get rootFolder =>
+      createFolder(id: 'root-folder-id', name: 'root-folder');
 }

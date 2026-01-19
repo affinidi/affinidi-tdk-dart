@@ -77,10 +77,7 @@ void main() {
     });
 
     test('should deserialize from JSON with all fields', () {
-      final json = {
-        'limit': 25,
-        'exclusiveStartKey': 'key-xyz',
-      };
+      final json = {'limit': 25, 'exclusiveStartKey': 'key-xyz'};
 
       final request = GetInstancesListRequestOptions.fromJson(json);
 
@@ -116,10 +113,7 @@ void main() {
     });
 
     test('should handle null values in JSON', () {
-      final json = {
-        'limit': null,
-        'exclusiveStartKey': null,
-      };
+      final json = {'limit': null, 'exclusiveStartKey': null};
 
       final request = GetInstancesListRequestOptions.fromJson(json);
 
@@ -128,10 +122,7 @@ void main() {
     });
 
     test('should handle extra fields in JSON', () {
-      final json = {
-        'limit': 10,
-        'extraField': 'should be ignored',
-      };
+      final json = {'limit': 10, 'extraField': 'should be ignored'};
 
       final request = GetInstancesListRequestOptions.fromJson(json);
 

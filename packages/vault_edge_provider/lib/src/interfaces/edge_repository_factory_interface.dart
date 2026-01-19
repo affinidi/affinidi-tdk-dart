@@ -8,9 +8,7 @@ abstract interface class EdgeRepositoryFactoryInterface {
   EdgeProfileRepositoryInterface createProfileRepository();
 
   /// Returns an EdgeFileRepository to manage local files.
-  EdgeFileRepositoryInterface createFileRepository({
-    required String profileId,
-  });
+  EdgeFileRepositoryInterface createFileRepository({required String profileId});
 
   /// Returns an EdgeCredentialsRepository to manage local credentials.
   EdgeCredentialsRepositoryInterface createCredentialRepository({

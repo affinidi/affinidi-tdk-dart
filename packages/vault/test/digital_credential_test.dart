@@ -18,8 +18,10 @@ void main() {
   group('DigitalCredential', () {
     test('should initialize with correct values', () {
       expect(digitalCredential.id, equals('test-id'));
-      expect(digitalCredential.verifiableCredential,
-          equals(mockVerifiableCredential));
+      expect(
+        digitalCredential.verifiableCredential,
+        equals(mockVerifiableCredential),
+      );
     });
 
     test('should return immutable values', () {

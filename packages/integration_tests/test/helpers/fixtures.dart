@@ -22,7 +22,7 @@ class Fixtures {
 }
 
 Fixtures getFixtures() {
-  final env = DotEnv()..load(['.env']);
+  final env = DotEnv()..load(['../../.env']);
 
   if (!env.isEveryDefined([
     'IOTA_CONFIGURATION',

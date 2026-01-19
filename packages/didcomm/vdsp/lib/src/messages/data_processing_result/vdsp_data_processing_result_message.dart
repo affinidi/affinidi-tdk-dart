@@ -20,13 +20,10 @@ class VdspDataProcessingResultMessage extends PlainTextMessage {
     super.createdTime,
     super.expiresTime,
     super.threadId,
-  }) : super(
-          type: messageType,
-        );
+  }) : super(type: messageType);
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Body payload for a VDSP data processing result message.
 ///
 /// Encapsulates the output of a processing operation and an optional
@@ -36,10 +33,7 @@ class VdspDataProcessingResultBody {
   ///
   /// [result] contains arbitrary structured output produced by processing.
   /// [operation] MAY echo a client supplied correlation identifier.
-  VdspDataProcessingResultBody({
-    required this.result,
-    this.operation,
-  });
+  VdspDataProcessingResultBody({required this.result, this.operation});
 
   /// Identifier of the original operation / correlation id.
   final String? operation;

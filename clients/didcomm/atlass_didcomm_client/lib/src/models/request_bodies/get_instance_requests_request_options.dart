@@ -18,7 +18,8 @@ class GetInstanceRequestsRequestOptions {
 
   /// Creates a [GetInstanceRequestsRequestOptions] from a JSON map.
   factory GetInstanceRequestsRequestOptions.fromJson(
-      Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+  ) {
     return GetInstanceRequestsRequestOptions(
       instanceId: json['mediatorId'] as String?,
       limit: json['limit'] as int?,

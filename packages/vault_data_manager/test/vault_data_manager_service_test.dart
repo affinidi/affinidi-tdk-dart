@@ -34,14 +34,14 @@ import 'mocks/vault_data_manager_encryption_service_mocks.dart';
 void main() {
   late MockVaultDataManagerApiService mockVaultDataManagerApiService;
   late MockVaultDataManagerEncryptionService
-      mockVaultDataManagerEncryptionService;
+  mockVaultDataManagerEncryptionService;
   late VaultDataManagerEncryptionServiceMocks
-      vaultDataManagerEncryptionServiceMocks;
+  vaultDataManagerEncryptionServiceMocks;
   late VaultDataManagerApiServiceMocks vaultDataManagerApiServiceMocks;
   late VaultDataManagerService vaultDataManagerService;
   late VaultDataManagerServiceFactory vaultDataManagerServiceFactory;
   late VaultDelegatedDataManagerServiceFactory
-      vaultDelegatedDataManagerServiceFactory;
+  vaultDelegatedDataManagerServiceFactory;
 
   setUp(() async {
     mockVaultDataManagerApiService = MockVaultDataManagerApiService();
@@ -49,10 +49,11 @@ void main() {
         MockVaultDataManagerEncryptionService();
     vaultDataManagerEncryptionServiceMocks =
         VaultDataManagerEncryptionServiceMocks(
-      mockVaultDataManagerEncryptionService,
+          mockVaultDataManagerEncryptionService,
+        );
+    vaultDataManagerApiServiceMocks = VaultDataManagerApiServiceMocks(
+      mockVaultDataManagerApiService,
     );
-    vaultDataManagerApiServiceMocks =
-        VaultDataManagerApiServiceMocks(mockVaultDataManagerApiService);
     final keyPair = await getRootKeyPair();
     vaultDataManagerService = VaultDataManagerService(
       mockVaultDataManagerEncryptionService,
@@ -68,22 +69,25 @@ void main() {
   });
 
   group(
-      'When creating vault data manager service instance using consumer token',
-      () {
-    group('and it was created successfully,', () {
-      test('it pass without exception thrown', () async {
-        final keyPair = await getRootKeyPair();
+    'When creating vault data manager service instance using consumer token',
+    () {
+      group('and it was created successfully,', () {
+        test('it pass without exception thrown', () async {
+          final keyPair = await getRootKeyPair();
 
-        final vaultDataManagerService = await vaultDataManagerServiceFactory(
-          encryptedDekek: Uint8List(2),
-          keyPair: keyPair,
-        );
+          final vaultDataManagerService = await vaultDataManagerServiceFactory(
+            encryptedDekek: Uint8List(2),
+            keyPair: keyPair,
+          );
 
-        await expectLater(
-            vaultDataManagerService, isA<VaultDataManagerService>());
+          await expectLater(
+            vaultDataManagerService,
+            isA<VaultDataManagerService>(),
+          );
+        });
       });
-    });
-  });
+    },
+  );
 
   group('When creating vault data manager instance using delegated token', () {
     group('and it was created successfully,', () {
@@ -91,13 +95,15 @@ void main() {
         final keyPair = await getRootKeyPair();
         final vaultDataManagerService =
             await vaultDelegatedDataManagerServiceFactory(
-          profileDid: 'profile_did',
-          encryptedDekek: Uint8List(2),
-          keyPair: keyPair,
-        );
+              profileDid: 'profile_did',
+              encryptedDekek: Uint8List(2),
+              keyPair: keyPair,
+            );
 
         await expectLater(
-            vaultDataManagerService, isA<VaultDataManagerService>());
+          vaultDataManagerService,
+          isA<VaultDataManagerService>(),
+        );
       });
     });
   });
@@ -105,90 +111,106 @@ void main() {
   group('When adding verifiable credential to profile', () {
     group('and it is added successfully,', () {
       test(
-          'it calls vault data manager api and encryption services methods once',
-          () async {
-        when(
-          vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
-        ).thenAnswer((_) async => dataEncryptionMaterial);
+        'it calls vault data manager api and encryption services methods once',
+        () async {
+          when(
+            vaultDataManagerEncryptionServiceMocks
+                .generateDataEncryptionMaterial,
+          ).thenAnswer((_) async => dataEncryptionMaterial);
 
-        when(
-          vaultDataManagerApiServiceMocks.uploadVerifiableCredential,
-        ).thenAnswer((_) async =>
-            Response<CreateNodeOK>(requestOptions: RequestOptions(path: '')));
+          when(
+            vaultDataManagerApiServiceMocks.uploadVerifiableCredential,
+          ).thenAnswer(
+            (_) async => Response<CreateNodeOK>(
+              requestOptions: RequestOptions(path: ''),
+            ),
+          );
 
-        await vaultDataManagerService.addVerifiableCredentialToProfile(
-          profileId: profileId,
-          verifiableCredential: credential,
-        );
+          await vaultDataManagerService.addVerifiableCredentialToProfile(
+            profileId: profileId,
+            verifiableCredential: credential,
+          );
 
-        verify(vaultDataManagerEncryptionServiceMocks
-                .generateDataEncryptionMaterial)
-            .called(1);
-        verify(vaultDataManagerApiServiceMocks.uploadVerifiableCredential)
-            .called(1);
-      });
+          verify(
+            vaultDataManagerEncryptionServiceMocks
+                .generateDataEncryptionMaterial,
+          ).called(1);
+          verify(
+            vaultDataManagerApiServiceMocks.uploadVerifiableCredential,
+          ).called(1);
+        },
+      );
     });
   });
 
   group('When creating file', () {
     group('and it is created successfully', () {
       test(
-          'it calls vault data manager api and encryption services methods once',
-          () async {
-        when(
-          vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
-        ).thenAnswer((_) async => dataEncryptionMaterial);
-        when(
-          vaultDataManagerApiServiceMocks.createFile,
-        ).thenAnswer((_) async =>
-            Response<CreateNodeOK>(requestOptions: RequestOptions(path: '')));
+        'it calls vault data manager api and encryption services methods once',
+        () async {
+          when(
+            vaultDataManagerEncryptionServiceMocks
+                .generateDataEncryptionMaterial,
+          ).thenAnswer((_) async => dataEncryptionMaterial);
+          when(vaultDataManagerApiServiceMocks.createFile).thenAnswer(
+            (_) async => Response<CreateNodeOK>(
+              requestOptions: RequestOptions(path: ''),
+            ),
+          );
 
-        await vaultDataManagerService.createFile(
-          fileName: 'file_name.pdf',
-          parentFolderNodeId: 'parent_node_id',
-          data: Uint8List(5),
-        );
+          await vaultDataManagerService.createFile(
+            fileName: 'file_name.pdf',
+            parentFolderNodeId: 'parent_node_id',
+            data: Uint8List(5),
+          );
 
-        verify(vaultDataManagerEncryptionServiceMocks
-                .generateDataEncryptionMaterial)
-            .called(1);
-        verify(vaultDataManagerApiServiceMocks.createFile).called(1);
-      });
+          verify(
+            vaultDataManagerEncryptionServiceMocks
+                .generateDataEncryptionMaterial,
+          ).called(1);
+          verify(vaultDataManagerApiServiceMocks.createFile).called(1);
+        },
+      );
     });
 
     group('and generating encryption material fails,', () {
       test(
-          'it throws exception and never calls vault data manager api service method',
-          () async {
-        when(
-          vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
-        ).thenThrow(
-            TdkException(message: 'something went wrong', code: 'test_code'));
+        'it throws exception and never calls vault data manager api service method',
+        () async {
+          when(
+            vaultDataManagerEncryptionServiceMocks
+                .generateDataEncryptionMaterial,
+          ).thenThrow(
+            TdkException(message: 'something went wrong', code: 'test_code'),
+          );
 
-        await expectLater(
-          vaultDataManagerService.createFile(
-            fileName: 'file_name.pdf',
-            parentFolderNodeId: 'parent_node_id',
-            data: Uint8List(5),
-          ),
-          throwsA(isA<TdkException>()),
-        );
+          await expectLater(
+            vaultDataManagerService.createFile(
+              fileName: 'file_name.pdf',
+              parentFolderNodeId: 'parent_node_id',
+              data: Uint8List(5),
+            ),
+            throwsA(isA<TdkException>()),
+          );
 
-        verifyNever(vaultDataManagerApiServiceMocks.createFile);
-      });
+          verifyNever(vaultDataManagerApiServiceMocks.createFile);
+        },
+      );
     });
   });
 
   group('When creating folder', () {
     group('and it is created successfully,', () {
       test('it calls vault data manager api service method once', () async {
-        when(
-          vaultDataManagerApiServiceMocks.createFolder,
-        ).thenAnswer((_) async =>
-            Response<CreateNodeOK>(requestOptions: RequestOptions(path: '')));
+        when(vaultDataManagerApiServiceMocks.createFolder).thenAnswer(
+          (_) async =>
+              Response<CreateNodeOK>(requestOptions: RequestOptions(path: '')),
+        );
 
         await vaultDataManagerService.createFolder(
-            folderName: 'folder_name', parentNodeId: 'parent_node_id');
+          folderName: 'folder_name',
+          parentNodeId: 'parent_node_id',
+        );
 
         verify(vaultDataManagerApiServiceMocks.createFolder).called(1);
       });
@@ -198,38 +220,42 @@ void main() {
   group('When creating profile', () {
     group('and it is created successfully,', () {
       test(
-          'it calls vault data manager api and encryption services methods once',
-          () async {
-        when(
-          () => mockVaultDataManagerApiService.getListOfProfiles(),
-        ).thenAnswer((_) async => Response(requestOptions: RequestOptions()));
+        'it calls vault data manager api and encryption services methods once',
+        () async {
+          when(
+            () => mockVaultDataManagerApiService.getListOfProfiles(),
+          ).thenAnswer((_) async => Response(requestOptions: RequestOptions()));
 
-        when(
-          vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
-        ).thenAnswer((_) async => dataEncryptionMaterial);
+          when(
+            vaultDataManagerEncryptionServiceMocks
+                .generateDataEncryptionMaterial,
+          ).thenAnswer((_) async => dataEncryptionMaterial);
 
-        when(
-          vaultDataManagerApiServiceMocks.createProfile,
-        ).thenAnswer((_) async =>
-            Response<CreateNodeOK>(requestOptions: RequestOptions(path: '')));
+          when(vaultDataManagerApiServiceMocks.createProfile).thenAnswer(
+            (_) async => Response<CreateNodeOK>(
+              requestOptions: RequestOptions(path: ''),
+            ),
+          );
 
-        await vaultDataManagerService.createProfile(name: profileName);
+          await vaultDataManagerService.createProfile(name: profileName);
 
-        verify(vaultDataManagerEncryptionServiceMocks
-                .generateDataEncryptionMaterial)
-            .called(1);
-        verify(vaultDataManagerApiServiceMocks.createProfile).called(1);
-      });
+          verify(
+            vaultDataManagerEncryptionServiceMocks
+                .generateDataEncryptionMaterial,
+          ).called(1);
+          verify(vaultDataManagerApiServiceMocks.createProfile).called(1);
+        },
+      );
     });
   });
 
   group('When deleting claimed credential', () {
     group('and it is deleted successfully,', () {
       test('it calls vault data manager api service method once', () async {
-        when(
-          vaultDataManagerApiServiceMocks.deleteNodeById,
-        ).thenAnswer((_) async =>
-            Response<DeleteNodeDto>(requestOptions: RequestOptions(path: '')));
+        when(vaultDataManagerApiServiceMocks.deleteNodeById).thenAnswer(
+          (_) async =>
+              Response<DeleteNodeDto>(requestOptions: RequestOptions(path: '')),
+        );
 
         await vaultDataManagerService.deleteClaimedCredential(nodeId: nodeId);
 
@@ -241,10 +267,10 @@ void main() {
   group('When deleting file', () {
     group('and it is deleted successfully,', () {
       test('it calls vault data manager api service method once', () async {
-        when(
-          vaultDataManagerApiServiceMocks.deleteNodeById,
-        ).thenAnswer((_) async =>
-            Response<DeleteNodeDto>(requestOptions: RequestOptions(path: '')));
+        when(vaultDataManagerApiServiceMocks.deleteNodeById).thenAnswer(
+          (_) async =>
+              Response<DeleteNodeDto>(requestOptions: RequestOptions(path: '')),
+        );
 
         await vaultDataManagerService.deleteFile(nodeId);
 
@@ -254,9 +280,7 @@ void main() {
 
     group('and it fails,', () {
       test('it throws exception', () async {
-        when(
-          vaultDataManagerApiServiceMocks.deleteNodeById,
-        ).thenThrow(
+        when(vaultDataManagerApiServiceMocks.deleteNodeById).thenThrow(
           TdkException(
             message: 'something went wrong',
             code: TdkExceptionType.unableToDeleteNode.code,
@@ -264,14 +288,15 @@ void main() {
         );
 
         await expectLater(
-            vaultDataManagerService.deleteFile(nodeId),
-            throwsA(
-              isA<TdkException>().having(
-                (e) => e.code,
-                'code',
-                TdkExceptionType.unableToDeleteFile.code,
-              ),
-            ));
+          vaultDataManagerService.deleteFile(nodeId),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.unableToDeleteFile.code,
+            ),
+          ),
+        );
 
         verify(vaultDataManagerApiServiceMocks.deleteNodeById).called(1);
       });
@@ -281,10 +306,10 @@ void main() {
   group('When deleting folder', () {
     group('and it is deleted successfully,', () {
       test('it calls vault data manager api service method once', () async {
-        when(
-          vaultDataManagerApiServiceMocks.deleteNodeById,
-        ).thenAnswer((_) async =>
-            Response<DeleteNodeDto>(requestOptions: RequestOptions(path: '')));
+        when(vaultDataManagerApiServiceMocks.deleteNodeById).thenAnswer(
+          (_) async =>
+              Response<DeleteNodeDto>(requestOptions: RequestOptions(path: '')),
+        );
 
         await vaultDataManagerService.deleteFolder(nodeId);
 
@@ -294,9 +319,7 @@ void main() {
 
     group('and it fails,', () {
       test('it throws exception', () async {
-        when(
-          vaultDataManagerApiServiceMocks.deleteNodeById,
-        ).thenThrow(
+        when(vaultDataManagerApiServiceMocks.deleteNodeById).thenThrow(
           TdkException(
             message: 'something went wrong',
             code: TdkExceptionType.unableToDeleteNode.code,
@@ -322,10 +345,10 @@ void main() {
   group('When deleting profile', () {
     group('and it is deleted successfully,', () {
       test('it calls vault data manager api service method once', () async {
-        when(
-          vaultDataManagerApiServiceMocks.deleteNodeById,
-        ).thenAnswer((_) async =>
-            Response<DeleteNodeDto>(requestOptions: RequestOptions(path: '')));
+        when(vaultDataManagerApiServiceMocks.deleteNodeById).thenAnswer(
+          (_) async =>
+              Response<DeleteNodeDto>(requestOptions: RequestOptions(path: '')),
+        );
 
         await vaultDataManagerService.deleteProfile(profileId);
 
@@ -335,9 +358,7 @@ void main() {
 
     group('and it fails,', () {
       test('it throws exception', () async {
-        when(
-          vaultDataManagerApiServiceMocks.deleteNodeById,
-        ).thenThrow(
+        when(vaultDataManagerApiServiceMocks.deleteNodeById).thenThrow(
           TdkException(
             message: 'something went wrong',
             code: TdkExceptionType.unableToDeleteNode.code,
@@ -363,139 +384,177 @@ void main() {
   group('When getting claimed credentials by profile', () {
     group('and they exists,', () {
       test(
-          'it calls vault data manager api service get verifiable credentials nodes method once and other api and encryption services methods as many times as nodes length (2) and return list of credentials',
-          () async {
-        when(
-          vaultDataManagerApiServiceMocks.getVerifiableCredentialsNodes,
-        ).thenAnswer((_) async => Response<ListNodeChildrenOK>(
+        'it calls vault data manager api service get verifiable credentials nodes method once and other api and encryption services methods as many times as nodes length (2) and return list of credentials',
+        () async {
+          when(
+            vaultDataManagerApiServiceMocks.getVerifiableCredentialsNodes,
+          ).thenAnswer(
+            (_) async => Response<ListNodeChildrenOK>(
               requestOptions: RequestOptions(path: ''),
               data: listNodeChildrenVCOK,
-            ));
+            ),
+          );
 
-        when(
-          vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek,
-        ).thenAnswer((_) async => Response<GetDetailedNodeInfoOK>(
+          when(
+            vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek,
+          ).thenAnswer(
+            (_) async => Response<GetDetailedNodeInfoOK>(
               requestOptions: RequestOptions(path: ''),
               data: getNodeInfoVcOk,
-            ));
+            ),
+          );
 
-        when(vaultDataManagerEncryptionServiceMocks
-                .getDekEncryptedByApiPublicKey)
-            .thenAnswer((_) async => List.filled(5, 0));
+          when(
+            vaultDataManagerEncryptionServiceMocks
+                .getDekEncryptedByApiPublicKey,
+          ).thenAnswer((_) async => List.filled(5, 0));
 
-        when(
-          vaultDataManagerApiServiceMocks.getNodeInfoWithDek,
-        ).thenAnswer((_) async => Response<GetDetailedNodeInfoOK>(
+          when(vaultDataManagerApiServiceMocks.getNodeInfoWithDek).thenAnswer(
+            (_) async => Response<GetDetailedNodeInfoOK>(
               requestOptions: RequestOptions(path: ''),
               data: getNodeInfoVcOk,
-            ));
+            ),
+          );
 
-        when(
-          vaultDataManagerEncryptionServiceMocks
-              .decryptDekByWalletCryptoMaterial,
-        ).thenAnswer((_) async => List.filled(5, 0));
+          when(
+            vaultDataManagerEncryptionServiceMocks
+                .decryptDekByWalletCryptoMaterial,
+          ).thenAnswer((_) async => List.filled(5, 0));
 
-        when(
-          vaultDataManagerApiServiceMocks.downloadNodeContents,
-        ).thenAnswer((_) async => Response(
+          when(vaultDataManagerApiServiceMocks.downloadNodeContents).thenAnswer(
+            (_) async => Response(
               requestOptions: RequestOptions(path: ''),
               data: nodeContent,
-            ));
+            ),
+          );
 
-        final result = await vaultDataManagerService
-            .getClaimedCredentialsByProfile(profileId);
+          final result = await vaultDataManagerService
+              .getClaimedCredentialsByProfile(profileId);
 
-        expect(result, isNotEmpty);
-        expect(result.length, 2);
-        verify(vaultDataManagerApiServiceMocks.getVerifiableCredentialsNodes)
-            .called(1);
-        verify(vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek).called(2);
-        verify(vaultDataManagerEncryptionServiceMocks
-                .getDekEncryptedByApiPublicKey)
-            .called(2);
-        verify(vaultDataManagerApiServiceMocks.getNodeInfoWithDek).called(2);
-        verify(vaultDataManagerEncryptionServiceMocks
-                .decryptDekByWalletCryptoMaterial)
-            .called(2);
-        verify(vaultDataManagerApiServiceMocks.downloadNodeContents).called(2);
-      });
+          expect(result, isNotEmpty);
+          expect(result.length, 2);
+          verify(
+            vaultDataManagerApiServiceMocks.getVerifiableCredentialsNodes,
+          ).called(1);
+          verify(
+            vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek,
+          ).called(2);
+          verify(
+            vaultDataManagerEncryptionServiceMocks
+                .getDekEncryptedByApiPublicKey,
+          ).called(2);
+          verify(vaultDataManagerApiServiceMocks.getNodeInfoWithDek).called(2);
+          verify(
+            vaultDataManagerEncryptionServiceMocks
+                .decryptDekByWalletCryptoMaterial,
+          ).called(2);
+          verify(
+            vaultDataManagerApiServiceMocks.downloadNodeContents,
+          ).called(2);
+        },
+      );
     });
   });
 
   group('When getting profile data', () {
     group('and it exists,', () {
       test(
-          'it calls api and encryption services methods once and return profile data',
-          () async {
-        when(
-          vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek,
-        ).thenAnswer((_) async => Response(
-            requestOptions: RequestOptions(), data: nodeInfoProfileOk));
+        'it calls api and encryption services methods once and return profile data',
+        () async {
+          when(
+            vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek,
+          ).thenAnswer(
+            (_) async => Response(
+              requestOptions: RequestOptions(),
+              data: nodeInfoProfileOk,
+            ),
+          );
 
-        when(
-          vaultDataManagerEncryptionServiceMocks.getDekEncryptedByApiPublicKey,
-        ).thenAnswer((_) async => List.filled(5, 0));
+          when(
+            vaultDataManagerEncryptionServiceMocks
+                .getDekEncryptedByApiPublicKey,
+          ).thenAnswer((_) async => List.filled(5, 0));
 
-        when(
-          vaultDataManagerApiServiceMocks.getProfileData,
-        ).thenAnswer((_) async =>
-            Response(requestOptions: RequestOptions(), data: profileDataOk));
+          when(vaultDataManagerApiServiceMocks.getProfileData).thenAnswer(
+            (_) async =>
+                Response(requestOptions: RequestOptions(), data: profileDataOk),
+          );
 
-        final result = await vaultDataManagerService.getProfileData(profileId);
+          final result = await vaultDataManagerService.getProfileData(
+            profileId,
+          );
 
-        expect(result, isNotNull);
-        expect(result, isA<ProfileData>());
-        verify(vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek).called(1);
-        verify(vaultDataManagerEncryptionServiceMocks
-                .getDekEncryptedByApiPublicKey)
-            .called(1);
-        verify(vaultDataManagerApiServiceMocks.getProfileData).called(1);
-      });
+          expect(result, isNotNull);
+          expect(result, isA<ProfileData>());
+          verify(
+            vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek,
+          ).called(1);
+          verify(
+            vaultDataManagerEncryptionServiceMocks
+                .getDekEncryptedByApiPublicKey,
+          ).called(1);
+          verify(vaultDataManagerApiServiceMocks.getProfileData).called(1);
+        },
+      );
     });
   });
 
   group('When getting profiles', () {
     group('and they exists,', () {
       test(
-          'it calls vault data manager api service method once and return list of profiles',
-          () async {
-        when(
-          () => mockVaultDataManagerApiService.getListOfProfiles(),
-        ).thenAnswer((_) async => Response(
-            requestOptions: RequestOptions(), data: listRootNodeChildrenOK));
+        'it calls vault data manager api service method once and return list of profiles',
+        () async {
+          when(
+            () => mockVaultDataManagerApiService.getListOfProfiles(),
+          ).thenAnswer(
+            (_) async => Response(
+              requestOptions: RequestOptions(),
+              data: listRootNodeChildrenOK,
+            ),
+          );
 
-        final result = await vaultDataManagerService.getProfiles();
+          final result = await vaultDataManagerService.getProfiles();
 
-        expect(result, isNotNull);
-        expect(result, isA<List<VaultDataManagerProfile>>());
-        expect(result.length, 1);
-        verify(() => mockVaultDataManagerApiService.getListOfProfiles())
-            .called(1);
-      });
+          expect(result, isNotNull);
+          expect(result, isA<List<VaultDataManagerProfile>>());
+          expect(result.length, 1);
+          verify(
+            () => mockVaultDataManagerApiService.getListOfProfiles(),
+          ).called(1);
+        },
+      );
     });
   });
 
   group('When getting scanned file info', () {
     group('and it exists,', () {
       test(
-          'it calls api service method once and return recognized profile data',
-          () async {
-        when(
-          vaultDataManagerApiServiceMocks.getScannedFileInfo,
-        ).thenAnswer((_) async => Response(
-            requestOptions: RequestOptions(), data: getScannedFileInfoOK));
+        'it calls api service method once and return recognized profile data',
+        () async {
+          when(vaultDataManagerApiServiceMocks.getScannedFileInfo).thenAnswer(
+            (_) async => Response(
+              requestOptions: RequestOptions(),
+              data: getScannedFileInfoOK,
+            ),
+          );
 
-        final result =
-            await vaultDataManagerService.getScannedFileInfo('file_token');
+          final result = await vaultDataManagerService.getScannedFileInfo(
+            'file_token',
+          );
 
-        expect(result, isNotNull);
-        expect(result, isA<RecognizedProfileData>());
-        expect(result.person?.properties.entries.first.value.alternatives,
-            isNotEmpty);
-        expect(result.categories?.properties.entries.first.value.properties,
-            isNotEmpty);
-        verify(vaultDataManagerApiServiceMocks.getScannedFileInfo).called(1);
-      });
+          expect(result, isNotNull);
+          expect(result, isA<RecognizedProfileData>());
+          expect(
+            result.person?.properties.entries.first.value.alternatives,
+            isNotEmpty,
+          );
+          expect(
+            result.categories?.properties.entries.first.value.properties,
+            isNotEmpty,
+          );
+          verify(vaultDataManagerApiServiceMocks.getScannedFileInfo).called(1);
+        },
+      );
     });
   });
 
@@ -515,8 +574,9 @@ void main() {
 
         expect(result.length, 2);
         expect(result.first.jobId, 'job_id');
-        verify(() => mockVaultDataManagerApiService.getAllScannedFiles())
-            .called(1);
+        verify(
+          () => mockVaultDataManagerApiService.getAllScannedFiles(),
+        ).called(1);
       });
     });
   });
@@ -524,35 +584,43 @@ void main() {
   group('When getting vault data file consumption', () {
     group('and it exists,', () {
       test(
-          'it calls api service method once and return not zero vault file consumption',
-          () async {
-        when(
-          () => mockVaultDataManagerApiService.getRootNodeInfo(),
-        ).thenAnswer((_) async =>
-            Response(requestOptions: RequestOptions(), data: rootNodeInfoOk));
+        'it calls api service method once and return not zero vault file consumption',
+        () async {
+          when(
+            () => mockVaultDataManagerApiService.getRootNodeInfo(),
+          ).thenAnswer(
+            (_) async => Response(
+              requestOptions: RequestOptions(),
+              data: rootNodeInfoOk,
+            ),
+          );
 
-        final result =
-            await vaultDataManagerService.getVaultDataFileConsumption();
+          final result = await vaultDataManagerService
+              .getVaultDataFileConsumption();
 
-        expect(result, isNotNull);
-        expect(result.sizeInMB, isNonZero);
+          expect(result, isNotNull);
+          expect(result.sizeInMB, isNonZero);
 
-        verify(() => mockVaultDataManagerApiService.getRootNodeInfo())
-            .called(1);
-      });
+          verify(
+            () => mockVaultDataManagerApiService.getRootNodeInfo(),
+          ).called(1);
+        },
+      );
     });
 
     group('and consumption data is null,', () {
       test('it calls api service method once and throw exeption', () async {
-        when(
-          () => mockVaultDataManagerApiService.getRootNodeInfo(),
-        ).thenAnswer((_) async =>
-            Response(requestOptions: RequestOptions(), data: null));
+        when(() => mockVaultDataManagerApiService.getRootNodeInfo()).thenAnswer(
+          (_) async => Response(requestOptions: RequestOptions(), data: null),
+        );
 
-        await expectLater(vaultDataManagerService.getVaultDataFileConsumption(),
-            throwsA(isA<Exception>()));
-        verify(() => mockVaultDataManagerApiService.getRootNodeInfo())
-            .called(1);
+        await expectLater(
+          vaultDataManagerService.getVaultDataFileConsumption(),
+          throwsA(isA<Exception>()),
+        );
+        verify(
+          () => mockVaultDataManagerApiService.getRootNodeInfo(),
+        ).called(1);
       });
     });
   });
@@ -560,13 +628,15 @@ void main() {
   group('When renaming file', () {
     group('and it is renamed successfully', () {
       test('it calls api service method once', () async {
-        when(
-          vaultDataManagerApiServiceMocks.renameNode,
-        ).thenAnswer((_) async =>
-            Response<NodeDto>(requestOptions: RequestOptions(path: '')));
+        when(vaultDataManagerApiServiceMocks.renameNode).thenAnswer(
+          (_) async =>
+              Response<NodeDto>(requestOptions: RequestOptions(path: '')),
+        );
 
         await vaultDataManagerService.renameFile(
-            nodeId: 'node_id', newName: 'new_name');
+          nodeId: 'node_id',
+          newName: 'new_name',
+        );
 
         verify(vaultDataManagerApiServiceMocks.renameNode).called(1);
       });
@@ -576,13 +646,15 @@ void main() {
   group('When renaming folder', () {
     group('and it is renamed successfully', () {
       test('it calls api service method once', () async {
-        when(
-          vaultDataManagerApiServiceMocks.renameNode,
-        ).thenAnswer((_) async =>
-            Response<NodeDto>(requestOptions: RequestOptions(path: '')));
+        when(vaultDataManagerApiServiceMocks.renameNode).thenAnswer(
+          (_) async =>
+              Response<NodeDto>(requestOptions: RequestOptions(path: '')),
+        );
 
         await vaultDataManagerService.renameFolder(
-            nodeId: 'node_id', newName: 'new_name');
+          nodeId: 'node_id',
+          newName: 'new_name',
+        );
 
         verify(vaultDataManagerApiServiceMocks.renameNode).called(1);
       });
@@ -592,28 +664,29 @@ void main() {
   group('When scanning file', () {
     group('and it is passed successfully,', () {
       test('it calls api and encryption services methods once', () async {
-        when(
-          vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek,
-        ).thenAnswer((_) async => Response<GetDetailedNodeInfoOK>(
-              requestOptions: RequestOptions(path: ''),
-              data: nodeInfoProfileOk,
-            ));
+        when(vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek).thenAnswer(
+          (_) async => Response<GetDetailedNodeInfoOK>(
+            requestOptions: RequestOptions(path: ''),
+            data: nodeInfoProfileOk,
+          ),
+        );
 
         when(
           vaultDataManagerEncryptionServiceMocks.getDekEncryptedByApiPublicKey,
         ).thenAnswer((_) async => List.filled(5, 0));
 
-        when(
-          vaultDataManagerApiServiceMocks.startScanFile,
-        ).thenAnswer((_) async => Response<StartFileScanOK>(
-            requestOptions: RequestOptions(path: '')));
+        when(vaultDataManagerApiServiceMocks.startScanFile).thenAnswer(
+          (_) async => Response<StartFileScanOK>(
+            requestOptions: RequestOptions(path: ''),
+          ),
+        );
 
         await vaultDataManagerService.scanFile('node_id');
 
         verify(vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek).called(1);
-        verify(vaultDataManagerEncryptionServiceMocks
-                .getDekEncryptedByApiPublicKey)
-            .called(1);
+        verify(
+          vaultDataManagerEncryptionServiceMocks.getDekEncryptedByApiPublicKey,
+        ).called(1);
         verify(vaultDataManagerApiServiceMocks.startScanFile).called(1);
       });
     });
@@ -626,17 +699,20 @@ void main() {
           vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
         ).thenAnswer((_) async => dataEncryptionMaterial);
 
-        when(
-          vaultDataManagerApiServiceMocks.updateProfileData,
-        ).thenAnswer((_) async => Response<UpdateProfileDataOK>(
-            requestOptions: RequestOptions(path: '')));
+        when(vaultDataManagerApiServiceMocks.updateProfileData).thenAnswer(
+          (_) async => Response<UpdateProfileDataOK>(
+            requestOptions: RequestOptions(path: ''),
+          ),
+        );
 
         await vaultDataManagerService.updateProfileData(
-            profileId: profileId, profileData: profileData);
+          profileId: profileId,
+          profileData: profileData,
+        );
 
-        verify(vaultDataManagerEncryptionServiceMocks
-                .generateDataEncryptionMaterial)
-            .called(1);
+        verify(
+          vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
+        ).called(1);
         verify(vaultDataManagerApiServiceMocks.updateProfileData).called(1);
       });
     });
@@ -645,10 +721,10 @@ void main() {
   group('When updating profile metadata', () {
     group('and it is updated successfully', () {
       test('it calls api service method once', () async {
-        when(
-          vaultDataManagerApiServiceMocks.renameNode,
-        ).thenAnswer((_) async =>
-            Response<NodeDto>(requestOptions: RequestOptions(path: '')));
+        when(vaultDataManagerApiServiceMocks.renameNode).thenAnswer(
+          (_) async =>
+              Response<NodeDto>(requestOptions: RequestOptions(path: '')),
+        );
 
         await vaultDataManagerService.updateProfileMetadata(
           id: profileId,
@@ -663,264 +739,322 @@ void main() {
 
   group('When downloading file', () {
     group('and it is downloaded successfully,', () {
-      test('it calls api and encryption services methods once and return file',
-          () async {
-        when(
-          vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek,
-        ).thenAnswer((_) async => Response<GetDetailedNodeInfoOK>(
+      test(
+        'it calls api and encryption services methods once and return file',
+        () async {
+          when(
+            vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek,
+          ).thenAnswer(
+            (_) async => Response<GetDetailedNodeInfoOK>(
               requestOptions: RequestOptions(path: ''),
               data: getNodeInfoFileOk,
-            ));
+            ),
+          );
 
-        when(
-          vaultDataManagerEncryptionServiceMocks.getDekEncryptedByApiPublicKey,
-        ).thenAnswer((_) async => List.filled(5, 0));
+          when(
+            vaultDataManagerEncryptionServiceMocks
+                .getDekEncryptedByApiPublicKey,
+          ).thenAnswer((_) async => List.filled(5, 0));
 
-        when(
-          vaultDataManagerApiServiceMocks.getNodeInfoWithDek,
-        ).thenAnswer((_) async => Response<GetDetailedNodeInfoOK>(
+          when(vaultDataManagerApiServiceMocks.getNodeInfoWithDek).thenAnswer(
+            (_) async => Response<GetDetailedNodeInfoOK>(
               requestOptions: RequestOptions(path: ''),
               data: getNodeInfoFileOk,
-            ));
+            ),
+          );
 
-        when(
-          vaultDataManagerEncryptionServiceMocks
-              .decryptDekByWalletCryptoMaterial,
-        ).thenAnswer((_) async => List.filled(5, 0));
+          when(
+            vaultDataManagerEncryptionServiceMocks
+                .decryptDekByWalletCryptoMaterial,
+          ).thenAnswer((_) async => List.filled(5, 0));
 
-        when(vaultDataManagerApiServiceMocks.downloadNodeContents)
-            .thenAnswer((_) async => Response(
-                  requestOptions: RequestOptions(path: ''),
-                  data: nodeContent,
-                ));
+          when(vaultDataManagerApiServiceMocks.downloadNodeContents).thenAnswer(
+            (_) async => Response(
+              requestOptions: RequestOptions(path: ''),
+              data: nodeContent,
+            ),
+          );
 
-        final result =
-            await vaultDataManagerService.downloadFile(nodeId: nodeId);
+          final result = await vaultDataManagerService.downloadFile(
+            nodeId: nodeId,
+          );
 
-        expect(result, isNotEmpty);
-        verify(vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek).called(1);
-        verify(vaultDataManagerEncryptionServiceMocks
-                .getDekEncryptedByApiPublicKey)
-            .called(1);
-        verify(vaultDataManagerApiServiceMocks.getNodeInfoWithDek).called(1);
-        verify(vaultDataManagerEncryptionServiceMocks
-                .decryptDekByWalletCryptoMaterial)
-            .called(1);
-        verify(vaultDataManagerApiServiceMocks.downloadNodeContents).called(1);
-      });
+          expect(result, isNotEmpty);
+          verify(
+            vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek,
+          ).called(1);
+          verify(
+            vaultDataManagerEncryptionServiceMocks
+                .getDekEncryptedByApiPublicKey,
+          ).called(1);
+          verify(vaultDataManagerApiServiceMocks.getNodeInfoWithDek).called(1);
+          verify(
+            vaultDataManagerEncryptionServiceMocks
+                .decryptDekByWalletCryptoMaterial,
+          ).called(1);
+          verify(
+            vaultDataManagerApiServiceMocks.downloadNodeContents,
+          ).called(1);
+        },
+      );
     });
 
     group('and it fails with getting node info,', () {
-      test('it throws exception and never call download node contents method',
-          () async {
-        when(
-          () => mockVaultDataManagerApiService.getNodeInfo(
-            nodeId: nodeId,
-          ),
-        ).thenAnswer((_) async => Response<GetDetailedNodeInfoOK>(
+      test(
+        'it throws exception and never call download node contents method',
+        () async {
+          when(
+            () => mockVaultDataManagerApiService.getNodeInfo(nodeId: nodeId),
+          ).thenAnswer(
+            (_) async => Response<GetDetailedNodeInfoOK>(
               requestOptions: RequestOptions(path: ''),
               data: getNodeInfoFileOk,
-            ));
-
-        when(
-          vaultDataManagerEncryptionServiceMocks.getDekEncryptedByApiPublicKey,
-        ).thenAnswer((_) async => List.filled(5, 0));
-
-        when(
-          () => mockVaultDataManagerApiService.getNodeInfo(
-            nodeId: nodeId,
-            dekEncryptedByVfsPublicKey: List.filled(5, 0),
-          ),
-        ).thenAnswer((_) async => Response<GetDetailedNodeInfoOK>(
-              requestOptions: RequestOptions(path: ''),
-              data: null,
-            ));
-
-        await expectLater(
-          vaultDataManagerService.downloadFile(nodeId: nodeId),
-          throwsA(
-            isA<TdkException>().having(
-              (e) => e.code,
-              'code',
-              TdkExceptionType.fileInfoNotFound.code,
             ),
-          ),
-        );
+          );
 
-        verify(() => mockVaultDataManagerApiService.getNodeInfo(nodeId: nodeId))
-            .called(1);
-        verify(vaultDataManagerEncryptionServiceMocks
-                .getDekEncryptedByApiPublicKey)
-            .called(1);
-        verify(() => mockVaultDataManagerApiService.getNodeInfo(
+          when(
+            vaultDataManagerEncryptionServiceMocks
+                .getDekEncryptedByApiPublicKey,
+          ).thenAnswer((_) async => List.filled(5, 0));
+
+          when(
+            () => mockVaultDataManagerApiService.getNodeInfo(
               nodeId: nodeId,
               dekEncryptedByVfsPublicKey: List.filled(5, 0),
-            )).called(1);
-        verifyNever(vaultDataManagerEncryptionServiceMocks
-            .decryptDekByWalletCryptoMaterial);
-      });
+            ),
+          ).thenAnswer(
+            (_) async => Response<GetDetailedNodeInfoOK>(
+              requestOptions: RequestOptions(path: ''),
+              data: null,
+            ),
+          );
+
+          await expectLater(
+            vaultDataManagerService.downloadFile(nodeId: nodeId),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.fileInfoNotFound.code,
+              ),
+            ),
+          );
+
+          verify(
+            () => mockVaultDataManagerApiService.getNodeInfo(nodeId: nodeId),
+          ).called(1);
+          verify(
+            vaultDataManagerEncryptionServiceMocks
+                .getDekEncryptedByApiPublicKey,
+          ).called(1);
+          verify(
+            () => mockVaultDataManagerApiService.getNodeInfo(
+              nodeId: nodeId,
+              dekEncryptedByVfsPublicKey: List.filled(5, 0),
+            ),
+          ).called(1);
+          verifyNever(
+            vaultDataManagerEncryptionServiceMocks
+                .decryptDekByWalletCryptoMaterial,
+          );
+        },
+      );
     });
 
     group('and it fails with getting edek,', () {
-      test('it throws exception and never call download node contents method',
-          () async {
-        when(
-          () => mockVaultDataManagerApiService.getNodeInfo(
-            nodeId: nodeId,
-          ),
-        ).thenAnswer((_) async => Response<GetDetailedNodeInfoOK>(
+      test(
+        'it throws exception and never call download node contents method',
+        () async {
+          when(
+            () => mockVaultDataManagerApiService.getNodeInfo(nodeId: nodeId),
+          ).thenAnswer(
+            (_) async => Response<GetDetailedNodeInfoOK>(
               requestOptions: RequestOptions(path: ''),
               data: getNodeInfoFileOk,
-            ));
-
-        when(
-          vaultDataManagerEncryptionServiceMocks.getDekEncryptedByApiPublicKey,
-        ).thenAnswer((_) async => List.filled(5, 0));
-
-        when(
-          () => mockVaultDataManagerApiService.getNodeInfo(
-            nodeId: nodeId,
-            dekEncryptedByVfsPublicKey: List.filled(5, 0),
-          ),
-        ).thenAnswer((_) async => Response<GetDetailedNodeInfoOK>(
-              requestOptions: RequestOptions(path: ''),
-              data: getNodeInfoFileWithoutEdekOk,
-            ));
-
-        await expectLater(
-          vaultDataManagerService.downloadFile(nodeId: nodeId),
-          throwsA(
-            isA<TdkException>().having(
-              (e) => e.code,
-              'code',
-              TdkExceptionType.dataEncryptionKeyNotFound.code,
             ),
-          ),
-        );
+          );
 
-        verify(() => mockVaultDataManagerApiService.getNodeInfo(nodeId: nodeId))
-            .called(1);
-        verify(vaultDataManagerEncryptionServiceMocks
-                .getDekEncryptedByApiPublicKey)
-            .called(1);
-        verify(() => mockVaultDataManagerApiService.getNodeInfo(
+          when(
+            vaultDataManagerEncryptionServiceMocks
+                .getDekEncryptedByApiPublicKey,
+          ).thenAnswer((_) async => List.filled(5, 0));
+
+          when(
+            () => mockVaultDataManagerApiService.getNodeInfo(
               nodeId: nodeId,
               dekEncryptedByVfsPublicKey: List.filled(5, 0),
-            )).called(1);
-        verifyNever(vaultDataManagerEncryptionServiceMocks
-            .decryptDekByWalletCryptoMaterial);
-      });
+            ),
+          ).thenAnswer(
+            (_) async => Response<GetDetailedNodeInfoOK>(
+              requestOptions: RequestOptions(path: ''),
+              data: getNodeInfoFileWithoutEdekOk,
+            ),
+          );
+
+          await expectLater(
+            vaultDataManagerService.downloadFile(nodeId: nodeId),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.dataEncryptionKeyNotFound.code,
+              ),
+            ),
+          );
+
+          verify(
+            () => mockVaultDataManagerApiService.getNodeInfo(nodeId: nodeId),
+          ).called(1);
+          verify(
+            vaultDataManagerEncryptionServiceMocks
+                .getDekEncryptedByApiPublicKey,
+          ).called(1);
+          verify(
+            () => mockVaultDataManagerApiService.getNodeInfo(
+              nodeId: nodeId,
+              dekEncryptedByVfsPublicKey: List.filled(5, 0),
+            ),
+          ).called(1);
+          verifyNever(
+            vaultDataManagerEncryptionServiceMocks
+                .decryptDekByWalletCryptoMaterial,
+          );
+        },
+      );
     });
   });
 
   group('When getting child nodes', () {
     group('and they exist,', () {
-      test('it calls api service method once and return list of nodes',
-          () async {
-        when(() => mockVaultDataManagerApiService.getChildrenByNodeId(any()))
-            .thenAnswer((_) async => Response<ListNodeChildrenOK>(
-                  requestOptions: RequestOptions(path: ''),
-                  data: listNodeChildrenOK,
-                ));
+      test(
+        'it calls api service method once and return list of nodes',
+        () async {
+          when(
+            () => mockVaultDataManagerApiService.getChildrenByNodeId(any()),
+          ).thenAnswer(
+            (_) async => Response<ListNodeChildrenOK>(
+              requestOptions: RequestOptions(path: ''),
+              data: listNodeChildrenOK,
+            ),
+          );
 
-        final result =
-            await vaultDataManagerService.getChildNodes(nodeId: nodeId);
+          final result = await vaultDataManagerService.getChildNodes(
+            nodeId: nodeId,
+          );
 
-        expect(result, isNotNull);
-        expect(result.items.length, 1);
-        verify(() => mockVaultDataManagerApiService.getChildrenByNodeId(any()))
-            .called(1);
-      });
+          expect(result, isNotNull);
+          expect(result.items.length, 1);
+          verify(
+            () => mockVaultDataManagerApiService.getChildrenByNodeId(any()),
+          ).called(1);
+        },
+      );
     });
   });
 
   group('When getting digital credentials', () {
     group('and they exists,', () {
       test(
-          'it calls vault data manager api service get verifiable credentials nodes method once and other api and encryption services methods as many times as nodes length (2) and return list of digital credentials',
-          () async {
-        when(
-          vaultDataManagerApiServiceMocks.getVerifiableCredentialsNodes,
-        ).thenAnswer((_) async => Response<ListNodeChildrenOK>(
+        'it calls vault data manager api service get verifiable credentials nodes method once and other api and encryption services methods as many times as nodes length (2) and return list of digital credentials',
+        () async {
+          when(
+            vaultDataManagerApiServiceMocks.getVerifiableCredentialsNodes,
+          ).thenAnswer(
+            (_) async => Response<ListNodeChildrenOK>(
               requestOptions: RequestOptions(path: ''),
               data: listNodeChildrenVCOK,
-            ));
+            ),
+          );
 
-        when(
-          vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek,
-        ).thenAnswer((_) async => Response<GetDetailedNodeInfoOK>(
+          when(
+            vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek,
+          ).thenAnswer(
+            (_) async => Response<GetDetailedNodeInfoOK>(
               requestOptions: RequestOptions(path: ''),
               data: getNodeInfoVcOk,
-            ));
+            ),
+          );
 
-        when(vaultDataManagerEncryptionServiceMocks
-                .getDekEncryptedByApiPublicKey)
-            .thenAnswer((_) async => List.filled(5, 0));
+          when(
+            vaultDataManagerEncryptionServiceMocks
+                .getDekEncryptedByApiPublicKey,
+          ).thenAnswer((_) async => List.filled(5, 0));
 
-        when(
-          vaultDataManagerApiServiceMocks.getNodeInfoWithDek,
-        ).thenAnswer((_) async => Response<GetDetailedNodeInfoOK>(
+          when(vaultDataManagerApiServiceMocks.getNodeInfoWithDek).thenAnswer(
+            (_) async => Response<GetDetailedNodeInfoOK>(
               requestOptions: RequestOptions(path: ''),
               data: getNodeInfoVcOk,
-            ));
+            ),
+          );
 
-        when(
-          vaultDataManagerEncryptionServiceMocks
-              .decryptDekByWalletCryptoMaterial,
-        ).thenAnswer((_) async => List.filled(5, 0));
+          when(
+            vaultDataManagerEncryptionServiceMocks
+                .decryptDekByWalletCryptoMaterial,
+          ).thenAnswer((_) async => List.filled(5, 0));
 
-        when(
-          vaultDataManagerApiServiceMocks.downloadNodeContents,
-        ).thenAnswer((_) async => Response(
+          when(vaultDataManagerApiServiceMocks.downloadNodeContents).thenAnswer(
+            (_) async => Response(
               requestOptions: RequestOptions(path: ''),
               data: nodeContent,
-            ));
+            ),
+          );
 
-        final result =
-            await vaultDataManagerService.getDigitalCredentials(profileId);
+          final result = await vaultDataManagerService.getDigitalCredentials(
+            profileId,
+          );
 
-        expect(result.items, isNotEmpty);
-        expect(result.items.length, 2);
-        verify(vaultDataManagerApiServiceMocks.getVerifiableCredentialsNodes)
-            .called(1);
-        verify(vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek).called(2);
-        verify(vaultDataManagerEncryptionServiceMocks
-                .getDekEncryptedByApiPublicKey)
-            .called(2);
-        verify(vaultDataManagerApiServiceMocks.getNodeInfoWithDek).called(2);
-        verify(vaultDataManagerEncryptionServiceMocks
-                .decryptDekByWalletCryptoMaterial)
-            .called(2);
-        verify(vaultDataManagerApiServiceMocks.downloadNodeContents).called(2);
-      });
+          expect(result.items, isNotEmpty);
+          expect(result.items.length, 2);
+          verify(
+            vaultDataManagerApiServiceMocks.getVerifiableCredentialsNodes,
+          ).called(1);
+          verify(
+            vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek,
+          ).called(2);
+          verify(
+            vaultDataManagerEncryptionServiceMocks
+                .getDekEncryptedByApiPublicKey,
+          ).called(2);
+          verify(vaultDataManagerApiServiceMocks.getNodeInfoWithDek).called(2);
+          verify(
+            vaultDataManagerEncryptionServiceMocks
+                .decryptDekByWalletCryptoMaterial,
+          ).called(2);
+          verify(
+            vaultDataManagerApiServiceMocks.downloadNodeContents,
+          ).called(2);
+        },
+      );
     });
 
     group('and it fails to download verifiable credentials,', () {
       test('it throws exception', () async {
         when(
           vaultDataManagerApiServiceMocks.getVerifiableCredentialsNodes,
-        ).thenAnswer((_) async => Response<ListNodeChildrenOK>(
-              requestOptions: RequestOptions(path: ''),
-              data: listNodeChildrenVCOK,
-            ));
+        ).thenAnswer(
+          (_) async => Response<ListNodeChildrenOK>(
+            requestOptions: RequestOptions(path: ''),
+            data: listNodeChildrenVCOK,
+          ),
+        );
+
+        when(vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek).thenAnswer(
+          (_) async => Response<GetDetailedNodeInfoOK>(
+            requestOptions: RequestOptions(path: ''),
+            data: getNodeInfoVcOk,
+          ),
+        );
 
         when(
-          vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek,
-        ).thenAnswer((_) async => Response<GetDetailedNodeInfoOK>(
-              requestOptions: RequestOptions(path: ''),
-              data: getNodeInfoVcOk,
-            ));
+          vaultDataManagerEncryptionServiceMocks.getDekEncryptedByApiPublicKey,
+        ).thenAnswer((_) async => List.filled(5, 0));
 
-        when(vaultDataManagerEncryptionServiceMocks
-                .getDekEncryptedByApiPublicKey)
-            .thenAnswer((_) async => List.filled(5, 0));
-
-        when(
-          vaultDataManagerApiServiceMocks.getNodeInfoWithDek,
-        ).thenAnswer((_) async => Response<GetDetailedNodeInfoOK>(
-              requestOptions: RequestOptions(path: ''),
-              data: getNodeInfoVcOk,
-            ));
+        when(vaultDataManagerApiServiceMocks.getNodeInfoWithDek).thenAnswer(
+          (_) async => Response<GetDetailedNodeInfoOK>(
+            requestOptions: RequestOptions(path: ''),
+            data: getNodeInfoVcOk,
+          ),
+        );
 
         when(
           vaultDataManagerEncryptionServiceMocks
@@ -942,16 +1076,18 @@ void main() {
           ),
         );
 
-        verify(vaultDataManagerApiServiceMocks.getVerifiableCredentialsNodes)
-            .called(1);
+        verify(
+          vaultDataManagerApiServiceMocks.getVerifiableCredentialsNodes,
+        ).called(1);
         verify(vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek).called(2);
-        verify(vaultDataManagerEncryptionServiceMocks
-                .getDekEncryptedByApiPublicKey)
-            .called(2);
+        verify(
+          vaultDataManagerEncryptionServiceMocks.getDekEncryptedByApiPublicKey,
+        ).called(2);
         verify(vaultDataManagerApiServiceMocks.getNodeInfoWithDek).called(2);
-        verify(vaultDataManagerEncryptionServiceMocks
-                .decryptDekByWalletCryptoMaterial)
-            .called(2);
+        verify(
+          vaultDataManagerEncryptionServiceMocks
+              .decryptDekByWalletCryptoMaterial,
+        ).called(2);
         verify(vaultDataManagerApiServiceMocks.downloadNodeContents).called(2);
       });
     });
@@ -960,12 +1096,12 @@ void main() {
   group('When getting node info', () {
     group('and it exists,', () {
       test('it calls api service method once and return node', () async {
-        when(
-          vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek,
-        ).thenAnswer((_) async => Response<GetDetailedNodeInfoOK>(
-              requestOptions: RequestOptions(path: ''),
-              data: getNodeInfoVcOk,
-            ));
+        when(vaultDataManagerApiServiceMocks.getNodeInfoWithoutDek).thenAnswer(
+          (_) async => Response<GetDetailedNodeInfoOK>(
+            requestOptions: RequestOptions(path: ''),
+            data: getNodeInfoVcOk,
+          ),
+        );
 
         final result = await vaultDataManagerService.getNodeInfo(nodeId);
 

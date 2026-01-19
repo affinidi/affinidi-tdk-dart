@@ -19,10 +19,14 @@ TrInstanceMetadata _$TrInstanceMetadataFromJson(Map<String, dynamic> json) =>
       didDocumentUrl: json['didDocumentUrl'] as String,
       projectId: json['projectId'] as String,
       serviceType: $enumDecode(_$ServiceTypeEnumMap, json['serviceType']),
-      deploymentState:
-          $enumDecode(_$DeploymentStateEnumMap, json['deploymentState']),
-      deploymentStatus:
-          $enumDecode(_$DeploymentStatusEnumMap, json['deploymentStatus']),
+      deploymentState: $enumDecode(
+        _$DeploymentStateEnumMap,
+        json['deploymentState'],
+      ),
+      deploymentStatus: $enumDecode(
+        _$DeploymentStatusEnumMap,
+        json['deploymentStatus'],
+      ),
       serviceSize: $enumDecode(_$ServiceSizeEnumMap, json['serviceSize']),
       accountId: json['accountId'] as String,
       defaultMediatorDid: json['defaultMediatorDid'] as String,

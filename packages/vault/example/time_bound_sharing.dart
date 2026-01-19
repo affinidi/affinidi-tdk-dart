@@ -45,7 +45,8 @@ void main() async {
   var profilesAlice = await vaultAlice.listProfiles();
   var profilesBob = await vaultBob.listProfiles();
   print(
-      '[Demo] ${profilesAlice.isEmpty ? 'No profiles found' : 'Available profiles: ${profilesAlice.length}'}');
+    '[Demo] ${profilesAlice.isEmpty ? 'No profiles found' : 'Available profiles: ${profilesAlice.length}'}',
+  );
   _listProfileNames(profilesAlice, label: 'Initial profile names');
   _listProfileNames(profilesBob, label: 'Initial profile names');
 
@@ -84,8 +85,11 @@ void main() async {
   print('[Demo] Adding new profiles ...');
 
   // Create Alice
-  accountIndexAlice =
-      await _createProfile(vaultAlice, 'Alice88', accountIndexAlice);
+  accountIndexAlice = await _createProfile(
+    vaultAlice,
+    'Alice88',
+    accountIndexAlice,
+  );
   final aliceAccountIndex = accountIndexAlice;
 
   // Create Bob
@@ -119,20 +123,25 @@ void main() async {
     parentFolderId: aliceProfile.id,
   );
 
-  final filesPage = await aliceProfile.defaultFileStorage!
-      .getFolder(folderId: aliceProfile.id);
+  final filesPage = await aliceProfile.defaultFileStorage!.getFolder(
+    folderId: aliceProfile.id,
+  );
   final file = filesPage.items.firstWhere((item) => item.name == fileName);
 
   // Share file with time-bound access (1 minute expiration)
   print(
-      '[Demo] Alice is sharing $fileName with Bob with READ access for 1 minute...');
+    '[Demo] Alice is sharing $fileName with Bob with READ access for 1 minute...',
+  );
   var policy = await vaultAlice.getItemPermissionsPolicy(
     profileId: aliceProfile.id,
     granteeDid: bobProfile.did,
   );
 
-  policy.addPermission([file.id], [Permissions.read],
-      expiresAt: DateTime.now().add(const Duration(minutes: 1)));
+  policy.addPermission(
+    [file.id],
+    [Permissions.read],
+    expiresAt: DateTime.now().add(const Duration(minutes: 1)),
+  );
 
   final kek = await vaultAlice.setItemAccess(
     profileId: aliceProfile.id,
@@ -172,7 +181,8 @@ void main() async {
 
   // Bob tries to read the file after expiration (should fail)
   print(
-      '[Demo] Bob is trying to read the file after expiration (should fail)...');
+    '[Demo] Bob is trying to read the file after expiration (should fail)...',
+  );
   try {
     await vaultBob.readSharedItem(
       ownerProfileId: aliceProfile.id,
@@ -182,29 +192,37 @@ void main() async {
   } catch (e) {
     print('[Demo] Bob correctly failed to read the file after expiration: $e');
     print(
-        '[Demo] Time-bound sharing is working - access was automatically revoked');
+      '[Demo] Time-bound sharing is working - access was automatically revoked',
+    );
   }
 
   // Cleanup
   print('[Demo] Alice is deleting all files...');
-  final aliceFilesPage = await aliceProfile.defaultFileStorage!
-      .getFolder(folderId: aliceProfile.id);
-  await Future.wait(aliceFilesPage.items.map(
-      (item) => aliceProfile.defaultFileStorage!.deleteFile(fileId: item.id)));
+  final aliceFilesPage = await aliceProfile.defaultFileStorage!.getFolder(
+    folderId: aliceProfile.id,
+  );
+  await Future.wait(
+    aliceFilesPage.items.map(
+      (item) => aliceProfile.defaultFileStorage!.deleteFile(fileId: item.id),
+    ),
+  );
 
   // Clean up profiles
   print('[Demo] Cleaning up profiles...');
   profilesAlice = await vaultAlice.listProfiles();
   profilesBob = await vaultBob.listProfiles();
   await Future.wait(
-      profilesAlice.map((profile) => _deleteProfile(vaultAlice, profile)));
+    profilesAlice.map((profile) => _deleteProfile(vaultAlice, profile)),
+  );
   await Future.wait(
-      profilesBob.map((profile) => _deleteProfile(vaultBob, profile)));
+    profilesBob.map((profile) => _deleteProfile(vaultBob, profile)),
+  );
 
   profilesAlice = await vaultAlice.listProfiles();
   profilesBob = await vaultBob.listProfiles();
   print(
-      '[Demo] Final profile count - Alice: ${profilesAlice.length}, Bob: ${profilesBob.length}');
+    '[Demo] Final profile count - Alice: ${profilesAlice.length}, Bob: ${profilesBob.length}',
+  );
 }
 
 Future<void> _deleteProfile(Vault vault, Profile profile) async {
@@ -241,7 +259,8 @@ Future<void> _deleteItems({
     } while (exclusiveStartItemId != null);
   } catch (e) {
     print(
-        '[Demo] Error while deleting folder $folderId in profile ${profile.name}: ${e.toString()}');
+      '[Demo] Error while deleting folder $folderId in profile ${profile.name}: ${e.toString()}',
+    );
   }
 
   if (folderId != profile.id) {
@@ -262,8 +281,13 @@ Future<int> _createProfile(Vault vault, String name, int accountIndex) async {
       final profileRepository = vault.defaultProfileRepository;
       await profileRepository.createProfile(name: '$name $newAccountIndex');
     } on TdkException catch (error) {
-      print([error.code, '[Demo] ${error.message}', error.originalMessage]
-          .join('\n'));
+      print(
+        [
+          error.code,
+          '[Demo] ${error.message}',
+          error.originalMessage,
+        ].join('\n'),
+      );
       rethrow;
     }
   }
@@ -273,18 +297,17 @@ Future<int> _createProfile(Vault vault, String name, int accountIndex) async {
   return newAccountIndex;
 }
 
-void _listProfileNames(
-  List<Profile> profiles, {
-  required String label,
-}) {
+void _listProfileNames(List<Profile> profiles, {required String label}) {
   if (profiles.isEmpty) {
     print('[Demo] List of profiles is empty');
     return;
   }
 
   final names = profiles
-      .map((profile) =>
-          '${profile.name} | ${profile.accountIndex} | ${profile.did} ')
+      .map(
+        (profile) =>
+            '${profile.name} | ${profile.accountIndex} | ${profile.did} ',
+      )
       .join(', ');
   print('[Demo] $label: $names');
 }

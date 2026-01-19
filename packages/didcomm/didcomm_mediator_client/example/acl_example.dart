@@ -2,7 +2,7 @@ import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediat
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../../../tests/integration/dart/test/test_config.dart';
+import 'package:integration_tests/test/test_config.dart';
 
 void main() async {
   // Run commands below in your terminal to generate keys for Alice and Bob:
@@ -35,10 +35,7 @@ void main() async {
 
   final aliceKeyId = 'alice-key-1';
 
-  await aliceWallet.generateKey(
-    keyId: aliceKeyId,
-    keyType: KeyType.p256,
-  );
+  await aliceWallet.generateKey(keyId: aliceKeyId, keyType: KeyType.p256);
 
   await aliceDidManager.addVerificationMethod(aliceKeyId);
   final aliceDidDocument = await aliceDidManager.getDidDocument();
@@ -51,20 +48,15 @@ void main() async {
 
   final bobKeyId = 'bob-key-1';
 
-  await bobWallet.generateKey(
-    keyId: bobKeyId,
-    keyType: KeyType.p256,
-  );
+  await bobWallet.generateKey(keyId: bobKeyId, keyType: KeyType.p256);
 
   await bobDidManager.addVerificationMethod(bobKeyId);
   final bobDidDocument = await bobDidManager.getDidDocument();
 
   prettyPrint('Bob DID Document', object: bobDidDocument);
 
-  final bobMediatorDocument =
-      await UniversalDIDResolver.defaultResolver.resolveDid(
-    await readDid(config.mediatorDidPath),
-  );
+  final bobMediatorDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(await readDid(config.mediatorDidPath));
 
   prettyPrint('Bob Mediator Document', object: bobMediatorDocument);
 
@@ -82,13 +74,13 @@ void main() async {
 
   final aliceSignedAndEncryptedMessage =
       await DidcommMessage.packIntoSignedAndEncryptedMessages(
-    alicePlainTextMassage,
-    keyType: [bobDidDocument].getCommonKeyTypesInKeyAgreements().first,
-    recipientDidDocuments: [bobDidDocument],
-    keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
-    encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
-    signer: aliceSigner,
-  );
+        alicePlainTextMassage,
+        keyType: [bobDidDocument].getCommonKeyTypesInKeyAgreements().first,
+        recipientDidDocuments: [bobDidDocument],
+        keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
+        encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
+        signer: aliceSigner,
+      );
 
   prettyPrint(
     'Encrypted and Signed Message by Alice',
@@ -134,15 +126,15 @@ void main() async {
 
   // Alice shall not send a message
   try {
-    await aliceMediatorClient.sendMessage(
-      forwardMessage,
-    );
+    await aliceMediatorClient.sendMessage(forwardMessage);
 
     throw Exception(
-        'No error, Alice did send a message, are we using a mediator with explicit allow per DID?');
+      'No error, Alice did send a message, are we using a mediator with explicit allow per DID?',
+    );
   } on MediatorClientException catch (e) {
-    if (!e.innerMessage
-        .contains('Delivery blocked due to ACLs (access_list denied)')) {
+    if (!e.innerMessage.contains(
+      'Delivery blocked due to ACLs (access_list denied)',
+    )) {
       throw Exception('Unexpected error occurred: ${e.innerMessage}');
     }
     prettyPrint('Expected error occurred', object: e.innerMessage);
@@ -171,10 +163,8 @@ void main() async {
 
   prettyPrint('bobAccessListAddMessage', object: bobAccessListAddMessage);
 
-  final bobAccessListAddSentMessage =
-      await bobMediatorClient.sendAclManagementMessage(
-    bobAccessListAddMessage,
-  );
+  final bobAccessListAddSentMessage = await bobMediatorClient
+      .sendAclManagementMessage(bobAccessListAddMessage);
 
   prettyPrint(
     'bobAccessListAddSentMessage',
@@ -182,9 +172,7 @@ void main() async {
   );
 
   // ...only then Alice can send a message
-  final sentMessage = await aliceMediatorClient.sendMessage(
-    forwardMessage,
-  );
+  final sentMessage = await aliceMediatorClient.sendMessage(forwardMessage);
 
   prettyPrint('Encrypted and Signed Forward Message', object: sentMessage);
   prettyPrint('Bob is fetching messages...');
@@ -194,21 +182,18 @@ void main() async {
   );
 
   for (final message in messages) {
-    prettyPrint(
-      'Raw message received by Bob via Mediator',
-      object: message,
-    );
+    prettyPrint('Raw message received by Bob via Mediator', object: message);
 
     final originalPlainTextMessage =
         await DidcommMessage.unpackToPlainTextMessage(
-      message: message,
-      recipientDidManager: bobDidManager,
-      expectedMessageWrappingTypes: [
-        MessageWrappingType.anoncryptSignPlaintext,
-        MessageWrappingType.authcryptPlaintext,
-        MessageWrappingType.authcryptSignPlaintext,
-      ],
-    );
+          message: message,
+          recipientDidManager: bobDidManager,
+          expectedMessageWrappingTypes: [
+            MessageWrappingType.anoncryptSignPlaintext,
+            MessageWrappingType.authcryptPlaintext,
+            MessageWrappingType.authcryptSignPlaintext,
+          ],
+        );
 
     prettyPrint(
       'Unpacked Plain Text Message received by Bob via Mediator',

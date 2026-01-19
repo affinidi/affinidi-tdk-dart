@@ -10,22 +10,15 @@ void main() {
     });
 
     test('should create options with ACL', () {
-      final acl = <String, num>{
-        'hash1': 1,
-        'hash2': 2,
-      };
+      final acl = <String, num>{'hash1': 1, 'hash2': 2};
 
-      final options = UpdateInstanceConfigurationOptions(
-        acl: acl,
-      );
+      final options = UpdateInstanceConfigurationOptions(acl: acl);
 
       expect(options.acl, acl);
     });
 
     test('should create options with empty ACL map', () {
-      final options = UpdateInstanceConfigurationOptions(
-        acl: <String, num>{},
-      );
+      final options = UpdateInstanceConfigurationOptions(acl: <String, num>{});
 
       expect(options.acl, isEmpty);
     });
@@ -40,14 +33,9 @@ void main() {
     });
 
     test('should serialize to JSON with ACL', () {
-      final acl = <String, num>{
-        'hash1': 1,
-        'hash2': 2,
-      };
+      final acl = <String, num>{'hash1': 1, 'hash2': 2};
 
-      final options = UpdateInstanceConfigurationOptions(
-        acl: acl,
-      );
+      final options = UpdateInstanceConfigurationOptions(acl: acl);
 
       final json = options.toJson();
 
@@ -56,9 +44,7 @@ void main() {
     });
 
     test('should serialize to JSON with empty ACL map', () {
-      final options = UpdateInstanceConfigurationOptions(
-        acl: <String, num>{},
-      );
+      final options = UpdateInstanceConfigurationOptions(acl: <String, num>{});
 
       final json = options.toJson();
 
@@ -67,14 +53,9 @@ void main() {
     });
 
     test('should deserialize from JSON with ACL', () {
-      final acl = <String, num>{
-        'hash1': 1,
-        'hash2': 2,
-      };
+      final acl = <String, num>{'hash1': 1, 'hash2': 2};
 
-      final json = {
-        'acl': acl,
-      };
+      final json = {'acl': acl};
 
       final options = UpdateInstanceConfigurationOptions.fromJson(json);
 
@@ -90,9 +71,7 @@ void main() {
     });
 
     test('should deserialize from JSON with null ACL', () {
-      final json = {
-        'acl': null,
-      };
+      final json = {'acl': null};
 
       final options = UpdateInstanceConfigurationOptions.fromJson(json);
 
@@ -100,15 +79,9 @@ void main() {
     });
 
     test('should handle ACL with different numeric types', () {
-      final acl = <String, num>{
-        'hash1': 1,
-        'hash2': 2.5,
-        'hash3': 3,
-      };
+      final acl = <String, num>{'hash1': 1, 'hash2': 2.5, 'hash3': 3};
 
-      final options = UpdateInstanceConfigurationOptions(
-        acl: acl,
-      );
+      final options = UpdateInstanceConfigurationOptions(acl: acl);
 
       expect(options.acl, acl);
       expect(options.acl!['hash1'], 1);
@@ -129,11 +102,7 @@ void main() {
     });
 
     test('should round-trip through JSON serialization', () {
-      final acl = <String, num>{
-        'hash1': 1,
-        'hash2': 2,
-        'hash3': 3.5,
-      };
+      final acl = <String, num>{'hash1': 1, 'hash2': 2, 'hash3': 3.5};
 
       final original = UpdateInstanceConfigurationOptions(acl: acl);
       final json = original.toJson();

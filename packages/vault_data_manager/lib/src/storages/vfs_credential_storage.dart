@@ -14,9 +14,9 @@ class VFSCredentialStorage implements CredentialStorage {
     required String id,
     required VaultDataManagerServiceInterface dataManagerService,
     required String profileId,
-  })  : _id = id,
-        _vaultDataManagerService = dataManagerService,
-        _profileId = profileId;
+  }) : _id = id,
+       _vaultDataManagerService = dataManagerService,
+       _profileId = profileId;
 
   final String _id;
   @override

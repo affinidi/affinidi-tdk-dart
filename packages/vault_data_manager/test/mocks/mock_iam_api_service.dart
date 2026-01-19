@@ -21,19 +21,20 @@ class MockIamApiService extends Mock
     ProgressCallback? onReceiveProgress,
   }) {
     return super.noSuchMethod(
-      Invocation.method(#grantAccessVfs, [], {
-        #granteeDid: granteeDid,
-        #permissions: permissions,
-        #expiresAt: expiresAt,
-        #profileId: profileId,
-        #cancelToken: cancelToken,
-        #headers: headers,
-        #extra: extra,
-        #validateStatus: validateStatus,
-        #onSendProgress: onSendProgress,
-        #onReceiveProgress: onReceiveProgress,
-      }),
-    ) as Future<void>;
+          Invocation.method(#grantAccessVfs, [], {
+            #granteeDid: granteeDid,
+            #permissions: permissions,
+            #expiresAt: expiresAt,
+            #profileId: profileId,
+            #cancelToken: cancelToken,
+            #headers: headers,
+            #extra: extra,
+            #validateStatus: validateStatus,
+            #onSendProgress: onSendProgress,
+            #onReceiveProgress: onReceiveProgress,
+          }),
+        )
+        as Future<void>;
   }
 
   @override
@@ -47,16 +48,17 @@ class MockIamApiService extends Mock
     ProgressCallback? onReceiveProgress,
   }) {
     return super.noSuchMethod(
-      Invocation.method(#revokeAccessVfs, [], {
-        #granteeDid: granteeDid,
-        #cancelToken: cancelToken,
-        #headers: headers,
-        #extra: extra,
-        #validateStatus: validateStatus,
-        #onSendProgress: onSendProgress,
-        #onReceiveProgress: onReceiveProgress,
-      }),
-    ) as Future<void>;
+          Invocation.method(#revokeAccessVfs, [], {
+            #granteeDid: granteeDid,
+            #cancelToken: cancelToken,
+            #headers: headers,
+            #extra: extra,
+            #validateStatus: validateStatus,
+            #onSendProgress: onSendProgress,
+            #onReceiveProgress: onReceiveProgress,
+          }),
+        )
+        as Future<void>;
   }
 
   @override
@@ -71,17 +73,18 @@ class MockIamApiService extends Mock
     ProgressCallback? onReceiveProgress,
   }) {
     return super.noSuchMethod(
-      Invocation.method(#updateAccessVfs, [], {
-        #granteeDid: granteeDid,
-        #permissions: permissions,
-        #cancelToken: cancelToken,
-        #headers: headers,
-        #extra: extra,
-        #validateStatus: validateStatus,
-        #onSendProgress: onSendProgress,
-        #onReceiveProgress: onReceiveProgress,
-      }),
-    ) as Future<Response<consumer_iam.UpdateAccessOutput>>;
+          Invocation.method(#updateAccessVfs, [], {
+            #granteeDid: granteeDid,
+            #permissions: permissions,
+            #cancelToken: cancelToken,
+            #headers: headers,
+            #extra: extra,
+            #validateStatus: validateStatus,
+            #onSendProgress: onSendProgress,
+            #onReceiveProgress: onReceiveProgress,
+          }),
+        )
+        as Future<Response<consumer_iam.UpdateAccessOutput>>;
   }
 
   @override
@@ -96,17 +99,18 @@ class MockIamApiService extends Mock
     ProgressCallback? onReceiveProgress,
   }) {
     return super.noSuchMethod(
-      Invocation.method(#revokeItemsAccessVfs, [], {
-        #granteeDid: granteeDid,
-        #itemIds: itemIds,
-        #cancelToken: cancelToken,
-        #headers: headers,
-        #extra: extra,
-        #validateStatus: validateStatus,
-        #onSendProgress: onSendProgress,
-        #onReceiveProgress: onReceiveProgress,
-      }),
-    ) as Future<void>;
+          Invocation.method(#revokeItemsAccessVfs, [], {
+            #granteeDid: granteeDid,
+            #itemIds: itemIds,
+            #cancelToken: cancelToken,
+            #headers: headers,
+            #extra: extra,
+            #validateStatus: validateStatus,
+            #onSendProgress: onSendProgress,
+            #onReceiveProgress: onReceiveProgress,
+          }),
+        )
+        as Future<void>;
   }
 
   @override
@@ -120,28 +124,26 @@ class MockIamApiService extends Mock
     ProgressCallback? onReceiveProgress,
   }) {
     return super.noSuchMethod(
-      Invocation.method(#getItemsAccessVfs, [], {
-        #granteeDid: granteeDid,
-        #cancelToken: cancelToken,
-        #headers: headers,
-        #extra: extra,
-        #validateStatus: validateStatus,
-        #onSendProgress: onSendProgress,
-        #onReceiveProgress: onReceiveProgress,
-      }),
-    ) as Future<Response<consumer_iam.GetAccessOutput>>;
+          Invocation.method(#getItemsAccessVfs, [], {
+            #granteeDid: granteeDid,
+            #cancelToken: cancelToken,
+            #headers: headers,
+            #extra: extra,
+            #validateStatus: validateStatus,
+            #onSendProgress: onSendProgress,
+            #onReceiveProgress: onReceiveProgress,
+          }),
+        )
+        as Future<Response<consumer_iam.GetAccessOutput>>;
   }
 
   @override
   Future<void> setItemsAccessVfs({
     required String granteeDid,
     required List<
-            ({
-              List<String> itemIds,
-              Permissions permissions,
-              DateTime? expiresAt
-            })>
-        permissionGroups,
+      ({List<String> itemIds, Permissions permissions, DateTime? expiresAt})
+    >
+    permissionGroups,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -150,16 +152,17 @@ class MockIamApiService extends Mock
     ProgressCallback? onReceiveProgress,
   }) {
     return super.noSuchMethod(
-      Invocation.method(#setItemsAccessVfs, [], {
-        #granteeDid: granteeDid,
-        #permissionGroups: permissionGroups,
-        #cancelToken: cancelToken,
-        #headers: headers,
-        #extra: extra,
-        #validateStatus: validateStatus,
-        #onSendProgress: onSendProgress,
-        #onReceiveProgress: onReceiveProgress,
-      }),
-    ) as Future<void>;
+          Invocation.method(#setItemsAccessVfs, [], {
+            #granteeDid: granteeDid,
+            #permissionGroups: permissionGroups,
+            #cancelToken: cancelToken,
+            #headers: headers,
+            #extra: extra,
+            #validateStatus: validateStatus,
+            #onSendProgress: onSendProgress,
+            #onReceiveProgress: onReceiveProgress,
+          }),
+        )
+        as Future<void>;
   }
 }

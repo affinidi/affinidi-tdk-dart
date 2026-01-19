@@ -1,34 +1,32 @@
-name: affinidi_tdk_dart_integration_tests
-
+name: dart_tdk_integration_tests
 environment:
-  sdk: ^3.8.1
-
-resolution: workspace
-publish_to: none
-
+  sdk: ^3.6.0
 dev_dependencies:
   affinidi_tdk_auth_provider:
-    path: ../auth_provider
+    path: ../../../packages/dart/auth_provider
   affinidi_tdk_common: ^1.6.0
   affinidi_tdk_consumer_auth_provider:
-    path: ../consumer_auth_provider
+    path: ../../../packages/dart/consumer_auth_provider
   affinidi_tdk_cryptography:
-    path: ../cryptography
-  ssi: ^1.0.0
+    path: ../../../packages/dart/cryptography
+  ssi: ^2.2.0
   affinidi_tdk_iam_client:
-    path: ../../clients/iam_client
+    path: ../../../clients/dart/iam_client
   affinidi_tdk_wallets_client:
-    path: ../../clients/wallets_client
+    path: ../../../clients/dart/wallets_client
   affinidi_tdk_credential_issuance_client:
-    path: ../../clients/credential_issuance_client
+    path: ../../../clients/dart/credential_issuance_client
   affinidi_tdk_vault_data_manager_client:
-    path: ../../clients/vault_data_manager_client
+    path: ../../../clients/dart/vault_data_manager_client
   affinidi_tdk_credential_verification_client:
-    path: ../../clients/credential_verification_client
+    path: ../../../clients/dart/credential_verification_client
   affinidi_tdk_iota_client:
-    path: ../../clients/iota_client
+    path: ../../../clients/dart/iota_client
   affinidi_tdk_login_configuration_client:
-    path: ../../clients/login_configuration_client
+    path: ../../../clients/dart/login_configuration_client
+  affinidi_tdk_didcomm_mediator_client: ^1.0.0
+  affinidi_tdk_vdsp: ^1.0.0
+  affinidi_tdk_vdip: ^1.0.0
   dotenv: ^4.2.0
   lints: ^5.0.0
   test: ^1.24.0
@@ -41,3 +39,9 @@ dev_dependencies:
   convert: ^3.1.2
   uuid: ^4.5.1
   jwt_decode: ^0.3.1
+dependencies:
+  collection: ^1.19.1
+  dcql: ^1.0.0
+  path: ^1.9.1
+repository: https://github.com/affinidi/affinidi-tdk-dart
+resolution: workspace

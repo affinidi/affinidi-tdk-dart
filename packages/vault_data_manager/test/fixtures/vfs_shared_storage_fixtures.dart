@@ -21,38 +21,38 @@ class NodeFixtures {
   static const testProfileId = 'test-profile-id';
 
   static Node get testFileNode => Node(
-        nodeId: '1',
-        status: NodeStatus.CREATED,
-        name: testNodeName,
-        consumerId: testConsumerId,
-        parentNodeId: testParentId,
-        profileId: testProfileId,
-        createdAt: DateTime.now().toIso8601String(),
-        modifiedAt: DateTime.now().toIso8601String(),
-        createdBy: testUser,
-        modifiedBy: testUser,
-        type: NodeType.FILE,
-        fileCount: 0,
-        profileCount: 0,
-        folderCount: 0,
-      );
+    nodeId: '1',
+    status: NodeStatus.CREATED,
+    name: testNodeName,
+    consumerId: testConsumerId,
+    parentNodeId: testParentId,
+    profileId: testProfileId,
+    createdAt: DateTime.now().toIso8601String(),
+    modifiedAt: DateTime.now().toIso8601String(),
+    createdBy: testUser,
+    modifiedBy: testUser,
+    type: NodeType.FILE,
+    fileCount: 0,
+    profileCount: 0,
+    folderCount: 0,
+  );
 
   static Node get testFolderNode => Node(
-        nodeId: '1',
-        status: NodeStatus.CREATED,
-        name: testNodeName,
-        consumerId: testConsumerId,
-        parentNodeId: testParentId,
-        profileId: testProfileId,
-        createdAt: DateTime.now().toIso8601String(),
-        modifiedAt: DateTime.now().toIso8601String(),
-        createdBy: testUser,
-        modifiedBy: testUser,
-        type: NodeType.FOLDER,
-        fileCount: 0,
-        profileCount: 0,
-        folderCount: 0,
-      );
+    nodeId: '1',
+    status: NodeStatus.CREATED,
+    name: testNodeName,
+    consumerId: testConsumerId,
+    parentNodeId: testParentId,
+    profileId: testProfileId,
+    createdAt: DateTime.now().toIso8601String(),
+    modifiedAt: DateTime.now().toIso8601String(),
+    createdBy: testUser,
+    modifiedBy: testUser,
+    type: NodeType.FOLDER,
+    fileCount: 0,
+    profileCount: 0,
+    folderCount: 0,
+  );
 }
 
 class FileFixtures {
@@ -69,21 +69,23 @@ class CredentialFixtures {
   static const testCredentialId = 'test-cred';
 
   static VerifiableCredential get testVerifiableCredential =>
-      UniversalParser.parse(jsonEncode({
-        '@context': ['https://www.w3.org/2018/credentials/v1'],
-        'type': ['VerifiableCredential', 'TestCredential'],
-        'id': 'test-vc-id',
-        'issuer': 'test-issuer',
-        'issuanceDate': DateTime.now().toIso8601String(),
-        'credentialSubject': {'id': 'test-subject', 'name': 'Test User'},
-        'proof': {
-          'type': 'Ed25519Signature2018',
-          'created': DateTime.now().toIso8601String(),
-          'verificationMethod': 'test-verification-method',
-          'proofPurpose': 'assertionMethod',
-          'jws': 'test-jws'
-        }
-      }));
+      UniversalParser.parse(
+        jsonEncode({
+          '@context': ['https://www.w3.org/2018/credentials/v1'],
+          'type': ['VerifiableCredential', 'TestCredential'],
+          'id': 'test-vc-id',
+          'issuer': 'test-issuer',
+          'issuanceDate': DateTime.now().toIso8601String(),
+          'credentialSubject': {'id': 'test-subject', 'name': 'Test User'},
+          'proof': {
+            'type': 'Ed25519Signature2018',
+            'created': DateTime.now().toIso8601String(),
+            'verificationMethod': 'test-verification-method',
+            'proofPurpose': 'assertionMethod',
+            'jws': 'test-jws',
+          },
+        }),
+      );
 
   static vault.DigitalCredential get testDigitalCredential =>
       vault.DigitalCredential(

@@ -13,11 +13,11 @@ class EdgeCredentialStorage implements CredentialStorage {
     required String profileId,
     CredentialCodec? codec,
     required EdgeEncryptionServiceInterface encryptionService,
-  })  : _repository = repository,
-        _id = id,
-        _profileId = profileId,
-        _codec = codec ?? CredentialCodec(),
-        _encryptionService = encryptionService;
+  }) : _repository = repository,
+       _id = id,
+       _profileId = profileId,
+       _codec = codec ?? CredentialCodec(),
+       _encryptionService = encryptionService;
 
   final EdgeCredentialsRepositoryInterface _repository;
   final String _id;
@@ -74,8 +74,9 @@ class EdgeCredentialStorage implements CredentialStorage {
       );
     }
 
-    final decryptedContent =
-        await _encryptionService.decryptData(credentialData.content);
+    final decryptedContent = await _encryptionService.decryptData(
+      credentialData.content,
+    );
 
     return _codec.decode(
       credentialBytes: decryptedContent,
@@ -98,8 +99,9 @@ class EdgeCredentialStorage implements CredentialStorage {
 
     final credentials = await Future.wait(
       credentialDataList.items.map((credentialData) async {
-        final decryptedContent =
-            await _encryptionService.decryptData(credentialData.content);
+        final decryptedContent = await _encryptionService.decryptData(
+          credentialData.content,
+        );
 
         return _codec.decode(
           credentialBytes: decryptedContent,
@@ -127,7 +129,8 @@ class EdgeCredentialStorage implements CredentialStorage {
   }) async {
     final credentialId = const Uuid().v4();
 
-    final credentialName = verifiableCredential.type
+    final credentialName =
+        verifiableCredential.type
             .where((type) => type != 'VerifiableCredential')
             .firstOrNull ??
         'Credential';
@@ -135,8 +138,9 @@ class EdgeCredentialStorage implements CredentialStorage {
     final credentialContent = _codec.encode(verifiableCredential);
 
     // Encrypt the credential content
-    final encryptedContent =
-        await _encryptionService.encryptData(credentialContent);
+    final encryptedContent = await _encryptionService.encryptData(
+      credentialContent,
+    );
 
     await _repository.saveCredentialData(
       profileId: _profileId,

@@ -23,26 +23,30 @@ void main() async {
 
 Future<String> _claimCredentialExample(AuthProvider authProvider) async {
   final issuanceClient = AffinidiTdkCredentialIssuanceClient(
-      authTokenHook: authProvider.fetchProjectScopedToken);
+    authTokenHook: authProvider.fetchProjectScopedToken,
+  );
   final issuanceApi = issuanceClient.getIssuanceApi();
 
   final startIssuanceInputBuilder =
       StartIssuanceInputBuilder(); // Add credential issuance data here
 
   final offer = (await issuanceApi.startIssuance(
-          projectId: '', startIssuanceInput: startIssuanceInputBuilder.build()))
-      .data;
+    projectId: '',
+    startIssuanceInput: startIssuanceInputBuilder.build(),
+  )).data;
 
   // Use the vault utilities from the common package to build the claim link
-  final affinidiVaultClaimLink =
-      VaultUtils.buildClaimLink(offer!.credentialOfferUri);
+  final affinidiVaultClaimLink = VaultUtils.buildClaimLink(
+    offer!.credentialOfferUri,
+  );
 
   return affinidiVaultClaimLink;
 }
 
 Future<String> _shareCredentialExample(AuthProvider authProvider) async {
   final iotaClient = AffinidiTdkIotaClient(
-      authTokenHook: authProvider.fetchProjectScopedToken);
+    authTokenHook: authProvider.fetchProjectScopedToken,
+  );
   final iotaApi = iotaClient.getIotaApi();
 
   final initiateDataSharingRequestInputBuilder =
@@ -54,13 +58,15 @@ Future<String> _shareCredentialExample(AuthProvider authProvider) async {
         ..redirectUri = ''
         ..correlationId = '';
   final iotaRequest = (await iotaApi.initiateDataSharingRequest(
-          initiateDataSharingRequestInput:
-              initiateDataSharingRequestInputBuilder.build()))
-      .data;
+    initiateDataSharingRequestInput: initiateDataSharingRequestInputBuilder
+        .build(),
+  )).data;
 
   // Use the vault utilities from the common package to build the share link
-  final affinidiVaultClaimLink =
-      VaultUtils.buildShareLink(iotaRequest!.data!.jwt, 'my_client_id');
+  final affinidiVaultClaimLink = VaultUtils.buildShareLink(
+    iotaRequest!.data!.jwt,
+    'my_client_id',
+  );
 
   return affinidiVaultClaimLink;
 }

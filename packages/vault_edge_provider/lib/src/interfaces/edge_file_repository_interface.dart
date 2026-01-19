@@ -33,9 +33,7 @@ abstract interface class EdgeFileRepositoryInterface {
   Future<File> getFile({required String fileId});
 
   /// Retrieves the content of the file
-  Future<Uint8List> getFileContent({
-    required String fileId,
-  });
+  Future<Uint8List> getFileContent({required String fileId});
 
   /// Retrieves the list of items in a folder with pagination support
   ///
@@ -53,10 +51,7 @@ abstract interface class EdgeFileRepositoryInterface {
   ///
   /// [fileId] - the file unique identifier
   /// [newName] - the new name
-  Future<void> renameFile({
-    required String fileId,
-    required String newName,
-  });
+  Future<void> renameFile({required String fileId, required String newName});
 
   /// Rename a folder
   ///

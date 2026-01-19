@@ -7,9 +7,7 @@ abstract class ProfileRepository {
   String get id;
 
   /// Retrieves a list of all available profiles.
-  Future<List<Profile>> listProfiles({
-    VaultCancelToken? cancelToken,
-  });
+  Future<List<Profile>> listProfiles({VaultCancelToken? cancelToken});
 
   /// Creates a new profile.
   ///
@@ -26,19 +24,13 @@ abstract class ProfileRepository {
   ///
   /// [profile] - The profile to update.
   /// [cancelToken] - Optional cancel token for API requests.
-  Future<void> updateProfile(
-    Profile profile, {
-    VaultCancelToken? cancelToken,
-  });
+  Future<void> updateProfile(Profile profile, {VaultCancelToken? cancelToken});
 
   /// Deletes a profile.
   ///
   /// [profile] - The profile to delete.
   /// [cancelToken] - Optional cancel token for API requests.
-  Future<void> deleteProfile(
-    Profile profile, {
-    VaultCancelToken? cancelToken,
-  });
+  Future<void> deleteProfile(Profile profile, {VaultCancelToken? cancelToken});
 
   /// Configures the profile repository with the provided settings.
   ///

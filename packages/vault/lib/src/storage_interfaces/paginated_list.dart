@@ -18,8 +18,5 @@ class PaginatedList<T> {
   bool get hasMore => lastEvaluatedItemId != null;
 
   /// Creates a new page with the given items and optional last evaluated item ID
-  PaginatedList({
-    required this.items,
-    this.lastEvaluatedItemId,
-  });
+  PaginatedList({required this.items, this.lastEvaluatedItemId});
 }

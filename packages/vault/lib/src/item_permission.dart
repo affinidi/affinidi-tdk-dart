@@ -22,11 +22,7 @@ class ItemPermission {
   /// [itemIds] - The list of item IDs that have these permissions.
   /// [rights] - The list of rights granted.
   /// [expiresAt] - Optional expiration date for the permissions.
-  ItemPermission({
-    required this.itemIds,
-    required this.rights,
-    this.expiresAt,
-  });
+  ItemPermission({required this.itemIds, required this.rights, this.expiresAt});
 
   /// Creates an [ItemPermission] from a map.
   ///
@@ -41,10 +37,11 @@ class ItemPermission {
     final itemIds = (map['nodeIds'] as List?)?.cast<String>() ?? <String>[];
     final rights =
         (map['rights'] as List?)?.map((r) => r.toString()).toList() ??
-            <String>[];
+        <String>[];
     final expiresAtStr = map['expiresAt'] as String?;
-    final expiresAt =
-        expiresAtStr != null ? DateTime.parse(expiresAtStr) : null;
+    final expiresAt = expiresAtStr != null
+        ? DateTime.parse(expiresAtStr)
+        : null;
 
     return ItemPermission(
       itemIds: itemIds,

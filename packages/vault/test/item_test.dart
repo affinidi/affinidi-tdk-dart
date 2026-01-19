@@ -29,10 +29,7 @@ void main() {
 
     group('immutability', () {
       test('should be immutable', () {
-        expect(
-          () => (file as dynamic).id = 'new-id',
-          throwsA(isA<Error>()),
-        );
+        expect(() => (file as dynamic).id = 'new-id', throwsA(isA<Error>()));
         expect(
           () => (file as dynamic).name = 'new-name',
           throwsA(isA<Error>()),
@@ -77,10 +74,7 @@ void main() {
 
     group('immutability', () {
       test('should be immutable', () {
-        expect(
-          () => (folder as dynamic).id = 'new-id',
-          throwsA(isA<Error>()),
-        );
+        expect(() => (folder as dynamic).id = 'new-id', throwsA(isA<Error>()));
         expect(
           () => (folder as dynamic).name = 'new-name',
           throwsA(isA<Error>()),

@@ -5,9 +5,7 @@ import '../models/edge_profile.dart';
 /// Interface to manage CRUD operations on profiles
 abstract interface class EdgeProfileRepositoryInterface {
   /// Retrieves list of local profiles
-  Future<List<EdgeProfile>> listProfiles({
-    VaultCancelToken? cancelToken,
-  });
+  Future<List<EdgeProfile>> listProfiles({VaultCancelToken? cancelToken});
 
   /// Creates a new local profile
   Future<void> createProfile({

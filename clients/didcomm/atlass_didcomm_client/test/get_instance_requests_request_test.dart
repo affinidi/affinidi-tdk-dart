@@ -4,14 +4,15 @@ import 'package:test/test.dart';
 void main() {
   group('BaseGetInstanceRequestsRequest', () {
     test(
-        'should create request with mediator instance type and no optional fields',
-        () {
-      final request = GetInstanceRequestsRequestOptions();
+      'should create request with mediator instance type and no optional fields',
+      () {
+        final request = GetInstanceRequestsRequestOptions();
 
-      expect(request.instanceId, isNull);
-      expect(request.limit, isNull);
-      expect(request.exclusiveStartKey, isNull);
-    });
+        expect(request.instanceId, isNull);
+        expect(request.limit, isNull);
+        expect(request.exclusiveStartKey, isNull);
+      },
+    );
 
     test('should create request with all fields for mediator', () {
       final request = GetInstanceRequestsRequestOptions(
@@ -90,9 +91,7 @@ void main() {
         'exclusiveStartKey': 'key-def',
       };
 
-      final request = GetInstanceRequestsRequestOptions.fromJson(
-        json,
-      );
+      final request = GetInstanceRequestsRequestOptions.fromJson(json);
 
       expect(request.instanceId, 'mediator-123');
       expect(request.limit, 25);
@@ -102,9 +101,7 @@ void main() {
     test('should deserialize from JSON with only instanceId for mediator', () {
       final json = {'mediatorId': 'mediator-789'};
 
-      final request = GetInstanceRequestsRequestOptions.fromJson(
-        json,
-      );
+      final request = GetInstanceRequestsRequestOptions.fromJson(json);
 
       expect(request.instanceId, 'mediator-789');
       expect(request.limit, isNull);
@@ -112,14 +109,9 @@ void main() {
     });
 
     test('should deserialize from JSON without instanceId for mediator', () {
-      final json = {
-        'limit': 30,
-        'exclusiveStartKey': 'key-ghi',
-      };
+      final json = {'limit': 30, 'exclusiveStartKey': 'key-ghi'};
 
-      final request = GetInstanceRequestsRequestOptions.fromJson(
-        json,
-      );
+      final request = GetInstanceRequestsRequestOptions.fromJson(json);
 
       expect(request.instanceId, isNull);
       expect(request.limit, 30);
@@ -129,9 +121,7 @@ void main() {
     test('should deserialize from empty JSON for mediator', () {
       final json = <String, dynamic>{};
 
-      final request = GetInstanceRequestsRequestOptions.fromJson(
-        json,
-      );
+      final request = GetInstanceRequestsRequestOptions.fromJson(json);
 
       expect(request.instanceId, isNull);
       expect(request.limit, isNull);
@@ -139,14 +129,9 @@ void main() {
     });
 
     test('should handle null instanceId in JSON for mediator', () {
-      final json = {
-        'mediatorId': null,
-        'limit': 10,
-      };
+      final json = {'mediatorId': null, 'limit': 10};
 
-      final request = GetInstanceRequestsRequestOptions.fromJson(
-        json,
-      );
+      final request = GetInstanceRequestsRequestOptions.fromJson(json);
 
       expect(request.instanceId, isNull);
       expect(request.limit, 10);
@@ -159,9 +144,7 @@ void main() {
         'extraField': 'should be ignored',
       };
 
-      final request = GetInstanceRequestsRequestOptions.fromJson(
-        json,
-      );
+      final request = GetInstanceRequestsRequestOptions.fromJson(json);
 
       expect(request.instanceId, 'mediator-123');
       expect(request.limit, 5);

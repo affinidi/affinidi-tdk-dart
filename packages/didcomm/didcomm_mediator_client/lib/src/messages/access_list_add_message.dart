@@ -24,15 +24,15 @@ class AccessListAddMessage extends AclManagementMessage {
     required this.theirDids,
     super.expiresTime,
   }) : super(
-          body: {
-            'access_list_add': {
-              'did_hash': sha256.convert(utf8.encode(from!)).toString(),
-              'hashes': theirDids
-                  .map((did) => sha256.convert(utf8.encode(did)).toString())
-                  .toList(),
-            }
-          },
-        );
+         body: {
+           'access_list_add': {
+             'did_hash': sha256.convert(utf8.encode(from!)).toString(),
+             'hashes': theirDids
+                 .map((did) => sha256.convert(utf8.encode(did)).toString())
+                 .toList(),
+           },
+         },
+       );
 
   /// Creates a [AccessListAddMessage] from a JSON map.
   ///

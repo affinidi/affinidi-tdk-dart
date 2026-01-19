@@ -20,8 +20,8 @@ class FakeAccountMetadata extends Fake implements AccountMetadata {
   final List<SharedStorageData> sharedStorageData;
 
   FakeAccountMetadata()
-      : dekekInfo = DekekInfo(encryptedDekek: 'test-encrypted-dekek'),
-        sharedStorageData = [];
+    : dekekInfo = DekekInfo(encryptedDekek: 'test-encrypted-dekek'),
+      sharedStorageData = [];
 }
 
 void registerAllFallbackValues() {
@@ -29,7 +29,8 @@ void registerAllFallbackValues() {
   registerFallbackValue('test-profile-id');
   registerFallbackValue(MockVerifiableCredential());
   registerFallbackValue(
-      MockDigitalCredential(MockVerifiableCredential(), id: 'test-node-id'));
+    MockDigitalCredential(MockVerifiableCredential(), id: 'test-node-id'),
+  );
   registerFallbackValue(NodeType.FILE);
   registerFallbackValue(NodeStatus.CREATED);
   registerFallbackValue(MockDeterministicWallet());

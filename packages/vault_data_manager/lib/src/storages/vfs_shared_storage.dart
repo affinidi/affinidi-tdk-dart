@@ -23,17 +23,17 @@ class VfsSharedStorage implements vault.SharedStorage {
     required String id,
     required VaultDataManagerServiceInterface dataManagerService,
     required String sharedProfileId, // nodePath
-  })  : _id = id,
-        _sharedProfileId = sharedProfileId,
-        _credentialStorage = VFSCredentialStorage(
-          id: id,
-          dataManagerService: dataManagerService,
-          profileId: sharedProfileId,
-        ),
-        _fileStorage = VFSFileStorage(
-          id: id,
-          dataManagerService: dataManagerService,
-        );
+  }) : _id = id,
+       _sharedProfileId = sharedProfileId,
+       _credentialStorage = VFSCredentialStorage(
+         id: id,
+         dataManagerService: dataManagerService,
+         profileId: sharedProfileId,
+       ),
+       _fileStorage = VFSFileStorage(
+         id: id,
+         dataManagerService: dataManagerService,
+       );
 
   final String _id;
   final String _sharedProfileId;
@@ -96,10 +96,7 @@ class VfsSharedStorage implements vault.SharedStorage {
     required String fileId,
     VaultCancelToken? cancelToken,
   }) async {
-    await _fileStorage.deleteFile(
-      fileId: fileId,
-      cancelToken: cancelToken,
-    );
+    await _fileStorage.deleteFile(fileId: fileId, cancelToken: cancelToken);
   }
 
   @override
@@ -118,10 +115,7 @@ class VfsSharedStorage implements vault.SharedStorage {
     required String fileId,
     VaultCancelToken? cancelToken,
   }) async {
-    return await _fileStorage.getFile(
-      fileId: fileId,
-      cancelToken: cancelToken,
-    );
+    return await _fileStorage.getFile(fileId: fileId, cancelToken: cancelToken);
   }
 
   @override

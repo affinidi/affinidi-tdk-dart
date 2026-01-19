@@ -99,9 +99,9 @@ class Environment {
   };
 
   /// Gets the amount of milliseconds to use for API connection timeouts 'AFFINIDI_API_TIMEOUT_MS'.
-  static int? get apiTimeOutInMilliseconds =>
-      int.tryParse(const String.fromEnvironment('AFFINIDI_API_TIMEOUT_MS',
-          defaultValue: ''));
+  static int? get apiTimeOutInMilliseconds => int.tryParse(
+    const String.fromEnvironment('AFFINIDI_API_TIMEOUT_MS', defaultValue: ''),
+  );
 
   /// Gets the current log level from the environment variable 'AFFINIDI_TDK_LOG_LEVEL'.
   LogLevel get logLevel =>
@@ -109,8 +109,10 @@ class Environment {
       LogLevel.off;
 
   /// The list of available environments with their respective configurations.
-  static Environment getEnvironmentConfig(EnvironmentType envType,
-      [ElementsRegion region = _defaultRegion]) {
+  static Environment getEnvironmentConfig(
+    EnvironmentType envType, [
+    ElementsRegion region = _defaultRegion,
+  ]) {
     final regionCode = region.regionCode;
     switch (envType) {
       case EnvironmentType.local:
@@ -163,8 +165,10 @@ class Environment {
     return EnvironmentType.values.firstWhere(
       (e) =>
           e.value ==
-          const String.fromEnvironment(enviromentVariableName,
-              defaultValue: 'prod'),
+          const String.fromEnvironment(
+            enviromentVariableName,
+            defaultValue: 'prod',
+          ),
       orElse: () => EnvironmentType.prod,
     );
   }
@@ -176,8 +180,10 @@ class Environment {
   }) {
     final resolvedEnvType = envType ?? _getEnvironmentTypeFromVariable();
     final baseEnv = getEnvironmentConfig(resolvedEnvType, region);
-    final vfsOverride =
-        const String.fromEnvironment('AFFINIDI_VFS_BASE_URL', defaultValue: '');
+    final vfsOverride = const String.fromEnvironment(
+      'AFFINIDI_VFS_BASE_URL',
+      defaultValue: '',
+    );
     if (vfsOverride.isNotEmpty) {
       return Environment._(
         environmentName: baseEnv.environmentName,

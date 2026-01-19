@@ -17,10 +17,7 @@ abstract class _$EdgeProfileCWProxy {
   /// ```dart
   /// EdgeProfile(...).copyWith(id: 12, name: "My name")
   /// ````
-  EdgeProfile call({
-    String name,
-    String? description,
-  });
+  EdgeProfile call({String name, String? description});
 }
 
 /// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfEdgeProfile.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfEdgeProfile.copyWith.fieldName(...)`
@@ -37,7 +34,6 @@ class _$EdgeProfileCWProxyImpl implements _$EdgeProfileCWProxy {
       this(description: description);
 
   @override
-
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `EdgeProfile(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -74,9 +70,7 @@ extension $EdgeProfileCopyWith on EdgeProfile {
   /// ```dart
   /// EdgeProfile(...).copyWithNull(firstField: true, secondField: true)
   /// ````
-  EdgeProfile copyWithNull({
-    bool description = false,
-  }) {
+  EdgeProfile copyWithNull({bool description = false}) {
     return EdgeProfile(
       id: id,
       accountIndex: accountIndex,

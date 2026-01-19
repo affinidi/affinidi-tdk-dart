@@ -3,7 +3,7 @@ import 'package:affinidi_tdk_vdip/affinidi_tdk_vdip.dart';
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../../../tests/integration/dart/test/test_config.dart';
+import 'package:integration_tests/test/test_config.dart';
 
 // Run commands below in your terminal to generate keys for Alice and Bob:
 // openssl ecparam -name prime256v1 -genkey -noout -out example/keys/alice_private_key.pem
@@ -27,14 +27,10 @@ Future<void> main() async {
     packageDirectoryName: 'vdip',
   );
 
-  final mediatorDid = await readDid(
-    config.mediatorDidPath,
-  );
+  final mediatorDid = await readDid(config.mediatorDidPath);
 
-  final mediatorDidDocument =
-      await UniversalDIDResolver.defaultResolver.resolveDid(
-    mediatorDid,
-  );
+  final mediatorDidDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(mediatorDid);
 
   final issuerKeyStore = InMemoryKeyStore();
   final issuerWallet = PersistentWallet(issuerKeyStore);
@@ -52,10 +48,7 @@ Future<void> main() async {
 
   await issuerKeyStore.set(
     issuerKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: issuerPrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: issuerPrivateKeyBytes),
   );
 
   await issuerDidManager.addVerificationMethod(issuerKeyId);
@@ -93,10 +86,7 @@ Future<void> main() async {
 
   await holderKeyStore.set(
     holderKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: holderPrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: holderPrivateKeyBytes),
   );
 
   await holderDidManager.addVerificationMethod(holderKeyId);
@@ -134,19 +124,13 @@ Future<void> main() async {
       ...FeatureDiscoveryHelper.getFeatureQueriesByDisclosures(
         FeatureDiscoveryHelper.vdipIssuerDisclosures,
       ),
-      Query(
-        featureType: FeatureType.operation.value,
-        match: 'registerAgent',
-      ),
+      Query(featureType: FeatureType.operation.value, match: 'registerAgent'),
     ],
   );
 
   vdipHolder.listenForIncomingMessages(
     onDiscloseMessage: (message) async {
-      prettyPrint(
-        'Holder received Feature Query Message',
-        object: message,
-      );
+      prettyPrint('Holder received Feature Query Message', object: message);
 
       // TODO: verify disclosed features
       // TODO: add mapping from header to propousalId
@@ -168,107 +152,93 @@ Future<void> main() async {
       await ConnectionPool.instance.stopConnections();
     },
     onProblemReport: (message) {
-      prettyPrint(
-        'A problem has occurred',
-        object: message,
-      );
+      prettyPrint('A problem has occurred', object: message);
     },
   );
 
   vdipIssuer.listenForIncomingMessages(
     onFeatureQuery: (message) async {
-      prettyPrint(
-        'Issuer received Feature Query Message',
-        object: message,
-      );
+      prettyPrint('Issuer received Feature Query Message', object: message);
 
-      await vdipIssuer.disclose(
-        queryMessage: message,
-      );
+      await vdipIssuer.disclose(queryMessage: message);
     },
-    onRequestToIssueCredential: ({
-      required message,
-      holderDidFromAssertion,
-      assertionValidationResult,
-      challenge,
-    }) async {
-      prettyPrint(
-        'Issuer received Request to Issue Credential Message',
-        object: message,
-      );
+    onRequestToIssueCredential:
+        ({
+          required message,
+          holderDidFromAssertion,
+          assertionValidationResult,
+          challenge,
+        }) async {
+          prettyPrint(
+            'Issuer received Request to Issue Credential Message',
+            object: message,
+          );
 
-      if (challenge != null) {
-        prettyPrint(
-          'Challenge received',
-          object: {'challenge': challenge},
-        );
-      }
+          if (challenge != null) {
+            prettyPrint('Challenge received', object: {'challenge': challenge});
+          }
 
-      final vdipRequestIssuanceMessageBody =
-          VdipRequestIssuanceMessageBody.fromJson(
-        message.body!,
-      );
+          final vdipRequestIssuanceMessageBody =
+              VdipRequestIssuanceMessageBody.fromJson(message.body!);
 
-      final email = vdipRequestIssuanceMessageBody
-          .credentialMeta?.data?['email'] as String?;
+          final email =
+              vdipRequestIssuanceMessageBody.credentialMeta?.data?['email']
+                  as String?;
 
-      if (email == null) {
-        throw ArgumentError.notNull('body.credentialMeta.data.email');
-      }
+          if (email == null) {
+            throw ArgumentError.notNull('body.credentialMeta.data.email');
+          }
 
-      if (message.from == null) {
-        throw ArgumentError.notNull('from');
-      }
+          if (message.from == null) {
+            throw ArgumentError.notNull('from');
+          }
 
-      // if multiple credential formats are supported, check which one is requested
-      // vdipRequestIssuanceMessageBody.credentialFormat
-      // we will proceed with W3C Verifiable Credentials Data Model 1.0
+          // if multiple credential formats are supported, check which one is requested
+          // vdipRequestIssuanceMessageBody.credentialFormat
+          // we will proceed with W3C Verifiable Credentials Data Model 1.0
 
-      final unsignedCredential = VcDataModelV1(
-        context: [
-          dmV1ContextUrl,
-          'https://d2oeuqaac90cm.cloudfront.net/TTestMusicSubscriptionV1R0.jsonld',
-        ],
-        credentialSchema: [
-          CredentialSchema(
-            id: Uri.parse(
-              'https://d2oeuqaac90cm.cloudfront.net/TTestMusicSubscriptionV1R0.json',
+          final unsignedCredential = VcDataModelV1(
+            context: [
+              dmV1ContextUrl,
+              'https://d2oeuqaac90cm.cloudfront.net/TTestMusicSubscriptionV1R0.jsonld',
+            ],
+            credentialSchema: [
+              CredentialSchema(
+                id: Uri.parse(
+                  'https://d2oeuqaac90cm.cloudfront.net/TTestMusicSubscriptionV1R0.json',
+                ),
+                type: 'JsonSchemaValidator2018',
+              ),
+            ],
+            id: Uri.parse(const Uuid().v4()),
+            issuer: Issuer.uri(issuerSigner.did),
+            type: {'VerifiableCredential', 'TestMusicSubscription'},
+            issuanceDate: DateTime.now().toUtc(),
+            credentialSubject: [
+              CredentialSubject.fromJson({
+                'id': message.from!, // holder DID
+                'email': email,
+                'subscriptionType': 'basic',
+              }),
+            ],
+          );
+
+          final suite = LdVcDm1Suite();
+
+          final issuedCredential = await suite.issue(
+            unsignedData: unsignedCredential,
+            proofGenerator: DataIntegrityEcdsaJcsGenerator(
+              signer: issuerSigner,
             ),
-            type: 'JsonSchemaValidator2018',
-          ),
-        ],
-        id: Uri.parse(const Uuid().v4()),
-        issuer: Issuer.uri(issuerSigner.did),
-        type: {'VerifiableCredential', 'TestMusicSubscription'},
-        issuanceDate: DateTime.now().toUtc(),
-        credentialSubject: [
-          CredentialSubject.fromJson({
-            'id': message.from!, // holder DID
-            'email': email,
-            'subscriptionType': 'basic',
-          }),
-        ],
-      );
+          );
 
-      final suite = LdVcDm1Suite();
-
-      final issuedCredential = await suite.issue(
-        unsignedData: unsignedCredential,
-        proofGenerator: DataIntegrityEcdsaJcsGenerator(
-          signer: issuerSigner,
-        ),
-      );
-
-      await vdipIssuer.sendIssuedCredentials(
-        holderDid: message.from!,
-        verifiableCredential: issuedCredential,
-      );
-    },
+          await vdipIssuer.sendIssuedCredentials(
+            holderDid: message.from!,
+            verifiableCredential: issuedCredential,
+          );
+        },
     onProblemReport: (message) {
-      prettyPrint(
-        'A problem has occurred',
-        object: message,
-      );
+      prettyPrint('A problem has occurred', object: message);
     },
   );
 

@@ -56,13 +56,12 @@ void main() {
         });
 
         test('should strip disclosure part from SD-JWT', () async {
-          final claims = {
-            'sub': 'test-subject',
-            'selective_data': 'sensitive',
-          };
+          final claims = {'sub': 'test-subject', 'selective_data': 'sensitive'};
 
-          final result =
-              await JwtHelper.createAndSignJwt(claims, signerAdapter);
+          final result = await JwtHelper.createAndSignJwt(
+            claims,
+            signerAdapter,
+          );
 
           expect(result.contains('~'), isFalse);
 
@@ -79,8 +78,10 @@ void main() {
             'custom_claim': 'custom_value',
           };
 
-          final result =
-              await JwtHelper.createAndSignJwt(claims, signerAdapter);
+          final result = await JwtHelper.createAndSignJwt(
+            claims,
+            signerAdapter,
+          );
 
           final parts = result.split('.');
           final payloadJson = utf8.decode(
@@ -95,12 +96,12 @@ void main() {
         });
 
         test('should use correct algorithm in JWT header', () async {
-          final claims = {
-            'sub': 'test-subject',
-          };
+          final claims = {'sub': 'test-subject'};
 
-          final result =
-              await JwtHelper.createAndSignJwt(claims, signerAdapter);
+          final result = await JwtHelper.createAndSignJwt(
+            claims,
+            signerAdapter,
+          );
 
           final parts = result.split('.');
           final headerJson = utf8.decode(
@@ -123,12 +124,18 @@ void main() {
           final parts = jwt.split('.');
           expect(parts.length, equals(3));
 
-          expect(() => base64Url.decode(base64Url.normalize(parts[0])),
-              returnsNormally);
-          expect(() => base64Url.decode(base64Url.normalize(parts[1])),
-              returnsNormally);
-          expect(() => base64Url.decode(base64Url.normalize(parts[2])),
-              returnsNormally);
+          expect(
+            () => base64Url.decode(base64Url.normalize(parts[0])),
+            returnsNormally,
+          );
+          expect(
+            () => base64Url.decode(base64Url.normalize(parts[1])),
+            returnsNormally,
+          );
+          expect(
+            () => base64Url.decode(base64Url.normalize(parts[2])),
+            returnsNormally,
+          );
 
           final signature = base64Url.decode(base64Url.normalize(parts[2]));
           expect(signature, isNotEmpty);

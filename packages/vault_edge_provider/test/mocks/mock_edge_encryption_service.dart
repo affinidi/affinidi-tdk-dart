@@ -7,9 +7,7 @@ class MockEdgeEncryptionService extends Mock
     implements EdgeEncryptionServiceInterface {}
 
 class MockEncryptionServiceSetup {
-  static void setupEncryptionServiceDefaults(
-    MockEdgeEncryptionService mock,
-  ) {
+  static void setupEncryptionServiceDefaults(MockEdgeEncryptionService mock) {
     when(() => mock.encryptData(any())).thenAnswer((invocation) async {
       final data = invocation.positionalArguments[0] as Uint8List;
       return data;

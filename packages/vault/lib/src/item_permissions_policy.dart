@@ -13,8 +13,10 @@ class ItemPermissionsPolicy {
     final permissionsList = accessMap['permissions'] as List?;
     final permissions = permissionsList != null
         ? permissionsList
-            .map((perm) => ItemPermission.fromMap(perm as Map<String, dynamic>))
-            .toList()
+              .map(
+                (perm) => ItemPermission.fromMap(perm as Map<String, dynamic>),
+              )
+              .toList()
         : <ItemPermission>[];
 
     return ItemPermissionsPolicy._(permissions);
@@ -22,7 +24,8 @@ class ItemPermissionsPolicy {
 
   /// Creates an [ItemPermissionsPolicy] from a list of [ItemPermission].
   factory ItemPermissionsPolicy.fromPermissions(
-      List<ItemPermission> permissions) {
+    List<ItemPermission> permissions,
+  ) {
     return ItemPermissionsPolicy._(List.from(permissions));
   }
 
@@ -41,8 +44,9 @@ class ItemPermissionsPolicy {
     List<Permissions> permissions, {
     DateTime? expiresAt,
   }) {
-    final rights =
-        ItemPermissionHelper.permissionsListToRightsList(permissions);
+    final rights = ItemPermissionHelper.permissionsListToRightsList(
+      permissions,
+    );
     _permissions = ItemPermissionHelper.addPermission(
       _permissions,
       itemIds,
@@ -63,14 +67,17 @@ class ItemPermissionsPolicy {
     final rights = permissions.isEmpty
         ? <String>[]
         : ItemPermissionHelper.permissionsListToRightsList(permissions);
-    _permissions =
-        ItemPermissionHelper.removePermission(_permissions, itemIds, rights);
+    _permissions = ItemPermissionHelper.removePermission(
+      _permissions,
+      itemIds,
+      rights,
+    );
     return this;
   }
 
   /// Builds permission groups
   List<({List<String> itemIds, Permissions permissions, DateTime? expiresAt})>
-      buildPermissionGroups() {
+  buildPermissionGroups() {
     return ItemPermissionHelper.buildPermissionGroups(_permissions);
   }
 

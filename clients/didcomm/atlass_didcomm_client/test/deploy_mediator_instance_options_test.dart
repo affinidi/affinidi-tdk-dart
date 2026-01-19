@@ -28,7 +28,9 @@ void main() {
       expect(options.serviceSize, ServiceSize.small);
       expect(options.mediatorAclMode, MediatorAclMode.explicitAllow);
       expect(
-          options.administratorDids, 'did:example:admin1,did:example:admin2');
+        options.administratorDids,
+        'did:example:admin1,did:example:admin2',
+      );
       expect(options.name, 'Test Mediator');
       expect(options.description, 'Test description');
     });

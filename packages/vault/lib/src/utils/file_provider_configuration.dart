@@ -1,10 +1,7 @@
 /// Configuration for file provider settings that can be shared across different providers
 class FileProviderConfiguration {
   /// Creates a new configuration with the specified settings
-  const FileProviderConfiguration({
-    this.maxFileSize,
-    this.allowedExtensions,
-  });
+  const FileProviderConfiguration({this.maxFileSize, this.allowedExtensions});
 
   /// Maximum allowed file size in bytes
   final int? maxFileSize;

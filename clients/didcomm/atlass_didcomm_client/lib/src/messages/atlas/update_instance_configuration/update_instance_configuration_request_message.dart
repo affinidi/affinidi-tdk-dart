@@ -47,7 +47,8 @@ class UpdateInstanceConfigurationRequestMessage extends BaseRequestMessage {
     String? threadId,
   }) {
     throw UnimplementedError(
-        'Meeting place configuration update is not yet implemented');
+      'Meeting place configuration update is not yet implemented',
+    );
   }
 
   /// Creates an update trust registry instance configuration message.
@@ -61,6 +62,7 @@ class UpdateInstanceConfigurationRequestMessage extends BaseRequestMessage {
     String? threadId,
   }) {
     throw UnimplementedError(
-        'Trust registry configuration update is not yet implemented');
+      'Trust registry configuration update is not yet implemented',
+    );
   }
 }

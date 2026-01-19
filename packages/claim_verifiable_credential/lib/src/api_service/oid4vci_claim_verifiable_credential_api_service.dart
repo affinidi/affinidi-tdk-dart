@@ -7,16 +7,12 @@ abstract class OID4VCIClaimVerifiableCredentialApiServiceInterface {
   /// Gets credential offer (new version)
   ///
   /// - [offerUri] (required) - URI of the credential offer
-  Future<Response<dynamic>> getCredentialOffer({
-    required String offerUri,
-  });
+  Future<Response<dynamic>> getCredentialOffer({required String offerUri});
 
   /// Retrieves metadata for a credential issuer.
   ///
   /// - [offerUri] (required) - URI of the credential offer
-  Future<Response<dynamic>> getIssuerMetadata({
-    required String offerUri,
-  });
+  Future<Response<dynamic>> getIssuerMetadata({required String offerUri});
 
   /// Retrieves an access token to claim a credential.
   ///
@@ -51,9 +47,8 @@ class OID4VCIClaimVerifiableCredentialApiService
       Environment.apiTimeOutInMilliseconds;
 
   /// Constructor to create an instance of [OID4VCIClaimVerifiableCredentialApiService].
-  OID4VCIClaimVerifiableCredentialApiService({
-    Dio? client,
-  }) : _client = client ?? _createDioClient();
+  OID4VCIClaimVerifiableCredentialApiService({Dio? client})
+    : _client = client ?? _createDioClient();
 
   final Dio _client;
 
@@ -110,9 +105,7 @@ class OID4VCIClaimVerifiableCredentialApiService
   }) {
     return _client.post(
       credentialEndpoint,
-      options: Options(
-        headers: {'Authorization': 'Bearer $accessToken'},
-      ),
+      options: Options(headers: {'Authorization': 'Bearer $accessToken'}),
       data: {
         'credential_identifier': offer.credentialIdentifier,
         'proof': {'proof_type': 'jwt', 'jwt': jwt},

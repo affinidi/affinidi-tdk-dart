@@ -19,36 +19,40 @@ MpxInstanceMetadata _$MpxInstanceMetadataFromJson(Map<String, dynamic> json) =>
       didDocumentUrl: json['didDocumentUrl'] as String,
       projectId: json['projectId'] as String,
       serviceType: $enumDecode(_$ServiceTypeEnumMap, json['serviceType']),
-      deploymentState:
-          $enumDecode(_$DeploymentStateEnumMap, json['deploymentState']),
-      deploymentStatus:
-          $enumDecode(_$DeploymentStatusEnumMap, json['deploymentStatus']),
+      deploymentState: $enumDecode(
+        _$DeploymentStateEnumMap,
+        json['deploymentState'],
+      ),
+      deploymentStatus: $enumDecode(
+        _$DeploymentStatusEnumMap,
+        json['deploymentStatus'],
+      ),
       serviceSize: $enumDecode(_$ServiceSizeEnumMap, json['serviceSize']),
       accountId: json['accountId'] as String,
       currentServiceRequest: json['currentServiceRequest'] as String?,
     );
 
 Map<String, dynamic> _$MpxInstanceMetadataToJson(
-        MpxInstanceMetadata instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'description': instance.description,
-      'createdAt': instance.createdAt,
-      'modifiedAt': instance.modifiedAt,
-      'createdBy': instance.createdBy,
-      'modifiedBy': instance.modifiedBy,
-      'id': instance.id,
-      'did': instance.did,
-      'didDocumentUrl': instance.didDocumentUrl,
-      'projectId': instance.projectId,
-      'serviceType': _$ServiceTypeEnumMap[instance.serviceType]!,
-      'deploymentState': _$DeploymentStateEnumMap[instance.deploymentState]!,
-      'deploymentStatus': _$DeploymentStatusEnumMap[instance.deploymentStatus]!,
-      'serviceSize': _$ServiceSizeEnumMap[instance.serviceSize]!,
-      'accountId': instance.accountId,
-      if (instance.currentServiceRequest case final value?)
-        'currentServiceRequest': value,
-    };
+  MpxInstanceMetadata instance,
+) => <String, dynamic>{
+  'name': instance.name,
+  'description': instance.description,
+  'createdAt': instance.createdAt,
+  'modifiedAt': instance.modifiedAt,
+  'createdBy': instance.createdBy,
+  'modifiedBy': instance.modifiedBy,
+  'id': instance.id,
+  'did': instance.did,
+  'didDocumentUrl': instance.didDocumentUrl,
+  'projectId': instance.projectId,
+  'serviceType': _$ServiceTypeEnumMap[instance.serviceType]!,
+  'deploymentState': _$DeploymentStateEnumMap[instance.deploymentState]!,
+  'deploymentStatus': _$DeploymentStatusEnumMap[instance.deploymentStatus]!,
+  'serviceSize': _$ServiceSizeEnumMap[instance.serviceSize]!,
+  'accountId': instance.accountId,
+  if (instance.currentServiceRequest case final value?)
+    'currentServiceRequest': value,
+};
 
 const _$ServiceTypeEnumMap = {
   ServiceType.mediator: 'MEDIATOR',

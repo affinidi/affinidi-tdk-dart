@@ -26,11 +26,7 @@ class ConsumerAuthProvider implements ConsumerAuthProviderInterface {
     ElementsRegion region = ElementsRegion.apSoutheast1,
   }) {
     return ConsumerAuthProvider._(
-      BaseConsumerAuthProvider(
-        signer: signer,
-        client: client,
-        region: region,
-      ),
+      BaseConsumerAuthProvider(signer: signer, client: client, region: region),
     );
   }
 
@@ -61,10 +57,12 @@ class ConsumerAuthProvider implements ConsumerAuthProviderInterface {
   /// Throws an Exception if the exchange request fails
   @override
   Future<({String accessToken, List<dynamic>? authorizationDetails})>
-      exchangePreAuthCodeForToken(
-              {required String tokenEndpoint,
-              required String preAuthCode,
-              String? txCode}) =>
-          _implementation.exchangePreAuthCodeForToken(
-              tokenEndpoint: tokenEndpoint, preAuthCode: preAuthCode);
+  exchangePreAuthCodeForToken({
+    required String tokenEndpoint,
+    required String preAuthCode,
+    String? txCode,
+  }) => _implementation.exchangePreAuthCodeForToken(
+    tokenEndpoint: tokenEndpoint,
+    preAuthCode: preAuthCode,
+  );
 }

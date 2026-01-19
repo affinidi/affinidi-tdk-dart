@@ -52,8 +52,8 @@ class UpdateTrInstanceDeploymentOptions {
 
   /// Creates a [UpdateTrInstanceDeploymentOptions] from a JSON map.
   factory UpdateTrInstanceDeploymentOptions.fromJson(
-          Map<String, dynamic> json) =>
-      _$UpdateTrInstanceDeploymentOptionsFromJson(json);
+    Map<String, dynamic> json,
+  ) => _$UpdateTrInstanceDeploymentOptionsFromJson(json);
 
   /// Converts the [UpdateTrInstanceDeploymentOptions] instance to JSON.
   Map<String, dynamic> toJson() =>

@@ -37,14 +37,16 @@ void main() {
         credentialContent: credentialContent,
       );
 
-      final credentialsData =
-          await repository.listCredentialData(profileId: profileId);
+      final credentialsData = await repository.listCredentialData(
+        profileId: profileId,
+      );
       expect(credentialsData.items, isNotEmpty);
       expect(credentialsData.items.first.id, equals(credentialId));
       expect(credentialsData.items.first.content, equals(credentialContent));
 
-      final fetched =
-          await repository.getCredentialData(credentialId: credentialId);
+      final fetched = await repository.getCredentialData(
+        credentialId: credentialId,
+      );
       expect(fetched, isNotNull);
       expect(fetched!.id, equals(credentialId));
       expect(fetched.content, equals(credentialContent));
@@ -69,8 +71,9 @@ void main() {
         credentialContent: credentialContent2,
       );
 
-      final credentialsData =
-          await repository.listCredentialData(profileId: profileId);
+      final credentialsData = await repository.listCredentialData(
+        profileId: profileId,
+      );
       expect(credentialsData.items.length, equals(2));
       expect(credentialsData.items.map((c) => c.id), contains(credentialId1));
       expect(credentialsData.items.map((c) => c.id), contains(credentialId2));
@@ -87,30 +90,42 @@ void main() {
         credentialContent: credentialContent,
       );
 
-      final credentialsData =
-          await repository.listCredentialData(profileId: profileId);
+      final credentialsData = await repository.listCredentialData(
+        profileId: profileId,
+      );
       expect(credentialsData.items, isNotEmpty);
 
       await repository.deleteCredential(credentialId: credentialId);
 
-      final afterDelete =
-          await repository.listCredentialData(profileId: profileId);
+      final afterDelete = await repository.listCredentialData(
+        profileId: profileId,
+      );
       expect(afterDelete.items, isEmpty);
     });
 
     test('should throw when getting non-existent credential', () async {
       expect(
         () => repository.getCredentialData(credentialId: 'non-existent'),
-        throwsA(isA<TdkException>().having(
-            (e) => e.code, 'code', TdkExceptionType.credentialNotFound.code)),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.credentialNotFound.code,
+          ),
+        ),
       );
     });
 
     test('should throw when deleting non-existent credential', () async {
       expect(
         () => repository.deleteCredential(credentialId: 'non-existent'),
-        throwsA(isA<TdkException>().having(
-            (e) => e.code, 'code', TdkExceptionType.credentialNotFound.code)),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.credentialNotFound.code,
+          ),
+        ),
       );
     });
   });

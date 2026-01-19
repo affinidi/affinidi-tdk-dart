@@ -35,9 +35,7 @@ abstract interface class OID4VCIClaimVerifiableCredentialServiceInterface {
   ///   Uri.parse('https://example.com?credentialOfferUri=https://issuer.example.com/offers/123'),
   /// );
   /// ```
-  Future<OID4VCIClaimContext> loadCredentialOffer(
-    Uri uri,
-  );
+  Future<OID4VCIClaimContext> loadCredentialOffer(Uri uri);
 
   /// Claims a credential using the provided claim context.
   ///

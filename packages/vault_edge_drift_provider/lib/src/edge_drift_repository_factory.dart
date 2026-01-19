@@ -6,25 +6,18 @@ import '../affinidi_tdk_vault_edge_drift_provider.dart';
 class EdgeDriftRepositoryFactory implements EdgeRepositoryFactoryInterface {
   /// Creates a new instance of [EdgeDriftRepositoryFactory].
   EdgeDriftRepositoryFactory({required Database database})
-      : _database = database;
+    : _database = database;
 
   final Database _database;
 
   @override
   EdgeDriftProfileRepository createProfileRepository() {
-    return EdgeDriftProfileRepository(
-      database: _database,
-    );
+    return EdgeDriftProfileRepository(database: _database);
   }
 
   @override
-  EdgeDriftFileRepository createFileRepository({
-    required String profileId,
-  }) {
-    return EdgeDriftFileRepository(
-      database: _database,
-      profileId: profileId,
-    );
+  EdgeDriftFileRepository createFileRepository({required String profileId}) {
+    return EdgeDriftFileRepository(database: _database, profileId: profileId);
   }
 
   @override

@@ -22,15 +22,11 @@ abstract class DidcommServiceClient extends DidcommMediatorClient {
     required super.didKeyId,
     required super.signer,
   }) {
-    _linkRequestsAndResponses(
-      serviceDidDocument: serviceDidDocument,
-    );
+    _linkRequestsAndResponses(serviceDidDocument: serviceDidDocument);
   }
 
   /// Waits for a message with the specified [threadId].
-  Future<PlainTextMessage> waitForMessage({
-    required String threadId,
-  }) async {
+  Future<PlainTextMessage> waitForMessage({required String threadId}) async {
     final completer = Completer<PlainTextMessage>();
     _pendingRequests[threadId] = completer;
 
@@ -41,9 +37,7 @@ abstract class DidcommServiceClient extends DidcommMediatorClient {
   Future<PlainTextMessage> sendServiceMessage(
     PlainTextMessage requestMessage,
   ) async {
-    final responseMessageFuture = waitForMessage(
-      threadId: requestMessage.id,
-    );
+    final responseMessageFuture = waitForMessage(threadId: requestMessage.id);
 
     await packAndSendMessage(requestMessage);
     return await responseMessageFuture;
@@ -61,14 +55,10 @@ abstract class DidcommServiceClient extends DidcommMediatorClient {
       expiresTime: DateTime.now().add(clientOptions.messageExpiration),
     );
 
-    await sendAclManagementMessage(
-      accessListAddMessage,
-    );
+    await sendAclManagementMessage(accessListAddMessage);
   }
 
-  void _linkRequestsAndResponses({
-    required DidDocument serviceDidDocument,
-  }) {
+  void _linkRequestsAndResponses({required DidDocument serviceDidDocument}) {
     listenForIncomingMessages(
       (message) async {
         final unpackedMessage = await DidcommMessage.unpackToPlainTextMessage(
@@ -80,10 +70,7 @@ abstract class DidcommServiceClient extends DidcommMediatorClient {
           ],
         );
 
-        final expectedSenders = [
-          mediatorDidDocument.id,
-          serviceDidDocument.id,
-        ];
+        final expectedSenders = [mediatorDidDocument.id, serviceDidDocument.id];
 
         if (!expectedSenders.contains(unpackedMessage.from)) {
           return;
@@ -125,8 +112,9 @@ abstract class DidcommServiceClient extends DidcommMediatorClient {
 
   /// Handles incoming problem reports and completes the corresponding pending request with an error.
   void _handleProblemReport(PlainTextMessage problemMessage) {
-    final problemReport =
-        ProblemReportMessage.fromJson(problemMessage.toJson());
+    final problemReport = ProblemReportMessage.fromJson(
+      problemMessage.toJson(),
+    );
 
     final parentThreadId = problemReport.parentThreadId;
     if (parentThreadId == null) {

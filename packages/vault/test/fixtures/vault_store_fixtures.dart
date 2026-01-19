@@ -9,12 +9,12 @@ class VaultStoreFixtures {
   static final Uint8List testPrivateKeyBytes = Uint8List.fromList([1, 2, 3, 4]);
 
   static StoredKey get testStoredKey => StoredKey(
-        keyType: KeyType.secp256k1,
-        privateKeyBytes: testPrivateKeyBytes,
-      );
+    keyType: KeyType.secp256k1,
+    privateKeyBytes: testPrivateKeyBytes,
+  );
 
   static Map<String, dynamic> get testStoredKeyJson => {
-        'keyType': 'secp256k1',
-        'privateKeyBytes': testPrivateKeyBytes,
-      };
+    'keyType': 'secp256k1',
+    'privateKeyBytes': testPrivateKeyBytes,
+  };
 }

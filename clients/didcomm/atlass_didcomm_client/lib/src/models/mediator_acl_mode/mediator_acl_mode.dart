@@ -8,5 +8,5 @@ enum MediatorAclMode {
 
   /// Explicitly allows access.
   @JsonValue('explicit_allow')
-  explicitAllow
+  explicitAllow,
 }

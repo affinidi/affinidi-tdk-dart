@@ -32,11 +32,22 @@ class BaseConsumerAuthProvider implements ConsumerAuthProviderInterface {
     final environment = Environment.fetchEnvironment(region: region);
 
     _consumerTokenProvider = ConsumerTokenProvider(
-        signer: signer, client: client, region: region, env: environment);
+      signer: signer,
+      client: client,
+      region: region,
+      env: environment,
+    );
     _cisTokenProvider = CisTokenProvider(
-        signer: signer, client: client, region: region, env: environment);
-    _delegatedTokenProvider =
-        DelegatedTokenProvider(signer: signer, client: client, region: region);
+      signer: signer,
+      client: client,
+      region: region,
+      env: environment,
+    );
+    _delegatedTokenProvider = DelegatedTokenProvider(
+      signer: signer,
+      client: client,
+      region: region,
+    );
   }
 
   @override
@@ -54,8 +65,9 @@ class BaseConsumerAuthProvider implements ConsumerAuthProviderInterface {
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
         TdkException(
-            message: 'Failed to fetch consumer token',
-            code: TdkExceptionType.failedToFetchConsumerToken.code),
+          message: 'Failed to fetch consumer token',
+          code: TdkExceptionType.failedToFetchConsumerToken.code,
+        ),
         stackTrace,
       );
     }
@@ -77,7 +89,7 @@ class BaseConsumerAuthProvider implements ConsumerAuthProviderInterface {
 
   @override
   Future<({String accessToken, List? authorizationDetails})>
-      exchangePreAuthCodeForToken({
+  exchangePreAuthCodeForToken({
     required String tokenEndpoint,
     required String preAuthCode,
     String? txCode,

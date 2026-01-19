@@ -1,9 +1,10 @@
 import 'package:affinidi_tdk_consumer_auth_provider/affinidi_tdk_consumer_auth_provider.dart';
+import 'package:affinidi_tdk_credential_issuance_client/affinidi_tdk_credential_issuance_client.dart';
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:built_value/json_object.dart' as built_value;
 import 'package:ssi/ssi.dart';
 import 'package:test/test.dart';
 import 'package:built_collection/built_collection.dart';
-import 'package:affinidi_tdk_credential_issuance_client/affinidi_tdk_credential_issuance_client.dart';
 
 import 'helpers/helpers.dart';
 
@@ -16,6 +17,7 @@ void main() {
     late WellKnownApi wellKnownApi;
     late String configurationId;
     late String walletId;
+    late String configurationIssuerWalletId;
     late ConsumerAuthProvider consumerAuthProvider;
     final envVault = getVaultEnvironment();
 
@@ -29,15 +31,22 @@ void main() {
       final keyPair = await wallet.generateKey(keyId: "m/44'/60'/0'/0/0");
       final didDoc = DidKey.generateDocument(keyPair.publicKey);
       final didSigner = DidSigner(
-        didDocument: didDoc,
+        did: didDoc.id,
         didKeyId: didDoc.verificationMethod.first.id,
         keyPair: keyPair,
         signatureScheme: SignatureScheme.ecdsa_secp256k1_sha256,
       );
       consumerAuthProvider = ConsumerAuthProvider(signer: didSigner);
 
+      final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
+      String basePathOverride = replaceBaseDomain(
+        AffinidiTdkCredentialIssuanceClient.basePath,
+        apiGwUrl,
+      );
+
       final issuanceClient = AffinidiTdkCredentialIssuanceClient(
         authTokenHook: ResourceFactory.getAuthTokenHook(),
+        basePathOverride: basePathOverride,
       );
       configurationApi = issuanceClient.getConfigurationApi();
       issuanceApi = issuanceClient.getIssuanceApi();
@@ -76,6 +85,7 @@ void main() {
 
         // Store configuration ID
         configurationId = configs.first.id;
+        configurationIssuerWalletId = configs.first.issuerWalletId!;
         expect(
           configurationId,
           isNotEmpty,
@@ -86,8 +96,16 @@ void main() {
       test('Updates issuance configuration', () async {
         final String updatedDescription = 'UpdatedDescription';
 
+        final foundWallet = await ResourceFactory.getWalletById(
+          configurationIssuerWalletId,
+        );
+
         final updateIssuanceConfigInput = UpdateIssuanceConfigInputBuilder()
           ..description = updatedDescription;
+
+        if (foundWallet == null) {
+          updateIssuanceConfigInput.issuerWalletId = walletId;
+        }
 
         final config = (await configurationApi.updateIssuanceConfigById(
           configurationId: configurationId,
@@ -228,7 +246,15 @@ void main() {
           "Authorization": "Bearer ${tokenDetails.accessToken}",
         };
 
-        final client = AffinidiTdkCredentialIssuanceClient();
+        final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
+        String basePathOverride = replaceBaseDomain(
+          AffinidiTdkCredentialIssuanceClient.basePath,
+          apiGwUrl,
+        );
+
+        final client = AffinidiTdkCredentialIssuanceClient(
+          basePathOverride: basePathOverride,
+        );
         final credentialsApi = client.getCredentialsApi();
         final data = (await credentialsApi.batchCredential(
           projectId: env.projectId,
@@ -242,16 +268,20 @@ void main() {
         expect(data?.credentialResponses.first.credential, isNotNull);
       });
 
-      test('Get issued credentials for specific flow', () async {
-        final data = (await credentialsApi.getIssuanceIdClaimedCredential(
-          configurationId: configurationId,
-          projectId: env.projectId,
-          issuanceId: issuanceId,
-        )).data;
-        expect(data, isNotNull);
-        expect(data?.credentials, isNotNull);
-        expect(data?.credentials?.length, equals(10));
-      });
+      test(
+        'Get issued credentials for specific flow',
+        () async {
+          final data = (await credentialsApi.getIssuanceIdClaimedCredential(
+            configurationId: configurationId,
+            projectId: env.projectId,
+            issuanceId: issuanceId,
+          )).data;
+          expect(data, isNotNull);
+          expect(data?.credentials, isNotNull);
+          expect(data?.credentials?.length, equals(10));
+        },
+        skip: 'TODO: unskip when fixed on the backend',
+      );
     });
   });
 }

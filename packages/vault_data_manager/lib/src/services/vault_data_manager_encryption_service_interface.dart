@@ -50,9 +50,7 @@ abstract interface class VaultDataManagerEncryptionServiceInterface {
   /// [dek] - The raw DEK to be encrypted
   ///
   /// Returns the encrypted DEK as an array of bytes.
-  Future<List<int>> encryptDekByApiPublicKey({
-    required List<int> dek,
-  });
+  Future<List<int>> encryptDekByApiPublicKey({required List<int> dek});
 
   /// Method to get a data encryption key [encryptedDekBase64] encrypted by the API public key.
   ///
