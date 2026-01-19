@@ -85,9 +85,12 @@ class TestConfig {
   }
 
   static String _getPackagePath({required String packageDirectoryName}) {
-    final expectedPaths = [
+    final expectedPaths = <String>[
       'libs/dart/didcomm/$packageDirectoryName',
       'clients/dart/didcomm/$packageDirectoryName',
+      'packages/didcomm/$packageDirectoryName',
+      'clients/didcomm/$packageDirectoryName',
+      'clients/didcomm/atlass_didcomm_client',
     ];
 
     for (final expectedPath in expectedPaths) {
@@ -96,11 +99,9 @@ class TestConfig {
       }
     }
 
-    // calling from integration tests folder
-
     for (final expectedPath in expectedPaths) {
       final possiblePath = path.normalize(
-        path.join(Directory.current.path, '../../../$expectedPath'),
+        path.join(Directory.current.path, '../../$expectedPath'),
       );
 
       if (Directory(possiblePath).existsSync()) {

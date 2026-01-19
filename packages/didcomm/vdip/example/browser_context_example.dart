@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediator_client.dart';
 import 'package:affinidi_tdk_vdip/affinidi_tdk_vdip.dart';
-import 'package:integration_tests/test/test_config.dart';
+import '../../../integration_tests/test/test_config.dart';
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
 
