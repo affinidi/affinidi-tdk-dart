@@ -150,7 +150,7 @@ void main() async {
   profilesBob = await vaultBob.listProfiles();
   bobProfile =
       profilesBob.where((p) => p.accountIndex == bobAccountIndex).firstOrNull ??
-      bobProfile;
+          bobProfile;
 
   print('[Demo] Bob is reading shared file1 metadata ...');
   await _printMetadataFromSharedStorage(
@@ -230,7 +230,7 @@ void main() async {
   profilesBob = await vaultBob.listProfiles();
   bobProfile =
       profilesBob.where((p) => p.accountIndex == bobAccountIndex).firstOrNull ??
-      bobProfile;
+          bobProfile;
 
   print('[Demo] Bob is reading shared file2 metadata ...');
   await _printMetadataFromSharedStorage(

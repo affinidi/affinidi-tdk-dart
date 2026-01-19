@@ -34,16 +34,17 @@ class VdspHolder {
     required List<Disclosure> featureDisclosures,
     AuthorizationProvider? authorizationProvider,
     ClientOptions clientOptions = const ClientOptions(),
-  }) async => VdspHolder(
-    didManager: didManager,
-    featureDisclosures: featureDisclosures,
-    mediatorClient: await DidcommMediatorClient.init(
-      didManager: didManager,
-      mediatorDidDocument: mediatorDidDocument,
-      authorizationProvider: authorizationProvider,
-      clientOptions: clientOptions,
-    ),
-  );
+  }) async =>
+      VdspHolder(
+        didManager: didManager,
+        featureDisclosures: featureDisclosures,
+        mediatorClient: await DidcommMediatorClient.init(
+          didManager: didManager,
+          mediatorDidDocument: mediatorDidDocument,
+          authorizationProvider: authorizationProvider,
+          clientOptions: clientOptions,
+        ),
+      );
 
   /// Returns the supported feature disclosures for a given [queryMessage].
   List<Disclosure> getDisclosures({required QueryMessage queryMessage}) {
@@ -261,44 +262,35 @@ class VdspHolder {
     final proofGenerator = switch (verifiablePresentationProofSuite) {
       DataIntegrityProofSuite.secp256k1Signature2019 =>
         Secp256k1Signature2019Generator(
-              signer: verifiablePresentationSigner,
-              challenge: proofContext?.challenge,
-              domain: proofContext != null ? [proofContext.domain] : null,
-              proofPurpose: ProofPurpose.authentication,
-            )
-            as EmbeddedProofGenerator,
-      DataIntegrityProofSuite.ecdsaJcs2019 =>
-        DataIntegrityEcdsaJcsGenerator(
-              signer: verifiablePresentationSigner,
-              challenge: proofContext?.challenge,
-              domain: proofContext != null ? [proofContext.domain] : null,
-              proofPurpose: ProofPurpose.authentication,
-            )
-            as EmbeddedProofGenerator,
-      DataIntegrityProofSuite.eddsaJcs2022 =>
-        DataIntegrityEddsaJcsGenerator(
-              signer: verifiablePresentationSigner,
-              challenge: proofContext?.challenge,
-              domain: proofContext != null ? [proofContext.domain] : null,
-              proofPurpose: ProofPurpose.authentication,
-            )
-            as EmbeddedProofGenerator,
-      DataIntegrityProofSuite.ecdsaRdfc2019 =>
-        DataIntegrityEcdsaRdfcGenerator(
-              signer: verifiablePresentationSigner,
-              challenge: proofContext?.challenge,
-              domain: proofContext != null ? [proofContext.domain] : null,
-              proofPurpose: ProofPurpose.authentication,
-            )
-            as EmbeddedProofGenerator,
-      DataIntegrityProofSuite.eddsaRdfc2022 =>
-        DataIntegrityEddsaRdfcGenerator(
-              signer: verifiablePresentationSigner,
-              challenge: proofContext?.challenge,
-              domain: proofContext != null ? [proofContext.domain] : null,
-              proofPurpose: ProofPurpose.authentication,
-            )
-            as EmbeddedProofGenerator,
+          signer: verifiablePresentationSigner,
+          challenge: proofContext?.challenge,
+          domain: proofContext != null ? [proofContext.domain] : null,
+          proofPurpose: ProofPurpose.authentication,
+        ) as EmbeddedProofGenerator,
+      DataIntegrityProofSuite.ecdsaJcs2019 => DataIntegrityEcdsaJcsGenerator(
+          signer: verifiablePresentationSigner,
+          challenge: proofContext?.challenge,
+          domain: proofContext != null ? [proofContext.domain] : null,
+          proofPurpose: ProofPurpose.authentication,
+        ) as EmbeddedProofGenerator,
+      DataIntegrityProofSuite.eddsaJcs2022 => DataIntegrityEddsaJcsGenerator(
+          signer: verifiablePresentationSigner,
+          challenge: proofContext?.challenge,
+          domain: proofContext != null ? [proofContext.domain] : null,
+          proofPurpose: ProofPurpose.authentication,
+        ) as EmbeddedProofGenerator,
+      DataIntegrityProofSuite.ecdsaRdfc2019 => DataIntegrityEcdsaRdfcGenerator(
+          signer: verifiablePresentationSigner,
+          challenge: proofContext?.challenge,
+          domain: proofContext != null ? [proofContext.domain] : null,
+          proofPurpose: ProofPurpose.authentication,
+        ) as EmbeddedProofGenerator,
+      DataIntegrityProofSuite.eddsaRdfc2022 => DataIntegrityEddsaRdfcGenerator(
+          signer: verifiablePresentationSigner,
+          challenge: proofContext?.challenge,
+          domain: proofContext != null ? [proofContext.domain] : null,
+          proofPurpose: ProofPurpose.authentication,
+        ) as EmbeddedProofGenerator,
     };
 
     switch (verifiablePresentationDataModel) {

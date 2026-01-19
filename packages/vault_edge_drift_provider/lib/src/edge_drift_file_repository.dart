@@ -10,8 +10,8 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
   EdgeDriftFileRepository._({
     required db.Database database,
     required String profileId,
-  }) : _database = database,
-       _profileId = profileId;
+  })  : _database = database,
+        _profileId = profileId;
 
   /// Creates a new instance of [EdgeDriftFileRepository].
   factory EdgeDriftFileRepository({
@@ -32,14 +32,14 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
     String? parentFolderId,
   }) async {
     if (parentFolderId != null) {
-      final parentFolder =
-          await (_database.select(_database.items)..where(
-                (filter) =>
-                    filter.id.equals(parentFolderId) &
-                    filter.itemType.equals(db.ItemType.folder.value) &
-                    filter.profileId.equals(_profileId),
-              ))
-              .getSingleOrNull();
+      final parentFolder = await (_database.select(_database.items)
+            ..where(
+              (filter) =>
+                  filter.id.equals(parentFolderId) &
+                  filter.itemType.equals(db.ItemType.folder.value) &
+                  filter.profileId.equals(_profileId),
+            ))
+          .getSingleOrNull();
       if (parentFolder == null) {
         Error.throwWithStackTrace(
           TdkException(
@@ -81,14 +81,14 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
     String? parentFolderId,
   }) async {
     if (parentFolderId != null) {
-      final parentFolder =
-          await (_database.select(_database.items)..where(
-                (filter) =>
-                    filter.id.equals(parentFolderId) &
-                    filter.itemType.equals(db.ItemType.folder.value) &
-                    filter.profileId.equals(_profileId),
-              ))
-              .getSingleOrNull();
+      final parentFolder = await (_database.select(_database.items)
+            ..where(
+              (filter) =>
+                  filter.id.equals(parentFolderId) &
+                  filter.itemType.equals(db.ItemType.folder.value) &
+                  filter.profileId.equals(_profileId),
+            ))
+          .getSingleOrNull();
       if (parentFolder == null) {
         Error.throwWithStackTrace(
           TdkException(
@@ -112,14 +112,14 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
     await _database.into(_database.items).insert(folderItem);
 
     // Verify the folder was created with correct parentId
-    final createdFolder =
-        await (_database.select(_database.items)..where(
-              (filter) =>
-                  filter.id.equals(folderId) &
-                  filter.itemType.equals(db.ItemType.folder.value) &
-                  filter.profileId.equals(_profileId),
-            ))
-            .getSingleOrNull();
+    final createdFolder = await (_database.select(_database.items)
+          ..where(
+            (filter) =>
+                filter.id.equals(folderId) &
+                filter.itemType.equals(db.ItemType.folder.value) &
+                filter.profileId.equals(_profileId),
+          ))
+        .getSingleOrNull();
 
     if (createdFolder == null) {
       Error.throwWithStackTrace(
@@ -145,11 +145,13 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
     await _database.transaction(() async {
       await (_database.delete(
         _database.fileContents,
-      )..where((filter) => filter.id.equals(fileId))).go();
+      )..where((filter) => filter.id.equals(fileId)))
+          .go();
 
       await (_database.delete(
         _database.items,
-      )..where((filter) => filter.id.equals(fileId))).go();
+      )..where((filter) => filter.id.equals(fileId)))
+          .go();
     });
   }
 
@@ -168,7 +170,8 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
 
     final atLeatsOneChild = await (_database.select(
       _database.items,
-    )..where((filter) => filter.parentId.equals(folderId))).getSingleOrNull();
+    )..where((filter) => filter.parentId.equals(folderId)))
+        .getSingleOrNull();
     if (atLeatsOneChild != null) {
       Error.throwWithStackTrace(
         TdkException(
@@ -181,19 +184,20 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
 
     final affectedRows = await (_database.delete(
       _database.items,
-    )..where((filter) => filter.id.equals(folderId))).go();
+    )..where((filter) => filter.id.equals(folderId)))
+        .go();
     return affectedRows > 0;
   }
 
   @override
   Future<File> getFile({required String fileId}) async {
-    final file =
-        await (_database.select(_database.items)..where(
-              (filter) =>
-                  filter.id.equals(fileId) &
-                  filter.itemType.equals(db.ItemType.file.value),
-            ))
-            .getSingleOrNull();
+    final file = await (_database.select(_database.items)
+          ..where(
+            (filter) =>
+                filter.id.equals(fileId) &
+                filter.itemType.equals(db.ItemType.file.value),
+          ))
+        .getSingleOrNull();
 
     if (file == null) {
       Error.throwWithStackTrace(
@@ -218,7 +222,8 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
   Future<Uint8List> getFileContent({required String fileId}) async {
     final content = await (_database.select(
       _database.fileContents,
-    )..where((filter) => filter.id.equals(fileId))).getSingleOrNull();
+    )..where((filter) => filter.id.equals(fileId)))
+        .getSingleOrNull();
 
     if (content == null) {
       Error.throwWithStackTrace(
@@ -300,13 +305,13 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
     required String fileId,
     required String newName,
   }) async {
-    final file =
-        await (_database.select(_database.items)..where(
-              (filter) =>
-                  filter.id.equals(fileId) &
-                  filter.itemType.equals(db.ItemType.file.value),
-            ))
-            .getSingleOrNull();
+    final file = await (_database.select(_database.items)
+          ..where(
+            (filter) =>
+                filter.id.equals(fileId) &
+                filter.itemType.equals(db.ItemType.file.value),
+          ))
+        .getSingleOrNull();
 
     if (file == null) {
       Error.throwWithStackTrace(
@@ -339,22 +344,21 @@ class EdgeDriftFileRepository implements EdgeFileRepositoryInterface {
       );
     }
 
-    final affectedRows =
-        await (_database.update(_database.items)
-              ..where((filter) => filter.id.equals(folderId)))
-            .write(db.ItemsCompanion(name: Value(newName)));
+    final affectedRows = await (_database.update(_database.items)
+          ..where((filter) => filter.id.equals(folderId)))
+        .write(db.ItemsCompanion(name: Value(newName)));
 
     return affectedRows > 0;
   }
 
   Future<db.Item?> _getExistingFolder(String folderId) async {
-    final existingFolder =
-        await (_database.select(_database.items)..where(
-              (filter) =>
-                  filter.id.equals(folderId) &
-                  filter.itemType.equals(db.ItemType.folder.value),
-            ))
-            .getSingleOrNull();
+    final existingFolder = await (_database.select(_database.items)
+          ..where(
+            (filter) =>
+                filter.id.equals(folderId) &
+                filter.itemType.equals(db.ItemType.folder.value),
+          ))
+        .getSingleOrNull();
     return existingFolder;
   }
 }

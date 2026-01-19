@@ -74,13 +74,13 @@ void main() async {
 
   final aliceSignedAndEncryptedMessage =
       await DidcommMessage.packIntoSignedAndEncryptedMessages(
-        alicePlainTextMassage,
-        keyType: [bobDidDocument].getCommonKeyTypesInKeyAgreements().first,
-        recipientDidDocuments: [bobDidDocument],
-        keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
-        encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
-        signer: aliceSigner,
-      );
+    alicePlainTextMassage,
+    keyType: [bobDidDocument].getCommonKeyTypesInKeyAgreements().first,
+    recipientDidDocuments: [bobDidDocument],
+    keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
+    encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
+    signer: aliceSigner,
+  );
 
   prettyPrint(
     'Encrypted and Signed Message by Alice',
@@ -163,8 +163,8 @@ void main() async {
 
   prettyPrint('bobAccessListAddMessage', object: bobAccessListAddMessage);
 
-  final bobAccessListAddSentMessage = await bobMediatorClient
-      .sendAclManagementMessage(bobAccessListAddMessage);
+  final bobAccessListAddSentMessage =
+      await bobMediatorClient.sendAclManagementMessage(bobAccessListAddMessage);
 
   prettyPrint(
     'bobAccessListAddSentMessage',
@@ -186,14 +186,14 @@ void main() async {
 
     final originalPlainTextMessage =
         await DidcommMessage.unpackToPlainTextMessage(
-          message: message,
-          recipientDidManager: bobDidManager,
-          expectedMessageWrappingTypes: [
-            MessageWrappingType.anoncryptSignPlaintext,
-            MessageWrappingType.authcryptPlaintext,
-            MessageWrappingType.authcryptSignPlaintext,
-          ],
-        );
+      message: message,
+      recipientDidManager: bobDidManager,
+      expectedMessageWrappingTypes: [
+        MessageWrappingType.anoncryptSignPlaintext,
+        MessageWrappingType.authcryptPlaintext,
+        MessageWrappingType.authcryptSignPlaintext,
+      ],
+    );
 
     prettyPrint(
       'Unpacked Plain Text Message received by Bob via Mediator',

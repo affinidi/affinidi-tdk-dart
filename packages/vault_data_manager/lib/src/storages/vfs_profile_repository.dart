@@ -23,29 +23,29 @@ import 'vfs_file_storage.dart';
 import 'vfs_shared_storage.dart';
 
 /// Type definition for creating [ConsumerAuthProvider] instances
-typedef ConsumerAuthProviderFactory =
-    ConsumerAuthProvider Function(DidSigner didSigner, {Dio? client});
+typedef ConsumerAuthProviderFactory = ConsumerAuthProvider
+    Function(DidSigner didSigner, {Dio? client});
 
 /// Factory function type for creating [VaultDataManagerSharedAccessApiService] instances.
-typedef IamApiServiceFactory =
-    VaultDataManagerSharedAccessApiServiceInterface Function(
-      ConsumerAuthProvider provider,
-    );
+typedef IamApiServiceFactory = VaultDataManagerSharedAccessApiServiceInterface
+    Function(
+  ConsumerAuthProvider provider,
+);
 
 /// Type definition for creating regular [VaultDataManagerService] instances
-typedef VaultDataManagerServiceFactory =
-    Future<VaultDataManagerServiceInterface> Function({
-      required KeyPair keyPair,
-      required Uint8List encryptedDekek,
-    });
+typedef VaultDataManagerServiceFactory
+    = Future<VaultDataManagerServiceInterface> Function({
+  required KeyPair keyPair,
+  required Uint8List encryptedDekek,
+});
 
 /// Type definition for creating delegated [VaultDataManagerService] instances
-typedef VaultDelegatedDataManagerServiceFactory =
-    Future<VaultDataManagerServiceInterface> Function({
-      required KeyPair keyPair,
-      required Uint8List encryptedDekek,
-      required String profileDid,
-    });
+typedef VaultDelegatedDataManagerServiceFactory
+    = Future<VaultDataManagerServiceInterface> Function({
+  required KeyPair keyPair,
+  required Uint8List encryptedDekek,
+  required String profileDid,
+});
 
 /// A VFS implementation of [ProfileRepository] for managing user profiles.
 class VfsProfileRepository implements ProfileRepository, ProfileAccessSharing {
@@ -71,7 +71,7 @@ class VfsProfileRepository implements ProfileRepository, ProfileAccessSharing {
   final IamApiServiceFactory _iamApiServiceFactory;
   final VaultDataManagerServiceFactory _vaultDataManagerServiceFactory;
   final VaultDelegatedDataManagerServiceFactory
-  _vaultDelegatedDataManagerServiceFactory;
+      _vaultDelegatedDataManagerServiceFactory;
 
   /// Creates a new instance of [VfsProfileRepository].
   ///
@@ -99,16 +99,17 @@ class VfsProfileRepository implements ProfileRepository, ProfileAccessSharing {
     IamApiServiceFactory? iamApiServiceFactory,
     VaultDataManagerServiceFactory? vaultDataManagerServiceFactory,
     VaultDelegatedDataManagerServiceFactory?
-    vaultDelegatedDataManagerServiceFactory,
-  }) => VfsProfileRepository._(
-    id,
-    cryptographyService: cryptographyService,
-    consumerAuthProviderFactory: consumerAuthProviderFactory,
-    iamApiServiceFactory: iamApiServiceFactory,
-    vaultDataManagerServiceFactory: vaultDataManagerServiceFactory,
-    vaultDelegatedDataManagerServiceFactory:
         vaultDelegatedDataManagerServiceFactory,
-  );
+  }) =>
+      VfsProfileRepository._(
+        id,
+        cryptographyService: cryptographyService,
+        consumerAuthProviderFactory: consumerAuthProviderFactory,
+        iamApiServiceFactory: iamApiServiceFactory,
+        vaultDataManagerServiceFactory: vaultDataManagerServiceFactory,
+        vaultDelegatedDataManagerServiceFactory:
+            vaultDelegatedDataManagerServiceFactory,
+      );
 
   VfsProfileRepository._(
     this._id, {
@@ -117,29 +118,27 @@ class VfsProfileRepository implements ProfileRepository, ProfileAccessSharing {
     IamApiServiceFactory? iamApiServiceFactory,
     VaultDataManagerServiceFactory? vaultDataManagerServiceFactory,
     VaultDelegatedDataManagerServiceFactory?
-    vaultDelegatedDataManagerServiceFactory,
-  }) : _cryptographyService = cryptographyService ?? CryptographyService(),
-       _consumerAuthProviderFactory =
-           consumerAuthProviderFactory ??
-           ((DidSigner didSigner, {Dio? client}) =>
-               ConsumerAuthProvider(signer: didSigner, client: client)),
-       _iamApiServiceFactory =
-           iamApiServiceFactory ??
-           ((ConsumerAuthProvider provider) {
-             final consumerIamClient = AffinidiTdkConsumerIamClient(
-               authTokenHook: provider.fetchConsumerToken,
-               basePathOverride:
-                   '${Environment.fetchEnvironment().apiGwUrl}/cid',
-             );
-             return VaultDataManagerSharedAccessApiService(
-               affinidiTdkConsumerIamClient: consumerIamClient,
-             );
-           }),
-       _vaultDataManagerServiceFactory =
-           vaultDataManagerServiceFactory ?? VaultDataManagerService.create,
-       _vaultDelegatedDataManagerServiceFactory =
-           vaultDelegatedDataManagerServiceFactory ??
-           VaultDataManagerService.createDelegated;
+        vaultDelegatedDataManagerServiceFactory,
+  })  : _cryptographyService = cryptographyService ?? CryptographyService(),
+        _consumerAuthProviderFactory = consumerAuthProviderFactory ??
+            ((DidSigner didSigner, {Dio? client}) =>
+                ConsumerAuthProvider(signer: didSigner, client: client)),
+        _iamApiServiceFactory = iamApiServiceFactory ??
+            ((ConsumerAuthProvider provider) {
+              final consumerIamClient = AffinidiTdkConsumerIamClient(
+                authTokenHook: provider.fetchConsumerToken,
+                basePathOverride:
+                    '${Environment.fetchEnvironment().apiGwUrl}/cid',
+              );
+              return VaultDataManagerSharedAccessApiService(
+                affinidiTdkConsumerIamClient: consumerIamClient,
+              );
+            }),
+        _vaultDataManagerServiceFactory =
+            vaultDataManagerServiceFactory ?? VaultDataManagerService.create,
+        _vaultDelegatedDataManagerServiceFactory =
+            vaultDelegatedDataManagerServiceFactory ??
+                VaultDataManagerService.createDelegated;
 
   @override
   String get id => _id;
@@ -486,9 +485,12 @@ class VfsProfileRepository implements ProfileRepository, ProfileAccessSharing {
     required int accountIndex,
     required String granteeDid,
     required List<
-      ({List<String> itemIds, Permissions permissions, DateTime? expiresAt})
-    >
-    permissionGroups,
+            ({
+              List<String> itemIds,
+              Permissions permissions,
+              DateTime? expiresAt
+            })>
+        permissionGroups,
     VaultCancelToken? cancelToken,
   }) async {
     _ensureConfigured();
@@ -505,9 +507,8 @@ class VfsProfileRepository implements ProfileRepository, ProfileAccessSharing {
             ),
           )
           .toList(),
-      cancelToken: cancelToken != null
-          ? DioCancelTokenAdapter.from(cancelToken)
-          : null,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
     );
 
     final accountVaultDataManagerService = await _memoizedDataManagerService(
@@ -552,9 +553,8 @@ class VfsProfileRepository implements ProfileRepository, ProfileAccessSharing {
     await iamApiService.revokeItemsAccessVfs(
       granteeDid: granteeDid,
       itemIds: itemIds,
-      cancelToken: cancelToken != null
-          ? DioCancelTokenAdapter.from(cancelToken)
-          : null,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
     );
   }
 
@@ -569,9 +569,8 @@ class VfsProfileRepository implements ProfileRepository, ProfileAccessSharing {
     final iamApiService = await _getIamApiService(accountIndex);
     final response = await iamApiService.getItemsAccessVfs(
       granteeDid: granteeDid,
-      cancelToken: cancelToken != null
-          ? DioCancelTokenAdapter.from(cancelToken)
-          : null,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
     );
 
     return {

@@ -20,8 +20,8 @@ void main() async {
     config.bobPrivateKeyPath,
   );
 
-  final receiverDidDocument = await UniversalDIDResolver.defaultResolver
-      .resolveDid(receiverDid);
+  final receiverDidDocument =
+      await UniversalDIDResolver.defaultResolver.resolveDid(receiverDid);
 
   final messageForReceiver = 'Hello, Bob!';
 
@@ -72,13 +72,13 @@ void main() async {
 
   final senderSignedAndEncryptedMessage =
       await DidcommMessage.packIntoSignedAndEncryptedMessages(
-        senderPlainTextMassage,
-        keyType: [receiverDidDocument].getCommonKeyTypesInKeyAgreements().first,
-        recipientDidDocuments: [receiverDidDocument],
-        keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
-        encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
-        signer: senderSigner,
-      );
+    senderPlainTextMassage,
+    keyType: [receiverDidDocument].getCommonKeyTypesInKeyAgreements().first,
+    recipientDidDocuments: [receiverDidDocument],
+    keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
+    encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
+    signer: senderSigner,
+  );
 
   prettyPrint(
     'Encrypted and Signed Message by Sender',

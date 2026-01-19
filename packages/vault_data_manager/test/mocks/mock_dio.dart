@@ -26,30 +26,26 @@ class MockDio extends Mock implements Dio {
   }) async {
     if (path == TestDataFixtures.schemaUrl) {
       return Response<T>(
-        data:
-            {
-                  'person': {'type': 'object'},
-                }
-                as T,
+        data: {
+          'person': {'type': 'object'},
+        } as T,
         statusCode: 200,
         requestOptions: RequestOptions(path: path),
       );
     }
     if (path == TestDataFixtures.jwksUrl) {
       return Response<T>(
-        data:
+        data: {
+          'keys': [
             {
-                  'keys': [
-                    {
-                      'kty': 'RSA',
-                      'kid': TestDataFixtures.testKid,
-                      'use': 'sig',
-                      'n': 'test-n',
-                      'e': 'AQAB',
-                    },
-                  ],
-                }
-                as T,
+              'kty': 'RSA',
+              'kid': TestDataFixtures.testKid,
+              'use': 'sig',
+              'n': 'test-n',
+              'e': 'AQAB',
+            },
+          ],
+        } as T,
         statusCode: 200,
         requestOptions: RequestOptions(path: path),
       );
@@ -87,14 +83,12 @@ class MockDio extends Mock implements Dio {
         );
       }
       return Response<T>(
-        data:
-            {
-                  'nodeId': 'test-node-id',
-                  'name': 'test-vc',
-                  'nodeType': 'VC',
-                  'status': 'CREATED',
-                }
-                as T,
+        data: {
+          'nodeId': 'test-node-id',
+          'name': 'test-vc',
+          'nodeType': 'VC',
+          'status': 'CREATED',
+        } as T,
         statusCode: 200,
         requestOptions: requestOptions,
       );
@@ -130,14 +124,12 @@ class MockDio extends Mock implements Dio {
         );
       }
       return Response<T>(
-        data:
-            {
-                  'nodeId': 'test-node-id',
-                  'name': 'test-vc',
-                  'nodeType': 'VC',
-                  'status': 'CREATED',
-                }
-                as T,
+        data: {
+          'nodeId': 'test-node-id',
+          'name': 'test-vc',
+          'nodeType': 'VC',
+          'status': 'CREATED',
+        } as T,
         statusCode: 200,
         requestOptions: RequestOptions(path: path),
       );

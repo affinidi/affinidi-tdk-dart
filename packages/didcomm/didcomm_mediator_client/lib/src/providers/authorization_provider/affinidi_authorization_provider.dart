@@ -94,14 +94,14 @@ class AffinidiAuthorizationProvider extends AuthorizationProvider {
 
       final encryptedMessage =
           await DidcommMessage.packIntoSignedAndEncryptedMessages(
-            plainTextMessage,
-            keyPair: keyPair,
-            didKeyId: didKeyId,
-            recipientDidDocuments: [mediatorDidDocument],
-            encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
-            keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdh1Pu,
-            signer: signer,
-          );
+        plainTextMessage,
+        keyPair: keyPair,
+        didKeyId: didKeyId,
+        recipientDidDocuments: [mediatorDidDocument],
+        encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
+        keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdh1Pu,
+        signer: signer,
+      );
 
       final authenticateResponse = await dio.post<Map<String, dynamic>>(
         '',

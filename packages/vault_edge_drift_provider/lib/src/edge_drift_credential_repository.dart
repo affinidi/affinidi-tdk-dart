@@ -10,8 +10,8 @@ class EdgeDriftCredentialRepository
   const EdgeDriftCredentialRepository({
     required db.Database database,
     required String profileId,
-  }) : _database = database,
-       _profileId = profileId;
+  })  : _database = database,
+        _profileId = profileId;
 
   final db.Database _database;
   final String _profileId;
@@ -22,13 +22,13 @@ class EdgeDriftCredentialRepository
     VaultCancelToken? cancelToken,
   }) async {
     // Check if credential exists
-    final credential =
-        await (_database.select(_database.credentials)..where(
-              (filter) =>
-                  filter.id.equals(credentialId) &
-                  filter.profileId.equals(_profileId),
-            ))
-            .getSingleOrNull();
+    final credential = await (_database.select(_database.credentials)
+          ..where(
+            (filter) =>
+                filter.id.equals(credentialId) &
+                filter.profileId.equals(_profileId),
+          ))
+        .getSingleOrNull();
 
     if (credential == null) {
       Error.throwWithStackTrace(
@@ -42,7 +42,8 @@ class EdgeDriftCredentialRepository
 
     await (_database.delete(
       _database.credentials,
-    )..where((filter) => filter.id.equals(credentialId))).go();
+    )..where((filter) => filter.id.equals(credentialId)))
+        .go();
   }
 
   @override
@@ -50,13 +51,13 @@ class EdgeDriftCredentialRepository
     required String credentialId,
     VaultCancelToken? cancelToken,
   }) async {
-    final credential =
-        await (_database.select(_database.credentials)..where(
-              (filter) =>
-                  filter.id.equals(credentialId) &
-                  filter.profileId.equals(_profileId),
-            ))
-            .getSingleOrNull();
+    final credential = await (_database.select(_database.credentials)
+          ..where(
+            (filter) =>
+                filter.id.equals(credentialId) &
+                filter.profileId.equals(_profileId),
+          ))
+        .getSingleOrNull();
 
     if (credential == null) {
       Error.throwWithStackTrace(

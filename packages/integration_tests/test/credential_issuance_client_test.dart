@@ -110,7 +110,8 @@ void main() {
         final config = (await configurationApi.updateIssuanceConfigById(
           configurationId: configurationId,
           updateIssuanceConfigInput: updateIssuanceConfigInput.build(),
-        )).data;
+        ))
+            .data;
 
         expect(config, isNotNull);
         expect(config?.description, equals(updatedDescription));
@@ -119,7 +120,8 @@ void main() {
       test('Reads issuance configuration', () async {
         final config = (await configurationApi.getIssuanceConfigById(
           configurationId: configurationId,
-        )).data;
+        ))
+            .data;
 
         expect(config, isNotNull);
       });
@@ -164,7 +166,8 @@ void main() {
         final issuanceResponse = (await issuanceApi.startIssuance(
           projectId: env.projectId,
           startIssuanceInput: startIssuanceInput.build(),
-        )).data;
+        ))
+            .data;
 
         expect(issuanceResponse, isNotNull);
         expect(issuanceResponse?.issuanceId, isNotEmpty);
@@ -176,14 +179,14 @@ void main() {
         final offerResponse = (await offerApi.getCredentialOffer(
           projectId: env.projectId,
           issuanceId: issuanceId,
-        )).data;
+        ))
+            .data;
 
         expect(offerResponse, isNotNull);
         expect(offerResponse?.credentialIssuer, isNotEmpty);
         expect(offerResponse?.grants, isNotNull);
         expect(
-          offerResponse
-              ?.grants
+          offerResponse?.grants
               .urnColonIetfColonParamsColonOauthColonGrantTypeColonPreAuthorizedCode,
           isNotNull,
         );
@@ -194,8 +197,7 @@ void main() {
               .preAuthorizedCode,
           isNotEmpty,
         );
-        preAuthCode =
-            offerResponse
+        preAuthCode = offerResponse
                 ?.grants
                 .urnColonIetfColonParamsColonOauthColonGrantTypeColonPreAuthorizedCode
                 .preAuthorizedCode ??
@@ -205,19 +207,20 @@ void main() {
       test("Claim batch credential", () async {
         final issuerMetadata =
             (await wellKnownApi.getWellKnownOpenIdCredentialIssuer(
-              projectId: env.projectId,
-            )).data;
+          projectId: env.projectId,
+        ))
+                .data;
         expect(issuerMetadata, isNotNull);
 
         final tokenEndpoint = issuerMetadata?.tokenEndpoint;
         expect(tokenEndpoint, isNotNull);
 
-        final tokenDetails = await consumerAuthProvider
-            .exchangePreAuthCodeForToken(
-              tokenEndpoint: issuerMetadata?.tokenEndpoint ?? '',
-              preAuthCode: preAuthCode,
-              txCode: txCode ?? '',
-            );
+        final tokenDetails =
+            await consumerAuthProvider.exchangePreAuthCodeForToken(
+          tokenEndpoint: issuerMetadata?.tokenEndpoint ?? '',
+          preAuthCode: preAuthCode,
+          txCode: txCode ?? '',
+        );
 
         expect(tokenDetails.accessToken, isNotNull);
         expect(tokenDetails.authorizationDetails, isNotNull);
@@ -260,7 +263,8 @@ void main() {
           projectId: env.projectId,
           batchCredentialInput: batchCredentialInput.build(),
           headers: headers,
-        )).data;
+        ))
+            .data;
         expect(data, isNotNull);
         expect(data?.credentialResponses, isNotNull);
         expect(data?.credentialResponses.length, equals(10));
@@ -275,7 +279,8 @@ void main() {
             configurationId: configurationId,
             projectId: env.projectId,
             issuanceId: issuanceId,
-          )).data;
+          ))
+              .data;
           expect(data, isNotNull);
           expect(data?.credentials, isNotNull);
           expect(data?.credentials?.length, equals(10));

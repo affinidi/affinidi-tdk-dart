@@ -22,6 +22,7 @@ class VdspRequestServiceMessage extends PlainTextMessage {
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
+
 /// Body payload for the request service message.
 /// This message should provide enough context for the Verifier to understand which service is requested,
 ///  via [operation] and optional [comment].

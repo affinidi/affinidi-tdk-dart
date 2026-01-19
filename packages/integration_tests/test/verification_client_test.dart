@@ -33,7 +33,8 @@ void main() {
         ]);
       final verificationResponse = (await verificationApi.verifyCredentials(
         verifyCredentialInput: verifyCredentialInputBuilder.build(),
-      )).data;
+      ))
+          .data;
       expect(verificationResponse, isNotNull);
       expect(verificationResponse!.isValid, isTrue);
       expect(verificationResponse.errors, isEmpty);

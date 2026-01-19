@@ -13,7 +13,7 @@ class MockKeyPair extends Mock implements KeyPair {
 
   @override
   List<SignatureScheme> get supportedSignatureSchemes => [
-    SignatureScheme.ecdsa_secp256k1_sha256,
-    SignatureScheme.ed25519,
-  ];
+        SignatureScheme.ecdsa_secp256k1_sha256,
+        SignatureScheme.ed25519,
+      ];
 }

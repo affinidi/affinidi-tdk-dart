@@ -13,10 +13,10 @@ class ItemPermissionsPolicy {
     final permissionsList = accessMap['permissions'] as List?;
     final permissions = permissionsList != null
         ? permissionsList
-              .map(
-                (perm) => ItemPermission.fromMap(perm as Map<String, dynamic>),
-              )
-              .toList()
+            .map(
+              (perm) => ItemPermission.fromMap(perm as Map<String, dynamic>),
+            )
+            .toList()
         : <ItemPermission>[];
 
     return ItemPermissionsPolicy._(permissions);
@@ -77,7 +77,7 @@ class ItemPermissionsPolicy {
 
   /// Builds permission groups
   List<({List<String> itemIds, Permissions permissions, DateTime? expiresAt})>
-  buildPermissionGroups() {
+      buildPermissionGroups() {
     return ItemPermissionHelper.buildPermissionGroups(_permissions);
   }
 

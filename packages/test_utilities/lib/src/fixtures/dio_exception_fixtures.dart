@@ -32,10 +32,11 @@ class DioExceptionFixtures {
   /// [message] - The error message for the SocketException.
   static DioException socketExceptionWithMessage({
     String message = 'Failed to connect',
-  }) => DioException(
-    requestOptions: RequestOptions(),
-    error: SocketException(message),
-  );
+  }) =>
+      DioException(
+        requestOptions: RequestOptions(),
+        error: SocketException(message),
+      );
 
   /// A DioException with an HttpException.
   static final httpException = httpExceptionWithMessage();
@@ -45,10 +46,11 @@ class DioExceptionFixtures {
   /// [message] - The error message for the HttpException.
   static DioException httpExceptionWithMessage({
     String message = 'Connection failed',
-  }) => DioException(
-    requestOptions: RequestOptions(),
-    error: HttpException(message),
-  );
+  }) =>
+      DioException(
+        requestOptions: RequestOptions(),
+        error: HttpException(message),
+      );
 
   /// A DioException for connection timeout.
   static final timeoutException = DioException(

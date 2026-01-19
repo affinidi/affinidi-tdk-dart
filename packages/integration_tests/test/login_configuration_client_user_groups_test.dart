@@ -65,7 +65,8 @@ void main() {
 
           final statusCode = (await allowListApi.allowGroups(
             groupNamesInput: groupNamesInputBuilder.build(),
-          )).statusCode;
+          ))
+              .statusCode;
 
           expect(statusCode, 200);
         });
@@ -84,7 +85,8 @@ void main() {
 
           final statusCode = (await allowListApi.disallowGroups(
             groupNamesInput: groupNamesInputBuilder.build(),
-          )).statusCode;
+          ))
+              .statusCode;
 
           expect(statusCode, 200);
         });
@@ -99,7 +101,8 @@ void main() {
 
           final statusCode = (await denyListApi.blockGroups(
             groupNamesInput: groupNamesInputBuilder.build(),
-          )).statusCode;
+          ))
+              .statusCode;
 
           expect(statusCode, 200);
         });
@@ -118,7 +121,8 @@ void main() {
 
           final statusCode = (await denyListApi.unblockGroups(
             groupNamesInput: groupNamesInputBuilder.build(),
-          )).statusCode;
+          ))
+              .statusCode;
 
           expect(statusCode, 200);
         });
@@ -129,7 +133,8 @@ void main() {
 
           final statusCode = (await denyListApi.blockUsers(
             blockedUsersInput: blockedUsersInputBuilder.build(),
-          )).statusCode;
+          ))
+              .statusCode;
 
           expect(statusCode, 200);
         });
@@ -147,7 +152,8 @@ void main() {
 
           final statusCode = (await denyListApi.unblockUsers(
             blockedUsersInput: blockedUsersInputBuilder.build(),
-          )).statusCode;
+          ))
+              .statusCode;
 
           expect(statusCode, 200);
         });

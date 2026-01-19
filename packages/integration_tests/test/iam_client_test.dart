@@ -43,7 +43,8 @@ void main() {
 
         final statusCode = (await projectsApi.addPrincipalToProject(
           addUserToProjectInput: addUserToProjectInputBuilder.build(),
-        )).statusCode;
+        ))
+            .statusCode;
 
         expect(statusCode, 204);
       });
@@ -60,7 +61,8 @@ void main() {
         final statusCode = (await projectsApi.deletePrincipalFromProject(
           principalId: testPrincipalId,
           principalType: principalType,
-        )).statusCode;
+        ))
+            .statusCode;
 
         expect(statusCode, 204);
       });
@@ -70,7 +72,8 @@ void main() {
       final result = (await policiesApi.getPolicies(
         principalId: tokenId,
         principalType: 'token',
-      )).data;
+      ))
+          .data;
 
       expect(result?.version, isNotNull);
       expect(result?.statement, isNotNull);

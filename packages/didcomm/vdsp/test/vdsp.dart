@@ -147,7 +147,8 @@ Future<void> main() async {
                   VerifiableCredentialsDataModel.v1,
                   VerifiableCredentialsDataModel.v2,
                 ]) {
-                  group('data model ${verifiablePresentationDataModel.name}', () {
+                  group('data model ${verifiablePresentationDataModel.name}',
+                      () {
                     test('VDSP works correctly', () async {
                       final testCompleter = Completer<PlainTextMessage>();
 
@@ -164,11 +165,10 @@ Future<void> main() async {
 
                           final unsupportedFeatureDisclosures =
                               FeatureDiscoveryHelper.getUnsupportedFeatures(
-                                expectedFeatureDisclosures:
-                                    FeatureDiscoveryHelper
-                                        .vdspHolderDisclosures,
-                                actualFeatureDisclosures: body.disclosures,
-                              );
+                            expectedFeatureDisclosures:
+                                FeatureDiscoveryHelper.vdspHolderDisclosures,
+                            actualFeatureDisclosures: body.disclosures,
+                          );
 
                           if (unsupportedFeatureDisclosures.isNotEmpty) {
                             testCompleter.completeError(
@@ -191,55 +191,47 @@ Future<void> main() async {
                             ),
                           );
                         },
-                        onDataResponse:
-                            ({
-                              required VdspDataResponseMessage message,
-                              required bool presentationAndCredentialsAreValid,
-                              VerifiablePresentation? verifiablePresentation,
-                              required VerificationResult
+                        onDataResponse: ({
+                          required VdspDataResponseMessage message,
+                          required bool presentationAndCredentialsAreValid,
+                          VerifiablePresentation? verifiablePresentation,
+                          required VerificationResult
                               presentationVerificationResult,
-                              required List<VerificationResult>
+                          required List<VerificationResult>
                               credentialVerificationResults,
-                            }) async {
-                              final result =
-                                  presentationAndCredentialsAreValid &&
-                                  verifiablePresentation
-                                          ?.proof
-                                          .first
-                                          .challenge ==
-                                      verifierChallenge &&
-                                  verifiablePresentation!
-                                          .proof
-                                          .first
-                                          .domain
-                                          ?.first ==
-                                      verifierDomain;
+                        }) async {
+                          final result = presentationAndCredentialsAreValid &&
+                              verifiablePresentation?.proof.first.challenge ==
+                                  verifierChallenge &&
+                              verifiablePresentation!
+                                      .proof.first.domain?.first ==
+                                  verifierDomain;
 
-                              final body = VdspDataResponseBody.fromJson(
-                                message.body!,
-                              );
+                          final body = VdspDataResponseBody.fromJson(
+                            message.body!,
+                          );
 
-                              if (body.comment != comment) {
-                                testCompleter.completeError(
-                                  Exception('Comment does not match'),
-                                );
+                          if (body.comment != comment) {
+                            testCompleter.completeError(
+                              Exception('Comment does not match'),
+                            );
 
-                                return;
-                              }
+                            return;
+                          }
 
-                              await vdspVerifier.sendDataProcessingResult(
-                                holderDid: message.from!,
-                                operation: body.operation,
-                                result: {
-                                  'success': result,
-                                  'email': verifiablePresentation
-                                      ?.verifiableCredential
-                                      .first
-                                      .credentialSubject
-                                      .first['email'],
-                                },
-                              );
+                          await vdspVerifier.sendDataProcessingResult(
+                            holderDid: message.from!,
+                            operation: body.operation,
+                            result: {
+                              'success': result,
+                              'email': verifiablePresentation
+                                  ?.verifiableCredential
+                                  .first
+                                  .credentialSubject
+                                  .first['email'],
                             },
+                          );
+                        },
                         onProblemReport: (message) async {
                           testCompleter.completeError(message);
                           await mockMediator.stopConnections();
@@ -265,12 +257,11 @@ Future<void> main() async {
                           );
                         },
                         onDataRequest: (message) async {
-                          final queryResult = await vdspHolder
-                              .filterVerifiableCredentials(
-                                requestMessage: message,
-                                verifiableCredentials:
-                                    holderVerifiableCredentials,
-                              );
+                          final queryResult =
+                              await vdspHolder.filterVerifiableCredentials(
+                            requestMessage: message,
+                            verifiableCredentials: holderVerifiableCredentials,
+                          );
 
                           if (queryResult.dcqlResult?.fulfilled == false) {
                             testCompleter.completeError(
@@ -325,10 +316,10 @@ Future<void> main() async {
 
                       await vdspVerifier.queryHolderFeatures(
                         holderDid: (await holderDidManager.getDidDocument()).id,
-                        featureQueries:
-                            FeatureDiscoveryHelper.getFeatureQueriesByDisclosures(
-                              FeatureDiscoveryHelper.vdspHolderDisclosures,
-                            ),
+                        featureQueries: FeatureDiscoveryHelper
+                            .getFeatureQueriesByDisclosures(
+                          FeatureDiscoveryHelper.vdspHolderDisclosures,
+                        ),
                       );
 
                       final actual = await testCompleter.future;
@@ -480,16 +471,15 @@ Future<void> main() async {
       );
 
       sut.listenForIncomingMessages(
-        onDataResponse:
-            ({
-              required VdspDataResponseMessage message,
-              required bool presentationAndCredentialsAreValid,
-              VerifiablePresentation? verifiablePresentation,
-              required VerificationResult presentationVerificationResult,
-              required List<VerificationResult> credentialVerificationResults,
-            }) {
-              completer.complete(presentationAndCredentialsAreValid);
-            },
+        onDataResponse: ({
+          required VdspDataResponseMessage message,
+          required bool presentationAndCredentialsAreValid,
+          VerifiablePresentation? verifiablePresentation,
+          required VerificationResult presentationVerificationResult,
+          required List<VerificationResult> credentialVerificationResults,
+        }) {
+          completer.complete(presentationAndCredentialsAreValid);
+        },
         onProblemReport: completer.completeError,
         onError: completer.completeError,
       );
@@ -530,16 +520,15 @@ Future<void> main() async {
       );
 
       sut.listenForIncomingMessages(
-        onDataResponse:
-            ({
-              required VdspDataResponseMessage message,
-              required bool presentationAndCredentialsAreValid,
-              VerifiablePresentation? verifiablePresentation,
-              required VerificationResult presentationVerificationResult,
-              required List<VerificationResult> credentialVerificationResults,
-            }) {
-              completer.complete(presentationAndCredentialsAreValid);
-            },
+        onDataResponse: ({
+          required VdspDataResponseMessage message,
+          required bool presentationAndCredentialsAreValid,
+          VerifiablePresentation? verifiablePresentation,
+          required VerificationResult presentationVerificationResult,
+          required List<VerificationResult> credentialVerificationResults,
+        }) {
+          completer.complete(presentationAndCredentialsAreValid);
+        },
         onProblemReport: completer.completeError,
         onError: completer.completeError,
       );

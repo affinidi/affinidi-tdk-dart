@@ -32,16 +32,17 @@ class VdipIssuer {
     required List<Disclosure> featureDisclosures,
     AuthorizationProvider? authorizationProvider,
     ClientOptions clientOptions = const ClientOptions(),
-  }) async => VdipIssuer(
-    didManager: didManager,
-    featureDisclosures: featureDisclosures,
-    mediatorClient: await DidcommMediatorClient.init(
-      didManager: didManager,
-      mediatorDidDocument: mediatorDidDocument,
-      authorizationProvider: authorizationProvider,
-      clientOptions: clientOptions,
-    ),
-  );
+  }) async =>
+      VdipIssuer(
+        didManager: didManager,
+        featureDisclosures: featureDisclosures,
+        mediatorClient: await DidcommMediatorClient.init(
+          didManager: didManager,
+          mediatorDidDocument: mediatorDidDocument,
+          authorizationProvider: authorizationProvider,
+          clientOptions: clientOptions,
+        ),
+      );
 
   /// Responds to a feature [queryMessage] by computing and sending a
   /// corresponding `disclose` message. Returns the sent message.
@@ -141,8 +142,7 @@ class VdipIssuer {
       String? challenge,
       AssertionValidationResult? assertionValidationResult,
       String? holderDidFromAssertion,
-    })
-    onRequestToIssueCredential,
+    }) onRequestToIssueCredential,
     void Function(ProblemReportMessage)? onProblemReport,
     Function? onError,
     void Function({int? closeCode, String? closeReason})? onDone,
@@ -233,9 +233,8 @@ class VdipIssuer {
     required String vcIssuerDid,
   }) async {
     try {
-      final resolvedHolderDidDocument = await UniversalDIDResolver
-          .defaultResolver
-          .resolveDid(holderDid);
+      final resolvedHolderDidDocument =
+          await UniversalDIDResolver.defaultResolver.resolveDid(holderDid);
       final decodedJwsAssertion = JwtHelper.decodeAndVerify(
         serializedJwt: jwsAssertion,
         holderDidDocument: resolvedHolderDidDocument,
@@ -253,12 +252,10 @@ class VdipIssuer {
       final isSubjectValid = assertionSubject == holderDid;
       final isProposalValid = assertionProposalId == proposalId;
       final isAudienceValid = assertionAudienceId == vcIssuerDid;
-      final isExpirationValid =
-          assertionExpiration != null &&
+      final isExpirationValid = assertionExpiration != null &&
           assertionExpiration > DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
-      final isValid =
-          isIssuerValid &&
+      final isValid = isIssuerValid &&
           isSubjectValid &&
           isProposalValid &&
           isAudienceValid &&
@@ -333,9 +330,8 @@ class VdipIssuer {
     required String expectedThreadId,
   }) async {
     try {
-      final resolvedHolderDidDocument = await UniversalDIDResolver
-          .defaultResolver
-          .resolveDid(holderDid);
+      final resolvedHolderDidDocument =
+          await UniversalDIDResolver.defaultResolver.resolveDid(holderDid);
 
       final decodedToken = JwtHelper.decodeAndVerify(
         serializedJwt: token,
@@ -357,8 +353,7 @@ class VdipIssuer {
       final isExpirationValid =
           tokenExpiration > DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
-      final isValid =
-          isIssuerValid &&
+      final isValid = isIssuerValid &&
           isSubjectValid &&
           isNonceValid &&
           isThreadIdValid &&

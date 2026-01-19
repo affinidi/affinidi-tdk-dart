@@ -34,14 +34,14 @@ import 'mocks/vault_data_manager_encryption_service_mocks.dart';
 void main() {
   late MockVaultDataManagerApiService mockVaultDataManagerApiService;
   late MockVaultDataManagerEncryptionService
-  mockVaultDataManagerEncryptionService;
+      mockVaultDataManagerEncryptionService;
   late VaultDataManagerEncryptionServiceMocks
-  vaultDataManagerEncryptionServiceMocks;
+      vaultDataManagerEncryptionServiceMocks;
   late VaultDataManagerApiServiceMocks vaultDataManagerApiServiceMocks;
   late VaultDataManagerService vaultDataManagerService;
   late VaultDataManagerServiceFactory vaultDataManagerServiceFactory;
   late VaultDelegatedDataManagerServiceFactory
-  vaultDelegatedDataManagerServiceFactory;
+      vaultDelegatedDataManagerServiceFactory;
 
   setUp(() async {
     mockVaultDataManagerApiService = MockVaultDataManagerApiService();
@@ -49,8 +49,8 @@ void main() {
         MockVaultDataManagerEncryptionService();
     vaultDataManagerEncryptionServiceMocks =
         VaultDataManagerEncryptionServiceMocks(
-          mockVaultDataManagerEncryptionService,
-        );
+      mockVaultDataManagerEncryptionService,
+    );
     vaultDataManagerApiServiceMocks = VaultDataManagerApiServiceMocks(
       mockVaultDataManagerApiService,
     );
@@ -95,10 +95,10 @@ void main() {
         final keyPair = await getRootKeyPair();
         final vaultDataManagerService =
             await vaultDelegatedDataManagerServiceFactory(
-              profileDid: 'profile_did',
-              encryptedDekek: Uint8List(2),
-              keyPair: keyPair,
-            );
+          profileDid: 'profile_did',
+          encryptedDekek: Uint8List(2),
+          keyPair: keyPair,
+        );
 
         await expectLater(
           vaultDataManagerService,
@@ -595,8 +595,8 @@ void main() {
             ),
           );
 
-          final result = await vaultDataManagerService
-              .getVaultDataFileConsumption();
+          final result =
+              await vaultDataManagerService.getVaultDataFileConsumption();
 
           expect(result, isNotNull);
           expect(result.sizeInMB, isNonZero);

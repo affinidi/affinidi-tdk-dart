@@ -19,9 +19,12 @@ abstract interface class ProfileAccessSharing {
     required int accountIndex,
     required String granteeDid,
     required List<
-      ({List<String> itemIds, Permissions permissions, DateTime? expiresAt})
-    >
-    permissionGroups,
+            ({
+              List<String> itemIds,
+              Permissions permissions,
+              DateTime? expiresAt
+            })>
+        permissionGroups,
     VaultCancelToken? cancelToken,
   });
 

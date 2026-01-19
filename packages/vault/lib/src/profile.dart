@@ -30,9 +30,9 @@ class Profile {
     required Map<String, FileStorage> fileStorages,
     required Map<String, CredentialStorage> credentialStorages,
     required Map<String, SharedStorage> sharedStorages,
-  }) : _fileStorages = Map.unmodifiable(fileStorages),
-       _credentialStorages = Map.unmodifiable(credentialStorages),
-       _sharedStorages = sharedStorages;
+  })  : _fileStorages = Map.unmodifiable(fileStorages),
+        _credentialStorages = Map.unmodifiable(credentialStorages),
+        _sharedStorages = sharedStorages;
 
   /// ID of the profile repository
   final String profileRepositoryId;

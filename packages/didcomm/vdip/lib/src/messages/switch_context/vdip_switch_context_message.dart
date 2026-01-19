@@ -35,6 +35,7 @@ class VdipSwitchContextMessage extends PlainTextMessage {
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
+
 /// Body payload for the switch context message.
 ///
 ///

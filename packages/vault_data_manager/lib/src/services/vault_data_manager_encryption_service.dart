@@ -47,8 +47,8 @@ class VaultDataManagerEncryptionService
   VaultDataManagerEncryptionService({
     required CryptographyServiceInterface cryptographyService,
     required Map<String, dynamic> jwk,
-  }) : _jwk = jwk,
-       _cryptographyService = cryptographyService;
+  })  : _jwk = jwk,
+        _cryptographyService = cryptographyService;
 
   /// Method to encrypt a data encryption key [dek] using the wallet crypto material.
   ///
@@ -166,9 +166,9 @@ class VaultDataManagerEncryptionService
 
     final dekEncryptedByWalletCryptoMaterial =
         await encryptDekByWalletCryptoMaterial(
-          encryptionKey: encryptionKey,
-          dek: dek,
-        );
+      encryptionKey: encryptionKey,
+      dek: dek,
+    );
 
     final walletCryptoMaterialHash = await getWalletCryptoMaterialKeyHash(
       encryptionKey: encryptionKey,

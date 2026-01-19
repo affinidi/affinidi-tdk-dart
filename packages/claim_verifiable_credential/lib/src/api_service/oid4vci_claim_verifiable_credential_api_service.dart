@@ -48,7 +48,7 @@ class OID4VCIClaimVerifiableCredentialApiService
 
   /// Constructor to create an instance of [OID4VCIClaimVerifiableCredentialApiService].
   OID4VCIClaimVerifiableCredentialApiService({Dio? client})
-    : _client = client ?? _createDioClient();
+      : _client = client ?? _createDioClient();
 
   final Dio _client;
 

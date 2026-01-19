@@ -4,7 +4,7 @@ class PermissionsFixtures {
   static List<RightsEnum> get readRights => [RightsEnum.vfsRead];
   static List<RightsEnum> get writeRights => [RightsEnum.vfsWrite];
   static List<RightsEnum> get allRights => [
-    RightsEnum.vfsRead,
-    RightsEnum.vfsWrite,
-  ];
+        RightsEnum.vfsRead,
+        RightsEnum.vfsWrite,
+      ];
 }

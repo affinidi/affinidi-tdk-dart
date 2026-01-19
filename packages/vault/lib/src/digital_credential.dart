@@ -13,8 +13,8 @@ class DigitalCredential {
   DigitalCredential({
     required VerifiableCredential verifiableCredential,
     required String id,
-  }) : _verifiableCredential = verifiableCredential,
-       _id = id;
+  })  : _verifiableCredential = verifiableCredential,
+        _id = id;
 
   /// Gets the verifiable credential associated with this digital credential
   VerifiableCredential get verifiableCredential => _verifiableCredential;

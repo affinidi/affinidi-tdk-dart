@@ -44,35 +44,29 @@ Future<LdVcDataModelV1> generateEmailLdVcV1({
   final issuedCredential = await suite.issue(
     unsignedData: unsignedCredential,
     proofGenerator: switch (issuerSigner.signatureScheme) {
-      SignatureScheme.ecdsa_secp256k1_sha256 =>
-        Secp256k1Signature2019Generator(
-              signer: issuerSigner,
-              proofPurpose: ProofPurpose.authentication,
-            )
-            as EmbeddedProofGenerator,
-      SignatureScheme.ecdsa_p256_sha256 =>
-        DataIntegrityEcdsaJcsGenerator(
-              signer: issuerSigner,
-              proofPurpose: ProofPurpose.authentication,
-            )
-            as EmbeddedProofGenerator,
+      SignatureScheme.ecdsa_secp256k1_sha256 => Secp256k1Signature2019Generator(
+          signer: issuerSigner,
+          proofPurpose: ProofPurpose.authentication,
+        ) as EmbeddedProofGenerator,
+      SignatureScheme.ecdsa_p256_sha256 => DataIntegrityEcdsaJcsGenerator(
+          signer: issuerSigner,
+          proofPurpose: ProofPurpose.authentication,
+        ) as EmbeddedProofGenerator,
       SignatureScheme.ecdsa_p384_sha384 => DataIntegrityEcdsaJcsGenerator(
-        signer: issuerSigner,
-        proofPurpose: ProofPurpose.authentication,
-      ),
+          signer: issuerSigner,
+          proofPurpose: ProofPurpose.authentication,
+        ),
       SignatureScheme.ecdsa_p521_sha512 => DataIntegrityEcdsaJcsGenerator(
-        signer: issuerSigner,
-        proofPurpose: ProofPurpose.authentication,
-      ),
-      SignatureScheme.ed25519 =>
-        DataIntegrityEddsaJcsGenerator(
-              signer: issuerSigner,
-              proofPurpose: ProofPurpose.authentication,
-            )
-            as EmbeddedProofGenerator,
+          signer: issuerSigner,
+          proofPurpose: ProofPurpose.authentication,
+        ),
+      SignatureScheme.ed25519 => DataIntegrityEddsaJcsGenerator(
+          signer: issuerSigner,
+          proofPurpose: ProofPurpose.authentication,
+        ) as EmbeddedProofGenerator,
       SignatureScheme.rsa_pkcs1_sha256 => throw UnimplementedError(
-        'RSA is not supported',
-      ),
+          'RSA is not supported',
+        ),
     },
   );
 
@@ -82,15 +76,16 @@ Future<LdVcDataModelV1> generateEmailLdVcV1({
 DcqlCredentialQuery createDataQuery({
   required CredentialFormat format,
   required List<String> path,
-}) => DcqlCredentialQuery(
-  credentials: [
-    DcqlCredential(
-      id: const Uuid().v4(),
-      format: format,
-      claims: [DcqlClaim(path: path)],
-    ),
-  ],
-);
+}) =>
+    DcqlCredentialQuery(
+      credentials: [
+        DcqlCredential(
+          id: const Uuid().v4(),
+          format: format,
+          claims: [DcqlClaim(path: path)],
+        ),
+      ],
+    );
 
 Future<DidManager> createDidManager({
   required String didMethod,

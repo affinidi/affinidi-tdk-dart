@@ -17,6 +17,6 @@ abstract class AclManagementMessage extends PlainTextMessage {
     required super.body,
     super.expiresTime,
   }) : super(
-         type: Uri.parse('https://didcomm.org/mediator/1.0/acl-management'),
-       );
+          type: Uri.parse('https://didcomm.org/mediator/1.0/acl-management'),
+        );
 }

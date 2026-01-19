@@ -16,7 +16,7 @@ class EdgeEncryptionService implements EdgeEncryptionServiceInterface {
 
   /// Creates a new instance of [EdgeEncryptionService].
   EdgeEncryptionService({required VaultStore vaultStore})
-    : _vaultStore = vaultStore;
+      : _vaultStore = vaultStore;
 
   final VaultStore _vaultStore;
   late final Random _secureRandom = Random.secure();

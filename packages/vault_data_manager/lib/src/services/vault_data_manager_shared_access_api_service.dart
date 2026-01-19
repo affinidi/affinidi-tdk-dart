@@ -118,8 +118,7 @@ class VaultDataManagerSharedAccessApiService
         rethrow;
       }
 
-      final isAlreadyGranted =
-          errorResponse.statusCode == 409 &&
+      final isAlreadyGranted = errorResponse.statusCode == 409 &&
           errorResponse.data != null &&
           (errorResponse.data as Map<String, dynamic>)['name'] ==
               'AlreadyExistsError';
@@ -295,9 +294,12 @@ class VaultDataManagerSharedAccessApiService
   Future<void> setItemsAccessVfs({
     required String granteeDid,
     required List<
-      ({List<String> itemIds, Permissions permissions, DateTime? expiresAt})
-    >
-    permissionGroups,
+            ({
+              List<String> itemIds,
+              Permissions permissions,
+              DateTime? expiresAt
+            })>
+        permissionGroups,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,

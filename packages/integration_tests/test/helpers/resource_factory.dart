@@ -55,7 +55,8 @@ class ResourceFactory {
 
     final createdWallet = (await walletApi.createWallet(
       createWalletInput: builder.build(),
-    )).data;
+    ))
+        .data;
 
     return createdWallet!.wallet;
   }
@@ -127,7 +128,8 @@ class ResourceFactory {
 
     final verificationResponse = (await verificationApi.verifyCredentials(
       verifyCredentialInput: verifyCredentialInputBuilder.build(),
-    )).data;
+    ))
+        .data;
 
     return verificationResponse!.isValid;
   }

@@ -7,7 +7,7 @@ import 'database/database.dart' hide Profile;
 class EdgeDriftProfileRepository implements EdgeProfileRepositoryInterface {
   /// Creates a new instance of [EdgeDriftProfileRepository].
   EdgeDriftProfileRepository({required Database database})
-    : _database = database;
+      : _database = database;
 
   final Database _database;
 
@@ -35,15 +35,18 @@ class EdgeDriftProfileRepository implements EdgeProfileRepositoryInterface {
     await _database.transaction(() async {
       await (_database.delete(
         _database.items,
-      )..where((filter) => filter.profileId.equals(profileId))).go();
+      )..where((filter) => filter.profileId.equals(profileId)))
+          .go();
 
       await (_database.delete(
         _database.credentials,
-      )..where((filter) => filter.profileId.equals(profileId))).go();
+      )..where((filter) => filter.profileId.equals(profileId)))
+          .go();
 
       final deleted = await (_database.delete(
         _database.profiles,
-      )..where((filter) => filter.id.equals(profileId))).go();
+      )..where((filter) => filter.id.equals(profileId)))
+          .go();
 
       if (deleted == 0) {
         throw TdkException(
@@ -79,7 +82,8 @@ class EdgeDriftProfileRepository implements EdgeProfileRepositoryInterface {
   }) async {
     final existing = await (_database.select(
       _database.profiles,
-    )..where((filter) => filter.id.equals(profile.id))).getSingleOrNull();
+    )..where((filter) => filter.id.equals(profile.id)))
+        .getSingleOrNull();
 
     if (existing == null) {
       throw TdkException(
@@ -101,11 +105,13 @@ class EdgeDriftProfileRepository implements EdgeProfileRepositoryInterface {
   Future<bool> hasAnyContent(String profileId) async {
     final filesOrFolders = await (_database.select(
       _database.items,
-    )..where((filter) => filter.profileId.equals(profileId))).get();
+    )..where((filter) => filter.profileId.equals(profileId)))
+        .get();
 
     final credentials = await (_database.select(
       _database.credentials,
-    )..where((filter) => filter.profileId.equals(profileId))).get();
+    )..where((filter) => filter.profileId.equals(profileId)))
+        .get();
 
     return filesOrFolders.isNotEmpty || credentials.isNotEmpty;
   }

@@ -165,9 +165,8 @@ class JWTHelper {
 
     final salt = (pbkdf2Params.elements[0] as ASN1OctetString).valueBytes();
     final iterations = (pbkdf2Params.elements[1] as ASN1Integer).intValue;
-    final hmacAlgo =
-        (pbkdf2Params.elements[2] as ASN1Sequence).elements[0]
-            as ASN1ObjectIdentifier;
+    final hmacAlgo = (pbkdf2Params.elements[2] as ASN1Sequence).elements[0]
+        as ASN1ObjectIdentifier;
 
     // Ensure HMAC algorithm is SHA-256
     if (hmacAlgo.identifier != '1.2.840.113549.2.9') {
@@ -188,8 +187,8 @@ class JWTHelper {
     }
 
     // Extract encrypted private key data
-    final encryptedData = (asn1Sequence.elements[1] as ASN1OctetString)
-        .valueBytes();
+    final encryptedData =
+        (asn1Sequence.elements[1] as ASN1OctetString).valueBytes();
 
     // Derive the decryption key from the passphrase
     final key = _deriveKey(passphrase, salt, iterations, keySize);

@@ -11,8 +11,8 @@ class DekekInfo {
 
   /// Creates a [DekekInfo] from a JSON map.
   DekekInfo.fromJson(Map<String, dynamic> json)
-    : encryptedDekek = json['encryptedDekek'] as String,
-      version = json['version'] as String;
+      : encryptedDekek = json['encryptedDekek'] as String,
+        version = json['version'] as String;
 
   /// Converts this [DekekInfo] to a JSON map.
   Map<String, Object> toJson() {
@@ -40,11 +40,12 @@ class AccountMetadata {
 
   /// Creates an [AccountMetadata] from a JSON map.
   AccountMetadata.fromJson(Map<String, dynamic> json)
-    : sharedStorageData = (json['sharedStorageData'] as List<dynamic>)
-          .map((e) => SharedStorageData.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      version = json['version'] as String,
-      dekekInfo = DekekInfo.fromJson(json['dekekInfo'] as Map<String, dynamic>);
+      : sharedStorageData = (json['sharedStorageData'] as List<dynamic>)
+            .map((e) => SharedStorageData.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        version = json['version'] as String,
+        dekekInfo =
+            DekekInfo.fromJson(json['dekekInfo'] as Map<String, dynamic>);
 
   /// Converts this [AccountMetadata] to a JSON map.
   Map<String, Object> toJson() {
@@ -76,9 +77,9 @@ class SharedStorageData {
 
   /// Creates a [SharedStorageData] from a JSON map.
   SharedStorageData.fromJson(Map<String, dynamic> json)
-    : nodePath = json['nodePath'] as String,
-      encryptedDekek = json['encryptedDekek'] as String,
-      profileDid = json['profileDid'] as String;
+      : nodePath = json['nodePath'] as String,
+        encryptedDekek = json['encryptedDekek'] as String,
+        profileDid = json['profileDid'] as String;
 
   /// Converts this [SharedStorageData] to a JSON map.
   Map<String, Object> toJson() {
@@ -114,11 +115,11 @@ class Account {
 
   /// Creates an [Account] from a JSON map.
   Account.fromJson(Map<String, dynamic> json)
-    : accountIndex = json['accountIndex'] as int,
-      accountDid = json['accountDid'] as String,
-      accountMetadata = AccountMetadata.fromJson(
-        json['metadata'] as Map<String, dynamic>,
-      );
+      : accountIndex = json['accountIndex'] as int,
+        accountDid = json['accountDid'] as String,
+        accountMetadata = AccountMetadata.fromJson(
+          json['metadata'] as Map<String, dynamic>,
+        );
 
   /// Converts this [Account] to a JSON map.
   Map<String, dynamic> toJson() {

@@ -25,15 +25,16 @@ class VdipHolder {
     required DidManager didManager,
     AuthorizationProvider? authorizationProvider,
     ClientOptions clientOptions = const ClientOptions(),
-  }) async => VdipHolder(
-    didManager: didManager,
-    mediatorClient: await DidcommMediatorClient.init(
-      didManager: didManager,
-      mediatorDidDocument: mediatorDidDocument,
-      authorizationProvider: authorizationProvider,
-      clientOptions: clientOptions,
-    ),
-  );
+  }) async =>
+      VdipHolder(
+        didManager: didManager,
+        mediatorClient: await DidcommMediatorClient.init(
+          didManager: didManager,
+          mediatorDidDocument: mediatorDidDocument,
+          authorizationProvider: authorizationProvider,
+          clientOptions: clientOptions,
+        ),
+      );
 
   /// Sends a DIDComm `feature query` message to an issuer asking for supported
   /// feature disclosures matching [featureQueries]. Returns the sent message.
@@ -91,8 +92,8 @@ class VdipHolder {
     if (holderDid != assertionSigner.did) {
       throw ArgumentError('Holder DID does not match assertion signer DID.');
     }
-    final issueTime = (DateTime.timestamp().millisecondsSinceEpoch / 1000)
-        .floor();
+    final issueTime =
+        (DateTime.timestamp().millisecondsSinceEpoch / 1000).floor();
     final payload = {
       'proposalId': options.proposalId,
       'iss': holderDid,
@@ -246,8 +247,8 @@ class VdipHolder {
   }) async {
     final signer = await didManager.getSigner(mediatorClient.signer.keyId);
 
-    final issueTime = (DateTime.timestamp().millisecondsSinceEpoch / 1000)
-        .floor();
+    final issueTime =
+        (DateTime.timestamp().millisecondsSinceEpoch / 1000).floor();
 
     final payload = {
       'nonce': nonce,

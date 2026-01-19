@@ -70,15 +70,15 @@ void main() async {
   for (final message in messages) {
     final originalPlainTextMessageFromSender =
         await DidcommMessage.unpackToPlainTextMessage(
-          message: message,
-          recipientDidManager: receiverDidManager,
-          expectedMessageWrappingTypes: [
-            MessageWrappingType.anoncryptSignPlaintext,
-            MessageWrappingType.authcryptSignPlaintext,
-            MessageWrappingType.authcryptPlaintext,
-            MessageWrappingType.anoncryptAuthcryptPlaintext,
-          ],
-        );
+      message: message,
+      recipientDidManager: receiverDidManager,
+      expectedMessageWrappingTypes: [
+        MessageWrappingType.anoncryptSignPlaintext,
+        MessageWrappingType.authcryptSignPlaintext,
+        MessageWrappingType.authcryptPlaintext,
+        MessageWrappingType.anoncryptAuthcryptPlaintext,
+      ],
+    );
 
     prettyPrint(
       'Unpacked Plain Text Message received by Receiver via Mediator',

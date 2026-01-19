@@ -52,7 +52,8 @@ void main() {
 
       final createdWallet = (await walletApi.createWallet(
         createWalletInput: walletInputBuilder.build(),
-      )).data;
+      ))
+          .data;
 
       expect(createdWallet, isNotNull);
       expect(createdWallet!.wallet, isNotNull);
@@ -95,7 +96,8 @@ void main() {
       final signedVC = (await walletApi.signCredential(
         walletId: walletId,
         signCredentialInputDto: signCredentialBuilder.build(),
-      )).data;
+      ))
+          .data;
 
       expect(signedVC?.signedCredential, isNotNull);
     });
@@ -108,7 +110,7 @@ void main() {
         'iat': DateTime.now().millisecondsSinceEpoch ~/ 1000,
         'exp':
             (DateTime.now().add(Duration(hours: 1))).millisecondsSinceEpoch ~/
-            1000,
+                1000,
       };
 
       final jsonHeader = JsonObject(header);
@@ -121,7 +123,8 @@ void main() {
       final result = (await walletApi.signJwtToken(
         walletId: walletId,
         signJwtToken: signTokenBuilder.build(),
-      )).data;
+      ))
+          .data;
 
       expect(result?.signedJwt, isNotNull);
     });
@@ -151,7 +154,8 @@ void main() {
       final wallet = (await walletApi.updateWallet(
         walletId: walletId,
         updateWalletInput: walletInputBuilder.build(),
-      )).data;
+      ))
+          .data;
 
       expect(wallet, isNotNull);
       expect(wallet!.name, equals(updatedName));

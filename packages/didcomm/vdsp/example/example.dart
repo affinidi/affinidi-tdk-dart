@@ -24,8 +24,8 @@ Future<void> main() async {
 
   final mediatorDid = await readDid(config.mediatorDidPath);
 
-  final mediatorDidDocument = await UniversalDIDResolver.defaultResolver
-      .resolveDid(mediatorDid);
+  final mediatorDidDocument =
+      await UniversalDIDResolver.defaultResolver.resolveDid(mediatorDid);
 
   final issuerKeyStore = InMemoryKeyStore();
   final issuerWallet = PersistentWallet(issuerKeyStore);
@@ -197,9 +197,9 @@ Future<void> main() async {
 
       final unsupportedFeatureDisclosures =
           FeatureDiscoveryHelper.getUnsupportedFeatures(
-            expectedFeatureDisclosures: expectedFeatures,
-            actualFeatureDisclosures: body.disclosures,
-          );
+        expectedFeatureDisclosures: expectedFeatures,
+        actualFeatureDisclosures: body.disclosures,
+      );
 
       if (unsupportedFeatureDisclosures.isNotEmpty) {
         await vdspVerifier.mediatorClient.packAndSendMessage(
@@ -230,46 +230,42 @@ Future<void> main() async {
         ),
       );
     },
-    onDataResponse:
-        ({
-          required VdspDataResponseMessage message,
-          required bool presentationAndCredentialsAreValid,
-          VerifiablePresentation? verifiablePresentation,
-          required VerificationResult presentationVerificationResult,
-          required List<VerificationResult> credentialVerificationResults,
-        }) async {
-          prettyPrint(
-            'Verifier received Data Response Message',
-            object: message,
-          );
+    onDataResponse: ({
+      required VdspDataResponseMessage message,
+      required bool presentationAndCredentialsAreValid,
+      VerifiablePresentation? verifiablePresentation,
+      required VerificationResult presentationVerificationResult,
+      required List<VerificationResult> credentialVerificationResults,
+    }) async {
+      prettyPrint(
+        'Verifier received Data Response Message',
+        object: message,
+      );
 
-          prettyPrint(
-            'VP and VCs are valid',
-            object: presentationAndCredentialsAreValid,
-          );
+      prettyPrint(
+        'VP and VCs are valid',
+        object: presentationAndCredentialsAreValid,
+      );
 
-          prettyPrint(
-            'Verifiable Presentation',
-            object: verifiablePresentation,
-          );
+      prettyPrint(
+        'Verifiable Presentation',
+        object: verifiablePresentation,
+      );
 
-          if (message.from == null) {
-            throw ArgumentError.notNull('from');
-          }
+      if (message.from == null) {
+        throw ArgumentError.notNull('from');
+      }
 
-          // domain and challenge check to prevent replay attacks
-          final result =
-              presentationAndCredentialsAreValid &&
-              verifiablePresentation?.proof.first.challenge ==
-                  verifierChallenge &&
-              verifiablePresentation!.proof.first.domain?.first ==
-                  verifierDomain;
+      // domain and challenge check to prevent replay attacks
+      final result = presentationAndCredentialsAreValid &&
+          verifiablePresentation?.proof.first.challenge == verifierChallenge &&
+          verifiablePresentation!.proof.first.domain?.first == verifierDomain;
 
-          await vdspVerifier.sendDataProcessingResult(
-            holderDid: message.from!,
-            result: {'success': result},
-          );
-        },
+      await vdspVerifier.sendDataProcessingResult(
+        holderDid: message.from!,
+        result: {'success': result},
+      );
+    },
     onProblemReport: (message) async {
       prettyPrint('A problem has occurred', object: message);
 

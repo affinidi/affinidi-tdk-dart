@@ -17,15 +17,14 @@ class EdgeFileStorage implements FileStorage {
     required String profileId,
     required EdgeEncryptionServiceInterface encryptionService,
     FileProviderConfiguration? configuration,
-  }) : _repository = repository,
-       _id = id,
-       _profileId = profileId,
-       _encryptionService = encryptionService,
-       _maxFileSize =
-           configuration?.maxFileSize ?? FileUtils.defaultMaxFileSize,
-       _allowedExtensions =
-           configuration?.allowedExtensions ??
-           FileUtils.defaultAllowedExtensions;
+  })  : _repository = repository,
+        _id = id,
+        _profileId = profileId,
+        _encryptionService = encryptionService,
+        _maxFileSize =
+            configuration?.maxFileSize ?? FileUtils.defaultMaxFileSize,
+        _allowedExtensions = configuration?.allowedExtensions ??
+            FileUtils.defaultAllowedExtensions;
 
   final EdgeFileRepositoryInterface _repository;
   final String _id;

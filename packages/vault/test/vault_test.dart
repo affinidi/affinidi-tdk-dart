@@ -449,16 +449,13 @@ void main() {
             () => mockProfileRepository.grantItemAccessMultiple(
               accountIndex: 0,
               granteeDid: 'did:test:123',
-              permissionGroups:
-                  any<
-                    List<
+              permissionGroups: any<
+                  List<
                       ({
                         List<String> itemIds,
                         Permissions permissions,
                         DateTime? expiresAt,
-                      })
-                    >
-                  >(named: 'permissionGroups'),
+                      })>>(named: 'permissionGroups'),
             ),
           ).thenAnswer((_) async => Uint8List.fromList([1, 2, 3, 4]));
 
@@ -469,9 +466,8 @@ void main() {
 
           expect(access.length, 3);
 
-          final item2Groups = access
-              .where((p) => p.itemIds.contains(itemId2))
-              .toList();
+          final item2Groups =
+              access.where((p) => p.itemIds.contains(itemId2)).toList();
           expect(item2Groups.length, 2);
 
           final writeOnlyGroup = item2Groups.firstWhere(
@@ -521,16 +517,13 @@ void main() {
           () => mockProfileRepository.grantItemAccessMultiple(
             accountIndex: 0,
             granteeDid: 'did:test:123',
-            permissionGroups:
-                any<
-                  List<
+            permissionGroups: any<
+                List<
                     ({
                       List<String> itemIds,
                       Permissions permissions,
                       DateTime? expiresAt,
-                    })
-                  >
-                >(named: 'permissionGroups'),
+                    })>>(named: 'permissionGroups'),
           ),
         ).thenAnswer((_) async => Uint8List.fromList([1, 2, 3, 4]));
 
@@ -561,16 +554,13 @@ void main() {
           () => mockProfileRepository.grantItemAccessMultiple(
             accountIndex: 0,
             granteeDid: 'did:test:123',
-            permissionGroups:
-                any<
-                  List<
+            permissionGroups: any<
+                List<
                     ({
                       List<String> itemIds,
                       Permissions permissions,
                       DateTime? expiresAt,
-                    })
-                  >
-                >(named: 'permissionGroups'),
+                    })>>(named: 'permissionGroups'),
           ),
         ).called(1);
       });
@@ -597,16 +587,13 @@ void main() {
             () => mockProfileRepository.grantItemAccessMultiple(
               accountIndex: 0,
               granteeDid: 'did:test:123',
-              permissionGroups:
-                  any<
-                    List<
+              permissionGroups: any<
+                  List<
                       ({
                         List<String> itemIds,
                         Permissions permissions,
                         DateTime? expiresAt,
-                      })
-                    >
-                  >(named: 'permissionGroups'),
+                      })>>(named: 'permissionGroups'),
             ),
           ).thenAnswer((_) async => Uint8List.fromList([1, 2, 3, 4]));
 
@@ -640,16 +627,13 @@ void main() {
             () => mockProfileRepository.grantItemAccessMultiple(
               accountIndex: 0,
               granteeDid: 'did:test:123',
-              permissionGroups:
-                  any<
-                    List<
+              permissionGroups: any<
+                  List<
                       ({
                         List<String> itemIds,
                         Permissions permissions,
                         DateTime? expiresAt,
-                      })
-                    >
-                  >(named: 'permissionGroups'),
+                      })>>(named: 'permissionGroups'),
             ),
           ).called(1);
         },
@@ -675,16 +659,13 @@ void main() {
           () => mockProfileRepository.grantItemAccessMultiple(
             accountIndex: 0,
             granteeDid: 'did:test:123',
-            permissionGroups:
-                any<
-                  List<
+            permissionGroups: any<
+                List<
                     ({
                       List<String> itemIds,
                       Permissions permissions,
                       DateTime? expiresAt,
-                    })
-                  >
-                >(named: 'permissionGroups'),
+                    })>>(named: 'permissionGroups'),
           ),
         ).thenAnswer((_) async => Uint8List.fromList([1, 2, 3, 4]));
 
@@ -712,16 +693,13 @@ void main() {
           () => mockProfileRepository.grantItemAccessMultiple(
             accountIndex: 0,
             granteeDid: 'did:test:123',
-            permissionGroups:
-                any<
-                  List<
+            permissionGroups: any<
+                List<
                     ({
                       List<String> itemIds,
                       Permissions permissions,
                       DateTime? expiresAt,
-                    })
-                  >
-                >(named: 'permissionGroups'),
+                    })>>(named: 'permissionGroups'),
           ),
         ).called(1);
       });
@@ -986,8 +964,8 @@ void main() {
         test('should allow expiresAt in the past', () {
           final policy = ItemPermissionsPolicy.empty();
           final pastDate = DateTime.now().toUtc().subtract(
-            const Duration(hours: 1),
-          );
+                const Duration(hours: 1),
+              );
 
           policy.addPermission(
             ['item-1'],
@@ -1017,8 +995,8 @@ void main() {
         test('should allow addPermission with valid expiresAt', () {
           final policy = ItemPermissionsPolicy.empty();
           final futureDate = DateTime.now().toUtc().add(
-            const Duration(hours: 1),
-          );
+                const Duration(hours: 1),
+              );
 
           policy.addPermission(
             ['item-1'],

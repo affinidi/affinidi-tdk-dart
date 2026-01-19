@@ -29,9 +29,10 @@ class Logger {
   static Logger get instance => _instance;
 
   Logger._({Environment? environment})
-    : _environment = environment ?? Environment.fetchEnvironment();
+      : _environment = environment ?? Environment.fetchEnvironment();
 
   @visibleForTesting
+
   /// Creates a new instance of [Logger] with the specified [_environment].
   Logger(this._environment);
 
@@ -53,9 +54,8 @@ class Logger {
   }) {
     if (logLevel.toLevel() < _environment.logLevel.toLevel()) return;
 
-    final formattedMessage = component != null
-        ? '[$component] $message'
-        : message;
+    final formattedMessage =
+        component != null ? '[$component] $message' : message;
 
     for (final logger in _loggers) {
       logger.log(logLevel, formattedMessage, error, stackTrace, zone);

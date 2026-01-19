@@ -13,11 +13,11 @@ class EdgeCredentialStorage implements CredentialStorage {
     required String profileId,
     CredentialCodec? codec,
     required EdgeEncryptionServiceInterface encryptionService,
-  }) : _repository = repository,
-       _id = id,
-       _profileId = profileId,
-       _codec = codec ?? CredentialCodec(),
-       _encryptionService = encryptionService;
+  })  : _repository = repository,
+        _id = id,
+        _profileId = profileId,
+        _codec = codec ?? CredentialCodec(),
+        _encryptionService = encryptionService;
 
   final EdgeCredentialsRepositoryInterface _repository;
   final String _id;
@@ -129,8 +129,7 @@ class EdgeCredentialStorage implements CredentialStorage {
   }) async {
     final credentialId = const Uuid().v4();
 
-    final credentialName =
-        verifiableCredential.type
+    final credentialName = verifiableCredential.type
             .where((type) => type != 'VerifiableCredential')
             .firstOrNull ??
         'Credential';

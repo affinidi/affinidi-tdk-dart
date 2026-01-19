@@ -24,10 +24,13 @@ void main() async {
             skipMediator: true,
           );
 
-          final result = await Process.run(Platform.resolvedExecutable, [
-            'pub',
-            'get',
-          ], workingDirectory: config.packagePath);
+          final result = await Process.run(
+              Platform.resolvedExecutable,
+              [
+                'pub',
+                'get',
+              ],
+              workingDirectory: config.packagePath);
 
           if (result.exitCode != 0) {
             throw Exception(

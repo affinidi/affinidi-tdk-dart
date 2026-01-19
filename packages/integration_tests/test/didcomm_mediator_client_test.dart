@@ -146,17 +146,17 @@ void main() async {
 
           final aliceSignedAndEncryptedMessage =
               await DidcommMessage.packIntoSignedAndEncryptedMessages(
-                alicePlainTextMassage,
-                keyType: [
-                  bobDidDocument,
-                ].getCommonKeyTypesInKeyAgreements().first,
-                recipientDidDocuments: [bobDidDocument],
-                keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
-                encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
-                signer: await aliceDidManager.getSigner(
-                  aliceDidDocument.assertionMethod.first.id,
-                ),
-              );
+            alicePlainTextMassage,
+            keyType: [
+              bobDidDocument,
+            ].getCommonKeyTypesInKeyAgreements().first,
+            recipientDidDocuments: [bobDidDocument],
+            keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
+            encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
+            signer: await aliceDidManager.getSigner(
+              aliceDidDocument.assertionMethod.first.id,
+            ),
+          );
 
           final createdTime = DateTime.now().toUtc();
           final expiresTime = createdTime.add(const Duration(seconds: 60));
@@ -228,17 +228,17 @@ void main() async {
 
           final aliceSignedAndEncryptedMessage =
               await DidcommMessage.packIntoSignedAndEncryptedMessages(
-                alicePlainTextMassage,
-                keyType: [
-                  bobDidDocument,
-                ].getCommonKeyTypesInKeyAgreements().first,
-                recipientDidDocuments: [bobDidDocument],
-                keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
-                encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
-                signer: await aliceDidManager.getSigner(
-                  aliceDidDocument.assertionMethod.first.id,
-                ),
-              );
+            alicePlainTextMassage,
+            keyType: [
+              bobDidDocument,
+            ].getCommonKeyTypesInKeyAgreements().first,
+            recipientDidDocuments: [bobDidDocument],
+            keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
+            encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
+            signer: await aliceDidManager.getSigner(
+              aliceDidDocument.assertionMethod.first.id,
+            ),
+          );
 
           final createdTime = DateTime.now().toUtc();
           final expiresTime = createdTime.add(const Duration(seconds: 60));
@@ -278,21 +278,21 @@ void main() async {
 
               final unpackedMessage =
                   await DidcommMessage.unpackToPlainTextMessage(
-                    message: message,
-                    recipientDidManager: bobDidManager,
-                    validateAddressingConsistency: true,
-                    expectedMessageWrappingTypes: [
-                      MessageWrappingType.authcryptPlaintext,
-                      MessageWrappingType.authcryptSignPlaintext,
-                      MessageWrappingType.anoncryptSignPlaintext,
-                      MessageWrappingType.anoncryptAuthcryptPlaintext,
-                    ],
-                    expectedSigners: [
-                      isMediatorTelemetryMessage
-                          ? bobMediatorDocument.assertionMethod.first.didKeyId
-                          : aliceDidDocument.assertionMethod.first.didKeyId,
-                    ],
-                  );
+                message: message,
+                recipientDidManager: bobDidManager,
+                validateAddressingConsistency: true,
+                expectedMessageWrappingTypes: [
+                  MessageWrappingType.authcryptPlaintext,
+                  MessageWrappingType.authcryptSignPlaintext,
+                  MessageWrappingType.anoncryptSignPlaintext,
+                  MessageWrappingType.anoncryptAuthcryptPlaintext,
+                ],
+                expectedSigners: [
+                  isMediatorTelemetryMessage
+                      ? bobMediatorDocument.assertionMethod.first.didKeyId
+                      : aliceDidDocument.assertionMethod.first.didKeyId,
+                ],
+              );
 
               if (isMediatorTelemetryMessage) {
                 telemetryMessageReceived = true;

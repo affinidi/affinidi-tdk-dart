@@ -83,7 +83,8 @@ void main() {
 
         final configuration = (await configurationsApi.createIotaConfiguration(
           createIotaConfigurationInput: createIotaConfigurationInput.build(),
-        )).data;
+        ))
+            .data;
 
         expect(configuration, isNotNull);
         expect(configuration!.walletAri, walletAri);
@@ -107,10 +108,10 @@ void main() {
 
         final configuration =
             (await configurationsApi.updateIotaConfigurationById(
-              configurationId: configurationId,
-              updateConfigurationByIdInput: updateConfigurationByIdInput
-                  .build(),
-            )).data;
+          configurationId: configurationId,
+          updateConfigurationByIdInput: updateConfigurationByIdInput.build(),
+        ))
+                .data;
 
         expect(configuration, isNotNull);
         expect(configuration!.name, updatedName);
@@ -128,7 +129,8 @@ void main() {
           final query = (await pexQueryApi.createPexQuery(
             configurationId: configurationId,
             createPexQueryInput: createPexQueryInput.build(),
-          )).data;
+          ))
+              .data;
 
           expect(query, isNotNull);
           expect(query!.ari, isNotNull);
@@ -139,7 +141,8 @@ void main() {
         test('Reads PEX queries', () async {
           final result = (await pexQueryApi.listPexQueries(
             configurationId: configurationId,
-          )).data;
+          ))
+              .data;
 
           expect(result!.pexQueries, isNotNull);
           expect(result.pexQueries.length, greaterThan(0));
@@ -155,7 +158,8 @@ void main() {
             configurationId: configurationId,
             queryId: queryId,
             updatePexQueryInput: updatePexQueryInput.build(),
-          )).data;
+          ))
+              .data;
 
           expect(query, isNotNull);
           expect(query!.description, updatedDescription);
@@ -195,9 +199,10 @@ void main() {
             ..correlationId = correlationId;
 
       final iotaDataSharingResponse = (await iotaApi.initiateDataSharingRequest(
-        initiateDataSharingRequestInput: initiateDataSharingRequestInputBuilder
-            .build(),
-      )).data;
+        initiateDataSharingRequestInput:
+            initiateDataSharingRequestInputBuilder.build(),
+      ))
+          .data;
 
       final transactionId = iotaDataSharingResponse?.data?.transactionId;
       final jwt = iotaDataSharingResponse?.data?.jwt;
@@ -219,7 +224,8 @@ void main() {
 
       final callbackResponse = (await callbackApi.iotOIDC4VPCallback(
         callbackInput: callbackInputBuilder.build(),
-      )).data;
+      ))
+          .data;
 
       final responseCode = callbackResponse?.responseCode;
 
@@ -233,7 +239,8 @@ void main() {
 
       final iotaVpResponse = (await iotaApi.fetchIotaVpResponse(
         fetchIOTAVPResponseInput: fetchIOTAVPResponseInputBuilder.build(),
-      )).data;
+      ))
+          .data;
 
       expect(iotaVpResponse, isNotNull);
 

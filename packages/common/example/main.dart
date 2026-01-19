@@ -33,7 +33,8 @@ Future<String> _claimCredentialExample(AuthProvider authProvider) async {
   final offer = (await issuanceApi.startIssuance(
     projectId: '',
     startIssuanceInput: startIssuanceInputBuilder.build(),
-  )).data;
+  ))
+      .data;
 
   // Use the vault utilities from the common package to build the claim link
   final affinidiVaultClaimLink = VaultUtils.buildClaimLink(
@@ -58,9 +59,10 @@ Future<String> _shareCredentialExample(AuthProvider authProvider) async {
         ..redirectUri = ''
         ..correlationId = '';
   final iotaRequest = (await iotaApi.initiateDataSharingRequest(
-    initiateDataSharingRequestInput: initiateDataSharingRequestInputBuilder
-        .build(),
-  )).data;
+    initiateDataSharingRequestInput:
+        initiateDataSharingRequestInputBuilder.build(),
+  ))
+      .data;
 
   // Use the vault utilities from the common package to build the share link
   final affinidiVaultClaimLink = VaultUtils.buildShareLink(

@@ -29,8 +29,8 @@ Future<void> main() async {
 
   final mediatorDid = await readDid(config.mediatorDidPath);
 
-  final mediatorDidDocument = await UniversalDIDResolver.defaultResolver
-      .resolveDid(mediatorDid);
+  final mediatorDidDocument =
+      await UniversalDIDResolver.defaultResolver.resolveDid(mediatorDid);
 
   final issuerKeyStore = InMemoryKeyStore();
   final issuerWallet = PersistentWallet(issuerKeyStore);
@@ -168,105 +168,103 @@ Future<void> main() async {
 
       await vdipIssuer.disclose(queryMessage: message);
     },
-    onRequestToIssueCredential:
-        ({
-          required message,
-          holderDidFromAssertion,
-          assertionValidationResult,
-          challenge,
-        }) async {
-          prettyPrint(
-            'Issuer received Request to Issue Credential Message',
-            object: message,
-          );
+    onRequestToIssueCredential: ({
+      required message,
+      holderDidFromAssertion,
+      assertionValidationResult,
+      challenge,
+    }) async {
+      prettyPrint(
+        'Issuer received Request to Issue Credential Message',
+        object: message,
+      );
 
-          // Verify the challenge if provided
-          if (challenge != null) {
-            prettyPrint(
-              'Challenge received from holder',
-              object: {'challenge': challenge},
-            );
+      // Verify the challenge if provided
+      if (challenge != null) {
+        prettyPrint(
+          'Challenge received from holder',
+          object: {'challenge': challenge},
+        );
 
-            /// In a real application challenge is used to prevent replay attacks:
-            /// 1. Store the challenge when sending a credential offer
-            /// 2. Verify it matches the stored challenge with [challenge] passed as an argument to [onRequestToIssueCredential]
-            /// 3. Ensure the challenge hasn't been used before
-          }
+        /// In a real application challenge is used to prevent replay attacks:
+        /// 1. Store the challenge when sending a credential offer
+        /// 2. Verify it matches the stored challenge with [challenge] passed as an argument to [onRequestToIssueCredential]
+        /// 3. Ensure the challenge hasn't been used before
+      }
 
-          if (assertionValidationResult?.isValid != true) {
-            await vdipIssuer.mediatorClient.packAndSendMessage(
-              ProblemReportMessage(
-                id: const Uuid().v4(),
-                to: [message.from!],
-                parentThreadId: message.threadId ?? message.id,
-                body: ProblemReportBody(
-                  code: ProblemCode(
-                    sorter: SorterType.warning,
-                    scope: Scope(scope: ScopeType.message),
-                    descriptors: ['vdip', 'invalid-assertion'],
-                  ),
-                ),
+      if (assertionValidationResult?.isValid != true) {
+        await vdipIssuer.mediatorClient.packAndSendMessage(
+          ProblemReportMessage(
+            id: const Uuid().v4(),
+            to: [message.from!],
+            parentThreadId: message.threadId ?? message.id,
+            body: ProblemReportBody(
+              code: ProblemCode(
+                sorter: SorterType.warning,
+                scope: Scope(scope: ScopeType.message),
+                descriptors: ['vdip', 'invalid-assertion'],
               ),
-            );
-
-            return;
-          }
-
-          final vdipRequestIssuanceMessageBody =
-              VdipRequestIssuanceMessageBody.fromJson(message.body!);
-
-          final email =
-              vdipRequestIssuanceMessageBody.credentialMeta?.data?['email']
-                  as String?;
-
-          if (email == null) {
-            throw ArgumentError.notNull('body.credentialMeta.data.email');
-          }
-
-          // if multiple credential formats are supported, check which one is requested
-          // vdipRequestIssuanceMessageBody.credentialFormat
-          // we will proceed with W3C Verifiable Credentials Data Model 1.0
-
-          final unsignedCredential = VcDataModelV1(
-            context: [
-              dmV1ContextUrl,
-              'https://d2oeuqaac90cm.cloudfront.net/TTestMusicSubscriptionV1R0.jsonld',
-            ],
-            credentialSchema: [
-              CredentialSchema(
-                id: Uri.parse(
-                  'https://d2oeuqaac90cm.cloudfront.net/TTestMusicSubscriptionV1R0.json',
-                ),
-                type: 'JsonSchemaValidator2018',
-              ),
-            ],
-            id: Uri.parse(const Uuid().v4()),
-            issuer: Issuer.uri(issuerSigner.did),
-            type: {'VerifiableCredential', 'TestMusicSubscription'},
-            issuanceDate: DateTime.now().toUtc(),
-            credentialSubject: [
-              CredentialSubject.fromJson({
-                'id': holderDidFromAssertion, // holder DID
-                'email': email,
-                'subscriptionType': 'basic',
-              }),
-            ],
-          );
-
-          final suite = LdVcDm1Suite();
-
-          final issuedCredential = await suite.issue(
-            unsignedData: unsignedCredential,
-            proofGenerator: DataIntegrityEcdsaJcsGenerator(
-              signer: issuerSigner,
             ),
-          );
+          ),
+        );
 
-          await vdipIssuer.sendIssuedCredentials(
-            holderDid: message.from!,
-            verifiableCredential: issuedCredential,
-          );
-        },
+        return;
+      }
+
+      final vdipRequestIssuanceMessageBody =
+          VdipRequestIssuanceMessageBody.fromJson(message.body!);
+
+      final email = vdipRequestIssuanceMessageBody
+          .credentialMeta?.data?['email'] as String?;
+
+      if (email == null) {
+        throw ArgumentError.notNull('body.credentialMeta.data.email');
+      }
+
+      // if multiple credential formats are supported, check which one is requested
+      // vdipRequestIssuanceMessageBody.credentialFormat
+      // we will proceed with W3C Verifiable Credentials Data Model 1.0
+
+      final unsignedCredential = VcDataModelV1(
+        context: [
+          dmV1ContextUrl,
+          'https://d2oeuqaac90cm.cloudfront.net/TTestMusicSubscriptionV1R0.jsonld',
+        ],
+        credentialSchema: [
+          CredentialSchema(
+            id: Uri.parse(
+              'https://d2oeuqaac90cm.cloudfront.net/TTestMusicSubscriptionV1R0.json',
+            ),
+            type: 'JsonSchemaValidator2018',
+          ),
+        ],
+        id: Uri.parse(const Uuid().v4()),
+        issuer: Issuer.uri(issuerSigner.did),
+        type: {'VerifiableCredential', 'TestMusicSubscription'},
+        issuanceDate: DateTime.now().toUtc(),
+        credentialSubject: [
+          CredentialSubject.fromJson({
+            'id': holderDidFromAssertion, // holder DID
+            'email': email,
+            'subscriptionType': 'basic',
+          }),
+        ],
+      );
+
+      final suite = LdVcDm1Suite();
+
+      final issuedCredential = await suite.issue(
+        unsignedData: unsignedCredential,
+        proofGenerator: DataIntegrityEcdsaJcsGenerator(
+          signer: issuerSigner,
+        ),
+      );
+
+      await vdipIssuer.sendIssuedCredentials(
+        holderDid: message.from!,
+        verifiableCredential: issuedCredential,
+      );
+    },
     onProblemReport: (message) {
       prettyPrint('A problem has occurred', object: message);
     },
