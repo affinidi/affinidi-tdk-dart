@@ -1,4 +1,3 @@
-import '../../oid4vci_claim_verifiable_credential.dart';
 import '../exceptions/tdk_exception_type.dart';
 
 /// Represents a credential offer from an issuer.
