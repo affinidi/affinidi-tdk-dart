@@ -8,7 +8,7 @@ import 'package:dcql/dcql.dart';
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../../../tests/integration/dart/test/test_config.dart';
+import 'package:integration_tests/test/test_config.dart';
 
 Future<void> main() async {
   // 1. Holder queries Issuer features
