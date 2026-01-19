@@ -1,3 +1,8 @@
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart' show TdkException;
+
+import 'package:affinidi_tdk_consumer_auth_provider/affinidi_tdk_consumer_auth_provider.dart' show TdkException;
+
+import '../../oid4vci_claim_verifiable_credential.dart' show TdkException;
 import '../exceptions/tdk_exception_type.dart';
 
 /// Represents a credential offer from an issuer.

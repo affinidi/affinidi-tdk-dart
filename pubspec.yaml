@@ -38,6 +38,14 @@ dev_dependencies:
   test: ^1.24.0
 melos:
   scripts:
+    fix:
+      exec: dart fix --apply
+      concurrency: 4
+      failFast: true
+      noSelect: true
+      packageFilters:
+        includePrivatePackages: false
+        diff: "origin/main"
     analyze:
       exec: dart analyze .
       concurrency: 4
@@ -46,7 +54,7 @@ melos:
       packageFilters:
         flutter: true
         includePrivatePackages: false
-        diff: 'origin/main'
+        diff: "origin/main"
     test:
       run: |
         melos run test-flutter
@@ -62,7 +70,7 @@ melos:
       packageFilters:
         flutter: true
         includePrivatePackages: false
-        diff: 'origin/main'
+        diff: "origin/main"
         ignore:
           - "*_example*"
     test-dart:
@@ -75,7 +83,7 @@ melos:
       packageFilters:
         flutter: false
         private: false
-        diff: 'origin/main'
+        diff: "origin/main"
         ignore:
           - "*_example*"
     test-integration:
@@ -95,4 +103,3 @@ melos:
         mkdir -p coverage
 
         find ./packages -name "lcov.info" -path "*/coverage/lcov.info" -exec cat {} + > coverage/lcov.info
-

@@ -7,7 +7,6 @@ import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
 
 import '../affinidi_tdk_vdsp.dart';
-import 'messages/request_service/vdsp_request_service_message.dart';
 
 /// Implements the VDSP protocol for a verifier, supporting feature discovery,
 /// data queries, and verification of presentations and credentials.
