@@ -28,6 +28,9 @@ workspace:
   - packages/didcomm/didcomm_mediator_client
   - packages/didcomm/vdsp
   - packages/didcomm/vdip
+  - packages/common/example
+  - packages/consumer_auth_provider/example
+  - packages/vault/example
 dev_dependencies:
   coverage: ^1.11.1
   dart_flutter_team_lints: ^3.2.1
