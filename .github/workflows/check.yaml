@@ -1,11 +1,12 @@
-name: Pull Request Checks
+name: Integration Tests
 
-on: 
+on:
   pull_request:
-     
+
 jobs:
   dart-pipeline:
-    uses: affinidi/pipeline-dart/.github/workflows/check.yaml@main
+    uses: affinidi/pipeline-dart/.github/workflows/integration-tests.yaml@main
     secrets: inherit
     with:
-      flutter-version: '3.32.4'
+      flutter-version: "3.32.4"
+      working-directory: "./"
