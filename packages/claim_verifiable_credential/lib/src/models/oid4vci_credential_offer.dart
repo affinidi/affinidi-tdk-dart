@@ -1,4 +1,4 @@
-import '../../affinidi_tdk_claim_verifiable_credential.dart';
+import '../../oid4vci_claim_verifiable_credential.dart';
 import '../exceptions/tdk_exception_type.dart';
 
 /// Represents a credential offer from an issuer.

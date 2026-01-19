@@ -1,14 +1,14 @@
 import 'dart:typed_data';
 
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
-import 'package:affinidi_tdk_vault_storages/affinidi_tdk_vault_storages.dart';
+import 'package:affinidi_tdk_vault_data_manager/affinidi_tdk_vault_data_manager.dart';
 
 void main() async {
   print('[Demo] Initializing Vault ...');
   // KeyStorage
   final vaultStore = InMemoryVaultStore();
   var accountIndex = 42;
-  await vaultStore.writeAccountIndex(accountIndex);
+  await vaultStore.setAccountIndex(accountIndex);
 
   // seed storage
   final seed = Uint8List.fromList(List.generate(32, (idx) => idx + 1));
@@ -123,15 +123,15 @@ void main() async {
   //
 
   // Option 1
-  final files =
+  final page =
       await profile.defaultFileStorage?.getFolder(folderId: rootFolderId);
   // Option 2
-  // final files = await profile.fileStorages['vfs']!.getFolder(folderId: rootFolderId);
-  print('[Demo] Files available on profile: ${files?.length ?? 0}');
+  // final page = await profile.fileStorages['vfs']!.getFolder(folderId: rootFolderId);
+  print('[Demo] Files available on profile: ${page?.items.length ?? 0}');
 
   await Future.delayed(const Duration(seconds: 2), () {});
 
-  final fileToDownload = files?.firstOrNull;
+  final fileToDownload = page?.items.firstOrNull;
   if (fileToDownload != null) {
     final retrievedFileData = await profile.defaultFileStorage
         ?.getFileContent(fileId: fileToDownload.id);
@@ -142,9 +142,9 @@ void main() async {
     //
 
     await profile.defaultFileStorage?.deleteFile(fileId: fileToDownload.id);
-    final remainingFiles =
+    final remainingPage =
         await profile.defaultFileStorage?.getFolder(folderId: rootFolderId);
-    print('Files: ${remainingFiles?.length ?? 0}');
+    print('Files: ${remainingPage?.items.length ?? 0}');
   } else {
     print('[Demo] Could not find any files');
   }
@@ -199,7 +199,8 @@ Future<void> _deleteProfile(Vault vault, Profile profile) async {
   // Check if profile has credentials...
   final credentials = await profile.defaultCredentialStorage!.listCredentials();
   // and delete them
-  await Future.wait(credentials.map((item) => profile.defaultCredentialStorage!
+  await Future.wait(credentials.items.map((item) => profile
+      .defaultCredentialStorage!
       .deleteCredential(digitalCredentialId: item.id)));
 
   await vault.defaultProfileRepository.deleteProfile(profile);
@@ -211,13 +212,29 @@ Future<void> _deleteFolder({
   required String folderId,
 }) async {
   print('Deleting folderId: $folderId');
-  final items = await profile.defaultFileStorage!.getFolder(folderId: folderId);
-  for (final item in items) {
-    if (item is Folder) {
-      await _deleteFolder(vault: vault, profile: profile, folderId: item.id);
-    } else if (item is File) {
-      await profile.defaultFileStorage!.deleteFile(fileId: item.id);
-    }
+  String? exclusiveStartItemId;
+
+  try {
+    do {
+      final page = await profile.defaultFileStorage!.getFolder(
+        folderId: folderId,
+        limit: 20,
+        exclusiveStartItemId: exclusiveStartItemId,
+      );
+
+      for (final item in page.items) {
+        if (item is Folder) {
+          await _deleteFolder(
+              vault: vault, profile: profile, folderId: item.id);
+        } else if (item is File) {
+          await profile.defaultFileStorage!.deleteFile(fileId: item.id);
+        }
+      }
+
+      exclusiveStartItemId = page.lastEvaluatedItemId;
+    } while (exclusiveStartItemId != null);
+  } catch (e) {
+    print('[Demo] Error getting folder contents for $folderId: $e');
   }
 
   // skip root folder

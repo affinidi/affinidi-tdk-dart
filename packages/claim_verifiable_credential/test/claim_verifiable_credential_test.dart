@@ -1,4 +1,4 @@
-import 'package:affinidi_tdk_claim_verifiable_credential/affinidi_tdk_claim_verifiable_credential.dart';
+import 'package:affinidi_tdk_claim_verifiable_credential/oid4vci_claim_verifiable_credential.dart';
 import 'package:affinidi_tdk_claim_verifiable_credential/src/exceptions/tdk_exception_type.dart';
 import 'package:affinidi_tdk_test_utilities/affinidi_tdk_test_utilities.dart';
 import 'package:dio/dio.dart';
@@ -42,7 +42,7 @@ void main() async {
 
   final didDocument = DidKey.generateDocument(keyPair.publicKey);
   final signer = DidSigner(
-    didDocument: didDocument,
+    did: didDocument.id,
     didKeyId: didDocument.verificationMethod.first.id,
     keyPair: keyPair,
     signatureScheme: SignatureScheme.ecdsa_secp256k1_sha256,

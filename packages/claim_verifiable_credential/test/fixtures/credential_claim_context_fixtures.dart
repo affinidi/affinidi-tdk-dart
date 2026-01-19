@@ -1,4 +1,4 @@
-import 'package:affinidi_tdk_claim_verifiable_credential/affinidi_tdk_claim_verifiable_credential.dart';
+import 'package:affinidi_tdk_claim_verifiable_credential/oid4vci_claim_verifiable_credential.dart';
 
 class OID4VCIClaimContextFixtures {
   static OID4VCIClaimContext general(
