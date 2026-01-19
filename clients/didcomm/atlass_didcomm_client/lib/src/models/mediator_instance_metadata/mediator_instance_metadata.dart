@@ -8,7 +8,6 @@ import '../service_type/service_type.dart';
 part 'mediator_instance_metadata.g.dart';
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Metadata for a mediator instance.
 class MediatorInstanceMetadata {
   /// Name of the entity.

@@ -46,10 +46,7 @@ void main() {
 
     group('and description is null', () {
       test('it correctly adds an entry to the database', () async {
-        await sut.createProfile(
-          name: name,
-          accountIndex: accountIndex,
-        );
+        await sut.createProfile(name: name, accountIndex: accountIndex);
 
         final profiles = await sut.listProfiles();
         final newProfile = profiles.firstOrNull;
@@ -106,17 +103,20 @@ void main() {
 
     group('and the profile does not exist', () {
       test(
-          'it throws an exception with code unable_to_delete_non_existent_profile',
-          () async {
-        expect(
-          () async => await sut.deleteProfile(profileId: 'unknown'),
-          throwsA(isA<TdkException>().having(
-            (error) => error.code,
-            'code',
-            TdkExceptionType.unableToDeleteNonExistentProfile.code,
-          )),
-        );
-      });
+        'it throws an exception with code unable_to_delete_non_existent_profile',
+        () async {
+          expect(
+            () async => await sut.deleteProfile(profileId: 'unknown'),
+            throwsA(
+              isA<TdkException>().having(
+                (error) => error.code,
+                'code',
+                TdkExceptionType.unableToDeleteNonExistentProfile.code,
+              ),
+            ),
+          );
+        },
+      );
     });
   });
 
@@ -186,23 +186,27 @@ void main() {
     });
 
     group('and the profile does not exist', () {
-      test('it throws an error with code unable_to_update_non_existent_profile',
-          () {
-        final profile = const EdgeProfile(
-          id: 'unknown',
-          accountIndex: 1,
-          name: 'name',
-          description: 'description',
-        );
-        expect(
-          () async => await sut.updateProfile(profile: profile),
-          throwsA(isA<TdkException>().having(
-            (error) => error.code,
-            'code',
-            TdkExceptionType.unableToUpdateNonExistentProfile.code,
-          )),
-        );
-      });
+      test(
+        'it throws an error with code unable_to_update_non_existent_profile',
+        () {
+          final profile = const EdgeProfile(
+            id: 'unknown',
+            accountIndex: 1,
+            name: 'name',
+            description: 'description',
+          );
+          expect(
+            () async => await sut.updateProfile(profile: profile),
+            throwsA(
+              isA<TdkException>().having(
+                (error) => error.code,
+                'code',
+                TdkExceptionType.unableToUpdateNonExistentProfile.code,
+              ),
+            ),
+          );
+        },
+      );
     });
   });
 

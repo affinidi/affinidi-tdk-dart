@@ -44,8 +44,8 @@ class UpdateMediatorInstanceDeploymentOptions {
 
   /// Creates a [UpdateMediatorInstanceDeploymentOptions] from a JSON map.
   factory UpdateMediatorInstanceDeploymentOptions.fromJson(
-          Map<String, dynamic> json) =>
-      _$UpdateMediatorInstanceDeploymentOptionsFromJson(json);
+    Map<String, dynamic> json,
+  ) => _$UpdateMediatorInstanceDeploymentOptionsFromJson(json);
 
   /// Converts the [UpdateMediatorInstanceDeploymentOptions] instance to JSON.
   Map<String, dynamic> toJson() =>

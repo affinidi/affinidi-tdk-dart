@@ -39,9 +39,7 @@ class AffinidiAuthorizationProvider extends AuthorizationProvider {
     final ownDidDocument = await didManager.getDidDocument();
 
     final bobMatchedDidKeyIds = ownDidDocument.matchKeysInKeyAgreement(
-      otherDidDocuments: [
-        mediatorDidDocument,
-      ],
+      otherDidDocuments: [mediatorDidDocument],
     );
 
     if (bobMatchedDidKeyIds.isEmpty) {
@@ -54,13 +52,9 @@ class AffinidiAuthorizationProvider extends AuthorizationProvider {
 
     return AffinidiAuthorizationProvider(
       mediatorDidDocument: mediatorDidDocument,
-      keyPair: await didManager.getKeyPairByDidKeyId(
-        didKeyId,
-      ),
+      keyPair: await didManager.getKeyPairByDidKeyId(didKeyId),
       didKeyId: didKeyId,
-      signer: await didManager.getSigner(
-        didManager.authentication.first,
-      ),
+      signer: await didManager.getSigner(didManager.authentication.first),
     );
   }
 
@@ -100,14 +94,14 @@ class AffinidiAuthorizationProvider extends AuthorizationProvider {
 
       final encryptedMessage =
           await DidcommMessage.packIntoSignedAndEncryptedMessages(
-        plainTextMessage,
-        keyPair: keyPair,
-        didKeyId: didKeyId,
-        recipientDidDocuments: [mediatorDidDocument],
-        encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
-        keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdh1Pu,
-        signer: signer,
-      );
+            plainTextMessage,
+            keyPair: keyPair,
+            didKeyId: didKeyId,
+            recipientDidDocuments: [mediatorDidDocument],
+            encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
+            keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdh1Pu,
+            signer: signer,
+          );
 
       final authenticateResponse = await dio.post<Map<String, dynamic>>(
         '',

@@ -54,8 +54,8 @@ Future<void> main() async {
   );
 
   final mediatorDid = await readDid(config.mediatorDidPath);
-  final mediatorDidDocument =
-      await UniversalDIDResolver.defaultResolver.resolveDid(mediatorDid);
+  final mediatorDidDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(mediatorDid);
 
   // Initialize Issuer
   final issuerKeyStore = InMemoryKeyStore();
@@ -66,21 +66,20 @@ Future<void> main() async {
   );
 
   final issuerKeyId = 'issuer-key-1';
-  final issuerPrivateKeyBytes =
-      await extractPrivateKeyBytes(config.alicePrivateKeyPath);
+  final issuerPrivateKeyBytes = await extractPrivateKeyBytes(
+    config.alicePrivateKeyPath,
+  );
 
   await issuerKeyStore.set(
     issuerKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: issuerPrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: issuerPrivateKeyBytes),
   );
 
   await issuerDidManager.addVerificationMethod(issuerKeyId);
 
-  final issuerSigner =
-      await issuerDidManager.getSigner(issuerDidManager.assertionMethod.first);
+  final issuerSigner = await issuerDidManager.getSigner(
+    issuerDidManager.assertionMethod.first,
+  );
 
   // Initialize Holder
   final holderKeyStore = InMemoryKeyStore();
@@ -91,21 +90,20 @@ Future<void> main() async {
   );
 
   final holderKeyId = 'holder-key-1';
-  final holderPrivateKeyBytes =
-      await extractPrivateKeyBytes(config.bobPrivateKeyPath);
+  final holderPrivateKeyBytes = await extractPrivateKeyBytes(
+    config.bobPrivateKeyPath,
+  );
 
   await holderKeyStore.set(
     holderKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: holderPrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: holderPrivateKeyBytes),
   );
 
   await holderDidManager.addVerificationMethod(holderKeyId);
 
-  final holderSigner =
-      await holderDidManager.getSigner(holderDidManager.assertionMethod.first);
+  final holderSigner = await holderDidManager.getSigner(
+    holderDidManager.assertionMethod.first,
+  );
 
   // Configure ACLs
   await Future.wait([
@@ -158,28 +156,18 @@ Future<void> main() async {
   // Set up Holder message listeners
   vdipHolder.listenForIncomingMessages(
     onDiscloseMessage: (message) async {
-      prettyPrint(
-        'Holder: Received Feature Disclose Message',
-        object: message,
-      );
+      prettyPrint('Holder: Received Feature Disclose Message', object: message);
 
       await vdipHolder.requestCredential(
         issuerDid: issuerSigner.did,
         options: RequestCredentialsOptions(
           proposalId: 'proposal_browser_verification',
-          credentialMeta: CredentialMeta(
-            data: {
-              'email': 'holder@example.com',
-            },
-          ),
+          credentialMeta: CredentialMeta(data: {'email': 'holder@example.com'}),
         ),
       );
     },
     onSwitchContext: (message) async {
-      prettyPrint(
-        'Holder: Received Switch Context Message',
-        object: message,
-      );
+      prettyPrint('Holder: Received Switch Context Message', object: message);
 
       final verificationUrl = await vdipHolder.buildBrowserContextUrl(
         switchContextMessage: message,
@@ -196,19 +184,14 @@ Future<void> main() async {
       print('=' * 80 + '\n');
 
       /// Opens verification URL in the browser
-      await Process.run(
-        'open',
-        [verificationUrl.toString()],
-      );
+      await Process.run('open', [verificationUrl.toString()]);
 
       print(
-          'Holder: Sending credential request with nonce from context switch\n');
+        'Holder: Sending credential request with nonce from context switch\n',
+      );
     },
     onCredentialsIssuanceResponse: (message) async {
-      prettyPrint(
-        'Holder: CREDENTIAL RECEIVED!',
-        object: message,
-      );
+      prettyPrint('Holder: CREDENTIAL RECEIVED!', object: message);
 
       print('\n${'=' * 80}');
       print('SUCCESS! The complete flow is finished:');
@@ -234,59 +217,59 @@ Future<void> main() async {
   // Set up Issuer message listeners
   vdipIssuer.listenForIncomingMessages(
     onFeatureQuery: (message) async {
-      prettyPrint(
-        'Issuer: Received Feature Query',
-        object: message,
-      );
+      prettyPrint('Issuer: Received Feature Query', object: message);
 
       await vdipIssuer.disclose(queryMessage: message);
     },
-    onRequestToIssueCredential: ({
-      required message,
-      holderDidFromAssertion,
-      assertionValidationResult,
-      challenge,
-    }) async {
-      prettyPrint(
-        'Issuer: Received Request to Issue Credential',
-        object: message,
-      );
+    onRequestToIssueCredential:
+        ({
+          required message,
+          holderDidFromAssertion,
+          assertionValidationResult,
+          challenge,
+        }) async {
+          prettyPrint(
+            'Issuer: Received Request to Issue Credential',
+            object: message,
+          );
 
-      final vdipRequestIssuanceBody = VdipRequestIssuanceMessageBody.fromJson(
-        Map<String, dynamic>.from(message.body!),
-      );
+          final vdipRequestIssuanceBody =
+              VdipRequestIssuanceMessageBody.fromJson(
+                Map<String, dynamic>.from(message.body!),
+              );
 
-      print('Issuer: No nonce found, initiating browser context switch\n');
-      final email = vdipRequestIssuanceBody.credentialMeta?.data?['email'];
+          print('Issuer: No nonce found, initiating browser context switch\n');
+          final email = vdipRequestIssuanceBody.credentialMeta?.data?['email'];
 
-      if (email == null) {
-        throw StateError('Issuer: Email is missing in credential meta\n');
-      }
+          if (email == null) {
+            throw StateError('Issuer: Email is missing in credential meta\n');
+          }
 
-      final contextNonce = const Uuid().v4();
-      final threadId = message.threadId ?? message.id;
+          final contextNonce = const Uuid().v4();
+          final threadId = message.threadId ?? message.id;
 
-      // Store verification request
-      pendingVerifications[contextNonce] = VerificationRequest(
-        nonce: contextNonce,
-        threadId: threadId,
-        holderDid: message.from!,
-        email: email as String,
-      );
+          // Store verification request
+          pendingVerifications[contextNonce] = VerificationRequest(
+            nonce: contextNonce,
+            threadId: threadId,
+            holderDid: message.from!,
+            email: email as String,
+          );
 
-      await vdipIssuer.sendSwitchContext(
-        holderDid: message.from!,
-        baseIssuerUrl: Uri.parse('http://localhost:8080'),
-        nonce: contextNonce,
-        threadId: threadId,
-      );
+          await vdipIssuer.sendSwitchContext(
+            holderDid: message.from!,
+            baseIssuerUrl: Uri.parse('http://localhost:8080'),
+            nonce: contextNonce,
+            threadId: threadId,
+          );
 
-      print(
-          'Issuer: Switch context sent. Waiting for browser verification...\n');
+          print(
+            'Issuer: Switch context sent. Waiting for browser verification...\n',
+          );
 
-      // If we have a nonce, wait for verification result
-      print('Issuer: Nonce received, waiting for verification result...\n');
-    },
+          // If we have a nonce, wait for verification result
+          print('Issuer: Nonce received, waiting for verification result...\n');
+        },
     onProblemReport: (message) {
       prettyPrint('Issuer: Problem occurred', object: message);
     },
@@ -303,11 +286,7 @@ Future<void> main() async {
     issuerDid: issuerSigner.did,
     options: RequestCredentialsOptions(
       proposalId: 'proposal_browser_verification',
-      credentialMeta: CredentialMeta(
-        data: {
-          'email': 'holder@example.com',
-        },
-      ),
+      credentialMeta: CredentialMeta(data: {'email': 'holder@example.com'}),
     ),
   );
 
@@ -324,10 +303,14 @@ Future<HttpServer> startIssuerServer({
   server.listen((HttpRequest request) async {
     // Enable CORS for browser requests
     request.response.headers.add('Access-Control-Allow-Origin', '*');
-    request.response.headers
-        .add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    request.response.headers
-        .add('Access-Control-Allow-Headers', 'Content-Type');
+    request.response.headers.add(
+      'Access-Control-Allow-Methods',
+      'GET, POST, OPTIONS',
+    );
+    request.response.headers.add(
+      'Access-Control-Allow-Headers',
+      'Content-Type',
+    );
 
     if (request.method == 'OPTIONS') {
       request.response.statusCode = HttpStatus.ok;
@@ -341,7 +324,8 @@ Future<HttpServer> startIssuerServer({
     if (uri.path == '/vdip/issuance' &&
         uri.queryParameters.containsKey('token')) {
       print(
-          'Issuer Server: Received browser request, redirecting to verification...\n');
+        'Issuer Server: Received browser request, redirecting to verification...\n',
+      );
 
       final token = uri.queryParameters['token']!;
 
@@ -356,8 +340,10 @@ Future<HttpServer> startIssuerServer({
 
     // Handle verification callback from the verification server
     if (uri.path == '/verification-callback' && request.method == 'POST') {
-      final body =
-          await request.cast<List<int>>().transform(const Utf8Decoder()).join();
+      final body = await request
+          .cast<List<int>>()
+          .transform(const Utf8Decoder())
+          .join();
       final data = Uri.splitQueryString(body);
 
       final token = data['token'];
@@ -459,9 +445,7 @@ Future<HttpServer> startIssuerServer({
         final suite = LdVcDm1Suite();
         final issuedCredential = await suite.issue(
           unsignedData: unsignedCredential,
-          proofGenerator: DataIntegrityEcdsaJcsGenerator(
-            signer: issuerSigner,
-          ),
+          proofGenerator: DataIntegrityEcdsaJcsGenerator(signer: issuerSigner),
         );
 
         await vdipIssuer.sendIssuedCredentials(

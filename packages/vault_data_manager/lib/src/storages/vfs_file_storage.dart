@@ -16,8 +16,8 @@ class VFSFileStorage implements FileStorage {
   VFSFileStorage({
     required String id,
     required VaultDataManagerServiceInterface dataManagerService,
-  })  : _id = id,
-        _vaultDataManagerService = dataManagerService;
+  }) : _id = id,
+       _vaultDataManagerService = dataManagerService;
 
   final String _id;
 
@@ -35,10 +35,12 @@ class VFSFileStorage implements FileStorage {
   }) async {
     if (folderId == null) {
       Error.throwWithStackTrace(
-          TdkException(
-              message: 'Missing folderId',
-              code: TdkExceptionType.folderNotFound.code),
-          StackTrace.current);
+        TdkException(
+          message: 'Missing folderId',
+          code: TdkExceptionType.folderNotFound.code,
+        ),
+        StackTrace.current,
+      );
     }
     final response = await _vaultDataManagerService.getChildNodes(
       nodeId: folderId,
@@ -50,32 +52,33 @@ class VFSFileStorage implements FileStorage {
     final items = response.items
         .where((node) => node.status != NodeStatus.HIDDEN)
         .map((node) {
-      if (node.type == NodeType.FILE) {
-        return File(
-          id: node.nodeId,
-          name: node.name,
-          createdAt: DateTime.parse(node.createdAt),
-          modifiedAt: DateTime.parse(node.modifiedAt),
-          parentId: folderId,
-        );
-      } else if (node.type == NodeType.FOLDER) {
-        return Folder(
-          id: node.nodeId,
-          name: node.name,
-          createdAt: DateTime.parse(node.createdAt),
-          modifiedAt: DateTime.parse(node.modifiedAt),
-          parentId: folderId,
-        );
-      } else {
-        Error.throwWithStackTrace(
-          TdkException(
-            message: 'Unsupported node type: ${node.type}',
-            code: TdkExceptionType.unsupportedNodeType.code,
-          ),
-          StackTrace.current,
-        );
-      }
-    }).toList();
+          if (node.type == NodeType.FILE) {
+            return File(
+              id: node.nodeId,
+              name: node.name,
+              createdAt: DateTime.parse(node.createdAt),
+              modifiedAt: DateTime.parse(node.modifiedAt),
+              parentId: folderId,
+            );
+          } else if (node.type == NodeType.FOLDER) {
+            return Folder(
+              id: node.nodeId,
+              name: node.name,
+              createdAt: DateTime.parse(node.createdAt),
+              modifiedAt: DateTime.parse(node.modifiedAt),
+              parentId: folderId,
+            );
+          } else {
+            Error.throwWithStackTrace(
+              TdkException(
+                message: 'Unsupported node type: ${node.type}',
+                code: TdkExceptionType.unsupportedNodeType.code,
+              ),
+              StackTrace.current,
+            );
+          }
+        })
+        .toList();
 
     return PaginatedList(
       items: items,
@@ -205,10 +208,7 @@ class VFSFileStorage implements FileStorage {
     required String fileId,
     VaultCancelToken? cancelToken,
   }) async {
-    await _vaultDataManagerService.deleteFile(
-      fileId,
-      cancelToken: cancelToken,
-    );
+    await _vaultDataManagerService.deleteFile(fileId, cancelToken: cancelToken);
   }
 
   @override

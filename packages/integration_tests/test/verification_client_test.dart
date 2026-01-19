@@ -13,11 +13,14 @@ void main() {
     setUpAll(() async {
       final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
       String basePathOverride = replaceBaseDomain(
-          AffinidiTdkCredentialVerificationClient.basePath, apiGwUrl);
+        AffinidiTdkCredentialVerificationClient.basePath,
+        apiGwUrl,
+      );
 
       final apiClient = AffinidiTdkCredentialVerificationClient(
-          authTokenHook: ResourceFactory.getAuthTokenHook(),
-          basePathOverride: basePathOverride);
+        authTokenHook: ResourceFactory.getAuthTokenHook(),
+        basePathOverride: basePathOverride,
+      );
       verificationApi = apiClient.getDefaultApi();
     });
 
@@ -25,14 +28,12 @@ void main() {
       final credential = getFixtures().verifiableCredential;
 
       final verifyCredentialInputBuilder = VerifyCredentialInputBuilder()
-        ..verifiableCredentials = ListBuilder<JsonObject>(
-          [
-            MapJsonObject(credential),
-          ],
-        );
+        ..verifiableCredentials = ListBuilder<JsonObject>([
+          MapJsonObject(credential),
+        ]);
       final verificationResponse = (await verificationApi.verifyCredentials(
-              verifyCredentialInput: verifyCredentialInputBuilder.build()))
-          .data;
+        verifyCredentialInput: verifyCredentialInputBuilder.build(),
+      )).data;
       expect(verificationResponse, isNotNull);
       expect(verificationResponse!.isValid, isTrue);
       expect(verificationResponse.errors, isEmpty);

@@ -22,12 +22,14 @@ class FlutterSecureVaultStore extends VaultStore {
   ///
   /// [_vaultId] - Unique identifier for this vault store instance.
   FlutterSecureVaultStore(this._vaultId, [FlutterSecureStorage? secureStorage])
-      : _secureStorage = secureStorage ??
-            const FlutterSecureStorage(
-              aOptions: AndroidOptions(encryptedSharedPreferences: true),
-              iOptions: IOSOptions(
-                  accessibility: KeychainAccessibility.unlocked_this_device),
-            );
+    : _secureStorage =
+          secureStorage ??
+          const FlutterSecureStorage(
+            aOptions: AndroidOptions(encryptedSharedPreferences: true),
+            iOptions: IOSOptions(
+              accessibility: KeychainAccessibility.unlocked_this_device,
+            ),
+          );
 
   final String _vaultId;
   final FlutterSecureStorage _secureStorage;
@@ -42,9 +44,7 @@ class FlutterSecureVaultStore extends VaultStore {
 
   @override
   Future<Uint8List?> getSeed() async {
-    final data = await _secureStorage.read(
-      key: _Key.seed.key(_vaultId),
-    );
+    final data = await _secureStorage.read(key: _Key.seed.key(_vaultId));
     if (data == null) {
       return null;
     }
@@ -76,9 +76,7 @@ class FlutterSecureVaultStore extends VaultStore {
 
   @override
   Future<Uint8List?> getContentKey() async {
-    final data = await _secureStorage.read(
-      key: _Key.contentKey.key(_vaultId),
-    );
+    final data = await _secureStorage.read(key: _Key.contentKey.key(_vaultId));
     if (data == null) {
       return null;
     }

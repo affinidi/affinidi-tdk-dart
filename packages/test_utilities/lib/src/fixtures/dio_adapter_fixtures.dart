@@ -7,10 +7,8 @@ class DioAdapterFixtures {
   ///
   /// [httpClient] - The Dio instance to use for HTTP requests.
   /// Returns a configured DioAdapter instance.
-  static DioAdapter adapter(Dio httpClient) => DioAdapter(
-        dio: httpClient,
-        matcher: const _UrlRequestMatcher(),
-      );
+  static DioAdapter adapter(Dio httpClient) =>
+      DioAdapter(dio: httpClient, matcher: const _UrlRequestMatcher());
 }
 
 extension _MatchesRequest on RequestOptions {

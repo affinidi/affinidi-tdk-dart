@@ -35,19 +35,21 @@ void main() {
         expect(dateEncryptionMaterial, isNotNull);
         expect(dateEncryptionMaterial.dek.length, equals(32));
         expect(dateEncryptionMaterial.dekEncryptedByApiPublicKey, isNotNull);
-        expect(dateEncryptionMaterial.dekEncryptedByWalletCryptoMaterial,
-            isNotNull);
+        expect(
+          dateEncryptionMaterial.dekEncryptedByWalletCryptoMaterial,
+          isNotNull,
+        );
         expect(dateEncryptionMaterial.walletCryptoMaterialHash, isNotNull);
         verify(() => mockCryptographyService.getRandomBytes(32)).called(1);
       });
 
       test('it generates different DEKs each time', () async {
-        when(() => mockCryptographyService.getRandomBytes(32)).thenReturn(
-          Uint8List.fromList(List.generate(32, (i) => i)),
-        );
-        when(() => mockCryptographyService.getRandomBytes(32)).thenReturn(
-          Uint8List.fromList(List.generate(32, (i) => i + 1)),
-        );
+        when(
+          () => mockCryptographyService.getRandomBytes(32),
+        ).thenReturn(Uint8List.fromList(List.generate(32, (i) => i)));
+        when(
+          () => mockCryptographyService.getRandomBytes(32),
+        ).thenReturn(Uint8List.fromList(List.generate(32, (i) => i + 1)));
         final dateEncryptionMaterial1 = await vaultDataManagerEncryptionService
             .generateDataEncryptionMaterial(encryptionKey: encryptionKey);
         final dateEncryptionMaterial2 = await vaultDataManagerEncryptionService
@@ -72,23 +74,24 @@ void main() {
       test('it encrypts the DEK by wallet crypto material', () async {
         final encryptedDek = await vaultDataManagerEncryptionService
             .encryptDekByWalletCryptoMaterial(
-          encryptionKey: encryptionKey,
-          dek: dek,
-        );
+              encryptionKey: encryptionKey,
+              dek: dek,
+            );
         expect(encryptedDek, isNotNull);
-        verify(() => mockCryptographyService.encryptToBytes(any(), any()))
-            .called(1);
+        verify(
+          () => mockCryptographyService.encryptToBytes(any(), any()),
+        ).called(1);
       });
       test('it encrypts the DEK by API public key', () async {
-        final encryptedDek =
-            await vaultDataManagerEncryptionService.encryptDekByApiPublicKey(
-          dek: dek,
-        );
+        final encryptedDek = await vaultDataManagerEncryptionService
+            .encryptDekByApiPublicKey(dek: dek);
         expect(encryptedDek, isNotNull);
-        verify(() => mockCryptographyService.encryptWithRsaPublicKeyFromJwk(
-              jwk: any(named: 'jwk'),
-              data: any(named: 'data'),
-            )).called(1);
+        verify(
+          () => mockCryptographyService.encryptWithRsaPublicKeyFromJwk(
+            jwk: any(named: 'jwk'),
+            data: any(named: 'data'),
+          ),
+        ).called(1);
       });
     });
 
@@ -101,8 +104,9 @@ void main() {
         expect(decryptedDek, isNotNull);
       });
       test('it throws an exception when decryption fails', () async {
-        when(() => mockCryptographyService.decryptFromBytes(any(), any()))
-            .thenReturn(null);
+        when(
+          () => mockCryptographyService.decryptFromBytes(any(), any()),
+        ).thenReturn(null);
         expect(
           () => vaultDataManagerEncryptionService.decryptDek(
             encryptionKey: encryptionKey,
@@ -117,16 +121,19 @@ void main() {
       test('it converts the DEK to API encrypted DEK', () async {
         final apiEncrypted = await vaultDataManagerEncryptionService
             .getDekEncryptedByApiPublicKey(
-          encryptionKey: encryptionKey,
-          encryptedDekBase64: encryptedDekBase64,
-        );
+              encryptionKey: encryptionKey,
+              encryptedDekBase64: encryptedDekBase64,
+            );
         expect(apiEncrypted, isNotNull);
-        verify(() => mockCryptographyService.decryptFromBytes(any(), any()))
-            .called(1);
-        verify(() => mockCryptographyService.encryptWithRsaPublicKeyFromJwk(
-              jwk: any(named: 'jwk'),
-              data: any(named: 'data'),
-            )).called(1);
+        verify(
+          () => mockCryptographyService.decryptFromBytes(any(), any()),
+        ).called(1);
+        verify(
+          () => mockCryptographyService.encryptWithRsaPublicKeyFromJwk(
+            jwk: any(named: 'jwk'),
+            data: any(named: 'data'),
+          ),
+        ).called(1);
       });
       test('it throws an exception when the input is invalid', () {
         expect(

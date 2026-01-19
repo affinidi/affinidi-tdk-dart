@@ -14,7 +14,9 @@ extension TdkExceptionExtension on TdkException {
   /// Returns a [TdkException] instance representing the error.
   static TdkException fromErrorResponse(ErrorResponse response) {
     return TdkException(
-        message: response.message ?? '', code: response.type.code);
+      message: response.message ?? '',
+      code: response.type.code,
+    );
   }
 
   /// Creates a [TdkException] instance from an error response.
@@ -31,7 +33,8 @@ extension TdkExceptionExtension on TdkException {
     // Handle token endpoint errors (OAuth style)
     if (errorData.containsKey('error')) {
       return fromClaimCredentialAccessTokenErrorResponse(
-          ClaimCredentialAccessTokenErrorResponse.fromJson(errorData));
+        ClaimCredentialAccessTokenErrorResponse.fromJson(errorData),
+      );
     }
 
     // Handle credential endpoint errors
@@ -43,7 +46,8 @@ extension TdkExceptionExtension on TdkException {
             return detailMap['issue'] == 'Credential offer has been expired.';
           })) {
         return TdkException(
-          message: errorData['message'] as String? ??
+          message:
+              errorData['message'] as String? ??
               'The credential offer has expired',
           code: TdkExceptionType.credentialOfferExpired.code,
         );
@@ -64,7 +68,8 @@ extension TdkExceptionExtension on TdkException {
   ///
   /// Returns a [TdkException] instance representing the error.
   static TdkException fromClaimCredentialAccessTokenErrorResponse(
-      ClaimCredentialAccessTokenErrorResponse errorResponse) {
+    ClaimCredentialAccessTokenErrorResponse errorResponse,
+  ) {
     switch (errorResponse.error) {
       case 'tx_code does not match':
         return TdkException(
@@ -73,7 +78,8 @@ extension TdkExceptionExtension on TdkException {
         );
       case 'invalid_proof':
         return TdkException(
-          message: errorResponse.errorDescription ??
+          message:
+              errorResponse.errorDescription ??
               'The proof in the Credential Request is invalid',
           code: TdkExceptionType.invalidCredentialProof.code,
         );

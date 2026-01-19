@@ -13,10 +13,10 @@ Future<void> main() async {
     jwk: jwk,
   );
 
-  final dekEncryptedByApiPublicKey =
-      await vaultDataManagerEncryptionService.getDekEncryptedByApiPublicKey(
-    encryptedDekBase64: encryptedDekBase64,
-    encryptionKey: encryptionKey,
-  );
+  final dekEncryptedByApiPublicKey = await vaultDataManagerEncryptionService
+      .getDekEncryptedByApiPublicKey(
+        encryptedDekBase64: encryptedDekBase64,
+        encryptionKey: encryptionKey,
+      );
   print('API encrypted DEK: $dekEncryptedByApiPublicKey');
 }

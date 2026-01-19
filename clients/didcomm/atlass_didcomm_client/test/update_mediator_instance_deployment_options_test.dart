@@ -125,8 +125,9 @@ void main() {
       );
 
       final json = original.toJson();
-      final deserialized =
-          UpdateMediatorInstanceDeploymentOptions.fromJson(json);
+      final deserialized = UpdateMediatorInstanceDeploymentOptions.fromJson(
+        json,
+      );
 
       expect(deserialized.serviceSize, original.serviceSize);
       expect(deserialized.mediatorAclMode, original.mediatorAclMode);

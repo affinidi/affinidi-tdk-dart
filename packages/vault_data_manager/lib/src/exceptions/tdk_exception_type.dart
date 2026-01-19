@@ -48,7 +48,9 @@
 enum TdkExceptionType {
   ///Indicates that an account already exists.
   accountAlreadyExists(
-      jsonValue: 'AlreadyExistsError', code: 'account_already_exists'),
+    jsonValue: 'AlreadyExistsError',
+    code: 'account_already_exists',
+  ),
 
   /// Exception thrown when a credential cannot be found.
   credentialNotFound(code: 'credential_not_found'),
@@ -58,15 +60,17 @@ enum TdkExceptionType {
 
   /// Indicates that the maximum number of accounts has been exceeded.
   exceededMaximumAccountAmount(
-      jsonValue: 'ResourceLimitExceededError',
-      code: 'exceeded_maximum_account_amount'),
+    jsonValue: 'ResourceLimitExceededError',
+    code: 'exceeded_maximum_account_amount',
+  ),
 
   /// Indicates a failure in decrypting data.
   failedToDecrypt(code: 'failed_to_decrypt'),
 
   /// Exception thrown when verifiable credentials cannot be retrieved.
   failedToGetVerifiableCredentials(
-      code: 'failed_to_get_verifiable_credentials'),
+    code: 'failed_to_get_verifiable_credentials',
+  ),
 
   /// Exception thrown when items cannot be listed.
   failedToListItems(code: 'failed_to_list_items'),
@@ -88,7 +92,8 @@ enum TdkExceptionType {
 
   /// Exception thrown when the repository configuration type is invalid.
   invalidRepositoryConfigurationType(
-      code: 'invalid_repository_configuration_type'),
+    code: 'invalid_repository_configuration_type',
+  ),
 
   /// Exception thrown when the file info is not providing an edek
   missingFileEdek(code: 'missing_file_edek'),
@@ -167,11 +172,13 @@ enum TdkExceptionType {
 
   /// Indicates a failure in retrieving the Vault Data Manager public key.
   unableToGetVaultDataManagerPublicKey(
-      code: 'unable_to_get_vault_data_manager_public_key'),
+    code: 'unable_to_get_vault_data_manager_public_key',
+  ),
 
   /// Indicates a failure in initializing the Vault Data Manager system.
   unableToInitVaultDataManagerSystem(
-      code: 'unable_to_init_vault_data_manager_system'),
+    code: 'unable_to_init_vault_data_manager_system',
+  ),
 
   /// Indicates a failure in scanning a node.
   unableToScanNode(code: 'unable_to_scan_node'),
@@ -190,7 +197,8 @@ enum TdkExceptionType {
 
   /// Exception thrown when access has already been granted.
   unableToGrantAccessAlreadyGranted(
-      code: 'unable_to_grant_access_already_granted'),
+    code: 'unable_to_grant_access_already_granted',
+  ),
 
   /// Exception thrown when access cannot be revoked.
   unableToRevokeAccess(code: 'unable_to_revoke_access'),
@@ -205,8 +213,7 @@ enum TdkExceptionType {
   unsupportedNodeType(code: 'unsupported_node_type'),
 
   /// Exception thrown when the profile repository is incorrect.
-  wrongProfileRepository(code: 'wrong_profile_repository'),
-  ;
+  wrongProfileRepository(code: 'wrong_profile_repository');
 
   const TdkExceptionType({required this.code, this.jsonValue});
 

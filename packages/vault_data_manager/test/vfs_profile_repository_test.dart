@@ -48,10 +48,12 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(Uint8List.fromList([1, 2, 3]));
-    registerFallbackValue(AccountMetadata(
-      dekekInfo: DekekInfo(encryptedDekek: 'dGVzdF9rZXk='),
-      sharedStorageData: [],
-    ));
+    registerFallbackValue(
+      AccountMetadata(
+        dekekInfo: DekekInfo(encryptedDekek: 'dGVzdF9rZXk='),
+        sharedStorageData: [],
+      ),
+    );
     registerFallbackValue(PublicKeyFake());
     registerFallbackValue(Permissions.read);
   });
@@ -69,28 +71,32 @@ void main() {
       consumerAuthProviderFactory: (didSigner, {client}) =>
           ConsumerAuthProvider(signer: didSigner, client: client),
       iamApiServiceFactory: (provider) => mockIamApiService,
-      vaultDataManagerServiceFactory: ({
-        required Uint8List encryptedDekek,
-        required KeyPair keyPair,
-      }) async =>
-          mockDataManagerService,
+      vaultDataManagerServiceFactory:
+          ({
+            required Uint8List encryptedDekek,
+            required KeyPair keyPair,
+          }) async => mockDataManagerService,
     );
 
     // Setup common mock behaviors
-    when(() => mockWallet.generateKey(keyId: any(named: 'keyId')))
-        .thenAnswer((_) async => mockKeyPair);
+    when(
+      () => mockWallet.generateKey(keyId: any(named: 'keyId')),
+    ).thenAnswer((_) async => mockKeyPair);
 
     when(() => mockKeyPair.publicKey).thenReturn(PublicKeyFake());
-    when(() => mockKeyPair.encrypt(any()))
-        .thenAnswer((_) async => ProfileFixtures.testEncryptedData);
-    when(() => mockKeyPair.decrypt(any()))
-        .thenAnswer((_) async => ProfileFixtures.testDecryptedData);
+    when(
+      () => mockKeyPair.encrypt(any()),
+    ).thenAnswer((_) async => ProfileFixtures.testEncryptedData);
+    when(
+      () => mockKeyPair.decrypt(any()),
+    ).thenAnswer((_) async => ProfileFixtures.testDecryptedData);
 
     // Mock DidSigner behavior
     when(() => mockDidSigner.did).thenReturn(ProfileFixtures.testDid);
     when(() => mockDidSigner.keyId).thenReturn(ProfileFixtures.testDidKeyId);
-    when(() => mockDidSigner.didDocument)
-        .thenReturn(ProfileFixtures.testDidDocument);
+    when(
+      () => mockDidSigner.didDocument,
+    ).thenReturn(ProfileFixtures.testDidDocument);
   });
 
   group('VfsProfileRepository', () {
@@ -112,72 +118,90 @@ void main() {
           keyStorage: null,
         );
 
-        expect(
-          () => sut.configure(config),
-          throwsA(isA<TdkException>()),
-        );
+        expect(() => sut.configure(config), throwsA(isA<TdkException>()));
       });
 
-      test('should throw error when configured with invalid configuration type',
-          () async {
-        expect(
-          () => sut.configure('invalid_config'),
-          throwsA(isA<TdkException>()),
-        );
-      });
+      test(
+        'should throw error when configured with invalid configuration type',
+        () async {
+          expect(
+            () => sut.configure('invalid_config'),
+            throwsA(isA<TdkException>()),
+          );
+        },
+      );
     });
 
     group('Profile Operations', () {
       setUp(() async {
-        await sut.configure(RepositoryConfiguration(
-          wallet: mockWallet,
-          keyStorage: mockVaultStore,
-        ));
+        await sut.configure(
+          RepositoryConfiguration(
+            wallet: mockWallet,
+            keyStorage: mockVaultStore,
+          ),
+        );
       });
 
       group('When creating a profile', () {
         test('should create a new profile successfully', () async {
-          when(() => mockVaultStore.getAccountIndex())
-              .thenAnswer((_) async => 0);
-          when(() => mockDataManagerService.createProfile(
-                name: any(named: 'name'),
-                description: any(named: 'description'),
-              )).thenAnswer((_) async => Response<CreateNodeOK>(
-                data: CreateNodeOK(
-                    (b) => b..nodeId = ProfileFixtures.testProfileId),
-                requestOptions: RequestOptions(path: ''),
-              ));
-          when(() => mockDataManagerService.createAccount(
-                accountIndex: any(named: 'accountIndex'),
-                accountDid: any(named: 'accountDid'),
-                didProof: any(named: 'didProof'),
-                metadata: any(named: 'metadata'),
-              )).thenAnswer((_) async {});
-          when(() => mockVaultStore.setAccountIndex(any()))
-              .thenAnswer((_) async {});
+          when(
+            () => mockVaultStore.getAccountIndex(),
+          ).thenAnswer((_) async => 0);
+          when(
+            () => mockDataManagerService.createProfile(
+              name: any(named: 'name'),
+              description: any(named: 'description'),
+            ),
+          ).thenAnswer(
+            (_) async => Response<CreateNodeOK>(
+              data: CreateNodeOK(
+                (b) => b..nodeId = ProfileFixtures.testProfileId,
+              ),
+              requestOptions: RequestOptions(path: ''),
+            ),
+          );
+          when(
+            () => mockDataManagerService.createAccount(
+              accountIndex: any(named: 'accountIndex'),
+              accountDid: any(named: 'accountDid'),
+              didProof: any(named: 'didProof'),
+              metadata: any(named: 'metadata'),
+            ),
+          ).thenAnswer((_) async {});
+          when(
+            () => mockVaultStore.setAccountIndex(any()),
+          ).thenAnswer((_) async {});
           when(() => mockDataManagerService.getProfiles()).thenAnswer(
-              (_) async => [ProfileFixtures.testVaultDataManagerProfile]);
+            (_) async => [ProfileFixtures.testVaultDataManagerProfile],
+          );
 
           await sut.createProfile(
             name: ProfileFixtures.testProfileName,
             description: ProfileFixtures.testProfileDescription,
           );
 
-          verify(() => mockDataManagerService.createProfile(
-                name: ProfileFixtures.testProfileName,
-                description: ProfileFixtures.testProfileDescription,
-              )).called(1);
-          verify(() => mockVaultStore
-              .setAccountIndex(ProfileFixtures.testAccountIndex)).called(1);
+          verify(
+            () => mockDataManagerService.createProfile(
+              name: ProfileFixtures.testProfileName,
+              description: ProfileFixtures.testProfileDescription,
+            ),
+          ).called(1);
+          verify(
+            () => mockVaultStore.setAccountIndex(
+              ProfileFixtures.testAccountIndex,
+            ),
+          ).called(1);
         });
       });
 
       group('When listing profiles', () {
         test('should list profiles successfully', () async {
-          when(() => mockDataManagerService.getAccounts())
-              .thenAnswer((_) async => [ProfileFixtures.testAccount]);
+          when(
+            () => mockDataManagerService.getAccounts(),
+          ).thenAnswer((_) async => [ProfileFixtures.testAccount]);
           when(() => mockDataManagerService.getProfiles()).thenAnswer(
-              (_) async => [ProfileFixtures.testVaultDataManagerProfile]);
+            (_) async => [ProfileFixtures.testVaultDataManagerProfile],
+          );
 
           final profiles = await sut.listProfiles();
 
@@ -188,75 +212,92 @@ void main() {
 
       group('When updating a profile', () {
         test('should update profile successfully', () async {
-          when(() => mockDataManagerService.updateProfileMetadata(
-                id: any(named: 'id'),
-                name: any(named: 'name'),
-                description: any(named: 'description'),
-                profilePictureURI: any(named: 'profilePictureURI'),
-              )).thenAnswer((_) async {});
+          when(
+            () => mockDataManagerService.updateProfileMetadata(
+              id: any(named: 'id'),
+              name: any(named: 'name'),
+              description: any(named: 'description'),
+              profilePictureURI: any(named: 'profilePictureURI'),
+            ),
+          ).thenAnswer((_) async {});
 
           await sut.updateProfile(ProfileFixtures.testProfile);
 
-          verify(() => mockDataManagerService.updateProfileMetadata(
-                id: ProfileFixtures.testProfileId,
-                name: ProfileFixtures.testProfileName,
-                description: ProfileFixtures.testProfileDescription,
-                profilePictureURI:
-                    ProfileFixtures.testProfile.profilePictureURI,
-              )).called(1);
+          verify(
+            () => mockDataManagerService.updateProfileMetadata(
+              id: ProfileFixtures.testProfileId,
+              name: ProfileFixtures.testProfileName,
+              description: ProfileFixtures.testProfileDescription,
+              profilePictureURI: ProfileFixtures.testProfile.profilePictureURI,
+            ),
+          ).called(1);
         });
 
         test(
-            'should throw error when updating profile from different repository',
-            () async {
-          expect(
-            () => sut.updateProfile(ProfileFixtures.differentProfile),
-            throwsA(isA<TdkException>()),
-          );
-        });
+          'should throw error when updating profile from different repository',
+          () async {
+            expect(
+              () => sut.updateProfile(ProfileFixtures.differentProfile),
+              throwsA(isA<TdkException>()),
+            );
+          },
+        );
       });
 
       group('When deleting a profile', () {
         test('should delete profile successfully', () async {
-          when(() => mockDataManagerService.deleteProfile(any()))
-              .thenAnswer((_) async {});
-          when(() => mockDataManagerService.deleteAccount(
-                accountIndex: any(named: 'accountIndex'),
-              )).thenAnswer((_) async {});
+          when(
+            () => mockDataManagerService.deleteProfile(any()),
+          ).thenAnswer((_) async {});
+          when(
+            () => mockDataManagerService.deleteAccount(
+              accountIndex: any(named: 'accountIndex'),
+            ),
+          ).thenAnswer((_) async {});
 
           await sut.deleteProfile(ProfileFixtures.testProfile);
 
-          verify(() => mockDataManagerService
-              .deleteProfile(ProfileFixtures.testProfileId)).called(1);
-          verify(() => mockDataManagerService.deleteAccount(
-                accountIndex: ProfileFixtures.testAccountIndex,
-              )).called(1);
+          verify(
+            () => mockDataManagerService.deleteProfile(
+              ProfileFixtures.testProfileId,
+            ),
+          ).called(1);
+          verify(
+            () => mockDataManagerService.deleteAccount(
+              accountIndex: ProfileFixtures.testAccountIndex,
+            ),
+          ).called(1);
         });
 
         test(
-            'should throw error when deleting profile from different repository',
-            () async {
-          expect(
-            () => sut.deleteProfile(ProfileFixtures.differentProfile),
-            throwsA(isA<TdkException>()),
-          );
-        });
+          'should throw error when deleting profile from different repository',
+          () async {
+            expect(
+              () => sut.deleteProfile(ProfileFixtures.differentProfile),
+              throwsA(isA<TdkException>()),
+            );
+          },
+        );
       });
     });
 
     group('Node Access Sharing', () {
       setUp(() async {
-        await sut.configure(RepositoryConfiguration(
-          wallet: mockWallet,
-          keyStorage: mockVaultStore,
-        ));
+        await sut.configure(
+          RepositoryConfiguration(
+            wallet: mockWallet,
+            keyStorage: mockVaultStore,
+          ),
+        );
       });
 
       test('should revoke item access successfully', () async {
-        when(() => mockIamApiService.revokeItemsAccessVfs(
-              granteeDid: any(named: 'granteeDid'),
-              itemIds: any(named: 'itemIds'),
-            )).thenAnswer((_) async {});
+        when(
+          () => mockIamApiService.revokeItemsAccessVfs(
+            granteeDid: any(named: 'granteeDid'),
+            itemIds: any(named: 'itemIds'),
+          ),
+        ).thenAnswer((_) async {});
 
         await sut.revokeItemAccess(
           accountIndex: 0,
@@ -264,10 +305,12 @@ void main() {
           itemIds: ['node-1'],
         );
 
-        verify(() => mockIamApiService.revokeItemsAccessVfs(
-              granteeDid: 'did:test:123',
-              itemIds: ['node-1'],
-            )).called(1);
+        verify(
+          () => mockIamApiService.revokeItemsAccessVfs(
+            granteeDid: 'did:test:123',
+            itemIds: ['node-1'],
+          ),
+        ).called(1);
       });
 
       test('should get item access successfully', () async {
@@ -284,9 +327,11 @@ void main() {
           requestOptions: RequestOptions(path: '/'),
         );
 
-        when(() => mockIamApiService.getItemsAccessVfs(
-              granteeDid: any(named: 'granteeDid'),
-            )).thenAnswer((_) async => expectedResponse);
+        when(
+          () => mockIamApiService.getItemsAccessVfs(
+            granteeDid: any(named: 'granteeDid'),
+          ),
+        ).thenAnswer((_) async => expectedResponse);
 
         final result = await sut.getItemAccess(
           accountIndex: 0,
@@ -294,44 +339,50 @@ void main() {
         );
 
         expect(result['permissions'], isA<List>());
-        verify(() => mockIamApiService.getItemsAccessVfs(
-              granteeDid: 'did:test:123',
-            )).called(1);
+        verify(
+          () => mockIamApiService.getItemsAccessVfs(granteeDid: 'did:test:123'),
+        ).called(1);
       });
 
       test('should grant multiple item access groups successfully', () async {
-        when(() => mockIamApiService.setItemsAccessVfs(
-              granteeDid: any<String>(named: 'granteeDid'),
-              permissionGroups: any<
+        when(
+          () => mockIamApiService.setItemsAccessVfs(
+            granteeDid: any<String>(named: 'granteeDid'),
+            permissionGroups:
+                any<
                   List<
-                      ({
-                        List<String> itemIds,
-                        Permissions permissions,
-                        DateTime? expiresAt
-                      })>>(named: 'permissionGroups'),
-              cancelToken: any<CancelToken?>(named: 'cancelToken'),
-            )).thenAnswer((_) async {});
+                    ({
+                      List<String> itemIds,
+                      Permissions permissions,
+                      DateTime? expiresAt,
+                    })
+                  >
+                >(named: 'permissionGroups'),
+            cancelToken: any<CancelToken?>(named: 'cancelToken'),
+          ),
+        ).thenAnswer((_) async {});
 
         final permissionGroups = [
           (itemIds: ['node-1'], permissions: Permissions.read, expiresAt: null),
           (
             itemIds: ['node-2'],
             permissions: Permissions.write,
-            expiresAt: null
+            expiresAt: null,
           ),
         ];
 
-        when(() => mockDataManagerService.getAccounts())
-            .thenAnswer((_) async => [
-                  Account(
-                    accountIndex: 0,
-                    accountDid: ProfileFixtures.testDid,
-                    accountMetadata: AccountMetadata(
-                      dekekInfo: DekekInfo(encryptedDekek: 'dGVzdF9rZXk='),
-                      sharedStorageData: [],
-                    ),
-                  ),
-                ]);
+        when(() => mockDataManagerService.getAccounts()).thenAnswer(
+          (_) async => [
+            Account(
+              accountIndex: 0,
+              accountDid: ProfileFixtures.testDid,
+              accountMetadata: AccountMetadata(
+                dekekInfo: DekekInfo(encryptedDekek: 'dGVzdF9rZXk='),
+                sharedStorageData: [],
+              ),
+            ),
+          ],
+        );
 
         await sut.grantItemAccessMultiple(
           accountIndex: 0,
@@ -339,17 +390,22 @@ void main() {
           permissionGroups: permissionGroups,
         );
 
-        verify(() => mockIamApiService.setItemsAccessVfs(
-              granteeDid: 'did:test:123',
-              permissionGroups: any<
+        verify(
+          () => mockIamApiService.setItemsAccessVfs(
+            granteeDid: 'did:test:123',
+            permissionGroups:
+                any<
                   List<
-                      ({
-                        List<String> itemIds,
-                        Permissions permissions,
-                        DateTime? expiresAt
-                      })>>(named: 'permissionGroups'),
-              cancelToken: any<CancelToken?>(named: 'cancelToken'),
-            )).called(1);
+                    ({
+                      List<String> itemIds,
+                      Permissions permissions,
+                      DateTime? expiresAt,
+                    })
+                  >
+                >(named: 'permissionGroups'),
+            cancelToken: any<CancelToken?>(named: 'cancelToken'),
+          ),
+        ).called(1);
       });
     });
   });

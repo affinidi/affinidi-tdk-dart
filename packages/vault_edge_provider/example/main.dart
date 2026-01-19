@@ -17,8 +17,9 @@ Future<void> main() async {
   final originalText = 'Hello';
   final originalData = utf8.encode(originalText);
 
-  final encryptedData =
-      await encryptionService.encryptData(Uint8List.fromList(originalData));
+  final encryptedData = await encryptionService.encryptData(
+    Uint8List.fromList(originalData),
+  );
 
   final decryptedData = await encryptionService.decryptData(encryptedData);
   final decryptedText = utf8.decode(decryptedData);
@@ -32,8 +33,9 @@ Future<void> main() async {
 
   final jsonData = {'name': 'Alice', 'age': 30, 'city': 'New York'};
   final jsonBytes = utf8.encode(jsonEncode(jsonData));
-  final encryptedJson =
-      await encryptionService.encryptData(Uint8List.fromList(jsonBytes));
+  final encryptedJson = await encryptionService.encryptData(
+    Uint8List.fromList(jsonBytes),
+  );
   final decryptedJson = await encryptionService.decryptData(encryptedJson);
   final decryptedJsonData = jsonDecode(utf8.decode(decryptedJson));
   print('JSON data encrypted/decrypted successfully');

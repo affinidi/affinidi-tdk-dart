@@ -13,18 +13,22 @@ void main() {
     setUpAll(() async {
       final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
       String basePathOverride = replaceBaseDomain(
-          AffinidiTdkLoginConfigurationClient.basePath, apiGwUrl);
+        AffinidiTdkLoginConfigurationClient.basePath,
+        apiGwUrl,
+      );
 
       final loginConfigurationClient = AffinidiTdkLoginConfigurationClient(
-          authTokenHook: ResourceFactory.getAuthTokenHook(),
-          basePathOverride: basePathOverride);
+        authTokenHook: ResourceFactory.getAuthTokenHook(),
+        basePathOverride: basePathOverride,
+      );
 
       configurationApi = loginConfigurationClient.getConfigurationApi();
     });
 
     tearDownAll(() async {
       await configurationApi.deleteLoginConfigurationsById(
-          configurationId: configurationId);
+        configurationId: configurationId,
+      );
     });
 
     group('Login Configurations', () {
@@ -38,8 +42,8 @@ void main() {
               ..redirectUris = ListBuilder<String>([redirectUri]);
 
         final response = (await configurationApi.createLoginConfigurations(
-            createLoginConfigurationInput:
-                createLoginConfigurationInput.build()));
+          createLoginConfigurationInput: createLoginConfigurationInput.build(),
+        ));
 
         expect(response.statusCode, 201);
         expect(response.data!.configurationId, isNotEmpty);
@@ -64,10 +68,9 @@ void main() {
             UpdateLoginConfigurationInputBuilder()..name = updatedName;
 
         final config = (await configurationApi.updateLoginConfigurationsById(
-                configurationId: configurationId,
-                updateLoginConfigurationInput:
-                    updateLoginConfigurationInput.build()))
-            .data;
+          configurationId: configurationId,
+          updateLoginConfigurationInput: updateLoginConfigurationInput.build(),
+        )).data;
 
         expect(config, isNotNull);
         expect(config?.name, equals(updatedName));
@@ -75,8 +78,8 @@ void main() {
 
       test('Reads login configuration', () async {
         final config = (await configurationApi.getLoginConfigurationsById(
-                configurationId: configurationId))
-            .data;
+          configurationId: configurationId,
+        )).data;
 
         expect(config, isNotNull);
       });

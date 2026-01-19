@@ -5,10 +5,7 @@ import 'package:test/test.dart';
 import 'test_config.dart';
 
 void main() async {
-  final testsToSkip = [
-    'atlas_example.dart',
-    'browser_context_example.dart',
-  ];
+  final testsToSkip = ['atlas_example.dart', 'browser_context_example.dart'];
 
   group('Running example files', () {
     for (final packageName in [
@@ -27,11 +24,10 @@ void main() async {
             skipMediator: true,
           );
 
-          final result = await Process.run(
-            Platform.resolvedExecutable,
-            ['pub', 'get'],
-            workingDirectory: config.packagePath,
-          );
+          final result = await Process.run(Platform.resolvedExecutable, [
+            'pub',
+            'get',
+          ], workingDirectory: config.packagePath);
 
           if (result.exitCode != 0) {
             throw Exception(
@@ -44,10 +40,7 @@ void main() async {
           'Run example files',
           () async {
             final exampleDirectory = Directory(
-              join(
-                config.packagePath,
-                'example',
-              ),
+              join(config.packagePath, 'example'),
             );
 
             if (!await exampleDirectory.exists()) {
@@ -82,28 +75,21 @@ void main() async {
 
             final errors = <String>[];
 
-            final compileKeys = [
-              'AFFINIDI_ATLAS_DID',
-            ];
+            final compileKeys = ['AFFINIDI_ATLAS_DID'];
 
             final compileConfigs = Platform.environment.keys
                 .where((key) => compileKeys.contains(key))
-                .map(
-                  (key) => '--define=$key=${Platform.environment[key]}',
-                );
+                .map((key) => '--define=$key=${Platform.environment[key]}');
 
             print('compileConfigs:');
             print(compileConfigs);
 
             for (final file in filesWithMain) {
-              final result = await Process.run(
-                Platform.resolvedExecutable,
-                [
-                  'run',
-                  ...compileConfigs,
-                  file.path,
-                ],
-              );
+              final result = await Process.run(Platform.resolvedExecutable, [
+                'run',
+                ...compileConfigs,
+                file.path,
+              ]);
 
               if (result.exitCode != 0) {
                 errors.add(

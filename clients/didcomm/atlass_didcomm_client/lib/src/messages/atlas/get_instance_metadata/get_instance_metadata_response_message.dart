@@ -36,9 +36,9 @@ class GetMediatorInstanceMetadataResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-          operationName: 'getMediatorInstanceMetadata',
-          fromJson: MediatorInstanceMetadata.fromJson,
-        );
+         operationName: 'getMediatorInstanceMetadata',
+         fromJson: MediatorInstanceMetadata.fromJson,
+       );
 }
 
 /// Response message for get MPX instance metadata operation.
@@ -55,9 +55,9 @@ class GetMpxInstanceMetadataResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-          operationName: 'getMpxInstanceMetadata',
-          fromJson: MpxInstanceMetadata.fromJson,
-        );
+         operationName: 'getMpxInstanceMetadata',
+         fromJson: MpxInstanceMetadata.fromJson,
+       );
 }
 
 /// Response message for get Trust Registry instance metadata operation.
@@ -74,7 +74,7 @@ class GetTrInstanceMetadataResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-          operationName: 'getTrInstanceMetadata',
-          fromJson: TrInstanceMetadata.fromJson,
-        );
+         operationName: 'getTrInstanceMetadata',
+         fromJson: TrInstanceMetadata.fromJson,
+       );
 }

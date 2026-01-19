@@ -18,9 +18,12 @@ Future<void> main() async {
 
   print('Raw DEK: ${dataEncryptionMaterial.dek}');
   print(
-      'Encrypted by API Public Key: ${dataEncryptionMaterial.dekEncryptedByApiPublicKey}');
+    'Encrypted by API Public Key: ${dataEncryptionMaterial.dekEncryptedByApiPublicKey}',
+  );
   print(
-      'Encrypted by Wallet: ${dataEncryptionMaterial.dekEncryptedByWalletCryptoMaterial}');
+    'Encrypted by Wallet: ${dataEncryptionMaterial.dekEncryptedByWalletCryptoMaterial}',
+  );
   print(
-      'Wallet Crypto Material Hash: ${dataEncryptionMaterial.walletCryptoMaterialHash}');
+    'Wallet Crypto Material Hash: ${dataEncryptionMaterial.walletCryptoMaterialHash}',
+  );
 }

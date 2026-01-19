@@ -16,9 +16,9 @@ class GetMediatorRequestsResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-          operationName: 'getMediatorRequests',
-          fromJson: GetMediatorRequestsResponseData.fromJson,
-        );
+         operationName: 'getMediatorRequests',
+         fromJson: GetMediatorRequestsResponseData.fromJson,
+       );
 }
 
 /// Response message for get MPX requests operation.
@@ -34,9 +34,9 @@ class GetMpxRequestsResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-          operationName: 'getMpxRequests',
-          fromJson: GetMpxRequestsResponseData.fromJson,
-        );
+         operationName: 'getMpxRequests',
+         fromJson: GetMpxRequestsResponseData.fromJson,
+       );
 }
 
 /// Response message for get Trust Registry requests operation.
@@ -52,13 +52,12 @@ class GetTrRequestsResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-          operationName: 'getTrRequests',
-          fromJson: GetTrRequestsResponseData.fromJson,
-        );
+         operationName: 'getTrRequests',
+         fromJson: GetTrRequestsResponseData.fromJson,
+       );
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Represents a mediator request.
 class MediatorRequest {
   /// The creation timestamp.
@@ -68,10 +67,7 @@ class MediatorRequest {
   final String? createdBy;
 
   /// Creates a mediator request.
-  MediatorRequest({
-    this.createdAt,
-    this.createdBy,
-  });
+  MediatorRequest({this.createdAt, this.createdBy});
 
   /// Creates MediatorRequest from a JSON map.
   factory MediatorRequest.fromJson(Map<String, dynamic> json) =>
@@ -82,7 +78,6 @@ class MediatorRequest {
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Response data for get mediator requests.
 class GetMediatorRequestsResponseData {
   /// The list of mediator requests.
@@ -107,7 +102,6 @@ class GetMediatorRequestsResponseData {
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Represents an MPX instance request.
 class MpxRequest {
   /// The creation timestamp.
@@ -117,10 +111,7 @@ class MpxRequest {
   final String? createdBy;
 
   /// Creates an MPX request.
-  MpxRequest({
-    this.createdAt,
-    this.createdBy,
-  });
+  MpxRequest({this.createdAt, this.createdBy});
 
   /// Creates MpxRequest from a JSON map.
   factory MpxRequest.fromJson(Map<String, dynamic> json) =>
@@ -131,7 +122,6 @@ class MpxRequest {
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Response data for get MPX requests.
 class GetMpxRequestsResponseData {
   /// The list of MPX requests.
@@ -141,10 +131,7 @@ class GetMpxRequestsResponseData {
   final String? lastEvaluatedKey;
 
   /// Creates get MPX requests response data.
-  GetMpxRequestsResponseData({
-    required this.requests,
-    this.lastEvaluatedKey,
-  });
+  GetMpxRequestsResponseData({required this.requests, this.lastEvaluatedKey});
 
   /// Creates GetMpxRequestsResponseData from a JSON map.
   factory GetMpxRequestsResponseData.fromJson(Map<String, dynamic> json) =>
@@ -155,7 +142,6 @@ class GetMpxRequestsResponseData {
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Represents a Trust Registry instance request.
 class TrRequest {
   /// The creation timestamp.
@@ -165,10 +151,7 @@ class TrRequest {
   final String? createdBy;
 
   /// Creates a Trust Registry request.
-  TrRequest({
-    this.createdAt,
-    this.createdBy,
-  });
+  TrRequest({this.createdAt, this.createdBy});
 
   /// Creates TrRequest from a JSON map.
   factory TrRequest.fromJson(Map<String, dynamic> json) =>
@@ -179,7 +162,6 @@ class TrRequest {
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Response data for get Trust Registry requests.
 class GetTrRequestsResponseData {
   /// The list of Trust Registry requests.
@@ -189,10 +171,7 @@ class GetTrRequestsResponseData {
   final String? lastEvaluatedKey;
 
   /// Creates get Trust Registry requests response data.
-  GetTrRequestsResponseData({
-    required this.requests,
-    this.lastEvaluatedKey,
-  });
+  GetTrRequestsResponseData({required this.requests, this.lastEvaluatedKey});
 
   /// Creates GetTrRequestsResponseData from a JSON map.
   factory GetTrRequestsResponseData.fromJson(Map<String, dynamic> json) =>

@@ -37,22 +37,17 @@ class TestConfig {
       packageDirectoryName: packageDirectoryName,
     );
 
-    final [
-      mediatorDidPath,
-      alicePrivateKeyPath,
-      bobPrivateKeyPath,
-    ] = [
-      'example/mediator/mediator_did.txt',
-      'example/keys/alice_private_key.pem',
-      'example/keys/bob_private_key.pem',
-    ]
-        .map(
-          (fileName) => _getFilePath(
-            packagePath: packagePath,
-            fileName: fileName,
-          ),
-        )
-        .toList();
+    final [mediatorDidPath, alicePrivateKeyPath, bobPrivateKeyPath] =
+        [
+              'example/mediator/mediator_did.txt',
+              'example/keys/alice_private_key.pem',
+              'example/keys/bob_private_key.pem',
+            ]
+            .map(
+              (fileName) =>
+                  _getFilePath(packagePath: packagePath, fileName: fileName),
+            )
+            .toList();
 
     if (!skipMediator) {
       await writeEnvironmentVariableToFileIfNeeded(
@@ -63,20 +58,14 @@ class TestConfig {
 
     await writeEnvironmentVariableToFileIfNeeded(
       'TEST_ALICE_PRIVATE_KEY_PEM',
-      _getFilePath(
-        packagePath: packagePath,
-        fileName: alicePrivateKeyPath,
-      ),
+      _getFilePath(packagePath: packagePath, fileName: alicePrivateKeyPath),
       decodeBase64: true,
     );
 
     if (!skipBob) {
       await writeEnvironmentVariableToFileIfNeeded(
         'TEST_BOB_PRIVATE_KEY_PEM',
-        _getFilePath(
-          packagePath: packagePath,
-          fileName: bobPrivateKeyPath,
-        ),
+        _getFilePath(packagePath: packagePath, fileName: bobPrivateKeyPath),
         decodeBase64: true,
       );
     }
@@ -93,18 +82,13 @@ class TestConfig {
     required String packagePath,
     required String fileName,
   }) {
-    return path.normalize(path.join(
-      packagePath,
-      fileName,
-    ));
+    return path.normalize(path.join(packagePath, fileName));
   }
 
-  static String _getPackagePath({
-    required String packageDirectoryName,
-  }) {
+  static String _getPackagePath({required String packageDirectoryName}) {
     final expectedPaths = [
       'libs/dart/didcomm/$packageDirectoryName',
-      'clients/dart/didcomm/$packageDirectoryName'
+      'clients/dart/didcomm/$packageDirectoryName',
     ];
 
     for (final expectedPath in expectedPaths) {
@@ -117,10 +101,7 @@ class TestConfig {
 
     for (final expectedPath in expectedPaths) {
       final possiblePath = path.normalize(
-        path.join(
-          Directory.current.path,
-          '../../../$expectedPath',
-        ),
+        path.join(Directory.current.path, '../../../$expectedPath'),
       );
 
       if (Directory(possiblePath).existsSync()) {
@@ -159,32 +140,22 @@ class TestConfig {
       expiresTime: expiresTime,
     );
 
-    await mediatorClient.sendAclManagementMessage(
-      accessListAddMessage,
-    );
+    await mediatorClient.sendAclManagementMessage(accessListAddMessage);
   }
 
   Future<String> getDidKeyForPrivateKeyPath(String privateKeyPath) async {
     final keyStore = InMemoryKeyStore();
     final wallet = PersistentWallet(keyStore);
 
-    final didManager = DidKeyManager(
-      wallet: wallet,
-      store: InMemoryDidStore(),
-    );
+    final didManager = DidKeyManager(wallet: wallet, store: InMemoryDidStore());
 
     final keyId = 'key-1';
 
-    final privateKeyBytes = await extractPrivateKeyBytes(
-      bobPrivateKeyPath,
-    );
+    final privateKeyBytes = await extractPrivateKeyBytes(bobPrivateKeyPath);
 
     await keyStore.set(
       keyId,
-      StoredKey(
-        keyType: KeyType.p256,
-        privateKeyBytes: privateKeyBytes,
-      ),
+      StoredKey(keyType: KeyType.p256, privateKeyBytes: privateKeyBytes),
     );
 
     await didManager.addVerificationMethod(keyId);

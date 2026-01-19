@@ -8,15 +8,12 @@ class IamApiServiceFixtures {
   static const Permissions testPermissions = Permissions.read;
 
   static Response<consumer_iam.UpdateAccessOutput>
-      get successfulUpdateAccessResponse => Response(
-            data: consumer_iam.UpdateAccessOutput((b) => b..success = true),
-            statusCode: 200,
-            requestOptions: RequestOptions(),
-          );
+  get successfulUpdateAccessResponse => Response(
+    data: consumer_iam.UpdateAccessOutput((b) => b..success = true),
+    statusCode: 200,
+    requestOptions: RequestOptions(),
+  );
 
-  static Response<dynamic> get successfulRevokeAccessResponse => Response(
-        data: null,
-        statusCode: 200,
-        requestOptions: RequestOptions(),
-      );
+  static Response<dynamic> get successfulRevokeAccessResponse =>
+      Response(data: null, statusCode: 200, requestOptions: RequestOptions());
 }

@@ -31,10 +31,7 @@ void main() async {
 
     late DidDocument bobMediatorDocument;
 
-    for (final didType in [
-      'did:key',
-      'did:peer',
-    ]) {
+    for (final didType in ['did:key', 'did:peer']) {
       group(didType, () {
         setUp(() async {
           final useDidKey = didType == 'did:key';
@@ -101,10 +98,8 @@ void main() async {
           await bobDidManager.addVerificationMethod(bobKeyId);
           bobDidDocument = await bobDidManager.getDidDocument();
 
-          bobMediatorDocument =
-              await UniversalDIDResolver.defaultResolver.resolveDid(
-            await readDid(config.mediatorDidPath),
-          );
+          bobMediatorDocument = await UniversalDIDResolver.defaultResolver
+              .resolveDid(await readDid(config.mediatorDidPath));
 
           aliceMediatorClient = await DidcommMediatorClient.init(
             authorizationProvider: await AffinidiAuthorizationProvider.init(
@@ -151,15 +146,17 @@ void main() async {
 
           final aliceSignedAndEncryptedMessage =
               await DidcommMessage.packIntoSignedAndEncryptedMessages(
-            alicePlainTextMassage,
-            keyType: [bobDidDocument].getCommonKeyTypesInKeyAgreements().first,
-            recipientDidDocuments: [bobDidDocument],
-            keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
-            encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
-            signer: await aliceDidManager.getSigner(
-              aliceDidDocument.assertionMethod.first.id,
-            ),
-          );
+                alicePlainTextMassage,
+                keyType: [
+                  bobDidDocument,
+                ].getCommonKeyTypesInKeyAgreements().first,
+                recipientDidDocuments: [bobDidDocument],
+                keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
+                encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
+                signer: await aliceDidManager.getSigner(
+                  aliceDidDocument.assertionMethod.first.id,
+                ),
+              );
 
           final createdTime = DateTime.now().toUtc();
           final expiresTime = createdTime.add(const Duration(seconds: 60));
@@ -182,9 +179,7 @@ void main() async {
             ],
           );
 
-          await aliceMediatorClient.sendMessage(
-            forwardMessage,
-          );
+          await aliceMediatorClient.sendMessage(forwardMessage);
 
           final messages = await bobMediatorClient.fetchMessages();
 
@@ -218,120 +213,114 @@ void main() async {
           );
         });
 
-        test(
-          'WebSockets API works correctly',
-          () async {
-            final expectedBodyContent = const Uuid().v4();
+        test('WebSockets API works correctly', () async {
+          final expectedBodyContent = const Uuid().v4();
 
-            final alicePlainTextMassage = PlainTextMessage(
-              id: const Uuid().v4(),
-              from: aliceDidDocument.id,
-              to: [bobDidDocument.id],
-              type: Uri.parse('https://didcomm.org/example/1.0/message'),
-              body: {'content': expectedBodyContent},
-            );
+          final alicePlainTextMassage = PlainTextMessage(
+            id: const Uuid().v4(),
+            from: aliceDidDocument.id,
+            to: [bobDidDocument.id],
+            type: Uri.parse('https://didcomm.org/example/1.0/message'),
+            body: {'content': expectedBodyContent},
+          );
 
-            alicePlainTextMassage['custom-header'] = 'custom-value';
+          alicePlainTextMassage['custom-header'] = 'custom-value';
 
-            final aliceSignedAndEncryptedMessage =
-                await DidcommMessage.packIntoSignedAndEncryptedMessages(
-              alicePlainTextMassage,
-              keyType: [
-                bobDidDocument,
-              ].getCommonKeyTypesInKeyAgreements().first,
-              recipientDidDocuments: [bobDidDocument],
-              keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
-              encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
-              signer: await aliceDidManager.getSigner(
-                aliceDidDocument.assertionMethod.first.id,
-              ),
-            );
+          final aliceSignedAndEncryptedMessage =
+              await DidcommMessage.packIntoSignedAndEncryptedMessages(
+                alicePlainTextMassage,
+                keyType: [
+                  bobDidDocument,
+                ].getCommonKeyTypesInKeyAgreements().first,
+                recipientDidDocuments: [bobDidDocument],
+                keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
+                encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
+                signer: await aliceDidManager.getSigner(
+                  aliceDidDocument.assertionMethod.first.id,
+                ),
+              );
 
-            final createdTime = DateTime.now().toUtc();
-            final expiresTime = createdTime.add(const Duration(seconds: 60));
+          final createdTime = DateTime.now().toUtc();
+          final expiresTime = createdTime.add(const Duration(seconds: 60));
 
-            final forwardMessage = ForwardMessage(
-              id: const Uuid().v4(),
-              to: [bobMediatorDocument.id],
-              from: aliceDidDocument.id,
-              next: bobDidDocument.id,
-              expiresTime: expiresTime,
-              attachments: [
-                Attachment(
-                  mediaType: 'application/json',
-                  data: AttachmentData(
-                    base64: base64UrlEncodeNoPadding(
-                      aliceSignedAndEncryptedMessage.toJsonBytes(),
-                    ),
+          final forwardMessage = ForwardMessage(
+            id: const Uuid().v4(),
+            to: [bobMediatorDocument.id],
+            from: aliceDidDocument.id,
+            next: bobDidDocument.id,
+            expiresTime: expiresTime,
+            attachments: [
+              Attachment(
+                mediaType: 'application/json',
+                data: AttachmentData(
+                  base64: base64UrlEncodeNoPadding(
+                    aliceSignedAndEncryptedMessage.toJsonBytes(),
                   ),
                 ),
-              ],
-            );
+              ),
+            ],
+          );
 
-            String? actualBodyContent;
-            bool? telemetryMessageReceived;
+          String? actualBodyContent;
+          bool? telemetryMessageReceived;
 
-            final completer = Completer<void>();
+          final completer = Completer<void>();
 
-            bobMediatorClient.listenForIncomingMessages(
-              (message) async {
-                final encryptedMessage = EncryptedMessage.fromJson(message);
-                final senderDid = const JweHeaderConverter()
-                    .fromJson(encryptedMessage.protected)
-                    .subjectKeyId;
+          bobMediatorClient.listenForIncomingMessages(
+            (message) async {
+              final encryptedMessage = EncryptedMessage.fromJson(message);
+              final senderDid = const JweHeaderConverter()
+                  .fromJson(encryptedMessage.protected)
+                  .subjectKeyId;
 
-                final isMediatorTelemetryMessage =
-                    senderDid?.contains('.affinidi.io') == true;
+              final isMediatorTelemetryMessage =
+                  senderDid?.contains('.affinidi.io') == true;
 
-                final unpackedMessage =
-                    await DidcommMessage.unpackToPlainTextMessage(
-                  message: message,
-                  recipientDidManager: bobDidManager,
-                  validateAddressingConsistency: true,
-                  expectedMessageWrappingTypes: [
-                    MessageWrappingType.authcryptPlaintext,
-                    MessageWrappingType.authcryptSignPlaintext,
-                    MessageWrappingType.anoncryptSignPlaintext,
-                    MessageWrappingType.anoncryptAuthcryptPlaintext,
-                  ],
-                  expectedSigners: [
-                    isMediatorTelemetryMessage
-                        ? bobMediatorDocument.assertionMethod.first.didKeyId
-                        : aliceDidDocument.assertionMethod.first.didKeyId,
-                  ],
-                );
+              final unpackedMessage =
+                  await DidcommMessage.unpackToPlainTextMessage(
+                    message: message,
+                    recipientDidManager: bobDidManager,
+                    validateAddressingConsistency: true,
+                    expectedMessageWrappingTypes: [
+                      MessageWrappingType.authcryptPlaintext,
+                      MessageWrappingType.authcryptSignPlaintext,
+                      MessageWrappingType.anoncryptSignPlaintext,
+                      MessageWrappingType.anoncryptAuthcryptPlaintext,
+                    ],
+                    expectedSigners: [
+                      isMediatorTelemetryMessage
+                          ? bobMediatorDocument.assertionMethod.first.didKeyId
+                          : aliceDidDocument.assertionMethod.first.didKeyId,
+                    ],
+                  );
 
-                if (isMediatorTelemetryMessage) {
-                  telemetryMessageReceived = true;
-                } else {
-                  actualBodyContent ??=
-                      unpackedMessage.body?['content'] as String?;
-                }
+              if (isMediatorTelemetryMessage) {
+                telemetryMessageReceived = true;
+              } else {
+                actualBodyContent ??=
+                    unpackedMessage.body?['content'] as String?;
+              }
 
-                if (actualBodyContent == expectedBodyContent &&
-                    telemetryMessageReceived == true) {
-                  await ConnectionPool.instance.stopConnections();
-                  completer.complete();
-                }
-              },
-              onError: (Object error) => prettyPrint('error', object: error),
-              cancelOnError: false,
-            );
+              if (actualBodyContent == expectedBodyContent &&
+                  telemetryMessageReceived == true) {
+                await ConnectionPool.instance.stopConnections();
+                completer.complete();
+              }
+            },
+            onError: (Object error) => prettyPrint('error', object: error),
+            cancelOnError: false,
+          );
 
-            await ConnectionPool.instance.startConnections();
+          await ConnectionPool.instance.startConnections();
 
-            await aliceMediatorClient.sendMessage(
-              forwardMessage,
-            );
+          await aliceMediatorClient.sendMessage(forwardMessage);
 
-            await completer.future;
-            await ConnectionPool.instance.stopConnections();
+          await completer.future;
+          await ConnectionPool.instance.stopConnections();
 
-            expect(actualBodyContent, expectedBodyContent);
-            expect(telemetryMessageReceived, isTrue);
-          },
-          retry: webSocketsTestRetries,
-        );
+          expect(actualBodyContent, expectedBodyContent);
+          expect(telemetryMessageReceived, isTrue);
+        }, retry: webSocketsTestRetries);
       });
     }
   });

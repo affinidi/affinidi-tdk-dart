@@ -14,9 +14,13 @@ void main() {
       expect(options.serviceSize, ServiceSize.tiny);
       expect(options.defaultMediatorDid, 'did:example:mediator');
       expect(
-          options.administratorDids, 'did:example:admin1,did:example:admin2');
-      expect(options.corsAllowedOrigins,
-          'https://example.com,https://app.example.com');
+        options.administratorDids,
+        'did:example:admin1,did:example:admin2',
+      );
+      expect(
+        options.corsAllowedOrigins,
+        'https://example.com,https://app.example.com',
+      );
       expect(options.name, isNull);
       expect(options.description, isNull);
     });
@@ -92,7 +96,9 @@ void main() {
       expect(options.serviceSize, ServiceSize.tiny);
       expect(options.defaultMediatorDid, 'did:example:mediator');
       expect(
-          options.administratorDids, 'did:example:admin1,did:example:admin2');
+        options.administratorDids,
+        'did:example:admin1,did:example:admin2',
+      );
       expect(options.corsAllowedOrigins, 'https://example.com');
       expect(options.name, 'Test TR');
       expect(options.description, 'Test description');

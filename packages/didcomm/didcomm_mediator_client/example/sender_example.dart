@@ -20,10 +20,8 @@ void main() async {
     config.bobPrivateKeyPath,
   );
 
-  final receiverDidDocument =
-      await UniversalDIDResolver.defaultResolver.resolveDid(
-    receiverDid,
-  );
+  final receiverDidDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(receiverDid);
 
   final messageForReceiver = 'Hello, Bob!';
 
@@ -36,33 +34,26 @@ void main() async {
   );
 
   final senderKeyId = 'alice-key-1';
-  final senderPrivateKeyBytes =
-      await extractPrivateKeyBytes(config.alicePrivateKeyPath);
+  final senderPrivateKeyBytes = await extractPrivateKeyBytes(
+    config.alicePrivateKeyPath,
+  );
 
   await senderKeyStore.set(
     senderKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: senderPrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: senderPrivateKeyBytes),
   );
 
   await senderDidManager.addVerificationMethod(senderKeyId);
   final senderDidDocument = await senderDidManager.getDidDocument();
 
-  prettyPrint(
-    'Sender DID',
-    object: senderDidDocument.id,
-  );
+  prettyPrint('Sender DID', object: senderDidDocument.id);
 
   final senderSigner = await senderDidManager.getSigner(
     senderDidDocument.assertionMethod.first.id,
   );
 
-  final receiverMediatorDidDocument =
-      await UniversalDIDResolver.defaultResolver.resolveDid(
-    await readDid(config.mediatorDidPath),
-  );
+  final receiverMediatorDidDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(await readDid(config.mediatorDidPath));
 
   final senderPlainTextMassage = PlainTextMessage(
     id: const Uuid().v4(),
@@ -81,15 +72,13 @@ void main() async {
 
   final senderSignedAndEncryptedMessage =
       await DidcommMessage.packIntoSignedAndEncryptedMessages(
-    senderPlainTextMassage,
-    keyType: [
-      receiverDidDocument,
-    ].getCommonKeyTypesInKeyAgreements().first,
-    recipientDidDocuments: [receiverDidDocument],
-    keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
-    encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
-    signer: senderSigner,
-  );
+        senderPlainTextMassage,
+        keyType: [receiverDidDocument].getCommonKeyTypesInKeyAgreements().first,
+        recipientDidDocuments: [receiverDidDocument],
+        keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
+        encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
+        signer: senderSigner,
+      );
 
   prettyPrint(
     'Encrypted and Signed Message by Sender',
@@ -132,9 +121,7 @@ void main() async {
     clientOptions: const AffinidiClientOptions(),
   );
 
-  await senderMediatorClient.sendMessage(
-    forwardMessage,
-  );
+  await senderMediatorClient.sendMessage(forwardMessage);
 
   prettyPrint('The message has been sent');
 }

@@ -4,20 +4,14 @@ import '../base_messages/base_response_message.dart';
 
 part 'destroy_instance_response_message.g.dart';
 
-@JsonSerializable(
-  includeIfNull: false,
-  explicitToJson: true,
-)
-
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 /// Response data for destroy instance operation.
 class DestroyInstanceResponse {
   /// The response message/status.
   final String? message;
 
   /// Creates a destroy instance response.
-  DestroyInstanceResponse({
-    this.message,
-  });
+  DestroyInstanceResponse({this.message});
 
   /// Creates a [DestroyInstanceResponse] from a JSON map.
   factory DestroyInstanceResponse.fromJson(Map<String, dynamic> json) =>
@@ -40,9 +34,7 @@ class DestroyInstanceResponseMessage
     super.expiresTime,
     super.threadId,
     super.body = const {},
-  }) : super(
-          fromJson: DestroyInstanceResponse.fromJson,
-        );
+  }) : super(fromJson: DestroyInstanceResponse.fromJson);
 
   /// Creates a destroy mediator instance response message.
   factory DestroyInstanceResponseMessage.mediator({

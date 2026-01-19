@@ -34,20 +34,14 @@ void main() async {
 
   await receiverKeyStore.set(
     receiverKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: receiverPrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: receiverPrivateKeyBytes),
   );
 
   await receiverDidManager.addVerificationMethod(receiverKeyId);
   final receiverDidDocument = await receiverDidManager.getDidDocument();
 
   // Serialized receiverMediatorDocument needs to shared with sender
-  prettyPrint(
-    'Receiver DID Document',
-    object: receiverDidDocument,
-  );
+  prettyPrint('Receiver DID Document', object: receiverDidDocument);
 
   await config.configureAcl(
     mediatorDidDocument: await UniversalDIDResolver.defaultResolver.resolveDid(
@@ -57,10 +51,8 @@ void main() async {
     theirDids: [senderDid],
   );
 
-  final receiverMediatorDocument =
-      await UniversalDIDResolver.defaultResolver.resolveDid(
-    await readDid(config.mediatorDidPath),
-  );
+  final receiverMediatorDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(await readDid(config.mediatorDidPath));
 
   final receiverMediatorClient = await DidcommMediatorClient.init(
     authorizationProvider: await AffinidiAuthorizationProvider.init(
@@ -78,15 +70,15 @@ void main() async {
   for (final message in messages) {
     final originalPlainTextMessageFromSender =
         await DidcommMessage.unpackToPlainTextMessage(
-      message: message,
-      recipientDidManager: receiverDidManager,
-      expectedMessageWrappingTypes: [
-        MessageWrappingType.anoncryptSignPlaintext,
-        MessageWrappingType.authcryptSignPlaintext,
-        MessageWrappingType.authcryptPlaintext,
-        MessageWrappingType.anoncryptAuthcryptPlaintext,
-      ],
-    );
+          message: message,
+          recipientDidManager: receiverDidManager,
+          expectedMessageWrappingTypes: [
+            MessageWrappingType.anoncryptSignPlaintext,
+            MessageWrappingType.authcryptSignPlaintext,
+            MessageWrappingType.authcryptPlaintext,
+            MessageWrappingType.anoncryptAuthcryptPlaintext,
+          ],
+        );
 
     prettyPrint(
       'Unpacked Plain Text Message received by Receiver via Mediator',

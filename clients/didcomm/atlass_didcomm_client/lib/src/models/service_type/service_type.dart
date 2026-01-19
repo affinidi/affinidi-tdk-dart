@@ -16,8 +16,8 @@ enum ServiceType {
 
   /// Gets the identifier field name for this service type.
   String get identifier => switch (this) {
-        ServiceType.mediator => 'mediatorId',
-        ServiceType.meetingPlace => 'mpxId',
-        ServiceType.trustRegistry => 'trId',
-      };
+    ServiceType.mediator => 'mediatorId',
+    ServiceType.meetingPlace => 'mpxId',
+    ServiceType.trustRegistry => 'trId',
+  };
 }

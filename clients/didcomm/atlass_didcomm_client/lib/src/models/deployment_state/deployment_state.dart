@@ -12,5 +12,5 @@ enum DeploymentState {
 
   /// The instance is in an error state.
   @JsonValue('ERROR')
-  error
+  error,
 }

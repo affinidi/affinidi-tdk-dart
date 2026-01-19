@@ -7,18 +7,18 @@ part of 'mediator_acl.dart';
 // **************************************************************************
 
 MediatorAcl _$MediatorAclFromJson(Map<String, dynamic> json) => MediatorAcl(
-      allowedDids: (json['allowedDids'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      deniedDids: (json['deniedDids'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      defaultAllow: json['defaultAllow'] as bool?,
-      lastUpdated: json['lastUpdated'] == null
-          ? null
-          : DateTime.parse(json['lastUpdated'] as String),
-      policyVersion: json['policyVersion'] as String?,
-    );
+  allowedDids: (json['allowedDids'] as List<dynamic>?)
+      ?.map((e) => e as String)
+      .toList(),
+  deniedDids: (json['deniedDids'] as List<dynamic>?)
+      ?.map((e) => e as String)
+      .toList(),
+  defaultAllow: json['defaultAllow'] as bool?,
+  lastUpdated: json['lastUpdated'] == null
+      ? null
+      : DateTime.parse(json['lastUpdated'] as String),
+  policyVersion: json['policyVersion'] as String?,
+);
 
 Map<String, dynamic> _$MediatorAclToJson(MediatorAcl instance) =>
     <String, dynamic>{

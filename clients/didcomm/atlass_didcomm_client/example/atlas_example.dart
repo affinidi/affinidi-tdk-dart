@@ -47,17 +47,13 @@ Future<void> main() async {
 
   prettyPrint('Checking if there are deployed mediators...');
 
-  final existingInstances =
-      await atlasClient.getMediatorInstancesList().catchError(
-    (Object error) {
-      prettyPrint(
-        'Error while listing mediators',
-        object: error,
-      );
+  final existingInstances = await atlasClient
+      .getMediatorInstancesList()
+      .catchError((Object error) {
+        prettyPrint('Error while listing mediators', object: error);
 
-      exit(1);
-    },
-  );
+        exit(1);
+      });
 
   if (existingInstances.instances.isNotEmpty) {
     prettyPrint('Cleaning previously deployed mediators...');
@@ -119,17 +115,20 @@ Future<void> main() async {
 
   prettyPrint('Updating mediator metadata...');
 
-  final updateMetadataResponse =
-      await atlasClient.updateMediatorInstanceDeployment(
-    mediatorId: deployedMediator.mediatorId,
-    options: const UpdateMediatorInstanceDeploymentOptions(
-      name: 'Example Mediator (updated)',
-      description: 'Example mediator metadata updated by atlas_example.dart',
-    ),
-  );
+  final updateMetadataResponse = await atlasClient
+      .updateMediatorInstanceDeployment(
+        mediatorId: deployedMediator.mediatorId,
+        options: const UpdateMediatorInstanceDeploymentOptions(
+          name: 'Example Mediator (updated)',
+          description:
+              'Example mediator metadata updated by atlas_example.dart',
+        ),
+      );
 
-  prettyPrint('Update metadata response',
-      object: updateMetadataResponse.response);
+  prettyPrint(
+    'Update metadata response',
+    object: updateMetadataResponse.response,
+  );
 
   prettyPrint('Updating mediator configuration (ACL)...');
 
@@ -146,15 +145,13 @@ Future<void> main() async {
 
   final acl = <String, num>{
     if (adminDid != null) hashDid(adminDid): 1,
-    hashDid(mediatorDid): 1
+    hashDid(mediatorDid): 1,
   };
 
-  final updateConfigurationResponse =
-      await atlasClient.updateMediatorInstanceConfiguration(
-    configurationData: UpdateInstanceConfigurationOptions(
-      acl: acl,
-    ),
-  );
+  final updateConfigurationResponse = await atlasClient
+      .updateMediatorInstanceConfiguration(
+        configurationData: UpdateInstanceConfigurationOptions(acl: acl),
+      );
 
   prettyPrint(
     'Update configuration response',
@@ -166,8 +163,8 @@ Future<void> main() async {
   );
 
   prettyPrint('Metadata after updates', object: finalMediatorMetadata);
-  final deployedMediatorsResponse =
-      await atlasClient.getMediatorInstancesList();
+  final deployedMediatorsResponse = await atlasClient
+      .getMediatorInstancesList();
 
   prettyPrint('Get mediators response', object: deployedMediatorsResponse);
 

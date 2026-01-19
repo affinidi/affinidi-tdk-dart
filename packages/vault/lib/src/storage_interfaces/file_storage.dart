@@ -62,10 +62,7 @@ abstract class FileStorage {
   /// Throws if the file does not exist
   /// Throws if the file is not a file
   /// Throws for network connectivity
-  Future<File> getFile({
-    required String fileId,
-    VaultCancelToken? cancelToken,
-  });
+  Future<File> getFile({required String fileId, VaultCancelToken? cancelToken});
 
   /// Allows retrieving file content
   /// Throws if the file does not exist

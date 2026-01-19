@@ -101,10 +101,7 @@ abstract interface class VaultDataManagerServiceInterface {
   /// ```dart
   /// await vaultDataManagerService.deleteProfile('your_profile_id');
   /// ```
-  Future<void> deleteProfile(
-    String profileId, {
-    VaultCancelToken? cancelToken,
-  });
+  Future<void> deleteProfile(String profileId, {VaultCancelToken? cancelToken});
 
   /// Retrieves structured data associated with a profile
   ///
@@ -147,10 +144,7 @@ abstract interface class VaultDataManagerServiceInterface {
   /// ```dart
   /// await vaultDataManagerService.scanFile('your_file_node_id');
   /// ```
-  Future<void> scanFile(
-    String nodeId, {
-    VaultCancelToken? cancelToken,
-  });
+  Future<void> scanFile(String nodeId, {VaultCancelToken? cancelToken});
 
   /// Retrieves list of scanned files
   ///
@@ -160,9 +154,7 @@ abstract interface class VaultDataManagerServiceInterface {
   /// ```dart
   /// final scannedFiles = await vaultDataManagerService.getScannedFiles();
   /// ```
-  Future<List<ScannedFile>> getScannedFiles({
-    VaultCancelToken? cancelToken,
-  });
+  Future<List<ScannedFile>> getScannedFiles({VaultCancelToken? cancelToken});
 
   /// Gets recognized data from a scanned file
   ///
@@ -223,22 +215,13 @@ abstract interface class VaultDataManagerServiceInterface {
   });
 
   /// Deletes a folder and its contents
-  Future<void> deleteFolder(
-    String nodeId, {
-    VaultCancelToken? cancelToken,
-  });
+  Future<void> deleteFolder(String nodeId, {VaultCancelToken? cancelToken});
 
   /// Deletes a file
-  Future<void> deleteFile(
-    String nodeId, {
-    VaultCancelToken? cancelToken,
-  });
+  Future<void> deleteFile(String nodeId, {VaultCancelToken? cancelToken});
 
   /// Retrieves node information
-  Future<Node> getNodeInfo(
-    String nodeId, {
-    VaultCancelToken? cancelToken,
-  });
+  Future<Node> getNodeInfo(String nodeId, {VaultCancelToken? cancelToken});
 
   /// Gets all verifiable credentials for a profile
   Future<List<DigitalCredential>> getClaimedCredentialsByProfile(

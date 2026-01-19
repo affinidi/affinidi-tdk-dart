@@ -5,8 +5,5 @@ part 'vault_service_state.freezed.dart';
 
 @Freezed(fromJson: false, toJson: false)
 class VaultServiceState with _$VaultServiceState {
-  factory VaultServiceState({
-    String? error,
-    Vault? vault,
-  }) = _VaultServiceState;
+  factory VaultServiceState({String? error, Vault? vault}) = _VaultServiceState;
 }

@@ -21,18 +21,17 @@ MediatorDeployment _$MediatorDeploymentFromJson(Map<String, dynamic> json) =>
       version: json['version'] as String?,
     );
 
-Map<String, dynamic> _$MediatorDeploymentToJson(MediatorDeployment instance) =>
-    <String, dynamic>{
-      if (instance.instanceType case final value?) 'instanceType': value,
-      if (instance.region case final value?) 'region': value,
-      if (instance.availabilityZone case final value?)
-        'availabilityZone': value,
-      if (instance.autoScaling case final value?) 'autoScaling': value,
-      if (instance.minInstances case final value?) 'minInstances': value,
-      if (instance.maxInstances case final value?) 'maxInstances': value,
-      if (instance.deploymentStatus case final value?)
-        'deploymentStatus': value,
-      if (instance.deployedAt?.toIso8601String() case final value?)
-        'deployedAt': value,
-      if (instance.version case final value?) 'version': value,
-    };
+Map<String, dynamic> _$MediatorDeploymentToJson(
+  MediatorDeployment instance,
+) => <String, dynamic>{
+  if (instance.instanceType case final value?) 'instanceType': value,
+  if (instance.region case final value?) 'region': value,
+  if (instance.availabilityZone case final value?) 'availabilityZone': value,
+  if (instance.autoScaling case final value?) 'autoScaling': value,
+  if (instance.minInstances case final value?) 'minInstances': value,
+  if (instance.maxInstances case final value?) 'maxInstances': value,
+  if (instance.deploymentStatus case final value?) 'deploymentStatus': value,
+  if (instance.deployedAt?.toIso8601String() case final value?)
+    'deployedAt': value,
+  if (instance.version case final value?) 'version': value,
+};

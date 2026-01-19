@@ -23,9 +23,7 @@ Future<void> main() async {
 
     // Create a new instance of ClaimVerifiableCredentialService
     final claimVerifiableCredentialService =
-        OID4VCIClaimVerifiableCredentialService(
-      didSigner: signer,
-    );
+        OID4VCIClaimVerifiableCredentialService(didSigner: signer);
 
     // The credential offer URL typically comes from:
     // - A QR code scan
@@ -35,14 +33,16 @@ Future<void> main() async {
       'https://example.com/callback?credential_offer_uri=https://issuer.example.com/offer/123',
     );
 
-    final context =
-        await claimVerifiableCredentialService.loadCredentialOffer(uri);
+    final context = await claimVerifiableCredentialService.loadCredentialOffer(
+      uri,
+    );
 
     // The credential is now ready to be stored or used
     print('Credential Details:');
     print('Identifier: ${context.credentialOffer.credentialIdentifier}');
     print(
-        'Requires Transaction Code: ${context.credentialOffer.isTxCodeRequired}');
+      'Requires Transaction Code: ${context.credentialOffer.isTxCodeRequired}',
+    );
     print('Issuer Details:');
     print('Token Endpoint: ${context.issuerMetadata.tokenEndpoint}');
     print('Credential Endpoint: ${context.issuerMetadata.credentialEndpoint}');

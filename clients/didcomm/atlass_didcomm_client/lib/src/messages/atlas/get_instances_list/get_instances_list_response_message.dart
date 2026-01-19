@@ -20,9 +20,9 @@ class GetMediatorInstancesListResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-          operationName: 'getMediatorInstancesList',
-          fromJson: MediatorInstanceBodyData.fromJson,
-        );
+         operationName: 'getMediatorInstancesList',
+         fromJson: MediatorInstanceBodyData.fromJson,
+       );
 
   /// Gets the list of mediator instances from the response.
   List<MediatorInstanceMetadata> get instances => response.instances;
@@ -41,9 +41,9 @@ class GetMpxInstancesListResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-          operationName: 'getMpxInstanceList',
-          fromJson: MpxInstanceBodyData.fromJson,
-        );
+         operationName: 'getMpxInstanceList',
+         fromJson: MpxInstanceBodyData.fromJson,
+       );
 
   /// Gets the list of MPX instances from the response.
   List<MpxInstanceMetadata> get instances => response.instances;
@@ -62,9 +62,9 @@ class GetTrInstancesListResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-          operationName: 'getTrInstanceList',
-          fromJson: TrInstanceBodyData.fromJson,
-        );
+         operationName: 'getTrInstanceList',
+         fromJson: TrInstanceBodyData.fromJson,
+       );
 
   /// Gets the list of Trust Registry instances from the response.
   List<TrInstanceMetadata> get instances => response.instances;
@@ -80,10 +80,7 @@ class ListInstancesOptions {
   final int? limit;
 
   /// Creates a list instances options.
-  ListInstancesOptions({
-    this.exclusiveStartKey,
-    this.limit = 10,
-  });
+  ListInstancesOptions({this.exclusiveStartKey, this.limit = 10});
 
   /// Creates a ListInstancesOptions from a JSON map.
   factory ListInstancesOptions.fromJson(Map<String, dynamic> json) =>
@@ -94,7 +91,6 @@ class ListInstancesOptions {
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Body data containing mediator instances list.
 class MediatorInstanceBodyData {
   /// The list of mediator instances.
@@ -104,10 +100,7 @@ class MediatorInstanceBodyData {
   final String? lastEvaluatedKey;
 
   /// Creates mediator instance body data.
-  MediatorInstanceBodyData({
-    required this.instances,
-    this.lastEvaluatedKey,
-  });
+  MediatorInstanceBodyData({required this.instances, this.lastEvaluatedKey});
 
   /// Creates MediatorInstanceBodyData from a JSON map.
   factory MediatorInstanceBodyData.fromJson(Map<String, dynamic> json) =>
@@ -118,7 +111,6 @@ class MediatorInstanceBodyData {
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Body data containing MPX instances list.
 class MpxInstanceBodyData {
   /// The list of MPX instances.
@@ -128,10 +120,7 @@ class MpxInstanceBodyData {
   final String? lastEvaluatedKey;
 
   /// Creates MPX instance body data.
-  MpxInstanceBodyData({
-    required this.instances,
-    this.lastEvaluatedKey,
-  });
+  MpxInstanceBodyData({required this.instances, this.lastEvaluatedKey});
 
   /// Creates MpxInstanceBodyData from a JSON map.
   factory MpxInstanceBodyData.fromJson(Map<String, dynamic> json) =>
@@ -142,7 +131,6 @@ class MpxInstanceBodyData {
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Body data containing Trust Registry instances list.
 class TrInstanceBodyData {
   /// The list of Trust Registry instances.
@@ -152,10 +140,7 @@ class TrInstanceBodyData {
   final String? lastEvaluatedKey;
 
   /// Creates Trust Registry instance body data.
-  TrInstanceBodyData({
-    required this.instances,
-    this.lastEvaluatedKey,
-  });
+  TrInstanceBodyData({required this.instances, this.lastEvaluatedKey});
 
   /// Creates TrInstanceBodyData from a JSON map.
   factory TrInstanceBodyData.fromJson(Map<String, dynamic> json) =>

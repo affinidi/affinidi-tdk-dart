@@ -91,9 +91,7 @@ void main() {
     });
 
     test('should deserialize from JSON with only required field', () {
-      final json = {
-        'serviceSize': 'small',
-      };
+      final json = {'serviceSize': 'small'};
 
       final request = DeployInstanceRequestMessage.mediator(
         id: 'test-id',
@@ -148,10 +146,7 @@ void main() {
     });
 
     test('should handle extra fields in JSON', () {
-      final json = {
-        'serviceSize': 'tiny',
-        'extraField': 'should be ignored',
-      };
+      final json = {'serviceSize': 'tiny', 'extraField': 'should be ignored'};
 
       final request = DeployInstanceRequestMessage.mediator(
         id: 'test-id',

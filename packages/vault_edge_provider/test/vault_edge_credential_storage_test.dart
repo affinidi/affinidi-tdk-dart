@@ -27,7 +27,8 @@ void main() {
 
     CredentialMockSetup.setupCredentialRepositoryMocks(mockRepository);
     MockEncryptionServiceSetup.setupEncryptionServiceDefaults(
-        mockEncryptionService);
+      mockEncryptionService,
+    );
   });
 
   group('When performing credential operations', () {
@@ -41,13 +42,15 @@ void main() {
 
         await storage.saveCredential(verifiableCredential: mockVC);
 
-        verify(() => mockRepository.saveCredentialData(
-              profileId: CredentialFixtures.profileId,
-              credentialId: any(named: 'credentialId'),
-              credentialName: 'UniversityDegree',
-              credentialContent: any(named: 'credentialContent'),
-              cancelToken: null,
-            )).called(1);
+        verify(
+          () => mockRepository.saveCredentialData(
+            profileId: CredentialFixtures.profileId,
+            credentialId: any(named: 'credentialId'),
+            credentialName: 'UniversityDegree',
+            credentialContent: any(named: 'credentialContent'),
+            cancelToken: null,
+          ),
+        ).called(1);
       });
 
       test('should pass cancel token when provided', () async {
@@ -59,13 +62,15 @@ void main() {
           cancelToken: cancelToken,
         );
 
-        verify(() => mockRepository.saveCredentialData(
-              profileId: CredentialFixtures.profileId,
-              credentialId: any(named: 'credentialId'),
-              credentialName: 'UniversityDegree',
-              credentialContent: any(named: 'credentialContent'),
-              cancelToken: cancelToken,
-            )).called(1);
+        verify(
+          () => mockRepository.saveCredentialData(
+            profileId: CredentialFixtures.profileId,
+            credentialId: any(named: 'credentialId'),
+            credentialName: 'UniversityDegree',
+            credentialContent: any(named: 'credentialContent'),
+            cancelToken: cancelToken,
+          ),
+        ).called(1);
       });
     });
 
@@ -76,27 +81,33 @@ void main() {
         );
 
         expect(result.id, equals(CredentialFixtures.credentialId));
-        verify(() => mockRepository.getCredentialData(
-              credentialId: CredentialFixtures.credentialId,
-              cancelToken: null,
-            )).called(1);
+        verify(
+          () => mockRepository.getCredentialData(
+            credentialId: CredentialFixtures.credentialId,
+            cancelToken: null,
+          ),
+        ).called(1);
       });
 
       test('should throw exception when credential not found', () async {
-        when(() => mockRepository.getCredentialData(
-              credentialId: CredentialFixtures.credentialId,
-              cancelToken: any(named: 'cancelToken'),
-            )).thenAnswer((_) async => null);
+        when(
+          () => mockRepository.getCredentialData(
+            credentialId: CredentialFixtures.credentialId,
+            cancelToken: any(named: 'cancelToken'),
+          ),
+        ).thenAnswer((_) async => null);
 
         expect(
           () => storage.getCredential(
             digitalCredentialId: CredentialFixtures.credentialId,
           ),
-          throwsA(isA<TdkException>().having(
-            (error) => error.code,
-            'code',
-            TdkExceptionType.credentialNotFound.code,
-          )),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              TdkExceptionType.credentialNotFound.code,
+            ),
+          ),
         );
       });
 
@@ -108,10 +119,12 @@ void main() {
           cancelToken: cancelToken,
         );
 
-        verify(() => mockRepository.getCredentialData(
-              credentialId: CredentialFixtures.credentialId,
-              cancelToken: cancelToken,
-            )).called(1);
+        verify(
+          () => mockRepository.getCredentialData(
+            credentialId: CredentialFixtures.credentialId,
+            cancelToken: cancelToken,
+          ),
+        ).called(1);
       });
     });
 
@@ -123,12 +136,14 @@ void main() {
         expect(result.items.first.id, equals(CredentialFixtures.credentialId));
         expect(result.items.last.id, equals('test-credential-id-2'));
         expect(result.lastEvaluatedItemId, equals('test-credential-id-2'));
-        verify(() => mockRepository.listCredentialData(
-              profileId: CredentialFixtures.profileId,
-              limit: null,
-              exclusiveStartItemId: null,
-              cancelToken: null,
-            )).called(1);
+        verify(
+          () => mockRepository.listCredentialData(
+            profileId: CredentialFixtures.profileId,
+            limit: null,
+            exclusiveStartItemId: null,
+            cancelToken: null,
+          ),
+        ).called(1);
       });
 
       test('should handle empty credential list', () async {
@@ -140,33 +155,39 @@ void main() {
         expect(result.lastEvaluatedItemId, isNull);
       });
 
-      test('should pass limit and exclusiveStartItemId when provided',
-          () async {
-        final result = await storage.listCredentials(
-          limit: 10,
-          exclusiveStartItemId: 'test-credential-id-1',
-        );
+      test(
+        'should pass limit and exclusiveStartItemId when provided',
+        () async {
+          final result = await storage.listCredentials(
+            limit: 10,
+            exclusiveStartItemId: 'test-credential-id-1',
+          );
 
-        expect(result.items.length, equals(2));
-        verify(() => mockRepository.listCredentialData(
+          expect(result.items.length, equals(2));
+          verify(
+            () => mockRepository.listCredentialData(
               profileId: CredentialFixtures.profileId,
               limit: 10,
               exclusiveStartItemId: 'test-credential-id-1',
               cancelToken: null,
-            )).called(1);
-      });
+            ),
+          ).called(1);
+        },
+      );
 
       test('should pass cancel token when provided', () async {
         final cancelToken = VaultCancelToken();
 
         await storage.listCredentials(cancelToken: cancelToken);
 
-        verify(() => mockRepository.listCredentialData(
-              profileId: CredentialFixtures.profileId,
-              limit: null,
-              exclusiveStartItemId: null,
-              cancelToken: cancelToken,
-            )).called(1);
+        verify(
+          () => mockRepository.listCredentialData(
+            profileId: CredentialFixtures.profileId,
+            limit: null,
+            exclusiveStartItemId: null,
+            cancelToken: cancelToken,
+          ),
+        ).called(1);
       });
     });
 
@@ -176,43 +197,57 @@ void main() {
           digitalCredentialId: CredentialFixtures.credentialId,
         );
 
-        verify(() => mockRepository.getCredentialData(
-              credentialId: CredentialFixtures.credentialId,
-              cancelToken: null,
-            )).called(1);
-        verify(() => mockRepository.deleteCredential(
-              credentialId: CredentialFixtures.credentialId,
-              cancelToken: null,
-            )).called(1);
+        verify(
+          () => mockRepository.getCredentialData(
+            credentialId: CredentialFixtures.credentialId,
+            cancelToken: null,
+          ),
+        ).called(1);
+        verify(
+          () => mockRepository.deleteCredential(
+            credentialId: CredentialFixtures.credentialId,
+            cancelToken: null,
+          ),
+        ).called(1);
       });
 
-      test('should throw exception when credential not found for deletion',
-          () async {
-        when(() => mockRepository.getCredentialData(
+      test(
+        'should throw exception when credential not found for deletion',
+        () async {
+          when(
+            () => mockRepository.getCredentialData(
               credentialId: CredentialFixtures.credentialId,
               cancelToken: any(named: 'cancelToken'),
-            )).thenAnswer((_) async => null);
+            ),
+          ).thenAnswer((_) async => null);
 
-        expect(
-          () => storage.deleteCredential(
-            digitalCredentialId: CredentialFixtures.credentialId,
-          ),
-          throwsA(isA<TdkException>().having(
-            (error) => error.code,
-            'code',
-            TdkExceptionType.credentialNotFound.code,
-          )),
-        );
+          expect(
+            () => storage.deleteCredential(
+              digitalCredentialId: CredentialFixtures.credentialId,
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (error) => error.code,
+                'code',
+                TdkExceptionType.credentialNotFound.code,
+              ),
+            ),
+          );
 
-        verify(() => mockRepository.getCredentialData(
+          verify(
+            () => mockRepository.getCredentialData(
               credentialId: CredentialFixtures.credentialId,
               cancelToken: null,
-            )).called(1);
-        verifyNever(() => mockRepository.deleteCredential(
+            ),
+          ).called(1);
+          verifyNever(
+            () => mockRepository.deleteCredential(
               credentialId: any(named: 'credentialId'),
               cancelToken: any(named: 'cancelToken'),
-            ));
-      });
+            ),
+          );
+        },
+      );
 
       test('should pass cancel token when provided', () async {
         final cancelToken = VaultCancelToken();
@@ -222,14 +257,18 @@ void main() {
           cancelToken: cancelToken,
         );
 
-        verify(() => mockRepository.getCredentialData(
-              credentialId: CredentialFixtures.credentialId,
-              cancelToken: cancelToken,
-            )).called(1);
-        verify(() => mockRepository.deleteCredential(
-              credentialId: CredentialFixtures.credentialId,
-              cancelToken: cancelToken,
-            )).called(1);
+        verify(
+          () => mockRepository.getCredentialData(
+            credentialId: CredentialFixtures.credentialId,
+            cancelToken: cancelToken,
+          ),
+        ).called(1);
+        verify(
+          () => mockRepository.deleteCredential(
+            credentialId: CredentialFixtures.credentialId,
+            cancelToken: cancelToken,
+          ),
+        ).called(1);
       });
     });
   });

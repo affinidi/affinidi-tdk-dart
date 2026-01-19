@@ -34,12 +34,15 @@ class ResourceFactory {
   static createWallet({bool didWeb = false}) async {
     await checkWalletLimitExceeded();
 
-    String basePathOverride =
-        replaceBaseDomain(AffinidiTdkWalletsClient.basePath, apiGwUrl);
+    String basePathOverride = replaceBaseDomain(
+      AffinidiTdkWalletsClient.basePath,
+      apiGwUrl,
+    );
 
     final apiClient = AffinidiTdkWalletsClient(
-        authTokenHook: ResourceFactory.getAuthTokenHook(),
-        basePathOverride: basePathOverride);
+      authTokenHook: ResourceFactory.getAuthTokenHook(),
+      basePathOverride: basePathOverride,
+    );
     final walletApi = apiClient.getWalletApi();
 
     final didKeyInputBuilder = CreateWalletInputBuilder()
@@ -50,19 +53,23 @@ class ResourceFactory {
 
     final builder = didWeb ? didWebInputBuilder : didKeyInputBuilder;
 
-    final createdWallet =
-        (await walletApi.createWallet(createWalletInput: builder.build())).data;
+    final createdWallet = (await walletApi.createWallet(
+      createWalletInput: builder.build(),
+    )).data;
 
     return createdWallet!.wallet;
   }
 
   static getWalletById(String walletId) async {
-    String basePathOverride =
-        replaceBaseDomain(AffinidiTdkWalletsClient.basePath, apiGwUrl);
+    String basePathOverride = replaceBaseDomain(
+      AffinidiTdkWalletsClient.basePath,
+      apiGwUrl,
+    );
 
     final apiClient = AffinidiTdkWalletsClient(
-        authTokenHook: ResourceFactory.getAuthTokenHook(),
-        basePathOverride: basePathOverride);
+      authTokenHook: ResourceFactory.getAuthTokenHook(),
+      basePathOverride: basePathOverride,
+    );
     final walletApi = apiClient.getWalletApi();
 
     try {
@@ -78,12 +85,15 @@ class ResourceFactory {
   }
 
   static deleteWallet(String walletId) async {
-    String basePathOverride =
-        replaceBaseDomain(AffinidiTdkWalletsClient.basePath, apiGwUrl);
+    String basePathOverride = replaceBaseDomain(
+      AffinidiTdkWalletsClient.basePath,
+      apiGwUrl,
+    );
 
     final apiClient = AffinidiTdkWalletsClient(
-        authTokenHook: ResourceFactory.getAuthTokenHook(),
-        basePathOverride: basePathOverride);
+      authTokenHook: ResourceFactory.getAuthTokenHook(),
+      basePathOverride: basePathOverride,
+    );
     final walletApi = apiClient.getWalletApi();
 
     await walletApi.deleteWallet(walletId: walletId);
@@ -92,29 +102,32 @@ class ResourceFactory {
   static String randomString({int length = 8}) {
     const letters = 'abcdefghijklmnopqrstuvwxyz';
     final rand = Random();
-    return List.generate(length, (_) => letters[rand.nextInt(letters.length)])
-        .join();
+    return List.generate(
+      length,
+      (_) => letters[rand.nextInt(letters.length)],
+    ).join();
   }
 
   static Future<bool> isCredentialValid(credential) async {
     String basePathOverride = replaceBaseDomain(
-        AffinidiTdkCredentialVerificationClient.basePath, apiGwUrl);
+      AffinidiTdkCredentialVerificationClient.basePath,
+      apiGwUrl,
+    );
 
     final apiClient = AffinidiTdkCredentialVerificationClient(
-        authTokenHook: ResourceFactory.getAuthTokenHook(),
-        basePathOverride: basePathOverride);
+      authTokenHook: ResourceFactory.getAuthTokenHook(),
+      basePathOverride: basePathOverride,
+    );
     final verificationApi = apiClient.getDefaultApi();
 
     final verifyCredentialInputBuilder = VerifyCredentialInputBuilder()
-      ..verifiableCredentials = ListBuilder<JsonObject>(
-        [
-          MapJsonObject(credential),
-        ],
-      );
+      ..verifiableCredentials = ListBuilder<JsonObject>([
+        MapJsonObject(credential),
+      ]);
 
     final verificationResponse = (await verificationApi.verifyCredentials(
-            verifyCredentialInput: verifyCredentialInputBuilder.build()))
-        .data;
+      verifyCredentialInput: verifyCredentialInputBuilder.build(),
+    )).data;
 
     return verificationResponse!.isValid;
   }
@@ -128,12 +141,15 @@ class ResourceFactory {
   }
 
   static checkWalletLimitExceeded() async {
-    String basePathOverride =
-        replaceBaseDomain(AffinidiTdkWalletsClient.basePath, apiGwUrl);
+    String basePathOverride = replaceBaseDomain(
+      AffinidiTdkWalletsClient.basePath,
+      apiGwUrl,
+    );
 
     final apiClient = AffinidiTdkWalletsClient(
-        authTokenHook: ResourceFactory.getAuthTokenHook(),
-        basePathOverride: basePathOverride);
+      authTokenHook: ResourceFactory.getAuthTokenHook(),
+      basePathOverride: basePathOverride,
+    );
     final walletApi = apiClient.getWalletApi();
 
     final result = (await walletApi.listWallets()).data;

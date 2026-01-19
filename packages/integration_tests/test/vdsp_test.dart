@@ -15,14 +15,10 @@ Future<void> main() async {
     packageDirectoryName: 'vdsp',
   );
 
-  final mediatorDid = await readDid(
-    config.mediatorDidPath,
-  );
+  final mediatorDid = await readDid(config.mediatorDidPath);
 
-  final mediatorDidDocument =
-      await UniversalDIDResolver.defaultResolver.resolveDid(
-    mediatorDid,
-  );
+  final mediatorDidDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(mediatorDid);
 
   group('VDSP Holder and Verifier Clients Integration Tests', () {
     late String holderEmail;
@@ -124,7 +120,7 @@ Future<void> main() async {
           VcDataModelV1(
             context: [
               dmV1ContextUrl,
-              'https://schema.affinidi.io/TEmailV1R0.jsonld'
+              'https://schema.affinidi.io/TEmailV1R0.jsonld',
             ],
             credentialSchema: [
               CredentialSchema(
@@ -143,19 +139,17 @@ Future<void> main() async {
               }),
             ],
           ),
-        ].map(
-          (unsignedCredential) async {
-            final suite = LdVcDm1Suite();
-            final issuedCredential = await suite.issue(
-              unsignedData: unsignedCredential,
-              proofGenerator: DataIntegrityEcdsaJcsGenerator(
-                signer: issuerSigner,
-              ),
-            );
+        ].map((unsignedCredential) async {
+          final suite = LdVcDm1Suite();
+          final issuedCredential = await suite.issue(
+            unsignedData: unsignedCredential,
+            proofGenerator: DataIntegrityEcdsaJcsGenerator(
+              signer: issuerSigner,
+            ),
+          );
 
-            return issuedCredential;
-          },
-        ),
+          return issuedCredential;
+        }),
       );
 
       verifierDcql = DcqlCredentialQuery(
@@ -164,12 +158,7 @@ Future<void> main() async {
             id: const Uuid().v4(),
             format: CredentialFormat.ldpVc,
             claims: [
-              DcqlClaim(
-                path: [
-                  'credentialSubject',
-                  'email',
-                ],
-              ),
+              DcqlClaim(path: ['credentialSubject', 'email']),
             ],
           ),
         ],
@@ -225,9 +214,9 @@ Future<void> main() async {
 
           final unsupportedFeatureDisclosures =
               FeatureDiscoveryHelper.getUnsupportedFeatures(
-            expectedFeatureDisclosures: expectedFeatures,
-            actualFeatureDisclosures: body.disclosures,
-          );
+                expectedFeatureDisclosures: expectedFeatures,
+                actualFeatureDisclosures: body.disclosures,
+              );
 
           if (unsupportedFeatureDisclosures.isNotEmpty) {
             await vdspVerifier.mediatorClient.packAndSendMessage(
@@ -239,10 +228,7 @@ Future<void> main() async {
                   code: ProblemCode(
                     sorter: SorterType.warning,
                     scope: Scope(scope: ScopeType.message),
-                    descriptors: [
-                      'vdsp',
-                      'features-not-supported',
-                    ],
+                    descriptors: ['vdsp', 'features-not-supported'],
                   ),
                 ),
               ),
@@ -261,32 +247,37 @@ Future<void> main() async {
             ),
           );
         },
-        onDataResponse: ({
-          required VdspDataResponseMessage message,
-          required bool presentationAndCredentialsAreValid,
-          VerifiablePresentation? verifiablePresentation,
-          required VerificationResult presentationVerificationResult,
-          required List<VerificationResult> credentialVerificationResults,
-        }) async {
-          if (message.from == null) {
-            throw ArgumentError.notNull('from');
-          }
+        onDataResponse:
+            ({
+              required VdspDataResponseMessage message,
+              required bool presentationAndCredentialsAreValid,
+              VerifiablePresentation? verifiablePresentation,
+              required VerificationResult presentationVerificationResult,
+              required List<VerificationResult> credentialVerificationResults,
+            }) async {
+              if (message.from == null) {
+                throw ArgumentError.notNull('from');
+              }
 
-          final result = presentationAndCredentialsAreValid &&
-              verifiablePresentation?.proof.first.challenge ==
-                  verifierChallenge &&
-              verifiablePresentation!.proof.first.domain?.first ==
-                  verifierDomain;
+              final result =
+                  presentationAndCredentialsAreValid &&
+                  verifiablePresentation?.proof.first.challenge ==
+                      verifierChallenge &&
+                  verifiablePresentation!.proof.first.domain?.first ==
+                      verifierDomain;
 
-          await vdspVerifier.sendDataProcessingResult(
-            holderDid: message.from!,
-            result: {
-              'success': result,
-              'email': verifiablePresentation
-                  ?.verifiableCredential.first.credentialSubject.first['email'],
+              await vdspVerifier.sendDataProcessingResult(
+                holderDid: message.from!,
+                result: {
+                  'success': result,
+                  'email': verifiablePresentation
+                      ?.verifiableCredential
+                      .first
+                      .credentialSubject
+                      .first['email'],
+                },
+              );
             },
-          );
-        },
         onProblemReport: (message) async {
           testCompleter.complete(message);
           await ConnectionPool.instance.stopConnections();
@@ -312,9 +303,7 @@ Future<void> main() async {
 
       vdspHolder.listenForIncomingMessages(
         onFeatureQuery: (message) async {
-          final disclosures = vdspHolder.getDisclosures(
-            queryMessage: message,
-          );
+          final disclosures = vdspHolder.getDisclosures(queryMessage: message);
 
           // here you can check if those are the right disclosures to share
 
@@ -343,10 +332,7 @@ Future<void> main() async {
                   code: ProblemCode(
                     sorter: SorterType.warning,
                     scope: Scope(scope: ScopeType.message),
-                    descriptors: [
-                      'vdsp',
-                      'data-not-found',
-                    ],
+                    descriptors: ['vdsp', 'data-not-found'],
                   ),
                 ),
               ),
@@ -378,20 +364,11 @@ Future<void> main() async {
       final actual = await testCompleter.future;
       final actualResult = actual.body?['result'] as Map<String, dynamic>?;
 
-      expect(
-        actual,
-        isA<VdspDataProcessingResultMessage>(),
-      );
+      expect(actual, isA<VdspDataProcessingResultMessage>());
 
-      expect(
-        actualResult?['email'],
-        holderEmail,
-      );
+      expect(actualResult?['email'], holderEmail);
 
-      expect(
-        actualResult?['success'],
-        isTrue,
-      );
+      expect(actualResult?['success'], isTrue);
     });
   });
 }

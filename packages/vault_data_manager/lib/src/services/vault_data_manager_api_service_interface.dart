@@ -149,9 +149,7 @@ abstract interface class VaultDataManagerApiServiceInterface {
   });
 
   /// Gets the profile template. Default to https://schema.affinidi.io/profile-template/template.json.
-  Future<Response> getProfileTemplate({
-    CancelToken? cancelToken,
-  });
+  Future<Response> getProfileTemplate({CancelToken? cancelToken});
 
   /// Initializes the Vault Data Manager system by creating the root node
   Future<Response<InitNodesOK>> initVaultDataManagerSystem({
@@ -167,9 +165,7 @@ abstract interface class VaultDataManagerApiServiceInterface {
   });
 
   /// Gets the configuration of the Vault Data Manager API
-  Future<Response<GetConfigOK>> getConfig({
-    CancelToken? cancelToken,
-  });
+  Future<Response<GetConfigOK>> getConfig({CancelToken? cancelToken});
 
   /// Gets accounts of associated profiles. Optionally provide [limit] and [exclusiveStartItemId].
   /// [limit] - Maximum number of accounts to fetch in a list

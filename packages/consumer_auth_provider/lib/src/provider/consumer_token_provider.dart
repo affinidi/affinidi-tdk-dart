@@ -31,18 +31,23 @@ class ConsumerTokenProvider extends TokenProvider with JwtTokenDidChecker {
     Dio? client,
     ElementsRegion region = ElementsRegion.apSoutheast1,
     Environment? env,
-  })  : _signer = signer,
-        _dioInstance = client ??
-            ((_apiTimeOutInMilliseconds != null)
-                ? Dio(BaseOptions(
-                    connectTimeout:
-                        Duration(milliseconds: _apiTimeOutInMilliseconds!),
-                    receiveTimeout:
-                        Duration(milliseconds: _apiTimeOutInMilliseconds!),
-                  ))
-                : Dio()),
-      _tokenEndpoint =
-             Environment.fetchConsumerAudienceUrl(env, null, region);
+  }) : _signer = signer,
+       _dioInstance =
+           client ??
+           ((_apiTimeOutInMilliseconds != null)
+               ? Dio(
+                   BaseOptions(
+                     connectTimeout: Duration(
+                       milliseconds: _apiTimeOutInMilliseconds!,
+                     ),
+                     receiveTimeout: Duration(
+                       milliseconds: _apiTimeOutInMilliseconds!,
+                     ),
+                   ),
+                 )
+               : Dio()),
+       _tokenEndpoint = Environment.fetchConsumerAudienceUrl(env, null, region);
+
   /// Method to retrieve a consumer token.
   ///
   /// Returns [Future] that resolves to a [String] representing the token.
@@ -53,15 +58,18 @@ class ConsumerTokenProvider extends TokenProvider with JwtTokenDidChecker {
       audience: _tokenEndpoint,
     );
     final did = _signer.did;
-    final consumerToken =
-        await _fetchConsumerToken(clientAssertion: token, did: did);
+    final consumerToken = await _fetchConsumerToken(
+      clientAssertion: token,
+      did: did,
+    );
 
     final decodedToken = JwtDecoder.decode(consumerToken);
     if (!hasMatchingDid(decodedToken: decodedToken, did: did)) {
       Error.throwWithStackTrace(
         TdkException(
-            message: 'Consumer token DID does not match user DID',
-            code: TdkExceptionType.consumerTokenDidMismatch.code),
+          message: 'Consumer token DID does not match user DID',
+          code: TdkExceptionType.consumerTokenDidMismatch.code,
+        ),
         StackTrace.current,
       );
     }

@@ -5,7 +5,9 @@ String generateRandomString(int length) {
   final rand = Random();
 
   return List.generate(
-      length, (index) => alphabet[rand.nextInt(alphabet.length)]).join();
+    length,
+    (index) => alphabet[rand.nextInt(alphabet.length)],
+  ).join();
 }
 
 String replaceBaseDomain(String originalBasePath, String newDomain) {

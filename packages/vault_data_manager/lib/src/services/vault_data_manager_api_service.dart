@@ -44,20 +44,25 @@ class VaultDataManagerApiService
   VaultDataManagerApiService({
     required AffinidiTdkVaultDataManagerClient apiClient,
     Dio? dio,
-  })  : _dio = dio ??
-            ((_apiTimeOutInMilliseconds != null)
-                ? Dio(BaseOptions(
-                    connectTimeout:
-                        Duration(milliseconds: _apiTimeOutInMilliseconds!),
-                    receiveTimeout:
-                        Duration(milliseconds: _apiTimeOutInMilliseconds!),
-                  ))
-                : Dio()),
-        _filesApi = apiClient.getFilesApi(),
-        _nodesApi = apiClient.getNodesApi(),
-        _configApi = apiClient.getConfigurationApi(),
-        _profileDataApi = apiClient.getProfileDataApi(),
-        _accountsApi = apiClient.getAccountsApi();
+  }) : _dio =
+           dio ??
+           ((_apiTimeOutInMilliseconds != null)
+               ? Dio(
+                   BaseOptions(
+                     connectTimeout: Duration(
+                       milliseconds: _apiTimeOutInMilliseconds!,
+                     ),
+                     receiveTimeout: Duration(
+                       milliseconds: _apiTimeOutInMilliseconds!,
+                     ),
+                   ),
+                 )
+               : Dio()),
+       _filesApi = apiClient.getFilesApi(),
+       _nodesApi = apiClient.getNodesApi(),
+       _configApi = apiClient.getConfigurationApi(),
+       _profileDataApi = apiClient.getProfileDataApi(),
+       _accountsApi = apiClient.getAccountsApi();
 
   @override
   Future<Response<CreateNodeOK>> createFile({
@@ -81,23 +86,25 @@ class VaultDataManagerApiService
       ..dek = base64.encode(dekEncryptedByVfsPublicKey)
       ..edekInfo = edekInfo;
 
-    final createNodeResponse =
-        await _createNode(createNodeInput: createNodeInput.build());
+    final createNodeResponse = await _createNode(
+      createNodeInput: createNodeInput.build(),
+    );
 
     final isNodeCreated = createNodeResponse.data is CreateNodeOK;
 
     if (!isNodeCreated) {
       Error.throwWithStackTrace(
-          TdkException(
-            message: 'Unable to create file.',
-            code: TdkExceptionType.unableToCreateNode.code,
-          ),
-          StackTrace.current);
+        TdkException(
+          message: 'Unable to create file.',
+          code: TdkExceptionType.unableToCreateNode.code,
+        ),
+        StackTrace.current,
+      );
     }
 
     final hasPropertiesForForFileUpload =
         createNodeResponse.data?.url != null &&
-            createNodeResponse.data?.fields != null;
+        createNodeResponse.data?.fields != null;
 
     if (!hasPropertiesForForFileUpload) {
       Error.throwWithStackTrace(
@@ -166,7 +173,7 @@ class VaultDataManagerApiService
 
     final hasPropertiesForForFileUpload =
         createNodeResponse.data?.url != null &&
-            createNodeResponse.data?.fields != null;
+        createNodeResponse.data?.fields != null;
 
     if (!hasPropertiesForForFileUpload) {
       Error.throwWithStackTrace(
@@ -187,10 +194,7 @@ class VaultDataManagerApiService
       'file': MultipartFile.fromBytes(verifiableCredentialBlob),
     });
 
-    await _uploadFile(
-      uploadUrl: uploadUrl,
-      data: fileData,
-    );
+    await _uploadFile(uploadUrl: uploadUrl, data: fileData);
 
     return createNodeResponse;
   }
@@ -203,9 +207,7 @@ class VaultDataManagerApiService
     CancelToken? cancelToken,
   }) async {
     return getChildrenByNodeId(
-      _getVcRootIdByProfileId(
-        profileId,
-      ),
+      _getVcRootIdByProfileId(profileId),
       cancelToken: cancelToken,
     );
   }
@@ -352,9 +354,7 @@ class VaultDataManagerApiService
     CancelToken? cancelToken,
   }) async {
     try {
-      return _filesApi.listScannedFiles(
-        cancelToken: cancelToken,
-      );
+      return _filesApi.listScannedFiles(cancelToken: cancelToken);
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
         TdkException(
@@ -428,9 +428,7 @@ class VaultDataManagerApiService
     CancelToken? cancelToken,
   }) async {
     try {
-      return _nodesApi.listRootNodeChildren(
-        cancelToken: cancelToken,
-      );
+      return _nodesApi.listRootNodeChildren(cancelToken: cancelToken);
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
         TdkException(
@@ -463,9 +461,7 @@ class VaultDataManagerApiService
       ..type = NodeType.PROFILE
       ..parentNodeId = rootNodeIdBase64Encoded
       ..dek = base64.encode(dekEncryptedByVfsPublicKey)
-      ..metadata = jsonEncode({
-        'pictureURI': profilePictureURI,
-      })
+      ..metadata = jsonEncode({'pictureURI': profilePictureURI})
       ..edekInfo = edekInfo;
 
     return _createNode(
@@ -486,9 +482,7 @@ class VaultDataManagerApiService
       final updateNodeInput = UpdateNodeInputBuilder()
         ..name = newName
         ..description = newDescription
-        ..metadata = jsonEncode({
-          'pictureURI': newPictureURI,
-        });
+        ..metadata = jsonEncode({'pictureURI': newPictureURI});
 
       return _nodesApi.updateNode(
         nodeId: nodeId,
@@ -514,10 +508,7 @@ class VaultDataManagerApiService
   }) async {
     try {
       return await RetryHelper.retry(
-        () => _nodesApi.deleteNode(
-          nodeId: nodeId,
-          cancelToken: cancelToken,
-        ),
+        () => _nodesApi.deleteNode(nodeId: nodeId, cancelToken: cancelToken),
         retryIf: (error) {
           return error is DioException && error.isPendingUploadError;
         },
@@ -535,14 +526,9 @@ class VaultDataManagerApiService
   }
 
   @override
-  Future<Response> getProfileTemplate({
-    CancelToken? cancelToken,
-  }) async {
+  Future<Response> getProfileTemplate({CancelToken? cancelToken}) async {
     try {
-      return _dio.get(
-        profileTemplateUrl,
-        cancelToken: cancelToken,
-      );
+      return _dio.get(profileTemplateUrl, cancelToken: cancelToken);
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
         TdkException(
@@ -561,9 +547,7 @@ class VaultDataManagerApiService
   }) async {
     try {
       // ignore: deprecated_member_use
-      return _nodesApi.initNodes(
-        cancelToken: cancelToken,
-      );
+      return _nodesApi.initNodes(cancelToken: cancelToken);
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
         TdkException(
@@ -582,9 +566,7 @@ class VaultDataManagerApiService
       final vautlUrl = VaultUtils.fetchElementsVaultApiUrl();
       final absoluteUrl = '$vautlUrl/vfs/.well-known/jwks.json';
 
-      final response = await _dio.get<dynamic>(
-        absoluteUrl,
-      );
+      final response = await _dio.get<dynamic>(absoluteUrl);
 
       final data = response.data as Map<String, dynamic>;
       final jwks = (data['keys'] as List).first;
@@ -636,8 +618,11 @@ class VaultDataManagerApiService
   }
 
   @pragma('vm:prefer-inline')
-  String _getVcRootIdByProfileId(String profileId) => base64.encode(utf8.encode(
-      '${utf8.decode(base64.decode(profileId))}#$vcRootNodeIdUtf8Encoded'));
+  String _getVcRootIdByProfileId(String profileId) => base64.encode(
+    utf8.encode(
+      '${utf8.decode(base64.decode(profileId))}#$vcRootNodeIdUtf8Encoded',
+    ),
+  );
 
   @override
   Future<Response> downloadNodeContents({
@@ -675,9 +660,7 @@ class VaultDataManagerApiService
   }
 
   @override
-  Future<Response<GetConfigOK>> getConfig({
-    CancelToken? cancelToken,
-  }) {
+  Future<Response<GetConfigOK>> getConfig({CancelToken? cancelToken}) {
     try {
       return _configApi.getConfiguration();
     } catch (e, stackTrace) {
@@ -728,9 +711,12 @@ class VaultDataManagerApiService
           error.response?.data != null &&
           error.response?.data is Map<String, dynamic>) {
         final errorResponse = ErrorResponse.fromJson(
-            error.response!.data as Map<String, dynamic>);
+          error.response!.data as Map<String, dynamic>,
+        );
         Error.throwWithStackTrace(
-            TdkExceptionExtension.fromErrorResponse(errorResponse), stackTrace);
+          TdkExceptionExtension.fromErrorResponse(errorResponse),
+          stackTrace,
+        );
       }
 
       Error.throwWithStackTrace(
@@ -802,11 +788,12 @@ class VaultDataManagerApiService
       return response;
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
-          TdkException(
-            message: 'Unable to delete account.',
-            code: TdkExceptionType.unableToDeleteAccount.code,
-          ),
-          stackTrace);
+        TdkException(
+          message: 'Unable to delete account.',
+          code: TdkExceptionType.unableToDeleteAccount.code,
+        ),
+        stackTrace,
+      );
     }
   }
 
@@ -846,11 +833,12 @@ class VaultDataManagerApiService
       return response;
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
-          TdkException(
-            message: 'Unable to update account.',
-            code: TdkExceptionType.unableToUpdateAccount.code,
-          ),
-          stackTrace);
+        TdkException(
+          message: 'Unable to update account.',
+          code: TdkExceptionType.unableToUpdateAccount.code,
+        ),
+        stackTrace,
+      );
     }
   }
 }

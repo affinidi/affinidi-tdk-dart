@@ -13,6 +13,8 @@ extension TdkExceptionExtension on TdkException {
   /// Returns [TdkException] instance representing the error.
   static TdkException fromErrorResponse(ErrorResponse response) {
     return TdkException(
-        message: response.message ?? '', code: response.type.code);
+      message: response.message ?? '',
+      code: response.type.code,
+    );
   }
 }

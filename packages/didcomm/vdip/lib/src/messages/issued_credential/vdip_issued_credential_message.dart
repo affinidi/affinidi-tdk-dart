@@ -18,7 +18,5 @@ class VdipIssuedCredentialMessage extends PlainTextMessage {
     super.threadId,
     super.body,
     super.attachments,
-  }) : super(
-          type: messageType,
-        );
+  }) : super(type: messageType);
 }

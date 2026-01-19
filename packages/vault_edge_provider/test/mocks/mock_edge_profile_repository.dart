@@ -32,8 +32,9 @@ class MockEdgeProfileRepository implements EdgeProfileRepositoryInterface {
   }
 
   @override
-  Future<List<EdgeProfile>> listProfiles(
-      {VaultCancelToken? cancelToken}) async {
+  Future<List<EdgeProfile>> listProfiles({
+    VaultCancelToken? cancelToken,
+  }) async {
     lastCalledListProfiles = true;
     return listProfilesReturnValue;
   }

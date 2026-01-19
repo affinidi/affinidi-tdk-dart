@@ -28,7 +28,6 @@ sealed class DeployInstanceResponse {
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Response data for deploy mediator instance operation.
 final class DeployMediatorInstanceResponse extends DeployInstanceResponse {
   /// The ID of the deployed mediator instance.
@@ -56,7 +55,6 @@ final class DeployMediatorInstanceResponse extends DeployInstanceResponse {
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Response data for deploy MPX instance operation.
 final class DeployMpxInstanceResponse extends DeployInstanceResponse {
   /// The ID of the deployed MPX instance.
@@ -84,7 +82,6 @@ final class DeployMpxInstanceResponse extends DeployInstanceResponse {
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Response data for deploy trust registry instance operation.
 final class DeployTrustRegistryInstanceResponse extends DeployInstanceResponse {
   /// The ID of the deployed trust registry instance.
@@ -105,8 +102,8 @@ final class DeployTrustRegistryInstanceResponse extends DeployInstanceResponse {
 
   /// Creates a deploy trust registry instance response from JSON.
   factory DeployTrustRegistryInstanceResponse.fromJson(
-          Map<String, dynamic> json) =>
-      _$DeployTrustRegistryInstanceResponseFromJson(json);
+    Map<String, dynamic> json,
+  ) => _$DeployTrustRegistryInstanceResponseFromJson(json);
 
   @override
   Map<String, dynamic> toJson() =>
@@ -126,9 +123,7 @@ class DeployInstanceResponseMessage
     super.expiresTime,
     super.threadId,
     super.body = const {},
-  }) : super(
-          fromJson: DeployInstanceResponse.fromJson,
-        );
+  }) : super(fromJson: DeployInstanceResponse.fromJson);
 
   /// Creates a deploy mediator instance response message.
   factory DeployInstanceResponseMessage.mediator({

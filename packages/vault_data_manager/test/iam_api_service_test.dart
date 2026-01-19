@@ -16,65 +16,71 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(IamApiServiceFixtures.testPermissions);
-    registerFallbackValue(
-      consumer_iam.UpdateAccessInputBuilder().build(),
-    );
+    registerFallbackValue(consumer_iam.UpdateAccessInputBuilder().build());
   });
 
   setUp(() {
     mockConsumerAuthzApi = MockConsumerAuthzApi();
     mockConsumerIamClient = MockAffinidiTdkConsumerIamClient();
-    when(() => mockConsumerIamClient.getAuthzApi())
-        .thenReturn(mockConsumerAuthzApi);
+    when(
+      () => mockConsumerIamClient.getAuthzApi(),
+    ).thenReturn(mockConsumerAuthzApi);
     iamApiService = VaultDataManagerSharedAccessApiService(
-        affinidiTdkConsumerIamClient: mockConsumerIamClient);
+      affinidiTdkConsumerIamClient: mockConsumerIamClient,
+    );
   });
 
   group('IamApiService', () {
     group('When revoking access from VFS', () {
       test('it should successfully revoke access', () async {
-        when(() => mockConsumerAuthzApi.deleteAccessVfs(
-                  granteeDid: any(named: 'granteeDid'),
-                  cancelToken: any(named: 'cancelToken'),
-                  headers: any(named: 'headers'),
-                  extra: any(named: 'extra'),
-                  validateStatus: any(named: 'validateStatus'),
-                  onSendProgress: any(named: 'onSendProgress'),
-                  onReceiveProgress: any(named: 'onReceiveProgress'),
-                ))
-            .thenAnswer((_) async =>
-                IamApiServiceFixtures.successfulRevokeAccessResponse);
+        when(
+          () => mockConsumerAuthzApi.deleteAccessVfs(
+            granteeDid: any(named: 'granteeDid'),
+            cancelToken: any(named: 'cancelToken'),
+            headers: any(named: 'headers'),
+            extra: any(named: 'extra'),
+            validateStatus: any(named: 'validateStatus'),
+            onSendProgress: any(named: 'onSendProgress'),
+            onReceiveProgress: any(named: 'onReceiveProgress'),
+          ),
+        ).thenAnswer(
+          (_) async => IamApiServiceFixtures.successfulRevokeAccessResponse,
+        );
 
         await iamApiService.revokeAccessVfs(
           granteeDid: IamApiServiceFixtures.testGranteeDid,
         );
 
-        verify(() => mockConsumerAuthzApi.deleteAccessVfs(
-              granteeDid: IamApiServiceFixtures.testGranteeDid,
-              cancelToken: any(named: 'cancelToken'),
-              headers: any(named: 'headers'),
-              extra: any(named: 'extra'),
-              validateStatus: any(named: 'validateStatus'),
-              onSendProgress: any(named: 'onSendProgress'),
-              onReceiveProgress: any(named: 'onReceiveProgress'),
-            )).called(1);
+        verify(
+          () => mockConsumerAuthzApi.deleteAccessVfs(
+            granteeDid: IamApiServiceFixtures.testGranteeDid,
+            cancelToken: any(named: 'cancelToken'),
+            headers: any(named: 'headers'),
+            extra: any(named: 'extra'),
+            validateStatus: any(named: 'validateStatus'),
+            onSendProgress: any(named: 'onSendProgress'),
+            onReceiveProgress: any(named: 'onReceiveProgress'),
+          ),
+        ).called(1);
       });
     });
 
     group('When setting item-level access', () {
       test('it should successfully set items access', () async {
-        when(() => mockConsumerAuthzApi.updateAccessVfs(
-                  granteeDid: any(named: 'granteeDid'),
-                  updateAccessInput: any(named: 'updateAccessInput'),
-                  cancelToken: any(named: 'cancelToken'),
-                  headers: any(named: 'headers'),
-                  extra: any(named: 'extra'),
-                  validateStatus: any(named: 'validateStatus'),
-                  onSendProgress: any(named: 'onSendProgress'),
-                  onReceiveProgress: any(named: 'onReceiveProgress'),
-                ))
-            .thenAnswer((_) async =>
-                IamApiServiceFixtures.successfulUpdateAccessResponse);
+        when(
+          () => mockConsumerAuthzApi.updateAccessVfs(
+            granteeDid: any(named: 'granteeDid'),
+            updateAccessInput: any(named: 'updateAccessInput'),
+            cancelToken: any(named: 'cancelToken'),
+            headers: any(named: 'headers'),
+            extra: any(named: 'extra'),
+            validateStatus: any(named: 'validateStatus'),
+            onSendProgress: any(named: 'onSendProgress'),
+            onReceiveProgress: any(named: 'onReceiveProgress'),
+          ),
+        ).thenAnswer(
+          (_) async => IamApiServiceFixtures.successfulUpdateAccessResponse,
+        );
 
         await iamApiService.setItemsAccessVfs(
           granteeDid: IamApiServiceFixtures.testGranteeDid,
@@ -82,52 +88,58 @@ void main() {
             (
               itemIds: ['node-1'],
               permissions: Permissions.read,
-              expiresAt: null
+              expiresAt: null,
             ),
           ],
         );
 
-        verify(() => mockConsumerAuthzApi.updateAccessVfs(
-              granteeDid: IamApiServiceFixtures.testGranteeDid,
-              updateAccessInput: any(named: 'updateAccessInput'),
-              cancelToken: any(named: 'cancelToken'),
-              headers: any(named: 'headers'),
-              extra: any(named: 'extra'),
-              validateStatus: any(named: 'validateStatus'),
-              onSendProgress: any(named: 'onSendProgress'),
-              onReceiveProgress: any(named: 'onReceiveProgress'),
-            )).called(1);
+        verify(
+          () => mockConsumerAuthzApi.updateAccessVfs(
+            granteeDid: IamApiServiceFixtures.testGranteeDid,
+            updateAccessInput: any(named: 'updateAccessInput'),
+            cancelToken: any(named: 'cancelToken'),
+            headers: any(named: 'headers'),
+            extra: any(named: 'extra'),
+            validateStatus: any(named: 'validateStatus'),
+            onSendProgress: any(named: 'onSendProgress'),
+            onReceiveProgress: any(named: 'onReceiveProgress'),
+          ),
+        ).called(1);
       });
     });
 
     group('When revoking item-level access', () {
       test('it should successfully revoke items access', () async {
-        when(() => mockConsumerAuthzApi.deleteAccessVfs(
-                  granteeDid: any(named: 'granteeDid'),
-                  cancelToken: any(named: 'cancelToken'),
-                  headers: any(named: 'headers'),
-                  extra: any(named: 'extra'),
-                  validateStatus: any(named: 'validateStatus'),
-                  onSendProgress: any(named: 'onSendProgress'),
-                  onReceiveProgress: any(named: 'onReceiveProgress'),
-                ))
-            .thenAnswer((_) async =>
-                IamApiServiceFixtures.successfulRevokeAccessResponse);
+        when(
+          () => mockConsumerAuthzApi.deleteAccessVfs(
+            granteeDid: any(named: 'granteeDid'),
+            cancelToken: any(named: 'cancelToken'),
+            headers: any(named: 'headers'),
+            extra: any(named: 'extra'),
+            validateStatus: any(named: 'validateStatus'),
+            onSendProgress: any(named: 'onSendProgress'),
+            onReceiveProgress: any(named: 'onReceiveProgress'),
+          ),
+        ).thenAnswer(
+          (_) async => IamApiServiceFixtures.successfulRevokeAccessResponse,
+        );
 
         await iamApiService.revokeItemsAccessVfs(
           granteeDid: IamApiServiceFixtures.testGranteeDid,
           itemIds: ['node-1', 'node-2'],
         );
 
-        verify(() => mockConsumerAuthzApi.deleteAccessVfs(
-              granteeDid: IamApiServiceFixtures.testGranteeDid,
-              cancelToken: any(named: 'cancelToken'),
-              headers: any(named: 'headers'),
-              extra: any(named: 'extra'),
-              validateStatus: any(named: 'validateStatus'),
-              onSendProgress: any(named: 'onSendProgress'),
-              onReceiveProgress: any(named: 'onReceiveProgress'),
-            )).called(1);
+        verify(
+          () => mockConsumerAuthzApi.deleteAccessVfs(
+            granteeDid: IamApiServiceFixtures.testGranteeDid,
+            cancelToken: any(named: 'cancelToken'),
+            headers: any(named: 'headers'),
+            extra: any(named: 'extra'),
+            validateStatus: any(named: 'validateStatus'),
+            onSendProgress: any(named: 'onSendProgress'),
+            onReceiveProgress: any(named: 'onReceiveProgress'),
+          ),
+        ).called(1);
       });
     });
 
@@ -146,15 +158,17 @@ void main() {
           requestOptions: RequestOptions(path: '/'),
         );
 
-        when(() => mockConsumerAuthzApi.getAccessVfs(
-              granteeDid: any(named: 'granteeDid'),
-              cancelToken: any(named: 'cancelToken'),
-              headers: any(named: 'headers'),
-              extra: any(named: 'extra'),
-              validateStatus: any(named: 'validateStatus'),
-              onSendProgress: any(named: 'onSendProgress'),
-              onReceiveProgress: any(named: 'onReceiveProgress'),
-            )).thenAnswer((_) async => expectedResponse);
+        when(
+          () => mockConsumerAuthzApi.getAccessVfs(
+            granteeDid: any(named: 'granteeDid'),
+            cancelToken: any(named: 'cancelToken'),
+            headers: any(named: 'headers'),
+            extra: any(named: 'extra'),
+            validateStatus: any(named: 'validateStatus'),
+            onSendProgress: any(named: 'onSendProgress'),
+            onReceiveProgress: any(named: 'onReceiveProgress'),
+          ),
+        ).thenAnswer((_) async => expectedResponse);
 
         final result = await iamApiService.getItemsAccessVfs(
           granteeDid: IamApiServiceFixtures.testGranteeDid,
@@ -162,15 +176,17 @@ void main() {
 
         expect(result.data, isNotNull);
         expect(result.data!.permissions.length, 1);
-        verify(() => mockConsumerAuthzApi.getAccessVfs(
-              granteeDid: IamApiServiceFixtures.testGranteeDid,
-              cancelToken: any(named: 'cancelToken'),
-              headers: any(named: 'headers'),
-              extra: any(named: 'extra'),
-              validateStatus: any(named: 'validateStatus'),
-              onSendProgress: any(named: 'onSendProgress'),
-              onReceiveProgress: any(named: 'onReceiveProgress'),
-            )).called(1);
+        verify(
+          () => mockConsumerAuthzApi.getAccessVfs(
+            granteeDid: IamApiServiceFixtures.testGranteeDid,
+            cancelToken: any(named: 'cancelToken'),
+            headers: any(named: 'headers'),
+            extra: any(named: 'extra'),
+            validateStatus: any(named: 'validateStatus'),
+            onSendProgress: any(named: 'onSendProgress'),
+            onReceiveProgress: any(named: 'onReceiveProgress'),
+          ),
+        ).called(1);
       });
     });
   });

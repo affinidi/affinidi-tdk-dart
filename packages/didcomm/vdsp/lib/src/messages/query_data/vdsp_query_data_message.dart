@@ -19,13 +19,10 @@ class VdspQueryDataMessage extends PlainTextMessage {
     super.createdTime,
     super.expiresTime,
     super.threadId,
-  }) : super(
-          type: messageType,
-        );
+  }) : super(type: messageType);
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Body payload for a VDSP query-data DIDComm message.
 ///
 /// Encapsulates a structured [query] expression together with language,
@@ -77,17 +74,13 @@ class VdspQueryDataBody {
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Proof generation context supplied by the verifier.
 ///
 /// The [challenge] guards against replay while [domain] scopes the proof
 /// to an application or audience specific value.
 class VdspQueryDataProofContext {
   /// Constructs a proof context used during cryptographic proof generation.
-  VdspQueryDataProofContext({
-    required this.challenge,
-    required this.domain,
-  });
+  VdspQueryDataProofContext({required this.challenge, required this.domain});
 
   /// Challenge string for replay protection.
   final String challenge;

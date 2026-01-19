@@ -28,14 +28,10 @@ Future<void> main() async {
     packageDirectoryName: 'vdip',
   );
 
-  final mediatorDid = await readDid(
-    config.mediatorDidPath,
-  );
+  final mediatorDid = await readDid(config.mediatorDidPath);
 
-  final mediatorDidDocument =
-      await UniversalDIDResolver.defaultResolver.resolveDid(
-    mediatorDid,
-  );
+  final mediatorDidDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(mediatorDid);
 
   final issuerKeyStore = InMemoryKeyStore();
   final issuerWallet = PersistentWallet(issuerKeyStore);
@@ -53,10 +49,7 @@ Future<void> main() async {
 
   await issuerKeyStore.set(
     issuerKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: issuerPrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: issuerPrivateKeyBytes),
   );
 
   await issuerDidManager.addVerificationMethod(issuerKeyId);
@@ -81,10 +74,7 @@ Future<void> main() async {
 
   await holderKeyStore.set(
     holderKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: holderPrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: holderPrivateKeyBytes),
   );
 
   await holderDidManager.addVerificationMethod(holderKeyId);
@@ -107,7 +97,7 @@ Future<void> main() async {
       VcDataModelV1(
         context: [
           dmV1ContextUrl,
-          'https://schema.affinidi.io/TEmailV1R0.jsonld'
+          'https://schema.affinidi.io/TEmailV1R0.jsonld',
         ],
         credentialSchema: [
           CredentialSchema(
@@ -126,19 +116,15 @@ Future<void> main() async {
           }),
         ],
       ),
-    ].map(
-      (unsignedCredential) async {
-        final suite = LdVcDm1Suite();
-        final issuedCredential = await suite.issue(
-          unsignedData: unsignedCredential,
-          proofGenerator: DataIntegrityEcdsaJcsGenerator(
-            signer: issuerSigner,
-          ),
-        );
+    ].map((unsignedCredential) async {
+      final suite = LdVcDm1Suite();
+      final issuedCredential = await suite.issue(
+        unsignedData: unsignedCredential,
+        proofGenerator: DataIntegrityEcdsaJcsGenerator(signer: issuerSigner),
+      );
 
-        return issuedCredential;
-      },
-    ),
+      return issuedCredential;
+    }),
   );
 
   final verifierDsql = DcqlCredentialQuery(
@@ -147,9 +133,7 @@ Future<void> main() async {
         id: const Uuid().v4(),
         format: CredentialFormat.ldpVc,
         claims: [
-          DcqlClaim(
-            path: ['credentialSubject', 'email'],
-          ),
+          DcqlClaim(path: ['credentialSubject', 'email']),
         ],
       ),
     ],
@@ -186,10 +170,7 @@ Future<void> main() async {
 
   vdipHolder.listenForIncomingMessages(
     onDiscloseMessage: (message) async {
-      prettyPrint(
-        'Holder received Feature Query Message',
-        object: message,
-      );
+      prettyPrint('Holder received Feature Query Message', object: message);
 
       await vdipHolder.requestCredential(
         issuerDid: issuerSigner.did,
@@ -207,23 +188,15 @@ Future<void> main() async {
       await ConnectionPool.instance.stopConnections();
     },
     onProblemReport: (message) {
-      prettyPrint(
-        'A problem has occurred',
-        object: message,
-      );
+      prettyPrint('A problem has occurred', object: message);
     },
   );
 
   vdspHolder.listenForIncomingMessages(
     onFeatureQuery: (message) async {
-      prettyPrint(
-        'Holder received Feature Query Message',
-        object: message,
-      );
+      prettyPrint('Holder received Feature Query Message', object: message);
 
-      final disclosures = vdspHolder.getDisclosures(
-        queryMessage: message,
-      );
+      final disclosures = vdspHolder.getDisclosures(queryMessage: message);
 
       await vdspHolder.disclose(
         queryMessage: message,
@@ -231,10 +204,7 @@ Future<void> main() async {
       );
     },
     onDataRequest: (message) async {
-      prettyPrint(
-        'Holder received Data Request Message',
-        object: message,
-      );
+      prettyPrint('Holder received Data Request Message', object: message);
 
       final queryResult = await vdspHolder.filterVerifiableCredentials(
         requestMessage: message,
@@ -257,10 +227,7 @@ Future<void> main() async {
       await ConnectionPool.instance.stopConnections();
     },
     onProblemReport: (message) {
-      prettyPrint(
-        'A problem has occurred',
-        object: message,
-      );
+      prettyPrint('A problem has occurred', object: message);
     },
   );
 
@@ -289,84 +256,69 @@ Future<void> main() async {
 
   vdipIssuer.listenForIncomingMessages(
     onFeatureQuery: (message) async {
-      prettyPrint(
-        'Issuer received Feature Query Message',
-        object: message,
-      );
+      prettyPrint('Issuer received Feature Query Message', object: message);
 
-      await vdipIssuer.disclose(
-        queryMessage: message,
-      );
+      await vdipIssuer.disclose(queryMessage: message);
     },
-    onRequestToIssueCredential: ({
-      required message,
-      holderDidFromAssertion,
-      assertionValidationResult,
-      challenge,
-    }) async {
-      prettyPrint(
-        'Issuer received Request to Issue Credentials Message',
-        object: message,
-      );
-
-      // Issuer should verify challenge matches the expected challenge
-      if (challenge != null) {
-        prettyPrint(
-          'Challenge received from holder',
-          object: {'challenge': challenge},
-        );
-
-        final isChallengeValid = issuerChallenge == challenge;
-
-        if (!isChallengeValid) {
-          await vdipIssuer.mediatorClient.packAndSendMessage(
-            ProblemReportMessage(
-              id: const Uuid().v4(),
-              to: [message.from!],
-              parentThreadId: message.threadId ?? message.id,
-              body: ProblemReportBody(
-                code: ProblemCode(
-                  sorter: SorterType.warning,
-                  scope: Scope(scope: ScopeType.message),
-                  descriptors: [
-                    'vdip',
-                    'invalid-challenge',
-                  ],
-                ),
-              ),
-            ),
+    onRequestToIssueCredential:
+        ({
+          required message,
+          holderDidFromAssertion,
+          assertionValidationResult,
+          challenge,
+        }) async {
+          prettyPrint(
+            'Issuer received Request to Issue Credentials Message',
+            object: message,
           );
 
-          return;
-        }
+          // Issuer should verify challenge matches the expected challenge
+          if (challenge != null) {
+            prettyPrint(
+              'Challenge received from holder',
+              object: {'challenge': challenge},
+            );
 
-        prettyPrint(
-          'Challenge received',
-          object: {'challenge': challenge},
-        );
-      }
+            final isChallengeValid = issuerChallenge == challenge;
 
-      await vdspIssuer.queryHolderFeatures(
-        holderDid: (await holderDidManager.getDidDocument()).id,
-        featureQueries: FeatureDiscoveryHelper.getFeatureQueriesByDisclosures(
-          FeatureDiscoveryHelper.vdspHolderDisclosures,
-        ),
-      );
-    },
+            if (!isChallengeValid) {
+              await vdipIssuer.mediatorClient.packAndSendMessage(
+                ProblemReportMessage(
+                  id: const Uuid().v4(),
+                  to: [message.from!],
+                  parentThreadId: message.threadId ?? message.id,
+                  body: ProblemReportBody(
+                    code: ProblemCode(
+                      sorter: SorterType.warning,
+                      scope: Scope(scope: ScopeType.message),
+                      descriptors: ['vdip', 'invalid-challenge'],
+                    ),
+                  ),
+                ),
+              );
+
+              return;
+            }
+
+            prettyPrint('Challenge received', object: {'challenge': challenge});
+          }
+
+          await vdspIssuer.queryHolderFeatures(
+            holderDid: (await holderDidManager.getDidDocument()).id,
+            featureQueries:
+                FeatureDiscoveryHelper.getFeatureQueriesByDisclosures(
+                  FeatureDiscoveryHelper.vdspHolderDisclosures,
+                ),
+          );
+        },
     onProblemReport: (message) {
-      prettyPrint(
-        'A problem has occurred',
-        object: message,
-      );
+      prettyPrint('A problem has occurred', object: message);
     },
   );
 
   vdspIssuer.listenForIncomingMessages(
     onDiscloseMessage: (message) async {
-      prettyPrint(
-        'Verifier received Disclose Message',
-        object: message,
-      );
+      prettyPrint('Verifier received Disclose Message', object: message);
 
       if (message.from == null) {
         throw ArgumentError.notNull('from');
@@ -383,9 +335,9 @@ Future<void> main() async {
 
       final unsupportedFeatureDisclosures =
           FeatureDiscoveryHelper.getUnsupportedFeatures(
-        expectedFeatureDisclosures: expectedFeatures,
-        actualFeatureDisclosures: body.disclosures,
-      );
+            expectedFeatureDisclosures: expectedFeatures,
+            actualFeatureDisclosures: body.disclosures,
+          );
 
       if (unsupportedFeatureDisclosures.isNotEmpty) {
         throw UnsupportedError(
@@ -402,124 +354,124 @@ Future<void> main() async {
         ),
       );
     },
-    onDataResponse: ({
-      required VdspDataResponseMessage message,
-      required bool presentationAndCredentialsAreValid,
-      VerifiablePresentation? verifiablePresentation,
-      required VerificationResult presentationVerificationResult,
-      required List<VerificationResult> credentialVerificationResults,
-    }) async {
-      prettyPrint(
-        'Verifier received Data Response Message',
-        object: message,
-      );
+    onDataResponse:
+        ({
+          required VdspDataResponseMessage message,
+          required bool presentationAndCredentialsAreValid,
+          VerifiablePresentation? verifiablePresentation,
+          required VerificationResult presentationVerificationResult,
+          required List<VerificationResult> credentialVerificationResults,
+        }) async {
+          prettyPrint(
+            'Verifier received Data Response Message',
+            object: message,
+          );
 
-      prettyPrint(
-        'VP and VCs are valid',
-        object: presentationAndCredentialsAreValid,
-      );
+          prettyPrint(
+            'VP and VCs are valid',
+            object: presentationAndCredentialsAreValid,
+          );
 
-      prettyPrint(
-        'Verifiable Presentation',
-        object: verifiablePresentation,
-      );
+          prettyPrint(
+            'Verifiable Presentation',
+            object: verifiablePresentation,
+          );
 
-      if (message.from == null) {
-        throw ArgumentError.notNull('from');
-      }
+          if (message.from == null) {
+            throw ArgumentError.notNull('from');
+          }
 
-      if (presentationAndCredentialsAreValid != true) {
-        await vdipIssuer.mediatorClient.packAndSendMessage(
-          ProblemReportMessage(
-            id: const Uuid().v4(),
-            to: [message.from!],
-            parentThreadId: message.threadId ?? message.id,
-            body: ProblemReportBody(
-              code: ProblemCode(
-                sorter: SorterType.warning,
-                scope: Scope(scope: ScopeType.message),
-                descriptors: [
-                  'vdip',
-                  'invalid-presentation-or-credentials',
-                ],
+          if (presentationAndCredentialsAreValid != true) {
+            await vdipIssuer.mediatorClient.packAndSendMessage(
+              ProblemReportMessage(
+                id: const Uuid().v4(),
+                to: [message.from!],
+                parentThreadId: message.threadId ?? message.id,
+                body: ProblemReportBody(
+                  code: ProblemCode(
+                    sorter: SorterType.warning,
+                    scope: Scope(scope: ScopeType.message),
+                    descriptors: [
+                      'vdip',
+                      'invalid-presentation-or-credentials',
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ),
-        );
+            );
 
-        return;
-      }
+            return;
+          }
 
-      final email = verifiablePresentation!.verifiableCredential.first
-          .credentialSubject.first['email'] as String?;
+          final email =
+              verifiablePresentation!
+                      .verifiableCredential
+                      .first
+                      .credentialSubject
+                      .first['email']
+                  as String?;
 
-      if (email == null) {
-        await vdipIssuer.mediatorClient.packAndSendMessage(
-          ProblemReportMessage(
-            id: const Uuid().v4(),
-            to: [message.from!],
-            parentThreadId: message.threadId ?? message.id,
-            body: ProblemReportBody(
-              code: ProblemCode(
-                sorter: SorterType.warning,
-                scope: Scope(scope: ScopeType.message),
-                descriptors: [
-                  'vdip',
-                  'missing-email-claim',
-                ],
+          if (email == null) {
+            await vdipIssuer.mediatorClient.packAndSendMessage(
+              ProblemReportMessage(
+                id: const Uuid().v4(),
+                to: [message.from!],
+                parentThreadId: message.threadId ?? message.id,
+                body: ProblemReportBody(
+                  code: ProblemCode(
+                    sorter: SorterType.warning,
+                    scope: Scope(scope: ScopeType.message),
+                    descriptors: ['vdip', 'missing-email-claim'],
+                  ),
+                ),
               ),
+            );
+
+            return;
+          }
+
+          final unsignedCredential = VcDataModelV1(
+            context: [
+              dmV1ContextUrl,
+              'https://d2oeuqaac90cm.cloudfront.net/TTestMusicSubscriptionV1R0.jsonld',
+            ],
+            credentialSchema: [
+              CredentialSchema(
+                id: Uri.parse(
+                  'https://d2oeuqaac90cm.cloudfront.net/TTestMusicSubscriptionV1R0.json',
+                ),
+                type: 'JsonSchemaValidator2018',
+              ),
+            ],
+            id: Uri.parse(const Uuid().v4()),
+            issuer: Issuer.uri(issuerSigner.did),
+            type: {'VerifiableCredential', 'TestMusicSubscription'},
+            issuanceDate: DateTime.now().toUtc(),
+            credentialSubject: [
+              CredentialSubject.fromJson({
+                'id': message.from!, // holder DID
+                'email': email,
+                'subscriptionType': 'basic',
+              }),
+            ],
+          );
+
+          final suite = LdVcDm1Suite();
+
+          final issuedCredential = await suite.issue(
+            unsignedData: unsignedCredential,
+            proofGenerator: DataIntegrityEcdsaJcsGenerator(
+              signer: issuerSigner,
             ),
-          ),
-        );
+          );
 
-        return;
-      }
-
-      final unsignedCredential = VcDataModelV1(
-        context: [
-          dmV1ContextUrl,
-          'https://d2oeuqaac90cm.cloudfront.net/TTestMusicSubscriptionV1R0.jsonld',
-        ],
-        credentialSchema: [
-          CredentialSchema(
-            id: Uri.parse(
-              'https://d2oeuqaac90cm.cloudfront.net/TTestMusicSubscriptionV1R0.json',
-            ),
-            type: 'JsonSchemaValidator2018',
-          ),
-        ],
-        id: Uri.parse(const Uuid().v4()),
-        issuer: Issuer.uri(issuerSigner.did),
-        type: {'VerifiableCredential', 'TestMusicSubscription'},
-        issuanceDate: DateTime.now().toUtc(),
-        credentialSubject: [
-          CredentialSubject.fromJson({
-            'id': message.from!, // holder DID
-            'email': email,
-            'subscriptionType': 'basic',
-          }),
-        ],
-      );
-
-      final suite = LdVcDm1Suite();
-
-      final issuedCredential = await suite.issue(
-        unsignedData: unsignedCredential,
-        proofGenerator: DataIntegrityEcdsaJcsGenerator(
-          signer: issuerSigner,
-        ),
-      );
-
-      await vdipIssuer.sendIssuedCredentials(
-        holderDid: message.from!,
-        verifiableCredential: issuedCredential,
-      );
-    },
+          await vdipIssuer.sendIssuedCredentials(
+            holderDid: message.from!,
+            verifiableCredential: issuedCredential,
+          );
+        },
     onProblemReport: (message) {
-      prettyPrint(
-        'A problem has occurred',
-        object: message,
-      );
+      prettyPrint('A problem has occurred', object: message);
     },
   );
 

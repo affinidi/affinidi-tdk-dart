@@ -3,7 +3,6 @@ import 'package:json_annotation/json_annotation.dart';
 part 'mediator_deployment.g.dart';
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Deployment details for a mediator instance.
 class MediatorDeployment {
   /// Type of the instance.

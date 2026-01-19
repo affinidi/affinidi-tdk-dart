@@ -42,7 +42,9 @@ void main() {
       expect(options.description, 'Updated TR description');
       expect(options.defaultMediatorDid, 'did:example:new-mediator');
       expect(
-          options.administratorDids, 'did:example:admin1,did:example:admin2');
+        options.administratorDids,
+        'did:example:admin1,did:example:admin2',
+      );
       expect(options.corsAllowedOrigins, 'https://neworigin.com');
     });
 
@@ -99,7 +101,9 @@ void main() {
       expect(options.description, 'Test description');
       expect(options.defaultMediatorDid, 'did:example:mediator');
       expect(
-          options.administratorDids, 'did:example:admin1,did:example:admin2');
+        options.administratorDids,
+        'did:example:admin1,did:example:admin2',
+      );
       expect(options.corsAllowedOrigins, 'https://example.com');
     });
 
@@ -161,8 +165,10 @@ void main() {
 
       expect(json.keys.length, 3);
       expect(json['defaultMediatorDid'], 'did:example:new-mediator');
-      expect(json['administratorDids'],
-          'did:example:new-admin1,did:example:new-admin2');
+      expect(
+        json['administratorDids'],
+        'did:example:new-admin1,did:example:new-admin2',
+      );
       expect(json['corsAllowedOrigins'], 'https://new1.com,https://new2.com');
       expect(json.containsKey('serviceSize'), isFalse);
       expect(json.containsKey('name'), isFalse);

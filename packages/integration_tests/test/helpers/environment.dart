@@ -32,9 +32,7 @@ class VaultEnvironment {
 class CredentialIssuanceEnvironment {
   final String credentialIssuanceData;
 
-  CredentialIssuanceEnvironment({
-    required this.credentialIssuanceData,
-  });
+  CredentialIssuanceEnvironment({required this.credentialIssuanceData});
 }
 
 ProjectEnvironment getProjectEnvironment() {
@@ -50,8 +48,11 @@ ProjectEnvironment getProjectEnvironment() {
   }
 
   if (!isProd &&
-      !env.isEveryDefined(
-          ['DEV_PROJECT_ID', 'DEV_TOKEN_ID', 'DEV_PRIVATE_KEY'])) {
+      !env.isEveryDefined([
+        'DEV_PROJECT_ID',
+        'DEV_TOKEN_ID',
+        'DEV_PRIVATE_KEY',
+      ])) {
     throw Exception(
       'Missing environment variables. Please provide DEV_PROJECT_ID, DEV_TOKEN_ID, DEV_PRIVATE_KEY',
     );

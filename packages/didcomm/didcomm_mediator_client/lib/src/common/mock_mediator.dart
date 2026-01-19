@@ -34,10 +34,7 @@ class MockMediator {
   ///
   /// [didManager] The DID manager for this mediator.
   /// [didDocument] The DID document representing this mediator.
-  MockMediator({
-    required this.didManager,
-    required this.didDocument,
-  });
+  MockMediator({required this.didManager, required this.didDocument});
 
   /// Initializes and returns a new [MockMediator] instance with a fresh DID.
   ///
@@ -47,13 +44,9 @@ class MockMediator {
   /// [keyType] The type of cryptographic key to generate for the mediator.
   ///
   /// Returns a fully initialized [MockMediator] ready for use.
-  static Future<MockMediator> init({
-    required KeyType keyType,
-  }) async {
+  static Future<MockMediator> init({required KeyType keyType}) async {
     final didManager = DidPeerManager(
-      wallet: PersistentWallet(
-        InMemoryKeyStore(),
-      ),
+      wallet: PersistentWallet(InMemoryKeyStore()),
       store: InMemoryDidStore(),
     );
 
@@ -65,9 +58,7 @@ class MockMediator {
       ),
     );
 
-    final keyPair = await didManager.wallet.generateKey(
-      keyType: keyType,
-    );
+    final keyPair = await didManager.wallet.generateKey(keyType: keyType);
 
     await didManager.addVerificationMethod(keyPair.id);
 
@@ -126,9 +117,7 @@ class MockMediator {
   /// the necessary stream controllers for bidirectional communication.
   ///
   /// [clientDidManager] The DID manager representing the client to be added.
-  Future<void> addClientForDidManager(
-    DidManager clientDidManager,
-  ) async {
+  Future<void> addClientForDidManager(DidManager clientDidManager) async {
     final clientDidDocument = await clientDidManager.getDidDocument();
     final clientDidKeyId = clientDidDocument.keyAgreement.first.id;
 
@@ -195,9 +184,7 @@ class MockMediatorDidcommClient extends DidcommMediatorClient {
   ///
   /// Returns the packed [DidcommMessage] that was sent.
   @override
-  Future<DidcommMessage> sendMessage(
-    ForwardMessage message,
-  ) async {
+  Future<DidcommMessage> sendMessage(ForwardMessage message) async {
     final messageToSend = await packMessage(
       message,
       messageOptions: forwardMessageOptions,
@@ -222,10 +209,7 @@ class MockMediatorDidcommClient extends DidcommMediatorClient {
   StreamSubscription listenForIncomingMessages(
     void Function(Map<String, dynamic>) onMessage, {
     Function? onError,
-    void Function({
-      int? closeCode,
-      String? closeReason,
-    })? onDone,
+    void Function({int? closeCode, String? closeReason})? onDone,
     bool? cancelOnError,
   }) {
     return responseStream.listen(

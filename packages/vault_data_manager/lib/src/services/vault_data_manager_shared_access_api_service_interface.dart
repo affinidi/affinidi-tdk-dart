@@ -141,12 +141,9 @@ abstract interface class VaultDataManagerSharedAccessApiServiceInterface {
   Future<void> setItemsAccessVfs({
     required String granteeDid,
     required List<
-            ({
-              List<String> itemIds,
-              Permissions permissions,
-              DateTime? expiresAt
-            })>
-        permissionGroups,
+      ({List<String> itemIds, Permissions permissions, DateTime? expiresAt})
+    >
+    permissionGroups,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,

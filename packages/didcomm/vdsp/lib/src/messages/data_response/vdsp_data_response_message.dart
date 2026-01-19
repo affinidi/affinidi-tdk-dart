@@ -19,9 +19,7 @@ class VdspDataResponseMessage extends PlainTextMessage {
     super.createdTime,
     super.expiresTime,
     super.threadId,
-  }) : super(
-          type: messageType,
-        );
+  }) : super(type: messageType);
 
   /// Strongly typed view of the response body.
   VdspDataResponseBody get response {
@@ -31,14 +29,11 @@ class VdspDataResponseMessage extends PlainTextMessage {
       throw StateError('Message body is missing.');
     }
 
-    return VdspDataResponseBody.fromJson(
-      Map<String, dynamic>.from(payload),
-    );
+    return VdspDataResponseBody.fromJson(Map<String, dynamic>.from(payload));
   }
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Body payload for a VDSP data response message encapsulating returned data.
 ///
 /// Provides the response data along with metadata describing its format and

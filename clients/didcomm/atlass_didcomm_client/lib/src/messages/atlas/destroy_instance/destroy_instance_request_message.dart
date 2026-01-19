@@ -30,9 +30,7 @@ class DestroyInstanceRequestMessage extends BaseRequestMessage {
       from: from,
       createdTime: createdTime,
       expiresTime: expiresTime,
-      body: {
-        'mediatorId': instanceId,
-      },
+      body: {'mediatorId': instanceId},
       threadId: threadId,
       operationName: 'destroyMediatorInstance',
     );
@@ -54,9 +52,7 @@ class DestroyInstanceRequestMessage extends BaseRequestMessage {
       from: from,
       createdTime: createdTime,
       expiresTime: expiresTime,
-      body: {
-        'mpxId': instanceId,
-      },
+      body: {'mpxId': instanceId},
       threadId: threadId,
       operationName: 'destroyMpxInstance',
     );
@@ -78,9 +74,7 @@ class DestroyInstanceRequestMessage extends BaseRequestMessage {
       from: from,
       createdTime: createdTime,
       expiresTime: expiresTime,
-      body: {
-        'trId': instanceId,
-      },
+      body: {'trId': instanceId},
       threadId: threadId,
       operationName: 'destroyTrInstance',
     );

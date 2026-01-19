@@ -40,11 +40,14 @@ void main() {
 
       final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
       String basePathOverride = replaceBaseDomain(
-          AffinidiTdkCredentialIssuanceClient.basePath, apiGwUrl);
+        AffinidiTdkCredentialIssuanceClient.basePath,
+        apiGwUrl,
+      );
 
       final issuanceClient = AffinidiTdkCredentialIssuanceClient(
-          authTokenHook: ResourceFactory.getAuthTokenHook(),
-          basePathOverride: basePathOverride);
+        authTokenHook: ResourceFactory.getAuthTokenHook(),
+        basePathOverride: basePathOverride,
+      );
       configurationApi = issuanceClient.getConfigurationApi();
       issuanceApi = issuanceClient.getIssuanceApi();
       offerApi = issuanceClient.getOfferApi();
@@ -62,27 +65,40 @@ void main() {
         final response = await configurationApi.getIssuanceConfigList();
 
         // Then
-        expect(response.data, isNotNull,
-            reason: 'Response data should not be null');
+        expect(
+          response.data,
+          isNotNull,
+          reason: 'Response data should not be null',
+        );
 
         final configs = response.data?.configurations;
-        expect(configs, isNotNull,
-            reason: 'Configurations list should not be null');
-        expect(configs!, isNotEmpty,
-            reason: 'Configurations list should not be empty');
+        expect(
+          configs,
+          isNotNull,
+          reason: 'Configurations list should not be null',
+        );
+        expect(
+          configs!,
+          isNotEmpty,
+          reason: 'Configurations list should not be empty',
+        );
 
         // Store configuration ID
         configurationId = configs.first.id;
         configurationIssuerWalletId = configs.first.issuerWalletId!;
-        expect(configurationId, isNotEmpty,
-            reason: 'First configuration ID should not be empty');
+        expect(
+          configurationId,
+          isNotEmpty,
+          reason: 'First configuration ID should not be empty',
+        );
       });
 
       test('Updates issuance configuration', () async {
         final String updatedDescription = 'UpdatedDescription';
 
-        final foundWallet =
-            await ResourceFactory.getWalletById(configurationIssuerWalletId);
+        final foundWallet = await ResourceFactory.getWalletById(
+          configurationIssuerWalletId,
+        );
 
         final updateIssuanceConfigInput = UpdateIssuanceConfigInputBuilder()
           ..description = updatedDescription;
@@ -92,9 +108,9 @@ void main() {
         }
 
         final config = (await configurationApi.updateIssuanceConfigById(
-                configurationId: configurationId,
-                updateIssuanceConfigInput: updateIssuanceConfigInput.build()))
-            .data;
+          configurationId: configurationId,
+          updateIssuanceConfigInput: updateIssuanceConfigInput.build(),
+        )).data;
 
         expect(config, isNotNull);
         expect(config?.description, equals(updatedDescription));
@@ -102,8 +118,8 @@ void main() {
 
       test('Reads issuance configuration', () async {
         final config = (await configurationApi.getIssuanceConfigById(
-                configurationId: configurationId))
-            .data;
+          configurationId: configurationId,
+        )).data;
 
         expect(config, isNotNull);
       });
@@ -146,9 +162,9 @@ void main() {
           ]);
 
         final issuanceResponse = (await issuanceApi.startIssuance(
-                projectId: env.projectId,
-                startIssuanceInput: startIssuanceInput.build()))
-            .data;
+          projectId: env.projectId,
+          startIssuanceInput: startIssuanceInput.build(),
+        )).data;
 
         expect(issuanceResponse, isNotNull);
         expect(issuanceResponse?.issuanceId, isNotEmpty);
@@ -158,23 +174,28 @@ void main() {
 
       test('Get Offer', () async {
         final offerResponse = (await offerApi.getCredentialOffer(
-                projectId: env.projectId, issuanceId: issuanceId))
-            .data;
+          projectId: env.projectId,
+          issuanceId: issuanceId,
+        )).data;
 
         expect(offerResponse, isNotNull);
         expect(offerResponse?.credentialIssuer, isNotEmpty);
         expect(offerResponse?.grants, isNotNull);
         expect(
-            offerResponse?.grants
-                .urnColonIetfColonParamsColonOauthColonGrantTypeColonPreAuthorizedCode,
-            isNotNull);
+          offerResponse
+              ?.grants
+              .urnColonIetfColonParamsColonOauthColonGrantTypeColonPreAuthorizedCode,
+          isNotNull,
+        );
         expect(
+          offerResponse
+              ?.grants
+              .urnColonIetfColonParamsColonOauthColonGrantTypeColonPreAuthorizedCode
+              .preAuthorizedCode,
+          isNotEmpty,
+        );
+        preAuthCode =
             offerResponse
-                ?.grants
-                .urnColonIetfColonParamsColonOauthColonGrantTypeColonPreAuthorizedCode
-                .preAuthorizedCode,
-            isNotEmpty);
-        preAuthCode = offerResponse
                 ?.grants
                 .urnColonIetfColonParamsColonOauthColonGrantTypeColonPreAuthorizedCode
                 .preAuthorizedCode ??
@@ -182,19 +203,21 @@ void main() {
       });
 
       test("Claim batch credential", () async {
-        final issuerMetadata = (await wellKnownApi
-                .getWellKnownOpenIdCredentialIssuer(projectId: env.projectId))
-            .data;
+        final issuerMetadata =
+            (await wellKnownApi.getWellKnownOpenIdCredentialIssuer(
+              projectId: env.projectId,
+            )).data;
         expect(issuerMetadata, isNotNull);
 
         final tokenEndpoint = issuerMetadata?.tokenEndpoint;
         expect(tokenEndpoint, isNotNull);
 
-        final tokenDetails =
-            await consumerAuthProvider.exchangePreAuthCodeForToken(
-                tokenEndpoint: issuerMetadata?.tokenEndpoint ?? '',
-                preAuthCode: preAuthCode,
-                txCode: txCode ?? '');
+        final tokenDetails = await consumerAuthProvider
+            .exchangePreAuthCodeForToken(
+              tokenEndpoint: issuerMetadata?.tokenEndpoint ?? '',
+              preAuthCode: preAuthCode,
+              txCode: txCode ?? '',
+            );
 
         expect(tokenDetails.accessToken, isNotNull);
         expect(tokenDetails.authorizationDetails, isNotNull);
@@ -205,10 +228,13 @@ void main() {
             final proof = CredentialProofBuilder()
               ..jwt = await consumerAuthProvider.fetchCisToken()
               ..proofType = CredentialProofProofTypeEnum.jwt;
-            credentialRequests
-                .add(BatchCredentialInputCredentialRequestsInner((b) => b
+            credentialRequests.add(
+              BatchCredentialInputCredentialRequestsInner(
+                (b) => b
                   ..credentialIdentifier = credentialIdentifier
-                  ..proof = proof));
+                  ..proof = proof,
+              ),
+            );
           }
         }
 
@@ -222,16 +248,19 @@ void main() {
 
         final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
         String basePathOverride = replaceBaseDomain(
-            AffinidiTdkCredentialIssuanceClient.basePath, apiGwUrl);
+          AffinidiTdkCredentialIssuanceClient.basePath,
+          apiGwUrl,
+        );
 
         final client = AffinidiTdkCredentialIssuanceClient(
-            basePathOverride: basePathOverride);
+          basePathOverride: basePathOverride,
+        );
         final credentialsApi = client.getCredentialsApi();
         final data = (await credentialsApi.batchCredential(
-                projectId: env.projectId,
-                batchCredentialInput: batchCredentialInput.build(),
-                headers: headers))
-            .data;
+          projectId: env.projectId,
+          batchCredentialInput: batchCredentialInput.build(),
+          headers: headers,
+        )).data;
         expect(data, isNotNull);
         expect(data?.credentialResponses, isNotNull);
         expect(data?.credentialResponses.length, equals(10));
@@ -239,16 +268,20 @@ void main() {
         expect(data?.credentialResponses.first.credential, isNotNull);
       });
 
-      test('Get issued credentials for specific flow', () async {
-        final data = (await credentialsApi.getIssuanceIdClaimedCredential(
-                configurationId: configurationId,
-                projectId: env.projectId,
-                issuanceId: issuanceId))
-            .data;
-        expect(data, isNotNull);
-        expect(data?.credentials, isNotNull);
-        expect(data?.credentials?.length, equals(10));
-      }, skip: 'TODO: unskip when fixed on the backend');
+      test(
+        'Get issued credentials for specific flow',
+        () async {
+          final data = (await credentialsApi.getIssuanceIdClaimedCredential(
+            configurationId: configurationId,
+            projectId: env.projectId,
+            issuanceId: issuanceId,
+          )).data;
+          expect(data, isNotNull);
+          expect(data?.credentials, isNotNull);
+          expect(data?.credentials?.length, equals(10));
+        },
+        skip: 'TODO: unskip when fixed on the backend',
+      );
     });
   });
 }

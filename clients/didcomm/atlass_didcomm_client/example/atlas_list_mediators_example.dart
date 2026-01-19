@@ -32,39 +32,31 @@ Future<void> main() async {
 
   await senderKeyStore.set(
     senderKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: senderPrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: senderPrivateKeyBytes),
   );
 
   await senderDidManager.addVerificationMethod(senderKeyId);
 
   final atlasClient = await DidcommAtlasClient.init(
     didManager: senderDidManager,
-    clientOptions:
-        const AffinidiClientOptions(requestTimeout: Duration(minutes: 5)),
+    clientOptions: const AffinidiClientOptions(
+      requestTimeout: Duration(minutes: 5),
+    ),
   );
 
   prettyPrint('Atlas DID', object: DidcommAtlasClient.atlasDid);
 
   await ConnectionPool.instance.startConnections();
 
-  final instances = await atlasClient.getMediatorInstancesList().catchError(
-    (Object error) {
-      prettyPrint(
-        'Error while listing mediators',
-        object: error,
-      );
+  final instances = await atlasClient.getMediatorInstancesList().catchError((
+    Object error,
+  ) {
+    prettyPrint('Error while listing mediators', object: error);
 
-      exit(1);
-    },
-  );
+    exit(1);
+  });
 
-  prettyPrint(
-    'Mediators',
-    object: instances,
-  );
+  prettyPrint('Mediators', object: instances);
 
   await ConnectionPool.instance.stopConnections();
 }

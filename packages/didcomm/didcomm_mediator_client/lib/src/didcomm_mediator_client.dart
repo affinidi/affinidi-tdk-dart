@@ -41,9 +41,9 @@ class DidcommMediatorClient extends MediatorClient {
     this.clientOptions = const ClientOptions(),
     super.authorizationProvider,
   }) : super(
-          forwardMessageOptions: clientOptions.forwardMessageOptions,
-          webSocketOptions: clientOptions.webSocketOptions,
-        );
+         forwardMessageOptions: clientOptions.forwardMessageOptions,
+         webSocketOptions: clientOptions.webSocketOptions,
+       );
 
   /// Initializes a [DidcommMediatorClient] asynchronously.
   ///
@@ -75,9 +75,7 @@ class DidcommMediatorClient extends MediatorClient {
 
   /// Packs and sends a [PlainTextMessage] to the mediator and recipient.
   /// Throws if the message is invalid or recipient cannot be resolved.
-  Future<void> packAndSendMessage(
-    PlainTextMessage message,
-  ) async {
+  Future<void> packAndSendMessage(PlainTextMessage message) async {
     if (message.to == null) {
       throw ArgumentError.notNull('message.to');
     }
@@ -97,15 +95,11 @@ class DidcommMediatorClient extends MediatorClient {
 
     final senderDidDocument = await didManager.getDidDocument();
 
-    final recipientDidDocument =
-        await UniversalDIDResolver.defaultResolver.resolveDid(
-      message.to!.first,
-    );
+    final recipientDidDocument = await UniversalDIDResolver.defaultResolver
+        .resolveDid(message.to!.first);
 
     final matchedKeyPairs = senderDidDocument.matchKeysInKeyAgreement(
-      otherDidDocuments: [
-        recipientDidDocument,
-      ],
+      otherDidDocuments: [recipientDidDocument],
     );
 
     if (matchedKeyPairs.isEmpty) {
@@ -132,7 +126,8 @@ class DidcommMediatorClient extends MediatorClient {
 
     final forwardMessageOptions = clientOptions.forwardMessageOptions;
 
-    final forwardFrom = forwardMessageOptions.shouldEncrypt &&
+    final forwardFrom =
+        forwardMessageOptions.shouldEncrypt &&
             forwardMessageOptions.keyWrappingAlgorithm ==
                 KeyWrappingAlgorithm.ecdh1Pu
         ? senderDidDocument.id
@@ -143,24 +138,18 @@ class DidcommMediatorClient extends MediatorClient {
       to: [mediatorDidDocument.id],
       from: forwardFrom,
       next: recipientDidDocument.id,
-      expiresTime: DateTime.now().toUtc().add(
-            clientOptions.messageExpiration,
-          ),
+      expiresTime: DateTime.now().toUtc().add(clientOptions.messageExpiration),
       attachments: [
         Attachment(
           mediaType: 'application/json',
           data: AttachmentData(
-            base64: base64UrlEncodeNoPadding(
-              packed.toJsonBytes(),
-            ),
+            base64: base64UrlEncodeNoPadding(packed.toJsonBytes()),
           ),
         ),
       ],
     );
 
-    await sendMessage(
-      forwardMessage,
-    );
+    await sendMessage(forwardMessage);
   }
 
   /// Sends a [AclManagementMessage] to the mediator.

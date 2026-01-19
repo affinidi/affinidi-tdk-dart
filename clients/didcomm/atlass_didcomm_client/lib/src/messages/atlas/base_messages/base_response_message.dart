@@ -23,12 +23,8 @@ abstract class BaseResponseMessage<T> extends PlainTextMessage {
     super.body = const {},
     required String operationName,
     required T Function(Map<String, dynamic>) fromJson,
-  })  : _fromJson = fromJson,
-        super(
-          type: Uri.parse(
-            '$baseOperationUri/$operationName/response',
-          ),
-        );
+  }) : _fromJson = fromJson,
+       super(type: Uri.parse('$baseOperationUri/$operationName/response'));
 
   /// Gets the parsed response data from the message body.
   T get response {

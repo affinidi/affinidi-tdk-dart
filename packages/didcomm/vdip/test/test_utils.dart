@@ -30,42 +30,46 @@ Future<LdVcDataModelV1> generateEmailLdVcV1({
     type: {'VerifiableCredential', 'Email'},
     issuanceDate: DateTime.now().toUtc(),
     credentialSubject: [
-      CredentialSubject.fromJson({
-        'id': holderDid,
-        'email': holderEmail,
-      }),
+      CredentialSubject.fromJson({'id': holderDid, 'email': holderEmail}),
     ],
   );
 
   final suite = LdVcDm1Suite();
 
   final issuedCredential = await suite.issue(
-      unsignedData: unsignedCredential,
-      proofGenerator: switch (issuerSigner.signatureScheme) {
-        SignatureScheme.ecdsa_secp256k1_sha256 =>
-          Secp256k1Signature2019Generator(
-            signer: issuerSigner,
-            proofPurpose: ProofPurpose.authentication,
-          ) as EmbeddedProofGenerator,
-        SignatureScheme.ecdsa_p256_sha256 => DataIntegrityEcdsaJcsGenerator(
-            signer: issuerSigner,
-            proofPurpose: ProofPurpose.authentication,
-          ) as EmbeddedProofGenerator,
-        SignatureScheme.ecdsa_p384_sha384 => DataIntegrityEcdsaJcsGenerator(
-            signer: issuerSigner,
-            proofPurpose: ProofPurpose.authentication,
-          ),
-        SignatureScheme.ecdsa_p521_sha512 => DataIntegrityEcdsaJcsGenerator(
-            signer: issuerSigner,
-            proofPurpose: ProofPurpose.authentication,
-          ),
-        SignatureScheme.ed25519 => DataIntegrityEddsaJcsGenerator(
-            signer: issuerSigner,
-            proofPurpose: ProofPurpose.authentication,
-          ) as EmbeddedProofGenerator,
-        SignatureScheme.rsa_pkcs1_sha256 =>
-          throw UnimplementedError('RSA is not supported'),
-      });
+    unsignedData: unsignedCredential,
+    proofGenerator: switch (issuerSigner.signatureScheme) {
+      SignatureScheme.ecdsa_secp256k1_sha256 =>
+        Secp256k1Signature2019Generator(
+              signer: issuerSigner,
+              proofPurpose: ProofPurpose.authentication,
+            )
+            as EmbeddedProofGenerator,
+      SignatureScheme.ecdsa_p256_sha256 =>
+        DataIntegrityEcdsaJcsGenerator(
+              signer: issuerSigner,
+              proofPurpose: ProofPurpose.authentication,
+            )
+            as EmbeddedProofGenerator,
+      SignatureScheme.ecdsa_p384_sha384 => DataIntegrityEcdsaJcsGenerator(
+        signer: issuerSigner,
+        proofPurpose: ProofPurpose.authentication,
+      ),
+      SignatureScheme.ecdsa_p521_sha512 => DataIntegrityEcdsaJcsGenerator(
+        signer: issuerSigner,
+        proofPurpose: ProofPurpose.authentication,
+      ),
+      SignatureScheme.ed25519 =>
+        DataIntegrityEddsaJcsGenerator(
+              signer: issuerSigner,
+              proofPurpose: ProofPurpose.authentication,
+            )
+            as EmbeddedProofGenerator,
+      SignatureScheme.rsa_pkcs1_sha256 => throw UnimplementedError(
+        'RSA is not supported',
+      ),
+    },
+  );
 
   return issuedCredential;
 }
@@ -78,14 +82,8 @@ Future<DidManager> createDidManager({
   final keyPair = await wallet.generateKey(keyType: keyType);
 
   final didManager = didMethod == 'did:key'
-      ? DidKeyManager(
-          store: InMemoryDidStore(),
-          wallet: wallet,
-        )
-      : DidPeerManager(
-          store: InMemoryDidStore(),
-          wallet: wallet,
-        );
+      ? DidKeyManager(store: InMemoryDidStore(), wallet: wallet)
+      : DidPeerManager(store: InMemoryDidStore(), wallet: wallet);
 
   await didManager.addVerificationMethod(keyPair.id);
   return didManager;
@@ -109,8 +107,9 @@ Future<EncryptedMessage> createEncryptedIssuedCredentialMessage({
 
   return await DidcommMessage.packIntoEncryptedMessage(
     message,
-    keyPair: await issuerDidManager
-        .getKeyPairByDidKeyId(issuerDidDocument.keyAgreement.first.id),
+    keyPair: await issuerDidManager.getKeyPairByDidKeyId(
+      issuerDidDocument.keyAgreement.first.id,
+    ),
     didKeyId: issuerDidDocument.keyAgreement.first.id,
     encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
     keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdh1Pu,
@@ -135,10 +134,7 @@ Future<EncryptedMessage> createdEncryptedProblemReportMessage({
       code: ProblemCode(
         sorter: SorterType.error,
         scope: Scope(scope: ScopeType.message),
-        descriptors: [
-          'vdip',
-          'unit-test',
-        ],
+        descriptors: ['vdip', 'unit-test'],
       ),
     ),
   );
@@ -179,8 +175,9 @@ Future<EncryptedMessage> createEncryptedMessageForAssertion({
 
   return await DidcommMessage.packIntoEncryptedMessage(
     requestIssuanceMessage,
-    keyPair: await holderDidManager
-        .getKeyPairByDidKeyId(holderDidDocument.keyAgreement.first.id),
+    keyPair: await holderDidManager.getKeyPairByDidKeyId(
+      holderDidDocument.keyAgreement.first.id,
+    ),
     didKeyId: holderDidDocument.keyAgreement.first.id,
     encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
     keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdh1Pu,

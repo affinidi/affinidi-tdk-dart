@@ -42,7 +42,9 @@ void main() {
 
       final vaultApiUrl = VaultUtils.fetchElementsVaultApiUrl();
       String basePathOverride = replaceBaseDomain(
-          AffinidiTdkVaultDataManagerClient.basePath, vaultApiUrl);
+        AffinidiTdkVaultDataManagerClient.basePath,
+        vaultApiUrl,
+      );
 
       final apiClient = AffinidiTdkVaultDataManagerClient(
         authTokenHook: consumerAuthProvider.fetchConsumerToken,

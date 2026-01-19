@@ -31,9 +31,9 @@ class NodeResponseFixtures {
         'type': 'PROFILE',
         'nodeId': profileNodeId,
         'edekInfo': {'dekekId': 'test-dekek-id', 'edek': 'test-edek'},
-        'metadata': jsonEncode({'pictureURI': ''})
-      }
-    ]
+        'metadata': jsonEncode({'pictureURI': ''}),
+      },
+    ],
   };
 
   static final emptyList = {'nodes': []};
@@ -57,7 +57,7 @@ class NodeResponseFixtures {
     'type': 'PROFILE',
     'nodeId': profileNodeId,
     'edekInfo': {'dekekId': 'test-dekek-id', 'edek': 'test-edek'},
-    'metadata': jsonEncode({'pictureURI': ''})
+    'metadata': jsonEncode({'pictureURI': ''}),
   };
 
   static final unableToHardDelete = {
@@ -102,7 +102,7 @@ class NodeResponseFixtures {
         'parentNodeId': rootNodeId,
         'type': 'FOLDER',
         'nodeId': childNodeId2,
-      }
-    ]
+      },
+    ],
   };
 }

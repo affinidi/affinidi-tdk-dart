@@ -42,62 +42,92 @@ void main() {
     group('and creates a profile', () {
       test('it throws an exception', () {
         expect(
-            () async => await sut.createProfile(name: 'Name'),
-            throwsA(isA<TdkException>().having((error) => error.code, 'code',
-                TdkExceptionType.profleNotConfigured.code)));
+          () async => await sut.createProfile(name: 'Name'),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              TdkExceptionType.profleNotConfigured.code,
+            ),
+          ),
+        );
       });
     });
 
     group('and deletes a profile', () {
       test('it throws an exception', () {
         expect(
-            () async => await sut.deleteProfile(ProfileFixtures.profile),
-            throwsA(isA<TdkException>().having((error) => error.code, 'code',
-                TdkExceptionType.profleNotConfigured.code)));
+          () async => await sut.deleteProfile(ProfileFixtures.profile),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              TdkExceptionType.profleNotConfigured.code,
+            ),
+          ),
+        );
       });
     });
 
     group('and updates a profile', () {
       test('it throws an exception', () {
         expect(
-            () async => await sut.updateProfile(ProfileFixtures.profile),
-            throwsA(isA<TdkException>().having((error) => error.code, 'code',
-                TdkExceptionType.profleNotConfigured.code)));
+          () async => await sut.updateProfile(ProfileFixtures.profile),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              TdkExceptionType.profleNotConfigured.code,
+            ),
+          ),
+        );
       });
     });
 
     group('and retrieves profiles', () {
       test('it throws an exception', () {
         expect(
-            () async => await sut.listProfiles(),
-            throwsA(isA<TdkException>().having((error) => error.code, 'code',
-                TdkExceptionType.profleNotConfigured.code)));
+          () async => await sut.listProfiles(),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              TdkExceptionType.profleNotConfigured.code,
+            ),
+          ),
+        );
       });
     });
 
     group('and configuring with invalid configuration', () {
       test('it throws error when keyStorage is null', () async {
         expect(
-          () async => await sut.configure(RepositoryConfiguration(
-            wallet: WalletFixtures.wallet,
-            keyStorage: null,
-          )),
-          throwsA(isA<TdkException>().having(
-            (error) => error.code,
-            'code',
-            TdkExceptionType.missingVaultStore.code,
-          )),
+          () async => await sut.configure(
+            RepositoryConfiguration(
+              wallet: WalletFixtures.wallet,
+              keyStorage: null,
+            ),
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              TdkExceptionType.missingVaultStore.code,
+            ),
+          ),
         );
       });
 
       test('it throws error when configuration is wrong type', () async {
         expect(
           () async => await sut.configure('invalid configuration'),
-          throwsA(isA<TdkException>().having(
-            (error) => error.code,
-            'code',
-            TdkExceptionType.invalidRepositoryConfigurationType.code,
-          )),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              TdkExceptionType.invalidRepositoryConfigurationType.code,
+            ),
+          ),
         );
       });
     });
@@ -105,10 +135,12 @@ void main() {
 
   group('When edge profile repository is configured', () {
     setUp(() async {
-      await sut.configure(RepositoryConfiguration(
-        wallet: WalletFixtures.wallet,
-        keyStorage: InMemoryVaultStore(),
-      ));
+      await sut.configure(
+        RepositoryConfiguration(
+          wallet: WalletFixtures.wallet,
+          keyStorage: InMemoryVaultStore(),
+        ),
+      );
     });
 
     test('it is configured with keyStorage', () async {
@@ -127,8 +159,10 @@ void main() {
 
         await sut.createProfile(name: name, description: description);
         expect(mockRepository.lastCalledCreateProfileName, equals(name));
-        expect(mockRepository.lastCalledCreateProfileDescription,
-            equals(description));
+        expect(
+          mockRepository.lastCalledCreateProfileDescription,
+          equals(description),
+        );
         expect(mockRepository.lastCalledCreateProfileAccountIndex, isNotNull);
       });
     });
@@ -143,8 +177,10 @@ void main() {
         test('it calls the repository with the correct parameters', () async {
           await sut.deleteProfile(profile);
 
-          expect(mockRepository.lastCalledHasAnyContentProfileId,
-              equals(profile.id));
+          expect(
+            mockRepository.lastCalledHasAnyContentProfileId,
+            equals(profile.id),
+          );
           expect(mockRepository.lastCalledDeletedProfileId, equals(profile.id));
         });
       });
@@ -155,20 +191,25 @@ void main() {
         });
 
         test(
-            'it throws an exception with code unable_to_delete_profile_with_content',
-            () async {
-          expect(
-            () async => await sut.deleteProfile(profile),
-            throwsA(isA<TdkException>().having(
-              (error) => error.code,
-              'code',
-              TdkExceptionType.unableToDeleteProfileWithContent.code,
-            )),
-          );
-          expect(mockRepository.lastCalledHasAnyContentProfileId,
-              equals(profile.id));
-          expect(mockRepository.lastCalledDeletedProfileId, isNull);
-        });
+          'it throws an exception with code unable_to_delete_profile_with_content',
+          () async {
+            expect(
+              () async => await sut.deleteProfile(profile),
+              throwsA(
+                isA<TdkException>().having(
+                  (error) => error.code,
+                  'code',
+                  TdkExceptionType.unableToDeleteProfileWithContent.code,
+                ),
+              ),
+            );
+            expect(
+              mockRepository.lastCalledHasAnyContentProfileId,
+              equals(profile.id),
+            );
+            expect(mockRepository.lastCalledDeletedProfileId, isNull);
+          },
+        );
       });
     });
 
@@ -233,9 +274,13 @@ void main() {
 
         expect(mockRepository.lastCalledUpdateProfile, isNotNull);
         expect(
-            mockRepository.lastCalledUpdateProfile!.name, equals(profile.name));
-        expect(mockRepository.lastCalledUpdateProfile!.description,
-            equals(profile.description));
+          mockRepository.lastCalledUpdateProfile!.name,
+          equals(profile.name),
+        );
+        expect(
+          mockRepository.lastCalledUpdateProfile!.description,
+          equals(profile.description),
+        );
       });
     });
   });
