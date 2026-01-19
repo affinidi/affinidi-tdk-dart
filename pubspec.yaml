@@ -88,7 +88,8 @@ melos:
           - "*_example*"
     test-integration:
       description: Run integration tests
-      exec: dart test
+      run: |
+        bash -lc 'set -eu -o pipefail; set -a; . ".env"; set +a; melos exec -- "dart test --chain-stack-traces"'
       dirExists: test
       concurrency: 4
       failFast: true
