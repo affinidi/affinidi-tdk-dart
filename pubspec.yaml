@@ -88,8 +88,7 @@ melos:
           - "*_example*"
     test-integration:
       description: Run integration tests
-      run: |
-        bash -lc 'set -eu -o pipefail; set -a; . ".env"; set +a; melos exec -- "dart test --chain-stack-traces"'
+      run: ./scripts/test-integration.sh
       dirExists: test
       concurrency: 4
       failFast: true
@@ -100,7 +99,4 @@ melos:
         scope:
           - "*integration_tests*"
     coverage-report:
-      run: >
-        mkdir -p coverage
-
-        find ./packages -name "lcov.info" -path "*/coverage/lcov.info" -exec cat {} + > coverage/lcov.info
+      run: ./scripts/coverage-report.sh
