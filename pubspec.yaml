@@ -31,6 +31,14 @@ workspace:
   - packages/common/example
   - packages/consumer_auth_provider/example
   - packages/vault/example
+  - clients/dart/login_configuration_client
+  - clients/dart/vault_data_manager_client
+  - clients/dart/credential_verification_client
+  - clients/dart/iam_client
+  - clients/dart/wallets_client
+  - clients/dart/credential_issuance_client
+  - clients/dart/consumer_iam_client
+  - clients/dart/iota_client
 dev_dependencies:
   coverage: ^1.11.1
   dart_flutter_team_lints: ^3.2.1
@@ -45,7 +53,7 @@ melos:
       noSelect: true
       packageFilters:
         includePrivatePackages: false
-        diff: "origin/main"
+        diff: origin/main
     analyze:
       exec: dart analyze .
       concurrency: 4
@@ -54,7 +62,7 @@ melos:
       packageFilters:
         flutter: true
         includePrivatePackages: false
-        diff: "origin/main"
+        diff: origin/main
     test:
       run: |
         melos run test-flutter
@@ -70,7 +78,7 @@ melos:
       packageFilters:
         flutter: true
         includePrivatePackages: false
-        diff: "origin/main"
+        diff: origin/main
         ignore:
           - "*_example*"
     test-dart:
@@ -83,7 +91,7 @@ melos:
       packageFilters:
         flutter: false
         private: false
-        diff: "origin/main"
+        diff: origin/main
         ignore:
           - "*_example*"
     test-integration:
