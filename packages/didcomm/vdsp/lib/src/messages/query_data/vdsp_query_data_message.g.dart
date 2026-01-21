@@ -8,17 +8,22 @@ part of 'vdsp_query_data_message.dart';
 
 VdspQueryDataBody _$VdspQueryDataBodyFromJson(Map<String, dynamic> json) =>
     VdspQueryDataBody(
-      dataQueryLanguage:
-          $enumDecode(_$DataQueryLanguageEnumMap, json['data_query_lang']),
+      dataQueryLanguage: $enumDecode(
+        _$DataQueryLanguageEnumMap,
+        json['data_query_lang'],
+      ),
       responseFormat: json['response_format'] as String,
       query: json['query'] as Map<String, dynamic>,
       proofContext: VdspQueryDataProofContext.fromJson(
-          json['proof_context'] as Map<String, dynamic>),
+        json['proof_context'] as Map<String, dynamic>,
+      ),
       operation: json['operation'] as String?,
       comment: json['comment'] as String?,
     );
 
-Map<String, dynamic> _$VdspQueryDataBodyToJson(VdspQueryDataBody instance) =>
+Map<String, dynamic> _$VdspQueryDataBodyToJson(
+  VdspQueryDataBody instance,
+) =>
     <String, dynamic>{
       if (instance.operation case final value?) 'operation': value,
       'data_query_lang':
@@ -29,19 +34,19 @@ Map<String, dynamic> _$VdspQueryDataBodyToJson(VdspQueryDataBody instance) =>
       'proof_context': instance.proofContext.toJson(),
     };
 
-const _$DataQueryLanguageEnumMap = {
-  DataQueryLanguage.dcql: 'DCQL',
-};
+const _$DataQueryLanguageEnumMap = {DataQueryLanguage.dcql: 'DCQL'};
 
 VdspQueryDataProofContext _$VdspQueryDataProofContextFromJson(
-        Map<String, dynamic> json) =>
+  Map<String, dynamic> json,
+) =>
     VdspQueryDataProofContext(
       challenge: json['challenge'] as String,
       domain: json['domain'] as String,
     );
 
 Map<String, dynamic> _$VdspQueryDataProofContextToJson(
-        VdspQueryDataProofContext instance) =>
+  VdspQueryDataProofContext instance,
+) =>
     <String, dynamic>{
       'challenge': instance.challenge,
       'domain': instance.domain,

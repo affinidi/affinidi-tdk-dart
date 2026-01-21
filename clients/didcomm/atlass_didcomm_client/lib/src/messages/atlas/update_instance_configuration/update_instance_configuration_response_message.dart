@@ -17,27 +17,24 @@ class UpdateMediatorInstanceConfigurationResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-          operationName: 'updateMediatorInstanceConfiguration',
-          fromJson: UpdateMediatorInstanceConfigurationResponse.fromJson,
-        );
+         operationName: 'updateMediatorInstanceConfiguration',
+         fromJson: UpdateMediatorInstanceConfigurationResponse.fromJson,
+       );
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Response data for update mediator instance configuration operation.
 class UpdateMediatorInstanceConfigurationResponse {
   /// The update message/status.
   final String? message;
 
   /// Creates an update mediator instance configuration response.
-  UpdateMediatorInstanceConfigurationResponse({
-    this.message,
-  });
+  UpdateMediatorInstanceConfigurationResponse({this.message});
 
   /// Creates UpdateMediatorInstanceConfigurationResponse from a JSON map.
   factory UpdateMediatorInstanceConfigurationResponse.fromJson(
-          Map<String, dynamic> json) =>
-      _$UpdateMediatorInstanceConfigurationResponseFromJson(json);
+    Map<String, dynamic> json,
+  ) => _$UpdateMediatorInstanceConfigurationResponseFromJson(json);
 
   /// Converts this UpdateMediatorInstanceConfigurationResponse to a JSON map.
   Map<String, dynamic> toJson() =>

@@ -21,10 +21,7 @@ class DioExceptionFixtures {
       requestOptions: requestOptions,
     );
 
-    return DioException(
-      requestOptions: requestOptions,
-      response: response,
-    );
+    return DioException(requestOptions: requestOptions, response: response);
   }
 
   /// A DioException with a SocketException.
@@ -33,8 +30,9 @@ class DioExceptionFixtures {
   /// Creates a DioException with a SocketException.
   ///
   /// [message] - The error message for the SocketException.
-  static DioException socketExceptionWithMessage(
-          {String message = 'Failed to connect'}) =>
+  static DioException socketExceptionWithMessage({
+    String message = 'Failed to connect',
+  }) =>
       DioException(
         requestOptions: RequestOptions(),
         error: SocketException(message),
@@ -46,8 +44,9 @@ class DioExceptionFixtures {
   /// Creates a DioException with an HttpException.
   ///
   /// [message] - The error message for the HttpException.
-  static DioException httpExceptionWithMessage(
-          {String message = 'Connection failed'}) =>
+  static DioException httpExceptionWithMessage({
+    String message = 'Connection failed',
+  }) =>
       DioException(
         requestOptions: RequestOptions(),
         error: HttpException(message),

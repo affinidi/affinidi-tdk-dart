@@ -41,7 +41,9 @@ void main() {
       expect(profile.name, equals('Updated Name'));
       expect(profile.description, equals('Updated Description'));
       expect(
-          profile.profilePictureURI, equals('https://example.com/avatar.png'));
+        profile.profilePictureURI,
+        equals('https://example.com/avatar.png'),
+      );
     });
   });
 
@@ -85,7 +87,9 @@ void main() {
   group('Credential Storage Operations', () {
     test('should return credential storages map', () {
       expect(
-          profile.credentialStorages, equals({'test': mockCredentialStorage}));
+        profile.credentialStorages,
+        equals({'test': mockCredentialStorage}),
+      );
     });
 
     test('should set and get default credential storage', () {
@@ -145,17 +149,16 @@ void main() {
     test('should throw when adding duplicate shared storage', () {
       expect(
         () => profile.addSharedStorage(
-            id: 'test', sharedStorage: MockSharedStorage()),
+          id: 'test',
+          sharedStorage: MockSharedStorage(),
+        ),
         throwsA(isA<TdkException>()),
       );
     });
 
     test('should remove shared storage', () {
       profile.removeSharedStorage(id: 'test');
-      expect(
-        () => profile.sharedStorage('test'),
-        throwsA(isA<TdkException>()),
-      );
+      expect(() => profile.sharedStorage('test'), throwsA(isA<TdkException>()));
     });
 
     test('should throw when removing non-existent shared storage', () {
@@ -205,8 +208,10 @@ void main() {
       expect(fullProfile.id, equals('full-id'));
       expect(fullProfile.name, equals('Full Profile'));
       expect(fullProfile.description, equals('Full Description'));
-      expect(fullProfile.profilePictureURI,
-          equals('https://example.com/avatar.png'));
+      expect(
+        fullProfile.profilePictureURI,
+        equals('https://example.com/avatar.png'),
+      );
       expect(fullProfile.fileStorages, isNotEmpty);
       expect(fullProfile.credentialStorages, isNotEmpty);
       expect(fullProfile.sharedStorages, isNotEmpty);

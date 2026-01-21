@@ -14,10 +14,7 @@ void main() async {
   final response = await dio.get<Map<String, dynamic>>('/hello');
   print('Mocked GET /hello: ${response.data}');
 
-  adapter.mockRequestWithException(
-    url: '/not-mocked',
-    statusCode: 404,
-  );
+  adapter.mockRequestWithException(url: '/not-mocked', statusCode: 404);
 
   try {
     await dio.get<Map<String, dynamic>>('/not-mocked');

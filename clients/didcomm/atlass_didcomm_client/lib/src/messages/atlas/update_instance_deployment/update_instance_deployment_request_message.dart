@@ -34,10 +34,7 @@ class UpdateInstanceDeploymentRequestMessage extends BaseRequestMessage {
       from: from,
       createdTime: createdTime,
       expiresTime: expiresTime,
-      body: {
-        'mediatorId': mediatorId,
-        ...options.toJson(),
-      },
+      body: {'mediatorId': mediatorId, ...options.toJson()},
       threadId: threadId,
       operationName: 'updateMediatorInstanceDeployment',
     );
@@ -60,10 +57,7 @@ class UpdateInstanceDeploymentRequestMessage extends BaseRequestMessage {
       from: from,
       createdTime: createdTime,
       expiresTime: expiresTime,
-      body: {
-        'mpxId': mpxId,
-        ...options.toJson(),
-      },
+      body: {'mpxId': mpxId, ...options.toJson()},
       threadId: threadId,
       operationName: 'updateMpxInstanceDeployment',
     );
@@ -86,10 +80,7 @@ class UpdateInstanceDeploymentRequestMessage extends BaseRequestMessage {
       from: from,
       createdTime: createdTime,
       expiresTime: expiresTime,
-      body: {
-        'trId': trId,
-        ...options.toJson(),
-      },
+      body: {'trId': trId, ...options.toJson()},
       threadId: threadId,
       operationName: 'updateTrInstanceDeployment',
     );

@@ -21,23 +21,17 @@ class FeatureDiscoveryHelper {
       JsonWebSignatureAlgorithm.es512.value,
       JsonWebSignatureAlgorithm.es256K.value,
       JsonWebSignatureAlgorithm.edDSA.value,
-    ]
+    ],
   };
 
   static final _vdspBaseConfig = <FeatureType, List<String>>{
-    FeatureType.protocol: [
-      'https://affinidi.com/didcomm/protocols/vdsp/1.0',
-    ],
-    FeatureType.dataQueryLanguage: [
-      DataQueryLanguage.dcql.value,
-    ],
+    FeatureType.protocol: ['https://affinidi.com/didcomm/protocols/vdsp/1.0'],
+    FeatureType.dataQueryLanguage: [DataQueryLanguage.dcql.value],
     ..._commonBaseConfig,
   };
 
   static final _vdipBaseConfig = <FeatureType, List<String>>{
-    FeatureType.protocol: [
-      'https://affinidi.com/didcomm/protocols/vdip/1.0',
-    ],
+    FeatureType.protocol: ['https://affinidi.com/didcomm/protocols/vdip/1.0'],
     ..._commonBaseConfig,
   };
 
@@ -60,10 +54,7 @@ class FeatureDiscoveryHelper {
   static final List<Disclosure> vdipIssuerDisclosures = _vdipBaseConfig.entries
       .expand(
         (entry) => entry.value.map(
-          (item) => Disclosure(
-            featureType: entry.key.value,
-            id: item,
-          ),
+          (item) => Disclosure(featureType: entry.key.value, id: item),
         ),
       )
       .map(
@@ -79,13 +70,12 @@ class FeatureDiscoveryHelper {
 
   /// Returns a list of [Query] objects for the given [disclosures].
   static List<Query> getFeatureQueriesByDisclosures(
-          List<Disclosure> disclosures) =>
+    List<Disclosure> disclosures,
+  ) =>
       disclosures
           .map(
             (disclosure) => Query(
-              featureType: disclosure.featureType,
-              match: disclosure.id,
-            ),
+                featureType: disclosure.featureType, match: disclosure.id),
           )
           .toList();
 

@@ -22,11 +22,7 @@ class ItemPermission {
   /// [itemIds] - The list of item IDs that have these permissions.
   /// [rights] - The list of rights granted.
   /// [expiresAt] - Optional expiration date for the permissions.
-  ItemPermission({
-    required this.itemIds,
-    required this.rights,
-    this.expiresAt,
-  });
+  ItemPermission({required this.itemIds, required this.rights, this.expiresAt});
 
   /// Creates an [ItemPermission] from a map.
   ///

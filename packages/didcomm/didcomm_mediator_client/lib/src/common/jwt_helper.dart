@@ -11,8 +11,11 @@ class JwtHelper {
     Map<String, dynamic> claims,
     Signer signer,
   ) async {
-    final sdJwt = await _handler
-        .sign(claims: claims, signer: signer, disclosureFrame: {});
+    final sdJwt = await _handler.sign(
+      claims: claims,
+      signer: signer,
+      disclosureFrame: {},
+    );
 
     return _getJwtStringWithoutDisclosure(sdJwt);
   }
@@ -51,9 +54,7 @@ class JwtHelper {
   }
 
   /// Decodes JWT
-  static SdJwt decode({
-    required String serializedJwt,
-  }) {
+  static SdJwt decode({required String serializedJwt}) {
     return SdJwtHandlerV1().unverifiedDecode(sdJwtToken: '$serializedJwt~');
   }
 }

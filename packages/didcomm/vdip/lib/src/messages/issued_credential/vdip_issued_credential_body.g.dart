@@ -7,16 +7,20 @@ part of 'vdip_issued_credential_body.dart';
 // **************************************************************************
 
 VdipIssuedCredentialBody _$VdipIssuedCredentialBodyFromJson(
-        Map<String, dynamic> json) =>
+  Map<String, dynamic> json,
+) =>
     VdipIssuedCredentialBody._(
       credential: json['credential'] as String,
-      credentialFormat:
-          $enumDecode(_$CredentialFormatEnumMap, json['credential_format']),
+      credentialFormat: $enumDecode(
+        _$CredentialFormatEnumMap,
+        json['credential_format'],
+      ),
       comment: json['comment'] as String?,
     );
 
 Map<String, dynamic> _$VdipIssuedCredentialBodyToJson(
-        VdipIssuedCredentialBody instance) =>
+  VdipIssuedCredentialBody instance,
+) =>
     <String, dynamic>{
       'credential': instance.credential,
       'credential_format':

@@ -15,9 +15,8 @@ class EdgeEncryptionService implements EdgeEncryptionServiceInterface {
   static const int _cypherLength = 32;
 
   /// Creates a new instance of [EdgeEncryptionService].
-  EdgeEncryptionService({
-    required VaultStore vaultStore,
-  }) : _vaultStore = vaultStore;
+  EdgeEncryptionService({required VaultStore vaultStore})
+      : _vaultStore = vaultStore;
 
   final VaultStore _vaultStore;
   late final Random _secureRandom = Random.secure();
@@ -46,13 +45,20 @@ class EdgeEncryptionService implements EdgeEncryptionServiceInterface {
       nonce: nonce,
     );
 
-    final result =
-        Uint8List(_ivLength + encryptedData.cipherText.length + _tagLength);
+    final result = Uint8List(
+      _ivLength + encryptedData.cipherText.length + _tagLength,
+    );
     result.setRange(0, _ivLength, nonce);
-    result.setRange(_ivLength, _ivLength + encryptedData.cipherText.length,
-        encryptedData.cipherText);
-    result.setRange(_ivLength + encryptedData.cipherText.length, result.length,
-        encryptedData.mac.bytes);
+    result.setRange(
+      _ivLength,
+      _ivLength + encryptedData.cipherText.length,
+      encryptedData.cipherText,
+    );
+    result.setRange(
+      _ivLength + encryptedData.cipherText.length,
+      result.length,
+      encryptedData.mac.bytes,
+    );
 
     return result;
   }
@@ -62,8 +68,9 @@ class EdgeEncryptionService implements EdgeEncryptionServiceInterface {
     final cipher = await _vaultStore.getContentKey();
     if (cipher == null) {
       throw TdkException(
-          message: 'Missing egde cipher for encrytping content',
-          code: TdkExceptionType.missingEdgeCipher.code);
+        message: 'Missing egde cipher for encrytping content',
+        code: TdkExceptionType.missingEdgeCipher.code,
+      );
     }
 
     if (encryptedData.length < _ivLength + _tagLength) {
@@ -77,8 +84,10 @@ class EdgeEncryptionService implements EdgeEncryptionServiceInterface {
     try {
       final secretBox = _makeSecretBoxFromData(encryptedData);
       final secretKey = SecretKey(cipher);
-      final decryptedData =
-          await _cryptographyAlgorythm.decrypt(secretBox, secretKey: secretKey);
+      final decryptedData = await _cryptographyAlgorythm.decrypt(
+        secretBox,
+        secretKey: secretKey,
+      );
       return Uint8List.fromList(decryptedData);
     } catch (e) {
       throw TdkException(
@@ -110,8 +119,10 @@ class EdgeEncryptionService implements EdgeEncryptionServiceInterface {
   }
 
   SecretBox _makeSecretBoxFromData(Uint8List encryptedData) {
-    final ciphertext =
-        encryptedData.sublist(_ivLength, encryptedData.length - _tagLength);
+    final ciphertext = encryptedData.sublist(
+      _ivLength,
+      encryptedData.length - _tagLength,
+    );
     final nonce = encryptedData.sublist(0, _ivLength);
     final tag = encryptedData.sublist(encryptedData.length - _tagLength);
     final mac = Mac(tag);
@@ -121,7 +132,6 @@ class EdgeEncryptionService implements EdgeEncryptionServiceInterface {
 }
 
 extension _RandomBytes on Random {
-  Uint8List nextBytes(int bytes) => Uint8List.fromList(
-        List<int>.generate(bytes, (_) => nextInt(256)),
-      );
+  Uint8List nextBytes(int bytes) =>
+      Uint8List.fromList(List<int>.generate(bytes, (_) => nextInt(256)));
 }

@@ -17,10 +17,7 @@ class CredentialFixtures {
         'issuanceDate': '2023-01-01T00:00:00Z',
         'credentialSubject': {
           'id': 'did:example:abcdef123456789',
-          'degree': {
-            'type': 'BachelorDegree',
-            'name': 'Bachelor of Science',
-          },
+          'degree': {'type': 'BachelorDegree', 'name': 'Bachelor of Science'},
         },
         'proof': {
           'type': 'Ed25519Signature2018',
@@ -28,8 +25,8 @@ class CredentialFixtures {
           'proofPurpose': 'assertionMethod',
           'verificationMethod': 'did:example:123456789abcdefghi#key-1',
           'jws':
-              'eyJhbGciOiJFUzI1NksiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..test-signature'
-        }
+              'eyJhbGciOiJFUzI1NksiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..test-signature',
+        },
       };
 
   static Map<String, dynamic> get drivingLicenseCredentialJson => {
@@ -49,8 +46,8 @@ class CredentialFixtures {
           'proofPurpose': 'assertionMethod',
           'verificationMethod': 'did:example:987654321fedcba#key-1',
           'jws':
-              'eyJhbGciOiJFUzI1NksiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..test-signature-2'
-        }
+              'eyJhbGciOiJFUzI1NksiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..test-signature-2',
+        },
       };
 
   static String get universityDegreeCredentialJsonString =>
@@ -88,10 +85,7 @@ class CredentialFixtures {
   }
 
   static List<DigitalCredential> get mockCredentials {
-    return [
-      mockDigitalCredential,
-      drivingLicenseDigitalCredential,
-    ];
+    return [mockDigitalCredential, drivingLicenseDigitalCredential];
   }
 
   static EdgeCredential get mockCredentialData {
@@ -109,10 +103,7 @@ class CredentialFixtures {
   }
 
   static List<EdgeCredential> get mockCredentialDataList {
-    return [
-      mockCredentialData,
-      drivingLicenseCredentialData,
-    ];
+    return [mockCredentialData, drivingLicenseCredentialData];
   }
 
   static Uint8List get smallCredentialData {
@@ -130,8 +121,6 @@ class CredentialFixtures {
       );
 
   static PaginatedList<EdgeCredential>
-      get mockEmptyCredentialDataPaginatedList => PaginatedList(
-            items: [],
-            lastEvaluatedItemId: null,
-          );
+      get mockEmptyCredentialDataPaginatedList =>
+          PaginatedList(items: [], lastEvaluatedItemId: null);
 }

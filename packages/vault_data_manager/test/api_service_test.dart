@@ -30,9 +30,7 @@ void main() {
     uploadDio = MockDio();
     uploadDio.options.baseUrl = '';
     vaultDataManagerApiService = VaultDataManagerApiService(
-      apiClient: AffinidiTdkVaultDataManagerClient(
-        dio: client,
-      ),
+      apiClient: AffinidiTdkVaultDataManagerClient(dio: client),
       dio: uploadDio,
     );
   });
@@ -86,9 +84,12 @@ void main() {
         );
 
         final nodeInfoResponse = await vaultDataManagerApiService.getNodeInfo(
-            nodeId: NodeResponseFixtures.profileNodeId);
-        expect(nodeInfoResponse.data?.nodeId,
-            equals(NodeResponseFixtures.profileNodeId));
+          nodeId: NodeResponseFixtures.profileNodeId,
+        );
+        expect(
+          nodeInfoResponse.data?.nodeId,
+          equals(NodeResponseFixtures.profileNodeId),
+        );
       });
     });
   });
@@ -119,9 +120,11 @@ void main() {
         );
 
         expect(
-            () => vaultDataManagerApiService.deleteNodeById(
-                nodeId: NodeResponseFixtures.profileNodeId),
-            throwsException);
+          () => vaultDataManagerApiService.deleteNodeById(
+            nodeId: NodeResponseFixtures.profileNodeId,
+          ),
+          throwsException,
+        );
       });
     });
   });
@@ -137,12 +140,15 @@ void main() {
         );
 
         final scanFileResponse = await vaultDataManagerApiService.startFileScan(
-            nodeId: NodeResponseFixtures.profileNodeId,
-            dekEncryptedByVfsPublicKey: TestDataFixtures.testDek);
+          nodeId: NodeResponseFixtures.profileNodeId,
+          dekEncryptedByVfsPublicKey: TestDataFixtures.testDek,
+        );
         expect(
-            scanFileResponse.data?.jobId,
-            equals(
-                'ff61913ffb889000a8fd8bfcb7a94c3f1fdef272c9f5aff93c4aeabda4e7c038'));
+          scanFileResponse.data?.jobId,
+          equals(
+            'ff61913ffb889000a8fd8bfcb7a94c3f1fdef272c9f5aff93c4aeabda4e7c038',
+          ),
+        );
         expect(scanFileResponse.data?.status.toString(), equals('STARTED'));
       });
     });
@@ -155,10 +161,12 @@ void main() {
         );
 
         expect(
-            () => vaultDataManagerApiService.startFileScan(
-                nodeId: NodeResponseFixtures.profileNodeId,
-                dekEncryptedByVfsPublicKey: TestDataFixtures.testDek),
-            throwsException);
+          () => vaultDataManagerApiService.startFileScan(
+            nodeId: NodeResponseFixtures.profileNodeId,
+            dekEncryptedByVfsPublicKey: TestDataFixtures.testDek,
+          ),
+          throwsException,
+        );
       });
     });
   });
@@ -174,8 +182,10 @@ void main() {
 
         final scannedFilesResponse =
             await vaultDataManagerApiService.getAllScannedFiles();
-        expect(scannedFilesResponse.data?.scannedFiles.first.status,
-            equals('COMPLETED'));
+        expect(
+          scannedFilesResponse.data?.scannedFiles.first.status,
+          equals('COMPLETED'),
+        );
       });
     });
 
@@ -213,11 +223,13 @@ void main() {
             dekEncryptedByWalletCryptoMaterial: TestDataFixtures.testDek,
             walletCryptoMaterialHash: TestDataFixtures.testHash,
           ),
-          throwsA(isA<TdkException>().having(
-            (error) => error.code,
-            'code',
-            TestDataFixtures.unableToCreateNode,
-          )),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              TestDataFixtures.unableToCreateNode,
+            ),
+          ),
         );
       });
     });
@@ -227,9 +239,7 @@ void main() {
         dioAdapter.mockRequestWithReply(
           url: '/v1/nodes',
           statusCode: 200,
-          data: {
-            'nodeId': NodeResponseFixtures.testNodeId,
-          },
+          data: {'nodeId': NodeResponseFixtures.testNodeId},
           httpMethod: HttpMethod.post,
         );
 
@@ -242,11 +252,13 @@ void main() {
             dekEncryptedByWalletCryptoMaterial: TestDataFixtures.testDek,
             walletCryptoMaterialHash: TestDataFixtures.testHash,
           ),
-          throwsA(isA<TdkException>().having(
-            (error) => error.code,
-            'code',
-            TestDataFixtures.missingPropertiesForFileUpload,
-          )),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              TestDataFixtures.missingPropertiesForFileUpload,
+            ),
+          ),
         );
       });
     });
@@ -275,11 +287,13 @@ void main() {
             dekEncryptedByWalletCryptoMaterial: TestDataFixtures.testDek,
             walletCryptoMaterialHash: TestDataFixtures.testHash,
           ),
-          throwsA(isA<TdkException>().having(
-            (error) => error.code,
-            'code',
-            TestDataFixtures.unableToUploadFile,
-          )),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              TestDataFixtures.unableToUploadFile,
+            ),
+          ),
         );
       });
     });
@@ -308,16 +322,21 @@ void main() {
   group('When downloading node contents', () {
     test('it includes encryption headers in the request', () async {
       final dek = TestDataFixtures.testDek;
-      final md5 =
-          CryptographyService().createMd5Base64(bytes: Uint8List.fromList(dek));
+      final md5 = CryptographyService().createMd5Base64(
+        bytes: Uint8List.fromList(dek),
+      );
 
       uploadDioAdapter.onGet(
         '',
-        (server) => server.reply(200, Uint8List.fromList([1, 2, 3]), headers: {
-          'x-amz-server-side-encryption-customer-algorithm': ['AES256'],
-          'x-amz-server-side-encryption-customer-key': [base64.encode(dek)],
-          'x-amz-server-side-encryption-customer-key-MD5': [md5],
-        }),
+        (server) => server.reply(
+          200,
+          Uint8List.fromList([1, 2, 3]),
+          headers: {
+            'x-amz-server-side-encryption-customer-algorithm': ['AES256'],
+            'x-amz-server-side-encryption-customer-key': [base64.encode(dek)],
+            'x-amz-server-side-encryption-customer-key-MD5': [md5],
+          },
+        ),
       );
 
       final result = await vaultDataManagerApiService.downloadNodeContents(
@@ -334,7 +353,7 @@ void main() {
       uploadDioAdapter.onGet(
         TestDataFixtures.schemaUrl,
         (server) => server.reply(200, {
-          'person': {'type': 'object'}
+          'person': {'type': 'object'},
         }),
         headers: {
           'Content-Type': ['application/json'],
@@ -354,7 +373,7 @@ void main() {
         url: '/v1/nodes/${NodeResponseFixtures.rootNodeId}/profile-data',
         statusCode: 200,
         data: {
-          'data': {'name': 'Updated'}
+          'data': {'name': 'Updated'},
         },
         httpMethod: HttpMethod.patch,
       );
@@ -379,8 +398,9 @@ void main() {
         queryParameters: {'limit': 10},
       );
 
-      final result =
-          await vaultDataManagerApiService.getChildrenByNodeId(nodeId);
+      final result = await vaultDataManagerApiService.getChildrenByNodeId(
+        nodeId,
+      );
       expect(result.data?.nodes?.length, equals(2));
     });
   });
@@ -422,17 +442,16 @@ void main() {
     test('it returns the list of VC nodes', () async {
       final profileId = 'NzY3ZjYjMWRiYmI=';
       final nodeId = base64.encode(
-          utf8.encode('${utf8.decode(base64.decode(profileId))}#1dbbb'));
+        utf8.encode('${utf8.decode(base64.decode(profileId))}#1dbbb'),
+      );
       dioAdapter.onGet(
         '/v1/nodes/$nodeId/children',
         (server) => server.reply(200, TestDataFixtures.testVcData),
         queryParameters: {'limit': 10},
       );
 
-      final result =
-          await vaultDataManagerApiService.getVerifiableCredentialsNodes(
-        profileId: profileId,
-      );
+      final result = await vaultDataManagerApiService
+          .getVerifiableCredentialsNodes(profileId: profileId);
 
       expect(result.data?.nodes?.length, equals(1));
       expect(result.data?.nodes?.first.type, equals(NodeType.VC));
@@ -473,8 +492,8 @@ void main() {
               'use': 'sig',
               'n': 'test-n',
               'e': 'AQAB',
-            }
-          ]
+            },
+          ],
         }),
       );
 
@@ -521,9 +540,7 @@ void main() {
       dioAdapter.mockRequestWithReply(
         url: '/v1/nodes/NzY3ZjY=/profile-data',
         statusCode: 200,
-        data: {
-          'data': TestDataFixtures.testProfileData,
-        },
+        data: {'data': TestDataFixtures.testProfileData},
       );
 
       final result = await vaultDataManagerApiService.getProfileData(
@@ -560,8 +577,8 @@ void main() {
               'accountIndex': 1,
               'accountDid': TestDataFixtures.testDid,
               'metadata': {'name': 'Test Account'},
-            }
-          ]
+            },
+          ],
         },
       );
 
@@ -575,10 +592,7 @@ void main() {
       dioAdapter.mockRequestWithReply(
         url: '/v1/accounts/1',
         statusCode: 200,
-        data: {
-          'accountIndex': 1,
-          'deleted': true,
-        },
+        data: {'accountIndex': 1, 'deleted': true},
         httpMethod: HttpMethod.delete,
       );
 
@@ -596,18 +610,21 @@ void main() {
         dioAdapter.onPatch(
           '/v1/accounts/1',
           (server) => server.throws(
+            400,
+            DioExceptionFixtures.withStatusCode(
               400,
-              DioExceptionFixtures.withStatusCode(400,
-                  url: '/v1/accounts/1',
-                  data: {
-                    'name': 'BadRequestError',
-                    'traceId': TestDataFixtures.testTraceId,
-                    'message': TestDataFixtures.invalidRequest,
-                    'details': [
-                      {'issue': 'Invalid request'},
-                      {'issue': 'Another issue'}
-                    ]
-                  })),
+              url: '/v1/accounts/1',
+              data: {
+                'name': 'BadRequestError',
+                'traceId': TestDataFixtures.testTraceId,
+                'message': TestDataFixtures.invalidRequest,
+                'details': [
+                  {'issue': 'Invalid request'},
+                  {'issue': 'Another issue'},
+                ],
+              },
+            ),
+          ),
           data: Matchers.any,
           headers: {'content-type': 'application/json'},
         );
@@ -619,11 +636,13 @@ void main() {
             didProof: TestDataFixtures.testDidProof,
             metadata: {'name': 'Updated Account'},
           ),
-          throwsA(isA<TdkException>().having(
-            (error) => error.code,
-            'code',
-            TestDataFixtures.unableToUpdateAccount,
-          )),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              TestDataFixtures.unableToUpdateAccount,
+            ),
+          ),
         );
       });
     });
@@ -633,13 +652,16 @@ void main() {
         dioAdapter.onPatch(
           '/v1/accounts/1',
           (server) => server.throws(
+            400,
+            DioExceptionFixtures.withStatusCode(
               400,
-              DioExceptionFixtures.withStatusCode(400,
-                  url: '/v1/accounts/1',
-                  data: {
-                    'name': 'BadRequestError',
-                    'message': TestDataFixtures.invalidRequest
-                  })),
+              url: '/v1/accounts/1',
+              data: {
+                'name': 'BadRequestError',
+                'message': TestDataFixtures.invalidRequest,
+              },
+            ),
+          ),
           data: Matchers.any,
           headers: {'content-type': 'application/json'},
         );
@@ -651,85 +673,101 @@ void main() {
             didProof: TestDataFixtures.testDidProof,
             metadata: {'name': 'Updated Account'},
           ),
-          throwsA(isA<TdkException>().having(
-            (error) => error.code,
-            'code',
-            TestDataFixtures.unableToUpdateAccount,
-          )),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              TestDataFixtures.unableToUpdateAccount,
+            ),
+          ),
         );
       });
     });
 
     group('and the error response has invalid details format', () {
-      test('it handles the error response with invalid details format',
-          () async {
-        dioAdapter.onPatch(
-          '/v1/accounts/1',
-          (server) => server.throws(
+      test(
+        'it handles the error response with invalid details format',
+        () async {
+          dioAdapter.onPatch(
+            '/v1/accounts/1',
+            (server) => server.throws(
               400,
-              DioExceptionFixtures.withStatusCode(400,
-                  url: '/v1/accounts/1',
-                  data: {
-                    'name': 'BadRequestError',
-                    'traceId': TestDataFixtures.testTraceId,
-                    'message': TestDataFixtures.invalidRequest,
-                    'details': 'not an array'
-                  })),
-          data: Matchers.any,
-          headers: {'content-type': 'application/json'},
-        );
+              DioExceptionFixtures.withStatusCode(
+                400,
+                url: '/v1/accounts/1',
+                data: {
+                  'name': 'BadRequestError',
+                  'traceId': TestDataFixtures.testTraceId,
+                  'message': TestDataFixtures.invalidRequest,
+                  'details': 'not an array',
+                },
+              ),
+            ),
+            data: Matchers.any,
+            headers: {'content-type': 'application/json'},
+          );
 
-        expect(
-          () => vaultDataManagerApiService.updateAccount(
-            accountIndex: 1,
-            accountDid: TestDataFixtures.testDid,
-            didProof: TestDataFixtures.testDidProof,
-            metadata: {'name': 'Updated Account'},
-          ),
-          throwsA(isA<TdkException>().having(
-            (error) => error.code,
-            'code',
-            TestDataFixtures.unableToUpdateAccount,
-          )),
-        );
-      });
+          expect(
+            () => vaultDataManagerApiService.updateAccount(
+              accountIndex: 1,
+              accountDid: TestDataFixtures.testDid,
+              didProof: TestDataFixtures.testDidProof,
+              metadata: {'name': 'Updated Account'},
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (error) => error.code,
+                'code',
+                TestDataFixtures.unableToUpdateAccount,
+              ),
+            ),
+          );
+        },
+      );
     });
 
     group('and the error response has invalid detail item format', () {
-      test('it handles the error response with invalid detail item format',
-          () async {
-        dioAdapter.onPatch(
-          '/v1/accounts/1',
-          (server) => server.throws(
+      test(
+        'it handles the error response with invalid detail item format',
+        () async {
+          dioAdapter.onPatch(
+            '/v1/accounts/1',
+            (server) => server.throws(
               400,
-              DioExceptionFixtures.withStatusCode(400,
-                  url: '/v1/accounts/1',
-                  data: {
-                    'name': 'BadRequestError',
-                    'traceId': TestDataFixtures.testTraceId,
-                    'message': TestDataFixtures.invalidRequest,
-                    'details': [
-                      {'invalid': 'format'}
-                    ]
-                  })),
-          data: Matchers.any,
-          headers: {'content-type': 'application/json'},
-        );
+              DioExceptionFixtures.withStatusCode(
+                400,
+                url: '/v1/accounts/1',
+                data: {
+                  'name': 'BadRequestError',
+                  'traceId': TestDataFixtures.testTraceId,
+                  'message': TestDataFixtures.invalidRequest,
+                  'details': [
+                    {'invalid': 'format'},
+                  ],
+                },
+              ),
+            ),
+            data: Matchers.any,
+            headers: {'content-type': 'application/json'},
+          );
 
-        expect(
-          () => vaultDataManagerApiService.updateAccount(
-            accountIndex: 1,
-            accountDid: TestDataFixtures.testDid,
-            didProof: TestDataFixtures.testDidProof,
-            metadata: {'name': 'Updated Account'},
-          ),
-          throwsA(isA<TdkException>().having(
-            (error) => error.code,
-            'code',
-            TestDataFixtures.unableToUpdateAccount,
-          )),
-        );
-      });
+          expect(
+            () => vaultDataManagerApiService.updateAccount(
+              accountIndex: 1,
+              accountDid: TestDataFixtures.testDid,
+              didProof: TestDataFixtures.testDidProof,
+              metadata: {'name': 'Updated Account'},
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (error) => error.code,
+                'code',
+                TestDataFixtures.unableToUpdateAccount,
+              ),
+            ),
+          );
+        },
+      );
     });
   });
 
@@ -745,9 +783,7 @@ void main() {
     });
 
     test('it uses default type when name is missing', () {
-      final json = {
-        'message': TestDataFixtures.invalidRequest,
-      };
+      final json = {'message': TestDataFixtures.invalidRequest};
       final response = ErrorResponse.fromJson(json);
       expect(response.type.code, equals(TdkExceptionType.other.code));
       expect(response.message, equals(TestDataFixtures.invalidRequest));
@@ -779,27 +815,15 @@ void main() {
   group('When retrying operations', () {
     group('and maxAttempts is invalid', () {
       test('it throws ArgumentError for zero maxAttempts', () async {
-        await expectLater(
-          () async {
-            await RetryHelper.retry(
-              () async => null,
-              maxAttempts: 0,
-            );
-          },
-          throwsA(isA<ArgumentError>()),
-        );
+        await expectLater(() async {
+          await RetryHelper.retry(() async => null, maxAttempts: 0);
+        }, throwsA(isA<ArgumentError>()));
       });
 
       test('it throws ArgumentError for negative maxAttempts', () async {
-        await expectLater(
-          () async {
-            await RetryHelper.retry(
-              () async => null,
-              maxAttempts: -1,
-            );
-          },
-          throwsA(isA<ArgumentError>()),
-        );
+        await expectLater(() async {
+          await RetryHelper.retry(() async => null, maxAttempts: -1);
+        }, throwsA(isA<ArgumentError>()));
       });
     });
 
@@ -885,7 +909,7 @@ void main() {
         (server) => server.reply(200, {
           'accountIndex': 1,
           'accountDid': TestDataFixtures.testDid,
-          'metadata': {'name': 'Updated Account'}
+          'metadata': {'name': 'Updated Account'},
         }),
         data: {
           'name': 'Hello',
@@ -893,7 +917,7 @@ void main() {
           'alias': 'Alias',
           'accountDid': TestDataFixtures.testDid,
           'didProof': TestDataFixtures.testDidProof,
-          'metadata': {'name': 'Updated Account'}
+          'metadata': {'name': 'Updated Account'},
         },
         headers: {'content-type': 'application/json'},
       );
@@ -917,26 +941,29 @@ void main() {
         dioAdapter.onGet(
           '/v1/nodes/NzY3ZjYjV2dFR2U=',
           (server) => server.throws(
-              500,
-              DioException(
+            500,
+            DioException(
+              requestOptions: RequestOptions(path: ''),
+              response: Response(
                 requestOptions: RequestOptions(path: ''),
-                response: Response(
-                  requestOptions: RequestOptions(path: ''),
-                  statusCode: 500,
-                  data: {'error': TestDataFixtures.internalServerError},
-                ),
-              )),
+                statusCode: 500,
+                data: {'error': TestDataFixtures.internalServerError},
+              ),
+            ),
+          ),
         );
 
         expect(
           () => vaultDataManagerApiService.getNodeInfo(
             nodeId: 'NzY3ZjYjV2dFR2U=',
           ),
-          throwsA(isA<TdkException>().having(
-            (error) => error.code,
-            'code',
-            TestDataFixtures.unableToGetNodeInfo,
-          )),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              TestDataFixtures.unableToGetNodeInfo,
+            ),
+          ),
         );
       });
     });
@@ -947,9 +974,7 @@ void main() {
         dioAdapter.onGet(
           '/v1/nodes/NzY3ZjYjV2dFR2U=',
           (server) => server.reply(200, NodeResponseFixtures.profile),
-          queryParameters: {
-            'dek': base64.encode(dek),
-          },
+          queryParameters: {'dek': base64.encode(dek)},
         );
 
         final response = await vaultDataManagerApiService.getNodeInfo(

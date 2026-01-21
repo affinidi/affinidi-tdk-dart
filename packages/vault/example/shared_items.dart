@@ -47,7 +47,8 @@ void main() async {
   var profilesAlice = await vaultAlice.listProfiles();
   var profilesBob = await vaultBob.listProfiles();
   print(
-      '[Demo] ${profilesAlice.isEmpty ? 'No profiles found' : 'Available profiles: ${profilesAlice.length}'}');
+    '[Demo] ${profilesAlice.isEmpty ? 'No profiles found' : 'Available profiles: ${profilesAlice.length}'}',
+  );
   _listProfileNames(profilesAlice, label: 'Initial profile names');
   _listProfileNames(profilesBob, label: 'Initial profile names');
 
@@ -72,8 +73,11 @@ void main() async {
   }
 
   print('[Demo] Adding new profiles ...');
-  accountIndexAlice =
-      await _createProfile(vaultAlice, 'Alice', accountIndexAlice);
+  accountIndexAlice = await _createProfile(
+    vaultAlice,
+    'Alice',
+    accountIndexAlice,
+  );
   final aliceAccountIndex = accountIndexAlice;
 
   accountIndexBob = await _createProfile(vaultBob, 'Bob', accountIndexBob);
@@ -96,14 +100,11 @@ void main() async {
   final timestamp = DateTime.now().millisecondsSinceEpoch;
   final random = Random().nextInt(1000000);
   final fileName1 = 'alice_file1_$timestamp-$random.txt';
-  await _addFileToProfile(
-    aliceProfile,
-    aliceProfile.id,
-    fileName1,
-  );
+  await _addFileToProfile(aliceProfile, aliceProfile.id, fileName1);
 
-  final filesPage1 = await aliceProfile.defaultFileStorage!
-      .getFolder(folderId: aliceProfile.id);
+  final filesPage1 = await aliceProfile.defaultFileStorage!.getFolder(
+    folderId: aliceProfile.id,
+  );
   final file1 = filesPage1.items.firstWhere((item) => item.name == fileName1);
 
   print('[Demo] Alice is sharing $fileName1 with Bob with READ access ...');
@@ -177,18 +178,16 @@ void main() async {
 
   print('[Demo] Alice is adding another file ...');
   final fileName2 = 'alice_file2_$timestamp-$random.txt';
-  await _addFileToProfile(
-    aliceProfile,
-    aliceProfile.id,
-    fileName2,
-  );
+  await _addFileToProfile(aliceProfile, aliceProfile.id, fileName2);
 
-  final filesPage2 = await aliceProfile.defaultFileStorage!
-      .getFolder(folderId: aliceProfile.id);
+  final filesPage2 = await aliceProfile.defaultFileStorage!.getFolder(
+    folderId: aliceProfile.id,
+  );
   final file2 = filesPage2.items.firstWhere((item) => item.name == fileName2);
 
   print(
-      '[Demo] Alice is sharing $fileName2 with Bob with READ and WRITE access ...');
+    '[Demo] Alice is sharing $fileName2 with Bob with READ and WRITE access ...',
+  );
   policy = await vaultAlice.getItemPermissionsPolicy(
     profileId: aliceProfile.id,
     granteeDid: bobProfile.did,
@@ -262,24 +261,18 @@ void main() async {
   print('[Demo] Alice is adding two more files ...');
   final fileName3 = 'alice_file3_$timestamp-$random.txt';
   final fileName4 = 'alice_file4_$timestamp-$random.txt';
-  await _addFileToProfile(
-    aliceProfile,
-    aliceProfile.id,
-    fileName3,
-  );
-  await _addFileToProfile(
-    aliceProfile,
-    aliceProfile.id,
-    fileName4,
-  );
+  await _addFileToProfile(aliceProfile, aliceProfile.id, fileName3);
+  await _addFileToProfile(aliceProfile, aliceProfile.id, fileName4);
 
-  final filesPage3 = await aliceProfile.defaultFileStorage!
-      .getFolder(folderId: aliceProfile.id);
+  final filesPage3 = await aliceProfile.defaultFileStorage!.getFolder(
+    folderId: aliceProfile.id,
+  );
   final file3 = filesPage3.items.firstWhere((item) => item.name == fileName3);
   final file4 = filesPage3.items.firstWhere((item) => item.name == fileName4);
 
   print(
-      '[Demo] Alice is sharing $fileName3 and $fileName4 with Bob at the same time ...');
+    '[Demo] Alice is sharing $fileName3 and $fileName4 with Bob at the same time ...',
+  );
 
   policy = await vaultAlice.getItemPermissionsPolicy(
     profileId: aliceProfile.id,
@@ -305,7 +298,8 @@ void main() async {
   );
 
   print(
-      '[Demo] Verifying Bob\'s permissions after sharing file3 and file4 ...');
+    '[Demo] Verifying Bob\'s permissions after sharing file3 and file4 ...',
+  );
 
   final bobPermissions4 = policy.permissions;
 
@@ -316,7 +310,8 @@ void main() async {
   }
 
   print(
-      '[Demo] Bob is accepting the shared items (file1, file2, file3, and file4) ...');
+    '[Demo] Bob is accepting the shared items (file1, file2, file3, and file4) ...',
+  );
   await vaultBob.acceptSharedItems(
     profileId: bobProfile.id,
     sharedItems: sharedItems3,
@@ -380,7 +375,8 @@ void main() async {
   final bobPermissions3 = policy.permissions;
 
   print(
-      '[Demo] Bob has ${bobPermissions3.length} permission group(s) after revoke');
+    '[Demo] Bob has ${bobPermissions3.length} permission group(s) after revoke',
+  );
   for (var permission in bobPermissions3) {
     print('[Demo] Item IDs: ${permission.itemIds}');
     print('[Demo] Rights: ${permission.rights}');
@@ -403,22 +399,29 @@ void main() async {
   }
 
   print('[Demo] Alice is deleting all files...');
-  final aliceFilesPage = await aliceProfile.defaultFileStorage!
-      .getFolder(folderId: aliceProfile.id);
-  await Future.wait(aliceFilesPage.items.map(
-      (item) => aliceProfile.defaultFileStorage!.deleteFile(fileId: item.id)));
+  final aliceFilesPage = await aliceProfile.defaultFileStorage!.getFolder(
+    folderId: aliceProfile.id,
+  );
+  await Future.wait(
+    aliceFilesPage.items.map(
+      (item) => aliceProfile.defaultFileStorage!.deleteFile(fileId: item.id),
+    ),
+  );
 
   profilesAlice = await vaultAlice.listProfiles();
   profilesBob = await vaultBob.listProfiles();
   await Future.wait(
-      profilesAlice.map((profile) => _deleteProfile(vaultAlice, profile)));
+    profilesAlice.map((profile) => _deleteProfile(vaultAlice, profile)),
+  );
   await Future.wait(
-      profilesBob.map((profile) => _deleteProfile(vaultBob, profile)));
+    profilesBob.map((profile) => _deleteProfile(vaultBob, profile)),
+  );
 
   profilesAlice = await vaultAlice.listProfiles();
   profilesBob = await vaultBob.listProfiles();
   print(
-      '[Demo] Final profile count; Alice: ${profilesAlice.length}, Bob: ${profilesBob.length}');
+    '[Demo] Final profile count; Alice: ${profilesAlice.length}, Bob: ${profilesBob.length}',
+  );
 }
 
 Future<void> _deleteProfile(Vault vault, Profile profile) async {
@@ -444,7 +447,10 @@ Future<void> _deleteFolder({
       for (final item in page.items) {
         if (item is Folder) {
           await _deleteFolder(
-              vault: vault, profile: profile, folderId: item.id);
+            vault: vault,
+            profile: profile,
+            folderId: item.id,
+          );
         } else if (item is File) {
           await profile.defaultFileStorage!.deleteFile(fileId: item.id);
         }
@@ -454,7 +460,8 @@ Future<void> _deleteFolder({
     } while (exclusiveStartItemId != null);
   } catch (e) {
     print(
-        '[Demo] Error while deleting folder $folderId in profile ${profile.name}: ${e.toString()}');
+      '[Demo] Error while deleting folder $folderId in profile ${profile.name}: ${e.toString()}',
+    );
   }
   if (folderId != profile.id) {
     await profile.defaultFileStorage!.deleteFolder(folderId: folderId);
@@ -474,8 +481,13 @@ Future<int> _createProfile(Vault vault, String name, int accountIndex) async {
       final profileRepository = vault.defaultProfileRepository;
       await profileRepository.createProfile(name: '$name $newAccountIndex');
     } on TdkException catch (error) {
-      print([error.code, '[Demo] ${error.message}', error.originalMessage]
-          .join('\n'));
+      print(
+        [
+          error.code,
+          '[Demo] ${error.message}',
+          error.originalMessage,
+        ].join('\n'),
+      );
       rethrow;
     }
   }
@@ -515,24 +527,24 @@ Future<void> _printMetadataFromSharedStorage({
   try {
     final item = await sharedStorage.getFile(fileId: itemId);
     print(
-        '[Demo] File Metadata:\n id: ${item.id}, name: ${item.name}, createdAt: ${item.createdAt}');
+      '[Demo] File Metadata:\n id: ${item.id}, name: ${item.name}, createdAt: ${item.createdAt}',
+    );
   } catch (e) {
     print('[Demo] Could not fetch metadata for $itemId: $e');
   }
 }
 
-void _listProfileNames(
-  List<Profile> profiles, {
-  required String label,
-}) {
+void _listProfileNames(List<Profile> profiles, {required String label}) {
   if (profiles.isEmpty) {
     print('[Demo] List of profiles is empty');
     return;
   }
 
   final names = profiles
-      .map((profile) =>
-          '${profile.name} | ${profile.accountIndex} | ${profile.did} ')
+      .map(
+        (profile) =>
+            '${profile.name} | ${profile.accountIndex} | ${profile.did} ',
+      )
       .join(', ');
   print('[Demo] $label: $names');
 }

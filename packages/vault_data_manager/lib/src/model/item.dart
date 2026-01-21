@@ -62,8 +62,9 @@ class Item {
       fileCount: json['fileCount'] as int?,
       folderCount: json['folderCount'] as int?,
       parentNodeId: json['parentNodeId'] as String?,
-      type: NodeType.values
-          .firstWhere((e) => e.toString() == 'NodeType.${json['type']}'),
+      type: NodeType.values.firstWhere(
+        (e) => e.toString() == 'NodeType.${json['type']}',
+      ),
       id: json['nodeId'] as String,
     );
   }

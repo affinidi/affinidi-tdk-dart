@@ -74,8 +74,9 @@ class EdgeCredentialStorage implements CredentialStorage {
       );
     }
 
-    final decryptedContent =
-        await _encryptionService.decryptData(credentialData.content);
+    final decryptedContent = await _encryptionService.decryptData(
+      credentialData.content,
+    );
 
     return _codec.decode(
       credentialBytes: decryptedContent,
@@ -98,8 +99,9 @@ class EdgeCredentialStorage implements CredentialStorage {
 
     final credentials = await Future.wait(
       credentialDataList.items.map((credentialData) async {
-        final decryptedContent =
-            await _encryptionService.decryptData(credentialData.content);
+        final decryptedContent = await _encryptionService.decryptData(
+          credentialData.content,
+        );
 
         return _codec.decode(
           credentialBytes: decryptedContent,
@@ -135,8 +137,9 @@ class EdgeCredentialStorage implements CredentialStorage {
     final credentialContent = _codec.encode(verifiableCredential);
 
     // Encrypt the credential content
-    final encryptedContent =
-        await _encryptionService.encryptData(credentialContent);
+    final encryptedContent = await _encryptionService.encryptData(
+      credentialContent,
+    );
 
     await _repository.saveCredentialData(
       profileId: _profileId,

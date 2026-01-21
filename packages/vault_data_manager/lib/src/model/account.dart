@@ -7,10 +7,7 @@ class DekekInfo {
   final String version;
 
   /// Creates a new DEKEK info instance.
-  DekekInfo({
-    required this.encryptedDekek,
-    this.version = '1.0.0',
-  });
+  DekekInfo({required this.encryptedDekek, this.version = '1.0.0'});
 
   /// Creates a [DekekInfo] from a JSON map.
   DekekInfo.fromJson(Map<String, dynamic> json)
@@ -120,8 +117,9 @@ class Account {
   Account.fromJson(Map<String, dynamic> json)
       : accountIndex = json['accountIndex'] as int,
         accountDid = json['accountDid'] as String,
-        accountMetadata =
-            AccountMetadata.fromJson(json['metadata'] as Map<String, dynamic>);
+        accountMetadata = AccountMetadata.fromJson(
+          json['metadata'] as Map<String, dynamic>,
+        );
 
   /// Converts this [Account] to a JSON map.
   Map<String, dynamic> toJson() {

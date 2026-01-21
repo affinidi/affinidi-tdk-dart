@@ -47,18 +47,14 @@ class VdspHolder {
       );
 
   /// Returns the supported feature disclosures for a given [queryMessage].
-  List<Disclosure> getDisclosures({
-    required QueryMessage queryMessage,
-  }) {
+  List<Disclosure> getDisclosures({required QueryMessage queryMessage}) {
     final rawBody = queryMessage.body;
 
     if (rawBody == null) {
       throw ArgumentError.notNull('queryMessage.body');
     }
 
-    final queryBody = QueryBody.fromJson(
-      Map<String, dynamic>.from(rawBody),
-    );
+    final queryBody = QueryBody.fromJson(Map<String, dynamic>.from(rawBody));
 
     return FeatureDiscoveryHelper.getSupportedFeatures(
       featureDisclosures,
@@ -81,9 +77,7 @@ class VdspHolder {
       id: const Uuid().v4(),
       to: [verifierDid],
       threadId: queryMessage.threadId ?? queryMessage.id,
-      body: DiscloseBody(
-        disclosures: disclosures,
-      ),
+      body: DiscloseBody(disclosures: disclosures),
     );
 
     await mediatorClient.packAndSendMessage(message);
@@ -207,9 +201,7 @@ class VdspHolder {
 
         if (onFeatureQuery != null &&
             unpacked.type == QueryMessage.messageType) {
-          onFeatureQuery(
-            QueryMessage.fromJson(plainTextJson),
-          );
+          onFeatureQuery(QueryMessage.fromJson(plainTextJson));
 
           return;
         }
@@ -249,9 +241,7 @@ class VdspHolder {
 
         if (onProblemReport != null &&
             unpacked.type == ProblemReportMessage.messageType) {
-          onProblemReport(
-            ProblemReportMessage.fromJson(plainTextJson),
-          );
+          onProblemReport(ProblemReportMessage.fromJson(plainTextJson));
 
           return;
         }
@@ -365,22 +355,22 @@ class VdspHolder {
           verifiableCredentials,
         );
 
-        final result = dcqlQuery.query(
-          digitalCredentials,
-        );
+        final result = dcqlQuery.query(digitalCredentials);
 
         final filteredVcIds = result.verifiableCredentials.values
-            .expand((list) => list.map(
-                (credential) => credential.getValueByPath(['id']) as String))
+            .expand(
+              (list) => list.map(
+                (credential) => credential.getValueByPath(['id']) as String,
+              ),
+            )
             .toSet();
 
         return DataQueryResult(
           dcqlResult: result,
           verifiableCredentials: verifiableCredentials
               .where(
-                (credential) => filteredVcIds.contains(
-                  credential.id.toString(),
-                ),
+                (credential) =>
+                    filteredVcIds.contains(credential.id.toString()),
               )
               .toList(),
         );
@@ -396,37 +386,31 @@ class VdspHolder {
       'Unsupported credential format. Only LDP VC v1.0, LDP VC v2.0 and SD-JWT are supported.',
     );
 
-    return verifiableCredentials.map(
-      (vc) {
-        if (vc.context.contains(dmV1ContextUrl)) {
-          return W3CDigitalCredential.fromLdVcDataModelV1(
-            vc.toJson(),
+    return verifiableCredentials.map((vc) {
+      if (vc.context.contains(dmV1ContextUrl)) {
+        return W3CDigitalCredential.fromLdVcDataModelV1(vc.toJson());
+      }
+
+      if (vc.context.contains(dmV2ContextUrl)) {
+        return W3CDigitalCredential.fromLdVcDataModelV2(vc.toJson());
+      }
+
+      final sdJwtHandler = SdJwtHandlerV1();
+
+      if (vc.serialized is String) {
+        // TODO: find a better way to check if it's SD-JWT
+        try {
+          final sdJwt = sdJwtHandler.unverifiedDecode(
+            sdJwtToken: vc.serialized as String,
           );
+
+          return W3CDigitalCredential.fromSdJwt(sdJwt);
+        } catch (_) {
+          throw unsupportedError;
         }
+      }
 
-        if (vc.context.contains(dmV2ContextUrl)) {
-          return W3CDigitalCredential.fromLdVcDataModelV2(
-            vc.toJson(),
-          );
-        }
-
-        final sdJwtHandler = SdJwtHandlerV1();
-
-        if (vc.serialized is String) {
-          // TODO: find a better way to check if it's SD-JWT
-          try {
-            final sdJwt = sdJwtHandler.unverifiedDecode(
-              sdJwtToken: vc.serialized as String,
-            );
-
-            return W3CDigitalCredential.fromSdJwt(sdJwt);
-          } catch (_) {
-            throw unsupportedError;
-          }
-        }
-
-        throw unsupportedError;
-      },
-    ).toList();
+      throw unsupportedError;
+    }).toList();
   }
 }

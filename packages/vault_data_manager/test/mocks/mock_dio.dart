@@ -27,7 +27,7 @@ class MockDio extends Mock implements Dio {
     if (path == TestDataFixtures.schemaUrl) {
       return Response<T>(
         data: {
-          'person': {'type': 'object'}
+          'person': {'type': 'object'},
         } as T,
         statusCode: 200,
         requestOptions: RequestOptions(path: path),
@@ -43,8 +43,8 @@ class MockDio extends Mock implements Dio {
               'use': 'sig',
               'n': 'test-n',
               'e': 'AQAB',
-            }
-          ]
+            },
+          ],
         } as T,
         statusCode: 200,
         requestOptions: RequestOptions(path: path),
@@ -87,7 +87,7 @@ class MockDio extends Mock implements Dio {
           'nodeId': 'test-node-id',
           'name': 'test-vc',
           'nodeType': 'VC',
-          'status': 'CREATED'
+          'status': 'CREATED',
         } as T,
         statusCode: 200,
         requestOptions: requestOptions,
@@ -128,7 +128,7 @@ class MockDio extends Mock implements Dio {
           'nodeId': 'test-node-id',
           'name': 'test-vc',
           'nodeType': 'VC',
-          'status': 'CREATED'
+          'status': 'CREATED',
         } as T,
         statusCode: 200,
         requestOptions: RequestOptions(path: path),

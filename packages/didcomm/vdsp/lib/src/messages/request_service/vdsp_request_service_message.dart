@@ -6,7 +6,8 @@ part 'vdsp_request_service_message.g.dart';
 class VdspRequestServiceMessage extends PlainTextMessage {
   /// Message type URI for requesting a service.
   static final Uri messageType = Uri.parse(
-      'https://affinidi.com/didcomm/protocols/vdsp/1.0/request-service');
+    'https://affinidi.com/didcomm/protocols/vdsp/1.0/request-service',
+  );
 
   /// Creates a new [VdspRequestServiceMessage].
   VdspRequestServiceMessage({
@@ -17,10 +18,7 @@ class VdspRequestServiceMessage extends PlainTextMessage {
     super.createdTime,
     super.expiresTime,
     super.threadId,
-  }) : super(
-          type: messageType,
-          body: body.toJson(),
-        );
+  }) : super(type: messageType, body: body.toJson());
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
@@ -36,10 +34,7 @@ class VdspRequestServiceMessageBody {
   final String? comment;
 
   /// Creates a new [VdspRequestServiceMessageBody].
-  VdspRequestServiceMessageBody({
-    required this.operation,
-    this.comment,
-  });
+  VdspRequestServiceMessageBody({required this.operation, this.comment});
 
   factory VdspRequestServiceMessageBody.fromJson(Map<String, dynamic> json) =>
       _$VdspRequestServiceMessageBodyFromJson(json);

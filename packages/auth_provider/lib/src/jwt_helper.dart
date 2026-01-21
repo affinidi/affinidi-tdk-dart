@@ -29,22 +29,24 @@ class JWTHelper {
         'jti': Uuid().v4(),
         if (additionalPayload != null) ...additionalPayload,
       },
-      header: {
-        'alg': algorithm.name,
-        if (keyId != null) 'kid': keyId,
-      },
+      header: {'alg': algorithm.name, if (keyId != null) 'kid': keyId},
     );
 
     String privateKeyString = privateKey;
 
     if (passphrase != null && passphrase.isNotEmpty) {
-      final decryptedPrivateKey =
-          _decryptPrivateKey(privateKeyString, passphrase);
+      final decryptedPrivateKey = _decryptPrivateKey(
+        privateKeyString,
+        passphrase,
+      );
       privateKeyString = _privateKeyToPem(decryptedPrivateKey);
     }
 
-    final token = jwt.sign(RSAPrivateKey(privateKeyString),
-        algorithm: algorithm, expiresIn: Duration(minutes: 5));
+    final token = jwt.sign(
+      RSAPrivateKey(privateKeyString),
+      algorithm: algorithm,
+      expiresIn: Duration(minutes: 5),
+    );
 
     return token;
   }
@@ -110,28 +112,40 @@ class JWTHelper {
 
   /// Derives the encryption key using PBKDF2 from the passphrase.
   static Uint8List _deriveKey(
-      String passphrase, Uint8List salt, int iterations, int keyLength) {
-    final keyDerivator =
-        pce.PBKDF2KeyDerivator(pce.HMac(pce.SHA256Digest(), 64))
-          ..init(pce.Pbkdf2Parameters(salt, iterations, keyLength));
+    String passphrase,
+    Uint8List salt,
+    int iterations,
+    int keyLength,
+  ) {
+    final keyDerivator = pce.PBKDF2KeyDerivator(
+      pce.HMac(pce.SHA256Digest(), 64),
+    )..init(pce.Pbkdf2Parameters(salt, iterations, keyLength));
     return keyDerivator.process(Uint8List.fromList(utf8.encode(passphrase)));
   }
 
   /// Decrypts an AES-256-CBC encrypted private key.
   static Uint8List _decryptAES256CBC(
-      Uint8List key, Uint8List iv, Uint8List ciphertext) {
+    Uint8List key,
+    Uint8List iv,
+    Uint8List ciphertext,
+  ) {
     final cipher = pce.PaddedBlockCipher('AES/CBC/PKCS7')
       ..init(
-          false,
-          pce.PaddedBlockCipherParameters(
-              pce.ParametersWithIV(pce.KeyParameter(key), iv), null));
+        false,
+        pce.PaddedBlockCipherParameters(
+          pce.ParametersWithIV(pce.KeyParameter(key), iv),
+          null,
+        ),
+      );
 
     return cipher.process(ciphertext);
   }
 
   /// Decrypts an RSA private key that is encrypted with AES-256-CBC using a passphrase.
   static Uint8List _decryptPrivateKey(
-      String encryptedKeyPem, String passphrase) {
+    String encryptedKeyPem,
+    String passphrase,
+  ) {
     // Decode the PEM-encoded private key
     final base64Key = encryptedKeyPem
         .replaceAll('-----BEGIN ENCRYPTED PRIVATE KEY-----', '')

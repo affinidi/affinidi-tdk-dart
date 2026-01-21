@@ -75,9 +75,7 @@ class DidcommMediatorClient extends MediatorClient {
 
   /// Packs and sends a [PlainTextMessage] to the mediator and recipient.
   /// Throws if the message is invalid or recipient cannot be resolved.
-  Future<void> packAndSendMessage(
-    PlainTextMessage message,
-  ) async {
+  Future<void> packAndSendMessage(PlainTextMessage message) async {
     if (message.to == null) {
       throw ArgumentError.notNull('message.to');
     }
@@ -97,15 +95,11 @@ class DidcommMediatorClient extends MediatorClient {
 
     final senderDidDocument = await didManager.getDidDocument();
 
-    final recipientDidDocument =
-        await UniversalDIDResolver.defaultResolver.resolveDid(
-      message.to!.first,
-    );
+    final recipientDidDocument = await UniversalDIDResolver.defaultResolver
+        .resolveDid(message.to!.first);
 
     final matchedKeyPairs = senderDidDocument.matchKeysInKeyAgreement(
-      otherDidDocuments: [
-        recipientDidDocument,
-      ],
+      otherDidDocuments: [recipientDidDocument],
     );
 
     if (matchedKeyPairs.isEmpty) {
@@ -143,24 +137,18 @@ class DidcommMediatorClient extends MediatorClient {
       to: [mediatorDidDocument.id],
       from: forwardFrom,
       next: recipientDidDocument.id,
-      expiresTime: DateTime.now().toUtc().add(
-            clientOptions.messageExpiration,
-          ),
+      expiresTime: DateTime.now().toUtc().add(clientOptions.messageExpiration),
       attachments: [
         Attachment(
           mediaType: 'application/json',
           data: AttachmentData(
-            base64: base64UrlEncodeNoPadding(
-              packed.toJsonBytes(),
-            ),
+            base64: base64UrlEncodeNoPadding(packed.toJsonBytes()),
           ),
         ),
       ],
     );
 
-    await sendMessage(
-      forwardMessage,
-    );
+    await sendMessage(forwardMessage);
   }
 
   /// Sends a [AclManagementMessage] to the mediator.

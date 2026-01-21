@@ -14,30 +14,38 @@ class FileMockSetup {
   static void setupFileRepositoryMocks(
     MockEdgeFileRepositoryInterface mockRepository,
   ) {
-    when(() => mockRepository.createFile(
-          profileId: any(named: 'profileId'),
-          fileName: any(named: 'fileName'),
-          data: any(named: 'data'),
-          parentFolderId: any(named: 'parentFolderId'),
-        )).thenAnswer((_) async {});
+    when(
+      () => mockRepository.createFile(
+        profileId: any(named: 'profileId'),
+        fileName: any(named: 'fileName'),
+        data: any(named: 'data'),
+        parentFolderId: any(named: 'parentFolderId'),
+      ),
+    ).thenAnswer((_) async {});
 
-    when(() => mockRepository.createFolder(
-          profileId: any(named: 'profileId'),
-          folderName: any(named: 'folderName'),
-          parentFolderId: any(named: 'parentFolderId'),
-        )).thenAnswer((_) async => FileFixtures.createMockFolder());
+    when(
+      () => mockRepository.createFolder(
+        profileId: any(named: 'profileId'),
+        folderName: any(named: 'folderName'),
+        parentFolderId: any(named: 'parentFolderId'),
+      ),
+    ).thenAnswer((_) async => FileFixtures.createMockFolder());
 
-    when(() => mockRepository.getFile(fileId: any(named: 'fileId')))
-        .thenAnswer((_) async => FileFixtures.createMockFileData());
+    when(
+      () => mockRepository.getFile(fileId: any(named: 'fileId')),
+    ).thenAnswer((_) async => FileFixtures.createMockFileData());
 
-    when(() => mockRepository.getFileContent(fileId: any(named: 'fileId')))
-        .thenAnswer((_) async => FileFixtures.smallFileData);
+    when(
+      () => mockRepository.getFileContent(fileId: any(named: 'fileId')),
+    ).thenAnswer((_) async => FileFixtures.smallFileData);
 
-    when(() => mockRepository.getFolder(
-          folderId: any(named: 'folderId'),
-          limit: any(named: 'limit'),
-          exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
-        )).thenAnswer((invocation) async {
+    when(
+      () => mockRepository.getFolder(
+        folderId: any(named: 'folderId'),
+        limit: any(named: 'limit'),
+        exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+      ),
+    ).thenAnswer((invocation) async {
       final folderId =
           invocation.namedArguments[const Symbol('folderId')] as String?;
       if (folderId == 'test-folder-id') {
@@ -50,20 +58,26 @@ class FileMockSetup {
       return PaginatedList(items: [], lastEvaluatedItemId: null);
     });
 
-    when(() => mockRepository.deleteFile(fileId: any(named: 'fileId')))
-        .thenAnswer((_) async {});
+    when(
+      () => mockRepository.deleteFile(fileId: any(named: 'fileId')),
+    ).thenAnswer((_) async {});
 
-    when(() => mockRepository.deleteFolder(folderId: any(named: 'folderId')))
-        .thenAnswer((_) async => true);
+    when(
+      () => mockRepository.deleteFolder(folderId: any(named: 'folderId')),
+    ).thenAnswer((_) async => true);
 
-    when(() => mockRepository.renameFile(
-          fileId: any(named: 'fileId'),
-          newName: any(named: 'newName'),
-        )).thenAnswer((_) async {});
+    when(
+      () => mockRepository.renameFile(
+        fileId: any(named: 'fileId'),
+        newName: any(named: 'newName'),
+      ),
+    ).thenAnswer((_) async {});
 
-    when(() => mockRepository.renameFolder(
-          folderId: any(named: 'folderId'),
-          newName: any(named: 'newName'),
-        )).thenAnswer((_) async => true);
+    when(
+      () => mockRepository.renameFolder(
+        folderId: any(named: 'folderId'),
+        newName: any(named: 'newName'),
+      ),
+    ).thenAnswer((_) async => true);
   }
 }

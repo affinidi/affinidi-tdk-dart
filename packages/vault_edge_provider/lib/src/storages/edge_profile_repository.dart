@@ -40,8 +40,9 @@ class EdgeProfileRepository implements ProfileRepository {
     if (configuration is! RepositoryConfiguration) {
       Error.throwWithStackTrace(
         TdkException(
-            message: 'Wrong configuration type',
-            code: TdkExceptionType.invalidRepositoryConfigurationType.code),
+          message: 'Wrong configuration type',
+          code: TdkExceptionType.invalidRepositoryConfigurationType.code,
+        ),
         StackTrace.current,
       );
     }
@@ -84,9 +85,10 @@ class EdgeProfileRepository implements ProfileRepository {
     if (!_configured) {
       Error.throwWithStackTrace(
         TdkException(
-            message: '''
+          message: '''
 Profile repository must be configured using a RepositoryConfiguration''',
-            code: TdkExceptionType.profleNotConfigured.code),
+          code: TdkExceptionType.profleNotConfigured.code,
+        ),
         StackTrace.current,
       );
     }
@@ -115,9 +117,10 @@ Profile repository must be configured using a RepositoryConfiguration''',
     if (!_configured) {
       Error.throwWithStackTrace(
         TdkException(
-            message: '''
+          message: '''
 Profile repository must be configured using a RepositoryConfiguration''',
-            code: TdkExceptionType.profleNotConfigured.code),
+          code: TdkExceptionType.profleNotConfigured.code,
+        ),
         StackTrace.current,
       );
     }
@@ -143,28 +146,26 @@ Profile repository must be configured using a RepositoryConfiguration''',
   ///
   /// The [cancelToken] to cancel the operation in progress.
   @override
-  Future<List<Profile>> listProfiles({
-    VaultCancelToken? cancelToken,
-  }) async {
+  Future<List<Profile>> listProfiles({VaultCancelToken? cancelToken}) async {
     if (!_configured) {
       Error.throwWithStackTrace(
         TdkException(
-            message: '''
+          message: '''
 Profile repository must be configured using a RepositoryConfiguration''',
-            code: TdkExceptionType.profleNotConfigured.code),
+          code: TdkExceptionType.profleNotConfigured.code,
+        ),
         StackTrace.current,
       );
     }
 
-    final items = await _repository.listProfiles(
-      cancelToken: cancelToken,
-    );
+    final items = await _repository.listProfiles(cancelToken: cancelToken);
 
     final profiles = <Profile>[];
 
     for (final item in items) {
-      final profileKeyPair =
-          await _memoizedKeyPair(accountIndex: item.accountIndex.toString());
+      final profileKeyPair = await _memoizedKeyPair(
+        accountIndex: item.accountIndex.toString(),
+      );
       final did = DidKey.getDid(profileKeyPair.publicKey);
 
       profiles.add(
@@ -176,8 +177,9 @@ Profile repository must be configured using a RepositoryConfiguration''',
           profileRepositoryId: _id,
           fileStorages: {
             _id: EdgeFileStorage(
-              repository:
-                  _repositoryFactory.createFileRepository(profileId: item.id),
+              repository: _repositoryFactory.createFileRepository(
+                profileId: item.id,
+              ),
               id: _id,
               profileId: item.id.toString(),
               encryptionService: _encryptionService,
@@ -186,7 +188,8 @@ Profile repository must be configured using a RepositoryConfiguration''',
           credentialStorages: {
             _id: EdgeCredentialStorage(
               repository: _repositoryFactory.createCredentialRepository(
-                  profileId: item.id),
+                profileId: item.id,
+              ),
               id: _id,
               profileId: item.id.toString(),
               encryptionService: _encryptionService,
@@ -212,9 +215,10 @@ Profile repository must be configured using a RepositoryConfiguration''',
     if (!_configured) {
       Error.throwWithStackTrace(
         TdkException(
-            message: '''
+          message: '''
 Profile repository must be configured using a RepositoryConfiguration''',
-            code: TdkExceptionType.profleNotConfigured.code),
+          code: TdkExceptionType.profleNotConfigured.code,
+        ),
         StackTrace.current,
       );
     }
@@ -227,8 +231,9 @@ Profile repository must be configured using a RepositoryConfiguration''',
   }
 
   Future<KeyPair> _memoizedKeyPair({required String accountIndex}) async {
-    _keyPairs[accountIndex] ??=
-        await _getProfileKeyPair(accountIndex: accountIndex);
+    _keyPairs[accountIndex] ??= await _getProfileKeyPair(
+      accountIndex: accountIndex,
+    );
     return _keyPairs[accountIndex]!;
   }
 

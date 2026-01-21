@@ -7,26 +7,32 @@ part of 'vdip_request_issuance_body.dart';
 // **************************************************************************
 
 VdipRequestIssuanceMessageBody _$VdipRequestIssuanceMessageBodyFromJson(
-        Map<String, dynamic> json) =>
+  Map<String, dynamic> json,
+) =>
     VdipRequestIssuanceMessageBody(
       proposalId: json['proposal_id'] as String,
       holderDid: json['holder_did'] as String?,
       assertion: json['assertion'] as String?,
       challenge: json['challenge'] as String?,
       credentialFormat: $enumDecodeNullable(
-          _$CredentialFormatEnumMap, json['credential_format']),
+        _$CredentialFormatEnumMap,
+        json['credential_format'],
+      ),
       jsonWebSignatureAlgorithm: $enumDecodeNullable(
-          _$JsonWebSignatureAlgorithmEnumMap,
-          json['json_web_signature_algorithm']),
+        _$JsonWebSignatureAlgorithmEnumMap,
+        json['json_web_signature_algorithm'],
+      ),
       comment: json['comment'] as String?,
       credentialMeta: json['credential_meta'] == null
           ? null
           : CredentialMeta.fromJson(
-              json['credential_meta'] as Map<String, dynamic>),
+              json['credential_meta'] as Map<String, dynamic>,
+            ),
     );
 
 Map<String, dynamic> _$VdipRequestIssuanceMessageBodyToJson(
-        VdipRequestIssuanceMessageBody instance) =>
+  VdipRequestIssuanceMessageBody instance,
+) =>
     <String, dynamic>{
       'proposal_id': instance.proposalId,
       if (instance.holderDid case final value?) 'holder_did': value,

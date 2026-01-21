@@ -42,9 +42,7 @@ Future<void> main() async {
       keyType: KeyType.p256,
     );
 
-    mockMediator = await MockMediator.init(
-      keyType: KeyType.p256,
-    );
+    mockMediator = await MockMediator.init(keyType: KeyType.p256);
 
     await mockMediator.addClientForDidManager(verifierDidManager);
     await mockMediator.addClientForDidManager(holderDidManager);
@@ -85,15 +83,10 @@ Future<void> main() async {
       // KeyType.p521, not supported by ecdsa
     ]) {
       group(keyType.name, () {
-        for (final didMethod in [
-          'did:key',
-          'did:peer',
-        ]) {
+        for (final didMethod in ['did:key', 'did:peer']) {
           group(didMethod, () {
             setUp(() async {
-              mockMediator = await MockMediator.init(
-                keyType: keyType,
-              );
+              mockMediator = await MockMediator.init(keyType: keyType);
 
               final issuerDidManager = await createDidManager(
                 didMethod: didMethod,
@@ -219,9 +212,9 @@ Future<void> main() async {
                           );
 
                           if (body.comment != comment) {
-                            testCompleter.completeError(Exception(
-                              'Comment does not match',
-                            ));
+                            testCompleter.completeError(
+                              Exception('Comment does not match'),
+                            );
 
                             return;
                           }
@@ -271,9 +264,11 @@ Future<void> main() async {
                           );
 
                           if (queryResult.dcqlResult?.fulfilled == false) {
-                            testCompleter.completeError(Exception(
-                              'Holder cannot fulfill the data request',
-                            ));
+                            testCompleter.completeError(
+                              Exception(
+                                'Holder cannot fulfill the data request',
+                              ),
+                            );
 
                             return;
                           }
@@ -302,9 +297,7 @@ Future<void> main() async {
 
                           if (body.operation != operation) {
                             testCompleter.completeError(
-                              Exception(
-                                'Operation does not match',
-                              ),
+                              Exception('Operation does not match'),
                             );
 
                             return;
@@ -508,9 +501,7 @@ Future<void> main() async {
 
       final vp = await createVerifiablePresentation(
         didManager: holderDidManager,
-        verifiableCredentials: [
-          UniversalParser.parse(jsonEncode(invalidVc)),
-        ],
+        verifiableCredentials: [UniversalParser.parse(jsonEncode(invalidVc))],
       );
 
       final encryptedMessage = await createdEncryptedDataResponseMessage(

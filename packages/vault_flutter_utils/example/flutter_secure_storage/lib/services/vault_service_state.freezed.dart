@@ -12,7 +12,8 @@ part of 'vault_service_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$VaultServiceState {
@@ -29,8 +30,9 @@ mixin _$VaultServiceState {
 /// @nodoc
 abstract class $VaultServiceStateCopyWith<$Res> {
   factory $VaultServiceStateCopyWith(
-          VaultServiceState value, $Res Function(VaultServiceState) then) =
-      _$VaultServiceStateCopyWithImpl<$Res, VaultServiceState>;
+    VaultServiceState value,
+    $Res Function(VaultServiceState) then,
+  ) = _$VaultServiceStateCopyWithImpl<$Res, VaultServiceState>;
   @useResult
   $Res call({String? error, Vault? vault});
 }
@@ -49,29 +51,29 @@ class _$VaultServiceStateCopyWithImpl<$Res, $Val extends VaultServiceState>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? error = freezed,
-    Object? vault = freezed,
-  }) {
-    return _then(_value.copyWith(
-      error: freezed == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String?,
-      vault: freezed == vault
-          ? _value.vault
-          : vault // ignore: cast_nullable_to_non_nullable
-              as Vault?,
-    ) as $Val);
+  $Res call({Object? error = freezed, Object? vault = freezed}) {
+    return _then(
+      _value.copyWith(
+        error: freezed == error
+            ? _value.error
+            : error // ignore: cast_nullable_to_non_nullable
+                as String?,
+        vault: freezed == vault
+            ? _value.vault
+            : vault // ignore: cast_nullable_to_non_nullable
+                as Vault?,
+      ) as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$VaultServiceStateImplCopyWith<$Res>
     implements $VaultServiceStateCopyWith<$Res> {
-  factory _$$VaultServiceStateImplCopyWith(_$VaultServiceStateImpl value,
-          $Res Function(_$VaultServiceStateImpl) then) =
-      __$$VaultServiceStateImplCopyWithImpl<$Res>;
+  factory _$$VaultServiceStateImplCopyWith(
+    _$VaultServiceStateImpl value,
+    $Res Function(_$VaultServiceStateImpl) then,
+  ) = __$$VaultServiceStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String? error, Vault? vault});
@@ -81,28 +83,28 @@ abstract class _$$VaultServiceStateImplCopyWith<$Res>
 class __$$VaultServiceStateImplCopyWithImpl<$Res>
     extends _$VaultServiceStateCopyWithImpl<$Res, _$VaultServiceStateImpl>
     implements _$$VaultServiceStateImplCopyWith<$Res> {
-  __$$VaultServiceStateImplCopyWithImpl(_$VaultServiceStateImpl _value,
-      $Res Function(_$VaultServiceStateImpl) _then)
-      : super(_value, _then);
+  __$$VaultServiceStateImplCopyWithImpl(
+    _$VaultServiceStateImpl _value,
+    $Res Function(_$VaultServiceStateImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of VaultServiceState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? error = freezed,
-    Object? vault = freezed,
-  }) {
-    return _then(_$VaultServiceStateImpl(
-      error: freezed == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String?,
-      vault: freezed == vault
-          ? _value.vault
-          : vault // ignore: cast_nullable_to_non_nullable
-              as Vault?,
-    ));
+  $Res call({Object? error = freezed, Object? vault = freezed}) {
+    return _then(
+      _$VaultServiceStateImpl(
+        error: freezed == error
+            ? _value.error
+            : error // ignore: cast_nullable_to_non_nullable
+                as String?,
+        vault: freezed == vault
+            ? _value.vault
+            : vault // ignore: cast_nullable_to_non_nullable
+                as Vault?,
+      ),
+    );
   }
 }
 
@@ -140,7 +142,9 @@ class _$VaultServiceStateImpl implements _VaultServiceState {
   @pragma('vm:prefer-inline')
   _$$VaultServiceStateImplCopyWith<_$VaultServiceStateImpl> get copyWith =>
       __$$VaultServiceStateImplCopyWithImpl<_$VaultServiceStateImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 }
 
 abstract class _VaultServiceState implements VaultServiceState {

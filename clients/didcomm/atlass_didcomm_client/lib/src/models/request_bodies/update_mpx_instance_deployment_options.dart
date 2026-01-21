@@ -34,8 +34,8 @@ class UpdateMpxInstanceDeploymentOptions {
 
   /// Creates a [UpdateMpxInstanceDeploymentOptions] from a JSON map.
   factory UpdateMpxInstanceDeploymentOptions.fromJson(
-          Map<String, dynamic> json) =>
-      _$UpdateMpxInstanceDeploymentOptionsFromJson(json);
+    Map<String, dynamic> json,
+  ) => _$UpdateMpxInstanceDeploymentOptionsFromJson(json);
 
   /// Converts the [UpdateMpxInstanceDeploymentOptions] instance to JSON.
   Map<String, dynamic> toJson() =>

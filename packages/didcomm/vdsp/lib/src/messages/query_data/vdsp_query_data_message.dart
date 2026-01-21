@@ -19,9 +19,7 @@ class VdspQueryDataMessage extends PlainTextMessage {
     super.createdTime,
     super.expiresTime,
     super.threadId,
-  }) : super(
-          type: messageType,
-        );
+  }) : super(type: messageType);
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
@@ -84,10 +82,7 @@ class VdspQueryDataBody {
 /// to an application or audience specific value.
 class VdspQueryDataProofContext {
   /// Constructs a proof context used during cryptographic proof generation.
-  VdspQueryDataProofContext({
-    required this.challenge,
-    required this.domain,
-  });
+  VdspQueryDataProofContext({required this.challenge, required this.domain});
 
   /// Challenge string for replay protection.
   final String challenge;

@@ -1,4 +1,9 @@
-import '../../oid4vci_claim_verifiable_credential.dart';
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart' show TdkException;
+
+import 'package:affinidi_tdk_consumer_auth_provider/affinidi_tdk_consumer_auth_provider.dart'
+    show TdkException;
+
+import '../../oid4vci_claim_verifiable_credential.dart' show TdkException;
 import '../exceptions/tdk_exception_type.dart';
 
 /// Represents a credential offer from an issuer.
@@ -64,9 +69,10 @@ class OID4VCICredentialOffer {
     if (credentialIdentifier == null) {
       Error.throwWithStackTrace(
         TdkException(
-            message:
-                'Failed to parse credential offer, missing required credential identifier',
-            code: TdkExceptionType.failedToLoadCredentialOffer.code),
+          message:
+              'Failed to parse credential offer, missing required credential identifier',
+          code: TdkExceptionType.failedToLoadCredentialOffer.code,
+        ),
         StackTrace.current,
       );
     }
@@ -74,9 +80,10 @@ class OID4VCICredentialOffer {
     if (preAuthCode == null) {
       Error.throwWithStackTrace(
         TdkException(
-            message:
-                'Failed to parse credential offer, missing required pre authorization code',
-            code: TdkExceptionType.failedToLoadCredentialOffer.code),
+          message:
+              'Failed to parse credential offer, missing required pre authorization code',
+          code: TdkExceptionType.failedToLoadCredentialOffer.code,
+        ),
         StackTrace.current,
       );
     }
@@ -93,10 +100,10 @@ enum _CredentialOfferKey {
   grants('grants'),
   configurationIds('credential_configuration_ids'),
   preAuthorizationCodeUrn(
-      'urn:ietf:params:oauth:grant-type:pre-authorized_code'),
+    'urn:ietf:params:oauth:grant-type:pre-authorized_code',
+  ),
   preAuthorizationCode('pre-authorized_code'),
-  transactionCode('tx_code'),
-  ;
+  transactionCode('tx_code');
 
   const _CredentialOfferKey(this.value);
 

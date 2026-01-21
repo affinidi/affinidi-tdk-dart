@@ -105,10 +105,7 @@ void main() {
         body: invalidBody,
       );
 
-      expect(
-        () => responseMessage.response,
-        throwsA(isA<FormatException>()),
-      );
+      expect(() => responseMessage.response, throwsA(isA<FormatException>()));
     });
 
     test('should throw TypeError for missing required fields', () {
@@ -135,10 +132,7 @@ void main() {
         to: ['did:example:alice'],
       );
 
-      expect(
-        () => responseMessage.response,
-        throwsA(isA<TypeError>()),
-      );
+      expect(() => responseMessage.response, throwsA(isA<TypeError>()));
     });
 
     test('should preserve all constructor parameters', () {

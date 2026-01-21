@@ -67,25 +67,29 @@ void main() {
       expect(fileData.parentId, equals(folder.id));
     });
 
-    test('should throw error when creating file in non-existent folder',
-        () async {
-      const fileName = 'test.txt';
-      final fileContent = Uint8List.fromList([1, 2, 3]);
+    test(
+      'should throw error when creating file in non-existent folder',
+      () async {
+        const fileName = 'test.txt';
+        final fileContent = Uint8List.fromList([1, 2, 3]);
 
-      expect(
-        () => repository.createFile(
-          profileId: profileId,
-          fileName: fileName,
-          data: fileContent,
-          parentFolderId: 'non-existent-folder',
-        ),
-        throwsA(isA<TdkException>().having(
-          (error) => error.code,
-          'code',
-          TdkExceptionType.invalidParentFolderId.code,
-        )),
-      );
-    });
+        expect(
+          () => repository.createFile(
+            profileId: profileId,
+            fileName: fileName,
+            data: fileContent,
+            parentFolderId: 'non-existent-folder',
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              TdkExceptionType.invalidParentFolderId.code,
+            ),
+          ),
+        );
+      },
+    );
 
     test('should delete a file', () async {
       const fileName = 'test.txt';
@@ -101,20 +105,24 @@ void main() {
 
       expect(
         () => repository.getFile(fileId: file.id),
-        throwsA(isA<TdkException>().having(
-          (error) => error.code,
-          'code',
-          TdkExceptionType.invalidFileId.code,
-        )),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            TdkExceptionType.invalidFileId.code,
+          ),
+        ),
       );
 
       expect(
         () => repository.getFileContent(fileId: file.id),
-        throwsA(isA<TdkException>().having(
-          (error) => error.code,
-          'code',
-          TdkExceptionType.invalidFileId.code,
-        )),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            TdkExceptionType.invalidFileId.code,
+          ),
+        ),
       );
     });
 
@@ -129,10 +137,7 @@ void main() {
         data: fileContent,
       );
 
-      await repository.renameFile(
-        fileId: file.id,
-        newName: newFileName,
-      );
+      await repository.renameFile(fileId: file.id, newName: newFileName);
 
       final fileData = await repository.getFile(fileId: file.id);
       expect(fileData.name, equals(newFileName));
@@ -164,10 +169,7 @@ void main() {
       expect(items.items.length, equals(4)); // 3 files + 1 subfolder
 
       final itemNames = items.items.map((item) => item.name).toList()..sort();
-      expect(
-        itemNames,
-        equals([...fileNames, 'subfolder']..sort()),
-      );
+      expect(itemNames, equals([...fileNames, 'subfolder']..sort()));
 
       for (final item in items.items) {
         expect(item.parentId, equals(folder.id));
@@ -205,30 +207,36 @@ void main() {
       expect(subFolder.parentId, equals(parentFolder.id));
     });
 
-    test('should throw error when creating folder in non-existent parent',
-        () async {
-      expect(
-        () => repository.createFolder(
-          profileId: profileId,
-          folderName: 'test-folder',
-          parentFolderId: 'non-existent-parent',
-        ),
-        throwsA(isA<TdkException>().having(
-          (error) => error.code,
-          'code',
-          TdkExceptionType.invalidParentFolderId.code,
-        )),
-      );
-    });
+    test(
+      'should throw error when creating folder in non-existent parent',
+      () async {
+        expect(
+          () => repository.createFolder(
+            profileId: profileId,
+            folderName: 'test-folder',
+            parentFolderId: 'non-existent-parent',
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              TdkExceptionType.invalidParentFolderId.code,
+            ),
+          ),
+        );
+      },
+    );
 
     test('should throw error when deleting non-existent folder', () async {
       expect(
         () => repository.deleteFolder(folderId: 'non-existent-folder'),
-        throwsA(isA<TdkException>().having(
-          (error) => error.code,
-          'code',
-          TdkExceptionType.invalidFolderId.code,
-        )),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            TdkExceptionType.invalidFolderId.code,
+          ),
+        ),
       );
     });
 
@@ -247,11 +255,13 @@ void main() {
 
       expect(
         () => repository.deleteFolder(folderId: folder.id),
-        throwsA(isA<TdkException>().having(
-          (error) => error.code,
-          'code',
-          TdkExceptionType.unableToDeleteFolderWithContent.code,
-        )),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            TdkExceptionType.unableToDeleteFolderWithContent.code,
+          ),
+        ),
       );
     });
 
@@ -288,10 +298,7 @@ void main() {
       expect(items.items.length, equals(3)); // 2 files + 1 folder
 
       final itemNames = items.items.map((item) => item.name).toList()..sort();
-      expect(
-        itemNames,
-        equals([...fileNames, 'root-folder']..sort()),
-      );
+      expect(itemNames, equals([...fileNames, 'root-folder']..sort()));
 
       for (final item in items.items) {
         expect(item.parentId, isNull);

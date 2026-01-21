@@ -17,7 +17,8 @@ void main() async {
   final wallet = Bip32Wallet.fromSeed(seed);
   final keyStorage = InMemoryVaultStore();
   await profileRepository.configure(
-      RepositoryConfiguration(wallet: wallet, keyStorage: keyStorage));
+    RepositoryConfiguration(wallet: wallet, keyStorage: keyStorage),
+  );
 
   //
   // Create a profile
@@ -26,8 +27,9 @@ void main() async {
   try {
     await profileRepository.createProfile(name: 'Test 1');
   } on TdkException catch (error) {
-    print([error.code, '[Demo] ${error.message}', error.originalMessage]
-        .join('\n'));
+    print(
+      [error.code, '[Demo] ${error.message}', error.originalMessage].join('\n'),
+    );
     rethrow;
   }
 

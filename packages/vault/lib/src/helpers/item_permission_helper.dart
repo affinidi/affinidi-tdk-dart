@@ -9,7 +9,8 @@ import '../permissions.dart';
 class ItemPermissionHelper {
   /// Converts a list of [Permissions] enum values to a list of rights strings.
   static List<String> permissionsListToRightsList(
-      List<Permissions> permissions) {
+    List<Permissions> permissions,
+  ) {
     if (permissions.isEmpty) return [];
 
     final rights = <String>{};
@@ -36,8 +37,9 @@ class ItemPermissionHelper {
     }
     final sortedRights = rightsList.toList()..sort();
     final knownRights = {'vfsRead', 'vfsWrite'};
-    final hasUnknownRights =
-        sortedRights.any((right) => !knownRights.contains(right));
+    final hasUnknownRights = sortedRights.any(
+      (right) => !knownRights.contains(right),
+    );
     if (hasUnknownRights) {
       return null;
     }
@@ -90,11 +92,13 @@ class ItemPermissionHelper {
         }
 
         if (remainingRights.isNotEmpty) {
-          updatedPermissions.add(ItemPermission(
-            itemIds: [itemId],
-            rights: remainingRights,
-            expiresAt: perm.expiresAt,
-          ));
+          updatedPermissions.add(
+            ItemPermission(
+              itemIds: [itemId],
+              rights: remainingRights,
+              expiresAt: perm.expiresAt,
+            ),
+          );
         }
       }
     }
@@ -108,7 +112,7 @@ class ItemPermissionHelper {
       ({
         List<String> itemIds,
         Permissions permissions,
-        DateTime? expiresAt,
+        DateTime? expiresAt
       })> buildPermissionGroups(List<ItemPermission> permissions) {
     return permissions
         .map((perm) {
@@ -138,10 +142,11 @@ class ItemPermissionHelper {
   /// [rights] - Rights to grant (e.g., ['vfsRead', 'vfsWrite'])
   /// [expiresAt] - Optional expiration date for the permissions
   static List<ItemPermission> addPermission(
-      List<ItemPermission> existingPermissions,
-      List<String> itemIds,
-      List<String> rights,
-      {DateTime? expiresAt}) {
+    List<ItemPermission> existingPermissions,
+    List<String> itemIds,
+    List<String> rights, {
+    DateTime? expiresAt,
+  }) {
     final updatedPermissions = <ItemPermission>[];
     final itemIdsSet = itemIds.toSet();
     final rightsSet = rights.toSet();
@@ -162,11 +167,13 @@ class ItemPermissionHelper {
 
         final mergedRights = {...perm.rights, ...rightsSet}.toList()..sort();
         if (mergedRights.isNotEmpty) {
-          updatedPermissions.add(ItemPermission(
-            itemIds: overlappingIds,
-            rights: mergedRights,
-            expiresAt: expiresAt,
-          ));
+          updatedPermissions.add(
+            ItemPermission(
+              itemIds: overlappingIds,
+              rights: mergedRights,
+              expiresAt: expiresAt,
+            ),
+          );
         }
       }
     }
@@ -177,11 +184,13 @@ class ItemPermissionHelper {
         itemIds.where((id) => !existingItemIds.contains(id)).toList();
 
     if (newItemIds.isNotEmpty && rightsSet.isNotEmpty) {
-      updatedPermissions.add(ItemPermission(
-        itemIds: newItemIds,
-        rights: rightsSet.toList()..sort(),
-        expiresAt: expiresAt,
-      ));
+      updatedPermissions.add(
+        ItemPermission(
+          itemIds: newItemIds,
+          rights: rightsSet.toList()..sort(),
+          expiresAt: expiresAt,
+        ),
+      );
     }
 
     return updatedPermissions;
@@ -229,11 +238,13 @@ class ItemPermissionHelper {
             perm.rights.where((right) => !rightsSet.contains(right)).toList();
 
         if (remainingRights.isNotEmpty) {
-          updatedPermissions.add(ItemPermission(
-            itemIds: overlappingIds,
-            rights: remainingRights,
-            expiresAt: perm.expiresAt,
-          ));
+          updatedPermissions.add(
+            ItemPermission(
+              itemIds: overlappingIds,
+              rights: remainingRights,
+              expiresAt: perm.expiresAt,
+            ),
+          );
         }
       }
     }

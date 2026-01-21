@@ -12,10 +12,21 @@ class FileFixtures {
   static const String fileName = 'test-file.txt';
   static const String folderName = 'test-folder';
 
-  static final smallFileData =
-      Uint8List.fromList([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-  static final largeFileData =
-      Uint8List(1024 * 1024 * 11); // 11MB - exceeds 10MB limit
+  static final smallFileData = Uint8List.fromList([
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+  ]);
+  static final largeFileData = Uint8List(
+    1024 * 1024 * 11,
+  ); // 11MB - exceeds 10MB limit
   static final invalidFileData = Uint8List.fromList([1, 2, 3]);
 
   static List<String> get allowedExtensions =>

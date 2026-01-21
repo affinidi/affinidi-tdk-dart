@@ -16,10 +16,7 @@ class VdipHolder {
 
   /// Creates a new [VdipHolder] with the provided DID manager and
   /// mediator client instance.
-  VdipHolder({
-    required this.didManager,
-    required this.mediatorClient,
-  });
+  VdipHolder({required this.didManager, required this.mediatorClient});
 
   /// Convenience initializer that creates the underlying [DidcommMediatorClient]
   /// before constructing the holder client.

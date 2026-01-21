@@ -3,7 +3,6 @@ import 'package:json_annotation/json_annotation.dart';
 part 'mediator_acl.g.dart';
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Access Control List (ACL) configuration for a mediator instance.
 class MediatorAcl {
   /// List of allowed DIDs.

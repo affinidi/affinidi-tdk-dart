@@ -24,12 +24,16 @@ void main() {
 
     test('Get Iota credentials', () async {
       final iotaToken = await authProvider.createIotaToken(
-        iotaConfigId: env['IOTA_CONFIG_ID']!, did: env['DID']!);
+        iotaConfigId: env['IOTA_CONFIG_ID']!,
+        did: env['DID']!,
+      );
 
       expect(iotaToken.iotaJwt, isNotEmpty);
       expect(iotaToken.iotaSessionId, isNotEmpty);
 
-      final iotaCredentials = await IotaCore.limitedTokenToIotaCredentials(iotaToken.iotaJwt);
+      final iotaCredentials = await IotaCore.limitedTokenToIotaCredentials(
+        iotaToken.iotaJwt,
+      );
 
       expect(iotaCredentials.credentials.accessKeyId, isNotEmpty);
       expect(iotaCredentials.credentials.secretKey, isNotEmpty);

@@ -30,7 +30,7 @@ class AccessListAddMessage extends AclManagementMessage {
               'hashes': theirDids
                   .map((did) => sha256.convert(utf8.encode(did)).toString())
                   .toList(),
-            }
+            },
           },
         );
 

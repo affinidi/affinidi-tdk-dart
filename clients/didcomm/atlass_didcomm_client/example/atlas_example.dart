@@ -4,9 +4,8 @@ import 'dart:io';
 import 'package:affinidi_tdk_atlas_didcomm_client/affinidi_tdk_atlas_didcomm_client.dart';
 import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediator_client.dart';
 import 'package:crypto/crypto.dart';
+import '../../../../packages/integration_tests/test/test_config.dart';
 import 'package:ssi/ssi.dart';
-
-import '../../../../../tests/integration/dart/test/test_config.dart';
 
 Future<void> main() async {
   // Run commands below in your terminal to generate keys for Receiver:
@@ -48,16 +47,11 @@ Future<void> main() async {
   prettyPrint('Checking if there are deployed mediators...');
 
   final existingInstances =
-      await atlasClient.getMediatorInstancesList().catchError(
-    (Object error) {
-      prettyPrint(
-        'Error while listing mediators',
-        object: error,
-      );
+      await atlasClient.getMediatorInstancesList().catchError((Object error) {
+    prettyPrint('Error while listing mediators', object: error);
 
-      exit(1);
-    },
-  );
+    exit(1);
+  });
 
   if (existingInstances.instances.isNotEmpty) {
     prettyPrint('Cleaning previously deployed mediators...');
@@ -128,8 +122,10 @@ Future<void> main() async {
     ),
   );
 
-  prettyPrint('Update metadata response',
-      object: updateMetadataResponse.response);
+  prettyPrint(
+    'Update metadata response',
+    object: updateMetadataResponse.response,
+  );
 
   prettyPrint('Updating mediator configuration (ACL)...');
 
@@ -146,14 +142,12 @@ Future<void> main() async {
 
   final acl = <String, num>{
     if (adminDid != null) hashDid(adminDid): 1,
-    hashDid(mediatorDid): 1
+    hashDid(mediatorDid): 1,
   };
 
   final updateConfigurationResponse =
       await atlasClient.updateMediatorInstanceConfiguration(
-    configurationData: UpdateInstanceConfigurationOptions(
-      acl: acl,
-    ),
+    configurationData: UpdateInstanceConfigurationOptions(acl: acl),
   );
 
   prettyPrint(

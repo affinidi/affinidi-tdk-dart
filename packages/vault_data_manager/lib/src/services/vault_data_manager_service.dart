@@ -78,8 +78,9 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     required Uint8List encryptedDekek,
     required KeyPair keyPair,
   }) async {
-    final consumerAuthProvider =
-        ConsumerAuthProvider(signer: keyPair.didSigner());
+    final consumerAuthProvider = ConsumerAuthProvider(
+      signer: keyPair.didSigner(),
+    );
     return _create(
       encryptedDekek: encryptedDekek,
       keyPair: keyPair,
@@ -97,8 +98,9 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     required Uint8List encryptedDekek,
     required KeyPair keyPair,
   }) async {
-    final consumerAuthProvider =
-        ConsumerAuthProvider(signer: keyPair.didSigner());
+    final consumerAuthProvider = ConsumerAuthProvider(
+      signer: keyPair.didSigner(),
+    );
     return _create(
       encryptedDekek: encryptedDekek,
       keyPair: keyPair,
@@ -115,10 +117,11 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     final elementsVaultApiUrl =
         Environment.fetchEnvironment().elementsVaultApiUrl;
     final vaultDataManagerApiService = VaultDataManagerApiService(
-        apiClient: AffinidiTdkVaultDataManagerClient(
-      authTokenHook: authTokenHook,
-      basePathOverride: '$elementsVaultApiUrl/vfs',
-    ));
+      apiClient: AffinidiTdkVaultDataManagerClient(
+        authTokenHook: authTokenHook,
+        basePathOverride: '$elementsVaultApiUrl/vfs',
+      ),
+    );
 
     final vfsPublicKey =
         await vaultDataManagerApiService.getVaultDataManagerPublicKey();
@@ -144,14 +147,16 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     required VerifiableCredential verifiableCredential,
     VaultCancelToken? cancelToken,
   }) async {
-    final verifiableCredentialBlob =
-        utf8.encode(jsonEncode(verifiableCredential));
+    final verifiableCredentialBlob = utf8.encode(
+      jsonEncode(verifiableCredential),
+    );
     final dekGenerateModel =
         await _vaultDataManagerEncryptionService.generateDataEncryptionMaterial(
       encryptionKey: await _keyPair.decrypt(_encryptedKey),
     );
-    final verifiableCredentialName =
-        _getVerifiableCredentialName(verifiableCredential);
+    final verifiableCredentialName = _getVerifiableCredentialName(
+      verifiableCredential,
+    );
 
     await _vaultDataManagerApiService.uploadVerifiableCredential(
       profileId: profileId,
@@ -338,28 +343,29 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
         verifiableCredentialNodesResponse.data?.nodes?.toList();
 
     final nodes = nodesResponse!
-        .map<Node>((nodeResponse) => Node(
-              name: nodeResponse.name,
-              nodeId: nodeResponse.nodeId,
-              status: NodeStatus.values.byName(
-                nodeResponse.status.name,
-              ),
-              metadata: nodeResponse.metadata != null
-                  ? Metadata.fromJson(jsonDecode(nodeResponse.metadata!)
-                      as Map<String, dynamic>)
-                  : null,
-              description: nodeResponse.description,
-              createdAt: nodeResponse.createdAt,
-              modifiedAt: nodeResponse.modifiedAt,
-              createdBy: nodeResponse.createdBy,
-              modifiedBy: nodeResponse.modifiedBy,
-              consumerId: nodeResponse.consumerId,
-              fileCount: nodeResponse.fileCount,
-              profileCount: nodeResponse.profileCount,
-              folderCount: nodeResponse.folderCount,
-              profileId: nodeResponse.profileId,
-              type: NodeType.values.byName(nodeResponse.type.name),
-            ))
+        .map<Node>(
+          (nodeResponse) => Node(
+            name: nodeResponse.name,
+            nodeId: nodeResponse.nodeId,
+            status: NodeStatus.values.byName(nodeResponse.status.name),
+            metadata: nodeResponse.metadata != null
+                ? Metadata.fromJson(
+                    jsonDecode(nodeResponse.metadata!) as Map<String, dynamic>,
+                  )
+                : null,
+            description: nodeResponse.description,
+            createdAt: nodeResponse.createdAt,
+            modifiedAt: nodeResponse.modifiedAt,
+            createdBy: nodeResponse.createdBy,
+            modifiedBy: nodeResponse.modifiedBy,
+            consumerId: nodeResponse.consumerId,
+            fileCount: nodeResponse.fileCount,
+            profileCount: nodeResponse.profileCount,
+            folderCount: nodeResponse.folderCount,
+            profileId: nodeResponse.profileId,
+            type: NodeType.values.byName(nodeResponse.type.name),
+          ),
+        )
         .where((node) => node.status == NodeStatus.CREATED)
         .toList();
 
@@ -371,7 +377,9 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
           cancelToken: cancelToken,
         );
         return DigitalCredential(
-            verifiableCredential: verifiableCredential, id: node.nodeId);
+          verifiableCredential: verifiableCredential,
+          id: node.nodeId,
+        );
       }),
       eagerError: cancelToken != null,
     ).catchError((Object error) {
@@ -392,7 +400,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
         cancelToken: cancelToken,
       );
       return UniversalParser.parse(
-          utf8.decode(verifiableCredentialRawData) as Object);
+        utf8.decode(verifiableCredentialRawData) as Object,
+      );
     } catch (e) {
       throw TdkException(
         message: 'Failed to get verifiable credential: ${e.toString()}',
@@ -416,8 +425,9 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
 
     final dekEncryptedByVfsPublicKey =
         await _vaultDataManagerEncryptionService.getDekEncryptedByApiPublicKey(
-            encryptedDekBase64: encryptedDekBase64!,
-            encryptionKey: await _keyPair.decrypt(_encryptedKey));
+      encryptedDekBase64: encryptedDekBase64!,
+      encryptionKey: await _keyPair.decrypt(_encryptedKey),
+    );
     final profileDataResponse =
         await _vaultDataManagerApiService.getProfileData(
       profileNodeId: profileId,
@@ -429,7 +439,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     final profilePerson = profileDataResponse.data?.data;
 
     return ProfileData.fromJson(
-        jsonDecode(profilePerson.toString()) as Map<String, dynamic>);
+      jsonDecode(profilePerson.toString()) as Map<String, dynamic>,
+    );
   }
 
   @override
@@ -445,16 +456,18 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     final profileNodes = profilesResponse.data?.nodes?.toList() ?? [];
 
     final profiles = profileNodes
-        .map<VaultDataManagerProfile>((nodeResponse) => VaultDataManagerProfile(
-              id: nodeResponse.nodeId,
-              name: nodeResponse.name,
-              description: nodeResponse.description,
-              pictureURI: nodeResponse.metadata != null
-                  ? Metadata.fromJson(jsonDecode(nodeResponse.metadata!)
-                          as Map<String, dynamic>)
-                      .pictureURI
-                  : '',
-            ))
+        .map<VaultDataManagerProfile>(
+          (nodeResponse) => VaultDataManagerProfile(
+            id: nodeResponse.nodeId,
+            name: nodeResponse.name,
+            description: nodeResponse.description,
+            pictureURI: nodeResponse.metadata != null
+                ? Metadata.fromJson(
+                    jsonDecode(nodeResponse.metadata!) as Map<String, dynamic>,
+                  ).pictureURI
+                : '',
+          ),
+        )
         .toList();
 
     return profiles;
@@ -475,7 +488,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     final scannedFileInfo = scannedFileInfoResponse.data?.data;
 
     return RecognizedProfileData.fromJson(
-        jsonDecode(scannedFileInfo.toString()) as Map<String, dynamic>);
+      jsonDecode(scannedFileInfo.toString()) as Map<String, dynamic>,
+    );
   }
 
   @override
@@ -491,14 +505,16 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     final scannedFilesData = scannedFilesResponse.data?.scannedFiles;
 
     final scannedFiles = scannedFilesData!
-        .map<ScannedFile>((scannedFile) => ScannedFile(
-              name: scannedFile.name,
-              status: scannedFile.status,
-              createdAt: scannedFile.createdAt,
-              jobId: scannedFile.jobId,
-              profileId: scannedFile.profileId,
-              nodeId: scannedFile.nodeId,
-            ))
+        .map<ScannedFile>(
+          (scannedFile) => ScannedFile(
+            name: scannedFile.name,
+            status: scannedFile.status,
+            createdAt: scannedFile.createdAt,
+            jobId: scannedFile.jobId,
+            profileId: scannedFile.profileId,
+            nodeId: scannedFile.nodeId,
+          ),
+        )
         .toList();
 
     return scannedFiles;
@@ -558,10 +574,7 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   }
 
   @override
-  Future<void> scanFile(
-    String nodeId, {
-    VaultCancelToken? cancelToken,
-  }) async {
+  Future<void> scanFile(String nodeId, {VaultCancelToken? cancelToken}) async {
     final nodeInfo = await _vaultDataManagerApiService.getNodeInfo(
       nodeId: nodeId,
       cancelToken:
@@ -571,8 +584,9 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     final encryptedDekBase64 = nodeInfo.data?.edekInfo?.edek;
     final dekEncryptedByVfsPublicKey =
         await _vaultDataManagerEncryptionService.getDekEncryptedByApiPublicKey(
-            encryptedDekBase64: encryptedDekBase64!,
-            encryptionKey: await _keyPair.decrypt(_encryptedKey));
+      encryptedDekBase64: encryptedDekBase64!,
+      encryptionKey: await _keyPair.decrypt(_encryptedKey),
+    );
 
     await _vaultDataManagerApiService.startFileScan(
       nodeId: nodeId,
@@ -628,10 +642,10 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   }) async {
     final commonNodeInfoResponse =
         await _vaultDataManagerApiService.getNodeInfo(
-            nodeId: nodeId,
-            cancelToken: cancelToken != null
-                ? DioCancelTokenAdapter.from(cancelToken)
-                : null);
+      nodeId: nodeId,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
+    );
     final commonNodeEdek = commonNodeInfoResponse.data?.edekInfo?.edek;
     if (commonNodeEdek == null) {
       Error.throwWithStackTrace(
@@ -713,7 +727,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   }
 
   String _getVerifiableCredentialName(
-      VerifiableCredential verifiableCredential) {
+    VerifiableCredential verifiableCredential,
+  ) {
     return verifiableCredential.type.last;
   }
 
@@ -789,28 +804,29 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     }
 
     final nodes = nodesResponse
-        .map<Node>((nodeResponse) => Node(
-              name: nodeResponse.name,
-              nodeId: nodeResponse.nodeId,
-              status: NodeStatus.values.byName(
-                nodeResponse.status.name,
-              ),
-              metadata: nodeResponse.metadata != null
-                  ? Metadata.fromJson(jsonDecode(nodeResponse.metadata!)
-                      as Map<String, dynamic>)
-                  : null,
-              description: nodeResponse.description,
-              createdAt: nodeResponse.createdAt,
-              modifiedAt: nodeResponse.modifiedAt,
-              createdBy: nodeResponse.createdBy,
-              modifiedBy: nodeResponse.modifiedBy,
-              consumerId: nodeResponse.consumerId,
-              fileCount: nodeResponse.fileCount,
-              profileCount: nodeResponse.profileCount,
-              folderCount: nodeResponse.folderCount,
-              profileId: nodeResponse.profileId,
-              type: NodeType.values.byName(nodeResponse.type.name),
-            ))
+        .map<Node>(
+          (nodeResponse) => Node(
+            name: nodeResponse.name,
+            nodeId: nodeResponse.nodeId,
+            status: NodeStatus.values.byName(nodeResponse.status.name),
+            metadata: nodeResponse.metadata != null
+                ? Metadata.fromJson(
+                    jsonDecode(nodeResponse.metadata!) as Map<String, dynamic>,
+                  )
+                : null,
+            description: nodeResponse.description,
+            createdAt: nodeResponse.createdAt,
+            modifiedAt: nodeResponse.modifiedAt,
+            createdBy: nodeResponse.createdBy,
+            modifiedBy: nodeResponse.modifiedBy,
+            consumerId: nodeResponse.consumerId,
+            fileCount: nodeResponse.fileCount,
+            profileCount: nodeResponse.profileCount,
+            folderCount: nodeResponse.folderCount,
+            profileId: nodeResponse.profileId,
+            type: NodeType.values.byName(nodeResponse.type.name),
+          ),
+        )
         .where((node) => node.status == NodeStatus.CREATED)
         .toList();
 
@@ -839,10 +855,10 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     VaultCancelToken? cancelToken,
   }) async {
     final nodeInfoResponse = await _vaultDataManagerApiService.getNodeInfo(
-        nodeId: nodeId,
-        cancelToken: cancelToken != null
-            ? DioCancelTokenAdapter.from(cancelToken)
-            : null);
+      nodeId: nodeId,
+      cancelToken:
+          cancelToken != null ? DioCancelTokenAdapter.from(cancelToken) : null,
+    );
 
     final nodeInfoData = nodeInfoResponse.data!;
 
@@ -852,7 +868,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
       status: NodeStatus.values.byName(nodeInfoData.status.name),
       metadata: nodeInfoData.metadata != null
           ? Metadata.fromJson(
-              jsonDecode(nodeInfoData.metadata!) as Map<String, dynamic>)
+              jsonDecode(nodeInfoData.metadata!) as Map<String, dynamic>,
+            )
           : null,
       description: nodeInfoData.description,
       createdAt: nodeInfoData.createdAt,
@@ -921,10 +938,12 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     final accounts = records
         .map(
           (record) => Account(
-              accountIndex: record.accountIndex,
-              accountDid: record.accountDid,
-              accountMetadata: AccountMetadata.fromJson(
-                  record.metadata!.asMap as Map<String, dynamic>)),
+            accountIndex: record.accountIndex,
+            accountDid: record.accountDid,
+            accountMetadata: AccountMetadata.fromJson(
+              record.metadata!.asMap as Map<String, dynamic>,
+            ),
+          ),
         )
         .toList();
 

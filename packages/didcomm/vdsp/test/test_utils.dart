@@ -7,9 +7,7 @@ import 'package:dcql/dcql.dart';
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
 
-void emptyOnDataRequestCallback(
-  VdspQueryDataMessage message,
-) {}
+void emptyOnDataRequestCallback(VdspQueryDataMessage message) {}
 
 void emptyOnDataResponseCallback({
   required credentialVerificationResults,
@@ -37,42 +35,40 @@ Future<LdVcDataModelV1> generateEmailLdVcV1({
     type: {'VerifiableCredential', 'Email'},
     issuanceDate: DateTime.now().toUtc(),
     credentialSubject: [
-      CredentialSubject.fromJson({
-        'id': holderDid,
-        'email': holderEmail,
-      }),
+      CredentialSubject.fromJson({'id': holderDid, 'email': holderEmail}),
     ],
   );
 
   final suite = LdVcDm1Suite();
 
   final issuedCredential = await suite.issue(
-      unsignedData: unsignedCredential,
-      proofGenerator: switch (issuerSigner.signatureScheme) {
-        SignatureScheme.ecdsa_secp256k1_sha256 =>
-          Secp256k1Signature2019Generator(
-            signer: issuerSigner,
-            proofPurpose: ProofPurpose.authentication,
-          ) as EmbeddedProofGenerator,
-        SignatureScheme.ecdsa_p256_sha256 => DataIntegrityEcdsaJcsGenerator(
-            signer: issuerSigner,
-            proofPurpose: ProofPurpose.authentication,
-          ) as EmbeddedProofGenerator,
-        SignatureScheme.ecdsa_p384_sha384 => DataIntegrityEcdsaJcsGenerator(
-            signer: issuerSigner,
-            proofPurpose: ProofPurpose.authentication,
-          ),
-        SignatureScheme.ecdsa_p521_sha512 => DataIntegrityEcdsaJcsGenerator(
-            signer: issuerSigner,
-            proofPurpose: ProofPurpose.authentication,
-          ),
-        SignatureScheme.ed25519 => DataIntegrityEddsaJcsGenerator(
-            signer: issuerSigner,
-            proofPurpose: ProofPurpose.authentication,
-          ) as EmbeddedProofGenerator,
-        SignatureScheme.rsa_pkcs1_sha256 =>
-          throw UnimplementedError('RSA is not supported'),
-      });
+    unsignedData: unsignedCredential,
+    proofGenerator: switch (issuerSigner.signatureScheme) {
+      SignatureScheme.ecdsa_secp256k1_sha256 => Secp256k1Signature2019Generator(
+          signer: issuerSigner,
+          proofPurpose: ProofPurpose.authentication,
+        ) as EmbeddedProofGenerator,
+      SignatureScheme.ecdsa_p256_sha256 => DataIntegrityEcdsaJcsGenerator(
+          signer: issuerSigner,
+          proofPurpose: ProofPurpose.authentication,
+        ) as EmbeddedProofGenerator,
+      SignatureScheme.ecdsa_p384_sha384 => DataIntegrityEcdsaJcsGenerator(
+          signer: issuerSigner,
+          proofPurpose: ProofPurpose.authentication,
+        ),
+      SignatureScheme.ecdsa_p521_sha512 => DataIntegrityEcdsaJcsGenerator(
+          signer: issuerSigner,
+          proofPurpose: ProofPurpose.authentication,
+        ),
+      SignatureScheme.ed25519 => DataIntegrityEddsaJcsGenerator(
+          signer: issuerSigner,
+          proofPurpose: ProofPurpose.authentication,
+        ) as EmbeddedProofGenerator,
+      SignatureScheme.rsa_pkcs1_sha256 => throw UnimplementedError(
+          'RSA is not supported',
+        ),
+    },
+  );
 
   return issuedCredential;
 }
@@ -86,11 +82,7 @@ DcqlCredentialQuery createDataQuery({
         DcqlCredential(
           id: const Uuid().v4(),
           format: format,
-          claims: [
-            DcqlClaim(
-              path: path,
-            ),
-          ],
+          claims: [DcqlClaim(path: path)],
         ),
       ],
     );
@@ -103,14 +95,8 @@ Future<DidManager> createDidManager({
   final keyPair = await wallet.generateKey(keyType: keyType);
 
   final didManager = didMethod == 'did:key'
-      ? DidKeyManager(
-          store: InMemoryDidStore(),
-          wallet: wallet,
-        )
-      : DidPeerManager(
-          store: InMemoryDidStore(),
-          wallet: wallet,
-        );
+      ? DidKeyManager(store: InMemoryDidStore(), wallet: wallet)
+      : DidPeerManager(store: InMemoryDidStore(), wallet: wallet);
 
   await didManager.addVerificationMethod(keyPair.id);
   return didManager;
@@ -134,8 +120,9 @@ Future<EncryptedMessage> createdEncryptedDataResponseMessage({
 
   return await DidcommMessage.packIntoEncryptedMessage(
     message,
-    keyPair: await holderDidManager
-        .getKeyPairByDidKeyId(holderDidDocument.keyAgreement.first.id),
+    keyPair: await holderDidManager.getKeyPairByDidKeyId(
+      holderDidDocument.keyAgreement.first.id,
+    ),
     didKeyId: holderDidDocument.keyAgreement.first.id,
     encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
     keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdh1Pu,
@@ -160,10 +147,7 @@ Future<EncryptedMessage> createdEncryptedProblemReportMessage({
       code: ProblemCode(
         sorter: SorterType.error,
         scope: Scope(scope: ScopeType.message),
-        descriptors: [
-          'vdsp',
-          'unit-test',
-        ],
+        descriptors: ['vdsp', 'unit-test'],
       ),
     ),
   );
@@ -184,15 +168,11 @@ Future<LdVpDataModelV1> createVerifiablePresentation({
   required DidManager didManager,
   required List<ParsedVerifiableCredential> verifiableCredentials,
 }) async {
-  final signer = await didManager.getSigner(
-    didManager.authentication.first,
-  );
+  final signer = await didManager.getSigner(didManager.authentication.first);
 
   final suite = LdVpDm1Suite();
 
-  final proofGenerator = DataIntegrityEcdsaJcsGenerator(
-    signer: signer,
-  );
+  final proofGenerator = DataIntegrityEcdsaJcsGenerator(signer: signer);
 
   return await suite.issue(
     unsignedData: VpDataModelV1.fromMutable(

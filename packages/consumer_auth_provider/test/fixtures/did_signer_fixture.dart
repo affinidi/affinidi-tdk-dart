@@ -10,10 +10,7 @@ class DidSignerFixture {
 
   /// Returns a DidSigner constructed from the seed using ed25519 which does not have an alg
   static Future<DidSigner> withInvalidAlgorithm(String seed) =>
-      _didSignerFromSeed(
-        seed: seed,
-        signatureScheme: SignatureScheme.ed25519,
-      );
+      _didSignerFromSeed(seed: seed, signatureScheme: SignatureScheme.ed25519);
 
   static Future<DidSigner> _didSignerFromSeed({
     required String seed,

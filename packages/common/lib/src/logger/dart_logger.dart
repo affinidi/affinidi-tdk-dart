@@ -37,8 +37,13 @@ class DartLogger implements Logging {
   }
 
   @override
-  void log(LogLevel logLevel, Object? message,
-      [Object? error, StackTrace? stackTrace, Zone? zone]) {
+  void log(
+    LogLevel logLevel,
+    Object? message, [
+    Object? error,
+    StackTrace? stackTrace,
+    Zone? zone,
+  ]) {
     final level = logLevel.toLevel();
     if (level < environmentLevel) return;
 

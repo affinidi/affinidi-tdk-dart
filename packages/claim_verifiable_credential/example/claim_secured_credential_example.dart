@@ -29,17 +29,16 @@ Future<void> main() async {
 
     // Create a new instance of ClaimVerifiableCredentialService
     final claimVerifiableCredentialService =
-        OID4VCIClaimVerifiableCredentialService(
-      didSigner: signer,
-    );
+        OID4VCIClaimVerifiableCredentialService(didSigner: signer);
 
     final uri = Uri.parse(
       'https://example.com/callback?credential_offer_uri=https://issuer.example.com/offer/456',
     );
 
     print('Loading credential offer...');
-    final context =
-        await claimVerifiableCredentialService.loadCredentialOffer(uri);
+    final context = await claimVerifiableCredentialService.loadCredentialOffer(
+      uri,
+    );
 
     if (!context.credentialOffer.isTxCodeRequired) {
       print('This credential does not require a transaction code.');

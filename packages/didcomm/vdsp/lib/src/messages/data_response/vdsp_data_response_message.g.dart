@@ -7,10 +7,13 @@ part of 'vdsp_data_response_message.dart';
 // **************************************************************************
 
 VdspDataResponseBody _$VdspDataResponseBodyFromJson(
-        Map<String, dynamic> json) =>
+  Map<String, dynamic> json,
+) =>
     VdspDataResponseBody(
       dataQueryLanguage: $enumDecodeNullable(
-              _$DataQueryLanguageEnumMap, json['data_query_lang']) ??
+            _$DataQueryLanguageEnumMap,
+            json['data_query_lang'],
+          ) ??
           DataQueryLanguage.dcql,
       responseFormat: json['response_format'] as String,
       dataResponse: json['data_response'] as Map<String, dynamic>,
@@ -19,7 +22,8 @@ VdspDataResponseBody _$VdspDataResponseBodyFromJson(
     );
 
 Map<String, dynamic> _$VdspDataResponseBodyToJson(
-        VdspDataResponseBody instance) =>
+  VdspDataResponseBody instance,
+) =>
     <String, dynamic>{
       if (instance.operation case final value?) 'operation': value,
       'data_query_lang':
@@ -29,6 +33,4 @@ Map<String, dynamic> _$VdspDataResponseBodyToJson(
       if (instance.comment case final value?) 'comment': value,
     };
 
-const _$DataQueryLanguageEnumMap = {
-  DataQueryLanguage.dcql: 'DCQL',
-};
+const _$DataQueryLanguageEnumMap = {DataQueryLanguage.dcql: 'DCQL'};

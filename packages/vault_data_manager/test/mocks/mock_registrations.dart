@@ -29,7 +29,8 @@ void registerAllFallbackValues() {
   registerFallbackValue('test-profile-id');
   registerFallbackValue(MockVerifiableCredential());
   registerFallbackValue(
-      MockDigitalCredential(MockVerifiableCredential(), id: 'test-node-id'));
+    MockDigitalCredential(MockVerifiableCredential(), id: 'test-node-id'),
+  );
   registerFallbackValue(NodeType.FILE);
   registerFallbackValue(NodeStatus.CREATED);
   registerFallbackValue(MockDeterministicWallet());

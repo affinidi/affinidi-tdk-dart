@@ -34,7 +34,7 @@ final seed = Uint8List.fromList([
   150,
   253,
   44,
-  205
+  205,
 ]);
 const _rootAccountDerivationPath = "m/44'/60'/0'/0'/0'";
 

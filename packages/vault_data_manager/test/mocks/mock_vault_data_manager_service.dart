@@ -40,13 +40,15 @@ class MockVaultDataManagerService extends Mock
     String? exclusiveStartItemId,
   }) {
     return super.noSuchMethod(
-      Invocation.method(#getDigitalCredentials, [
-        profileId
-      ], {
-        #cancelToken: cancelToken,
-        #limit: limit,
-        #exclusiveStartItemId: exclusiveStartItemId,
-      }),
+      Invocation.method(
+        #getDigitalCredentials,
+        [profileId],
+        {
+          #cancelToken: cancelToken,
+          #limit: limit,
+          #exclusiveStartItemId: exclusiveStartItemId,
+        },
+      ),
     ) as Future<PaginatedList<DigitalCredential>>;
   }
 }

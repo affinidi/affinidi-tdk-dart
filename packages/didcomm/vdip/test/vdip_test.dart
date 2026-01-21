@@ -16,9 +16,7 @@ Future<void> main() async {
   final attachment = Attachment(
     id: 'sample-attachment',
     mediaType: 'application/json',
-    data: AttachmentData(
-      json: jsonEncode({'sample': 'data'}),
-    ),
+    data: AttachmentData(json: jsonEncode({'sample': 'data'})),
   );
 
   late MockMediator mockMediator;
@@ -43,9 +41,7 @@ Future<void> main() async {
       keyType: KeyType.p256,
     );
 
-    mockMediator = await MockMediator.init(
-      keyType: KeyType.p256,
-    );
+    mockMediator = await MockMediator.init(keyType: KeyType.p256);
 
     await mockMediator.addClientForDidManager(issuerDidManager);
     await mockMediator.addClientForDidManager(holderDidManager);
@@ -63,21 +59,12 @@ Future<void> main() async {
   });
 
   group('VDIP Holder and Issuer Clients Unit Tests', () {
-    for (final keyType in [
-      KeyType.ed25519,
-      KeyType.p256,
-      KeyType.p384,
-    ]) {
+    for (final keyType in [KeyType.ed25519, KeyType.p256, KeyType.p384]) {
       group(keyType.name, () {
-        for (final didMethod in [
-          'did:key',
-          'did:peer',
-        ]) {
+        for (final didMethod in ['did:key', 'did:peer']) {
           group(didMethod, () {
             setUp(() async {
-              mockMediator = await MockMediator.init(
-                keyType: keyType,
-              );
+              mockMediator = await MockMediator.init(keyType: keyType);
 
               issuerDidManager = await createDidManager(
                 didMethod: didMethod,
@@ -123,9 +110,7 @@ Future<void> main() async {
 
               vdipIssuer.listenForIncomingMessages(
                 onFeatureQuery: (message) async {
-                  await vdipIssuer.disclose(
-                    queryMessage: message,
-                  );
+                  await vdipIssuer.disclose(queryMessage: message);
                 },
                 onRequestToIssueCredential: ({
                   required message,
@@ -168,9 +153,7 @@ Future<void> main() async {
                   // Holder responds to feature query if needed
                 },
                 onCredentialsIssuanceResponse: (message) async {
-                  final body = VdipIssuedCredentialBody.fromJson(
-                    message.body!,
-                  );
+                  final body = VdipIssuedCredentialBody.fromJson(message.body!);
 
                   if (body.comment != comment) {
                     testCompleter.completeError(
@@ -224,117 +207,120 @@ Future<void> main() async {
               expect(actual.attachments?.first.toJson(), attachment.toJson());
 
               final credentialSerialized = actualBody.credential;
-              final verifiableCredential =
-                  VcDataModelV1.fromJson(credentialSerialized);
+              final verifiableCredential = VcDataModelV1.fromJson(
+                credentialSerialized,
+              );
 
               expect(actualBody.comment, comment);
               expect(verifiableCredential.id, credential.id);
             });
 
-            test('VDIP holder-bound credential issuance works correctly',
-                () async {
-              final testCompleter = Completer<PlainTextMessage>();
+            test(
+              'VDIP holder-bound credential issuance works correctly',
+              () async {
+                final testCompleter = Completer<PlainTextMessage>();
 
-              final vdipIssuer = VdipIssuer(
-                didManager: issuerDidManager,
-                mediatorClient: mockMediator.clients[issuerDidManager]!,
-                featureDisclosures:
-                    FeatureDiscoveryHelper.vdipIssuerDisclosures,
-              );
+                final vdipIssuer = VdipIssuer(
+                  didManager: issuerDidManager,
+                  mediatorClient: mockMediator.clients[issuerDidManager]!,
+                  featureDisclosures:
+                      FeatureDiscoveryHelper.vdipIssuerDisclosures,
+                );
 
-              vdipIssuer.listenForIncomingMessages(
-                onRequestToIssueCredential: ({
-                  required message,
-                  assertionValidationResult,
-                  holderDidFromAssertion,
-                  challenge,
-                }) async {
-                  if (assertionValidationResult == null ||
-                      !assertionValidationResult.isValid) {
-                    testCompleter.completeError(
-                      Exception('Assertion is not valid'),
+                vdipIssuer.listenForIncomingMessages(
+                  onRequestToIssueCredential: ({
+                    required message,
+                    assertionValidationResult,
+                    holderDidFromAssertion,
+                    challenge,
+                  }) async {
+                    if (assertionValidationResult == null ||
+                        !assertionValidationResult.isValid) {
+                      testCompleter.completeError(
+                        Exception('Assertion is not valid'),
+                      );
+                      return;
+                    }
+
+                    if (holderDidFromAssertion == null) {
+                      testCompleter.completeError(
+                        Exception('Holder DID from assertion is missing'),
+                      );
+                      return;
+                    }
+
+                    final body = VdipRequestIssuanceMessageBody.fromJson(
+                      message.body!,
                     );
-                    return;
-                  }
 
-                  if (holderDidFromAssertion == null) {
-                    testCompleter.completeError(
-                      Exception('Holder DID from assertion is missing'),
+                    if (body.holderDid != holderDidFromAssertion) {
+                      testCompleter.completeError(
+                        Exception('Holder DID does not match assertion'),
+                      );
+                      return;
+                    }
+
+                    // Issue credential for the specific holder
+                    final credential = await generateEmailLdVcV1(
+                      holderDid: holderDidFromAssertion,
+                      holderEmail: holderEmail,
+                      issuerSigner: issuerSigner,
                     );
-                    return;
-                  }
 
-                  final body = VdipRequestIssuanceMessageBody.fromJson(
-                    message.body!,
-                  );
-
-                  if (body.holderDid != holderDidFromAssertion) {
-                    testCompleter.completeError(
-                      Exception('Holder DID does not match assertion'),
+                    await vdipIssuer.sendIssuedCredentials(
+                      holderDid: message.from!,
+                      verifiableCredential: credential,
+                      comment: comment,
+                      attachments: [attachment],
                     );
-                    return;
-                  }
+                  },
+                  onProblemReport: (message) async {
+                    testCompleter.completeError(message);
+                    await mockMediator.stopConnections();
+                  },
+                );
 
-                  // Issue credential for the specific holder
-                  final credential = await generateEmailLdVcV1(
-                    holderDid: holderDidFromAssertion,
-                    holderEmail: holderEmail,
-                    issuerSigner: issuerSigner,
-                  );
+                final vdipHolder = VdipHolder(
+                  didManager: holderDidManager,
+                  mediatorClient: mockMediator.clients[holderDidManager]!,
+                );
 
-                  await vdipIssuer.sendIssuedCredentials(
-                    holderDid: message.from!,
-                    verifiableCredential: credential,
+                vdipHolder.listenForIncomingMessages(
+                  onCredentialsIssuanceResponse: (message) async {
+                    testCompleter.complete(message);
+                    await mockMediator.stopConnections();
+                  },
+                  onProblemReport: (message) async {
+                    testCompleter.completeError(message);
+                    await mockMediator.stopConnections();
+                  },
+                );
+
+                await mockMediator.startConnections();
+
+                // Holder requests credential for specific holder DID with assertion
+                await vdipHolder.requestCredentialForHolder(
+                  holderSigner.did,
+                  issuerDid: issuerDidDocument.id,
+                  assertionSigner: holderSigner,
+                  options: RequestCredentialsOptions(
+                    proposalId: proposalId,
+                    credentialFormat: CredentialFormat.w3cV1,
                     comment: comment,
-                    attachments: [attachment],
-                  );
-                },
-                onProblemReport: (message) async {
-                  testCompleter.completeError(message);
-                  await mockMediator.stopConnections();
-                },
-              );
+                  ),
+                );
 
-              final vdipHolder = VdipHolder(
-                didManager: holderDidManager,
-                mediatorClient: mockMediator.clients[holderDidManager]!,
-              );
+                final actual = await testCompleter.future;
 
-              vdipHolder.listenForIncomingMessages(
-                onCredentialsIssuanceResponse: (message) async {
-                  testCompleter.complete(message);
-                  await mockMediator.stopConnections();
-                },
-                onProblemReport: (message) async {
-                  testCompleter.completeError(message);
-                  await mockMediator.stopConnections();
-                },
-              );
+                expect(actual, isA<VdipIssuedCredentialMessage>());
 
-              await mockMediator.startConnections();
-
-              // Holder requests credential for specific holder DID with assertion
-              await vdipHolder.requestCredentialForHolder(
-                holderSigner.did,
-                issuerDid: issuerDidDocument.id,
-                assertionSigner: holderSigner,
-                options: RequestCredentialsOptions(
-                  proposalId: proposalId,
-                  credentialFormat: CredentialFormat.w3cV1,
-                  comment: comment,
-                ),
-              );
-
-              final actual = await testCompleter.future;
-
-              expect(actual, isA<VdipIssuedCredentialMessage>());
-
-              final actualBody = VdipIssuedCredentialBody.fromJson(
-                actual.body!,
-              );
-              expect(actualBody.comment, comment);
-              expect(actual.attachments?.first.toJson(), attachment.toJson());
-            });
+                final actualBody = VdipIssuedCredentialBody.fromJson(
+                  actual.body!,
+                );
+                expect(actualBody.comment, comment);
+                expect(actual.attachments?.first.toJson(), attachment.toJson());
+              },
+            );
 
             test('VDIP challenge validation works correctly', () async {
               final testCompleter = Completer<String?>();
@@ -403,9 +389,7 @@ Future<void> main() async {
 
               issuerClient.listenForIncomingMessages(
                 onFeatureQuery: (message) async {
-                  await issuerClient.disclose(
-                    queryMessage: message,
-                  );
+                  await issuerClient.disclose(queryMessage: message);
 
                   // After feature disclosure, send switch context
                   await issuerClient.sendSwitchContext(
@@ -1034,12 +1018,18 @@ Future<void> main() async {
       // but the DID validation will fail because iss/sub don't match
       expect(result.isValid, isFalse);
       // Signature might succeed depending on key compatibility, but DID check will fail
-      expect(result.isIssuerValid, isFalse,
-          reason:
-              'Issuer validation should fail when token DIDs dont match expected DID');
-      expect(result.isSubjectValid, isFalse,
-          reason:
-              'Subject validation should fail when token DIDs dont match expected DID');
+      expect(
+        result.isIssuerValid,
+        isFalse,
+        reason:
+            'Issuer validation should fail when token DIDs dont match expected DID',
+      );
+      expect(
+        result.isSubjectValid,
+        isFalse,
+        reason:
+            'Subject validation should fail when token DIDs dont match expected DID',
+      );
     });
 
     test('fails validation with invalid token format', () async {

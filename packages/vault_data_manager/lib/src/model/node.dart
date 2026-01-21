@@ -7,22 +7,16 @@ class Metadata {
   final String? pictureURI;
 
   /// Creates a new metadata instance.
-  Metadata({
-    this.pictureURI,
-  });
+  Metadata({this.pictureURI});
 
   /// Creates a [Metadata] from a JSON map.
   factory Metadata.fromJson(Map<String, dynamic> json) {
-    return Metadata(
-      pictureURI: json['pictureURI'] as String?,
-    );
+    return Metadata(pictureURI: json['pictureURI'] as String?);
   }
 
   /// Converts this [Metadata] to a JSON map.
   Map<String, dynamic> toJson() {
-    return {
-      'pictureURI': pictureURI,
-    };
+    return {'pictureURI': pictureURI};
   }
 }
 

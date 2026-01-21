@@ -12,19 +12,12 @@ class EdgeDriftRepositoryFactory implements EdgeRepositoryFactoryInterface {
 
   @override
   EdgeDriftProfileRepository createProfileRepository() {
-    return EdgeDriftProfileRepository(
-      database: _database,
-    );
+    return EdgeDriftProfileRepository(database: _database);
   }
 
   @override
-  EdgeDriftFileRepository createFileRepository({
-    required String profileId,
-  }) {
-    return EdgeDriftFileRepository(
-      database: _database,
-      profileId: profileId,
-    );
+  EdgeDriftFileRepository createFileRepository({required String profileId}) {
+    return EdgeDriftFileRepository(database: _database, profileId: profileId);
   }
 
   @override

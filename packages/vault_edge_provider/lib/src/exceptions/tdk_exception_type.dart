@@ -63,8 +63,7 @@ enum TdkExceptionType {
   unableToDeleteProfileWithContent('unable_to_delete_profile_with_content'),
 
   /// [unableToUpdateNonExistentProfile] - Indicates it was not possible to update a profile as it does not exists
-  unableToUpdateNonExistentProfile('unable_to_update_non_existent_profile'),
-  ;
+  unableToUpdateNonExistentProfile('unable_to_update_non_existent_profile');
 
   /// Creates a new instance of [TdkExceptionType].
   ///

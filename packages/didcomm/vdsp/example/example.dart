@@ -2,10 +2,9 @@ import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediat
     hide CredentialFormat;
 import 'package:affinidi_tdk_vdsp/affinidi_tdk_vdsp.dart';
 import 'package:dcql/dcql.dart';
+import '../../../integration_tests/test/test_config.dart';
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
-
-import '../../../../../tests/integration/dart/test/test_config.dart';
 
 // Run commands below in your terminal to generate keys for Alice and Bob:
 // openssl ecparam -name prime256v1 -genkey -noout -out example/keys/alice_private_key.pem
@@ -22,14 +21,10 @@ Future<void> main() async {
     packageDirectoryName: 'vdsp',
   );
 
-  final mediatorDid = await readDid(
-    config.mediatorDidPath,
-  );
+  final mediatorDid = await readDid(config.mediatorDidPath);
 
   final mediatorDidDocument =
-      await UniversalDIDResolver.defaultResolver.resolveDid(
-    mediatorDid,
-  );
+      await UniversalDIDResolver.defaultResolver.resolveDid(mediatorDid);
 
   final issuerKeyStore = InMemoryKeyStore();
   final issuerWallet = PersistentWallet(issuerKeyStore);
@@ -64,10 +59,7 @@ Future<void> main() async {
 
   await verifierKeyStore.set(
     verifierKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: verifierPrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: verifierPrivateKeyBytes),
   );
 
   await verifierDidManager.addVerificationMethod(verifierKeyId);
@@ -88,10 +80,7 @@ Future<void> main() async {
 
   await holderKeyStore.set(
     holderKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: holderPrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: holderPrivateKeyBytes),
   );
 
   await holderDidManager.addVerificationMethod(holderKeyId);
@@ -118,7 +107,7 @@ Future<void> main() async {
       VcDataModelV1(
         context: [
           dmV1ContextUrl,
-          'https://schema.affinidi.io/TEmailV1R0.jsonld'
+          'https://schema.affinidi.io/TEmailV1R0.jsonld',
         ],
         credentialSchema: [
           CredentialSchema(
@@ -137,19 +126,15 @@ Future<void> main() async {
           }),
         ],
       ),
-    ].map(
-      (unsignedCredential) async {
-        final suite = LdVcDm1Suite();
-        final issuedCredential = await suite.issue(
-          unsignedData: unsignedCredential,
-          proofGenerator: DataIntegrityEcdsaJcsGenerator(
-            signer: issuerSigner,
-          ),
-        );
+    ].map((unsignedCredential) async {
+      final suite = LdVcDm1Suite();
+      final issuedCredential = await suite.issue(
+        unsignedData: unsignedCredential,
+        proofGenerator: DataIntegrityEcdsaJcsGenerator(signer: issuerSigner),
+      );
 
-        return issuedCredential;
-      },
-    ),
+      return issuedCredential;
+    }),
   );
 
   final verifierDcql = DcqlCredentialQuery(
@@ -158,12 +143,7 @@ Future<void> main() async {
         id: const Uuid().v4(),
         format: CredentialFormat.ldpVc,
         claims: [
-          DcqlClaim(
-            path: [
-              'credentialSubject',
-              'email',
-            ],
-          ),
+          DcqlClaim(path: ['credentialSubject', 'email']),
         ],
       ),
     ],
@@ -187,19 +167,13 @@ Future<void> main() async {
       ...FeatureDiscoveryHelper.getFeatureQueriesByDisclosures(
         FeatureDiscoveryHelper.vdspHolderDisclosures,
       ),
-      Query(
-        featureType: FeatureType.operation.value,
-        match: 'registerAgent',
-      ),
+      Query(featureType: FeatureType.operation.value, match: 'registerAgent'),
     ],
   );
 
   vdspVerifier.listenForIncomingMessages(
     onDiscloseMessage: (message) async {
-      prettyPrint(
-        'Verifier received Disclose Message',
-        object: message,
-      );
+      prettyPrint('Verifier received Disclose Message', object: message);
 
       if (message.from == null) {
         throw ArgumentError.notNull('from');
@@ -236,10 +210,7 @@ Future<void> main() async {
               code: ProblemCode(
                 sorter: SorterType.warning,
                 scope: Scope(scope: ScopeType.message),
-                descriptors: [
-                  'vdsp',
-                  'features-not-supported',
-                ],
+                descriptors: ['vdsp', 'features-not-supported'],
               ),
             ),
           ),
@@ -295,10 +266,7 @@ Future<void> main() async {
       );
     },
     onProblemReport: (message) async {
-      prettyPrint(
-        'A problem has occurred',
-        object: message,
-      );
+      prettyPrint('A problem has occurred', object: message);
 
       await ConnectionPool.instance.stopConnections();
     },
@@ -316,26 +284,18 @@ Future<void> main() async {
     ),
     featureDisclosures: [
       ...FeatureDiscoveryHelper.vdspHolderDisclosures,
-      Disclosure(
-        featureType: FeatureType.operation.value,
-        id: 'registerAgent',
-      ),
+      Disclosure(featureType: FeatureType.operation.value, id: 'registerAgent'),
     ],
   );
 
   vdspHolder.listenForIncomingMessages(
     onFeatureQuery: (message) async {
-      prettyPrint(
-        'Holder received Feature Query Message',
-        object: message,
-      );
+      prettyPrint('Holder received Feature Query Message', object: message);
 
       // here you can check if this is a trusted verifier
       // e.g. by checking the `message.from` value
 
-      final disclosures = vdspHolder.getDisclosures(
-        queryMessage: message,
-      );
+      final disclosures = vdspHolder.getDisclosures(queryMessage: message);
 
       // here you can check if those are the right disclosures to share
 
@@ -345,10 +305,7 @@ Future<void> main() async {
       );
     },
     onDataRequest: (message) async {
-      prettyPrint(
-        'Holder received Data Request Message',
-        object: message,
-      );
+      prettyPrint('Holder received Data Request Message', object: message);
 
       final queryResult = await vdspHolder.filterVerifiableCredentials(
         requestMessage: message,
@@ -369,10 +326,7 @@ Future<void> main() async {
               code: ProblemCode(
                 sorter: SorterType.warning,
                 scope: Scope(scope: ScopeType.message),
-                descriptors: [
-                  'vdsp',
-                  'data-not-found',
-                ],
+                descriptors: ['vdsp', 'data-not-found'],
               ),
             ),
           ),
@@ -401,10 +355,7 @@ Future<void> main() async {
       await ConnectionPool.instance.stopConnections();
     },
     onProblemReport: (message) async {
-      prettyPrint(
-        'A problem has occurred',
-        object: message,
-      );
+      prettyPrint('A problem has occurred', object: message);
 
       await ConnectionPool.instance.stopConnections();
     },

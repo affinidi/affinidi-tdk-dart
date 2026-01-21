@@ -74,9 +74,7 @@ class GetInstanceMetadataRequestMessage extends BaseRequestMessage {
       from: from,
       createdTime: createdTime,
       expiresTime: expiresTime,
-      body: {
-        'trId': instanceId,
-      },
+      body: {'trId': instanceId},
       threadId: threadId,
       operationName: 'getTrInstanceMetadata',
     );

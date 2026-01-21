@@ -104,7 +104,7 @@ class PublicKeyFake extends Fake implements PublicKey {
         44,
         44,
         44,
-        44
+        44,
       ]);
 
   @override

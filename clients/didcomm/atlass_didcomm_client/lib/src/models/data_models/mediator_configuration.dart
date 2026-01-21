@@ -3,7 +3,6 @@ import 'package:json_annotation/json_annotation.dart';
 part 'mediator_configuration.g.dart';
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Configuration settings for a mediator instance.
 class MediatorConfiguration {
   /// Maximum size of messages in bytes.

@@ -19,7 +19,8 @@ class VaultDataManagerSharedAccessApiService
 
   /// Converts [Permissions] to Consumer IAM rights list.
   List<consumer_iam.RightsEnum> _permissionsToConsumerRights(
-      Permissions permissions) {
+    Permissions permissions,
+  ) {
     switch (permissions) {
       case Permissions.read:
         return [consumer_iam.RightsEnum.vfsRead];
@@ -28,7 +29,7 @@ class VaultDataManagerSharedAccessApiService
       case Permissions.all:
         return [
           consumer_iam.RightsEnum.vfsRead,
-          consumer_iam.RightsEnum.vfsWrite
+          consumer_iam.RightsEnum.vfsWrite,
         ];
     }
   }
@@ -36,9 +37,7 @@ class VaultDataManagerSharedAccessApiService
   /// Creates a new instance of [VaultDataManagerSharedAccessApiService].
   ///
   /// [affinidiTdkConsumerIamClient] - Consumer IAM client for profile-level and node-level access methods.
-  VaultDataManagerSharedAccessApiService({
-    this.affinidiTdkConsumerIamClient,
-  }) {
+  VaultDataManagerSharedAccessApiService({this.affinidiTdkConsumerIamClient}) {
     _consumerAuthzApi = affinidiTdkConsumerIamClient?.getAuthzApi();
   }
 
@@ -76,8 +75,16 @@ class VaultDataManagerSharedAccessApiService
         /// Format the date by creating a new DateTime with microsecond set to 0
         /// The backend API rejects dates that contain microseconds/nanoseconds.
         /// This ensures the date is serialized in a format accepted by the backend.
-        formattedExpiresAt = DateTime.utc(dt.year, dt.month, dt.day, dt.hour,
-            dt.minute, dt.second, dt.millisecond, 0);
+        formattedExpiresAt = DateTime.utc(
+          dt.year,
+          dt.month,
+          dt.day,
+          dt.hour,
+          dt.minute,
+          dt.second,
+          dt.millisecond,
+          0,
+        );
       }
 
       // Use profileId as nodeId if provided (since profile is a node), otherwise use empty list
@@ -85,13 +92,15 @@ class VaultDataManagerSharedAccessApiService
 
       final permissionBuilder = consumer_iam.PermissionBuilder()
         ..rights = ListBuilder<consumer_iam.RightsEnum>(
-            _permissionsToConsumerRights(permissions))
+          _permissionsToConsumerRights(permissions),
+        )
         ..nodeIds = ListBuilder<String>(nodeIds)
         ..expiresAt = formattedExpiresAt;
 
       final updateAccessInput = consumer_iam.UpdateAccessInputBuilder()
-        ..permissions =
-            ListBuilder<consumer_iam.Permission>([permissionBuilder.build()]);
+        ..permissions = ListBuilder<consumer_iam.Permission>([
+          permissionBuilder.build(),
+        ]);
 
       await _consumerAuthzApi!.updateAccessVfs(
         granteeDid: granteeDid,
@@ -116,23 +125,25 @@ class VaultDataManagerSharedAccessApiService
 
       if (isAlreadyGranted) {
         Error.throwWithStackTrace(
-            TdkException(
-              message: 'Failed to grant access to $granteeDid',
-              code: TdkExceptionType.unableToGrantAccessAlreadyGranted.code,
-              originalMessage: e.toString(),
-            ),
-            stackTrace);
+          TdkException(
+            message: 'Failed to grant access to $granteeDid',
+            code: TdkExceptionType.unableToGrantAccessAlreadyGranted.code,
+            originalMessage: e.toString(),
+          ),
+          stackTrace,
+        );
       }
     } on TdkException catch (_) {
       rethrow;
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
-          TdkException(
-            message: 'Failed to grant access to $granteeDid',
-            code: TdkExceptionType.unableToGrantAccess.code,
-            originalMessage: e.toString(),
-          ),
-          stackTrace);
+        TdkException(
+          message: 'Failed to grant access to $granteeDid',
+          code: TdkExceptionType.unableToGrantAccess.code,
+          originalMessage: e.toString(),
+        ),
+        stackTrace,
+      );
     }
   }
 
@@ -168,12 +179,13 @@ class VaultDataManagerSharedAccessApiService
       );
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
-          TdkException(
-            message: 'Failed to revoke access from $granteeDid',
-            code: TdkExceptionType.unableToRevokeAccess.code,
-            originalMessage: e.toString(),
-          ),
-          stackTrace);
+        TdkException(
+          message: 'Failed to revoke access from $granteeDid',
+          code: TdkExceptionType.unableToRevokeAccess.code,
+          originalMessage: e.toString(),
+        ),
+        stackTrace,
+      );
     }
   }
 
@@ -201,12 +213,14 @@ class VaultDataManagerSharedAccessApiService
     try {
       final permissionBuilder = consumer_iam.PermissionBuilder()
         ..rights = ListBuilder<consumer_iam.RightsEnum>(
-            _permissionsToConsumerRights(permissions))
+          _permissionsToConsumerRights(permissions),
+        )
         ..nodeIds = ListBuilder<String>([]);
 
       final updateAccessInput = consumer_iam.UpdateAccessInputBuilder()
-        ..permissions =
-            ListBuilder<consumer_iam.Permission>([permissionBuilder.build()]);
+        ..permissions = ListBuilder<consumer_iam.Permission>([
+          permissionBuilder.build(),
+        ]);
 
       final response = await _consumerAuthzApi!.updateAccessVfs(
         granteeDid: granteeDid,
@@ -222,12 +236,13 @@ class VaultDataManagerSharedAccessApiService
       return response;
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
-          TdkException(
-            message: 'Failed to update access for $granteeDid',
-            code: TdkExceptionType.unableToUpdateAccess.code,
-            originalMessage: e.toString(),
-          ),
-          stackTrace);
+        TdkException(
+          message: 'Failed to update access for $granteeDid',
+          code: TdkExceptionType.unableToUpdateAccess.code,
+          originalMessage: e.toString(),
+        ),
+        stackTrace,
+      );
     }
   }
 
@@ -311,19 +326,29 @@ class VaultDataManagerSharedAccessApiService
           /// Format the date by creating a new DateTime with microsecond set to 0
           /// The backend API rejects dates that contain microseconds/nanoseconds.
           /// This ensures the date is serialized in a format accepted by the backend.
-          formattedExpiresAt = DateTime.utc(dt.year, dt.month, dt.day, dt.hour,
-              dt.minute, dt.second, dt.millisecond, 0);
+          formattedExpiresAt = DateTime.utc(
+            dt.year,
+            dt.month,
+            dt.day,
+            dt.hour,
+            dt.minute,
+            dt.second,
+            dt.millisecond,
+            0,
+          );
         }
         return consumer_iam.PermissionBuilder()
           ..rights = ListBuilder<consumer_iam.RightsEnum>(
-              _permissionsToConsumerRights(group.permissions))
+            _permissionsToConsumerRights(group.permissions),
+          )
           ..nodeIds = ListBuilder<String>(group.itemIds)
           ..expiresAt = formattedExpiresAt;
       }).toList();
 
       final updateAccessInput = consumer_iam.UpdateAccessInputBuilder()
         ..permissions = ListBuilder<consumer_iam.Permission>(
-            permissionBuilders.map((b) => b.build()).toList());
+          permissionBuilders.map((b) => b.build()).toList(),
+        );
 
       await _consumerAuthzApi!.updateAccessVfs(
         granteeDid: granteeDid,

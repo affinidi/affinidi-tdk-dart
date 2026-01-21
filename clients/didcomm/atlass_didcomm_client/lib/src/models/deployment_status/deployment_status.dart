@@ -76,5 +76,5 @@ enum DeploymentStatus {
 
   /// The status is update rollback complete cleanup in progress.
   @JsonValue('UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS')
-  updateRollbackCompleteCleanupInProgress
+  updateRollbackCompleteCleanupInProgress,
 }

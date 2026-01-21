@@ -83,8 +83,9 @@ class ScannedFileData {
       jobId: json['jobId'] as String,
       status: json['status'] as String,
       profileId: json['profileId'] as String,
-      data:
-          RecognizedProfileData.fromJson(json['data'] as Map<String, dynamic>),
+      data: RecognizedProfileData.fromJson(
+        json['data'] as Map<String, dynamic>,
+      ),
     );
   }
 

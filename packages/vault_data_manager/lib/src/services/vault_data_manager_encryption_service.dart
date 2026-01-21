@@ -104,9 +104,7 @@ class VaultDataManagerEncryptionService
   ///
   /// Returns the encrypted DEK as an array of bytes.
   @override
-  Future<List<int>> encryptDekByApiPublicKey({
-    required List<int> dek,
-  }) async {
+  Future<List<int>> encryptDekByApiPublicKey({required List<int> dek}) async {
     final encrypted = _cryptographyService.encryptWithRsaPublicKeyFromJwk(
       jwk: _jwk,
       data: dek,
@@ -145,9 +143,7 @@ class VaultDataManagerEncryptionService
       encryptedDek: base64.decode(encryptedDekBase64),
     );
 
-    final encryptedDek = await encryptDekByApiPublicKey(
-      dek: dek,
-    );
+    final encryptedDek = await encryptDekByApiPublicKey(dek: dek);
     return encryptedDek;
   }
 
@@ -166,9 +162,7 @@ class VaultDataManagerEncryptionService
   }) async {
     final dek = _cryptographyService.getRandomBytes(nonceSize);
 
-    final dekEncryptedByVfsPublicKey = await encryptDekByApiPublicKey(
-      dek: dek,
-    );
+    final dekEncryptedByVfsPublicKey = await encryptDekByApiPublicKey(dek: dek);
 
     final dekEncryptedByWalletCryptoMaterial =
         await encryptDekByWalletCryptoMaterial(
@@ -176,8 +170,9 @@ class VaultDataManagerEncryptionService
       dek: dek,
     );
 
-    final walletCryptoMaterialHash =
-        await getWalletCryptoMaterialKeyHash(encryptionKey: encryptionKey);
+    final walletCryptoMaterialHash = await getWalletCryptoMaterialKeyHash(
+      encryptionKey: encryptionKey,
+    );
 
     return DataEncryptionMaterial(
       dek: dek,

@@ -64,23 +64,25 @@ class DidcommAtlasClient extends DidcommServiceClient {
     AuthorizationProvider? authorizationProvider,
     AffinidiClientOptions clientOptions = const AffinidiClientOptions(),
   }) async {
-    final atlasDidDocument =
-        await UniversalDIDResolver.defaultResolver.resolveDid(atlasDid);
+    final atlasDidDocument = await UniversalDIDResolver.defaultResolver
+        .resolveDid(atlasDid);
 
     // TODO: add enum instead of hardcoding service type
-    final mediatorService = atlasDidDocument.service
-        .firstWhere((service) => service.type == 'DIDCommMessaging');
+    final mediatorService = atlasDidDocument.service.firstWhere(
+      (service) => service.type == 'DIDCommMessaging',
+    );
 
     final mediatorDid = mediatorService.id.split('#').first;
 
-    final mediatorDidDocument =
-        await UniversalDIDResolver.defaultResolver.resolveDid(mediatorDid);
+    final mediatorDidDocument = await UniversalDIDResolver.defaultResolver
+        .resolveDid(mediatorDid);
 
     final mediatorClient = await DidcommMediatorClient.init(
       didManager: didManager,
       mediatorDidDocument: mediatorDidDocument,
       clientOptions: clientOptions,
-      authorizationProvider: authorizationProvider ??
+      authorizationProvider:
+          authorizationProvider ??
           await AffinidiAuthorizationProvider.init(
             didManager: didManager,
             mediatorDidDocument: mediatorDidDocument,
@@ -116,9 +118,9 @@ class DidcommAtlasClient extends DidcommServiceClient {
       ),
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    ).catchError((Object error) {
+    final responseMessage = await sendServiceMessage(requestMessage).catchError((
+      Object error,
+    ) {
       if (error is ProblemReportMessage && error.body != null) {
         final body = ProblemReportBody.fromJson(error.body!);
 
@@ -153,9 +155,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
       options: options,
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    );
+    final responseMessage = await sendServiceMessage(requestMessage);
 
     return DeployInstanceResponseMessage.mediator(
       id: responseMessage.id,
@@ -177,9 +177,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
       options: options,
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    );
+    final responseMessage = await sendServiceMessage(requestMessage);
 
     return DeployInstanceResponseMessage.meetingPlace(
       id: responseMessage.id,
@@ -201,9 +199,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
       options: options,
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    );
+    final responseMessage = await sendServiceMessage(requestMessage);
 
     return DeployInstanceResponseMessage.trustRegistry(
       id: responseMessage.id,
@@ -217,18 +213,14 @@ class DidcommAtlasClient extends DidcommServiceClient {
 
   /// Gets the metadata for a specific mediator instance.
   Future<GetMediatorInstanceMetadataResponseMessage>
-      getMediatorInstanceMetadata({
-    required String mediatorId,
-  }) async {
+  getMediatorInstanceMetadata({required String mediatorId}) async {
     final requestMessage = GetInstanceMetadataRequestMessage.mediator(
       id: const Uuid().v4(),
       to: [serviceDidDocument.id],
       instanceId: mediatorId,
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    );
+    final responseMessage = await sendServiceMessage(requestMessage);
 
     return GetMediatorInstanceMetadataResponseMessage(
       id: responseMessage.id,
@@ -250,9 +242,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
       instanceId: mpxId,
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    );
+    final responseMessage = await sendServiceMessage(requestMessage);
 
     return GetMpxInstanceMetadataResponseMessage(
       id: responseMessage.id,
@@ -274,9 +264,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
       instanceId: trId,
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    );
+    final responseMessage = await sendServiceMessage(requestMessage);
 
     return GetTrInstanceMetadataResponseMessage(
       id: responseMessage.id,
@@ -298,9 +286,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
       instanceId: mediatorId,
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    );
+    final responseMessage = await sendServiceMessage(requestMessage);
 
     return DestroyInstanceResponseMessage.mediator(
       id: responseMessage.id,
@@ -322,9 +308,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
       instanceId: mpxId,
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    );
+    final responseMessage = await sendServiceMessage(requestMessage);
 
     return DestroyInstanceResponseMessage.meetingPlace(
       id: responseMessage.id,
@@ -346,9 +330,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
       instanceId: trId,
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    );
+    final responseMessage = await sendServiceMessage(requestMessage);
 
     return DestroyInstanceResponseMessage.trustRegistry(
       id: responseMessage.id,
@@ -362,7 +344,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
 
   /// Updates the deployment configuration of a mediator instance.
   Future<UpdateMediatorInstanceDeploymentResponseMessage>
-      updateMediatorInstanceDeployment({
+  updateMediatorInstanceDeployment({
     required String mediatorId,
     required UpdateMediatorInstanceDeploymentOptions options,
   }) async {
@@ -373,9 +355,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
       options: options,
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    );
+    final responseMessage = await sendServiceMessage(requestMessage);
 
     return UpdateMediatorInstanceDeploymentResponseMessage(
       id: responseMessage.id,
@@ -389,7 +369,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
 
   /// Updates the deployment configuration of an MPX instance.
   Future<UpdateMediatorInstanceDeploymentResponseMessage>
-      updateMpxInstanceDeployment({
+  updateMpxInstanceDeployment({
     required String mpxId,
     required UpdateMpxInstanceDeploymentOptions options,
   }) async {
@@ -400,9 +380,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
       options: options,
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    );
+    final responseMessage = await sendServiceMessage(requestMessage);
 
     return UpdateMediatorInstanceDeploymentResponseMessage(
       id: responseMessage.id,
@@ -416,7 +394,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
 
   /// Updates the deployment configuration of a Trust Registry instance.
   Future<UpdateMediatorInstanceDeploymentResponseMessage>
-      updateTrInstanceDeployment({
+  updateTrInstanceDeployment({
     required String trId,
     required UpdateTrInstanceDeploymentOptions options,
   }) async {
@@ -427,9 +405,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
       options: options,
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    );
+    final responseMessage = await sendServiceMessage(requestMessage);
 
     return UpdateMediatorInstanceDeploymentResponseMessage(
       id: responseMessage.id,
@@ -443,7 +419,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
 
   /// Updates the configuration of a mediator instance.
   Future<UpdateMediatorInstanceConfigurationResponseMessage>
-      updateMediatorInstanceConfiguration({
+  updateMediatorInstanceConfiguration({
     required UpdateInstanceConfigurationOptions configurationData,
   }) async {
     final requestMessage = UpdateInstanceConfigurationRequestMessage.mediator(
@@ -452,9 +428,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
       body: configurationData.toJson(),
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    );
+    final responseMessage = await sendServiceMessage(requestMessage);
 
     return UpdateMediatorInstanceConfigurationResponseMessage(
       id: responseMessage.id,
@@ -482,9 +456,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
       ),
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    );
+    final responseMessage = await sendServiceMessage(requestMessage);
 
     return GetMediatorRequestsResponseMessage(
       id: responseMessage.id,
@@ -512,9 +484,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
       ),
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    );
+    final responseMessage = await sendServiceMessage(requestMessage);
 
     return GetMpxRequestsResponseMessage(
       id: responseMessage.id,
@@ -542,9 +512,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
       ),
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    );
+    final responseMessage = await sendServiceMessage(requestMessage);
 
     return GetTrRequestsResponseMessage(
       id: responseMessage.id,
@@ -570,9 +538,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
       ),
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    );
+    final responseMessage = await sendServiceMessage(requestMessage);
 
     return GetMpxInstancesListResponseMessage(
       id: responseMessage.id,
@@ -598,9 +564,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
       ).toJson(),
     );
 
-    final responseMessage = await sendServiceMessage(
-      requestMessage,
-    );
+    final responseMessage = await sendServiceMessage(requestMessage);
 
     return GetTrInstancesListResponseMessage(
       id: responseMessage.id,

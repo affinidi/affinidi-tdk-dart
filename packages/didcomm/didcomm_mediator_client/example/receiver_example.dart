@@ -1,7 +1,6 @@
 import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediator_client.dart';
+import '../../../integration_tests/test/test_config.dart';
 import 'package:ssi/ssi.dart';
-
-import '../../../../../tests/integration/dart/test/test_config.dart';
 
 void main() async {
   // Run commands below in your terminal to generate keys for Receiver:
@@ -34,20 +33,14 @@ void main() async {
 
   await receiverKeyStore.set(
     receiverKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: receiverPrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: receiverPrivateKeyBytes),
   );
 
   await receiverDidManager.addVerificationMethod(receiverKeyId);
   final receiverDidDocument = await receiverDidManager.getDidDocument();
 
   // Serialized receiverMediatorDocument needs to shared with sender
-  prettyPrint(
-    'Receiver DID Document',
-    object: receiverDidDocument,
-  );
+  prettyPrint('Receiver DID Document', object: receiverDidDocument);
 
   await config.configureAcl(
     mediatorDidDocument: await UniversalDIDResolver.defaultResolver.resolveDid(
@@ -57,10 +50,8 @@ void main() async {
     theirDids: [senderDid],
   );
 
-  final receiverMediatorDocument =
-      await UniversalDIDResolver.defaultResolver.resolveDid(
-    await readDid(config.mediatorDidPath),
-  );
+  final receiverMediatorDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(await readDid(config.mediatorDidPath));
 
   final receiverMediatorClient = await DidcommMediatorClient.init(
     authorizationProvider: await AffinidiAuthorizationProvider.init(

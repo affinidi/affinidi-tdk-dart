@@ -3,7 +3,6 @@ import 'package:json_annotation/json_annotation.dart';
 part 'request_details.g.dart';
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Details about a service request
 class RequestDetails {
   /// HTTP method used in the request.

@@ -21,7 +21,7 @@ final nodes = [
     'parentNodeId': 'parent_node_id',
     'profileId': 'parent_node_id',
     'type': 'VC_ROOT',
-    'nodeId': hiddenNodeId
+    'nodeId': hiddenNodeId,
   }),
   Node.fromJson({
     'name': 'Folder',
@@ -38,7 +38,7 @@ final nodes = [
     'parentNodeId': 'parent_node_id',
     'profileId': 'parent_node_id',
     'type': 'FOLDER',
-    'nodeId': 'node_id'
+    'nodeId': 'node_id',
   }),
   Node.fromJson({
     'name': 'name.pdf',
@@ -58,6 +58,6 @@ final nodes = [
     'profileId': 'parent_node_id',
     'type': 'FILE',
     'nodeId': 'node_id',
-    'edekInfo': {'dekekId': 'test_dekek_id', 'edek': 'test_edek'}
-  })
+    'edekInfo': {'dekekId': 'test_dekek_id', 'edek': 'test_edek'},
+  }),
 ];

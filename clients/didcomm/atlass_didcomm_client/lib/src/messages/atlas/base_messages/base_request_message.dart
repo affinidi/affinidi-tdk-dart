@@ -17,9 +17,5 @@ abstract class BaseRequestMessage extends PlainTextMessage {
     super.body = const {},
     super.threadId,
     required String operationName,
-  }) : super(
-          type: Uri.parse(
-            '$baseOperationUri/$operationName',
-          ),
-        );
+  }) : super(type: Uri.parse('$baseOperationUri/$operationName'));
 }

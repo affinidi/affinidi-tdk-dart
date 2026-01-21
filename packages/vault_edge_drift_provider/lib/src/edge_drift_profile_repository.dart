@@ -6,9 +6,8 @@ import 'database/database.dart' hide Profile;
 /// Repository class to manage profiles on a local Drift database
 class EdgeDriftProfileRepository implements EdgeProfileRepositoryInterface {
   /// Creates a new instance of [EdgeDriftProfileRepository].
-  EdgeDriftProfileRepository({
-    required Database database,
-  }) : _database = database;
+  EdgeDriftProfileRepository({required Database database})
+      : _database = database;
 
   final Database _database;
 
@@ -34,16 +33,19 @@ class EdgeDriftProfileRepository implements EdgeProfileRepositoryInterface {
     VaultCancelToken? cancelToken,
   }) async {
     await _database.transaction(() async {
-      await (_database.delete(_database.items)
-            ..where((filter) => filter.profileId.equals(profileId)))
+      await (_database.delete(
+        _database.items,
+      )..where((filter) => filter.profileId.equals(profileId)))
           .go();
 
-      await (_database.delete(_database.credentials)
-            ..where((filter) => filter.profileId.equals(profileId)))
+      await (_database.delete(
+        _database.credentials,
+      )..where((filter) => filter.profileId.equals(profileId)))
           .go();
 
-      final deleted = await (_database.delete(_database.profiles)
-            ..where((filter) => filter.id.equals(profileId)))
+      final deleted = await (_database.delete(
+        _database.profiles,
+      )..where((filter) => filter.id.equals(profileId)))
           .go();
 
       if (deleted == 0) {
@@ -62,12 +64,14 @@ class EdgeDriftProfileRepository implements EdgeProfileRepositoryInterface {
     final profiles = await _database.select(_database.profiles).get();
 
     return profiles
-        .map((item) => EdgeProfile(
-              id: item.id,
-              accountIndex: item.accountIndex,
-              name: item.name,
-              description: item.description,
-            ))
+        .map(
+          (item) => EdgeProfile(
+            id: item.id,
+            accountIndex: item.accountIndex,
+            name: item.name,
+            description: item.description,
+          ),
+        )
         .toList();
   }
 
@@ -76,8 +80,9 @@ class EdgeDriftProfileRepository implements EdgeProfileRepositoryInterface {
     required EdgeProfile profile,
     VaultCancelToken? cancelToken,
   }) async {
-    final existing = await (_database.select(_database.profiles)
-          ..where((filter) => filter.id.equals(profile.id)))
+    final existing = await (_database.select(
+      _database.profiles,
+    )..where((filter) => filter.id.equals(profile.id)))
         .getSingleOrNull();
 
     if (existing == null) {
@@ -98,12 +103,14 @@ class EdgeDriftProfileRepository implements EdgeProfileRepositoryInterface {
 
   @override
   Future<bool> hasAnyContent(String profileId) async {
-    final filesOrFolders = await (_database.select(_database.items)
-          ..where((filter) => filter.profileId.equals(profileId)))
+    final filesOrFolders = await (_database.select(
+      _database.items,
+    )..where((filter) => filter.profileId.equals(profileId)))
         .get();
 
-    final credentials = await (_database.select(_database.credentials)
-          ..where((filter) => filter.profileId.equals(profileId)))
+    final credentials = await (_database.select(
+      _database.credentials,
+    )..where((filter) => filter.profileId.equals(profileId)))
         .get();
 
     return filesOrFolders.isNotEmpty || credentials.isNotEmpty;

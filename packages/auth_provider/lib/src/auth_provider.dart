@@ -80,8 +80,9 @@ class AuthProvider {
   /// to authenticate their requests, allowing for token refresh after expiration.
   Future<String> fetchProjectScopedToken() async {
     if (await _shouldFetchToken()) {
-      _projectScopedToken =
-          await _getProjectScopedToken(audience: tokenEndpoint);
+      _projectScopedToken = await _getProjectScopedToken(
+        audience: tokenEndpoint,
+      );
     }
     return _projectScopedToken!;
   }
@@ -116,9 +117,7 @@ class AuthProvider {
     return data['access_token'];
   }
 
-  Future<String> _getProjectScopedToken({
-    required String audience,
-  }) async {
+  Future<String> _getProjectScopedToken({required String audience}) async {
     final userAccessToken = await _getUserAccessToken(audience: audience);
 
     final response = await http.post(

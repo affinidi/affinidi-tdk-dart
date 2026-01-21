@@ -35,10 +35,12 @@ class VFSFileStorage implements FileStorage {
   }) async {
     if (folderId == null) {
       Error.throwWithStackTrace(
-          TdkException(
-              message: 'Missing folderId',
-              code: TdkExceptionType.folderNotFound.code),
-          StackTrace.current);
+        TdkException(
+          message: 'Missing folderId',
+          code: TdkExceptionType.folderNotFound.code,
+        ),
+        StackTrace.current,
+      );
     }
     final response = await _vaultDataManagerService.getChildNodes(
       nodeId: folderId,
@@ -205,10 +207,7 @@ class VFSFileStorage implements FileStorage {
     required String fileId,
     VaultCancelToken? cancelToken,
   }) async {
-    await _vaultDataManagerService.deleteFile(
-      fileId,
-      cancelToken: cancelToken,
-    );
+    await _vaultDataManagerService.deleteFile(fileId, cancelToken: cancelToken);
   }
 
   @override

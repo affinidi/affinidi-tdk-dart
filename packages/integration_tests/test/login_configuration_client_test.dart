@@ -1,4 +1,5 @@
 import 'package:affinidi_tdk_login_configuration_client/affinidi_tdk_login_configuration_client.dart';
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:test/test.dart';
 
@@ -10,8 +11,15 @@ void main() {
     late String configurationId;
 
     setUpAll(() async {
+      final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
+      String basePathOverride = replaceBaseDomain(
+        AffinidiTdkLoginConfigurationClient.basePath,
+        apiGwUrl,
+      );
+
       final loginConfigurationClient = AffinidiTdkLoginConfigurationClient(
         authTokenHook: ResourceFactory.getAuthTokenHook(),
+        basePathOverride: basePathOverride,
       );
 
       configurationApi = loginConfigurationClient.getConfigurationApi();
@@ -62,7 +70,8 @@ void main() {
         final config = (await configurationApi.updateLoginConfigurationsById(
           configurationId: configurationId,
           updateLoginConfigurationInput: updateLoginConfigurationInput.build(),
-        )).data;
+        ))
+            .data;
 
         expect(config, isNotNull);
         expect(config?.name, equals(updatedName));
@@ -71,7 +80,8 @@ void main() {
       test('Reads login configuration', () async {
         final config = (await configurationApi.getLoginConfigurationsById(
           configurationId: configurationId,
-        )).data;
+        ))
+            .data;
 
         expect(config, isNotNull);
       });

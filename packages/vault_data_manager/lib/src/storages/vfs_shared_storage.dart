@@ -96,10 +96,7 @@ class VfsSharedStorage implements vault.SharedStorage {
     required String fileId,
     VaultCancelToken? cancelToken,
   }) async {
-    await _fileStorage.deleteFile(
-      fileId: fileId,
-      cancelToken: cancelToken,
-    );
+    await _fileStorage.deleteFile(fileId: fileId, cancelToken: cancelToken);
   }
 
   @override
@@ -118,10 +115,7 @@ class VfsSharedStorage implements vault.SharedStorage {
     required String fileId,
     VaultCancelToken? cancelToken,
   }) async {
-    return await _fileStorage.getFile(
-      fileId: fileId,
-      cancelToken: cancelToken,
-    );
+    return await _fileStorage.getFile(fileId: fileId, cancelToken: cancelToken);
   }
 
   @override

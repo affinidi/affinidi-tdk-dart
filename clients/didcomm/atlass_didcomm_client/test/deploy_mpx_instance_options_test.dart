@@ -66,9 +66,7 @@ void main() {
     });
 
     test('should deserialize from JSON with only required field', () {
-      final json = {
-        'serviceSize': 'small',
-      };
+      final json = {'serviceSize': 'small'};
 
       final options = DeployMpxInstanceOptions.fromJson(json);
 
@@ -78,11 +76,7 @@ void main() {
     });
 
     test('should handle null values in JSON', () {
-      final json = {
-        'serviceSize': 'dev',
-        'name': null,
-        'description': null,
-      };
+      final json = {'serviceSize': 'dev', 'name': null, 'description': null};
 
       final options = DeployMpxInstanceOptions.fromJson(json);
 

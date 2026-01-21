@@ -39,9 +39,7 @@ class AffinidiAuthorizationProvider extends AuthorizationProvider {
     final ownDidDocument = await didManager.getDidDocument();
 
     final bobMatchedDidKeyIds = ownDidDocument.matchKeysInKeyAgreement(
-      otherDidDocuments: [
-        mediatorDidDocument,
-      ],
+      otherDidDocuments: [mediatorDidDocument],
     );
 
     if (bobMatchedDidKeyIds.isEmpty) {
@@ -54,13 +52,9 @@ class AffinidiAuthorizationProvider extends AuthorizationProvider {
 
     return AffinidiAuthorizationProvider(
       mediatorDidDocument: mediatorDidDocument,
-      keyPair: await didManager.getKeyPairByDidKeyId(
-        didKeyId,
-      ),
+      keyPair: await didManager.getKeyPairByDidKeyId(didKeyId),
       didKeyId: didKeyId,
-      signer: await didManager.getSigner(
-        didManager.authentication.first,
-      ),
+      signer: await didManager.getSigner(didManager.authentication.first),
     );
   }
 

@@ -33,27 +33,35 @@ void main() {
     group('When creating resources', () {
       group('and creating a folder', () {
         test('it should create a folder successfully', () async {
-          when(() => mockService.getChildNodes(nodeId: any(named: 'nodeId')))
-              .thenAnswer((_) async => PaginatedList<Node>(
-                    items: [FileFixtures.mockFolderNode],
-                    lastEvaluatedItemId: null,
-                  ));
+          when(
+            () => mockService.getChildNodes(nodeId: any(named: 'nodeId')),
+          ).thenAnswer(
+            (_) async => PaginatedList<Node>(
+              items: [FileFixtures.mockFolderNode],
+              lastEvaluatedItemId: null,
+            ),
+          );
 
           await vfsFileStorage.createFolder(
             folderName: FileFixtures.testFolderName,
             parentFolderId: FileFixtures.testParentId,
           );
 
-          verify(() => mockService.createFolder(
-                parentNodeId: FileFixtures.testParentId,
-                folderName: FileFixtures.testFolderName,
-              )).called(1);
+          verify(
+            () => mockService.createFolder(
+              parentNodeId: FileFixtures.testParentId,
+              folderName: FileFixtures.testFolderName,
+            ),
+          ).called(1);
         });
 
         test('it should throw if folder not found after creation', () async {
-          when(() => mockService.getChildNodes(nodeId: any(named: 'nodeId')))
-              .thenAnswer((_) async =>
-                  PaginatedList<Node>(items: [], lastEvaluatedItemId: null));
+          when(
+            () => mockService.getChildNodes(nodeId: any(named: 'nodeId')),
+          ).thenAnswer(
+            (_) async =>
+                PaginatedList<Node>(items: [], lastEvaluatedItemId: null),
+          );
 
           expect(
             () => vfsFileStorage.createFolder(
@@ -73,11 +81,13 @@ void main() {
             parentFolderId: FileFixtures.testParentId,
           );
 
-          verify(() => mockService.createFile(
-                parentFolderNodeId: FileFixtures.testParentId,
-                fileName: FileFixtures.testFileName,
-                data: FileFixtures.testData,
-              )).called(1);
+          verify(
+            () => mockService.createFile(
+              parentFolderNodeId: FileFixtures.testParentId,
+              fileName: FileFixtures.testFileName,
+              data: FileFixtures.testData,
+            ),
+          ).called(1);
         });
 
         test('it should work with null parentFolderId (root)', () async {
@@ -87,11 +97,13 @@ void main() {
             parentFolderId: null,
           );
 
-          verify(() => mockService.createFile(
-                parentFolderNodeId: '',
-                fileName: FileFixtures.testFileName,
-                data: FileFixtures.testData,
-              )).called(1);
+          verify(
+            () => mockService.createFile(
+              parentFolderNodeId: '',
+              fileName: FileFixtures.testFileName,
+              data: FileFixtures.testData,
+            ),
+          ).called(1);
         });
       });
     });
@@ -99,18 +111,18 @@ void main() {
     group('When reading resources', () {
       group('and getting folder contents', () {
         test('it should get folder contents successfully', () async {
-          when(() =>
-                  mockService.getChildNodes(nodeId: FileFixtures.testFolderId))
-              .thenAnswer((_) async => PaginatedList<Node>(
-                    items: [
-                      FileFixtures.mockFileNode,
-                      FileFixtures.mockFolderNode
-                    ],
-                    lastEvaluatedItemId: null,
-                  ));
+          when(
+            () => mockService.getChildNodes(nodeId: FileFixtures.testFolderId),
+          ).thenAnswer(
+            (_) async => PaginatedList<Node>(
+              items: [FileFixtures.mockFileNode, FileFixtures.mockFolderNode],
+              lastEvaluatedItemId: null,
+            ),
+          );
 
           final items = await vfsFileStorage.getFolder(
-              folderId: FileFixtures.testFolderId);
+            folderId: FileFixtures.testFolderId,
+          );
 
           expect(items.items, hasLength(2));
           expect(items.items.whereType<File>(), hasLength(1));
@@ -125,12 +137,14 @@ void main() {
         });
 
         test('it should throw for unsupported node type', () async {
-          when(() =>
-                  mockService.getChildNodes(nodeId: FileFixtures.testFolderId))
-              .thenAnswer((_) async => PaginatedList<Node>(
-                    items: [FileFixtures.unsupportedNode],
-                    lastEvaluatedItemId: null,
-                  ));
+          when(
+            () => mockService.getChildNodes(nodeId: FileFixtures.testFolderId),
+          ).thenAnswer(
+            (_) async => PaginatedList<Node>(
+              items: [FileFixtures.unsupportedNode],
+              lastEvaluatedItemId: null,
+            ),
+          );
 
           expect(
             () => vfsFileStorage.getFolder(folderId: FileFixtures.testFolderId),
@@ -139,48 +153,58 @@ void main() {
         });
 
         test('it should return empty list if no children', () async {
-          when(() =>
-                  mockService.getChildNodes(nodeId: FileFixtures.testFolderId))
-              .thenAnswer((_) async =>
-                  PaginatedList<Node>(items: [], lastEvaluatedItemId: null));
+          when(
+            () => mockService.getChildNodes(nodeId: FileFixtures.testFolderId),
+          ).thenAnswer(
+            (_) async =>
+                PaginatedList<Node>(items: [], lastEvaluatedItemId: null),
+          );
 
           final items = await vfsFileStorage.getFolder(
-              folderId: FileFixtures.testFolderId);
+            folderId: FileFixtures.testFolderId,
+          );
           expect(items.items, isEmpty);
         });
       });
 
       group('and getting file information', () {
         test('it should retrieve a file by ID', () async {
-          when(() => mockService.getNodeInfo(FileFixtures.testFileId))
-              .thenAnswer((_) async => FileFixtures.mockFileNode);
+          when(
+            () => mockService.getNodeInfo(FileFixtures.testFileId),
+          ).thenAnswer((_) async => FileFixtures.mockFileNode);
 
-          final file =
-              await vfsFileStorage.getFile(fileId: FileFixtures.testFileId);
+          final file = await vfsFileStorage.getFile(
+            fileId: FileFixtures.testFileId,
+          );
 
           expect(file, isA<File>());
           expect(file.name, equals(FileFixtures.mockFileNode.name));
         });
 
-        test('it should throw if getFile is called with folder node type',
-            () async {
-          when(() => mockService.getNodeInfo(FileFixtures.testFolderId))
-              .thenAnswer((_) async => FileFixtures.mockFolderNode);
+        test(
+          'it should throw if getFile is called with folder node type',
+          () async {
+            when(
+              () => mockService.getNodeInfo(FileFixtures.testFolderId),
+            ).thenAnswer((_) async => FileFixtures.mockFolderNode);
 
-          expect(
-            () => vfsFileStorage.getFile(fileId: FileFixtures.testFolderId),
-            throwsA(isA<TdkException>()),
-          );
-        });
+            expect(
+              () => vfsFileStorage.getFile(fileId: FileFixtures.testFolderId),
+              throwsA(isA<TdkException>()),
+            );
+          },
+        );
       });
 
       group('and getting file content', () {
         test('it should retrieve file content', () async {
-          when(() => mockService.downloadFile(nodeId: FileFixtures.testFileId))
-              .thenAnswer((_) async => FileFixtures.testData);
+          when(
+            () => mockService.downloadFile(nodeId: FileFixtures.testFileId),
+          ).thenAnswer((_) async => FileFixtures.testData);
 
           final result = await vfsFileStorage.getFileContent(
-              fileId: FileFixtures.testFileId);
+            fileId: FileFixtures.testFileId,
+          );
 
           expect(result, equals(FileFixtures.testData));
         });
@@ -194,10 +218,12 @@ void main() {
           newName: FileFixtures.testNewName,
         );
 
-        verify(() => mockService.renameFolder(
-              nodeId: FileFixtures.testFolderId,
-              newName: FileFixtures.testNewName,
-            )).called(1);
+        verify(
+          () => mockService.renameFolder(
+            nodeId: FileFixtures.testFolderId,
+            newName: FileFixtures.testNewName,
+          ),
+        ).called(1);
       });
 
       test('it should rename a file', () async {
@@ -206,18 +232,21 @@ void main() {
           newName: FileFixtures.testNewName,
         );
 
-        verify(() => mockService.renameFile(
-              nodeId: FileFixtures.testFileId,
-              newName: FileFixtures.testNewName,
-            )).called(1);
+        verify(
+          () => mockService.renameFile(
+            nodeId: FileFixtures.testFileId,
+            newName: FileFixtures.testNewName,
+          ),
+        ).called(1);
       });
     });
 
     group('When deleting resources', () {
       test('it should delete a folder', () async {
         await vfsFileStorage.deleteFolder(folderId: FileFixtures.testFolderId);
-        verify(() => mockService.deleteFolder(FileFixtures.testFolderId))
-            .called(1);
+        verify(
+          () => mockService.deleteFolder(FileFixtures.testFolderId),
+        ).called(1);
       });
 
       test('it should delete a file', () async {

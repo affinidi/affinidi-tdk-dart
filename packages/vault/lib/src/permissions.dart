@@ -12,5 +12,4 @@ enum Permissions {
 
   /// Full access permission (read and write).
   all,
-  ;
 }

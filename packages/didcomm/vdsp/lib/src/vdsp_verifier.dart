@@ -7,7 +7,6 @@ import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
 
 import '../affinidi_tdk_vdsp.dart';
-import 'messages/request_service/vdsp_request_service_message.dart';
 
 /// Implements the VDSP protocol for a verifier, supporting feature discovery,
 /// data queries, and verification of presentations and credentials.
@@ -19,10 +18,7 @@ class VdspVerifier {
   final DidManager didManager;
 
   /// Constructs a [VdspVerifier] for the VDSP protocol with the given [didManager] and [mediatorClient].
-  VdspVerifier({
-    required this.didManager,
-    required this.mediatorClient,
-  });
+  VdspVerifier({required this.didManager, required this.mediatorClient});
 
   /// Initializes a [VdspVerifier] for the VDSP protocol asynchronously with the provided mediator DID document and DID manager.
   static Future<VdspVerifier> init({
@@ -49,9 +45,7 @@ class VdspVerifier {
     final message = QueryMessage(
       id: const Uuid().v4(),
       to: [holderDid],
-      body: QueryBody(
-        queries: featureQueries,
-      ),
+      body: QueryBody(queries: featureQueries),
     );
 
     await mediatorClient.packAndSendMessage(message);
@@ -149,9 +143,7 @@ class VdspVerifier {
 
           if (onDiscloseMessage != null &&
               unpacked.type == DiscloseMessage.messageType) {
-            onDiscloseMessage(
-              DiscloseMessage.fromJson(plainTextJson),
-            );
+            onDiscloseMessage(DiscloseMessage.fromJson(plainTextJson));
 
             return;
           }
@@ -237,20 +229,17 @@ class VdspVerifier {
               expiresTime: unpacked.expiresTime,
               threadId: unpacked.threadId,
               body: VdspRequestServiceMessageBody.fromJson(
-                  unpacked.body as Map<String, dynamic>),
+                unpacked.body as Map<String, dynamic>,
+              ),
             );
-            onRequestService(
-              requestServiceMessage,
-            );
+            onRequestService(requestServiceMessage);
 
             return;
           }
 
           if (onProblemReport != null &&
               unpacked.type == ProblemReportMessage.messageType) {
-            onProblemReport(
-              ProblemReportMessage.fromJson(plainTextJson),
-            );
+            onProblemReport(ProblemReportMessage.fromJson(plainTextJson));
 
             return;
           }

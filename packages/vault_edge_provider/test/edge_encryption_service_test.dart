@@ -66,27 +66,25 @@ void main() {
   });
 
   group('When decrypting data with invalid length', () {
-    test('it throws TdkException for data shorter than minimum required length',
-        () async {
-      final invalidData = Uint8List(20);
+    test(
+      'it throws TdkException for data shorter than minimum required length',
+      () async {
+        final invalidData = Uint8List(20);
 
-      expect(
-        () => encryptionService.decryptData(invalidData),
-        throwsA(
-          isA<TdkException>()
-              .having(
-                (e) => e.message,
-                'message',
-                'Failed to decrypt data',
-              )
-              .having(
-                (e) => e.originalMessage,
-                'originalMessage',
-                'Invalid data length',
-              ),
-        ),
-      );
-    });
+        expect(
+          () => encryptionService.decryptData(invalidData),
+          throwsA(
+            isA<TdkException>()
+                .having((e) => e.message, 'message', 'Failed to decrypt data')
+                .having(
+                  (e) => e.originalMessage,
+                  'originalMessage',
+                  'Invalid data length',
+                ),
+          ),
+        );
+      },
+    );
 
     test('it throws TdkException for empty data', () async {
       final emptyData = Uint8List(0);
@@ -95,11 +93,7 @@ void main() {
         () => encryptionService.decryptData(emptyData),
         throwsA(
           isA<TdkException>()
-              .having(
-                (e) => e.message,
-                'message',
-                'Failed to decrypt data',
-              )
+              .having((e) => e.message, 'message', 'Failed to decrypt data')
               .having(
                 (e) => e.originalMessage,
                 'originalMessage',
@@ -110,20 +104,21 @@ void main() {
     });
 
     test(
-        'it throws TdkException for data exactly at minimum length but invalid format',
-        () async {
-      final invalidData = Uint8List(28);
+      'it throws TdkException for data exactly at minimum length but invalid format',
+      () async {
+        final invalidData = Uint8List(28);
 
-      expect(
-        () => encryptionService.decryptData(invalidData),
-        throwsA(
-          isA<TdkException>().having(
-            (e) => e.message,
-            'message',
-            'Failed to decrypt data',
+        expect(
+          () => encryptionService.decryptData(invalidData),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.message,
+              'message',
+              'Failed to decrypt data',
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   });
 }

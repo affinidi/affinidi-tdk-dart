@@ -77,14 +77,16 @@ void main() {
       expect(json.length, 4);
     });
 
-    test('should serialize to JSON with empty object when all fields are null',
-        () {
-      final options = const UpdateMediatorInstanceDeploymentOptions();
+    test(
+      'should serialize to JSON with empty object when all fields are null',
+      () {
+        final options = const UpdateMediatorInstanceDeploymentOptions();
 
-      final json = options.toJson();
+        final json = options.toJson();
 
-      expect(json, isEmpty);
-    });
+        expect(json, isEmpty);
+      },
+    );
 
     test('should serialize to JSON without null fields', () {
       final options = const UpdateMediatorInstanceDeploymentOptions(
@@ -129,10 +131,7 @@ void main() {
     });
 
     test('should deserialize from JSON with partial fields', () {
-      final json = {
-        'serviceSize': 'tiny',
-        'description': 'Only description',
-      };
+      final json = {'serviceSize': 'tiny', 'description': 'Only description'};
 
       final options = UpdateMediatorInstanceDeploymentOptions.fromJson(json);
 
@@ -213,8 +212,9 @@ void main() {
       );
 
       final json = original.toJson();
-      final deserialized =
-          UpdateMediatorInstanceDeploymentOptions.fromJson(json);
+      final deserialized = UpdateMediatorInstanceDeploymentOptions.fromJson(
+        json,
+      );
 
       expect(deserialized.serviceSize, original.serviceSize);
       expect(deserialized.mediatorAclMode, original.mediatorAclMode);

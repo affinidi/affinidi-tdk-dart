@@ -23,9 +23,11 @@ class EdgeDriftCredentialRepository
   }) async {
     // Check if credential exists
     final credential = await (_database.select(_database.credentials)
-          ..where((filter) =>
-              filter.id.equals(credentialId) &
-              filter.profileId.equals(_profileId)))
+          ..where(
+            (filter) =>
+                filter.id.equals(credentialId) &
+                filter.profileId.equals(_profileId),
+          ))
         .getSingleOrNull();
 
     if (credential == null) {
@@ -38,8 +40,9 @@ class EdgeDriftCredentialRepository
       );
     }
 
-    await (_database.delete(_database.credentials)
-          ..where((filter) => filter.id.equals(credentialId)))
+    await (_database.delete(
+      _database.credentials,
+    )..where((filter) => filter.id.equals(credentialId)))
         .go();
   }
 
@@ -49,9 +52,11 @@ class EdgeDriftCredentialRepository
     VaultCancelToken? cancelToken,
   }) async {
     final credential = await (_database.select(_database.credentials)
-          ..where((filter) =>
-              filter.id.equals(credentialId) &
-              filter.profileId.equals(_profileId)))
+          ..where(
+            (filter) =>
+                filter.id.equals(credentialId) &
+                filter.profileId.equals(_profileId),
+          ))
         .getSingleOrNull();
 
     if (credential == null) {
@@ -64,10 +69,7 @@ class EdgeDriftCredentialRepository
       );
     }
 
-    return EdgeCredential(
-      id: credential.id,
-      content: credential.content,
-    );
+    return EdgeCredential(id: credential.id, content: credential.content);
   }
 
   @override
@@ -91,10 +93,10 @@ class EdgeDriftCredentialRepository
 
     final credentials = await query.get();
     final items = credentials
-        .map((credential) => EdgeCredential(
-              id: credential.id,
-              content: credential.content,
-            ))
+        .map(
+          (credential) =>
+              EdgeCredential(id: credential.id, content: credential.content),
+        )
         .toList();
 
     String? lastEvaluatedItemId;

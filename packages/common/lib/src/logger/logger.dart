@@ -38,9 +38,7 @@ class Logger {
 
   final Environment _environment;
 
-  late final List<Logging> _loggers = [
-    DartLogger(environment: _environment),
-  ];
+  late final List<Logging> _loggers = [DartLogger(environment: _environment)];
 
   /// Adds a log record for a [message] at a particular [logLevel] if logging is enabled via the environment variable `AFFINIDI_TDK_LOG_LEVEL`.
   ///
@@ -70,10 +68,19 @@ class Logger {
   }
 
   /// Logs a message at SEVERE (ERROR) level
-  void error(Object? message,
-      {String? component, Object? error, StackTrace? stackTrace}) {
-    log(LogLevel.severe, message,
-        component: component, error: error, stackTrace: stackTrace);
+  void error(
+    Object? message, {
+    String? component,
+    Object? error,
+    StackTrace? stackTrace,
+  }) {
+    log(
+      LogLevel.severe,
+      message,
+      component: component,
+      error: error,
+      stackTrace: stackTrace,
+    );
   }
 
   /// Logs a message at WARNING level

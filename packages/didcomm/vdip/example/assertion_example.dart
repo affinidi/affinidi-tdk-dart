@@ -1,9 +1,8 @@
 import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediator_client.dart';
 import 'package:affinidi_tdk_vdip/affinidi_tdk_vdip.dart';
+import '../../../integration_tests/test/test_config.dart';
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
-
-import '../../../../../tests/integration/dart/test/test_config.dart';
 
 // Run commands below in your terminal to generate keys for Alice and Bob:
 // openssl ecparam -name prime256v1 -genkey -noout -out example/keys/alice_private_key.pem
@@ -27,14 +26,10 @@ Future<void> main() async {
     packageDirectoryName: 'vdip',
   );
 
-  final mediatorDid = await readDid(
-    config.mediatorDidPath,
-  );
+  final mediatorDid = await readDid(config.mediatorDidPath);
 
   final mediatorDidDocument =
-      await UniversalDIDResolver.defaultResolver.resolveDid(
-    mediatorDid,
-  );
+      await UniversalDIDResolver.defaultResolver.resolveDid(mediatorDid);
 
   final issuerKeyStore = InMemoryKeyStore();
   final issuerWallet = PersistentWallet(issuerKeyStore);
@@ -52,10 +47,7 @@ Future<void> main() async {
 
   await issuerKeyStore.set(
     issuerKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: issuerPrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: issuerPrivateKeyBytes),
   );
 
   await issuerDidManager.addVerificationMethod(issuerKeyId);
@@ -93,10 +85,7 @@ Future<void> main() async {
 
   await holderKeyStore.set(
     holderKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: holderPrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: holderPrivateKeyBytes),
   );
 
   await holderDidManager.addVerificationMethod(holderKeyId);
@@ -134,10 +123,7 @@ Future<void> main() async {
       ...FeatureDiscoveryHelper.getFeatureQueriesByDisclosures(
         FeatureDiscoveryHelper.vdipIssuerDisclosures,
       ),
-      Query(
-        featureType: FeatureType.operation.value,
-        match: 'registerAgent',
-      ),
+      Query(featureType: FeatureType.operation.value, match: 'registerAgent'),
     ],
   );
 
@@ -146,10 +132,7 @@ Future<void> main() async {
 
   vdipHolder.listenForIncomingMessages(
     onDiscloseMessage: (message) async {
-      prettyPrint(
-        'Holder received Feature Query Message',
-        object: message,
-      );
+      prettyPrint('Holder received Feature Query Message', object: message);
 
       // TODO: verify disclosed features
       // TODO: add mapping from header to propousalId
@@ -174,23 +157,15 @@ Future<void> main() async {
       await ConnectionPool.instance.stopConnections();
     },
     onProblemReport: (message) {
-      prettyPrint(
-        'A problem has occurred',
-        object: message,
-      );
+      prettyPrint('A problem has occurred', object: message);
     },
   );
 
   vdipIssuer.listenForIncomingMessages(
     onFeatureQuery: (message) async {
-      prettyPrint(
-        'Issuer received Feature Query Message',
-        object: message,
-      );
+      prettyPrint('Issuer received Feature Query Message', object: message);
 
-      await vdipIssuer.disclose(
-        queryMessage: message,
-      );
+      await vdipIssuer.disclose(queryMessage: message);
     },
     onRequestToIssueCredential: ({
       required message,
@@ -226,10 +201,7 @@ Future<void> main() async {
               code: ProblemCode(
                 sorter: SorterType.warning,
                 scope: Scope(scope: ScopeType.message),
-                descriptors: [
-                  'vdip',
-                  'invalid-assertion',
-                ],
+                descriptors: ['vdip', 'invalid-assertion'],
               ),
             ),
           ),
@@ -239,9 +211,7 @@ Future<void> main() async {
       }
 
       final vdipRequestIssuanceMessageBody =
-          VdipRequestIssuanceMessageBody.fromJson(
-        message.body!,
-      );
+          VdipRequestIssuanceMessageBody.fromJson(message.body!);
 
       final email = vdipRequestIssuanceMessageBody
           .credentialMeta?.data?['email'] as String?;
@@ -295,10 +265,7 @@ Future<void> main() async {
       );
     },
     onProblemReport: (message) {
-      prettyPrint(
-        'A problem has occurred',
-        object: message,
-      );
+      prettyPrint('A problem has occurred', object: message);
     },
   );
 

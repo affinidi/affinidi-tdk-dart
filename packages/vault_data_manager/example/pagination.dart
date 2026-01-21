@@ -3,18 +3,17 @@ import 'dart:typed_data';
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_data_manager/affinidi_tdk_vault_data_manager.dart';
 
-void _listProfileNames(
-  List<Profile> profiles, {
-  required String label,
-}) {
+void _listProfileNames(List<Profile> profiles, {required String label}) {
   if (profiles.isEmpty) {
     print('[Demo] List of profiles is empty');
     return;
   }
 
   final names = profiles
-      .map((profile) =>
-          '${profile.name} | ${profile.accountIndex} | ${profile.did} ')
+      .map(
+        (profile) =>
+            '${profile.name} | ${profile.accountIndex} | ${profile.did} ',
+      )
       .join(', ');
   print('[Demo] $label: $names');
 }
@@ -79,7 +78,8 @@ Future<void> _deleteFolder({
 
         if (verifyPage.items.isNotEmpty) {
           print(
-              '[Demo] Warning: Folder $folderId is not empty, contains ${verifyPage.items.length} items');
+            '[Demo] Warning: Folder $folderId is not empty, contains ${verifyPage.items.length} items',
+          );
           hasErrors = true;
         } else {
           print('[Demo] Folder $folderId is empty, proceeding with deletion');
@@ -97,7 +97,8 @@ Future<void> _deleteFolder({
       );
       if (verifyPage.items.isNotEmpty) {
         print(
-            '[Demo] Warning: Root folder still contains ${verifyPage.items.length} items');
+          '[Demo] Warning: Root folder still contains ${verifyPage.items.length} items',
+        );
         hasErrors = true;
       } else {
         print('[Demo] Root folder is empty');
@@ -132,8 +133,9 @@ Future<void> _deleteProfile(Vault vault, Profile profile) async {
 
     for (final credential in credentials.items) {
       try {
-        await profile.defaultCredentialStorage!
-            .deleteCredential(digitalCredentialId: credential.id);
+        await profile.defaultCredentialStorage!.deleteCredential(
+          digitalCredentialId: credential.id,
+        );
         print('[Demo] Successfully deleted credential: ${credential.id}');
       } catch (e) {
         print('[Demo] Error deleting credential ${credential.id}: $e');
@@ -163,8 +165,13 @@ Future<int> _createProfile(Vault vault, String name, int accountIndex) async {
       final profileRepository = vault.defaultProfileRepository;
       await profileRepository.createProfile(name: '$name $newAccountIndex');
     } on TdkException catch (error) {
-      print([error.code, '[Demo] ${error.message}', error.originalMessage]
-          .join('\n'));
+      print(
+        [
+          error.code,
+          '[Demo] ${error.message}',
+          error.originalMessage,
+        ].join('\n'),
+      );
       rethrow;
     }
   }
@@ -202,7 +209,8 @@ Future<void> main() async {
 
     var profiles = await vault.listProfiles();
     print(
-        '[Demo] ${profiles.isEmpty ? 'No profiles found' : 'Available profiles: ${profiles.length}'}');
+      '[Demo] ${profiles.isEmpty ? 'No profiles found' : 'Available profiles: ${profiles.length}'}',
+    );
     _listProfileNames(profiles, label: 'Initial profile names');
 
     print('[Demo] Deleting all existing profiles...');
@@ -238,7 +246,8 @@ Future<void> main() async {
     }
 
     print(
-        '[Demo] Profile created successfully: ${testProfile.name} (${testProfile.id})');
+      '[Demo] Profile created successfully: ${testProfile.name} (${testProfile.id})',
+    );
 
     await Future<void>.delayed(const Duration(seconds: 2));
 
@@ -247,7 +256,8 @@ Future<void> main() async {
         folderId: testProfile.id,
       );
       print(
-          '[Demo] Initial folder contents: ${initialFolder.items.length} items');
+        '[Demo] Initial folder contents: ${initialFolder.items.length} items',
+      );
     } catch (e) {
       print('[Demo] Error accessing profile folder: $e');
       rethrow;
@@ -317,7 +327,8 @@ Future<void> main() async {
             folderId: item.id,
           );
           print(
-              '[Demo] Folder ${item.name} contains ${subFolder.items.length} items');
+            '[Demo] Folder ${item.name} contains ${subFolder.items.length} items',
+          );
         }
       }
     } catch (e) {
@@ -352,7 +363,8 @@ Future<void> main() async {
         totalItems += page.items.length;
         print('[Demo] Retrieved ${page.items.length} items');
         print(
-            '[Demo] Items: ${page.items.map((item) => item.name).join(', ')}');
+          '[Demo] Items: ${page.items.map((item) => item.name).join(', ')}',
+        );
 
         exclusiveStartItemId = page.lastEvaluatedItemId;
         if (exclusiveStartItemId != null) {

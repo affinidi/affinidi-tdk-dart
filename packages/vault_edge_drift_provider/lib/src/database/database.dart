@@ -4,14 +4,7 @@ import 'package:uuid/uuid.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(
-  tables: [
-    Profiles,
-    Items,
-    FileContents,
-    Credentials,
-  ],
-)
+@DriftDatabase(tables: [Profiles, Items, FileContents, Credentials])
 
 /// Database class to access drift tables
 class Database extends _$Database {
@@ -57,8 +50,7 @@ enum ItemType {
   file(1),
 
   /// an item of type Folder
-  folder(2),
-  ;
+  folder(2);
 
   const ItemType(this.value);
 

@@ -14,9 +14,6 @@ class IamApiServiceFixtures {
             requestOptions: RequestOptions(),
           );
 
-  static Response<dynamic> get successfulRevokeAccessResponse => Response(
-        data: null,
-        statusCode: 200,
-        requestOptions: RequestOptions(),
-      );
+  static Response<dynamic> get successfulRevokeAccessResponse =>
+      Response(data: null, statusCode: 200, requestOptions: RequestOptions());
 }

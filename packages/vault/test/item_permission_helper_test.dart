@@ -11,42 +11,53 @@ void main() {
       });
 
       test('should return Permissions.read for vfsRead only', () {
-        final result =
-            ItemPermissionHelper.rightsListToPermissions(['vfsRead']);
+        final result = ItemPermissionHelper.rightsListToPermissions([
+          'vfsRead',
+        ]);
         expect(result, equals(Permissions.read));
       });
 
       test('should return Permissions.write for vfsWrite only', () {
-        final result =
-            ItemPermissionHelper.rightsListToPermissions(['vfsWrite']);
+        final result = ItemPermissionHelper.rightsListToPermissions([
+          'vfsWrite',
+        ]);
         expect(result, equals(Permissions.write));
       });
 
       test('should return Permissions.all for both vfsRead and vfsWrite', () {
-        final result = ItemPermissionHelper.rightsListToPermissions(
-            ['vfsRead', 'vfsWrite']);
+        final result = ItemPermissionHelper.rightsListToPermissions([
+          'vfsRead',
+          'vfsWrite',
+        ]);
         expect(result, equals(Permissions.all));
       });
 
       test('should return Permissions.all regardless of order', () {
-        final result1 = ItemPermissionHelper.rightsListToPermissions(
-            ['vfsRead', 'vfsWrite']);
-        final result2 = ItemPermissionHelper.rightsListToPermissions(
-            ['vfsWrite', 'vfsRead']);
+        final result1 = ItemPermissionHelper.rightsListToPermissions([
+          'vfsRead',
+          'vfsWrite',
+        ]);
+        final result2 = ItemPermissionHelper.rightsListToPermissions([
+          'vfsWrite',
+          'vfsRead',
+        ]);
         expect(result1, equals(Permissions.all));
         expect(result2, equals(Permissions.all));
         expect(result1, equals(result2));
       });
 
       test('should return null for unknown rights', () {
-        final result =
-            ItemPermissionHelper.rightsListToPermissions(['unknownRight']);
+        final result = ItemPermissionHelper.rightsListToPermissions([
+          'unknownRight',
+        ]);
         expect(result, isNull);
       });
 
       test('should return null for mixed known and unknown rights', () {
-        final result = ItemPermissionHelper.rightsListToPermissions(
-            ['vfsRead', 'unknownRight']);
+        final result = ItemPermissionHelper.rightsListToPermissions([
+          'vfsRead',
+          'unknownRight',
+        ]);
         expect(result, isNull);
       });
     });
@@ -58,20 +69,23 @@ void main() {
       });
 
       test('should convert Permissions.read to vfsRead', () {
-        final result = ItemPermissionHelper.permissionsListToRightsList(
-            [Permissions.read]);
+        final result = ItemPermissionHelper.permissionsListToRightsList([
+          Permissions.read,
+        ]);
         expect(result, equals(['vfsRead']));
       });
 
       test('should convert Permissions.write to vfsWrite', () {
-        final result = ItemPermissionHelper.permissionsListToRightsList(
-            [Permissions.write]);
+        final result = ItemPermissionHelper.permissionsListToRightsList([
+          Permissions.write,
+        ]);
         expect(result, equals(['vfsWrite']));
       });
 
       test('should convert Permissions.all to both rights', () {
-        final result =
-            ItemPermissionHelper.permissionsListToRightsList([Permissions.all]);
+        final result = ItemPermissionHelper.permissionsListToRightsList([
+          Permissions.all,
+        ]);
         expect(result, containsAll(['vfsRead', 'vfsWrite']));
         expect(result.length, equals(2));
       });
@@ -146,7 +160,9 @@ void main() {
       test('should handle multiple nodeIds with same permissions', () {
         final permissions = [
           ItemPermission(
-              itemIds: ['node1', 'node2', 'node3'], rights: ['vfsRead']),
+            itemIds: ['node1', 'node2', 'node3'],
+            rights: ['vfsRead'],
+          ),
         ];
         final result = ItemPermissionHelper.buildPermissionGroups(permissions);
         expect(result.length, equals(1));
@@ -164,29 +180,40 @@ void main() {
         final result = ItemPermissionHelper.buildPermissionGroups(permissions);
         expect(result.length, equals(3));
         expect(
-            result.any((g) =>
+          result.any(
+            (g) =>
                 g.itemIds.length == 1 &&
                 g.itemIds.first == 'node1' &&
-                g.permissions == Permissions.read),
-            isTrue);
+                g.permissions == Permissions.read,
+          ),
+          isTrue,
+        );
         expect(
-            result.any((g) =>
+          result.any(
+            (g) =>
                 g.itemIds.length == 1 &&
                 g.itemIds.first == 'node2' &&
-                g.permissions == Permissions.write),
-            isTrue);
+                g.permissions == Permissions.write,
+          ),
+          isTrue,
+        );
         expect(
-            result.any((g) =>
+          result.any(
+            (g) =>
                 g.itemIds.length == 1 &&
                 g.itemIds.first == 'node3' &&
-                g.permissions == Permissions.all),
-            isTrue);
+                g.permissions == Permissions.all,
+          ),
+          isTrue,
+        );
       });
 
       test('should handle nodeIds in different orders', () {
         final permissions = [
           ItemPermission(
-              itemIds: ['node3', 'node1', 'node2'], rights: ['vfsRead']),
+            itemIds: ['node3', 'node1', 'node2'],
+            rights: ['vfsRead'],
+          ),
         ];
         final result = ItemPermissionHelper.buildPermissionGroups(permissions);
         expect(result.length, equals(1));
@@ -201,10 +228,12 @@ void main() {
         final permissions2 = [
           ItemPermission(itemIds: ['node1'], rights: ['vfsWrite', 'vfsRead']),
         ];
-        final result1 =
-            ItemPermissionHelper.buildPermissionGroups(permissions1);
-        final result2 =
-            ItemPermissionHelper.buildPermissionGroups(permissions2);
+        final result1 = ItemPermissionHelper.buildPermissionGroups(
+          permissions1,
+        );
+        final result2 = ItemPermissionHelper.buildPermissionGroups(
+          permissions2,
+        );
         expect(result1.first.permissions, equals(Permissions.all));
         expect(result2.first.permissions, equals(Permissions.all));
         expect(result1.first.permissions, equals(result2.first.permissions));
@@ -226,22 +255,27 @@ void main() {
           ItemPermission(itemIds: ['node1', 'node2'], rights: ['vfsRead']),
           ItemPermission(itemIds: ['node3'], rights: ['vfsWrite']),
           ItemPermission(
-              itemIds: ['node4', 'node5'], rights: ['vfsRead', 'vfsWrite']),
+            itemIds: ['node4', 'node5'],
+            rights: ['vfsRead', 'vfsWrite'],
+          ),
           ItemPermission(itemIds: ['node6'], rights: []),
         ];
         final result = ItemPermissionHelper.buildPermissionGroups(permissions);
         expect(result.length, equals(3));
 
-        final readGroup =
-            result.firstWhere((g) => g.permissions == Permissions.read);
+        final readGroup = result.firstWhere(
+          (g) => g.permissions == Permissions.read,
+        );
         expect(readGroup.itemIds, containsAll(['node1', 'node2']));
 
-        final writeGroup =
-            result.firstWhere((g) => g.permissions == Permissions.write);
+        final writeGroup = result.firstWhere(
+          (g) => g.permissions == Permissions.write,
+        );
         expect(writeGroup.itemIds, equals(['node3']));
 
-        final allGroup =
-            result.firstWhere((g) => g.permissions == Permissions.all);
+        final allGroup = result.firstWhere(
+          (g) => g.permissions == Permissions.all,
+        );
         expect(allGroup.itemIds, containsAll(['node4', 'node5']));
       });
     });
@@ -295,19 +329,25 @@ void main() {
         );
         expect(result.length, equals(2));
         expect(
-            result.any((p) =>
+          result.any(
+            (p) =>
                 p.itemIds.length == 1 &&
                 p.itemIds.first == 'node1' &&
                 p.rights.length == 1 &&
-                p.rights.first == 'vfsRead'),
-            isTrue);
+                p.rights.first == 'vfsRead',
+          ),
+          isTrue,
+        );
         expect(
-            result.any((p) =>
+          result.any(
+            (p) =>
                 p.itemIds.length == 1 &&
                 p.itemIds.first == 'node2' &&
                 p.rights.length == 1 &&
-                p.rights.first == 'vfsWrite'),
-            isTrue);
+                p.rights.first == 'vfsWrite',
+          ),
+          isTrue,
+        );
       });
 
       test('should handle overlapping nodeIds', () {
@@ -320,10 +360,12 @@ void main() {
           ['vfsWrite'],
         );
         expect(result.length, greaterThanOrEqualTo(2));
-        final node2Perm = result.firstWhere((p) =>
-            p.itemIds.contains('node2') &&
-            !p.itemIds.contains('node1') &&
-            !p.itemIds.contains('node3'));
+        final node2Perm = result.firstWhere(
+          (p) =>
+              p.itemIds.contains('node2') &&
+              !p.itemIds.contains('node1') &&
+              !p.itemIds.contains('node3'),
+        );
         expect(node2Perm.rights, containsAll(['vfsRead', 'vfsWrite']));
       });
 
@@ -351,11 +393,9 @@ void main() {
         final existing = [
           ItemPermission(itemIds: ['node1'], rights: ['vfsRead', 'vfsWrite']),
         ];
-        final result = ItemPermissionHelper.removePermission(
-          existing,
-          ['node1'],
-          [],
-        );
+        final result = ItemPermissionHelper.removePermission(existing, [
+          'node1',
+        ], []);
         expect(result, isEmpty);
       });
 
@@ -377,11 +417,10 @@ void main() {
         final existing = [
           ItemPermission(itemIds: ['node1', 'node2'], rights: ['vfsRead']),
         ];
-        final result = ItemPermissionHelper.removePermission(
-          existing,
-          ['node1', 'node2'],
-          [],
-        );
+        final result = ItemPermissionHelper.removePermission(existing, [
+          'node1',
+          'node2',
+        ], []);
         expect(result, isEmpty);
       });
 
@@ -389,11 +428,9 @@ void main() {
         final existing = [
           ItemPermission(itemIds: ['node1', 'node2'], rights: ['vfsRead']),
         ];
-        final result = ItemPermissionHelper.removePermission(
-          existing,
-          ['node1'],
-          [],
-        );
+        final result = ItemPermissionHelper.removePermission(existing, [
+          'node1',
+        ], []);
         expect(result.length, equals(1));
         expect(result.first.itemIds, equals(['node2']));
         expect(result.first.rights, equals(['vfsRead']));
@@ -404,11 +441,9 @@ void main() {
           ItemPermission(itemIds: ['node1'], rights: ['vfsRead']),
           ItemPermission(itemIds: ['node2'], rights: ['vfsWrite']),
         ];
-        final result = ItemPermissionHelper.removePermission(
-          existing,
-          ['node1'],
-          [],
-        );
+        final result = ItemPermissionHelper.removePermission(existing, [
+          'node1',
+        ], []);
         expect(result.length, equals(1));
         expect(result.first.itemIds, equals(['node2']));
         expect(result.first.rights, equals(['vfsWrite']));

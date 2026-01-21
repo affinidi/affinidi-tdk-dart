@@ -13,8 +13,8 @@ class CredentialFixtures {
           'created': '2020-01-01T00:00:00Z',
           'proofPurpose': 'assertionMethod',
           'verificationMethod': 'did:example:issuer#key-1',
-          'jws': 'eyJ...'
-        }
+          'jws': 'eyJ...',
+        },
       };
 
   static Map<String, dynamic> get anotherCredentialJson => {
@@ -28,8 +28,8 @@ class CredentialFixtures {
           'created': '2021-01-01T00:00:00Z',
           'proofPurpose': 'assertionMethod',
           'verificationMethod': 'did:example:issuer2#key-1',
-          'jws': 'eyJ...'
-        }
+          'jws': 'eyJ...',
+        },
       };
 
   static VerifiableCredential get testVerifiableCredential =>

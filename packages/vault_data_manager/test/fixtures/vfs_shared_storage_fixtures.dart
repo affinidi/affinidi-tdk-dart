@@ -69,21 +69,23 @@ class CredentialFixtures {
   static const testCredentialId = 'test-cred';
 
   static VerifiableCredential get testVerifiableCredential =>
-      UniversalParser.parse(jsonEncode({
-        '@context': ['https://www.w3.org/2018/credentials/v1'],
-        'type': ['VerifiableCredential', 'TestCredential'],
-        'id': 'test-vc-id',
-        'issuer': 'test-issuer',
-        'issuanceDate': DateTime.now().toIso8601String(),
-        'credentialSubject': {'id': 'test-subject', 'name': 'Test User'},
-        'proof': {
-          'type': 'Ed25519Signature2018',
-          'created': DateTime.now().toIso8601String(),
-          'verificationMethod': 'test-verification-method',
-          'proofPurpose': 'assertionMethod',
-          'jws': 'test-jws'
-        }
-      }));
+      UniversalParser.parse(
+        jsonEncode({
+          '@context': ['https://www.w3.org/2018/credentials/v1'],
+          'type': ['VerifiableCredential', 'TestCredential'],
+          'id': 'test-vc-id',
+          'issuer': 'test-issuer',
+          'issuanceDate': DateTime.now().toIso8601String(),
+          'credentialSubject': {'id': 'test-subject', 'name': 'Test User'},
+          'proof': {
+            'type': 'Ed25519Signature2018',
+            'created': DateTime.now().toIso8601String(),
+            'verificationMethod': 'test-verification-method',
+            'proofPurpose': 'assertionMethod',
+            'jws': 'test-jws',
+          },
+        }),
+      );
 
   static vault.DigitalCredential get testDigitalCredential =>
       vault.DigitalCredential(

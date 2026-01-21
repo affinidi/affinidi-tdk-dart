@@ -47,10 +47,7 @@ class CryptographyService implements CryptographyServiceInterface {
     required List<int> key,
     required List<int> encryptedData,
   }) =>
-      _implementation.Aes256Decrypt(
-        key: key,
-        encryptedData: encryptedData,
-      );
+      _implementation.Aes256Decrypt(key: key, encryptedData: encryptedData);
 
   /// Decrypts the given encrypted hex string using AES-256 algorithm.
   ///
@@ -77,10 +74,7 @@ class CryptographyService implements CryptographyServiceInterface {
     required List<int> key,
     required List<int> data,
   }) =>
-      _implementation.Aes256Encrypt(
-        key: key,
-        data: data,
-      );
+      _implementation.Aes256Encrypt(key: key, data: data);
 
   /// Encrypts the given string to a hex string using AES-256 algorithm.
   ///
@@ -92,10 +86,7 @@ class CryptographyService implements CryptographyServiceInterface {
     required List<int> key,
     required String data,
   }) =>
-      _implementation.Aes256EncryptStringToHex(
-        key: key,
-        data: data,
-      );
+      _implementation.Aes256EncryptStringToHex(key: key, data: data);
 
   /// Derives a key using PBKDF2 algorithm.
   ///
@@ -107,10 +98,7 @@ class CryptographyService implements CryptographyServiceInterface {
     required String password,
     required List<int> nonce,
   }) =>
-      _implementation.Pbkdf2(
-        password: password,
-        nonce: nonce,
-      );
+      _implementation.Pbkdf2(password: password, nonce: nonce);
 
   /// Creates a hash from the given source string.
   ///
@@ -150,10 +138,7 @@ class CryptographyService implements CryptographyServiceInterface {
     required Map<String, dynamic> jwk,
     required List<int> data,
   }) =>
-      _implementation.encryptWithRsaPublicKeyFromJwk(
-        jwk: jwk,
-        data: data,
-      );
+      _implementation.encryptWithRsaPublicKeyFromJwk(jwk: jwk, data: data);
 
   /// Generates a list of random bytes of the given length.
   ///
@@ -186,10 +171,7 @@ class CryptographyService implements CryptographyServiceInterface {
     required String jwtToken,
     required String didKey,
   }) =>
-      _implementation.verifyJwt(
-        jwtToken: jwtToken,
-        didKey: didKey,
-      );
+      _implementation.verifyJwt(jwtToken: jwtToken, didKey: didKey);
 
   /// Decrypts the given bytes using the provided key.
   ///
@@ -198,10 +180,7 @@ class CryptographyService implements CryptographyServiceInterface {
   /// [ivAndBytes] - The initialization vector and bytes to decrypt.
   @override
   Uint8List? decryptFromBytes(Uint8List key, Uint8List ivAndBytes) =>
-      _implementation.decryptFromBytes(
-        key,
-        ivAndBytes,
-      );
+      _implementation.decryptFromBytes(key, ivAndBytes);
 
   /// Decrypts the given hexadecimal string using the provided key.
   ///
@@ -210,10 +189,7 @@ class CryptographyService implements CryptographyServiceInterface {
   /// [hexStr] - The hexadecimal string to decrypt.
   @override
   Uint8List? decryptFromHex(Uint8List key, String hexStr) =>
-      _implementation.decryptFromHex(
-        key,
-        hexStr,
-      );
+      _implementation.decryptFromHex(key, hexStr);
 
   /// Encrypts the given data to bytes using the provided key.
   ///
@@ -222,10 +198,7 @@ class CryptographyService implements CryptographyServiceInterface {
   /// [data] - The data to encrypt.
   @override
   Uint8List encryptToBytes(Uint8List key, Uint8List data) =>
-      _implementation.encryptToBytes(
-        key,
-        data,
-      );
+      _implementation.encryptToBytes(key, data);
 
   /// Encrypts the given data to a hexadecimal string using the provided key.
   ///
@@ -234,10 +207,7 @@ class CryptographyService implements CryptographyServiceInterface {
   /// [data] - The data to encrypt.
   @override
   String encryptToHex(Uint8List key, Uint8List data) =>
-      _implementation.encryptToHex(
-        key,
-        data,
-      );
+      _implementation.encryptToHex(key, data);
 
   /// Decrypts the given ciphertext using the provided key and initialization vector (IV) with AES in CBC mode.
   ///

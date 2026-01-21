@@ -20,9 +20,7 @@ class VdipSwitchContextMessage extends PlainTextMessage {
     super.threadId,
     super.body = const {},
     super.attachments,
-  }) : super(
-          type: messageType,
-        );
+  }) : super(type: messageType);
 
   /// Strongly typed view of the switch context body.
   VdipSwitchContextBody get switchContext {
@@ -32,9 +30,7 @@ class VdipSwitchContextMessage extends PlainTextMessage {
       throw StateError('Message body is missing.');
     }
 
-    return VdipSwitchContextBody.fromJson(
-      Map<String, dynamic>.from(payload),
-    );
+    return VdipSwitchContextBody.fromJson(Map<String, dynamic>.from(payload));
   }
 }
 
@@ -44,10 +40,7 @@ class VdipSwitchContextMessage extends PlainTextMessage {
 ///
 ///
 class VdipSwitchContextBody {
-  VdipSwitchContextBody({
-    required this.baseIssuerUrl,
-    required this.nonce,
-  });
+  VdipSwitchContextBody({required this.baseIssuerUrl, required this.nonce});
 
   @JsonKey(name: 'base_issuer_url')
   final String baseIssuerUrl;

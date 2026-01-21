@@ -1,6 +1,7 @@
 import 'package:uuid/uuid.dart';
 import 'package:test/test.dart';
 import 'package:affinidi_tdk_iam_client/affinidi_tdk_iam_client.dart';
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 
 import 'helpers/helpers.dart';
 
@@ -15,8 +16,15 @@ void main() {
       final env = getProjectEnvironment();
       tokenId = env.tokenId;
 
+      final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
+      String basePathOverride = replaceBaseDomain(
+        AffinidiTdkIamClient.basePath,
+        apiGwUrl,
+      );
+
       final iamClient = AffinidiTdkIamClient(
         authTokenHook: ResourceFactory.getAuthTokenHook(),
+        basePathOverride: basePathOverride,
       );
 
       policiesApi = iamClient.getPoliciesApi();
@@ -35,7 +43,8 @@ void main() {
 
         final statusCode = (await projectsApi.addPrincipalToProject(
           addUserToProjectInput: addUserToProjectInputBuilder.build(),
-        )).statusCode;
+        ))
+            .statusCode;
 
         expect(statusCode, 204);
       });
@@ -52,7 +61,8 @@ void main() {
         final statusCode = (await projectsApi.deletePrincipalFromProject(
           principalId: testPrincipalId,
           principalType: principalType,
-        )).statusCode;
+        ))
+            .statusCode;
 
         expect(statusCode, 204);
       });
@@ -62,7 +72,8 @@ void main() {
       final result = (await policiesApi.getPolicies(
         principalId: tokenId,
         principalType: 'token',
-      )).data;
+      ))
+          .data;
 
       expect(result?.version, isNotNull);
       expect(result?.statement, isNotNull);

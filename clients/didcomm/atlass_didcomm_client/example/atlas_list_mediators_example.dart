@@ -2,9 +2,8 @@ import 'dart:io';
 
 import 'package:affinidi_tdk_atlas_didcomm_client/affinidi_tdk_atlas_didcomm_client.dart';
 import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediator_client.dart';
+import '../../../../packages/integration_tests/test/test_config.dart';
 import 'package:ssi/ssi.dart';
-
-import '../../../../../tests/integration/dart/test/test_config.dart';
 
 Future<void> main() async {
   // Run commands below in your terminal to generate keys for Receiver:
@@ -32,39 +31,31 @@ Future<void> main() async {
 
   await senderKeyStore.set(
     senderKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: senderPrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: senderPrivateKeyBytes),
   );
 
   await senderDidManager.addVerificationMethod(senderKeyId);
 
   final atlasClient = await DidcommAtlasClient.init(
     didManager: senderDidManager,
-    clientOptions:
-        const AffinidiClientOptions(requestTimeout: Duration(minutes: 5)),
+    clientOptions: const AffinidiClientOptions(
+      requestTimeout: Duration(minutes: 5),
+    ),
   );
 
   prettyPrint('Atlas DID', object: DidcommAtlasClient.atlasDid);
 
   await ConnectionPool.instance.startConnections();
 
-  final instances = await atlasClient.getMediatorInstancesList().catchError(
-    (Object error) {
-      prettyPrint(
-        'Error while listing mediators',
-        object: error,
-      );
+  final instances = await atlasClient.getMediatorInstancesList().catchError((
+    Object error,
+  ) {
+    prettyPrint('Error while listing mediators', object: error);
 
-      exit(1);
-    },
-  );
+    exit(1);
+  });
 
-  prettyPrint(
-    'Mediators',
-    object: instances,
-  );
+  prettyPrint('Mediators', object: instances);
 
   await ConnectionPool.instance.stopConnections();
 }

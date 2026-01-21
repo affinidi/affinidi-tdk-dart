@@ -7,14 +7,14 @@ part of 'update_instance_configuration_response_message.dart';
 // **************************************************************************
 
 UpdateMediatorInstanceConfigurationResponse
-    _$UpdateMediatorInstanceConfigurationResponseFromJson(
-            Map<String, dynamic> json) =>
-        UpdateMediatorInstanceConfigurationResponse(
-          message: json['message'] as String?,
-        );
+_$UpdateMediatorInstanceConfigurationResponseFromJson(
+  Map<String, dynamic> json,
+) => UpdateMediatorInstanceConfigurationResponse(
+  message: json['message'] as String?,
+);
 
 Map<String, dynamic> _$UpdateMediatorInstanceConfigurationResponseToJson(
-        UpdateMediatorInstanceConfigurationResponse instance) =>
-    <String, dynamic>{
-      if (instance.message case final value?) 'message': value,
-    };
+  UpdateMediatorInstanceConfigurationResponse instance,
+) => <String, dynamic>{
+  if (instance.message case final value?) 'message': value,
+};

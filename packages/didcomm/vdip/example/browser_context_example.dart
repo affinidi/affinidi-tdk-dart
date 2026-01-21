@@ -4,10 +4,9 @@ import 'dart:io';
 
 import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediator_client.dart';
 import 'package:affinidi_tdk_vdip/affinidi_tdk_vdip.dart';
+import '../../../integration_tests/test/test_config.dart';
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
-
-import '../../../../../tests/integration/dart/test/test_config.dart';
 
 /// This example demonstrates the complete browser context switch flow with real HTTP servers:
 ///
@@ -66,21 +65,20 @@ Future<void> main() async {
   );
 
   final issuerKeyId = 'issuer-key-1';
-  final issuerPrivateKeyBytes =
-      await extractPrivateKeyBytes(config.alicePrivateKeyPath);
+  final issuerPrivateKeyBytes = await extractPrivateKeyBytes(
+    config.alicePrivateKeyPath,
+  );
 
   await issuerKeyStore.set(
     issuerKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: issuerPrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: issuerPrivateKeyBytes),
   );
 
   await issuerDidManager.addVerificationMethod(issuerKeyId);
 
-  final issuerSigner =
-      await issuerDidManager.getSigner(issuerDidManager.assertionMethod.first);
+  final issuerSigner = await issuerDidManager.getSigner(
+    issuerDidManager.assertionMethod.first,
+  );
 
   // Initialize Holder
   final holderKeyStore = InMemoryKeyStore();
@@ -91,21 +89,20 @@ Future<void> main() async {
   );
 
   final holderKeyId = 'holder-key-1';
-  final holderPrivateKeyBytes =
-      await extractPrivateKeyBytes(config.bobPrivateKeyPath);
+  final holderPrivateKeyBytes = await extractPrivateKeyBytes(
+    config.bobPrivateKeyPath,
+  );
 
   await holderKeyStore.set(
     holderKeyId,
-    StoredKey(
-      keyType: KeyType.p256,
-      privateKeyBytes: holderPrivateKeyBytes,
-    ),
+    StoredKey(keyType: KeyType.p256, privateKeyBytes: holderPrivateKeyBytes),
   );
 
   await holderDidManager.addVerificationMethod(holderKeyId);
 
-  final holderSigner =
-      await holderDidManager.getSigner(holderDidManager.assertionMethod.first);
+  final holderSigner = await holderDidManager.getSigner(
+    holderDidManager.assertionMethod.first,
+  );
 
   // Configure ACLs
   await Future.wait([
@@ -158,28 +155,18 @@ Future<void> main() async {
   // Set up Holder message listeners
   vdipHolder.listenForIncomingMessages(
     onDiscloseMessage: (message) async {
-      prettyPrint(
-        'Holder: Received Feature Disclose Message',
-        object: message,
-      );
+      prettyPrint('Holder: Received Feature Disclose Message', object: message);
 
       await vdipHolder.requestCredential(
         issuerDid: issuerSigner.did,
         options: RequestCredentialsOptions(
           proposalId: 'proposal_browser_verification',
-          credentialMeta: CredentialMeta(
-            data: {
-              'email': 'holder@example.com',
-            },
-          ),
+          credentialMeta: CredentialMeta(data: {'email': 'holder@example.com'}),
         ),
       );
     },
     onSwitchContext: (message) async {
-      prettyPrint(
-        'Holder: Received Switch Context Message',
-        object: message,
-      );
+      prettyPrint('Holder: Received Switch Context Message', object: message);
 
       final verificationUrl = await vdipHolder.buildBrowserContextUrl(
         switchContextMessage: message,
@@ -196,19 +183,14 @@ Future<void> main() async {
       print('=' * 80 + '\n');
 
       /// Opens verification URL in the browser
-      await Process.run(
-        'open',
-        [verificationUrl.toString()],
-      );
+      await Process.run('open', [verificationUrl.toString()]);
 
       print(
-          'Holder: Sending credential request with nonce from context switch\n');
+        'Holder: Sending credential request with nonce from context switch\n',
+      );
     },
     onCredentialsIssuanceResponse: (message) async {
-      prettyPrint(
-        'Holder: CREDENTIAL RECEIVED!',
-        object: message,
-      );
+      prettyPrint('Holder: CREDENTIAL RECEIVED!', object: message);
 
       print('\n${'=' * 80}');
       print('SUCCESS! The complete flow is finished:');
@@ -234,10 +216,7 @@ Future<void> main() async {
   // Set up Issuer message listeners
   vdipIssuer.listenForIncomingMessages(
     onFeatureQuery: (message) async {
-      prettyPrint(
-        'Issuer: Received Feature Query',
-        object: message,
-      );
+      prettyPrint('Issuer: Received Feature Query', object: message);
 
       await vdipIssuer.disclose(queryMessage: message);
     },
@@ -282,7 +261,8 @@ Future<void> main() async {
       );
 
       print(
-          'Issuer: Switch context sent. Waiting for browser verification...\n');
+        'Issuer: Switch context sent. Waiting for browser verification...\n',
+      );
 
       // If we have a nonce, wait for verification result
       print('Issuer: Nonce received, waiting for verification result...\n');
@@ -303,11 +283,7 @@ Future<void> main() async {
     issuerDid: issuerSigner.did,
     options: RequestCredentialsOptions(
       proposalId: 'proposal_browser_verification',
-      credentialMeta: CredentialMeta(
-        data: {
-          'email': 'holder@example.com',
-        },
-      ),
+      credentialMeta: CredentialMeta(data: {'email': 'holder@example.com'}),
     ),
   );
 
@@ -324,10 +300,14 @@ Future<HttpServer> startIssuerServer({
   server.listen((HttpRequest request) async {
     // Enable CORS for browser requests
     request.response.headers.add('Access-Control-Allow-Origin', '*');
-    request.response.headers
-        .add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    request.response.headers
-        .add('Access-Control-Allow-Headers', 'Content-Type');
+    request.response.headers.add(
+      'Access-Control-Allow-Methods',
+      'GET, POST, OPTIONS',
+    );
+    request.response.headers.add(
+      'Access-Control-Allow-Headers',
+      'Content-Type',
+    );
 
     if (request.method == 'OPTIONS') {
       request.response.statusCode = HttpStatus.ok;
@@ -341,7 +321,8 @@ Future<HttpServer> startIssuerServer({
     if (uri.path == '/vdip/issuance' &&
         uri.queryParameters.containsKey('token')) {
       print(
-          'Issuer Server: Received browser request, redirecting to verification...\n');
+        'Issuer Server: Received browser request, redirecting to verification...\n',
+      );
 
       final token = uri.queryParameters['token']!;
 
@@ -459,9 +440,7 @@ Future<HttpServer> startIssuerServer({
         final suite = LdVcDm1Suite();
         final issuedCredential = await suite.issue(
           unsignedData: unsignedCredential,
-          proofGenerator: DataIntegrityEcdsaJcsGenerator(
-            signer: issuerSigner,
-          ),
+          proofGenerator: DataIntegrityEcdsaJcsGenerator(signer: issuerSigner),
         );
 
         await vdipIssuer.sendIssuedCredentials(

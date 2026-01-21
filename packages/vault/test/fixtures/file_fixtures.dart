@@ -25,8 +25,6 @@ class FileFixtures {
         parentId: 'test-folder-id',
       );
 
-  static File get rootFile => createFile(
-        id: 'root-file-id',
-        name: 'root-file.txt',
-      );
+  static File get rootFile =>
+      createFile(id: 'root-file-id', name: 'root-file.txt');
 }

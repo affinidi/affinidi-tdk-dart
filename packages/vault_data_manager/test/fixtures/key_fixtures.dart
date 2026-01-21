@@ -36,7 +36,7 @@ class KeyFixtures {
         44,
         44,
         44,
-        44
+        44,
       ]);
 
   static KeyType get testKeyType => KeyType.secp256k1;
