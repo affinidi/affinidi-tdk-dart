@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_edge_drift_provider/affinidi_tdk_vault_edge_drift_provider.dart';
 import 'package:file_picker/file_picker.dart';

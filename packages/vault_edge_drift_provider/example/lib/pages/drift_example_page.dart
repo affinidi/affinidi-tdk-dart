@@ -72,7 +72,7 @@ class _DriftExamplePageState extends State<DriftExamplePage> {
 
     if (_state.currentFileContent != null && _state.currentFileName != null) {
       if (mounted) {
-        showDialog(
+        await showDialog<void>(
           context: context,
           builder: (context) => FilePreviewDialog(
             fileName: _state.currentFileName!,
