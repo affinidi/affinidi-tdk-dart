@@ -3,7 +3,7 @@ description: A library to manage Vault CRUD operations on a Drift database
 version: 1.6.0
 repository: https://github.com/affinidi/affinidi-tdk-dart
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.8.0
 resolution: workspace
 dependencies:
   affinidi_tdk_common: ^1.6.0

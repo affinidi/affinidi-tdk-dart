@@ -1,8 +1,9 @@
 import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediator_client.dart';
 import 'package:affinidi_tdk_vdip/affinidi_tdk_vdip.dart';
-import '../../../integration_tests/test/test_config.dart';
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../../integration_tests/test/test_config.dart';
 
 // Run commands below in your terminal to generate keys for Alice and Bob:
 // openssl ecparam -name prime256v1 -genkey -noout -out example/keys/alice_private_key.pem
@@ -28,8 +29,8 @@ Future<void> main() async {
 
   final mediatorDid = await readDid(config.mediatorDidPath);
 
-  final mediatorDidDocument =
-      await UniversalDIDResolver.defaultResolver.resolveDid(mediatorDid);
+  final mediatorDidDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(mediatorDid);
 
   final issuerKeyStore = InMemoryKeyStore();
   final issuerWallet = PersistentWallet(issuerKeyStore);
@@ -161,79 +162,80 @@ Future<void> main() async {
 
       await vdipIssuer.disclose(queryMessage: message);
     },
-    onRequestToIssueCredential: ({
-      required message,
-      holderDidFromAssertion,
-      assertionValidationResult,
-      challenge,
-    }) async {
-      prettyPrint(
-        'Issuer received Request to Issue Credential Message',
-        object: message,
-      );
+    onRequestToIssueCredential:
+        ({
+          required message,
+          holderDidFromAssertion,
+          assertionValidationResult,
+          challenge,
+        }) async {
+          prettyPrint(
+            'Issuer received Request to Issue Credential Message',
+            object: message,
+          );
 
-      if (challenge != null) {
-        prettyPrint('Challenge received', object: {'challenge': challenge});
-      }
+          if (challenge != null) {
+            prettyPrint('Challenge received', object: {'challenge': challenge});
+          }
 
-      final vdipRequestIssuanceMessageBody =
-          VdipRequestIssuanceMessageBody.fromJson(message.body!);
+          final vdipRequestIssuanceMessageBody =
+              VdipRequestIssuanceMessageBody.fromJson(message.body!);
 
-      final email = vdipRequestIssuanceMessageBody
-          .credentialMeta?.data?['email'] as String?;
+          final email =
+              vdipRequestIssuanceMessageBody.credentialMeta?.data?['email']
+                  as String?;
 
-      if (email == null) {
-        throw ArgumentError.notNull('body.credentialMeta.data.email');
-      }
+          if (email == null) {
+            throw ArgumentError.notNull('body.credentialMeta.data.email');
+          }
 
-      if (message.from == null) {
-        throw ArgumentError.notNull('from');
-      }
+          if (message.from == null) {
+            throw ArgumentError.notNull('from');
+          }
 
-      // if multiple credential formats are supported, check which one is requested
-      // vdipRequestIssuanceMessageBody.credentialFormat
-      // we will proceed with W3C Verifiable Credentials Data Model 1.0
+          // if multiple credential formats are supported, check which one is requested
+          // vdipRequestIssuanceMessageBody.credentialFormat
+          // we will proceed with W3C Verifiable Credentials Data Model 1.0
 
-      final unsignedCredential = VcDataModelV1(
-        context: [
-          dmV1ContextUrl,
-          'https://d2oeuqaac90cm.cloudfront.net/TTestMusicSubscriptionV1R0.jsonld',
-        ],
-        credentialSchema: [
-          CredentialSchema(
-            id: Uri.parse(
-              'https://d2oeuqaac90cm.cloudfront.net/TTestMusicSubscriptionV1R0.json',
+          final unsignedCredential = VcDataModelV2(
+            context: JsonLdContext.fromJson([
+              dmV2ContextUrl,
+              'https://d2oeuqaac90cm.cloudfront.net/TTestMusicSubscriptionV1R0.jsonld',
+            ]),
+            credentialSchema: [
+              CredentialSchema(
+                id: Uri.parse(
+                  'https://d2oeuqaac90cm.cloudfront.net/TTestMusicSubscriptionV1R0.json',
+                ),
+                type: 'JsonSchemaValidator2018',
+              ),
+            ],
+            id: Uri.parse(const Uuid().v4()),
+            issuer: Issuer.uri(issuerSigner.did),
+            type: {'VerifiableCredential', 'TestMusicSubscription'},
+            credentialSubject: [
+              CredentialSubject.fromJson({
+                'id': message.from!, // holder DID
+                'email': email,
+                'subscriptionType': 'basic',
+              }),
+            ],
+          );
+
+          final suite = LdVcDm2Suite();
+
+          final issuedCredential = await suite.issue(
+            unsignedData: unsignedCredential,
+            proofGenerator: DataIntegrityEcdsaJcsGenerator(
+              signer: issuerSigner,
             ),
-            type: 'JsonSchemaValidator2018',
-          ),
-        ],
-        id: Uri.parse(const Uuid().v4()),
-        issuer: Issuer.uri(issuerSigner.did),
-        type: {'VerifiableCredential', 'TestMusicSubscription'},
-        issuanceDate: DateTime.now().toUtc(),
-        credentialSubject: [
-          CredentialSubject.fromJson({
-            'id': message.from!, // holder DID
-            'email': email,
-            'subscriptionType': 'basic',
-          }),
-        ],
-      );
+          );
 
-      final suite = LdVcDm1Suite();
-
-      final issuedCredential = await suite.issue(
-        unsignedData: unsignedCredential,
-        proofGenerator: DataIntegrityEcdsaJcsGenerator(
-          signer: issuerSigner,
-        ),
-      );
-
-      await vdipIssuer.sendIssuedCredentials(
-        holderDid: message.from!,
-        verifiableCredential: issuedCredential,
-      );
-    },
+          await vdipIssuer.sendIssuedCredentials(
+            holderDid: message.from!,
+            verifiableCredential: issuedCredential,
+          );
+        },
     onProblemReport: (message) {
       prettyPrint('A problem has occurred', object: message);
     },

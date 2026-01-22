@@ -4,6 +4,14 @@ publish_to: none
 environment:
   sdk: ^3.8.0
 workspace:
+  - clients/didcomm/atlas_didcomm_client
+  - clients/login_configuration_client
+  - clients/credential_issuance_client
+  - clients/iam_client
+  - clients/credential_verification_client
+  - clients/wallets_client
+  - clients/iota_client
+  - clients/vault_data_manager_client
   - packages/auth_provider
   - packages/claim_verifiable_credential
   - packages/common
@@ -16,13 +24,6 @@ workspace:
   - packages/vault_flutter_utils
   - packages/vault_flutter_utils/example/flutter_secure_storage
   - packages/integration_tests
-  - clients/login_configuration_client
-  - clients/credential_issuance_client
-  - clients/iam_client
-  - clients/credential_verification_client
-  - clients/wallets_client
-  - clients/iota_client
-  - clients/vault_data_manager_client
   - packages/vault_edge_drift_provider
   - packages/vault_edge_provider
   - packages/didcomm/didcomm_mediator_client

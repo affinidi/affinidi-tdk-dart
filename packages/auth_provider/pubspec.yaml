@@ -3,7 +3,7 @@ description: Auth provider that allows creating project scoped tokens to access 
 version: 1.4.3
 repository: https://github.com/affinidi/affinidi-tdk-dart
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.8.0
 resolution: workspace
 dependencies:
   affinidi_tdk_common: ^1.6.0

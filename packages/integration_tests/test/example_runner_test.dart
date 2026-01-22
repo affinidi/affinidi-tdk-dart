@@ -5,7 +5,11 @@ import 'package:test/test.dart';
 import 'test_config.dart';
 
 void main() async {
-  final testsToSkip = ['atlas_example.dart', 'browser_context_example.dart'];
+  final testsToSkip = [
+    'atlas_example.dart',
+    'atlas_list_mediators_example.dart',
+    'browser_context_example.dart',
+  ];
 
   group('Running example files', () {
     for (final packageName in [
@@ -24,13 +28,10 @@ void main() async {
             skipMediator: true,
           );
 
-          final result = await Process.run(
-              Platform.resolvedExecutable,
-              [
-                'pub',
-                'get',
-              ],
-              workingDirectory: config.packagePath);
+          final result = await Process.run(Platform.resolvedExecutable, [
+            'pub',
+            'get',
+          ], workingDirectory: config.packagePath);
 
           if (result.exitCode != 0) {
             throw Exception(
