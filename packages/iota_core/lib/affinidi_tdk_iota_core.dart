@@ -1,5 +1,3 @@
-library;
-
 import 'src/iota_auth_provider.dart';
 
 class IotaCore {

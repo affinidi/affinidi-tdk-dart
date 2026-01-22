@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class AuthProviderParams {
   final String region;
@@ -69,8 +70,7 @@ class IotaAuthProvider {
       throw Exception('Failed to exchange credentials');
     }
 
-    final Map<String, dynamic> data =
-        jsonDecode(response.body) as Map<String, dynamic>;
+    final data = jsonDecode(response.body) as Map<String, dynamic>;
     final connectionClientId = data['connectionClientId'] as String;
 
     final identityCredentials = IdentityCredentials.fromJson(

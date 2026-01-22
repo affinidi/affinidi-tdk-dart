@@ -1,7 +1,7 @@
 import 'package:affinidi_tdk_auth_provider/affinidi_tdk_auth_provider.dart';
 import 'package:affinidi_tdk_iota_core/affinidi_tdk_iota_core.dart';
-import 'package:test/test.dart';
 import 'package:dotenv/dotenv.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('Iota core', () {
@@ -23,7 +23,7 @@ void main() {
     });
 
     test('Get Iota credentials', () async {
-      final iotaToken = await authProvider.createIotaToken(
+      final iotaToken = authProvider.createIotaToken(
         iotaConfigId: env['IOTA_CONFIG_ID']!,
         did: env['DID']!,
       );
