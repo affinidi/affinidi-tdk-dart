@@ -125,9 +125,9 @@ Future<void> main() async {
               final holderDid = message.from!;
 
               // Create the credential to issue
-              final credentialToIssue = VcDataModelV1(
+              final credentialToIssue = VcDataModelV2(
                 context: JsonLdContext.fromJson([
-                  dmV1ContextUrl,
+                  dmV2ContextUrl,
                   'https://schema.affinidi.io/TEmailV1R0.jsonld',
                 ]),
                 credentialSchema: [
@@ -139,7 +139,6 @@ Future<void> main() async {
                 id: Uri.parse(const Uuid().v4()),
                 issuer: Issuer.uri(issuerSigner.did),
                 type: {'VerifiableCredential', 'Email'},
-                issuanceDate: DateTime.now().toUtc(),
                 credentialSubject: [
                   CredentialSubject.fromJson({
                     'id': holderDid,
@@ -149,7 +148,7 @@ Future<void> main() async {
               );
 
               // Sign the credential
-              final suite = LdVcDm1Suite();
+              final suite = LdVcDm2Suite();
               final issuedCredential = await suite.issue(
                 unsignedData: credentialToIssue,
                 proofGenerator: DataIntegrityEcdsaJcsGenerator(

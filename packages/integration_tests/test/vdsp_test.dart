@@ -31,7 +31,7 @@ Future<void> main() async {
 
     late DidSigner holderSigner;
 
-    late List<LdVcDataModelV1> holderVerifiableCredentials;
+    late List<LdVcDataModelV2> holderVerifiableCredentials;
     late DcqlCredentialQuery verifierDcql;
 
     setUp(() async {
@@ -117,9 +117,9 @@ Future<void> main() async {
 
       holderVerifiableCredentials = await Future.wait(
         [
-          VcDataModelV1(
+          VcDataModelV2(
             context: JsonLdContext.fromJson([
-              dmV1ContextUrl,
+              dmV2ContextUrl,
               'https://schema.affinidi.io/TEmailV1R0.jsonld',
             ]),
             credentialSchema: [
@@ -131,7 +131,6 @@ Future<void> main() async {
             id: Uri.parse(const Uuid().v4()),
             issuer: Issuer.uri(issuerSigner.did),
             type: {'VerifiableCredential', 'Email'},
-            issuanceDate: DateTime.now().toUtc(),
             credentialSubject: [
               CredentialSubject.fromJson({
                 'id': holderSigner.did,
@@ -140,7 +139,7 @@ Future<void> main() async {
             ],
           ),
         ].map((unsignedCredential) async {
-          final suite = LdVcDm1Suite();
+          final suite = LdVcDm2Suite();
           final issuedCredential = await suite.issue(
             unsignedData: unsignedCredential,
             proofGenerator: DataIntegrityEcdsaJcsGenerator(

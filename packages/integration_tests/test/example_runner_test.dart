@@ -5,18 +5,14 @@ import 'package:test/test.dart';
 import 'test_config.dart';
 
 void main() async {
-  final testsToSkip = [
-    'atlas_example.dart',
-    'atlas_list_mediators_example.dart',
-    'browser_context_example.dart',
-  ];
+  final testsToSkip = ['atlas_example.dart', 'browser_context_example.dart'];
 
   group('Running example files', () {
     for (final packageName in [
       'didcomm_mediator_client',
       'vdsp',
       'vdip',
-      'atlas_didcomm_client',
+      // 'atlas_didcomm_client',
     ]) {
       group(packageName, () {
         late TestConfig config;
