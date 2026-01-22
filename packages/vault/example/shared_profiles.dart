@@ -160,16 +160,16 @@ void main() async {
   print('[Demo] Waiting before download attempt...');
   await Future<void>.delayed(const Duration(seconds: 5));
 
-  final aliceFileContent =
-      await aliceProfile.defaultFileStorage!.getFileContent(
-    fileId: aliceFileId,
-    onReceiveProgress: (received, total) {
-      if (total != -1) {
-        final progress = (received / total * 100).toStringAsFixed(2);
-        print('[Demo] Alice download progress: $progress%');
-      }
-    },
-  );
+  final aliceFileContent = await aliceProfile.defaultFileStorage!
+      .getFileContent(
+        fileId: aliceFileId,
+        onReceiveProgress: (received, total) {
+          if (total != -1) {
+            final progress = (received / total * 100).toStringAsFixed(2);
+            print('[Demo] Alice download progress: $progress%');
+          }
+        },
+      );
   print('[Demo] Alice file content: $aliceFileContent');
 
   // Try revoking
@@ -200,8 +200,9 @@ void main() async {
   );
 
   profilesBob = await vaultBob.listProfiles();
-  var bobProfileWithSharedStorage =
-      profilesBob.where((profile) => profile.id == bobProfile.id).firstOrNull;
+  var bobProfileWithSharedStorage = profilesBob
+      .where((profile) => profile.id == bobProfile.id)
+      .firstOrNull;
   final bobSharedStorages = bobProfileWithSharedStorage!.sharedStorages;
 
   print(
@@ -241,8 +242,8 @@ void main() async {
     '[Demo] Bob is trying to access Alice\'s files after expiration (should fail)...',
   );
   try {
-    final folderPageAfterRevokal =
-        await bobSharedStorageWAliceProfile!.getFolder();
+    final folderPageAfterRevokal = await bobSharedStorageWAliceProfile!
+        .getFolder();
     print(
       '[Demo] Bob available shared files from Alice after revokal: ${folderPageAfterRevokal.items.map((item) => item.name).join('\n')}',
     );

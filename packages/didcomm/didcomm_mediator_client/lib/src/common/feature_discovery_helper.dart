@@ -71,43 +71,39 @@ class FeatureDiscoveryHelper {
   /// Returns a list of [Query] objects for the given [disclosures].
   static List<Query> getFeatureQueriesByDisclosures(
     List<Disclosure> disclosures,
-  ) =>
-      disclosures
-          .map(
-            (disclosure) => Query(
-                featureType: disclosure.featureType, match: disclosure.id),
-          )
-          .toList();
+  ) => disclosures
+      .map(
+        (disclosure) =>
+            Query(featureType: disclosure.featureType, match: disclosure.id),
+      )
+      .toList();
 
   /// Returns the list of supported [Disclosure]s from [discloses] that match the given [queries].
   static List<Disclosure> getSupportedFeatures(
     List<Disclosure> discloses,
     List<Query> queries,
-  ) =>
-      discloses
-          .where(
-            (disclose) => queries.any(
-              (query) =>
-                  query.featureType == disclose.featureType &&
-                  query.match == disclose.id,
-            ),
-          )
-          .toList();
+  ) => discloses
+      .where(
+        (disclose) => queries.any(
+          (query) =>
+              query.featureType == disclose.featureType &&
+              query.match == disclose.id,
+        ),
+      )
+      .toList();
 
   /// Returns the list of [Disclosure]s from [expectedFeatureDisclosures] that are not present in [actualFeatureDisclosures].
   static List<Disclosure> getUnsupportedFeatures({
     required List<Disclosure> expectedFeatureDisclosures,
     required List<Disclosure> actualFeatureDisclosures,
-  }) =>
-      expectedFeatureDisclosures
-          .where(
-            (expectedDisclosure) => !actualFeatureDisclosures.any(
-              (actualDisclosure) =>
-                  actualDisclosure.featureType ==
-                      expectedDisclosure.featureType &&
-                  actualDisclosure.id == expectedDisclosure.id,
-              // TODO: handle roles
-            ),
-          )
-          .toList();
+  }) => expectedFeatureDisclosures
+      .where(
+        (expectedDisclosure) => !actualFeatureDisclosures.any(
+          (actualDisclosure) =>
+              actualDisclosure.featureType == expectedDisclosure.featureType &&
+              actualDisclosure.id == expectedDisclosure.id,
+          // TODO: handle roles
+        ),
+      )
+      .toList();
 }

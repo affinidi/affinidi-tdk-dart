@@ -55,8 +55,8 @@ void main() {
           statusCode: 200,
           data: NodeResponseFixtures.profileList,
         );
-        final profilesResponse =
-            await vaultDataManagerApiService.getListOfProfiles();
+        final profilesResponse = await vaultDataManagerApiService
+            .getListOfProfiles();
         expect(profilesResponse.data?.nodes?.toList().first.name, 'My profile');
       });
     });
@@ -67,8 +67,8 @@ void main() {
           statusCode: 200,
           data: NodeResponseFixtures.emptyList,
         );
-        final profilesResponse =
-            await vaultDataManagerApiService.getListOfProfiles();
+        final profilesResponse = await vaultDataManagerApiService
+            .getListOfProfiles();
         expect(profilesResponse.data?.nodes, isEmpty);
       });
     });
@@ -180,8 +180,8 @@ void main() {
           data: FileResponseFixtures.scannedFilesList,
         );
 
-        final scannedFilesResponse =
-            await vaultDataManagerApiService.getAllScannedFiles();
+        final scannedFilesResponse = await vaultDataManagerApiService
+            .getAllScannedFiles();
         expect(
           scannedFilesResponse.data?.scannedFiles.first.status,
           equals('COMPLETED'),
@@ -197,8 +197,8 @@ void main() {
           data: FileResponseFixtures.emptyScannedFilesList,
         );
 
-        final scannedFilesResponse =
-            await vaultDataManagerApiService.getAllScannedFiles();
+        final scannedFilesResponse = await vaultDataManagerApiService
+            .getAllScannedFiles();
         expect(scannedFilesResponse.data?.scannedFiles, isEmpty);
       });
     });
@@ -424,15 +424,15 @@ void main() {
         data: Matchers.any,
       );
 
-      final result =
-          await vaultDataManagerApiService.uploadVerifiableCredential(
-        profileId: NodeResponseFixtures.rootNodeId,
-        verifiableCredentialName: FileResponseFixtures.testVcName,
-        verifiableCredentialBlob: Uint8List.fromList([1, 2, 3]),
-        dekEncryptedByVfsPublicKey: TestDataFixtures.testDek,
-        dekEncryptedByWalletCryptoMaterial: TestDataFixtures.testDek,
-        walletCryptoMaterialHash: TestDataFixtures.testHash,
-      );
+      final result = await vaultDataManagerApiService
+          .uploadVerifiableCredential(
+            profileId: NodeResponseFixtures.rootNodeId,
+            verifiableCredentialName: FileResponseFixtures.testVcName,
+            verifiableCredentialBlob: Uint8List.fromList([1, 2, 3]),
+            dekEncryptedByVfsPublicKey: TestDataFixtures.testDek,
+            dekEncryptedByWalletCryptoMaterial: TestDataFixtures.testDek,
+            walletCryptoMaterialHash: TestDataFixtures.testHash,
+          );
 
       expect(result.data?.nodeId, isNotNull);
     });
@@ -497,8 +497,8 @@ void main() {
         }),
       );
 
-      final result =
-          await vaultDataManagerApiService.getVaultDataManagerPublicKey();
+      final result = await vaultDataManagerApiService
+          .getVaultDataManagerPublicKey();
       expect(result['kid'], equals(TestDataFixtures.testKid));
     });
   });

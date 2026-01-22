@@ -42,8 +42,8 @@ class AuthProvider {
     required this.privateKey,
     this.keyId,
     this.passphrase,
-  })  : apiGatewayUrl = Environment.fetchApiGwUrl(),
-        tokenEndpoint = Environment.fetchElementsAuthTokenUrl();
+  }) : apiGatewayUrl = Environment.fetchApiGwUrl(),
+       tokenEndpoint = Environment.fetchElementsAuthTokenUrl();
 
   /// Constructor for internal use only. Allows for custom API Gateway and
   /// token endpoint.

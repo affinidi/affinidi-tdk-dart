@@ -37,8 +37,7 @@ void main() {
     });
 
     group('and the token was issued for a different user DID', () {
-      test('it throws an exception with code consumerTokenDidMismatch',
-          () async {
+      test('it throws an exception with code consumerTokenDidMismatch', () async {
         final didSigner = await DidSignerFixture.withSeed(seed);
         final provider = ConsumerAuthProvider(
           signer: didSigner,

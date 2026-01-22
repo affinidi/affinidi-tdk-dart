@@ -102,8 +102,8 @@ abstract class TokenProvider {
     required String aud,
     required int exp,
   }) {
-    final issueTimeS =
-        (DateTime.timestamp().millisecondsSinceEpoch / 1000).floor();
+    final issueTimeS = (DateTime.timestamp().millisecondsSinceEpoch / 1000)
+        .floor();
     final payload = {
       'iss': iss,
       'sub': sub,

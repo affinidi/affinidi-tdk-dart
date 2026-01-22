@@ -89,13 +89,13 @@ void main() async {
 
   final aliceSignedAndEncryptedMessage =
       await DidcommMessage.packIntoSignedAndEncryptedMessages(
-    alicePlainTextMassage,
-    keyType: [bobDidDocument].getCommonKeyTypesInKeyAgreements().first,
-    recipientDidDocuments: [bobDidDocument],
-    keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
-    encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
-    signer: aliceSigner,
-  );
+        alicePlainTextMassage,
+        keyType: [bobDidDocument].getCommonKeyTypesInKeyAgreements().first,
+        recipientDidDocuments: [bobDidDocument],
+        keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
+        encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
+        signer: aliceSigner,
+      );
 
   prettyPrint(
     'Encrypted and Signed Message by Alice',
@@ -154,15 +154,15 @@ void main() async {
     (message) async {
       final unpackedMessageByBob =
           await DidcommMessage.unpackToPlainTextMessage(
-        message: message,
-        recipientDidManager: bobDidManager,
-        expectedMessageWrappingTypes: [
-          MessageWrappingType.authcryptPlaintext,
-          MessageWrappingType.authcryptSignPlaintext,
-          MessageWrappingType.anoncryptSignPlaintext,
-          MessageWrappingType.anoncryptAuthcryptPlaintext,
-        ],
-      );
+            message: message,
+            recipientDidManager: bobDidManager,
+            expectedMessageWrappingTypes: [
+              MessageWrappingType.authcryptPlaintext,
+              MessageWrappingType.authcryptSignPlaintext,
+              MessageWrappingType.anoncryptSignPlaintext,
+              MessageWrappingType.anoncryptAuthcryptPlaintext,
+            ],
+          );
 
       prettyPrint(
         'Unpacked Plain Text Message received by Bob via Mediator',

@@ -43,7 +43,7 @@ import 'oid4vci_claim_verifiable_credential_interface.dart';
 class OID4VCIClaimVerifiableCredentialService
     implements OID4VCIClaimVerifiableCredentialServiceInterface {
   final OID4VCIClaimVerifiableCredentialApiServiceInterface
-      _claimVerifiableCredentialApiService;
+  _claimVerifiableCredentialApiService;
   final ConsumerAuthProvider _consumerAuthProvider;
   final Logger _logger;
   static const _componentName = 'OID4VCIClaimService';
@@ -64,15 +64,16 @@ class OID4VCIClaimVerifiableCredentialService
     required DidSigner didSigner,
     Dio? client,
     OID4VCIClaimVerifiableCredentialApiServiceInterface?
-        claimVerifiableCredentialApiService,
+    claimVerifiableCredentialApiService,
     ConsumerAuthProvider? consumerAuthProvider,
     Logger? logger,
-  })  : _claimVerifiableCredentialApiService =
-            claimVerifiableCredentialApiService ??
-                OID4VCIClaimVerifiableCredentialApiService(client: client),
-        _consumerAuthProvider = consumerAuthProvider ??
-            ConsumerAuthProvider(signer: didSigner, client: client),
-        _logger = logger ?? Logger.instance;
+  }) : _claimVerifiableCredentialApiService =
+           claimVerifiableCredentialApiService ??
+           OID4VCIClaimVerifiableCredentialApiService(client: client),
+       _consumerAuthProvider =
+           consumerAuthProvider ??
+           ConsumerAuthProvider(signer: didSigner, client: client),
+       _logger = logger ?? Logger.instance;
 
   /// Loads a credential offer from the given [uri] and returns a [OID4VCIClaimContext]
   /// containing both the credential offer and the issuer metadata.
@@ -223,10 +224,10 @@ class OID4VCIClaimVerifiableCredentialService
     try {
       final accessTokenResponse = await _claimVerifiableCredentialApiService
           .getClaimCredentialAccessToken(
-        offer: claimContext.credentialOffer,
-        tokenEndpoint: claimContext.issuerMetadata.tokenEndpoint,
-        transactionCode: txCode,
-      );
+            offer: claimContext.credentialOffer,
+            tokenEndpoint: claimContext.issuerMetadata.tokenEndpoint,
+            transactionCode: txCode,
+          );
 
       if (accessTokenResponse.statusCode != 200) {
         _logger.error(
@@ -245,13 +246,13 @@ class OID4VCIClaimVerifiableCredentialService
           accessTokenResponse.data as Map<String, dynamic>;
 
       final jwt = await _consumerAuthProvider.fetchCisToken();
-      final credentialResponse =
-          await _claimVerifiableCredentialApiService.claimCredential(
-        accessToken: accessTokenResponseJson['access_token'] as String,
-        offer: claimContext.credentialOffer,
-        credentialEndpoint: claimContext.issuerMetadata.credentialEndpoint,
-        jwt: jwt,
-      );
+      final credentialResponse = await _claimVerifiableCredentialApiService
+          .claimCredential(
+            accessToken: accessTokenResponseJson['access_token'] as String,
+            offer: claimContext.credentialOffer,
+            credentialEndpoint: claimContext.issuerMetadata.credentialEndpoint,
+            jwt: jwt,
+          );
 
       if (credentialResponse.statusCode != 200) {
         _logger.error(

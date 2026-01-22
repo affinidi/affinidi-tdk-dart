@@ -23,17 +23,17 @@ class VfsSharedStorage implements vault.SharedStorage {
     required String id,
     required VaultDataManagerServiceInterface dataManagerService,
     required String sharedProfileId, // nodePath
-  })  : _id = id,
-        _sharedProfileId = sharedProfileId,
-        _credentialStorage = VFSCredentialStorage(
-          id: id,
-          dataManagerService: dataManagerService,
-          profileId: sharedProfileId,
-        ),
-        _fileStorage = VFSFileStorage(
-          id: id,
-          dataManagerService: dataManagerService,
-        );
+  }) : _id = id,
+       _sharedProfileId = sharedProfileId,
+       _credentialStorage = VFSCredentialStorage(
+         id: id,
+         dataManagerService: dataManagerService,
+         profileId: sharedProfileId,
+       ),
+       _fileStorage = VFSFileStorage(
+         id: id,
+         dataManagerService: dataManagerService,
+       );
 
   final String _id;
   final String _sharedProfileId;

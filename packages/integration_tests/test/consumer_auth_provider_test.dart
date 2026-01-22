@@ -30,12 +30,12 @@ void main() {
     test(
       'with a Dio Client - obtains a consumer scoped token and caches it',
       () async {
-        final consumerAuthToken1 =
-            await providerWithClient.fetchConsumerToken();
+        final consumerAuthToken1 = await providerWithClient
+            .fetchConsumerToken();
         expect(consumerAuthToken1, isNotEmpty);
 
-        final consumerAuthToken2 =
-            await providerWithClient.fetchConsumerToken();
+        final consumerAuthToken2 = await providerWithClient
+            .fetchConsumerToken();
         expect(consumerAuthToken2, equals(consumerAuthToken1));
       },
     );
@@ -48,12 +48,12 @@ void main() {
     test(
       'without a Dio client - obtains a consumer scoped token and caches it',
       () async {
-        final consumerAuthToken1 =
-            await providerWithoutClient.fetchConsumerToken();
+        final consumerAuthToken1 = await providerWithoutClient
+            .fetchConsumerToken();
         expect(consumerAuthToken1, isNotEmpty);
 
-        final consumerAuthToken2 =
-            await providerWithoutClient.fetchConsumerToken();
+        final consumerAuthToken2 = await providerWithoutClient
+            .fetchConsumerToken();
         expect(consumerAuthToken2, equals(consumerAuthToken1));
       },
     );

@@ -31,22 +31,22 @@ class ConsumerTokenProvider extends TokenProvider with JwtTokenDidChecker {
     Dio? client,
     ElementsRegion region = ElementsRegion.apSoutheast1,
     Environment? env,
-  })  : _signer = signer,
-        _dioInstance = client ??
-            ((_apiTimeOutInMilliseconds != null)
-                ? Dio(
-                    BaseOptions(
-                      connectTimeout: Duration(
-                        milliseconds: _apiTimeOutInMilliseconds!,
-                      ),
-                      receiveTimeout: Duration(
-                        milliseconds: _apiTimeOutInMilliseconds!,
-                      ),
-                    ),
-                  )
-                : Dio()),
-        _tokenEndpoint =
-            Environment.fetchConsumerAudienceUrl(env, null, region);
+  }) : _signer = signer,
+       _dioInstance =
+           client ??
+           ((_apiTimeOutInMilliseconds != null)
+               ? Dio(
+                   BaseOptions(
+                     connectTimeout: Duration(
+                       milliseconds: _apiTimeOutInMilliseconds!,
+                     ),
+                     receiveTimeout: Duration(
+                       milliseconds: _apiTimeOutInMilliseconds!,
+                     ),
+                   ),
+                 )
+               : Dio()),
+       _tokenEndpoint = Environment.fetchConsumerAudienceUrl(env, null, region);
 
   /// Method to retrieve a consumer token.
   ///

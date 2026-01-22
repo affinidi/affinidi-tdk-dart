@@ -37,16 +37,17 @@ class TestConfig {
       packageDirectoryName: packageDirectoryName,
     );
 
-    final [mediatorDidPath, alicePrivateKeyPath, bobPrivateKeyPath] = [
-      'example/mediator/mediator_did.txt',
-      'example/keys/alice_private_key.pem',
-      'example/keys/bob_private_key.pem',
-    ]
-        .map(
-          (fileName) =>
-              _getFilePath(packagePath: packagePath, fileName: fileName),
-        )
-        .toList();
+    final [mediatorDidPath, alicePrivateKeyPath, bobPrivateKeyPath] =
+        [
+              'example/mediator/mediator_did.txt',
+              'example/keys/alice_private_key.pem',
+              'example/keys/bob_private_key.pem',
+            ]
+            .map(
+              (fileName) =>
+                  _getFilePath(packagePath: packagePath, fileName: fileName),
+            )
+            .toList();
 
     if (!skipMediator) {
       await writeEnvironmentVariableToFileIfNeeded(

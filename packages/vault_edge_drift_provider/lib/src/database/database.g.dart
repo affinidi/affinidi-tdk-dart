@@ -197,19 +197,19 @@ class Profile extends DataClass implements Insertable<Profile> {
     String? name,
     Value<String?> description = const Value.absent(),
     int? accountIndex,
-  }) =>
-      Profile(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        description: description.present ? description.value : this.description,
-        accountIndex: accountIndex ?? this.accountIndex,
-      );
+  }) => Profile(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    description: description.present ? description.value : this.description,
+    accountIndex: accountIndex ?? this.accountIndex,
+  );
   Profile copyWithCompanion(ProfilesCompanion data) {
     return Profile(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
-      description:
-          data.description.present ? data.description.value : this.description,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
       accountIndex: data.accountIndex.present
           ? data.accountIndex.value
           : this.accountIndex,
@@ -258,8 +258,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.description = const Value.absent(),
     required int accountIndex,
     this.rowid = const Value.absent(),
-  })  : name = Value(name),
-        accountIndex = Value(accountIndex);
+  }) : name = Value(name),
+       accountIndex = Value(accountIndex);
   static Insertable<Profile> custom({
     Expression<String>? id,
     Expression<String>? name,
@@ -378,12 +378,12 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
   @override
   late final GeneratedColumnWithTypeConverter<ItemType, int> itemType =
       GeneratedColumn<int>(
-    'item_type',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  ).withConverter<ItemType>($ItemsTable.$converteritemType);
+        'item_type',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: true,
+      ).withConverter<ItemType>($ItemsTable.$converteritemType);
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -410,14 +410,14 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
   );
   @override
   List<GeneratedColumn> get $columns => [
-        id,
-        profileId,
-        name,
-        parentId,
-        itemType,
-        createdAt,
-        modifiedAt,
-      ];
+    id,
+    profileId,
+    name,
+    parentId,
+    itemType,
+    createdAt,
+    modifiedAt,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -618,16 +618,15 @@ class Item extends DataClass implements Insertable<Item> {
     ItemType? itemType,
     DateTime? createdAt,
     DateTime? modifiedAt,
-  }) =>
-      Item(
-        id: id ?? this.id,
-        profileId: profileId ?? this.profileId,
-        name: name ?? this.name,
-        parentId: parentId.present ? parentId.value : this.parentId,
-        itemType: itemType ?? this.itemType,
-        createdAt: createdAt ?? this.createdAt,
-        modifiedAt: modifiedAt ?? this.modifiedAt,
-      );
+  }) => Item(
+    id: id ?? this.id,
+    profileId: profileId ?? this.profileId,
+    name: name ?? this.name,
+    parentId: parentId.present ? parentId.value : this.parentId,
+    itemType: itemType ?? this.itemType,
+    createdAt: createdAt ?? this.createdAt,
+    modifiedAt: modifiedAt ?? this.modifiedAt,
+  );
   Item copyWithCompanion(ItemsCompanion data) {
     return Item(
       id: data.id.present ? data.id.value : this.id,
@@ -636,8 +635,9 @@ class Item extends DataClass implements Insertable<Item> {
       parentId: data.parentId.present ? data.parentId.value : this.parentId,
       itemType: data.itemType.present ? data.itemType.value : this.itemType,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
-      modifiedAt:
-          data.modifiedAt.present ? data.modifiedAt.value : this.modifiedAt,
+      modifiedAt: data.modifiedAt.present
+          ? data.modifiedAt.value
+          : this.modifiedAt,
     );
   }
 
@@ -657,14 +657,14 @@ class Item extends DataClass implements Insertable<Item> {
 
   @override
   int get hashCode => Object.hash(
-        id,
-        profileId,
-        name,
-        parentId,
-        itemType,
-        createdAt,
-        modifiedAt,
-      );
+    id,
+    profileId,
+    name,
+    parentId,
+    itemType,
+    createdAt,
+    modifiedAt,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -706,9 +706,9 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     this.createdAt = const Value.absent(),
     this.modifiedAt = const Value.absent(),
     this.rowid = const Value.absent(),
-  })  : profileId = Value(profileId),
-        name = Value(name),
-        itemType = Value(itemType);
+  }) : profileId = Value(profileId),
+       name = Value(name),
+       itemType = Value(itemType);
   static Insertable<Item> custom({
     Expression<String>? id,
     Expression<String>? profileId,
@@ -962,8 +962,8 @@ class FileContentsCompanion extends UpdateCompanion<FileContent> {
     required String id,
     required Uint8List content,
     this.rowid = const Value.absent(),
-  })  : id = Value(id),
-        content = Value(content);
+  }) : id = Value(id),
+       content = Value(content);
   static Insertable<FileContent> custom({
     Expression<String>? id,
     Expression<Uint8List>? content,
@@ -1090,13 +1090,13 @@ class $CredentialsTable extends Credentials
   );
   @override
   List<GeneratedColumn> get $columns => [
-        id,
-        profileId,
-        name,
-        content,
-        createdAt,
-        modifiedAt,
-      ];
+    id,
+    profileId,
+    name,
+    content,
+    createdAt,
+    modifiedAt,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1273,15 +1273,14 @@ class Credential extends DataClass implements Insertable<Credential> {
     Uint8List? content,
     DateTime? createdAt,
     DateTime? modifiedAt,
-  }) =>
-      Credential(
-        id: id ?? this.id,
-        profileId: profileId ?? this.profileId,
-        name: name ?? this.name,
-        content: content ?? this.content,
-        createdAt: createdAt ?? this.createdAt,
-        modifiedAt: modifiedAt ?? this.modifiedAt,
-      );
+  }) => Credential(
+    id: id ?? this.id,
+    profileId: profileId ?? this.profileId,
+    name: name ?? this.name,
+    content: content ?? this.content,
+    createdAt: createdAt ?? this.createdAt,
+    modifiedAt: modifiedAt ?? this.modifiedAt,
+  );
   Credential copyWithCompanion(CredentialsCompanion data) {
     return Credential(
       id: data.id.present ? data.id.value : this.id,
@@ -1289,8 +1288,9 @@ class Credential extends DataClass implements Insertable<Credential> {
       name: data.name.present ? data.name.value : this.name,
       content: data.content.present ? data.content.value : this.content,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
-      modifiedAt:
-          data.modifiedAt.present ? data.modifiedAt.value : this.modifiedAt,
+      modifiedAt: data.modifiedAt.present
+          ? data.modifiedAt.value
+          : this.modifiedAt,
     );
   }
 
@@ -1309,13 +1309,13 @@ class Credential extends DataClass implements Insertable<Credential> {
 
   @override
   int get hashCode => Object.hash(
-        id,
-        profileId,
-        name,
-        $driftBlobEquality.hash(content),
-        createdAt,
-        modifiedAt,
-      );
+    id,
+    profileId,
+    name,
+    $driftBlobEquality.hash(content),
+    createdAt,
+    modifiedAt,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1353,9 +1353,9 @@ class CredentialsCompanion extends UpdateCompanion<Credential> {
     this.createdAt = const Value.absent(),
     this.modifiedAt = const Value.absent(),
     this.rowid = const Value.absent(),
-  })  : profileId = Value(profileId),
-        name = Value(name),
-        content = Value(content);
+  }) : profileId = Value(profileId),
+       name = Value(name),
+       content = Value(content);
   static Insertable<Credential> custom({
     Expression<String>? id,
     Expression<String>? profileId,
@@ -1450,27 +1450,29 @@ abstract class _$Database extends GeneratedDatabase {
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
-        profiles,
-        items,
-        fileContents,
-        credentials,
-      ];
+    profiles,
+    items,
+    fileContents,
+    credentials,
+  ];
 }
 
-typedef $$ProfilesTableCreateCompanionBuilder = ProfilesCompanion Function({
-  Value<String> id,
-  required String name,
-  Value<String?> description,
-  required int accountIndex,
-  Value<int> rowid,
-});
-typedef $$ProfilesTableUpdateCompanionBuilder = ProfilesCompanion Function({
-  Value<String> id,
-  Value<String> name,
-  Value<String?> description,
-  Value<int> accountIndex,
-  Value<int> rowid,
-});
+typedef $$ProfilesTableCreateCompanionBuilder =
+    ProfilesCompanion Function({
+      Value<String> id,
+      required String name,
+      Value<String?> description,
+      required int accountIndex,
+      Value<int> rowid,
+    });
+typedef $$ProfilesTableUpdateCompanionBuilder =
+    ProfilesCompanion Function({
+      Value<String> id,
+      Value<String> name,
+      Value<String?> description,
+      Value<int> accountIndex,
+      Value<int> rowid,
+    });
 
 final class $$ProfilesTableReferences
     extends BaseReferences<_$Database, $ProfilesTable, Profile> {
@@ -1478,11 +1480,10 @@ final class $$ProfilesTableReferences
 
   static MultiTypedResultKey<$ItemsTable, List<Item>> _itemsRefsTable(
     _$Database db,
-  ) =>
-      MultiTypedResultKey.fromTable(
-        db.items,
-        aliasName: $_aliasNameGenerator(db.profiles.id, db.items.profileId),
-      );
+  ) => MultiTypedResultKey.fromTable(
+    db.items,
+    aliasName: $_aliasNameGenerator(db.profiles.id, db.items.profileId),
+  );
 
   $$ItemsTableProcessedTableManager get itemsRefs {
     final manager = $$ItemsTableTableManager(
@@ -1497,11 +1498,10 @@ final class $$ProfilesTableReferences
   }
 
   static MultiTypedResultKey<$CredentialsTable, List<Credential>>
-      _credentialsRefsTable(_$Database db) => MultiTypedResultKey.fromTable(
-            db.credentials,
-            aliasName:
-                $_aliasNameGenerator(db.profiles.id, db.credentials.profileId),
-          );
+  _credentialsRefsTable(_$Database db) => MultiTypedResultKey.fromTable(
+    db.credentials,
+    aliasName: $_aliasNameGenerator(db.profiles.id, db.credentials.profileId),
+  );
 
   $$CredentialsTableProcessedTableManager get credentialsRefs {
     final manager = $$CredentialsTableTableManager(
@@ -1526,24 +1526,24 @@ class $$ProfilesTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<String> get id => $composableBuilder(
-        column: $table.id,
-        builder: (column) => ColumnFilters(column),
-      );
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get name => $composableBuilder(
-        column: $table.name,
-        builder: (column) => ColumnFilters(column),
-      );
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get description => $composableBuilder(
-        column: $table.description,
-        builder: (column) => ColumnFilters(column),
-      );
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get accountIndex => $composableBuilder(
-        column: $table.accountIndex,
-        builder: (column) => ColumnFilters(column),
-      );
+    column: $table.accountIndex,
+    builder: (column) => ColumnFilters(column),
+  );
 
   Expression<bool> itemsRefs(
     Expression<bool> Function($$ItemsTableFilterComposer f) f,
@@ -1553,18 +1553,19 @@ class $$ProfilesTableFilterComposer
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.items,
       getReferencedColumn: (t) => t.profileId,
-      builder: (
-        joinBuilder, {
-        $addJoinBuilderToRootComposer,
-        $removeJoinBuilderFromRootComposer,
-      }) =>
-          $$ItemsTableFilterComposer(
-        $db: $db,
-        $table: $db.items,
-        $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-        joinBuilder: joinBuilder,
-        $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-      ),
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ItemsTableFilterComposer(
+            $db: $db,
+            $table: $db.items,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
     );
     return f(composer);
   }
@@ -1577,18 +1578,19 @@ class $$ProfilesTableFilterComposer
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.credentials,
       getReferencedColumn: (t) => t.profileId,
-      builder: (
-        joinBuilder, {
-        $addJoinBuilderToRootComposer,
-        $removeJoinBuilderFromRootComposer,
-      }) =>
-          $$CredentialsTableFilterComposer(
-        $db: $db,
-        $table: $db.credentials,
-        $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-        joinBuilder: joinBuilder,
-        $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-      ),
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CredentialsTableFilterComposer(
+            $db: $db,
+            $table: $db.credentials,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
     );
     return f(composer);
   }
@@ -1604,24 +1606,24 @@ class $$ProfilesTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<String> get id => $composableBuilder(
-        column: $table.id,
-        builder: (column) => ColumnOrderings(column),
-      );
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get name => $composableBuilder(
-        column: $table.name,
-        builder: (column) => ColumnOrderings(column),
-      );
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get description => $composableBuilder(
-        column: $table.description,
-        builder: (column) => ColumnOrderings(column),
-      );
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get accountIndex => $composableBuilder(
-        column: $table.accountIndex,
-        builder: (column) => ColumnOrderings(column),
-      );
+    column: $table.accountIndex,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$ProfilesTableAnnotationComposer
@@ -1640,14 +1642,14 @@ class $$ProfilesTableAnnotationComposer
       $composableBuilder(column: $table.name, builder: (column) => column);
 
   GeneratedColumn<String> get description => $composableBuilder(
-        column: $table.description,
-        builder: (column) => column,
-      );
+    column: $table.description,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get accountIndex => $composableBuilder(
-        column: $table.accountIndex,
-        builder: (column) => column,
-      );
+    column: $table.accountIndex,
+    builder: (column) => column,
+  );
 
   Expression<T> itemsRefs<T extends Object>(
     Expression<T> Function($$ItemsTableAnnotationComposer a) f,
@@ -1657,18 +1659,19 @@ class $$ProfilesTableAnnotationComposer
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.items,
       getReferencedColumn: (t) => t.profileId,
-      builder: (
-        joinBuilder, {
-        $addJoinBuilderToRootComposer,
-        $removeJoinBuilderFromRootComposer,
-      }) =>
-          $$ItemsTableAnnotationComposer(
-        $db: $db,
-        $table: $db.items,
-        $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-        joinBuilder: joinBuilder,
-        $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-      ),
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ItemsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.items,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
     );
     return f(composer);
   }
@@ -1681,168 +1684,183 @@ class $$ProfilesTableAnnotationComposer
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.credentials,
       getReferencedColumn: (t) => t.profileId,
-      builder: (
-        joinBuilder, {
-        $addJoinBuilderToRootComposer,
-        $removeJoinBuilderFromRootComposer,
-      }) =>
-          $$CredentialsTableAnnotationComposer(
-        $db: $db,
-        $table: $db.credentials,
-        $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-        joinBuilder: joinBuilder,
-        $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-      ),
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CredentialsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.credentials,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
     );
     return f(composer);
   }
 }
 
-class $$ProfilesTableTableManager extends RootTableManager<
-    _$Database,
-    $ProfilesTable,
-    Profile,
-    $$ProfilesTableFilterComposer,
-    $$ProfilesTableOrderingComposer,
-    $$ProfilesTableAnnotationComposer,
-    $$ProfilesTableCreateCompanionBuilder,
-    $$ProfilesTableUpdateCompanionBuilder,
-    (Profile, $$ProfilesTableReferences),
-    Profile,
-    PrefetchHooks Function({bool itemsRefs, bool credentialsRefs})> {
+class $$ProfilesTableTableManager
+    extends
+        RootTableManager<
+          _$Database,
+          $ProfilesTable,
+          Profile,
+          $$ProfilesTableFilterComposer,
+          $$ProfilesTableOrderingComposer,
+          $$ProfilesTableAnnotationComposer,
+          $$ProfilesTableCreateCompanionBuilder,
+          $$ProfilesTableUpdateCompanionBuilder,
+          (Profile, $$ProfilesTableReferences),
+          Profile,
+          PrefetchHooks Function({bool itemsRefs, bool credentialsRefs})
+        > {
   $$ProfilesTableTableManager(_$Database db, $ProfilesTable table)
-      : super(
-          TableManagerState(
-            db: db,
-            table: table,
-            createFilteringComposer: () =>
-                $$ProfilesTableFilterComposer($db: db, $table: table),
-            createOrderingComposer: () =>
-                $$ProfilesTableOrderingComposer($db: db, $table: table),
-            createComputedFieldComposer: () =>
-                $$ProfilesTableAnnotationComposer($db: db, $table: table),
-            updateCompanionCallback: ({
-              Value<String> id = const Value.absent(),
-              Value<String> name = const Value.absent(),
-              Value<String?> description = const Value.absent(),
-              Value<int> accountIndex = const Value.absent(),
-              Value<int> rowid = const Value.absent(),
-            }) =>
-                ProfilesCompanion(
-              id: id,
-              name: name,
-              description: description,
-              accountIndex: accountIndex,
-              rowid: rowid,
-            ),
-            createCompanionCallback: ({
-              Value<String> id = const Value.absent(),
-              required String name,
-              Value<String?> description = const Value.absent(),
-              required int accountIndex,
-              Value<int> rowid = const Value.absent(),
-            }) =>
-                ProfilesCompanion.insert(
-              id: id,
-              name: name,
-              description: description,
-              accountIndex: accountIndex,
-              rowid: rowid,
-            ),
-            withReferenceMapper: (p0) => p0
-                .map(
-                  (e) => (
-                    e.readTable(table),
-                    $$ProfilesTableReferences(db, table, e),
-                  ),
-                )
-                .toList(),
-            prefetchHooksCallback: (
-                {itemsRefs = false, credentialsRefs = false}) {
-              return PrefetchHooks(
-                db: db,
-                explicitlyWatchedTables: [
-                  if (itemsRefs) db.items,
-                  if (credentialsRefs) db.credentials,
-                ],
-                addJoins: null,
-                getPrefetchedDataCallback: (items) async {
-                  return [
-                    if (itemsRefs)
-                      await $_getPrefetchedData<Profile, $ProfilesTable, Item>(
-                        currentTable: table,
-                        referencedTable:
-                            $$ProfilesTableReferences._itemsRefsTable(db),
-                        managerFromTypedResult: (p0) =>
-                            $$ProfilesTableReferences(
-                          db,
-                          table,
-                          p0,
-                        ).itemsRefs,
-                        referencedItemsForCurrentItem:
-                            (item, referencedItems) => referencedItems.where(
-                          (e) => e.profileId == item.id,
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ProfilesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ProfilesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ProfilesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<int> accountIndex = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ProfilesCompanion(
+                id: id,
+                name: name,
+                description: description,
+                accountIndex: accountIndex,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                required String name,
+                Value<String?> description = const Value.absent(),
+                required int accountIndex,
+                Value<int> rowid = const Value.absent(),
+              }) => ProfilesCompanion.insert(
+                id: id,
+                name: name,
+                description: description,
+                accountIndex: accountIndex,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$ProfilesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({itemsRefs = false, credentialsRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (itemsRefs) db.items,
+                    if (credentialsRefs) db.credentials,
+                  ],
+                  addJoins: null,
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (itemsRefs)
+                        await $_getPrefetchedData<
+                          Profile,
+                          $ProfilesTable,
+                          Item
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ProfilesTableReferences
+                              ._itemsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ProfilesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).itemsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.profileId == item.id,
+                              ),
+                          typedResults: items,
                         ),
-                        typedResults: items,
-                      ),
-                    if (credentialsRefs)
-                      await $_getPrefetchedData<Profile, $ProfilesTable,
-                          Credential>(
-                        currentTable: table,
-                        referencedTable:
-                            $$ProfilesTableReferences._credentialsRefsTable(db),
-                        managerFromTypedResult: (p0) =>
-                            $$ProfilesTableReferences(
-                          db,
-                          table,
-                          p0,
-                        ).credentialsRefs,
-                        referencedItemsForCurrentItem:
-                            (item, referencedItems) => referencedItems.where(
-                          (e) => e.profileId == item.id,
+                      if (credentialsRefs)
+                        await $_getPrefetchedData<
+                          Profile,
+                          $ProfilesTable,
+                          Credential
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ProfilesTableReferences
+                              ._credentialsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ProfilesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).credentialsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.profileId == item.id,
+                              ),
+                          typedResults: items,
                         ),
-                        typedResults: items,
-                      ),
-                  ];
-                },
-              );
-            },
-          ),
-        );
+                    ];
+                  },
+                );
+              },
+        ),
+      );
 }
 
-typedef $$ProfilesTableProcessedTableManager = ProcessedTableManager<
-    _$Database,
-    $ProfilesTable,
-    Profile,
-    $$ProfilesTableFilterComposer,
-    $$ProfilesTableOrderingComposer,
-    $$ProfilesTableAnnotationComposer,
-    $$ProfilesTableCreateCompanionBuilder,
-    $$ProfilesTableUpdateCompanionBuilder,
-    (Profile, $$ProfilesTableReferences),
-    Profile,
-    PrefetchHooks Function({bool itemsRefs, bool credentialsRefs})>;
-typedef $$ItemsTableCreateCompanionBuilder = ItemsCompanion Function({
-  Value<String> id,
-  required String profileId,
-  required String name,
-  Value<String?> parentId,
-  required ItemType itemType,
-  Value<DateTime> createdAt,
-  Value<DateTime> modifiedAt,
-  Value<int> rowid,
-});
-typedef $$ItemsTableUpdateCompanionBuilder = ItemsCompanion Function({
-  Value<String> id,
-  Value<String> profileId,
-  Value<String> name,
-  Value<String?> parentId,
-  Value<ItemType> itemType,
-  Value<DateTime> createdAt,
-  Value<DateTime> modifiedAt,
-  Value<int> rowid,
-});
+typedef $$ProfilesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$Database,
+      $ProfilesTable,
+      Profile,
+      $$ProfilesTableFilterComposer,
+      $$ProfilesTableOrderingComposer,
+      $$ProfilesTableAnnotationComposer,
+      $$ProfilesTableCreateCompanionBuilder,
+      $$ProfilesTableUpdateCompanionBuilder,
+      (Profile, $$ProfilesTableReferences),
+      Profile,
+      PrefetchHooks Function({bool itemsRefs, bool credentialsRefs})
+    >;
+typedef $$ItemsTableCreateCompanionBuilder =
+    ItemsCompanion Function({
+      Value<String> id,
+      required String profileId,
+      required String name,
+      Value<String?> parentId,
+      required ItemType itemType,
+      Value<DateTime> createdAt,
+      Value<DateTime> modifiedAt,
+      Value<int> rowid,
+    });
+typedef $$ItemsTableUpdateCompanionBuilder =
+    ItemsCompanion Function({
+      Value<String> id,
+      Value<String> profileId,
+      Value<String> name,
+      Value<String?> parentId,
+      Value<ItemType> itemType,
+      Value<DateTime> createdAt,
+      Value<DateTime> modifiedAt,
+      Value<int> rowid,
+    });
 
 final class $$ItemsTableReferences
     extends BaseReferences<_$Database, $ItemsTable, Item> {
@@ -1866,10 +1884,10 @@ final class $$ItemsTableReferences
   }
 
   static MultiTypedResultKey<$FileContentsTable, List<FileContent>>
-      _fileContentsRefsTable(_$Database db) => MultiTypedResultKey.fromTable(
-            db.fileContents,
-            aliasName: $_aliasNameGenerator(db.items.id, db.fileContents.id),
-          );
+  _fileContentsRefsTable(_$Database db) => MultiTypedResultKey.fromTable(
+    db.fileContents,
+    aliasName: $_aliasNameGenerator(db.items.id, db.fileContents.id),
+  );
 
   $$FileContentsTableProcessedTableManager get fileContentsRefs {
     final manager = $$FileContentsTableTableManager(
@@ -1893,19 +1911,19 @@ class $$ItemsTableFilterComposer extends Composer<_$Database, $ItemsTable> {
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<String> get id => $composableBuilder(
-        column: $table.id,
-        builder: (column) => ColumnFilters(column),
-      );
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get name => $composableBuilder(
-        column: $table.name,
-        builder: (column) => ColumnFilters(column),
-      );
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get parentId => $composableBuilder(
-        column: $table.parentId,
-        builder: (column) => ColumnFilters(column),
-      );
+    column: $table.parentId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnWithTypeConverterFilters<ItemType, ItemType, int> get itemType =>
       $composableBuilder(
@@ -1914,14 +1932,14 @@ class $$ItemsTableFilterComposer extends Composer<_$Database, $ItemsTable> {
       );
 
   ColumnFilters<DateTime> get createdAt => $composableBuilder(
-        column: $table.createdAt,
-        builder: (column) => ColumnFilters(column),
-      );
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<DateTime> get modifiedAt => $composableBuilder(
-        column: $table.modifiedAt,
-        builder: (column) => ColumnFilters(column),
-      );
+    column: $table.modifiedAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
   $$ProfilesTableFilterComposer get profileId {
     final $$ProfilesTableFilterComposer composer = $composerBuilder(
@@ -1929,18 +1947,19 @@ class $$ItemsTableFilterComposer extends Composer<_$Database, $ItemsTable> {
       getCurrentColumn: (t) => t.profileId,
       referencedTable: $db.profiles,
       getReferencedColumn: (t) => t.id,
-      builder: (
-        joinBuilder, {
-        $addJoinBuilderToRootComposer,
-        $removeJoinBuilderFromRootComposer,
-      }) =>
-          $$ProfilesTableFilterComposer(
-        $db: $db,
-        $table: $db.profiles,
-        $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-        joinBuilder: joinBuilder,
-        $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-      ),
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProfilesTableFilterComposer(
+            $db: $db,
+            $table: $db.profiles,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
     );
     return composer;
   }
@@ -1953,18 +1972,19 @@ class $$ItemsTableFilterComposer extends Composer<_$Database, $ItemsTable> {
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.fileContents,
       getReferencedColumn: (t) => t.id,
-      builder: (
-        joinBuilder, {
-        $addJoinBuilderToRootComposer,
-        $removeJoinBuilderFromRootComposer,
-      }) =>
-          $$FileContentsTableFilterComposer(
-        $db: $db,
-        $table: $db.fileContents,
-        $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-        joinBuilder: joinBuilder,
-        $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-      ),
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FileContentsTableFilterComposer(
+            $db: $db,
+            $table: $db.fileContents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
     );
     return f(composer);
   }
@@ -1979,34 +1999,34 @@ class $$ItemsTableOrderingComposer extends Composer<_$Database, $ItemsTable> {
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<String> get id => $composableBuilder(
-        column: $table.id,
-        builder: (column) => ColumnOrderings(column),
-      );
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get name => $composableBuilder(
-        column: $table.name,
-        builder: (column) => ColumnOrderings(column),
-      );
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get parentId => $composableBuilder(
-        column: $table.parentId,
-        builder: (column) => ColumnOrderings(column),
-      );
+    column: $table.parentId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get itemType => $composableBuilder(
-        column: $table.itemType,
-        builder: (column) => ColumnOrderings(column),
-      );
+    column: $table.itemType,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
-        column: $table.createdAt,
-        builder: (column) => ColumnOrderings(column),
-      );
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<DateTime> get modifiedAt => $composableBuilder(
-        column: $table.modifiedAt,
-        builder: (column) => ColumnOrderings(column),
-      );
+    column: $table.modifiedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   $$ProfilesTableOrderingComposer get profileId {
     final $$ProfilesTableOrderingComposer composer = $composerBuilder(
@@ -2014,18 +2034,19 @@ class $$ItemsTableOrderingComposer extends Composer<_$Database, $ItemsTable> {
       getCurrentColumn: (t) => t.profileId,
       referencedTable: $db.profiles,
       getReferencedColumn: (t) => t.id,
-      builder: (
-        joinBuilder, {
-        $addJoinBuilderToRootComposer,
-        $removeJoinBuilderFromRootComposer,
-      }) =>
-          $$ProfilesTableOrderingComposer(
-        $db: $db,
-        $table: $db.profiles,
-        $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-        joinBuilder: joinBuilder,
-        $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-      ),
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProfilesTableOrderingComposer(
+            $db: $db,
+            $table: $db.profiles,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
     );
     return composer;
   }
@@ -2055,9 +2076,9 @@ class $$ItemsTableAnnotationComposer extends Composer<_$Database, $ItemsTable> {
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
   GeneratedColumn<DateTime> get modifiedAt => $composableBuilder(
-        column: $table.modifiedAt,
-        builder: (column) => column,
-      );
+    column: $table.modifiedAt,
+    builder: (column) => column,
+  );
 
   $$ProfilesTableAnnotationComposer get profileId {
     final $$ProfilesTableAnnotationComposer composer = $composerBuilder(
@@ -2065,18 +2086,19 @@ class $$ItemsTableAnnotationComposer extends Composer<_$Database, $ItemsTable> {
       getCurrentColumn: (t) => t.profileId,
       referencedTable: $db.profiles,
       getReferencedColumn: (t) => t.id,
-      builder: (
-        joinBuilder, {
-        $addJoinBuilderToRootComposer,
-        $removeJoinBuilderFromRootComposer,
-      }) =>
-          $$ProfilesTableAnnotationComposer(
-        $db: $db,
-        $table: $db.profiles,
-        $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-        joinBuilder: joinBuilder,
-        $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-      ),
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProfilesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.profiles,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
     );
     return composer;
   }
@@ -2089,184 +2111,199 @@ class $$ItemsTableAnnotationComposer extends Composer<_$Database, $ItemsTable> {
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.fileContents,
       getReferencedColumn: (t) => t.id,
-      builder: (
-        joinBuilder, {
-        $addJoinBuilderToRootComposer,
-        $removeJoinBuilderFromRootComposer,
-      }) =>
-          $$FileContentsTableAnnotationComposer(
-        $db: $db,
-        $table: $db.fileContents,
-        $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-        joinBuilder: joinBuilder,
-        $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-      ),
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FileContentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.fileContents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
     );
     return f(composer);
   }
 }
 
-class $$ItemsTableTableManager extends RootTableManager<
-    _$Database,
-    $ItemsTable,
-    Item,
-    $$ItemsTableFilterComposer,
-    $$ItemsTableOrderingComposer,
-    $$ItemsTableAnnotationComposer,
-    $$ItemsTableCreateCompanionBuilder,
-    $$ItemsTableUpdateCompanionBuilder,
-    (Item, $$ItemsTableReferences),
-    Item,
-    PrefetchHooks Function({bool profileId, bool fileContentsRefs})> {
+class $$ItemsTableTableManager
+    extends
+        RootTableManager<
+          _$Database,
+          $ItemsTable,
+          Item,
+          $$ItemsTableFilterComposer,
+          $$ItemsTableOrderingComposer,
+          $$ItemsTableAnnotationComposer,
+          $$ItemsTableCreateCompanionBuilder,
+          $$ItemsTableUpdateCompanionBuilder,
+          (Item, $$ItemsTableReferences),
+          Item,
+          PrefetchHooks Function({bool profileId, bool fileContentsRefs})
+        > {
   $$ItemsTableTableManager(_$Database db, $ItemsTable table)
-      : super(
-          TableManagerState(
-            db: db,
-            table: table,
-            createFilteringComposer: () =>
-                $$ItemsTableFilterComposer($db: db, $table: table),
-            createOrderingComposer: () =>
-                $$ItemsTableOrderingComposer($db: db, $table: table),
-            createComputedFieldComposer: () =>
-                $$ItemsTableAnnotationComposer($db: db, $table: table),
-            updateCompanionCallback: ({
-              Value<String> id = const Value.absent(),
-              Value<String> profileId = const Value.absent(),
-              Value<String> name = const Value.absent(),
-              Value<String?> parentId = const Value.absent(),
-              Value<ItemType> itemType = const Value.absent(),
-              Value<DateTime> createdAt = const Value.absent(),
-              Value<DateTime> modifiedAt = const Value.absent(),
-              Value<int> rowid = const Value.absent(),
-            }) =>
-                ItemsCompanion(
-              id: id,
-              profileId: profileId,
-              name: name,
-              parentId: parentId,
-              itemType: itemType,
-              createdAt: createdAt,
-              modifiedAt: modifiedAt,
-              rowid: rowid,
-            ),
-            createCompanionCallback: ({
-              Value<String> id = const Value.absent(),
-              required String profileId,
-              required String name,
-              Value<String?> parentId = const Value.absent(),
-              required ItemType itemType,
-              Value<DateTime> createdAt = const Value.absent(),
-              Value<DateTime> modifiedAt = const Value.absent(),
-              Value<int> rowid = const Value.absent(),
-            }) =>
-                ItemsCompanion.insert(
-              id: id,
-              profileId: profileId,
-              name: name,
-              parentId: parentId,
-              itemType: itemType,
-              createdAt: createdAt,
-              modifiedAt: modifiedAt,
-              rowid: rowid,
-            ),
-            withReferenceMapper: (p0) => p0
-                .map(
-                  (e) => (
-                    e.readTable(table),
-                    $$ItemsTableReferences(db, table, e)
-                  ),
-                )
-                .toList(),
-            prefetchHooksCallback: (
-                {profileId = false, fileContentsRefs = false}) {
-              return PrefetchHooks(
-                db: db,
-                explicitlyWatchedTables: [
-                  if (fileContentsRefs) db.fileContents,
-                ],
-                addJoins: <
-                    T extends TableManagerState<
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic>>(state) {
-                  if (profileId) {
-                    state = state.withJoin(
-                      currentTable: table,
-                      currentColumn: table.profileId,
-                      referencedTable:
-                          $$ItemsTableReferences._profileIdTable(db),
-                      referencedColumn:
-                          $$ItemsTableReferences._profileIdTable(db).id,
-                    ) as T;
-                  }
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ItemsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ItemsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ItemsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> profileId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> parentId = const Value.absent(),
+                Value<ItemType> itemType = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> modifiedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ItemsCompanion(
+                id: id,
+                profileId: profileId,
+                name: name,
+                parentId: parentId,
+                itemType: itemType,
+                createdAt: createdAt,
+                modifiedAt: modifiedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                required String profileId,
+                required String name,
+                Value<String?> parentId = const Value.absent(),
+                required ItemType itemType,
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> modifiedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ItemsCompanion.insert(
+                id: id,
+                profileId: profileId,
+                name: name,
+                parentId: parentId,
+                itemType: itemType,
+                createdAt: createdAt,
+                modifiedAt: modifiedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) =>
+                    (e.readTable(table), $$ItemsTableReferences(db, table, e)),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({profileId = false, fileContentsRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (fileContentsRefs) db.fileContents,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (profileId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.profileId,
+                                    referencedTable: $$ItemsTableReferences
+                                        ._profileIdTable(db),
+                                    referencedColumn: $$ItemsTableReferences
+                                        ._profileIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
 
-                  return state;
-                },
-                getPrefetchedDataCallback: (items) async {
-                  return [
-                    if (fileContentsRefs)
-                      await $_getPrefetchedData<Item, $ItemsTable, FileContent>(
-                        currentTable: table,
-                        referencedTable:
-                            $$ItemsTableReferences._fileContentsRefsTable(db),
-                        managerFromTypedResult: (p0) => $$ItemsTableReferences(
-                          db,
-                          table,
-                          p0,
-                        ).fileContentsRefs,
-                        referencedItemsForCurrentItem:
-                            (item, referencedItems) =>
-                                referencedItems.where((e) => e.id == item.id),
-                        typedResults: items,
-                      ),
-                  ];
-                },
-              );
-            },
-          ),
-        );
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (fileContentsRefs)
+                        await $_getPrefetchedData<
+                          Item,
+                          $ItemsTable,
+                          FileContent
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ItemsTableReferences
+                              ._fileContentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ItemsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).fileContentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) =>
+                                  referencedItems.where((e) => e.id == item.id),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
 }
 
-typedef $$ItemsTableProcessedTableManager = ProcessedTableManager<
-    _$Database,
-    $ItemsTable,
-    Item,
-    $$ItemsTableFilterComposer,
-    $$ItemsTableOrderingComposer,
-    $$ItemsTableAnnotationComposer,
-    $$ItemsTableCreateCompanionBuilder,
-    $$ItemsTableUpdateCompanionBuilder,
-    (Item, $$ItemsTableReferences),
-    Item,
-    PrefetchHooks Function({bool profileId, bool fileContentsRefs})>;
-typedef $$FileContentsTableCreateCompanionBuilder = FileContentsCompanion
-    Function({
-  required String id,
-  required Uint8List content,
-  Value<int> rowid,
-});
-typedef $$FileContentsTableUpdateCompanionBuilder = FileContentsCompanion
-    Function({
-  Value<String> id,
-  Value<Uint8List> content,
-  Value<int> rowid,
-});
+typedef $$ItemsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$Database,
+      $ItemsTable,
+      Item,
+      $$ItemsTableFilterComposer,
+      $$ItemsTableOrderingComposer,
+      $$ItemsTableAnnotationComposer,
+      $$ItemsTableCreateCompanionBuilder,
+      $$ItemsTableUpdateCompanionBuilder,
+      (Item, $$ItemsTableReferences),
+      Item,
+      PrefetchHooks Function({bool profileId, bool fileContentsRefs})
+    >;
+typedef $$FileContentsTableCreateCompanionBuilder =
+    FileContentsCompanion Function({
+      required String id,
+      required Uint8List content,
+      Value<int> rowid,
+    });
+typedef $$FileContentsTableUpdateCompanionBuilder =
+    FileContentsCompanion Function({
+      Value<String> id,
+      Value<Uint8List> content,
+      Value<int> rowid,
+    });
 
 final class $$FileContentsTableReferences
     extends BaseReferences<_$Database, $FileContentsTable, FileContent> {
   $$FileContentsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
   static $ItemsTable _idTable(_$Database db) => db.items.createAlias(
-        $_aliasNameGenerator(db.fileContents.id, db.items.id),
-      );
+    $_aliasNameGenerator(db.fileContents.id, db.items.id),
+  );
 
   $$ItemsTableProcessedTableManager get id {
     final $_column = $_itemColumn<String>('id')!;
@@ -2293,9 +2330,9 @@ class $$FileContentsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<Uint8List> get content => $composableBuilder(
-        column: $table.content,
-        builder: (column) => ColumnFilters(column),
-      );
+    column: $table.content,
+    builder: (column) => ColumnFilters(column),
+  );
 
   $$ItemsTableFilterComposer get id {
     final $$ItemsTableFilterComposer composer = $composerBuilder(
@@ -2303,18 +2340,19 @@ class $$FileContentsTableFilterComposer
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.items,
       getReferencedColumn: (t) => t.id,
-      builder: (
-        joinBuilder, {
-        $addJoinBuilderToRootComposer,
-        $removeJoinBuilderFromRootComposer,
-      }) =>
-          $$ItemsTableFilterComposer(
-        $db: $db,
-        $table: $db.items,
-        $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-        joinBuilder: joinBuilder,
-        $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-      ),
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ItemsTableFilterComposer(
+            $db: $db,
+            $table: $db.items,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
     );
     return composer;
   }
@@ -2330,9 +2368,9 @@ class $$FileContentsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<Uint8List> get content => $composableBuilder(
-        column: $table.content,
-        builder: (column) => ColumnOrderings(column),
-      );
+    column: $table.content,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   $$ItemsTableOrderingComposer get id {
     final $$ItemsTableOrderingComposer composer = $composerBuilder(
@@ -2340,18 +2378,19 @@ class $$FileContentsTableOrderingComposer
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.items,
       getReferencedColumn: (t) => t.id,
-      builder: (
-        joinBuilder, {
-        $addJoinBuilderToRootComposer,
-        $removeJoinBuilderFromRootComposer,
-      }) =>
-          $$ItemsTableOrderingComposer(
-        $db: $db,
-        $table: $db.items,
-        $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-        joinBuilder: joinBuilder,
-        $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-      ),
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ItemsTableOrderingComposer(
+            $db: $db,
+            $table: $db.items,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
     );
     return composer;
   }
@@ -2375,141 +2414,154 @@ class $$FileContentsTableAnnotationComposer
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.items,
       getReferencedColumn: (t) => t.id,
-      builder: (
-        joinBuilder, {
-        $addJoinBuilderToRootComposer,
-        $removeJoinBuilderFromRootComposer,
-      }) =>
-          $$ItemsTableAnnotationComposer(
-        $db: $db,
-        $table: $db.items,
-        $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-        joinBuilder: joinBuilder,
-        $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-      ),
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ItemsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.items,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
     );
     return composer;
   }
 }
 
-class $$FileContentsTableTableManager extends RootTableManager<
-    _$Database,
-    $FileContentsTable,
-    FileContent,
-    $$FileContentsTableFilterComposer,
-    $$FileContentsTableOrderingComposer,
-    $$FileContentsTableAnnotationComposer,
-    $$FileContentsTableCreateCompanionBuilder,
-    $$FileContentsTableUpdateCompanionBuilder,
-    (FileContent, $$FileContentsTableReferences),
-    FileContent,
-    PrefetchHooks Function({bool id})> {
+class $$FileContentsTableTableManager
+    extends
+        RootTableManager<
+          _$Database,
+          $FileContentsTable,
+          FileContent,
+          $$FileContentsTableFilterComposer,
+          $$FileContentsTableOrderingComposer,
+          $$FileContentsTableAnnotationComposer,
+          $$FileContentsTableCreateCompanionBuilder,
+          $$FileContentsTableUpdateCompanionBuilder,
+          (FileContent, $$FileContentsTableReferences),
+          FileContent,
+          PrefetchHooks Function({bool id})
+        > {
   $$FileContentsTableTableManager(_$Database db, $FileContentsTable table)
-      : super(
-          TableManagerState(
-            db: db,
-            table: table,
-            createFilteringComposer: () =>
-                $$FileContentsTableFilterComposer($db: db, $table: table),
-            createOrderingComposer: () =>
-                $$FileContentsTableOrderingComposer($db: db, $table: table),
-            createComputedFieldComposer: () =>
-                $$FileContentsTableAnnotationComposer($db: db, $table: table),
-            updateCompanionCallback: ({
-              Value<String> id = const Value.absent(),
-              Value<Uint8List> content = const Value.absent(),
-              Value<int> rowid = const Value.absent(),
-            }) =>
-                FileContentsCompanion(id: id, content: content, rowid: rowid),
-            createCompanionCallback: ({
-              required String id,
-              required Uint8List content,
-              Value<int> rowid = const Value.absent(),
-            }) =>
-                FileContentsCompanion.insert(
-              id: id,
-              content: content,
-              rowid: rowid,
-            ),
-            withReferenceMapper: (p0) => p0
-                .map(
-                  (e) => (
-                    e.readTable(table),
-                    $$FileContentsTableReferences(db, table, e),
-                  ),
-                )
-                .toList(),
-            prefetchHooksCallback: ({id = false}) {
-              return PrefetchHooks(
-                db: db,
-                explicitlyWatchedTables: [],
-                addJoins: <
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$FileContentsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$FileContentsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$FileContentsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<Uint8List> content = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) =>
+                  FileContentsCompanion(id: id, content: content, rowid: rowid),
+          createCompanionCallback:
+              ({
+                required String id,
+                required Uint8List content,
+                Value<int> rowid = const Value.absent(),
+              }) => FileContentsCompanion.insert(
+                id: id,
+                content: content,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$FileContentsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({id = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
                     T extends TableManagerState<
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic>>(state) {
-                  if (id) {
-                    state = state.withJoin(
-                      currentTable: table,
-                      currentColumn: table.id,
-                      referencedTable:
-                          $$FileContentsTableReferences._idTable(db),
-                      referencedColumn:
-                          $$FileContentsTableReferences._idTable(db).id,
-                    ) as T;
-                  }
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (id) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.id,
+                                referencedTable: $$FileContentsTableReferences
+                                    ._idTable(db),
+                                referencedColumn: $$FileContentsTableReferences
+                                    ._idTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
 
-                  return state;
-                },
-                getPrefetchedDataCallback: (items) async {
-                  return [];
-                },
-              );
-            },
-          ),
-        );
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
 }
 
-typedef $$FileContentsTableProcessedTableManager = ProcessedTableManager<
-    _$Database,
-    $FileContentsTable,
-    FileContent,
-    $$FileContentsTableFilterComposer,
-    $$FileContentsTableOrderingComposer,
-    $$FileContentsTableAnnotationComposer,
-    $$FileContentsTableCreateCompanionBuilder,
-    $$FileContentsTableUpdateCompanionBuilder,
-    (FileContent, $$FileContentsTableReferences),
-    FileContent,
-    PrefetchHooks Function({bool id})>;
-typedef $$CredentialsTableCreateCompanionBuilder = CredentialsCompanion
-    Function({
-  Value<String> id,
-  required String profileId,
-  required String name,
-  required Uint8List content,
-  Value<DateTime> createdAt,
-  Value<DateTime> modifiedAt,
-  Value<int> rowid,
-});
-typedef $$CredentialsTableUpdateCompanionBuilder = CredentialsCompanion
-    Function({
-  Value<String> id,
-  Value<String> profileId,
-  Value<String> name,
-  Value<Uint8List> content,
-  Value<DateTime> createdAt,
-  Value<DateTime> modifiedAt,
-  Value<int> rowid,
-});
+typedef $$FileContentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$Database,
+      $FileContentsTable,
+      FileContent,
+      $$FileContentsTableFilterComposer,
+      $$FileContentsTableOrderingComposer,
+      $$FileContentsTableAnnotationComposer,
+      $$FileContentsTableCreateCompanionBuilder,
+      $$FileContentsTableUpdateCompanionBuilder,
+      (FileContent, $$FileContentsTableReferences),
+      FileContent,
+      PrefetchHooks Function({bool id})
+    >;
+typedef $$CredentialsTableCreateCompanionBuilder =
+    CredentialsCompanion Function({
+      Value<String> id,
+      required String profileId,
+      required String name,
+      required Uint8List content,
+      Value<DateTime> createdAt,
+      Value<DateTime> modifiedAt,
+      Value<int> rowid,
+    });
+typedef $$CredentialsTableUpdateCompanionBuilder =
+    CredentialsCompanion Function({
+      Value<String> id,
+      Value<String> profileId,
+      Value<String> name,
+      Value<Uint8List> content,
+      Value<DateTime> createdAt,
+      Value<DateTime> modifiedAt,
+      Value<int> rowid,
+    });
 
 final class $$CredentialsTableReferences
     extends BaseReferences<_$Database, $CredentialsTable, Credential> {
@@ -2545,29 +2597,29 @@ class $$CredentialsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<String> get id => $composableBuilder(
-        column: $table.id,
-        builder: (column) => ColumnFilters(column),
-      );
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get name => $composableBuilder(
-        column: $table.name,
-        builder: (column) => ColumnFilters(column),
-      );
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<Uint8List> get content => $composableBuilder(
-        column: $table.content,
-        builder: (column) => ColumnFilters(column),
-      );
+    column: $table.content,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<DateTime> get createdAt => $composableBuilder(
-        column: $table.createdAt,
-        builder: (column) => ColumnFilters(column),
-      );
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<DateTime> get modifiedAt => $composableBuilder(
-        column: $table.modifiedAt,
-        builder: (column) => ColumnFilters(column),
-      );
+    column: $table.modifiedAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
   $$ProfilesTableFilterComposer get profileId {
     final $$ProfilesTableFilterComposer composer = $composerBuilder(
@@ -2575,18 +2627,19 @@ class $$CredentialsTableFilterComposer
       getCurrentColumn: (t) => t.profileId,
       referencedTable: $db.profiles,
       getReferencedColumn: (t) => t.id,
-      builder: (
-        joinBuilder, {
-        $addJoinBuilderToRootComposer,
-        $removeJoinBuilderFromRootComposer,
-      }) =>
-          $$ProfilesTableFilterComposer(
-        $db: $db,
-        $table: $db.profiles,
-        $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-        joinBuilder: joinBuilder,
-        $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-      ),
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProfilesTableFilterComposer(
+            $db: $db,
+            $table: $db.profiles,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
     );
     return composer;
   }
@@ -2602,29 +2655,29 @@ class $$CredentialsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<String> get id => $composableBuilder(
-        column: $table.id,
-        builder: (column) => ColumnOrderings(column),
-      );
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get name => $composableBuilder(
-        column: $table.name,
-        builder: (column) => ColumnOrderings(column),
-      );
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<Uint8List> get content => $composableBuilder(
-        column: $table.content,
-        builder: (column) => ColumnOrderings(column),
-      );
+    column: $table.content,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
-        column: $table.createdAt,
-        builder: (column) => ColumnOrderings(column),
-      );
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<DateTime> get modifiedAt => $composableBuilder(
-        column: $table.modifiedAt,
-        builder: (column) => ColumnOrderings(column),
-      );
+    column: $table.modifiedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   $$ProfilesTableOrderingComposer get profileId {
     final $$ProfilesTableOrderingComposer composer = $composerBuilder(
@@ -2632,18 +2685,19 @@ class $$CredentialsTableOrderingComposer
       getCurrentColumn: (t) => t.profileId,
       referencedTable: $db.profiles,
       getReferencedColumn: (t) => t.id,
-      builder: (
-        joinBuilder, {
-        $addJoinBuilderToRootComposer,
-        $removeJoinBuilderFromRootComposer,
-      }) =>
-          $$ProfilesTableOrderingComposer(
-        $db: $db,
-        $table: $db.profiles,
-        $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-        joinBuilder: joinBuilder,
-        $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-      ),
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProfilesTableOrderingComposer(
+            $db: $db,
+            $table: $db.profiles,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
     );
     return composer;
   }
@@ -2671,9 +2725,9 @@ class $$CredentialsTableAnnotationComposer
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
   GeneratedColumn<DateTime> get modifiedAt => $composableBuilder(
-        column: $table.modifiedAt,
-        builder: (column) => column,
-      );
+    column: $table.modifiedAt,
+    builder: (column) => column,
+  );
 
   $$ProfilesTableAnnotationComposer get profileId {
     final $$ProfilesTableAnnotationComposer composer = $composerBuilder(
@@ -2681,141 +2735,153 @@ class $$CredentialsTableAnnotationComposer
       getCurrentColumn: (t) => t.profileId,
       referencedTable: $db.profiles,
       getReferencedColumn: (t) => t.id,
-      builder: (
-        joinBuilder, {
-        $addJoinBuilderToRootComposer,
-        $removeJoinBuilderFromRootComposer,
-      }) =>
-          $$ProfilesTableAnnotationComposer(
-        $db: $db,
-        $table: $db.profiles,
-        $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-        joinBuilder: joinBuilder,
-        $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
-      ),
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProfilesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.profiles,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
     );
     return composer;
   }
 }
 
-class $$CredentialsTableTableManager extends RootTableManager<
-    _$Database,
-    $CredentialsTable,
-    Credential,
-    $$CredentialsTableFilterComposer,
-    $$CredentialsTableOrderingComposer,
-    $$CredentialsTableAnnotationComposer,
-    $$CredentialsTableCreateCompanionBuilder,
-    $$CredentialsTableUpdateCompanionBuilder,
-    (Credential, $$CredentialsTableReferences),
-    Credential,
-    PrefetchHooks Function({bool profileId})> {
+class $$CredentialsTableTableManager
+    extends
+        RootTableManager<
+          _$Database,
+          $CredentialsTable,
+          Credential,
+          $$CredentialsTableFilterComposer,
+          $$CredentialsTableOrderingComposer,
+          $$CredentialsTableAnnotationComposer,
+          $$CredentialsTableCreateCompanionBuilder,
+          $$CredentialsTableUpdateCompanionBuilder,
+          (Credential, $$CredentialsTableReferences),
+          Credential,
+          PrefetchHooks Function({bool profileId})
+        > {
   $$CredentialsTableTableManager(_$Database db, $CredentialsTable table)
-      : super(
-          TableManagerState(
-            db: db,
-            table: table,
-            createFilteringComposer: () =>
-                $$CredentialsTableFilterComposer($db: db, $table: table),
-            createOrderingComposer: () =>
-                $$CredentialsTableOrderingComposer($db: db, $table: table),
-            createComputedFieldComposer: () =>
-                $$CredentialsTableAnnotationComposer($db: db, $table: table),
-            updateCompanionCallback: ({
-              Value<String> id = const Value.absent(),
-              Value<String> profileId = const Value.absent(),
-              Value<String> name = const Value.absent(),
-              Value<Uint8List> content = const Value.absent(),
-              Value<DateTime> createdAt = const Value.absent(),
-              Value<DateTime> modifiedAt = const Value.absent(),
-              Value<int> rowid = const Value.absent(),
-            }) =>
-                CredentialsCompanion(
-              id: id,
-              profileId: profileId,
-              name: name,
-              content: content,
-              createdAt: createdAt,
-              modifiedAt: modifiedAt,
-              rowid: rowid,
-            ),
-            createCompanionCallback: ({
-              Value<String> id = const Value.absent(),
-              required String profileId,
-              required String name,
-              required Uint8List content,
-              Value<DateTime> createdAt = const Value.absent(),
-              Value<DateTime> modifiedAt = const Value.absent(),
-              Value<int> rowid = const Value.absent(),
-            }) =>
-                CredentialsCompanion.insert(
-              id: id,
-              profileId: profileId,
-              name: name,
-              content: content,
-              createdAt: createdAt,
-              modifiedAt: modifiedAt,
-              rowid: rowid,
-            ),
-            withReferenceMapper: (p0) => p0
-                .map(
-                  (e) => (
-                    e.readTable(table),
-                    $$CredentialsTableReferences(db, table, e),
-                  ),
-                )
-                .toList(),
-            prefetchHooksCallback: ({profileId = false}) {
-              return PrefetchHooks(
-                db: db,
-                explicitlyWatchedTables: [],
-                addJoins: <
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$CredentialsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$CredentialsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$CredentialsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> profileId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<Uint8List> content = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> modifiedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => CredentialsCompanion(
+                id: id,
+                profileId: profileId,
+                name: name,
+                content: content,
+                createdAt: createdAt,
+                modifiedAt: modifiedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                required String profileId,
+                required String name,
+                required Uint8List content,
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> modifiedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => CredentialsCompanion.insert(
+                id: id,
+                profileId: profileId,
+                name: name,
+                content: content,
+                createdAt: createdAt,
+                modifiedAt: modifiedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$CredentialsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({profileId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
                     T extends TableManagerState<
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic,
-                        dynamic>>(state) {
-                  if (profileId) {
-                    state = state.withJoin(
-                      currentTable: table,
-                      currentColumn: table.profileId,
-                      referencedTable:
-                          $$CredentialsTableReferences._profileIdTable(db),
-                      referencedColumn:
-                          $$CredentialsTableReferences._profileIdTable(db).id,
-                    ) as T;
-                  }
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (profileId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.profileId,
+                                referencedTable: $$CredentialsTableReferences
+                                    ._profileIdTable(db),
+                                referencedColumn: $$CredentialsTableReferences
+                                    ._profileIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
 
-                  return state;
-                },
-                getPrefetchedDataCallback: (items) async {
-                  return [];
-                },
-              );
-            },
-          ),
-        );
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
 }
 
-typedef $$CredentialsTableProcessedTableManager = ProcessedTableManager<
-    _$Database,
-    $CredentialsTable,
-    Credential,
-    $$CredentialsTableFilterComposer,
-    $$CredentialsTableOrderingComposer,
-    $$CredentialsTableAnnotationComposer,
-    $$CredentialsTableCreateCompanionBuilder,
-    $$CredentialsTableUpdateCompanionBuilder,
-    (Credential, $$CredentialsTableReferences),
-    Credential,
-    PrefetchHooks Function({bool profileId})>;
+typedef $$CredentialsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$Database,
+      $CredentialsTable,
+      Credential,
+      $$CredentialsTableFilterComposer,
+      $$CredentialsTableOrderingComposer,
+      $$CredentialsTableAnnotationComposer,
+      $$CredentialsTableCreateCompanionBuilder,
+      $$CredentialsTableUpdateCompanionBuilder,
+      (Credential, $$CredentialsTableReferences),
+      Credential,
+      PrefetchHooks Function({bool profileId})
+    >;
 
 class $DatabaseManager {
   final _$Database _db;

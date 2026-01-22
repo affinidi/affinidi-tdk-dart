@@ -70,8 +70,7 @@ void main() {
         final config = (await configurationApi.updateLoginConfigurationsById(
           configurationId: configurationId,
           updateLoginConfigurationInput: updateLoginConfigurationInput.build(),
-        ))
-            .data;
+        )).data;
 
         expect(config, isNotNull);
         expect(config?.name, equals(updatedName));
@@ -80,8 +79,7 @@ void main() {
       test('Reads login configuration', () async {
         final config = (await configurationApi.getLoginConfigurationsById(
           configurationId: configurationId,
-        ))
-            .data;
+        )).data;
 
         expect(config, isNotNull);
       });

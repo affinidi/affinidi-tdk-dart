@@ -6,8 +6,8 @@ import 'package:http/http.dart' as http;
 class IamClient {
   /// Creates a new instance of [IamClient].
   IamClient({required String apiGatewayUrl, http.Client? httpClient})
-      : _httpClient = httpClient ?? http.Client(),
-        _apiGatewayUrl = apiGatewayUrl;
+    : _httpClient = httpClient ?? http.Client(),
+      _apiGatewayUrl = apiGatewayUrl;
 
   final http.Client _httpClient;
   final String _apiGatewayUrl;

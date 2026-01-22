@@ -100,9 +100,8 @@ class Environment {
 
   /// Gets the amount of milliseconds to use for API connection timeouts 'AFFINIDI_API_TIMEOUT_MS'.
   static int? get apiTimeOutInMilliseconds => int.tryParse(
-        const String.fromEnvironment('AFFINIDI_API_TIMEOUT_MS',
-            defaultValue: ''),
-      );
+    const String.fromEnvironment('AFFINIDI_API_TIMEOUT_MS', defaultValue: ''),
+  );
 
   /// Gets the current log level from the environment variable 'AFFINIDI_TDK_LOG_LEVEL'.
   LogLevel get logLevel =>

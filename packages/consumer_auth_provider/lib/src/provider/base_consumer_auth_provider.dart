@@ -89,7 +89,7 @@ class BaseConsumerAuthProvider implements ConsumerAuthProviderInterface {
 
   @override
   Future<({String accessToken, List? authorizationDetails})>
-      exchangePreAuthCodeForToken({
+  exchangePreAuthCodeForToken({
     required String tokenEndpoint,
     required String preAuthCode,
     String? txCode,

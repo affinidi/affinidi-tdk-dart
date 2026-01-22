@@ -9,7 +9,7 @@ class VaultDataManagerEncryptionServiceMocks {
   );
 
   final MockVaultDataManagerEncryptionService
-      mockVaultDataManagerEncryptionService;
+  mockVaultDataManagerEncryptionService;
 
   Future<DataEncryptionMaterial> generateDataEncryptionMaterial() =>
       mockVaultDataManagerEncryptionService.generateDataEncryptionMaterial(

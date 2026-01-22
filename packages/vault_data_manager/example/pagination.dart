@@ -127,8 +127,8 @@ Future<void> _deleteProfile(Vault vault, Profile profile) async {
       throw Exception('Profile still contains items, cannot delete');
     }
 
-    final credentials =
-        await profile.defaultCredentialStorage!.listCredentials();
+    final credentials = await profile.defaultCredentialStorage!
+        .listCredentials();
     print('[Demo] Found ${credentials.items.length} credentials to delete');
 
     for (final credential in credentials.items) {

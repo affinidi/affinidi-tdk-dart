@@ -41,9 +41,9 @@ class DidcommMediatorClient extends MediatorClient {
     this.clientOptions = const ClientOptions(),
     super.authorizationProvider,
   }) : super(
-          forwardMessageOptions: clientOptions.forwardMessageOptions,
-          webSocketOptions: clientOptions.webSocketOptions,
-        );
+         forwardMessageOptions: clientOptions.forwardMessageOptions,
+         webSocketOptions: clientOptions.webSocketOptions,
+       );
 
   /// Initializes a [DidcommMediatorClient] asynchronously.
   ///
@@ -126,7 +126,8 @@ class DidcommMediatorClient extends MediatorClient {
 
     final forwardMessageOptions = clientOptions.forwardMessageOptions;
 
-    final forwardFrom = forwardMessageOptions.shouldEncrypt &&
+    final forwardFrom =
+        forwardMessageOptions.shouldEncrypt &&
             forwardMessageOptions.keyWrappingAlgorithm ==
                 KeyWrappingAlgorithm.ecdh1Pu
         ? senderDidDocument.id

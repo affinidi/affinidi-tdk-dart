@@ -20,8 +20,8 @@ class FakeAccountMetadata extends Fake implements AccountMetadata {
   final List<SharedStorageData> sharedStorageData;
 
   FakeAccountMetadata()
-      : dekekInfo = DekekInfo(encryptedDekek: 'test-encrypted-dekek'),
-        sharedStorageData = [];
+    : dekekInfo = DekekInfo(encryptedDekek: 'test-encrypted-dekek'),
+      sharedStorageData = [];
 }
 
 void registerAllFallbackValues() {

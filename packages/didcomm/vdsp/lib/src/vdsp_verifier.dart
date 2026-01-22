@@ -26,16 +26,15 @@ class VdspVerifier {
     required DidDocument mediatorDidDocument,
     AuthorizationProvider? authorizationProvider,
     ClientOptions clientOptions = const ClientOptions(),
-  }) async =>
-      VdspVerifier(
-        didManager: didManager,
-        mediatorClient: await DidcommMediatorClient.init(
-          didManager: didManager,
-          mediatorDidDocument: mediatorDidDocument,
-          authorizationProvider: authorizationProvider,
-          clientOptions: clientOptions,
-        ),
-      );
+  }) async => VdspVerifier(
+    didManager: didManager,
+    mediatorClient: await DidcommMediatorClient.init(
+      didManager: didManager,
+      mediatorDidDocument: mediatorDidDocument,
+      authorizationProvider: authorizationProvider,
+      clientOptions: clientOptions,
+    ),
+  );
 
   /// Sends a feature query to a holder to discover supported features.
   Future<QueryMessage> queryHolderFeatures({
@@ -118,7 +117,8 @@ class VdspVerifier {
       VerifiablePresentation? verifiablePresentation,
       required VerificationResult presentationVerificationResult,
       required List<VerificationResult> credentialVerificationResults,
-    }) onDataResponse,
+    })
+    onDataResponse,
     void Function(VdspRequestServiceMessage)? onRequestService,
     void Function(ProblemReportMessage)? onProblemReport,
     Function? onError,
@@ -175,8 +175,8 @@ class VdspVerifier {
 
             final presentationVerificationResult =
                 await universalPresentationVerifier.verify(
-              verifiablePresentation,
-            );
+                  verifiablePresentation,
+                );
 
             if (presentationVerificationResult.isValid) {
               final credentialVerificationResults = await Future.wait(
