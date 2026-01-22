@@ -89,7 +89,7 @@ Future<void> main() async {
           ...FeatureDiscoveryHelper.vdipIssuerDisclosures,
           Disclosure(
             featureType: FeatureType.credentialFormat.value,
-            id: CredentialFormat.w3cV1.value,
+            id: CredentialFormat.w3cV2.value,
           ),
         ],
         clientOptions: const AffinidiClientOptions(),
@@ -209,7 +209,7 @@ Future<void> main() async {
         options: RequestCredentialsOptions(
           proposalId: proposalId,
           challenge: expectedChallenge,
-          credentialFormat: CredentialFormat.w3cV1,
+          credentialFormat: CredentialFormat.w3cV2,
           credentialMeta: CredentialMeta(data: {'email': holderEmail}),
         ),
       );
@@ -245,7 +245,7 @@ Future<void> main() async {
           ...FeatureDiscoveryHelper.vdipIssuerDisclosures,
           Disclosure(
             featureType: FeatureType.credentialFormat.value,
-            id: CredentialFormat.w3cV1.value,
+            id: CredentialFormat.w3cV2.value,
           ),
         ],
         clientOptions: const AffinidiClientOptions(),
@@ -328,9 +328,9 @@ Future<void> main() async {
               final holderDid = holderDidFromAssertion!;
 
               // Create the credential to issue
-              final credentialToIssue = VcDataModelV1(
+              final credentialToIssue = VcDataModelV2(
                 context: JsonLdContext.fromJson([
-                  dmV1ContextUrl,
+                  dmV2ContextUrl,
                   'https://schema.affinidi.io/TEmailV1R0.jsonld',
                 ]),
                 credentialSchema: [
@@ -342,7 +342,6 @@ Future<void> main() async {
                 id: Uri.parse(const Uuid().v4()),
                 issuer: Issuer.uri(issuerSigner.did),
                 type: {'VerifiableCredential', 'Email'},
-                issuanceDate: DateTime.now().toUtc(),
                 credentialSubject: [
                   CredentialSubject.fromJson({
                     'id': holderDid,
@@ -352,7 +351,7 @@ Future<void> main() async {
               );
 
               // Sign the credential
-              final suite = LdVcDm1Suite();
+              final suite = LdVcDm2Suite();
               final issuedCredential = await suite.issue(
                 unsignedData: credentialToIssue,
                 proofGenerator: DataIntegrityEcdsaJcsGenerator(
@@ -429,7 +428,7 @@ Future<void> main() async {
           assertionSigner: differentSigner, // But signing with differentSigner
           options: RequestCredentialsOptions(
             proposalId: proposalId,
-            credentialFormat: CredentialFormat.w3cV1,
+            credentialFormat: CredentialFormat.w3cV2,
           ),
         ),
         throwsA(isA<ArgumentError>()),
@@ -443,7 +442,7 @@ Future<void> main() async {
         options: RequestCredentialsOptions(
           proposalId: proposalId,
           challenge: expectedChallenge,
-          credentialFormat: CredentialFormat.w3cV1,
+          credentialFormat: CredentialFormat.w3cV2,
           credentialMeta: CredentialMeta(data: {'email': holderEmail}),
         ),
       );
