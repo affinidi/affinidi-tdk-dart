@@ -78,7 +78,7 @@ void main() async {
             final compileKeys = ['AFFINIDI_ATLAS_DID'];
 
             final compileConfigs = Platform.environment.keys
-                .where((key) => compileKeys.contains(key))
+                .where(compileKeys.contains)
                 .map((key) => '--define=$key=${Platform.environment[key]}');
 
             print('compileConfigs:');
@@ -105,7 +105,7 @@ void main() async {
             expect(errors, isEmpty);
           },
           // gives enough time for the examples to run
-          timeout: Timeout(Duration(minutes: 5)),
+          timeout: const Timeout(Duration(minutes: 5)),
         );
       });
     }

@@ -135,10 +135,13 @@ class _DriftExamplePageState extends State<DriftExamplePage> {
                           padding: const EdgeInsets.all(8),
                           child: Row(
                             children: [
-                              const Text('Profiles',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold)),
+                              const Text(
+                                'Profiles',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               const Spacer(),
                               IconButton(
                                 icon: const Icon(Icons.add),
@@ -183,10 +186,13 @@ class _DriftExamplePageState extends State<DriftExamplePage> {
                           padding: const EdgeInsets.all(8),
                           child: Row(
                             children: [
-                              const Text('Files & Folders',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold)),
+                              const Text(
+                                'Files & Folders',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               const Spacer(),
                               if (_state.selectedProfileId != null) ...[
                                 IconButton(
@@ -211,8 +217,9 @@ class _DriftExamplePageState extends State<DriftExamplePage> {
                         if (_state.selectedProfileId != null) ...[
                           if (_state.currentFolderId != null)
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
                               child: Row(
                                 children: [
                                   IconButton(
@@ -257,7 +264,8 @@ class _DriftExamplePageState extends State<DriftExamplePage> {
                           const Expanded(
                             child: Center(
                               child: Text(
-                                  'Select a profile to view files and folders'),
+                                'Select a profile to view files and folders',
+                              ),
                             ),
                           ),
                       ],

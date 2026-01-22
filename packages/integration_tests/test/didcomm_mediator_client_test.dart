@@ -108,7 +108,7 @@ void main() async {
             ),
             didManager: aliceDidManager,
             mediatorDidDocument: bobMediatorDocument,
-            clientOptions: AffinidiClientOptions(),
+            clientOptions: const AffinidiClientOptions(),
           );
 
           bobMediatorClient = await DidcommMediatorClient.init(
@@ -118,7 +118,7 @@ void main() async {
             ),
             didManager: bobDidManager,
             mediatorDidDocument: bobMediatorDocument,
-            clientOptions: AffinidiClientOptions(),
+            clientOptions: const AffinidiClientOptions(),
           );
 
           await config.configureAcl(

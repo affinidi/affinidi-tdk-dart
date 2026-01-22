@@ -1,4 +1,4 @@
-import 'package:affinidi_tdk_common/src/logger/log_level.dart';
+import 'logger/log_level.dart';
 
 /// Enum to represent different types of environments.
 enum EnvironmentType {
@@ -81,7 +81,7 @@ class Environment {
   });
 
   /// The name of the environment variable that holds the current environment type.
-  static const enviromentVariableName = "AFFINIDI_TDK_ENVIRONMENT";
+  static const enviromentVariableName = 'AFFINIDI_TDK_ENVIRONMENT';
   static const _consumerAudienceEndpoint = '/iam/v1/consumer/oauth2/token';
   static const _consumerCisEndpoint = '/cis';
   static const _defaultRegion = ElementsRegion.apSoutheast1;

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:affinidi_tdk_iota_client/affinidi_tdk_iota_client.dart';
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:affinidi_tdk_iota_client/affinidi_tdk_iota_client.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:test/test.dart';
@@ -24,11 +24,11 @@ void main() {
 
     setUpAll(() async {
       final wallet = await ResourceFactory.createWallet();
-      walletId = wallet.id;
-      walletAri = wallet.ari;
+      walletId = wallet.id!;
+      walletAri = wallet.ari!;
 
       final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
-      String basePathOverride = replaceBaseDomain(
+      var basePathOverride = replaceBaseDomain(
         AffinidiTdkIotaClient.basePath,
         apiGwUrl,
       );
@@ -62,24 +62,26 @@ void main() {
           ..build();
 
         final fixture = getFixtures().iotaConfiguration;
-        redirectUri = fixture['redirectUris'][0];
+        redirectUri = fixture['redirectUris'][0] as String;
 
         final createIotaConfigurationInput =
             CreateIotaConfigurationInputBuilder()
-              ..name = fixture['name']
+              ..name = fixture['name'] as String?
               ..walletAri = walletAri
               ..redirectUris = ListBuilder<String>(
-                List<String>.from(fixture['redirectUris']),
+                List<String>.from(fixture['redirectUris'] as Iterable),
               )
-              ..enableVerification = fixture['enableVerification'] ?? false
+              ..enableVerification =
+                  (fixture['enableVerification'] as bool?) ?? false
               ..enableConsentAuditLog =
-                  fixture['enableConsentAuditLog'] ?? false
+                  (fixture['enableConsentAuditLog'] as bool?) ?? false
               ..clientMetadata = clientMetadata
-              ..description = fixture['description']
+              ..description = fixture['description'] as String?
               ..mode = CreateIotaConfigurationInputModeEnum.valueOf(
-                fixture['mode'],
+                fixture['mode'] as String,
               )
-              ..enableIdvProviders = fixture['enableIdvProviders'] ?? false;
+              ..enableIdvProviders =
+                  (fixture['enableIdvProviders'] as bool?) ?? false;
 
         final configuration = (await configurationsApi.createIotaConfiguration(
           createIotaConfigurationInput: createIotaConfigurationInput.build(),
@@ -100,7 +102,7 @@ void main() {
       });
 
       test('Updates Iota configuration', () async {
-        String updatedName = 'UpdatedName';
+        var updatedName = 'UpdatedName';
 
         final updateConfigurationByIdInput =
             UpdateConfigurationByIdInputBuilder()..name = updatedName;
@@ -146,7 +148,7 @@ void main() {
         });
 
         test('Updates PEX query', () async {
-          String updatedDescription = 'UpdatedDescription';
+          var updatedDescription = 'UpdatedDescription';
 
           final updatePexQueryInput = UpdatePexQueryInputBuilder()
             ..description = updatedDescription;
@@ -179,7 +181,7 @@ void main() {
     });
 
     test('Iota redirect flow', () async {
-      final uuid = Uuid();
+      final uuid = const Uuid();
       final correlationId = uuid.v4();
       final presentationSubmission = getFixtures()
           .iotaPresentationSubmission; // envIota.presentationSubmission;
@@ -209,8 +211,8 @@ void main() {
         return;
       }
 
-      final Map<String, dynamic> decodedToken = Jwt.parseJwt(jwt);
-      final state = decodedToken['state'];
+      final decodedToken = Jwt.parseJwt(jwt);
+      final state = decodedToken['state'] as String?;
 
       final callbackInputBuilder = CallbackInputBuilder()
         ..state = state

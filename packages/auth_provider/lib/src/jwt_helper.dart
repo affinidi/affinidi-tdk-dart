@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
-import 'package:uuid/uuid.dart';
-import 'package:pointycastle/export.dart' as pce;
 import 'package:asn1lib/asn1lib.dart';
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:pointycastle/export.dart' as pce;
+import 'package:uuid/uuid.dart';
 
 import 'iam_client.dart';
 
@@ -17,7 +17,7 @@ class JWTHelper {
     required String privateKey,
     String? keyId,
     String? passphrase,
-    dynamic additionalPayload,
+    Map<String, dynamic>? additionalPayload,
   }) {
     final algorithm = JWTAlgorithm.RS256;
 
@@ -26,13 +26,13 @@ class JWTHelper {
         'iss': tokenId,
         'sub': tokenId,
         'aud': audience,
-        'jti': Uuid().v4(),
+        'jti': const Uuid().v4(),
         if (additionalPayload != null) ...additionalPayload,
       },
       header: {'alg': algorithm.name, if (keyId != null) 'kid': keyId},
     );
 
-    String privateKeyString = privateKey;
+    var privateKeyString = privateKey;
 
     if (passphrase != null && passphrase.isNotEmpty) {
       final decryptedPrivateKey = _decryptPrivateKey(
@@ -45,7 +45,7 @@ class JWTHelper {
     final token = jwt.sign(
       RSAPrivateKey(privateKeyString),
       algorithm: algorithm,
-      expiresIn: Duration(minutes: 5),
+      expiresIn: const Duration(minutes: 5),
     );
 
     return token;
@@ -67,8 +67,8 @@ class JWTHelper {
     }
 
     // Decode base64url-encoded x and y coordinates
-    final Uint8List x = base64Url.decode(_addPadding(jwk['x']!));
-    final Uint8List y = base64Url.decode(_addPadding(jwk['y']!));
+    final x = base64Url.decode(_addPadding(jwk['x']! as String));
+    final y = base64Url.decode(_addPadding(jwk['y']! as String));
 
     // Create the EC domain parameters for P-256 (secp256r1)
     final curve = pce.ECCurve_secp256r1();
@@ -90,7 +90,7 @@ class JWTHelper {
   }
 
   static BigInt _decodeBigInt(Uint8List bytes) {
-    BigInt result = BigInt.zero;
+    var result = BigInt.zero;
     for (var i = 0; i < bytes.length; i++) {
       result += BigInt.from(bytes[i]) << (8 * (bytes.length - i - 1));
     }
@@ -99,9 +99,9 @@ class JWTHelper {
 
   /// Mapping of AES-CBC OIDs to key sizes
   static final Map<String, int> aesKeySizes = {
-    "2.16.840.1.101.3.4.1.42": 32, // AES-256-CBC
-    "2.16.840.1.101.3.4.1.22": 24, // AES-192-CBC
-    "2.16.840.1.101.3.4.1.2": 16, // AES-128-CBC
+    '2.16.840.1.101.3.4.1.42': 32, // AES-256-CBC
+    '2.16.840.1.101.3.4.1.22': 24, // AES-192-CBC
+    '2.16.840.1.101.3.4.1.2': 16, // AES-128-CBC
   };
 
   /// Converts the decrypted private key to PEM format.
@@ -175,7 +175,7 @@ class JWTHelper {
     }
 
     // Extract AES-CBC IV
-    final encryptionParams = (pbes2Params.elements[1] as ASN1Sequence);
+    final encryptionParams = pbes2Params.elements[1] as ASN1Sequence;
     final iv = (encryptionParams.elements[1] as ASN1OctetString).valueBytes();
 
     final cipherOid =
@@ -184,7 +184,7 @@ class JWTHelper {
 
     // Determine AES key size from OID
     if (keySize == null) {
-      throw Exception("Unsupported encryption algorithm: $cipherOid");
+      throw Exception('Unsupported encryption algorithm: $cipherOid');
     }
 
     // Extract encrypted private key data

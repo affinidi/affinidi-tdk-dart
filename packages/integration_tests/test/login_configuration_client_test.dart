@@ -1,5 +1,5 @@
-import 'package:affinidi_tdk_login_configuration_client/affinidi_tdk_login_configuration_client.dart';
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:affinidi_tdk_login_configuration_client/affinidi_tdk_login_configuration_client.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:test/test.dart';
 
@@ -12,7 +12,7 @@ void main() {
 
     setUpAll(() async {
       final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
-      String basePathOverride = replaceBaseDomain(
+      var basePathOverride = replaceBaseDomain(
         AffinidiTdkLoginConfigurationClient.basePath,
         apiGwUrl,
       );
@@ -41,9 +41,9 @@ void main() {
               ..name = name
               ..redirectUris = ListBuilder<String>([redirectUri]);
 
-        final response = (await configurationApi.createLoginConfigurations(
+        final response = await configurationApi.createLoginConfigurations(
           createLoginConfigurationInput: createLoginConfigurationInput.build(),
-        ));
+        );
 
         expect(response.statusCode, 201);
         expect(response.data!.configurationId, isNotEmpty);
@@ -62,7 +62,7 @@ void main() {
       });
 
       test('Updates login configuration', () async {
-        final String updatedName = 'UpdatedName';
+        final updatedName = 'UpdatedName';
 
         final updateLoginConfigurationInput =
             UpdateLoginConfigurationInputBuilder()..name = updatedName;

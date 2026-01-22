@@ -2,10 +2,9 @@
 
 import 'dart:typed_data';
 
-import 'package:affinidi_tdk_cryptography/src/models/verify_jwt_result.dart';
-
 import 'cryptography/base_cryptography_service.dart';
 import 'cryptography_service_interface.dart';
+import 'models/verify_jwt_result.dart';
 
 /// A service class that provides cryptographic operations.
 class CryptographyService implements CryptographyServiceInterface {

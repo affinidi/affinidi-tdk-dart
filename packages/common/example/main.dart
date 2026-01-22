@@ -1,5 +1,5 @@
-import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_auth_provider/affinidi_tdk_auth_provider.dart';
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_credential_issuance_client/affinidi_tdk_credential_issuance_client.dart';
 import 'package:affinidi_tdk_iota_client/affinidi_tdk_iota_client.dart';
 

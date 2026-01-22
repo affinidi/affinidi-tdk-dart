@@ -1,12 +1,11 @@
 import 'dart:math';
-import 'package:built_value/json_object.dart';
-import 'package:built_collection/built_collection.dart';
 
 import 'package:affinidi_tdk_auth_provider/affinidi_tdk_auth_provider.dart';
-import 'package:affinidi_tdk_wallets_client/affinidi_tdk_wallets_client.dart';
-import 'package:affinidi_tdk_credential_verification_client/affinidi_tdk_credential_verification_client.dart';
-
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:affinidi_tdk_credential_verification_client/affinidi_tdk_credential_verification_client.dart';
+import 'package:affinidi_tdk_wallets_client/affinidi_tdk_wallets_client.dart';
+import 'package:built_collection/built_collection.dart';
+import 'package:built_value/json_object.dart';
 import 'package:dio/dio.dart';
 
 import 'helpers.dart';
@@ -18,7 +17,7 @@ class ResourceFactory {
 
   static final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
 
-  static getAuthTokenHook() {
+  static Future<String?> Function() getAuthTokenHook() {
     final env = getProjectEnvironment();
     final authProvider = AuthProvider(
       projectId: env.projectId,
@@ -31,10 +30,10 @@ class ResourceFactory {
     return authProvider.fetchProjectScopedToken;
   }
 
-  static createWallet({bool didWeb = false}) async {
+  static Future<WalletDto> createWallet({bool didWeb = false}) async {
     await checkWalletLimitExceeded();
 
-    String basePathOverride = replaceBaseDomain(
+    var basePathOverride = replaceBaseDomain(
       AffinidiTdkWalletsClient.basePath,
       apiGwUrl,
     );
@@ -57,11 +56,11 @@ class ResourceFactory {
       createWalletInput: builder.build(),
     )).data;
 
-    return createdWallet!.wallet;
+    return createdWallet!.wallet!;
   }
 
-  static getWalletById(String walletId) async {
-    String basePathOverride = replaceBaseDomain(
+  static Future<WalletDto?>? getWalletById(String walletId) async {
+    var basePathOverride = replaceBaseDomain(
       AffinidiTdkWalletsClient.basePath,
       apiGwUrl,
     );
@@ -84,8 +83,8 @@ class ResourceFactory {
     }
   }
 
-  static deleteWallet(String walletId) async {
-    String basePathOverride = replaceBaseDomain(
+  static Future<void> deleteWallet(String walletId) async {
+    var basePathOverride = replaceBaseDomain(
       AffinidiTdkWalletsClient.basePath,
       apiGwUrl,
     );
@@ -108,8 +107,8 @@ class ResourceFactory {
     ).join();
   }
 
-  static Future<bool> isCredentialValid(credential) async {
-    String basePathOverride = replaceBaseDomain(
+  static Future<bool> isCredentialValid(Map<String, dynamic> credential) async {
+    var basePathOverride = replaceBaseDomain(
       AffinidiTdkCredentialVerificationClient.basePath,
       apiGwUrl,
     );
@@ -140,8 +139,8 @@ class ResourceFactory {
     return segments.isNotEmpty ? segments.last : null;
   }
 
-  static checkWalletLimitExceeded() async {
-    String basePathOverride = replaceBaseDomain(
+  static Future<void> checkWalletLimitExceeded() async {
+    var basePathOverride = replaceBaseDomain(
       AffinidiTdkWalletsClient.basePath,
       apiGwUrl,
     );

@@ -1,10 +1,10 @@
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_consumer_auth_provider/affinidi_tdk_consumer_auth_provider.dart';
 import 'package:affinidi_tdk_credential_issuance_client/affinidi_tdk_credential_issuance_client.dart';
-import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/json_object.dart' as built_value;
 import 'package:ssi/ssi.dart';
 import 'package:test/test.dart';
-import 'package:built_collection/built_collection.dart';
 
 import 'helpers/helpers.dart';
 
@@ -25,7 +25,7 @@ void main() {
 
     setUpAll(() async {
       final tempWallet = await ResourceFactory.createWallet();
-      walletId = tempWallet.id;
+      walletId = tempWallet.id!;
 
       final wallet = Bip32Wallet.fromSeed(envVault.seed);
       final keyPair = await wallet.generateKey(keyId: "m/44'/60'/0'/0/0");
@@ -39,7 +39,7 @@ void main() {
       consumerAuthProvider = ConsumerAuthProvider(signer: didSigner);
 
       final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
-      String basePathOverride = replaceBaseDomain(
+      var basePathOverride = replaceBaseDomain(
         AffinidiTdkCredentialIssuanceClient.basePath,
         apiGwUrl,
       );
@@ -59,7 +59,7 @@ void main() {
       await ResourceFactory.deleteWallet(walletId);
     });
 
-    group("issuance config", () {
+    group('issuance config', () {
       test('Lists issuance configurations', () async {
         // When
         final response = await configurationApi.getIssuanceConfigList();
@@ -94,7 +94,7 @@ void main() {
       });
 
       test('Updates issuance configuration', () async {
-        final String updatedDescription = 'UpdatedDescription';
+        final updatedDescription = 'UpdatedDescription';
 
         final foundWallet = await ResourceFactory.getWalletById(
           configurationIssuerWalletId,
@@ -125,7 +125,7 @@ void main() {
       });
     });
 
-    group("Batch issuance", () {
+    group('Batch issuance', () {
       late String preAuthCode;
       late String? txCode;
       late String issuanceId;
@@ -133,20 +133,20 @@ void main() {
       test('Start issuance', () async {
         // Update the credentialData MapBuilder to properly create JsonObject values
         final credentialData = MapBuilder<String, built_value.JsonObject?>({
-          "studentID": built_value.JsonObject("1234"),
-          "degreeName": built_value.JsonObject("FakeDegree"),
-          "degreeType": built_value.JsonObject("SpecialDegree"),
-          "awardedDate": built_value.JsonObject("2024-04-14T20:48:31.148Z"),
-          "name": built_value.JsonObject("Mohamed 2"),
-          "dateOfBirth": built_value.JsonObject("2024-04-14T20:48:31.148Z"),
+          'studentID': built_value.JsonObject('1234'),
+          'degreeName': built_value.JsonObject('FakeDegree'),
+          'degreeType': built_value.JsonObject('SpecialDegree'),
+          'awardedDate': built_value.JsonObject('2024-04-14T20:48:31.148Z'),
+          'name': built_value.JsonObject('Mohamed 2'),
+          'dateOfBirth': built_value.JsonObject('2024-04-14T20:48:31.148Z'),
         });
         final b1 = StartIssuanceInputDataInnerBuilder()
-          ..credentialTypeId = "UniversityDegree2024"
+          ..credentialTypeId = 'UniversityDegree2024'
           ..credentialData = credentialData;
 
         final startIssuanceInput = StartIssuanceInputBuilder()
           ..holderDid =
-              "did:key:zQ3shNxQh9GT56poRxCvihKZJ4Qfs6Xc8aAAas6PF5nZSBdz7"
+              'did:key:zQ3shNxQh9GT56poRxCvihKZJ4Qfs6Xc8aAAas6PF5nZSBdz7'
           ..claimMode = StartIssuanceInputClaimModeEnum.NORMAL
           ..data = ListBuilder([
             b1.build(),
@@ -202,7 +202,7 @@ void main() {
             '';
       });
 
-      test("Claim batch credential", () async {
+      test('Claim batch credential', () async {
         final issuerMetadata =
             (await wellKnownApi.getWellKnownOpenIdCredentialIssuer(
               projectId: env.projectId,
@@ -221,17 +221,18 @@ void main() {
 
         expect(tokenDetails.accessToken, isNotNull);
         expect(tokenDetails.authorizationDetails, isNotNull);
-        List<dynamic> authorizationDetails = tokenDetails.authorizationDetails!;
+        var authorizationDetails = tokenDetails.authorizationDetails!;
         final credentialRequests = [];
         for (var detail in authorizationDetails) {
-          for (var credentialIdentifier in detail['credential_identifiers']) {
+          for (var credentialIdentifier
+              in detail['credential_identifiers'] as List) {
             final proof = CredentialProofBuilder()
               ..jwt = await consumerAuthProvider.fetchCisToken()
               ..proofType = CredentialProofProofTypeEnum.jwt;
             credentialRequests.add(
               BatchCredentialInputCredentialRequestsInner(
                 (b) => b
-                  ..credentialIdentifier = credentialIdentifier
+                  ..credentialIdentifier = credentialIdentifier as String
                   ..proof = proof,
               ),
             );
@@ -242,12 +243,12 @@ void main() {
           ..credentialRequests = ListBuilder(credentialRequests);
 
         final headers = {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${tokenDetails.accessToken}",
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${tokenDetails.accessToken}',
         };
 
         final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
-        String basePathOverride = replaceBaseDomain(
+        var basePathOverride = replaceBaseDomain(
           AffinidiTdkCredentialIssuanceClient.basePath,
           apiGwUrl,
         );

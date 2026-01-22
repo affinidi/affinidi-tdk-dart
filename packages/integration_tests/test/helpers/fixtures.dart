@@ -47,12 +47,18 @@ Fixtures getFixtures() {
   final credentialIssuanceData = env['CREDENTIAL_ISSUANCE_DATA']!;
 
   return Fixtures(
-    iotaConfiguration: json.decode(iotaConfiguration),
-    iotaPresentationDefinition: json.decode(iotaPresentationDefinition),
-    iotaPresentationSubmission: json.decode(iotaPresentationSubmission),
-    verifiableCredential: json.decode(verifiableCredential),
-    verifiablePresentation: json.decode(verifiablePresentation),
-    unsignedCredentialParams: json.decode(unsignedCredentialParams),
-    credentialIssuanceData: json.decode(credentialIssuanceData),
+    iotaConfiguration: json.decode(iotaConfiguration) as Map<String, dynamic>,
+    iotaPresentationDefinition:
+        json.decode(iotaPresentationDefinition) as Map<String, dynamic>,
+    iotaPresentationSubmission:
+        json.decode(iotaPresentationSubmission) as Map<String, dynamic>,
+    verifiableCredential:
+        json.decode(verifiableCredential) as Map<String, dynamic>,
+    verifiablePresentation:
+        json.decode(verifiablePresentation) as Map<String, dynamic>,
+    unsignedCredentialParams:
+        json.decode(unsignedCredentialParams) as Map<String, dynamic>,
+    credentialIssuanceData:
+        json.decode(credentialIssuanceData) as Map<String, dynamic>,
   );
 }

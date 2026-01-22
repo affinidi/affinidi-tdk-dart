@@ -6,17 +6,17 @@ void main() {
 
   final logger = Logger.instance;
 
-  logger.log(LogLevel.warning, "This is a warning");
-  logger.warning("This is also a warning");
+  logger.log(LogLevel.warning, 'This is a warning');
+  logger.warning('This is also a warning');
 
   try {
     // Intentionally cause an error
-    int result = 10 ~/ 0;
+    var result = 10 ~/ 0;
     print(result);
   } catch (e, stack) {
     logger.error(
-      "Division by zero encountered",
-      component: "MyComponent",
+      'Division by zero encountered',
+      component: 'MyComponent',
       error: e,
       stackTrace: stack,
     );

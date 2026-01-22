@@ -13,9 +13,7 @@ class VaultService extends _$VaultService {
 
   @override
   VaultServiceState build() {
-    Future(() {
-      _create();
-    });
+    Future(_create);
 
     return VaultServiceState();
   }

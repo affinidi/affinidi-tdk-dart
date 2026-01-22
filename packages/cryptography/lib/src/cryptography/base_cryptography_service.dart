@@ -3,19 +3,20 @@
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
-import 'package:affinidi_tdk_cryptography/src/models/verify_jwt_result.dart';
+
+import 'package:bs58/bs58.dart';
+import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:cryptography/cryptography.dart' as cryptography;
-import 'package:convert/convert.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:bs58/bs58.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pointycastle/ecc/ecc_fp.dart' as ecc_fp;
+import 'package:pointycastle/export.dart' as pce;
 import 'package:pointycastle/pointycastle.dart' as pc;
-import "package:pointycastle/export.dart" as pce;
 import 'package:secp256k1/secp256k1.dart' as secp256k1;
 
 import '../cryptography_service_interface.dart';
+import '../models/verify_jwt_result.dart';
 
 /// Base class for cryptographic operations. Implements the [CryptographyServiceInterface].
 class BaseCryptographyService implements CryptographyServiceInterface {
@@ -179,7 +180,7 @@ class BaseCryptographyService implements CryptographyServiceInterface {
   String createHash({required String hashSource}) {
     print('Started creating hash');
     List<int> bytes = utf8.encode(hashSource);
-    crypto.Digest digest = crypto.sha1.convert(bytes);
+    var digest = crypto.sha1.convert(bytes);
 
     print('Completed creating hash');
     return digest.toString();
@@ -188,7 +189,7 @@ class BaseCryptographyService implements CryptographyServiceInterface {
   @override
   String createSha256Hex({required List<int> bytes}) {
     print('Started creating SHA256 HEX from bytes');
-    crypto.Digest digest = crypto.sha256.convert(bytes);
+    var digest = crypto.sha256.convert(bytes);
 
     print('Completed creating SHA256 HEX from bytes');
     return digest.toString();
@@ -197,7 +198,7 @@ class BaseCryptographyService implements CryptographyServiceInterface {
   @override
   String createMd5Base64({required List<int> bytes}) {
     print('Started creating MD5 base64 from bytes');
-    crypto.Digest digest = crypto.md5.convert(bytes);
+    var digest = crypto.md5.convert(bytes);
 
     print('Completed creating MD5 base64 from bytes');
     return base64.encode(digest.bytes);
@@ -364,26 +365,26 @@ class BaseCryptographyService implements CryptographyServiceInterface {
   }
 
   (BigInt x, BigInt y) _ecPointFromDid(String did) {
-    if (!did.startsWith("did:key:")) {
-      throw "only did:key supported";
+    if (!did.startsWith('did:key:')) {
+      throw 'only did:key supported';
     }
 
     final keyStr = did.split(':')[2];
 
     if (!keyStr.startsWith('z')) {
-      throw "unsupported encoding";
+      throw 'unsupported encoding';
     }
 
     final compressedWithHeader = base58.decode(keyStr.substring(1));
 
     if (compressedWithHeader.isEmpty || compressedWithHeader[0] != 0xe7) {
-      throw "expected secp256k1 curve";
+      throw 'expected secp256k1 curve';
     }
 
     final compressed = Uint8List.sublistView(compressedWithHeader, 2);
 
     if (compressed.length != 33) {
-      throw "invalid key length";
+      throw 'invalid key length';
     }
 
     final bigCompressed = _uint8ListToBigInt(compressed);
@@ -425,8 +426,14 @@ class BaseCryptographyService implements CryptographyServiceInterface {
       throw UnimplementedError('Only alg=$alg is supported');
     }
 
-    final n = BigInt.parse(hex.encode(_base64UrlDecode(jwk['n']!)), radix: 16);
-    final e = BigInt.parse(hex.encode(_base64UrlDecode(jwk['e']!)), radix: 16);
+    final n = BigInt.parse(
+      hex.encode(_base64UrlDecode(jwk['n']! as String)),
+      radix: 16,
+    );
+    final e = BigInt.parse(
+      hex.encode(_base64UrlDecode(jwk['e']! as String)),
+      radix: 16,
+    );
 
     print('Completed getting RSA public key from JWK');
 
@@ -469,7 +476,7 @@ class BaseCryptographyService implements CryptographyServiceInterface {
 
   Uint8List _base64UrlDecode(String input) {
     // Pad the string to a multiple of 4 for correct decoding
-    String padded = input.padRight((input.length + 3) ~/ 4 * 4, '=');
+    var padded = input.padRight((input.length + 3) ~/ 4 * 4, '=');
     return base64Url.decode(padded);
   }
 

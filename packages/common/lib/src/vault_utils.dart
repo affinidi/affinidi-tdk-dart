@@ -26,16 +26,16 @@ class VaultUtils {
     Environment? env,
   ]) {
     final vaultUrl = fetchWebVaultUrl(env);
-    Map<String, String> params = {'request': request, 'client_id': clientId};
-    String queryString = Uri(queryParameters: params).query;
+    var params = <String, String>{'request': request, 'client_id': clientId};
+    var queryString = Uri(queryParameters: params).query;
     return '$vaultUrl$_sharePath?$queryString';
   }
 
   /// Builds a credential claim link for the given credential offer URI.
   static String buildClaimLink(String credentialOfferUri, [Environment? env]) {
     final vaultUrl = fetchWebVaultUrl(env);
-    Map<String, String> params = {'credential_offer_uri': credentialOfferUri};
-    String queryString = Uri(queryParameters: params).query;
+    var params = <String, String>{'credential_offer_uri': credentialOfferUri};
+    var queryString = Uri(queryParameters: params).query;
     return '$vaultUrl$_claimPath?$queryString';
   }
 }

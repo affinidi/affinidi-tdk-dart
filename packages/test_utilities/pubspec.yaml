@@ -9,5 +9,4 @@ dependencies:
   dio: ^5.8.0+1
   http_mock_adapter: ^0.6.1
 dev_dependencies:
-  dart_flutter_team_lints: ^3.2.1
   test: ^1.24.0

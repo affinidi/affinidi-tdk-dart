@@ -1,10 +1,9 @@
-import 'package:dio/dio.dart';
-import 'package:test/test.dart';
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_consumer_auth_provider/affinidi_tdk_consumer_auth_provider.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/affinidi_tdk_vault_data_manager_client.dart';
-import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
-
+import 'package:dio/dio.dart';
 import 'package:ssi/ssi.dart';
+import 'package:test/test.dart';
 
 import 'helpers/helpers.dart';
 
@@ -13,12 +12,12 @@ const vfsSalt =
     '031b96f9b4641f508702c03b5643fd5de8d90465fdb0bdf6abe5d6c1c8a667a8';
 
 Future<Map<String, dynamic>> getVaultDataManagerPublicKey() async {
-  final Dio dio = Dio();
+  final dio = Dio();
   final absoluteUrl =
-      "${AffinidiTdkVaultDataManagerClient.basePath}/.well-known/jwks.json";
+      '${AffinidiTdkVaultDataManagerClient.basePath}/.well-known/jwks.json';
   final response = await dio.get(absoluteUrl);
   final jwks = (response.data['keys'] as List).first;
-  return jwks;
+  return jwks as Map<String, dynamic>;
 }
 
 void main() {
@@ -41,7 +40,7 @@ void main() {
       consumerAuthProvider = ConsumerAuthProvider(signer: didSigner);
 
       final vaultApiUrl = VaultUtils.fetchElementsVaultApiUrl();
-      String basePathOverride = replaceBaseDomain(
+      var basePathOverride = replaceBaseDomain(
         AffinidiTdkVaultDataManagerClient.basePath,
         vaultApiUrl,
       );

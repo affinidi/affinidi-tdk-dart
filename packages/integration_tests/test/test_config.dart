@@ -130,7 +130,7 @@ class TestConfig {
         mediatorDidDocument: mediatorDidDocument,
         didManager: didManager,
       ),
-      clientOptions: AffinidiClientOptions(),
+      clientOptions: const AffinidiClientOptions(),
     );
 
     final accessListAddMessage = AccessListAddMessage(

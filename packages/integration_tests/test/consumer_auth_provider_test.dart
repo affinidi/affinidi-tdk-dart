@@ -1,7 +1,7 @@
-import 'package:dio/dio.dart';
-import 'package:test/test.dart';
 import 'package:affinidi_tdk_consumer_auth_provider/affinidi_tdk_consumer_auth_provider.dart';
+import 'package:dio/dio.dart';
 import 'package:ssi/ssi.dart';
+import 'package:test/test.dart';
 
 import 'helpers/helpers.dart';
 
@@ -10,7 +10,7 @@ void main() {
   late final ConsumerAuthProvider providerWithoutClient;
 
   setUpAll(() async {
-    final VaultEnvironment env = getVaultEnvironment();
+    final env = getVaultEnvironment();
 
     final wallet = Bip32Wallet.fromSeed(env.seed);
     final keyPair = await wallet.generateKey(keyId: "m/44'/60'/0'/0'/0'");
