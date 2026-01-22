@@ -7,7 +7,6 @@ import 'package:affinidi_tdk_credential_issuance_client/src/model/project_creden
 import 'package:affinidi_tdk_credential_issuance_client/src/model/project_credential_config_not_exist_error.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:affinidi_tdk_credential_issuance_client/src/model/invalid_issuer_wallet_error.dart';
-import 'package:affinidi_tdk_credential_issuance_client/src/model/action_forbidden_error_details_inner.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:one_of/one_of.dart';

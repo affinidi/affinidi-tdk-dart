@@ -8,9 +8,16 @@ part of 'serializers.dart';
 
 Serializers _$serializers =
     (Serializers().toBuilder()
+          ..add(AuthcryptMessageInput.serializer)
+          ..add(AuthcryptMessageInputSignatureSchemeEnum.serializer)
+          ..add(AuthcryptMessageResultDto.serializer)
           ..add(CreateWalletInput.serializer)
           ..add(CreateWalletInputDidMethodEnum.serializer)
           ..add(CreateWalletResponse.serializer)
+          ..add(CreateWalletV2Input.serializer)
+          ..add(CreateWalletV2InputAlgorithmEnum.serializer)
+          ..add(CreateWalletV2InputDidMethodEnum.serializer)
+          ..add(CreateWalletV2Response.serializer)
           ..add(EntityNotFoundError.serializer)
           ..add(EntityNotFoundErrorHttpStatusCodeEnum.serializer)
           ..add(EntityNotFoundErrorMessageEnum.serializer)
@@ -38,6 +45,7 @@ Serializers _$serializers =
           ..add(OperationForbiddenErrorMessageEnum.serializer)
           ..add(OperationForbiddenErrorNameEnum.serializer)
           ..add(RevokeCredentialInput.serializer)
+          ..add(RevokeCredentialsInput.serializer)
           ..add(ServiceErrorResponse.serializer)
           ..add(ServiceErrorResponseDetailsInner.serializer)
           ..add(SignCredential400Response.serializer)
@@ -45,23 +53,42 @@ Serializers _$serializers =
           ..add(SignCredentialInputDtoCredentialFormatEnum.serializer)
           ..add(SignCredentialInputDtoUnsignedCredentialParams.serializer)
           ..add(SignCredentialResultDto.serializer)
-          ..add(SignCredentialsDm1JwtInputDto.serializer)
-          ..add(SignCredentialsDm1JwtResultDto.serializer)
           ..add(SignCredentialsDm1LdInputDto.serializer)
+          ..add(SignCredentialsDm1LdInputDtoSignatureSchemeEnum.serializer)
           ..add(SignCredentialsDm1LdResultDto.serializer)
-          ..add(SignCredentialsDm2LdInputDto.serializer)
-          ..add(SignCredentialsDm2LdResultDto.serializer)
           ..add(SignCredentialsDm2SdJwtInputDto.serializer)
+          ..add(SignCredentialsDm2SdJwtInputDtoSignatureSchemeEnum.serializer)
           ..add(SignCredentialsDm2SdJwtResultDto.serializer)
+          ..add(SignCredentialsJwtInputDto.serializer)
+          ..add(SignCredentialsJwtInputDtoSignatureSchemeEnum.serializer)
+          ..add(SignCredentialsJwtResultDto.serializer)
+          ..add(SignCredentialsLdpInputDto.serializer)
+          ..add(SignCredentialsLdpInputDtoSignatureSchemeEnum.serializer)
+          ..add(SignCredentialsLdpInputDtoSignatureSuiteEnum.serializer)
+          ..add(SignCredentialsLdpResultDto.serializer)
           ..add(SignJwtToken.serializer)
           ..add(SignJwtTokenOK.serializer)
+          ..add(SignMessageInput.serializer)
+          ..add(SignMessageInputSignatureSchemeEnum.serializer)
+          ..add(SignMessageResultDto.serializer)
+          ..add(SignPresentationLdpInputDto.serializer)
+          ..add(SignPresentationLdpInputDtoSignatureSchemeEnum.serializer)
+          ..add(SignPresentationLdpInputDtoSignatureSuiteEnum.serializer)
+          ..add(SignPresentationLdpResultDto.serializer)
           ..add(SigningFailedError.serializer)
           ..add(SigningFailedErrorHttpStatusCodeEnum.serializer)
           ..add(SigningFailedErrorMessageEnum.serializer)
           ..add(SigningFailedErrorNameEnum.serializer)
+          ..add(TooManyRequestsError.serializer)
+          ..add(TooManyRequestsErrorHttpStatusCodeEnum.serializer)
+          ..add(TooManyRequestsErrorMessageEnum.serializer)
+          ..add(TooManyRequestsErrorNameEnum.serializer)
+          ..add(UnpackMessageInput.serializer)
+          ..add(UnpackMessageResultDto.serializer)
           ..add(UpdateWalletInput.serializer)
           ..add(WalletDto.serializer)
           ..add(WalletDtoKeysInner.serializer)
+          ..add(WalletV2Dto.serializer)
           ..add(WalletsListDto.serializer)
           ..addBuilderFactory(
             const FullType(BuiltList, const [
@@ -112,8 +139,24 @@ Serializers _$serializers =
             () => ListBuilder<ServiceErrorResponseDetailsInner>(),
           )
           ..addBuilderFactory(
+            const FullType(BuiltList, const [
+              const FullType(ServiceErrorResponseDetailsInner),
+            ]),
+            () => ListBuilder<ServiceErrorResponseDetailsInner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, const [const FullType(String)]),
+            () => ListBuilder<String>(),
+          )
+          ..addBuilderFactory(
             const FullType(BuiltList, const [const FullType(WalletDto)]),
             () => ListBuilder<WalletDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, const [
+              const FullType(WalletDtoKeysInner),
+            ]),
+            () => ListBuilder<WalletDtoKeysInner>(),
           )
           ..addBuilderFactory(
             const FullType(BuiltList, const [

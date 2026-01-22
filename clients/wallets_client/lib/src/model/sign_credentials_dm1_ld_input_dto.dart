@@ -3,6 +3,7 @@
 //
 
 // ignore_for_file: unused_element
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/json_object.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
@@ -14,6 +15,7 @@ part 'sign_credentials_dm1_ld_input_dto.g.dart';
 /// Properties:
 /// * [unsignedCredential] - Unsigned Credential in Dm1 format
 /// * [revocable]
+/// * [signatureScheme]
 @BuiltValue()
 abstract class SignCredentialsDm1LdInputDto
     implements
@@ -27,6 +29,10 @@ abstract class SignCredentialsDm1LdInputDto
 
   @BuiltValueField(wireName: r'revocable')
   bool? get revocable;
+
+  @BuiltValueField(wireName: r'signatureScheme')
+  SignCredentialsDm1LdInputDtoSignatureSchemeEnum? get signatureScheme;
+  // enum signatureSchemeEnum {  ecdsa_secp256k1_sha256,  ecdsa_p256_sha256,  ed25519,  };
 
   SignCredentialsDm1LdInputDto._();
 
@@ -68,6 +74,15 @@ class _$SignCredentialsDm1LdInputDtoSerializer
       yield serializers.serialize(
         object.revocable,
         specifiedType: const FullType(bool),
+      );
+    }
+    if (object.signatureScheme != null) {
+      yield r'signatureScheme';
+      yield serializers.serialize(
+        object.signatureScheme,
+        specifiedType: const FullType(
+          SignCredentialsDm1LdInputDtoSignatureSchemeEnum,
+        ),
       );
     }
   }
@@ -115,6 +130,17 @@ class _$SignCredentialsDm1LdInputDtoSerializer
                   as bool;
           result.revocable = valueDes;
           break;
+        case r'signatureScheme':
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      SignCredentialsDm1LdInputDtoSignatureSchemeEnum,
+                    ),
+                  )
+                  as SignCredentialsDm1LdInputDtoSignatureSchemeEnum;
+          result.signatureScheme = valueDes;
+          break;
         default:
           unhandled.add(key);
           unhandled.add(value);
@@ -142,4 +168,28 @@ class _$SignCredentialsDm1LdInputDtoSerializer
     );
     return result.build();
   }
+}
+
+class SignCredentialsDm1LdInputDtoSignatureSchemeEnum extends EnumClass {
+  @BuiltValueEnumConst(wireName: r'ecdsa_secp256k1_sha256')
+  static const SignCredentialsDm1LdInputDtoSignatureSchemeEnum
+  ecdsaSecp256k1Sha256 =
+      _$signCredentialsDm1LdInputDtoSignatureSchemeEnum_ecdsaSecp256k1Sha256;
+  @BuiltValueEnumConst(wireName: r'ecdsa_p256_sha256')
+  static const SignCredentialsDm1LdInputDtoSignatureSchemeEnum ecdsaP256Sha256 =
+      _$signCredentialsDm1LdInputDtoSignatureSchemeEnum_ecdsaP256Sha256;
+  @BuiltValueEnumConst(wireName: r'ed25519')
+  static const SignCredentialsDm1LdInputDtoSignatureSchemeEnum ed25519 =
+      _$signCredentialsDm1LdInputDtoSignatureSchemeEnum_ed25519;
+
+  static Serializer<SignCredentialsDm1LdInputDtoSignatureSchemeEnum>
+  get serializer => _$signCredentialsDm1LdInputDtoSignatureSchemeEnumSerializer;
+
+  const SignCredentialsDm1LdInputDtoSignatureSchemeEnum._(String name)
+    : super(name);
+
+  static BuiltSet<SignCredentialsDm1LdInputDtoSignatureSchemeEnum> get values =>
+      _$signCredentialsDm1LdInputDtoSignatureSchemeEnumValues;
+  static SignCredentialsDm1LdInputDtoSignatureSchemeEnum valueOf(String name) =>
+      _$signCredentialsDm1LdInputDtoSignatureSchemeEnumValueOf(name);
 }

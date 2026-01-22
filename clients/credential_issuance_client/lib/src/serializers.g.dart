@@ -164,6 +164,8 @@ Serializers _$serializers =
             WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner
                 .serializer,
           )
+          ..add(WellKnownOpenIdCredentialIssuerResponseDisplay.serializer)
+          ..add(WellKnownOpenIdCredentialIssuerResponseDisplayLogo.serializer)
           ..add(
             WellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum
                 .serializer,
@@ -407,6 +409,10 @@ Serializers _$serializers =
                 >(),
           )
           ..addBuilderFactory(
+            const FullType(BuiltList, const [const FullType(JsonObject)]),
+            () => ListBuilder<JsonObject>(),
+          )
+          ..addBuilderFactory(
             const FullType(BuiltList, const [
               const FullType(
                 WellKnownOpenIdCredentialIssuerResponseGrantTypesSupportedEnum,
@@ -438,6 +444,10 @@ Serializers _$serializers =
                 ListBuilder<
                   WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum
                 >(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, const [const FullType(String)]),
+            () => ListBuilder<String>(),
           )
           ..addBuilderFactory(
             const FullType(BuiltMap, const [

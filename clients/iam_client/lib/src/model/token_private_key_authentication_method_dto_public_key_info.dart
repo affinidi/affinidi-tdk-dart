@@ -5,7 +5,6 @@
 // ignore_for_file: unused_element
 import 'package:affinidi_tdk_iam_client/src/model/token_private_key_authentication_method_dto_public_key_info_one_of1.dart';
 import 'package:affinidi_tdk_iam_client/src/model/token_private_key_authentication_method_dto_public_key_info_one_of.dart';
-import 'package:affinidi_tdk_iam_client/src/model/json_web_key_set_dto.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:one_of/one_of.dart';

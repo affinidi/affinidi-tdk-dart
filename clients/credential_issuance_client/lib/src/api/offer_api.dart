@@ -4,13 +4,11 @@
 
 import 'dart:async';
 
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:affinidi_tdk_credential_issuance_client/src/api_util.dart';
 import 'package:affinidi_tdk_credential_issuance_client/src/model/credential_offer_response.dart';
-import 'package:affinidi_tdk_credential_issuance_client/src/model/get_credential_offer400_response.dart';
 
 class OfferApi {
   final Dio _dio;

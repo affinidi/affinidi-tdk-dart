@@ -1,24 +1,24 @@
 # affinidi_tdk_iam_client.api.StsApi
 
 ## Load the API package
+
 ```dart
 import 'package:affinidi_tdk_iam_client/api.dart';
 ```
 
 All URIs are relative to *https://apse1.api.affinidi.io/iam*
 
-Method | HTTP request | Description
-------------- | ------------- | -------------
-[**createProjectScopedToken**](StsApi.md#createprojectscopedtoken) | **POST** /v1/sts/create-project-scoped-token | 
-[**whoami**](StsApi.md#whoami) | **GET** /v1/sts/whoami | 
-
+| Method                                                             | HTTP request                                 | Description |
+| ------------------------------------------------------------------ | -------------------------------------------- | ----------- |
+| [**createProjectScopedToken**](StsApi.md#createprojectscopedtoken) | **POST** /v1/sts/create-project-scoped-token |
+| [**whoami**](StsApi.md#whoami)                                     | **GET** /v1/sts/whoami                       |
 
 # **createProjectScopedToken**
+
 > CreateProjectScopedTokenOutput createProjectScopedToken(createProjectScopedTokenInput)
 
-
-
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_iam_client/api.dart';
 // TODO Configure API key authorization: UserTokenAuth
@@ -39,9 +39,9 @@ try {
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **createProjectScopedTokenInput** | [**CreateProjectScopedTokenInput**](CreateProjectScopedTokenInput.md)| CreateProjectScopedToken | 
+| Name                              | Type                                                                  | Description              | Notes |
+| --------------------------------- | --------------------------------------------------------------------- | ------------------------ | ----- |
+| **createProjectScopedTokenInput** | [**CreateProjectScopedTokenInput**](CreateProjectScopedTokenInput.md) | CreateProjectScopedToken |
 
 ### Return type
 
@@ -53,17 +53,17 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **whoami**
+
 > WhoamiDto whoami()
 
-
-
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_iam_client/api.dart';
 // TODO Configure API key authorization: UserTokenAuth
@@ -82,6 +82,7 @@ try {
 ```
 
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
@@ -94,8 +95,7 @@ This endpoint does not need any parameter.
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-

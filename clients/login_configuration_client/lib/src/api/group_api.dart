@@ -4,21 +4,16 @@
 
 import 'dart:async';
 
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:affinidi_tdk_login_configuration_client/src/api_util.dart';
-import 'package:affinidi_tdk_login_configuration_client/src/model/action_forbidden_error.dart';
 import 'package:affinidi_tdk_login_configuration_client/src/model/add_user_to_group_input.dart';
 import 'package:affinidi_tdk_login_configuration_client/src/model/create_group_input.dart';
 import 'package:affinidi_tdk_login_configuration_client/src/model/group_dto.dart';
 import 'package:affinidi_tdk_login_configuration_client/src/model/group_user_mapping_dto.dart';
 import 'package:affinidi_tdk_login_configuration_client/src/model/group_user_mappings_list.dart';
 import 'package:affinidi_tdk_login_configuration_client/src/model/groups_list.dart';
-import 'package:affinidi_tdk_login_configuration_client/src/model/groups_per_user_limit_exceeded_error.dart';
-import 'package:affinidi_tdk_login_configuration_client/src/model/invalid_parameter_error.dart';
-import 'package:affinidi_tdk_login_configuration_client/src/model/not_found_error.dart';
 import 'package:affinidi_tdk_login_configuration_client/src/model/remove_user_from_group_input.dart';
 
 class GroupApi {

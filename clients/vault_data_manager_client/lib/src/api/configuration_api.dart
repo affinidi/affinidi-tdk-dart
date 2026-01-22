@@ -4,12 +4,10 @@
 
 import 'dart:async';
 
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/get_config_ok.dart';
-import 'package:affinidi_tdk_vault_data_manager_client/src/model/invalid_parameter_error.dart';
 
 class ConfigurationApi {
   final Dio _dio;

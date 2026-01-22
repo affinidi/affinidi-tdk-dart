@@ -4,7 +4,6 @@
 
 import 'dart:async';
 
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
@@ -13,7 +12,6 @@ import 'package:affinidi_tdk_login_configuration_client/src/model/blocked_users.
 import 'package:affinidi_tdk_login_configuration_client/src/model/blocked_users_input.dart';
 import 'package:affinidi_tdk_login_configuration_client/src/model/group_names.dart';
 import 'package:affinidi_tdk_login_configuration_client/src/model/group_names_input.dart';
-import 'package:affinidi_tdk_login_configuration_client/src/model/invalid_groups_error.dart';
 
 class DenyListApi {
   final Dio _dio;

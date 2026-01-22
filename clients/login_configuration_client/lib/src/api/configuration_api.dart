@@ -4,21 +4,15 @@
 
 import 'dart:async';
 
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:affinidi_tdk_login_configuration_client/src/api_util.dart';
-import 'package:affinidi_tdk_login_configuration_client/src/model/action_forbidden_error.dart';
 import 'package:affinidi_tdk_login_configuration_client/src/model/create_login_configuration_input.dart';
 import 'package:affinidi_tdk_login_configuration_client/src/model/create_login_configuration_output.dart';
-import 'package:affinidi_tdk_login_configuration_client/src/model/create_login_configurations400_response.dart';
-import 'package:affinidi_tdk_login_configuration_client/src/model/invalid_parameter_error.dart';
 import 'package:affinidi_tdk_login_configuration_client/src/model/list_login_configuration_output.dart';
 import 'package:affinidi_tdk_login_configuration_client/src/model/login_configuration_client_metadata_output.dart';
 import 'package:affinidi_tdk_login_configuration_client/src/model/login_configuration_object.dart';
-import 'package:affinidi_tdk_login_configuration_client/src/model/not_found_error.dart';
-import 'package:affinidi_tdk_login_configuration_client/src/model/resource_creation_error.dart';
 import 'package:affinidi_tdk_login_configuration_client/src/model/update_login_configuration_input.dart';
 
 class ConfigurationApi {

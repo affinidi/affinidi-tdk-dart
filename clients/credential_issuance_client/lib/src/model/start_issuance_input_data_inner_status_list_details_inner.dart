@@ -27,7 +27,7 @@ abstract class StartIssuanceInputDataInnerStatusListDetailsInner
 
   @BuiltValueField(wireName: r'standard')
   StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum get standard;
-  // enum standardEnum {  RevocationList2020,  BitstringStatusListV1,  };
+  // enum standardEnum {  RevocationList2020,  };
 
   StartIssuanceInputDataInnerStatusListDetailsInner._();
 
@@ -188,10 +188,6 @@ class StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum
   static const StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum
   revocationList2020 =
       _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnum_revocationList2020;
-  @BuiltValueEnumConst(wireName: r'BitstringStatusListV1')
-  static const StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum
-  bitstringStatusListV1 =
-      _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnum_bitstringStatusListV1;
 
   static Serializer<
     StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum

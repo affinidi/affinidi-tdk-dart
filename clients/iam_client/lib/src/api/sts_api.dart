@@ -4,17 +4,11 @@
 
 import 'dart:async';
 
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
-import 'package:affinidi_tdk_iam_client/src/model/action_forbidden_error.dart';
 import 'package:affinidi_tdk_iam_client/src/model/create_project_scoped_token_input.dart';
 import 'package:affinidi_tdk_iam_client/src/model/create_project_scoped_token_output.dart';
-import 'package:affinidi_tdk_iam_client/src/model/invalid_parameter_error.dart';
-import 'package:affinidi_tdk_iam_client/src/model/not_found_error.dart';
-import 'package:affinidi_tdk_iam_client/src/model/principal_does_not_belong_to_project_error.dart';
-import 'package:affinidi_tdk_iam_client/src/model/unexpected_error.dart';
 import 'package:affinidi_tdk_iam_client/src/model/whoami_dto.dart';
 
 class StsApi {

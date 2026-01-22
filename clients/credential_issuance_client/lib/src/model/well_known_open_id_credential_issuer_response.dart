@@ -3,6 +3,7 @@
 //
 
 // ignore_for_file: unused_element
+import 'package:affinidi_tdk_credential_issuance_client/src/model/well_known_open_id_credential_issuer_response_display.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:affinidi_tdk_credential_issuance_client/src/model/well_known_open_id_credential_issuer_response_credentials_supported_inner.dart';
 import 'package:built_value/json_object.dart';
@@ -19,12 +20,15 @@ part 'well_known_open_id_credential_issuer_response.g.dart';
 /// * [credentialIssuer]
 /// * [batchCredentialEndpoint]
 /// * [credentialsSupported]
+/// * [credentialConfigurationsSupported]
 /// * [deferredCredentialEndpoint]
 /// * [grantTypesSupported]
 /// * [jwksUri]
+/// * [display]
 /// * [scopesSupported]
 /// * [tokenEndpoint]
 /// * [tokenEndpointAuthMethodsSupported]
+/// * [returnUris]
 @BuiltValue()
 abstract class WellKnownOpenIdCredentialIssuerResponse
     implements
@@ -48,6 +52,9 @@ abstract class WellKnownOpenIdCredentialIssuerResponse
   BuiltList<WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner>?
   get credentialsSupported;
 
+  @BuiltValueField(wireName: r'credential_configurations_supported')
+  BuiltList<JsonObject>? get credentialConfigurationsSupported;
+
   @BuiltValueField(wireName: r'deferred_credential_endpoint')
   String? get deferredCredentialEndpoint;
 
@@ -58,6 +65,9 @@ abstract class WellKnownOpenIdCredentialIssuerResponse
 
   @BuiltValueField(wireName: r'jwks_uri')
   String? get jwksUri;
+
+  @BuiltValueField(wireName: r'display')
+  WellKnownOpenIdCredentialIssuerResponseDisplay? get display;
 
   @BuiltValueField(wireName: r'scopes_supported')
   BuiltList<WellKnownOpenIdCredentialIssuerResponseScopesSupportedEnum>?
@@ -73,6 +83,9 @@ abstract class WellKnownOpenIdCredentialIssuerResponse
   >?
   get tokenEndpointAuthMethodsSupported;
   // enum tokenEndpointAuthMethodsSupportedEnum {  client_secret_post,  client_secret_basic,  none,  };
+
+  @BuiltValueField(wireName: r'return_uris')
+  BuiltList<String>? get returnUris;
 
   WellKnownOpenIdCredentialIssuerResponse._();
 
@@ -143,6 +156,13 @@ class _$WellKnownOpenIdCredentialIssuerResponseSerializer
         ]),
       );
     }
+    if (object.credentialConfigurationsSupported != null) {
+      yield r'credential_configurations_supported';
+      yield serializers.serialize(
+        object.credentialConfigurationsSupported,
+        specifiedType: const FullType(BuiltList, [FullType(JsonObject)]),
+      );
+    }
     if (object.deferredCredentialEndpoint != null) {
       yield r'deferred_credential_endpoint';
       yield serializers.serialize(
@@ -166,6 +186,15 @@ class _$WellKnownOpenIdCredentialIssuerResponseSerializer
       yield serializers.serialize(
         object.jwksUri,
         specifiedType: const FullType(String),
+      );
+    }
+    if (object.display != null) {
+      yield r'display';
+      yield serializers.serialize(
+        object.display,
+        specifiedType: const FullType(
+          WellKnownOpenIdCredentialIssuerResponseDisplay,
+        ),
       );
     }
     if (object.scopesSupported != null) {
@@ -193,6 +222,13 @@ class _$WellKnownOpenIdCredentialIssuerResponseSerializer
             WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum,
           ),
         ]),
+      );
+    }
+    if (object.returnUris != null) {
+      yield r'return_uris';
+      yield serializers.serialize(
+        object.returnUris,
+        specifiedType: const FullType(BuiltList, [FullType(String)]),
       );
     }
   }
@@ -273,6 +309,17 @@ class _$WellKnownOpenIdCredentialIssuerResponseSerializer
                   >;
           result.credentialsSupported.replace(valueDes);
           break;
+        case r'credential_configurations_supported':
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(JsonObject),
+                    ]),
+                  )
+                  as BuiltList<JsonObject>;
+          result.credentialConfigurationsSupported.replace(valueDes);
+          break;
         case r'deferred_credential_endpoint':
           final valueDes =
               serializers.deserialize(
@@ -305,6 +352,17 @@ class _$WellKnownOpenIdCredentialIssuerResponseSerializer
                   )
                   as String;
           result.jwksUri = valueDes;
+          break;
+        case r'display':
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      WellKnownOpenIdCredentialIssuerResponseDisplay,
+                    ),
+                  )
+                  as WellKnownOpenIdCredentialIssuerResponseDisplay;
+          result.display.replace(valueDes);
           break;
         case r'scopes_supported':
           final valueDes =
@@ -344,6 +402,17 @@ class _$WellKnownOpenIdCredentialIssuerResponseSerializer
                     WellKnownOpenIdCredentialIssuerResponseTokenEndpointAuthMethodsSupportedEnum
                   >;
           result.tokenEndpointAuthMethodsSupported.replace(valueDes);
+          break;
+        case r'return_uris':
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
+          result.returnUris.replace(valueDes);
           break;
         default:
           unhandled.add(key);

@@ -21,7 +21,7 @@ part 'update_configuration_by_id_input.g.dart';
 /// * [tokenMaxAge] - This is the lifetime of the signed request token during the data-sharing flow.
 /// * [description] - An optional description of what the configuration is used for.
 /// * [clientMetadata]
-/// * [mode] - Determines whether to handle the data-sharing request using the WebSocket or Redirect flow.
+/// * [mode] - Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
 /// * [redirectUris] - List of allowed URLs to redirect users, including the response from the request. This is required if the selected data-sharing mode is Redirect.
 /// * [enableIdvProviders] - Enables identity verification from user with a 3rd-party provider when a verified identity document is not found.
 @BuiltValue()
@@ -62,10 +62,10 @@ abstract class UpdateConfigurationByIdInput
   @BuiltValueField(wireName: r'clientMetadata')
   IotaConfigurationDtoClientMetadata? get clientMetadata;
 
-  /// Determines whether to handle the data-sharing request using the WebSocket or Redirect flow.
+  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
   @BuiltValueField(wireName: r'mode')
   UpdateConfigurationByIdInputModeEnum? get mode;
-  // enum modeEnum {  redirect,  websocket,  };
+  // enum modeEnum {  redirect,  websocket,  didcomm,  };
 
   /// List of allowed URLs to redirect users, including the response from the request. This is required if the selected data-sharing mode is Redirect.
   @BuiltValueField(wireName: r'redirectUris')
@@ -341,15 +341,20 @@ class _$UpdateConfigurationByIdInputSerializer
 }
 
 class UpdateConfigurationByIdInputModeEnum extends EnumClass {
-  /// Determines whether to handle the data-sharing request using the WebSocket or Redirect flow.
+  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
   @BuiltValueEnumConst(wireName: r'redirect')
   static const UpdateConfigurationByIdInputModeEnum redirect =
       _$updateConfigurationByIdInputModeEnum_redirect;
 
-  /// Determines whether to handle the data-sharing request using the WebSocket or Redirect flow.
+  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
   @BuiltValueEnumConst(wireName: r'websocket')
   static const UpdateConfigurationByIdInputModeEnum websocket =
       _$updateConfigurationByIdInputModeEnum_websocket;
+
+  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
+  @BuiltValueEnumConst(wireName: r'didcomm')
+  static const UpdateConfigurationByIdInputModeEnum didcomm =
+      _$updateConfigurationByIdInputModeEnum_didcomm;
 
   static Serializer<UpdateConfigurationByIdInputModeEnum> get serializer =>
       _$updateConfigurationByIdInputModeEnumSerializer;

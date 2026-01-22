@@ -10,6 +10,8 @@ const CreateWalletInputDidMethodEnum _$createWalletInputDidMethodEnum_key =
     const CreateWalletInputDidMethodEnum._('key');
 const CreateWalletInputDidMethodEnum _$createWalletInputDidMethodEnum_web =
     const CreateWalletInputDidMethodEnum._('web');
+const CreateWalletInputDidMethodEnum _$createWalletInputDidMethodEnum_peer0 =
+    const CreateWalletInputDidMethodEnum._('peer0');
 
 CreateWalletInputDidMethodEnum _$createWalletInputDidMethodEnumValueOf(
   String name,
@@ -19,6 +21,8 @@ CreateWalletInputDidMethodEnum _$createWalletInputDidMethodEnumValueOf(
       return _$createWalletInputDidMethodEnum_key;
     case 'web':
       return _$createWalletInputDidMethodEnum_web;
+    case 'peer0':
+      return _$createWalletInputDidMethodEnum_peer0;
     default:
       throw ArgumentError(name);
   }
@@ -30,6 +34,7 @@ _$createWalletInputDidMethodEnumValues =
       const <CreateWalletInputDidMethodEnum>[
         _$createWalletInputDidMethodEnum_key,
         _$createWalletInputDidMethodEnum_web,
+        _$createWalletInputDidMethodEnum_peer0,
       ],
     );
 
@@ -42,10 +47,12 @@ class _$CreateWalletInputDidMethodEnumSerializer
   static const Map<String, Object> _toWire = const <String, Object>{
     'key': 'key',
     'web': 'web',
+    'peer0': 'peer0',
   };
   static const Map<Object, String> _fromWire = const <Object, String>{
     'key': 'key',
     'web': 'web',
+    'peer0': 'peer0',
   };
 
   @override
@@ -76,7 +83,7 @@ class _$CreateWalletInput extends CreateWalletInput {
   @override
   final String? description;
   @override
-  final CreateWalletInputDidMethodEnum didMethod;
+  final CreateWalletInputDidMethodEnum? didMethod;
   @override
   final String? didWebUrl;
 
@@ -87,7 +94,7 @@ class _$CreateWalletInput extends CreateWalletInput {
   _$CreateWalletInput._({
     this.name,
     this.description,
-    required this.didMethod,
+    this.didMethod,
     this.didWebUrl,
   }) : super._();
   @override
@@ -186,11 +193,7 @@ class CreateWalletInputBuilder
         _$CreateWalletInput._(
           name: name,
           description: description,
-          didMethod: BuiltValueNullFieldError.checkNotNull(
-            didMethod,
-            r'CreateWalletInput',
-            'didMethod',
-          ),
+          didMethod: didMethod,
           didWebUrl: didWebUrl,
         );
     replace(_$result);

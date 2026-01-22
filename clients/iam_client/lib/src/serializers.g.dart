@@ -14,6 +14,10 @@ Serializers _$serializers =
           ..add(ActionForbiddenErrorNameEnum.serializer)
           ..add(AddUserToProjectInput.serializer)
           ..add(ConsumerAuthTokenEndpointInput.serializer)
+          ..add(
+            ConsumerAuthTokenEndpointInputClientAssertionTypeEnum.serializer,
+          )
+          ..add(ConsumerAuthTokenEndpointInputGrantTypeEnum.serializer)
           ..add(ConsumerAuthTokenEndpointOutput.serializer)
           ..add(CorsConsumerAuthTokenEndpointOK.serializer)
           ..add(CorsGrantAccessVfsOK.serializer)
@@ -23,7 +27,6 @@ Serializers _$serializers =
           ..add(CreateProjectScopedTokenOutput.serializer)
           ..add(CreateTokenInput.serializer)
           ..add(DeleteAccessOutput.serializer)
-          ..add(GetWellKnownDidOK.serializer)
           ..add(GrantAccessInput.serializer)
           ..add(GrantAccessOutput.serializer)
           ..add(InvalidDIDError.serializer)

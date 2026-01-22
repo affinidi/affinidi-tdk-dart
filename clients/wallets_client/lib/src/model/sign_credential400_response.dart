@@ -5,7 +5,6 @@
 // ignore_for_file: unused_element
 import 'package:affinidi_tdk_wallets_client/src/model/invalid_parameter_error.dart';
 import 'package:built_collection/built_collection.dart';
-import 'package:affinidi_tdk_wallets_client/src/model/service_error_response_details_inner.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/signing_failed_error.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';

@@ -3,10 +3,9 @@ description: Affinidi TDK for Dart client to manage Affinidi Atlas services.
 version: 1.0.0-dev.1
 homepage: https://github.com/affinidi/affinidi-tdk
 
+resolution: workspace
 environment:
   sdk: ^3.8.0
-
-resolution: workspace
 
 dependencies:
   affinidi_tdk_didcomm_mediator_client: ^1.0.0

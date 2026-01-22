@@ -18,7 +18,8 @@ part 'initiate_data_sharing_request_input.g.dart';
 /// * [nonce] - A randomly generated value that is added in the request and response to prevent replay attacks.
 /// * [redirectUri] - List of allowed URLs to redirect users, including the response from the request. This is required if the selected data-sharing mode is Redirect.
 /// * [configurationId] - ID of the Affinidi Iota Framework configuration.
-/// * [mode] - Determines whether to handle the data-sharing request using the WebSocket or Redirect flow.
+/// * [userDid] - User DID to send the initiating request to. Only required if mode is didcomm
+/// * [mode] - Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
 @BuiltValue()
 abstract class InitiateDataSharingRequestInput
     implements
@@ -50,10 +51,14 @@ abstract class InitiateDataSharingRequestInput
   @BuiltValueField(wireName: r'configurationId')
   String get configurationId;
 
-  /// Determines whether to handle the data-sharing request using the WebSocket or Redirect flow.
+  /// User DID to send the initiating request to. Only required if mode is didcomm
+  @BuiltValueField(wireName: r'userDid')
+  String? get userDid;
+
+  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
   @BuiltValueField(wireName: r'mode')
   InitiateDataSharingRequestInputModeEnum get mode;
-  // enum modeEnum {  redirect,  websocket,  };
+  // enum modeEnum {  redirect,  websocket,  didcomm,  };
 
   InitiateDataSharingRequestInput._();
 
@@ -117,6 +122,13 @@ class _$InitiateDataSharingRequestInputSerializer
       object.configurationId,
       specifiedType: const FullType(String),
     );
+    if (object.userDid != null) {
+      yield r'userDid';
+      yield serializers.serialize(
+        object.userDid,
+        specifiedType: const FullType(String),
+      );
+    }
     yield r'mode';
     yield serializers.serialize(
       object.mode,
@@ -200,6 +212,15 @@ class _$InitiateDataSharingRequestInputSerializer
                   as String;
           result.configurationId = valueDes;
           break;
+        case r'userDid':
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
+          result.userDid = valueDes;
+          break;
         case r'mode':
           final valueDes =
               serializers.deserialize(
@@ -241,15 +262,20 @@ class _$InitiateDataSharingRequestInputSerializer
 }
 
 class InitiateDataSharingRequestInputModeEnum extends EnumClass {
-  /// Determines whether to handle the data-sharing request using the WebSocket or Redirect flow.
+  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
   @BuiltValueEnumConst(wireName: r'redirect')
   static const InitiateDataSharingRequestInputModeEnum redirect =
       _$initiateDataSharingRequestInputModeEnum_redirect;
 
-  /// Determines whether to handle the data-sharing request using the WebSocket or Redirect flow.
+  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
   @BuiltValueEnumConst(wireName: r'websocket')
   static const InitiateDataSharingRequestInputModeEnum websocket =
       _$initiateDataSharingRequestInputModeEnum_websocket;
+
+  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
+  @BuiltValueEnumConst(wireName: r'didcomm')
+  static const InitiateDataSharingRequestInputModeEnum didcomm =
+      _$initiateDataSharingRequestInputModeEnum_didcomm;
 
   static Serializer<InitiateDataSharingRequestInputModeEnum> get serializer =>
       _$initiateDataSharingRequestInputModeEnumSerializer;

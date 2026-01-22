@@ -1,20 +1,21 @@
 # affinidi_tdk_iam_client.api.AuthzApi
 
 ## Load the API package
+
 ```dart
 import 'package:affinidi_tdk_iam_client/api.dart';
 ```
 
 All URIs are relative to *https://apse1.api.affinidi.io/iam*
 
-Method | HTTP request | Description
-------------- | ------------- | -------------
-[**deleteAccessVfs**](AuthzApi.md#deleteaccessvfs) | **DELETE** /v1/authz/vfs/access/{granteeDid} | delete access of granteeDid
-[**grantAccessVfs**](AuthzApi.md#grantaccessvfs) | **POST** /v1/authz/vfs/access | Grant access to the virtual file system
-[**updateAccessVfs**](AuthzApi.md#updateaccessvfs) | **PUT** /v1/authz/vfs/access/{granteeDid} | Update access of granteeDid
-
+| Method                                             | HTTP request                                 | Description                             |
+| -------------------------------------------------- | -------------------------------------------- | --------------------------------------- |
+| [**deleteAccessVfs**](AuthzApi.md#deleteaccessvfs) | **DELETE** /v1/authz/vfs/access/{granteeDid} | delete access of granteeDid             |
+| [**grantAccessVfs**](AuthzApi.md#grantaccessvfs)   | **POST** /v1/authz/vfs/access                | Grant access to the virtual file system |
+| [**updateAccessVfs**](AuthzApi.md#updateaccessvfs) | **PUT** /v1/authz/vfs/access/{granteeDid}    | Update access of granteeDid             |
 
 # **deleteAccessVfs**
+
 > deleteAccessVfs(granteeDid)
 
 delete access of granteeDid
@@ -22,6 +23,7 @@ delete access of granteeDid
 deleteAccessVfs
 
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_iam_client/api.dart';
 // TODO Configure API key authorization: ConsumerTokenAuth
@@ -30,7 +32,7 @@ import 'package:affinidi_tdk_iam_client/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('ConsumerTokenAuth').apiKeyPrefix = 'Bearer';
 
 final api = AffinidiTdkIamClient().getAuthzApi();
-final String granteeDid = granteeDid_example; // String | 
+final String granteeDid = granteeDid_example; // String |
 
 try {
     api.deleteAccessVfs(granteeDid);
@@ -41,9 +43,9 @@ try {
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **granteeDid** | **String**|  | 
+| Name           | Type       | Description | Notes |
+| -------------- | ---------- | ----------- | ----- |
+| **granteeDid** | **String** |             |
 
 ### Return type
 
@@ -55,12 +57,13 @@ void (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **grantAccessVfs**
+
 > GrantAccessOutput grantAccessVfs(grantAccessInput)
 
 Grant access to the virtual file system
@@ -68,6 +71,7 @@ Grant access to the virtual file system
 Grants access rights to a subject for the virtual file system
 
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_iam_client/api.dart';
 // TODO Configure API key authorization: ConsumerTokenAuth
@@ -88,9 +92,9 @@ try {
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **grantAccessInput** | [**GrantAccessInput**](GrantAccessInput.md)| Grant access to virtual file system | 
+| Name                 | Type                                        | Description                         | Notes |
+| -------------------- | ------------------------------------------- | ----------------------------------- | ----- |
+| **grantAccessInput** | [**GrantAccessInput**](GrantAccessInput.md) | Grant access to virtual file system |
 
 ### Return type
 
@@ -102,12 +106,13 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **updateAccessVfs**
+
 > UpdateAccessOutput updateAccessVfs(granteeDid, updateAccessInput)
 
 Update access of granteeDid
@@ -115,6 +120,7 @@ Update access of granteeDid
 updateAccessVfs
 
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_iam_client/api.dart';
 // TODO Configure API key authorization: ConsumerTokenAuth
@@ -123,7 +129,7 @@ import 'package:affinidi_tdk_iam_client/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('ConsumerTokenAuth').apiKeyPrefix = 'Bearer';
 
 final api = AffinidiTdkIamClient().getAuthzApi();
-final String granteeDid = granteeDid_example; // String | 
+final String granteeDid = granteeDid_example; // String |
 final UpdateAccessInput updateAccessInput = ; // UpdateAccessInput | update access to virtual file system
 
 try {
@@ -136,10 +142,10 @@ try {
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **granteeDid** | **String**|  | 
- **updateAccessInput** | [**UpdateAccessInput**](UpdateAccessInput.md)| update access to virtual file system | 
+| Name                  | Type                                          | Description                          | Notes |
+| --------------------- | --------------------------------------------- | ------------------------------------ | ----- |
+| **granteeDid**        | **String**                                    |                                      |
+| **updateAccessInput** | [**UpdateAccessInput**](UpdateAccessInput.md) | update access to virtual file system |
 
 ### Return type
 
@@ -151,8 +157,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-

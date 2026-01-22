@@ -4,7 +4,6 @@
 
 import 'dart:async';
 
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
@@ -12,7 +11,6 @@ import 'package:affinidi_tdk_vault_data_manager_client/src/api_util.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/create_account_input.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/create_account_ok.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/delete_account_dto.dart';
-import 'package:affinidi_tdk_vault_data_manager_client/src/model/invalid_parameter_error.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/list_accounts_dto.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/update_account_dto.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/update_account_input.dart';

@@ -88,6 +88,8 @@ class _$CreateLoginConfigurationInput extends CreateLoginConfigurationInput {
   @override
   final JsonObject? presentationDefinition;
   @override
+  final JsonObject? dcqlQuery;
+  @override
   final BuiltList<IdTokenMappingItem>? idTokenMapping;
   @override
   final LoginConfigurationClientMetadataInput? clientMetadata;
@@ -111,6 +113,7 @@ class _$CreateLoginConfigurationInput extends CreateLoginConfigurationInput {
     this.postLogoutRedirectUris,
     this.vpDefinition,
     this.presentationDefinition,
+    this.dcqlQuery,
     this.idTokenMapping,
     this.clientMetadata,
     this.claimFormat,
@@ -137,6 +140,7 @@ class _$CreateLoginConfigurationInput extends CreateLoginConfigurationInput {
         postLogoutRedirectUris == other.postLogoutRedirectUris &&
         vpDefinition == other.vpDefinition &&
         presentationDefinition == other.presentationDefinition &&
+        dcqlQuery == other.dcqlQuery &&
         idTokenMapping == other.idTokenMapping &&
         clientMetadata == other.clientMetadata &&
         claimFormat == other.claimFormat &&
@@ -154,6 +158,7 @@ class _$CreateLoginConfigurationInput extends CreateLoginConfigurationInput {
     _$hash = $jc(_$hash, postLogoutRedirectUris.hashCode);
     _$hash = $jc(_$hash, vpDefinition.hashCode);
     _$hash = $jc(_$hash, presentationDefinition.hashCode);
+    _$hash = $jc(_$hash, dcqlQuery.hashCode);
     _$hash = $jc(_$hash, idTokenMapping.hashCode);
     _$hash = $jc(_$hash, clientMetadata.hashCode);
     _$hash = $jc(_$hash, claimFormat.hashCode);
@@ -173,6 +178,7 @@ class _$CreateLoginConfigurationInput extends CreateLoginConfigurationInput {
           ..add('postLogoutRedirectUris', postLogoutRedirectUris)
           ..add('vpDefinition', vpDefinition)
           ..add('presentationDefinition', presentationDefinition)
+          ..add('dcqlQuery', dcqlQuery)
           ..add('idTokenMapping', idTokenMapping)
           ..add('clientMetadata', clientMetadata)
           ..add('claimFormat', claimFormat)
@@ -219,6 +225,10 @@ class CreateLoginConfigurationInputBuilder
   JsonObject? get presentationDefinition => _$this._presentationDefinition;
   set presentationDefinition(JsonObject? presentationDefinition) =>
       _$this._presentationDefinition = presentationDefinition;
+
+  JsonObject? _dcqlQuery;
+  JsonObject? get dcqlQuery => _$this._dcqlQuery;
+  set dcqlQuery(JsonObject? dcqlQuery) => _$this._dcqlQuery = dcqlQuery;
 
   ListBuilder<IdTokenMappingItem>? _idTokenMapping;
   ListBuilder<IdTokenMappingItem> get idTokenMapping =>
@@ -268,6 +278,7 @@ class CreateLoginConfigurationInputBuilder
       _postLogoutRedirectUris = $v.postLogoutRedirectUris?.toBuilder();
       _vpDefinition = $v.vpDefinition;
       _presentationDefinition = $v.presentationDefinition;
+      _dcqlQuery = $v.dcqlQuery;
       _idTokenMapping = $v.idTokenMapping?.toBuilder();
       _clientMetadata = $v.clientMetadata?.toBuilder();
       _claimFormat = $v.claimFormat;
@@ -308,6 +319,7 @@ class CreateLoginConfigurationInputBuilder
             postLogoutRedirectUris: _postLogoutRedirectUris?.build(),
             vpDefinition: vpDefinition,
             presentationDefinition: presentationDefinition,
+            dcqlQuery: dcqlQuery,
             idTokenMapping: _idTokenMapping?.build(),
             clientMetadata: _clientMetadata?.build(),
             claimFormat: claimFormat,

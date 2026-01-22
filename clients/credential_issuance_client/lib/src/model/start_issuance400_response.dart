@@ -10,7 +10,6 @@ import 'package:affinidi_tdk_credential_issuance_client/src/model/credential_iss
 import 'package:affinidi_tdk_credential_issuance_client/src/model/invalid_parameter_error.dart';
 import 'package:affinidi_tdk_credential_issuance_client/src/model/missing_holder_did_error.dart';
 import 'package:affinidi_tdk_credential_issuance_client/src/model/credential_subject_not_valid_error.dart';
-import 'package:affinidi_tdk_credential_issuance_client/src/model/action_forbidden_error_details_inner.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:one_of/one_of.dart';

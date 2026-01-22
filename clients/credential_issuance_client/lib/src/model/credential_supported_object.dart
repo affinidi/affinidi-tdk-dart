@@ -148,7 +148,7 @@ class _$CredentialSupportedObjectSerializer
                     specifiedType: const FullType(SupportedCredentialMetadata),
                   )
                   as SupportedCredentialMetadata;
-          result.metadata = valueDes.toBuilder();
+          result.metadata.replace(valueDes);
           break;
         default:
           unhandled.add(key);

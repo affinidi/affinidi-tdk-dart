@@ -4,20 +4,14 @@
 
 import 'dart:async';
 
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:affinidi_tdk_iota_client/src/api_util.dart';
-import 'package:affinidi_tdk_iota_client/src/model/already_exists_error.dart';
 import 'package:affinidi_tdk_iota_client/src/model/create_iota_configuration_input.dart';
 import 'package:affinidi_tdk_iota_client/src/model/get_iota_configuration_meta_data_ok.dart';
-import 'package:affinidi_tdk_iota_client/src/model/invalid_parameter_error.dart';
 import 'package:affinidi_tdk_iota_client/src/model/iota_configuration_dto.dart';
 import 'package:affinidi_tdk_iota_client/src/model/list_configuration_ok.dart';
-import 'package:affinidi_tdk_iota_client/src/model/not_found_error.dart';
-import 'package:affinidi_tdk_iota_client/src/model/operation_forbidden_error.dart';
-import 'package:affinidi_tdk_iota_client/src/model/resource_limit_exceeded_error.dart';
 import 'package:affinidi_tdk_iota_client/src/model/update_configuration_by_id_input.dart';
 
 class ConfigurationsApi {

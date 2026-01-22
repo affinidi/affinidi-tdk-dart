@@ -8,9 +8,7 @@ import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
-import 'package:affinidi_tdk_iam_client/src/model/get_well_known_did_ok.dart';
 import 'package:affinidi_tdk_iam_client/src/model/json_web_key_set_dto.dart';
-import 'package:affinidi_tdk_iam_client/src/model/unexpected_error.dart';
 
 class WellKnownApi {
   final Dio _dio;
@@ -30,9 +28,9 @@ class WellKnownApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [GetWellKnownDidOK] as data
+  /// Returns a [Future] containing a [Response] with a [JsonObject] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<GetWellKnownDidOK>> getWellKnownDid({
+  Future<Response<JsonObject>> getWellKnownDid({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -56,7 +54,7 @@ class WellKnownApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    GetWellKnownDidOK? _responseData;
+    JsonObject? _responseData;
 
     try {
       final rawResponse = _response.data;
@@ -64,9 +62,9 @@ class WellKnownApi {
           ? null
           : _serializers.deserialize(
                   rawResponse,
-                  specifiedType: const FullType(GetWellKnownDidOK),
+                  specifiedType: const FullType(JsonObject),
                 )
-                as GetWellKnownDidOK;
+                as JsonObject;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -77,7 +75,7 @@ class WellKnownApi {
       );
     }
 
-    return Response<GetWellKnownDidOK>(
+    return Response<JsonObject>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,

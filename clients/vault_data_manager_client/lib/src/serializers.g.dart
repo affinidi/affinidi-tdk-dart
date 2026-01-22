@@ -31,6 +31,7 @@ Serializers _$serializers =
           ..add(CorsUpdateProfileDataOK.serializer)
           ..add(CreateAccountInput.serializer)
           ..add(CreateAccountOK.serializer)
+          ..add(CreateChildNodeInput.serializer)
           ..add(CreateNodeInput.serializer)
           ..add(CreateNodeOK.serializer)
           ..add(DeleteAccountDto.serializer)

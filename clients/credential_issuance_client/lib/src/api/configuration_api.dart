@@ -4,17 +4,13 @@
 
 import 'dart:async';
 
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:affinidi_tdk_credential_issuance_client/src/api_util.dart';
-import 'package:affinidi_tdk_credential_issuance_client/src/model/create_issuance_config400_response.dart';
 import 'package:affinidi_tdk_credential_issuance_client/src/model/create_issuance_config_input.dart';
-import 'package:affinidi_tdk_credential_issuance_client/src/model/invalid_parameter_error.dart';
 import 'package:affinidi_tdk_credential_issuance_client/src/model/issuance_config_dto.dart';
 import 'package:affinidi_tdk_credential_issuance_client/src/model/issuance_config_list_response.dart';
-import 'package:affinidi_tdk_credential_issuance_client/src/model/not_found_error.dart';
 import 'package:affinidi_tdk_credential_issuance_client/src/model/update_issuance_config_input.dart';
 
 class ConfigurationApi {

@@ -4,15 +4,12 @@
 
 import 'dart:async';
 
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:affinidi_tdk_iam_client/src/api_util.dart';
 import 'package:affinidi_tdk_iam_client/src/model/grant_access_input.dart';
 import 'package:affinidi_tdk_iam_client/src/model/grant_access_output.dart';
-import 'package:affinidi_tdk_iam_client/src/model/unauthorized_error.dart';
-import 'package:affinidi_tdk_iam_client/src/model/unexpected_error.dart';
 import 'package:affinidi_tdk_iam_client/src/model/update_access_input.dart';
 import 'package:affinidi_tdk_iam_client/src/model/update_access_output.dart';
 
