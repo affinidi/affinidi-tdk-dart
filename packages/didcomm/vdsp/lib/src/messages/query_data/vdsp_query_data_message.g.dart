@@ -23,31 +23,27 @@ VdspQueryDataBody _$VdspQueryDataBodyFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$VdspQueryDataBodyToJson(
   VdspQueryDataBody instance,
-) =>
-    <String, dynamic>{
-      if (instance.operation case final value?) 'operation': value,
-      'data_query_lang':
-          _$DataQueryLanguageEnumMap[instance.dataQueryLanguage]!,
-      'response_format': instance.responseFormat,
-      if (instance.comment case final value?) 'comment': value,
-      'query': instance.query,
-      'proof_context': instance.proofContext.toJson(),
-    };
+) => <String, dynamic>{
+  if (instance.operation case final value?) 'operation': value,
+  'data_query_lang': _$DataQueryLanguageEnumMap[instance.dataQueryLanguage]!,
+  'response_format': instance.responseFormat,
+  if (instance.comment case final value?) 'comment': value,
+  'query': instance.query,
+  'proof_context': instance.proofContext.toJson(),
+};
 
 const _$DataQueryLanguageEnumMap = {DataQueryLanguage.dcql: 'DCQL'};
 
 VdspQueryDataProofContext _$VdspQueryDataProofContextFromJson(
   Map<String, dynamic> json,
-) =>
-    VdspQueryDataProofContext(
-      challenge: json['challenge'] as String,
-      domain: json['domain'] as String,
-    );
+) => VdspQueryDataProofContext(
+  challenge: json['challenge'] as String,
+  domain: json['domain'] as String,
+);
 
 Map<String, dynamic> _$VdspQueryDataProofContextToJson(
   VdspQueryDataProofContext instance,
-) =>
-    <String, dynamic>{
-      'challenge': instance.challenge,
-      'domain': instance.domain,
-    };
+) => <String, dynamic>{
+  'challenge': instance.challenge,
+  'domain': instance.domain,
+};

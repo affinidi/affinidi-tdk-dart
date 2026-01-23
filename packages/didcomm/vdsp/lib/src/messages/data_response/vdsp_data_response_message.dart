@@ -34,7 +34,6 @@ class VdspDataResponseMessage extends PlainTextMessage {
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Body payload for a VDSP data response message encapsulating returned data.
 ///
 /// Provides the response data along with metadata describing its format and

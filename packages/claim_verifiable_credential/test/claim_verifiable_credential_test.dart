@@ -53,9 +53,9 @@ void main() async {
   // Create a new instance of ClaimVerifiableCredentialService
   final claimVerifiableCredentialService =
       OID4VCIClaimVerifiableCredentialService(
-    didSigner: signer,
-    client: client,
-  );
+        didSigner: signer,
+        client: client,
+      );
 
   late DioAdapter dioAdapter;
 
@@ -162,8 +162,8 @@ void main() async {
           );
 
           final uri = Uri.parse(validCredentialOfferUrl);
-          final result =
-              await claimVerifiableCredentialService.loadCredentialOffer(uri);
+          final result = await claimVerifiableCredentialService
+              .loadCredentialOffer(uri);
 
           expect(result, isA<OID4VCIClaimContext>());
           expect(result.issuerMetadata.tokenEndpoint, testTokenEndpoint);

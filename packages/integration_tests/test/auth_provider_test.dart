@@ -1,5 +1,5 @@
-import 'package:test/test.dart';
 import 'package:affinidi_tdk_auth_provider/affinidi_tdk_auth_provider.dart';
+import 'package:test/test.dart';
 
 import 'helpers/helpers.dart';
 

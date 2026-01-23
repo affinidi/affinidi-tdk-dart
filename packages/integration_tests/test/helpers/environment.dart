@@ -98,7 +98,7 @@ VaultEnvironment getVaultEnvironment() {
   }
 
   final seedHexEncoded = env['VAULT_SEED_BYTES_HEX_ENCODED']!;
-  final Uint8List seed = Uint8List.fromList(hex.decode(seedHexEncoded));
+  final seed = Uint8List.fromList(hex.decode(seedHexEncoded));
 
   return VaultEnvironment(seed: seed, seedHexEncoded: seedHexEncoded);
 }

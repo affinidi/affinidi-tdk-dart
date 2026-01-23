@@ -1,6 +1,7 @@
 import 'dart:typed_data';
-import 'package:flutter/material.dart';
+
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
+import 'package:flutter/material.dart';
 
 class FilePreviewDialog extends StatelessWidget {
   final String fileName;
@@ -45,10 +46,7 @@ class FilePreviewDialog extends StatelessWidget {
                 ),
                 Text(
                   fileSize,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
-                  ),
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 const SizedBox(width: 8),
                 IconButton(
@@ -58,9 +56,7 @@ class FilePreviewDialog extends StatelessWidget {
               ],
             ),
             const Divider(),
-            Expanded(
-              child: _buildContent(extension, context),
-            ),
+            Expanded(child: _buildContent(extension, context)),
           ],
         ),
       ),
@@ -116,10 +112,7 @@ class FilePreviewDialog extends StatelessWidget {
       return SingleChildScrollView(
         child: SelectableText(
           textContent,
-          style: const TextStyle(
-            fontFamily: 'monospace',
-            fontSize: 14,
-          ),
+          style: const TextStyle(fontFamily: 'monospace', fontSize: 14),
         ),
       );
     } catch (e) {

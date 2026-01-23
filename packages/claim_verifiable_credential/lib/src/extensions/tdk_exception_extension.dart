@@ -46,7 +46,8 @@ extension TdkExceptionExtension on TdkException {
             return detailMap['issue'] == 'Credential offer has been expired.';
           })) {
         return TdkException(
-          message: errorData['message'] as String? ??
+          message:
+              errorData['message'] as String? ??
               'The credential offer has expired',
           code: TdkExceptionType.credentialOfferExpired.code,
         );
@@ -77,7 +78,8 @@ extension TdkExceptionExtension on TdkException {
         );
       case 'invalid_proof':
         return TdkException(
-          message: errorResponse.errorDescription ??
+          message:
+              errorResponse.errorDescription ??
               'The proof in the Credential Request is invalid',
           code: TdkExceptionType.invalidCredentialProof.code,
         );

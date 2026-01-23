@@ -54,15 +54,16 @@ class _$VaultServiceStateCopyWithImpl<$Res, $Val extends VaultServiceState>
   $Res call({Object? error = freezed, Object? vault = freezed}) {
     return _then(
       _value.copyWith(
-        error: freezed == error
-            ? _value.error
-            : error // ignore: cast_nullable_to_non_nullable
-                as String?,
-        vault: freezed == vault
-            ? _value.vault
-            : vault // ignore: cast_nullable_to_non_nullable
-                as Vault?,
-      ) as $Val,
+            error: freezed == error
+                ? _value.error
+                : error // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            vault: freezed == vault
+                ? _value.vault
+                : vault // ignore: cast_nullable_to_non_nullable
+                      as Vault?,
+          )
+          as $Val,
     );
   }
 }
@@ -98,11 +99,11 @@ class __$$VaultServiceStateImplCopyWithImpl<$Res>
         error: freezed == error
             ? _value.error
             : error // ignore: cast_nullable_to_non_nullable
-                as String?,
+                  as String?,
         vault: freezed == vault
             ? _value.vault
             : vault // ignore: cast_nullable_to_non_nullable
-                as Vault?,
+                  as Vault?,
       ),
     );
   }

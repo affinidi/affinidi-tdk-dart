@@ -37,10 +37,11 @@ class ItemPermission {
     final itemIds = (map['nodeIds'] as List?)?.cast<String>() ?? <String>[];
     final rights =
         (map['rights'] as List?)?.map((r) => r.toString()).toList() ??
-            <String>[];
+        <String>[];
     final expiresAtStr = map['expiresAt'] as String?;
-    final expiresAt =
-        expiresAtStr != null ? DateTime.parse(expiresAtStr) : null;
+    final expiresAt = expiresAtStr != null
+        ? DateTime.parse(expiresAtStr)
+        : null;
 
     return ItemPermission(
       itemIds: itemIds,

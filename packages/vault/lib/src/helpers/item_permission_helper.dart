@@ -109,11 +109,9 @@ class ItemPermissionHelper {
   /// Builds permission groups for API calls from a list of ItemPermissions.
   /// Returns a list of permission groups in the format expected by the API.
   static List<
-      ({
-        List<String> itemIds,
-        Permissions permissions,
-        DateTime? expiresAt
-      })> buildPermissionGroups(List<ItemPermission> permissions) {
+    ({List<String> itemIds, Permissions permissions, DateTime? expiresAt})
+  >
+  buildPermissionGroups(List<ItemPermission> permissions) {
     return permissions
         .map((perm) {
           final convertedPermissions = rightsListToPermissions(perm.rights);
@@ -127,11 +125,8 @@ class ItemPermissionHelper {
           );
         })
         .whereType<
-            ({
-              List<String> itemIds,
-              Permissions permissions,
-              DateTime? expiresAt
-            })>()
+          ({List<String> itemIds, Permissions permissions, DateTime? expiresAt})
+        >()
         .toList();
   }
 
@@ -158,8 +153,9 @@ class ItemPermissionHelper {
         updatedPermissions.add(perm);
       } else {
         final overlappingIds = perm.itemIds.where(itemIdsSet.contains).toList();
-        final nonOverlappingIds =
-            perm.itemIds.where((id) => !itemIdsSet.contains(id)).toList();
+        final nonOverlappingIds = perm.itemIds
+            .where((id) => !itemIdsSet.contains(id))
+            .toList();
 
         if (nonOverlappingIds.isNotEmpty) {
           updatedPermissions.add(perm.copyWith(itemIds: nonOverlappingIds));
@@ -178,10 +174,12 @@ class ItemPermissionHelper {
       }
     }
 
-    final existingItemIds =
-        existingPermissions.expand((perm) => perm.itemIds).toSet();
-    final newItemIds =
-        itemIds.where((id) => !existingItemIds.contains(id)).toList();
+    final existingItemIds = existingPermissions
+        .expand((perm) => perm.itemIds)
+        .toSet();
+    final newItemIds = itemIds
+        .where((id) => !existingItemIds.contains(id))
+        .toList();
 
     if (newItemIds.isNotEmpty && rightsSet.isNotEmpty) {
       updatedPermissions.add(
@@ -224,8 +222,9 @@ class ItemPermissionHelper {
       }
 
       final overlappingIds = perm.itemIds.where(itemIdsSet.contains).toList();
-      final nonOverlappingIds =
-          perm.itemIds.where((id) => !itemIdsSet.contains(id)).toList();
+      final nonOverlappingIds = perm.itemIds
+          .where((id) => !itemIdsSet.contains(id))
+          .toList();
 
       if (nonOverlappingIds.isNotEmpty) {
         updatedPermissions.add(perm.copyWith(itemIds: nonOverlappingIds));
@@ -234,8 +233,9 @@ class ItemPermissionHelper {
       if (removeAllRights) {
         continue;
       } else {
-        final remainingRights =
-            perm.rights.where((right) => !rightsSet.contains(right)).toList();
+        final remainingRights = perm.rights
+            .where((right) => !rightsSet.contains(right))
+            .toList();
 
         if (remainingRights.isNotEmpty) {
           updatedPermissions.add(

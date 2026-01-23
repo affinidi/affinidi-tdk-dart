@@ -1,7 +1,8 @@
 import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediator_client.dart';
-import '../../../integration_tests/test/test_config.dart';
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../../integration_tests/test/test_config.dart';
 
 void main() async {
   // Run commands below in your terminal to generate keys for Alice and Bob:
@@ -89,13 +90,13 @@ void main() async {
 
   final aliceSignedAndEncryptedMessage =
       await DidcommMessage.packIntoSignedAndEncryptedMessages(
-    alicePlainTextMassage,
-    keyType: [bobDidDocument].getCommonKeyTypesInKeyAgreements().first,
-    recipientDidDocuments: [bobDidDocument],
-    keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
-    encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
-    signer: aliceSigner,
-  );
+        alicePlainTextMassage,
+        keyType: [bobDidDocument].getCommonKeyTypesInKeyAgreements().first,
+        recipientDidDocuments: [bobDidDocument],
+        keyWrappingAlgorithm: KeyWrappingAlgorithm.ecdhEs,
+        encryptionAlgorithm: EncryptionAlgorithm.a256cbc,
+        signer: aliceSigner,
+      );
 
   prettyPrint(
     'Encrypted and Signed Message by Alice',
@@ -154,15 +155,15 @@ void main() async {
     (message) async {
       final unpackedMessageByBob =
           await DidcommMessage.unpackToPlainTextMessage(
-        message: message,
-        recipientDidManager: bobDidManager,
-        expectedMessageWrappingTypes: [
-          MessageWrappingType.authcryptPlaintext,
-          MessageWrappingType.authcryptSignPlaintext,
-          MessageWrappingType.anoncryptSignPlaintext,
-          MessageWrappingType.anoncryptAuthcryptPlaintext,
-        ],
-      );
+            message: message,
+            recipientDidManager: bobDidManager,
+            expectedMessageWrappingTypes: [
+              MessageWrappingType.authcryptPlaintext,
+              MessageWrappingType.authcryptSignPlaintext,
+              MessageWrappingType.anoncryptSignPlaintext,
+              MessageWrappingType.anoncryptAuthcryptPlaintext,
+            ],
+          );
 
       prettyPrint(
         'Unpacked Plain Text Message received by Bob via Mediator',

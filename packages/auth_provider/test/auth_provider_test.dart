@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:affinidi_tdk_auth_provider/affinidi_tdk_auth_provider.dart';
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
-import 'package:affinidi_tdk_auth_provider/affinidi_tdk_auth_provider.dart';
 
 void main() {
   group('Auth Provider Tests', () {

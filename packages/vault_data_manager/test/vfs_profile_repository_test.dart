@@ -71,11 +71,11 @@ void main() {
       consumerAuthProviderFactory: (didSigner, {client}) =>
           ConsumerAuthProvider(signer: didSigner, client: client),
       iamApiServiceFactory: (provider) => mockIamApiService,
-      vaultDataManagerServiceFactory: ({
-        required Uint8List encryptedDekek,
-        required KeyPair keyPair,
-      }) async =>
-          mockDataManagerService,
+      vaultDataManagerServiceFactory:
+          ({
+            required Uint8List encryptedDekek,
+            required KeyPair keyPair,
+          }) async => mockDataManagerService,
     );
 
     // Setup common mock behaviors
@@ -348,13 +348,16 @@ void main() {
         when(
           () => mockIamApiService.setItemsAccessVfs(
             granteeDid: any<String>(named: 'granteeDid'),
-            permissionGroups: any<
-                List<
+            permissionGroups:
+                any<
+                  List<
                     ({
                       List<String> itemIds,
                       Permissions permissions,
                       DateTime? expiresAt,
-                    })>>(named: 'permissionGroups'),
+                    })
+                  >
+                >(named: 'permissionGroups'),
             cancelToken: any<CancelToken?>(named: 'cancelToken'),
           ),
         ).thenAnswer((_) async {});
@@ -390,13 +393,16 @@ void main() {
         verify(
           () => mockIamApiService.setItemsAccessVfs(
             granteeDid: 'did:test:123',
-            permissionGroups: any<
-                List<
+            permissionGroups:
+                any<
+                  List<
                     ({
                       List<String> itemIds,
                       Permissions permissions,
                       DateTime? expiresAt,
-                    })>>(named: 'permissionGroups'),
+                    })
+                  >
+                >(named: 'permissionGroups'),
             cancelToken: any<CancelToken?>(named: 'cancelToken'),
           ),
         ).called(1);

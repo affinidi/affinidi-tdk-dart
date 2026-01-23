@@ -21,38 +21,38 @@ class NodeFixtures {
   static const testProfileId = 'test-profile-id';
 
   static Node get testFileNode => Node(
-        nodeId: '1',
-        status: NodeStatus.CREATED,
-        name: testNodeName,
-        consumerId: testConsumerId,
-        parentNodeId: testParentId,
-        profileId: testProfileId,
-        createdAt: DateTime.now().toIso8601String(),
-        modifiedAt: DateTime.now().toIso8601String(),
-        createdBy: testUser,
-        modifiedBy: testUser,
-        type: NodeType.FILE,
-        fileCount: 0,
-        profileCount: 0,
-        folderCount: 0,
-      );
+    nodeId: '1',
+    status: NodeStatus.CREATED,
+    name: testNodeName,
+    consumerId: testConsumerId,
+    parentNodeId: testParentId,
+    profileId: testProfileId,
+    createdAt: DateTime.now().toIso8601String(),
+    modifiedAt: DateTime.now().toIso8601String(),
+    createdBy: testUser,
+    modifiedBy: testUser,
+    type: NodeType.FILE,
+    fileCount: 0,
+    profileCount: 0,
+    folderCount: 0,
+  );
 
   static Node get testFolderNode => Node(
-        nodeId: '1',
-        status: NodeStatus.CREATED,
-        name: testNodeName,
-        consumerId: testConsumerId,
-        parentNodeId: testParentId,
-        profileId: testProfileId,
-        createdAt: DateTime.now().toIso8601String(),
-        modifiedAt: DateTime.now().toIso8601String(),
-        createdBy: testUser,
-        modifiedBy: testUser,
-        type: NodeType.FOLDER,
-        fileCount: 0,
-        profileCount: 0,
-        folderCount: 0,
-      );
+    nodeId: '1',
+    status: NodeStatus.CREATED,
+    name: testNodeName,
+    consumerId: testConsumerId,
+    parentNodeId: testParentId,
+    profileId: testProfileId,
+    createdAt: DateTime.now().toIso8601String(),
+    modifiedAt: DateTime.now().toIso8601String(),
+    createdBy: testUser,
+    modifiedBy: testUser,
+    type: NodeType.FOLDER,
+    fileCount: 0,
+    profileCount: 0,
+    folderCount: 0,
+  );
 }
 
 class FileFixtures {

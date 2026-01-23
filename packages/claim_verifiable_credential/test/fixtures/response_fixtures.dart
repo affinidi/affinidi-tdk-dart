@@ -21,23 +21,22 @@ class ResponseFixtures {
   static Map<String, dynamic> issuerMetaData({
     required String tokenEndpoint,
     required String credentialEndpoint,
-  }) =>
-      {
-        'token_endpoint': tokenEndpoint,
-        'credential_endpoint': credentialEndpoint,
-        'return_uris': <String>[],
-      };
+  }) => {
+    'token_endpoint': tokenEndpoint,
+    'credential_endpoint': credentialEndpoint,
+    'return_uris': <String>[],
+  };
 
   static Map<String, dynamic> error({required String message}) => {
-        'name': 'serverError',
-        'message': message,
-        'details': <String>[],
-      };
+    'name': 'serverError',
+    'message': message,
+    'details': <String>[],
+  };
 
   static Map<String, dynamic> claimError({required String message}) => {
-        'error': 'serverError',
-        'error_description': message,
-      };
+    'error': 'serverError',
+    'error_description': message,
+  };
 
   static const Map<String, dynamic> invalidIssuanceId = {
     'name': 'InvalidParameterError',

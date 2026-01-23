@@ -2,15 +2,16 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:dio/dio.dart';
 import 'package:built_value/serializer.dart';
-import 'package:affinidi_tdk_wallets_client/src/serializers.dart';
-import 'package:affinidi_tdk_wallets_client/src/auth/api_key_auth.dart';
-import 'package:affinidi_tdk_wallets_client/src/auth/basic_auth.dart';
-import 'package:affinidi_tdk_wallets_client/src/auth/bearer_auth.dart';
-import 'package:affinidi_tdk_wallets_client/src/auth/oauth.dart';
-import 'package:affinidi_tdk_wallets_client/src/api/revocation_api.dart';
-import 'package:affinidi_tdk_wallets_client/src/api/wallet_api.dart';
+import 'package:dio/dio.dart';
+
+import 'api/revocation_api.dart';
+import 'api/wallet_api.dart';
+import 'auth/api_key_auth.dart';
+import 'auth/basic_auth.dart';
+import 'auth/bearer_auth.dart';
+import 'auth/oauth.dart';
+import 'serializers.dart';
 
 class AffinidiTdkWalletsClient {
   static const String basePath = r'https://apse1.api.affinidi.io/cwe';

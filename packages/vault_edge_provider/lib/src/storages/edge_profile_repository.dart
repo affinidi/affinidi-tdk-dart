@@ -52,7 +52,8 @@ class EdgeProfileRepository implements ProfileRepository {
     if (configuration.keyStorage == null) {
       Error.throwWithStackTrace(
         TdkException(
-          message: 'Key storage is required to '
+          message:
+              'Key storage is required to '
               'maintain account indexes and avoid duplicate accounts',
           code: TdkExceptionType.missingVaultStore.code,
         ),

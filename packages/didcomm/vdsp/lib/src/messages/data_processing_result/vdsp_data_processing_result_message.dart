@@ -24,7 +24,6 @@ class VdspDataProcessingResultMessage extends PlainTextMessage {
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-
 /// Body payload for a VDSP data processing result message.
 ///
 /// Encapsulates the output of a processing operation and an optional

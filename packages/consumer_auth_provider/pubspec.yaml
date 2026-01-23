@@ -3,7 +3,7 @@ description: Auth provider that allows creating consumer scoped tokens to access
 version: 4.10.0
 repository: https://github.com/affinidi/affinidi-tdk-dart
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.8.0
 resolution: workspace
 dependencies:
   affinidi_tdk_common: ^1.6.0
@@ -12,10 +12,9 @@ dependencies:
   crypto: ^3.0.6
   dio: ^5.7.0
   jwt_decoder: ^2.0.1
-  ssi: ^2.2.0
+  ssi: ^3.3.0
   uuid: ^4.5.1
   web3dart: ^3.0.0
 dev_dependencies:
   affinidi_tdk_test_utilities: ^1.1.0
-  dart_flutter_team_lints: ^3.2.1
   test: ^1.24.0

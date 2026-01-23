@@ -4,9 +4,10 @@ import 'dart:io';
 
 import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediator_client.dart';
 import 'package:affinidi_tdk_vdip/affinidi_tdk_vdip.dart';
-import '../../../integration_tests/test/test_config.dart';
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../../integration_tests/test/test_config.dart';
 
 /// This example demonstrates the complete browser context switch flow with real HTTP servers:
 ///
@@ -53,8 +54,8 @@ Future<void> main() async {
   );
 
   final mediatorDid = await readDid(config.mediatorDidPath);
-  final mediatorDidDocument =
-      await UniversalDIDResolver.defaultResolver.resolveDid(mediatorDid);
+  final mediatorDidDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(mediatorDid);
 
   // Initialize Issuer
   final issuerKeyStore = InMemoryKeyStore();
@@ -220,53 +221,55 @@ Future<void> main() async {
 
       await vdipIssuer.disclose(queryMessage: message);
     },
-    onRequestToIssueCredential: ({
-      required message,
-      holderDidFromAssertion,
-      assertionValidationResult,
-      challenge,
-    }) async {
-      prettyPrint(
-        'Issuer: Received Request to Issue Credential',
-        object: message,
-      );
+    onRequestToIssueCredential:
+        ({
+          required message,
+          holderDidFromAssertion,
+          assertionValidationResult,
+          challenge,
+        }) async {
+          prettyPrint(
+            'Issuer: Received Request to Issue Credential',
+            object: message,
+          );
 
-      final vdipRequestIssuanceBody = VdipRequestIssuanceMessageBody.fromJson(
-        Map<String, dynamic>.from(message.body!),
-      );
+          final vdipRequestIssuanceBody =
+              VdipRequestIssuanceMessageBody.fromJson(
+                Map<String, dynamic>.from(message.body!),
+              );
 
-      print('Issuer: No nonce found, initiating browser context switch\n');
-      final email = vdipRequestIssuanceBody.credentialMeta?.data?['email'];
+          print('Issuer: No nonce found, initiating browser context switch\n');
+          final email = vdipRequestIssuanceBody.credentialMeta?.data?['email'];
 
-      if (email == null) {
-        throw StateError('Issuer: Email is missing in credential meta\n');
-      }
+          if (email == null) {
+            throw StateError('Issuer: Email is missing in credential meta\n');
+          }
 
-      final contextNonce = const Uuid().v4();
-      final threadId = message.threadId ?? message.id;
+          final contextNonce = const Uuid().v4();
+          final threadId = message.threadId ?? message.id;
 
-      // Store verification request
-      pendingVerifications[contextNonce] = VerificationRequest(
-        nonce: contextNonce,
-        threadId: threadId,
-        holderDid: message.from!,
-        email: email as String,
-      );
+          // Store verification request
+          pendingVerifications[contextNonce] = VerificationRequest(
+            nonce: contextNonce,
+            threadId: threadId,
+            holderDid: message.from!,
+            email: email as String,
+          );
 
-      await vdipIssuer.sendSwitchContext(
-        holderDid: message.from!,
-        baseIssuerUrl: Uri.parse('http://localhost:8080'),
-        nonce: contextNonce,
-        threadId: threadId,
-      );
+          await vdipIssuer.sendSwitchContext(
+            holderDid: message.from!,
+            baseIssuerUrl: Uri.parse('http://localhost:8080'),
+            nonce: contextNonce,
+            threadId: threadId,
+          );
 
-      print(
-        'Issuer: Switch context sent. Waiting for browser verification...\n',
-      );
+          print(
+            'Issuer: Switch context sent. Waiting for browser verification...\n',
+          );
 
-      // If we have a nonce, wait for verification result
-      print('Issuer: Nonce received, waiting for verification result...\n');
-    },
+          // If we have a nonce, wait for verification result
+          print('Issuer: Nonce received, waiting for verification result...\n');
+        },
     onProblemReport: (message) {
       prettyPrint('Issuer: Problem occurred', object: message);
     },
@@ -337,8 +340,10 @@ Future<HttpServer> startIssuerServer({
 
     // Handle verification callback from the verification server
     if (uri.path == '/verification-callback' && request.method == 'POST') {
-      final body =
-          await request.cast<List<int>>().transform(const Utf8Decoder()).join();
+      final body = await request
+          .cast<List<int>>()
+          .transform(const Utf8Decoder())
+          .join();
       final data = Uri.splitQueryString(body);
 
       final token = data['token'];
@@ -409,11 +414,11 @@ Future<HttpServer> startIssuerServer({
       if (verified) {
         print('Issuer: Verification successful! Issuing credential...\n');
         // Issue the credential
-        final unsignedCredential = VcDataModelV1(
-          context: [
-            dmV1ContextUrl,
+        final unsignedCredential = VcDataModelV2(
+          context: JsonLdContext.fromJson([
+            dmV2ContextUrl,
             'https://d2oeuqaac90cm.cloudfront.net/TTestMusicSubscriptionV1R0.jsonld',
-          ],
+          ]),
           credentialSchema: [
             CredentialSchema(
               id: Uri.parse(
@@ -425,7 +430,6 @@ Future<HttpServer> startIssuerServer({
           id: Uri.parse(const Uuid().v4()),
           issuer: Issuer.uri(issuerSigner.did),
           type: {'VerifiableCredential', 'TestMusicSubscription'},
-          issuanceDate: DateTime.now().toUtc(),
           credentialSubject: [
             CredentialSubject.fromJson({
               'id': verificationRequest.holderDid,
@@ -437,7 +441,7 @@ Future<HttpServer> startIssuerServer({
           ],
         );
 
-        final suite = LdVcDm1Suite();
+        final suite = LdVcDm2Suite();
         final issuedCredential = await suite.issue(
           unsignedData: unsignedCredential,
           proofGenerator: DataIntegrityEcdsaJcsGenerator(signer: issuerSigner),

@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class AuthProviderParams {
   final String region;
@@ -41,8 +42,8 @@ class IdentityCredentials {
 
   factory IdentityCredentials.fromJson(Map<String, dynamic> json) {
     return IdentityCredentials(
-      identityId: json['identityId'],
-      token: json['token'],
+      identityId: json['identityId'] as String,
+      token: json['token'] as String,
     );
   }
 }
@@ -52,8 +53,8 @@ class IotaAuthProvider {
   late final String apiGW;
 
   IotaAuthProvider({Map<String, dynamic>? params}) {
-    region = params?['region'] ?? 'ap-southeast-1';
-    apiGW = params?['apiGW'] ?? Environment.fetchApiGwUrl();
+    region = params?['region'] as String? ?? 'ap-southeast-1';
+    apiGW = params?['apiGW'] as String? ?? Environment.fetchApiGwUrl();
   }
 
   Future<IotaCredentials> limitedTokenToIotaCredentials(
@@ -69,11 +70,11 @@ class IotaAuthProvider {
       throw Exception('Failed to exchange credentials');
     }
 
-    final Map<String, dynamic> data = jsonDecode(response.body);
+    final data = jsonDecode(response.body) as Map<String, dynamic>;
     final connectionClientId = data['connectionClientId'] as String;
 
     final identityCredentials = IdentityCredentials.fromJson(
-      data['credentials'],
+      data['credentials'] as Map<String, dynamic>,
     );
 
     final credentials = await exchangeIdentityCredentials(identityCredentials);
@@ -98,9 +99,9 @@ class IotaAuthProvider {
     );
 
     return Credentials(
-      accessKeyId: creds['AccessKeyId'],
-      secretKey: creds['SecretKey'],
-      sessionToken: creds['SessionToken'],
+      accessKeyId: creds['AccessKeyId'] as String?,
+      secretKey: creds['SecretKey'] as String?,
+      sessionToken: creds['SessionToken'] as String?,
       expiration: creds['Expiration'] != null ? expirationDate : null,
     );
   }
@@ -127,6 +128,6 @@ class IotaAuthProvider {
       throw Exception('Failed to fetch Cognito credentials');
     }
 
-    return jsonDecode(response.body);
+    return jsonDecode(response.body) as Map<String, dynamic>;
   }
 }

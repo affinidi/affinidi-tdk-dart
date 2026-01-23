@@ -15,8 +15,8 @@ Future<void> main() async {
 
   final mediatorDid = await readDid(config.mediatorDidPath);
 
-  final mediatorDidDocument =
-      await UniversalDIDResolver.defaultResolver.resolveDid(mediatorDid);
+  final mediatorDidDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(mediatorDid);
 
   group('VDIP Holder and Issuer Clients Integration Tests', () {
     late String holderEmail;
@@ -89,7 +89,7 @@ Future<void> main() async {
           ...FeatureDiscoveryHelper.vdipIssuerDisclosures,
           Disclosure(
             featureType: FeatureType.credentialFormat.value,
-            id: CredentialFormat.w3cV1.value,
+            id: CredentialFormat.w3cV2.value,
           ),
         ],
         clientOptions: const AffinidiClientOptions(),
@@ -103,66 +103,66 @@ Future<void> main() async {
         onFeatureQuery: (message) async {
           await vdspIssuer.disclose(queryMessage: message);
         },
-        onRequestToIssueCredential: ({
-          required PlainTextMessage message,
-          AssertionValidationResult? assertionValidationResult,
-          String? holderDidFromAssertion,
-          String? challenge,
-        }) async {
-          if (message.from == null) {
-            throw ArgumentError.notNull('from');
-          }
+        onRequestToIssueCredential:
+            ({
+              required PlainTextMessage message,
+              AssertionValidationResult? assertionValidationResult,
+              String? holderDidFromAssertion,
+              String? challenge,
+            }) async {
+              if (message.from == null) {
+                throw ArgumentError.notNull('from');
+              }
 
-          // Verify challenge was properly transmitted
-          expect(challenge, isNotNull);
-          expect(challenge, equals(expectedChallenge));
+              // Verify challenge was properly transmitted
+              expect(challenge, isNotNull);
+              expect(challenge, equals(expectedChallenge));
 
-          // Verify assertion validation is null for non-holder-bound requests
-          expect(assertionValidationResult, isNull);
-          expect(holderDidFromAssertion, isNull);
+              // Verify assertion validation is null for non-holder-bound requests
+              expect(assertionValidationResult, isNull);
+              expect(holderDidFromAssertion, isNull);
 
-          final holderDid = message.from!;
+              final holderDid = message.from!;
 
-          // Create the credential to issue
-          final credentialToIssue = VcDataModelV1(
-            context: [
-              dmV1ContextUrl,
-              'https://schema.affinidi.io/TEmailV1R0.jsonld',
-            ],
-            credentialSchema: [
-              CredentialSchema(
-                id: Uri.parse('https://schema.affinidi.io/TEmailV1R0.json'),
-                type: 'JsonSchemaValidator2018',
-              ),
-            ],
-            id: Uri.parse(const Uuid().v4()),
-            issuer: Issuer.uri(issuerSigner.did),
-            type: {'VerifiableCredential', 'Email'},
-            issuanceDate: DateTime.now().toUtc(),
-            credentialSubject: [
-              CredentialSubject.fromJson({
-                'id': holderDid,
-                'email': holderEmail,
-              }),
-            ],
-          );
+              // Create the credential to issue
+              final credentialToIssue = VcDataModelV2(
+                context: JsonLdContext.fromJson([
+                  dmV2ContextUrl,
+                  'https://schema.affinidi.io/TEmailV1R0.jsonld',
+                ]),
+                credentialSchema: [
+                  CredentialSchema(
+                    id: Uri.parse('https://schema.affinidi.io/TEmailV1R0.json'),
+                    type: 'JsonSchemaValidator2018',
+                  ),
+                ],
+                id: Uri.parse(const Uuid().v4()),
+                issuer: Issuer.uri(issuerSigner.did),
+                type: {'VerifiableCredential', 'Email'},
+                credentialSubject: [
+                  CredentialSubject.fromJson({
+                    'id': holderDid,
+                    'email': holderEmail,
+                  }),
+                ],
+              );
 
-          // Sign the credential
-          final suite = LdVcDm1Suite();
-          final issuedCredential = await suite.issue(
-            unsignedData: credentialToIssue,
-            proofGenerator: DataIntegrityEcdsaJcsGenerator(
-              signer: issuerSigner,
-            ),
-          );
+              // Sign the credential
+              final suite = LdVcDm2Suite();
+              final issuedCredential = await suite.issue(
+                unsignedData: credentialToIssue,
+                proofGenerator: DataIntegrityEcdsaJcsGenerator(
+                  signer: issuerSigner,
+                ),
+              );
 
-          // Send the issued credential to the holder
-          await vdspIssuer.sendIssuedCredentials(
-            holderDid: holderDid,
-            verifiableCredential: issuedCredential,
-            comment: 'Your email credential',
-          );
-        },
+              // Send the issued credential to the holder
+              await vdspIssuer.sendIssuedCredentials(
+                holderDid: holderDid,
+                verifiableCredential: issuedCredential,
+                comment: 'Your email credential',
+              );
+            },
         onProblemReport: (message) async {
           testCompleter.complete(message);
           await ConnectionPool.instance.stopConnections();
@@ -209,7 +209,7 @@ Future<void> main() async {
         options: RequestCredentialsOptions(
           proposalId: proposalId,
           challenge: expectedChallenge,
-          credentialFormat: CredentialFormat.w3cV1,
+          credentialFormat: CredentialFormat.w3cV2,
           credentialMeta: CredentialMeta(data: {'email': holderEmail}),
         ),
       );
@@ -245,7 +245,7 @@ Future<void> main() async {
           ...FeatureDiscoveryHelper.vdipIssuerDisclosures,
           Disclosure(
             featureType: FeatureType.credentialFormat.value,
-            id: CredentialFormat.w3cV1.value,
+            id: CredentialFormat.w3cV2.value,
           ),
         ],
         clientOptions: const AffinidiClientOptions(),
@@ -259,112 +259,113 @@ Future<void> main() async {
         onFeatureQuery: (message) async {
           await vdipIssuer.disclose(queryMessage: message);
         },
-        onRequestToIssueCredential: ({
-          required PlainTextMessage message,
-          AssertionValidationResult? assertionValidationResult,
-          String? holderDidFromAssertion,
-          String? challenge,
-        }) async {
-          if (message.from == null) {
-            throw ArgumentError.notNull('from');
-          }
+        onRequestToIssueCredential:
+            ({
+              required PlainTextMessage message,
+              AssertionValidationResult? assertionValidationResult,
+              String? holderDidFromAssertion,
+              String? challenge,
+            }) async {
+              if (message.from == null) {
+                throw ArgumentError.notNull('from');
+              }
 
-          // Verify the assertion is valid
-          expect(assertionValidationResult?.isValid, isTrue);
-          expect(holderDidFromAssertion, holderSigner.did);
+              // Verify the assertion is valid
+              expect(assertionValidationResult?.isValid, isTrue);
+              expect(holderDidFromAssertion, holderSigner.did);
 
-          // Verify challenge was properly transmitted with assertion
-          expect(challenge, isNotNull);
-          expect(challenge, equals(expectedChallenge));
+              // Verify challenge was properly transmitted with assertion
+              expect(challenge, isNotNull);
+              expect(challenge, equals(expectedChallenge));
 
-          // Verify that holderDid in message body matches holderDidFromAssertion
-          final body = VdipRequestIssuanceMessageBody.fromJson(
-            message.body!,
-          );
-          expect(body.holderDid, equals(holderDidFromAssertion));
+              // Verify that holderDid in message body matches holderDidFromAssertion
+              final body = VdipRequestIssuanceMessageBody.fromJson(
+                message.body!,
+              );
+              expect(body.holderDid, equals(holderDidFromAssertion));
 
-          // Verify assertion JWT claims
-          if (body.assertion != null) {
-            final holderDidDocument = await UniversalDIDResolver.defaultResolver
-                .resolveDid(holderSigner.did);
+              // Verify assertion JWT claims
+              if (body.assertion != null) {
+                final holderDidDocument = await UniversalDIDResolver
+                    .defaultResolver
+                    .resolveDid(holderSigner.did);
 
-            final decodedAssertion = JwtHelper.decodeAndVerify(
-              serializedJwt: body.assertion!,
-              holderDidDocument: holderDidDocument,
-            );
+                final decodedAssertion = JwtHelper.decodeAndVerify(
+                  serializedJwt: body.assertion!,
+                  holderDidDocument: holderDidDocument,
+                );
 
-            final payload = decodedAssertion.payload;
+                final payload = decodedAssertion.payload;
 
-            // Verify JWT payload contains expected fields
-            expect(
-              payload['sub'],
-              equals(holderSigner.did),
-            ); // Subject is holder DID
-            expect(
-              payload['iss'],
-              equals(holderSigner.did),
-            ); // Issuer is holder DID
-            expect(
-              payload['aud'],
-              equals((await issuerDidManager.getDidDocument()).id),
-            ); // Audience is issuer DID
-            expect(
-              payload['proposalId'],
-              equals(proposalId),
-            ); // Proposal ID matches
-            expect(payload['jti'], isNotNull); // Has unique JWT ID
-            expect(payload['iat'], isNotNull); // Has issued at time
-            expect(payload['exp'], isNotNull); // Has expiration time
+                // Verify JWT payload contains expected fields
+                expect(
+                  payload['sub'],
+                  equals(holderSigner.did),
+                ); // Subject is holder DID
+                expect(
+                  payload['iss'],
+                  equals(holderSigner.did),
+                ); // Issuer is holder DID
+                expect(
+                  payload['aud'],
+                  equals((await issuerDidManager.getDidDocument()).id),
+                ); // Audience is issuer DID
+                expect(
+                  payload['proposalId'],
+                  equals(proposalId),
+                ); // Proposal ID matches
+                expect(payload['jti'], isNotNull); // Has unique JWT ID
+                expect(payload['iat'], isNotNull); // Has issued at time
+                expect(payload['exp'], isNotNull); // Has expiration time
 
-            // Verify expiration is in the future
-            final exp = payload['exp'] as int;
-            final now =
-                (DateTime.timestamp().millisecondsSinceEpoch / 1000).floor();
-            expect(exp, greaterThan(now));
-          }
+                // Verify expiration is in the future
+                final exp = payload['exp'] as int;
+                final now = (DateTime.timestamp().millisecondsSinceEpoch / 1000)
+                    .floor();
+                expect(exp, greaterThan(now));
+              }
 
-          final holderDid = holderDidFromAssertion!;
+              final holderDid = holderDidFromAssertion!;
 
-          // Create the credential to issue
-          final credentialToIssue = VcDataModelV1(
-            context: [
-              dmV1ContextUrl,
-              'https://schema.affinidi.io/TEmailV1R0.jsonld',
-            ],
-            credentialSchema: [
-              CredentialSchema(
-                id: Uri.parse('https://schema.affinidi.io/TEmailV1R0.json'),
-                type: 'JsonSchemaValidator2018',
-              ),
-            ],
-            id: Uri.parse(const Uuid().v4()),
-            issuer: Issuer.uri(issuerSigner.did),
-            type: {'VerifiableCredential', 'Email'},
-            issuanceDate: DateTime.now().toUtc(),
-            credentialSubject: [
-              CredentialSubject.fromJson({
-                'id': holderDid,
-                'email': holderEmail,
-              }),
-            ],
-          );
+              // Create the credential to issue
+              final credentialToIssue = VcDataModelV2(
+                context: JsonLdContext.fromJson([
+                  dmV2ContextUrl,
+                  'https://schema.affinidi.io/TEmailV1R0.jsonld',
+                ]),
+                credentialSchema: [
+                  CredentialSchema(
+                    id: Uri.parse('https://schema.affinidi.io/TEmailV1R0.json'),
+                    type: 'JsonSchemaValidator2018',
+                  ),
+                ],
+                id: Uri.parse(const Uuid().v4()),
+                issuer: Issuer.uri(issuerSigner.did),
+                type: {'VerifiableCredential', 'Email'},
+                credentialSubject: [
+                  CredentialSubject.fromJson({
+                    'id': holderDid,
+                    'email': holderEmail,
+                  }),
+                ],
+              );
 
-          // Sign the credential
-          final suite = LdVcDm1Suite();
-          final issuedCredential = await suite.issue(
-            unsignedData: credentialToIssue,
-            proofGenerator: DataIntegrityEcdsaJcsGenerator(
-              signer: issuerSigner,
-            ),
-          );
+              // Sign the credential
+              final suite = LdVcDm2Suite();
+              final issuedCredential = await suite.issue(
+                unsignedData: credentialToIssue,
+                proofGenerator: DataIntegrityEcdsaJcsGenerator(
+                  signer: issuerSigner,
+                ),
+              );
 
-          // Send the issued credential to the holder
-          await vdipIssuer.sendIssuedCredentials(
-            holderDid: holderDid,
-            verifiableCredential: issuedCredential,
-            comment: 'Your email credential with holder-bound assertion',
-          );
-        },
+              // Send the issued credential to the holder
+              await vdipIssuer.sendIssuedCredentials(
+                holderDid: holderDid,
+                verifiableCredential: issuedCredential,
+                comment: 'Your email credential with holder-bound assertion',
+              );
+            },
         onProblemReport: (message) async {
           testCompleter.complete(message);
           await ConnectionPool.instance.stopConnections();
@@ -427,7 +428,7 @@ Future<void> main() async {
           assertionSigner: differentSigner, // But signing with differentSigner
           options: RequestCredentialsOptions(
             proposalId: proposalId,
-            credentialFormat: CredentialFormat.w3cV1,
+            credentialFormat: CredentialFormat.w3cV2,
           ),
         ),
         throwsA(isA<ArgumentError>()),
@@ -441,7 +442,7 @@ Future<void> main() async {
         options: RequestCredentialsOptions(
           proposalId: proposalId,
           challenge: expectedChallenge,
-          credentialFormat: CredentialFormat.w3cV1,
+          credentialFormat: CredentialFormat.w3cV2,
           credentialMeta: CredentialMeta(data: {'email': holderEmail}),
         ),
       );

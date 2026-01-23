@@ -42,8 +42,8 @@ class AuthProvider {
     required this.privateKey,
     this.keyId,
     this.passphrase,
-  })  : apiGatewayUrl = Environment.fetchApiGwUrl(),
-        tokenEndpoint = Environment.fetchElementsAuthTokenUrl();
+  }) : apiGatewayUrl = Environment.fetchApiGwUrl(),
+       tokenEndpoint = Environment.fetchElementsAuthTokenUrl();
 
   /// Constructor for internal use only. Allows for custom API Gateway and
   /// token endpoint.
@@ -114,7 +114,7 @@ class AuthProvider {
     }
 
     final data = jsonDecode(response.body);
-    return data['access_token'];
+    return data['access_token'] as String;
   }
 
   Future<String> _getProjectScopedToken({required String audience}) async {
@@ -134,7 +134,7 @@ class AuthProvider {
     }
 
     final data = jsonDecode(response.body);
-    return data['accessToken'];
+    return data['accessToken'] as String;
   }
 
   /// Generates an iota token to be used when setting up an iota websockets
@@ -145,7 +145,7 @@ class AuthProvider {
     required String did,
     String? iotaSessionId,
   }) {
-    final sessionId = iotaSessionId ?? Uuid().v4();
+    final sessionId = iotaSessionId ?? const Uuid().v4();
 
     return (
       iotaJwt: JWTHelper.signPayload(

@@ -22,13 +22,14 @@ class FlutterSecureVaultStore extends VaultStore {
   ///
   /// [_vaultId] - Unique identifier for this vault store instance.
   FlutterSecureVaultStore(this._vaultId, [FlutterSecureStorage? secureStorage])
-      : _secureStorage = secureStorage ??
-            const FlutterSecureStorage(
-              aOptions: AndroidOptions(encryptedSharedPreferences: true),
-              iOptions: IOSOptions(
-                accessibility: KeychainAccessibility.unlocked_this_device,
-              ),
-            );
+    : _secureStorage =
+          secureStorage ??
+          const FlutterSecureStorage(
+            aOptions: AndroidOptions(encryptedSharedPreferences: true),
+            iOptions: IOSOptions(
+              accessibility: KeychainAccessibility.unlocked_this_device,
+            ),
+          );
 
   final String _vaultId;
   final FlutterSecureStorage _secureStorage;

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:affinidi_tdk_iota_client/affinidi_tdk_iota_client.dart';
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:affinidi_tdk_iota_client/affinidi_tdk_iota_client.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:test/test.dart';
@@ -24,11 +24,11 @@ void main() {
 
     setUpAll(() async {
       final wallet = await ResourceFactory.createWallet();
-      walletId = wallet.id;
-      walletAri = wallet.ari;
+      walletId = wallet.id!;
+      walletAri = wallet.ari!;
 
       final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
-      String basePathOverride = replaceBaseDomain(
+      var basePathOverride = replaceBaseDomain(
         AffinidiTdkIotaClient.basePath,
         apiGwUrl,
       );
@@ -62,29 +62,30 @@ void main() {
           ..build();
 
         final fixture = getFixtures().iotaConfiguration;
-        redirectUri = fixture['redirectUris'][0];
+        redirectUri = fixture['redirectUris'][0] as String;
 
         final createIotaConfigurationInput =
             CreateIotaConfigurationInputBuilder()
-              ..name = fixture['name']
+              ..name = fixture['name'] as String?
               ..walletAri = walletAri
               ..redirectUris = ListBuilder<String>(
-                List<String>.from(fixture['redirectUris']),
+                List<String>.from(fixture['redirectUris'] as Iterable),
               )
-              ..enableVerification = fixture['enableVerification'] ?? false
+              ..enableVerification =
+                  (fixture['enableVerification'] as bool?) ?? false
               ..enableConsentAuditLog =
-                  fixture['enableConsentAuditLog'] ?? false
+                  (fixture['enableConsentAuditLog'] as bool?) ?? false
               ..clientMetadata = clientMetadata
-              ..description = fixture['description']
+              ..description = fixture['description'] as String?
               ..mode = CreateIotaConfigurationInputModeEnum.valueOf(
-                fixture['mode'],
+                fixture['mode'] as String,
               )
-              ..enableIdvProviders = fixture['enableIdvProviders'] ?? false;
+              ..enableIdvProviders =
+                  (fixture['enableIdvProviders'] as bool?) ?? false;
 
         final configuration = (await configurationsApi.createIotaConfiguration(
           createIotaConfigurationInput: createIotaConfigurationInput.build(),
-        ))
-            .data;
+        )).data;
 
         expect(configuration, isNotNull);
         expect(configuration!.walletAri, walletAri);
@@ -101,17 +102,17 @@ void main() {
       });
 
       test('Updates Iota configuration', () async {
-        String updatedName = 'UpdatedName';
+        var updatedName = 'UpdatedName';
 
         final updateConfigurationByIdInput =
             UpdateConfigurationByIdInputBuilder()..name = updatedName;
 
         final configuration =
             (await configurationsApi.updateIotaConfigurationById(
-          configurationId: configurationId,
-          updateConfigurationByIdInput: updateConfigurationByIdInput.build(),
-        ))
-                .data;
+              configurationId: configurationId,
+              updateConfigurationByIdInput: updateConfigurationByIdInput
+                  .build(),
+            )).data;
 
         expect(configuration, isNotNull);
         expect(configuration!.name, updatedName);
@@ -129,8 +130,7 @@ void main() {
           final query = (await pexQueryApi.createPexQuery(
             configurationId: configurationId,
             createPexQueryInput: createPexQueryInput.build(),
-          ))
-              .data;
+          )).data;
 
           expect(query, isNotNull);
           expect(query!.ari, isNotNull);
@@ -141,15 +141,14 @@ void main() {
         test('Reads PEX queries', () async {
           final result = (await pexQueryApi.listPexQueries(
             configurationId: configurationId,
-          ))
-              .data;
+          )).data;
 
           expect(result!.pexQueries, isNotNull);
           expect(result.pexQueries.length, greaterThan(0));
         });
 
         test('Updates PEX query', () async {
-          String updatedDescription = 'UpdatedDescription';
+          var updatedDescription = 'UpdatedDescription';
 
           final updatePexQueryInput = UpdatePexQueryInputBuilder()
             ..description = updatedDescription;
@@ -158,8 +157,7 @@ void main() {
             configurationId: configurationId,
             queryId: queryId,
             updatePexQueryInput: updatePexQueryInput.build(),
-          ))
-              .data;
+          )).data;
 
           expect(query, isNotNull);
           expect(query!.description, updatedDescription);
@@ -183,7 +181,7 @@ void main() {
     });
 
     test('Iota redirect flow', () async {
-      final uuid = Uuid();
+      final uuid = const Uuid();
       final correlationId = uuid.v4();
       final presentationSubmission = getFixtures()
           .iotaPresentationSubmission; // envIota.presentationSubmission;
@@ -199,10 +197,9 @@ void main() {
             ..correlationId = correlationId;
 
       final iotaDataSharingResponse = (await iotaApi.initiateDataSharingRequest(
-        initiateDataSharingRequestInput:
-            initiateDataSharingRequestInputBuilder.build(),
-      ))
-          .data;
+        initiateDataSharingRequestInput: initiateDataSharingRequestInputBuilder
+            .build(),
+      )).data;
 
       final transactionId = iotaDataSharingResponse?.data?.transactionId;
       final jwt = iotaDataSharingResponse?.data?.jwt;
@@ -214,8 +211,8 @@ void main() {
         return;
       }
 
-      final Map<String, dynamic> decodedToken = Jwt.parseJwt(jwt);
-      final state = decodedToken['state'];
+      final decodedToken = Jwt.parseJwt(jwt);
+      final state = decodedToken['state'] as String?;
 
       final callbackInputBuilder = CallbackInputBuilder()
         ..state = state
@@ -224,8 +221,7 @@ void main() {
 
       final callbackResponse = (await callbackApi.iotOIDC4VPCallback(
         callbackInput: callbackInputBuilder.build(),
-      ))
-          .data;
+      )).data;
 
       final responseCode = callbackResponse?.responseCode;
 
@@ -239,8 +235,7 @@ void main() {
 
       final iotaVpResponse = (await iotaApi.fetchIotaVpResponse(
         fetchIOTAVPResponseInput: fetchIOTAVPResponseInputBuilder.build(),
-      ))
-          .data;
+      )).data;
 
       expect(iotaVpResponse, isNotNull);
 

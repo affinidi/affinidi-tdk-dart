@@ -3,7 +3,7 @@ description: Cryptography package for Affinidi TDK that provides cryptographic f
 version: 2.3.2
 repository: https://github.com/affinidi/affinidi-tdk-dart
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.8.0
 resolution: workspace
 dependencies:
   bs58: ^1.0.2

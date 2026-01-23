@@ -1,7 +1,7 @@
-import 'dart:typed_data';
+// ignore_for_file: avoid_print
 
-import 'package:affinidi_tdk_vault_edge_drift_provider/affinidi_tdk_vault_edge_drift_provider.dart';
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
+import 'package:affinidi_tdk_vault_edge_drift_provider/affinidi_tdk_vault_edge_drift_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
@@ -24,10 +24,12 @@ class DriftService {
       final platformInfo = DatabaseConfig.getPlatformInfo();
       print('Platform info: $platformInfo');
 
-      final directory =
-          kIsWeb ? null : await getApplicationDocumentsDirectory();
+      final directory = kIsWeb
+          ? null
+          : await getApplicationDocumentsDirectory();
 
       final database = await DatabaseConfig.createDatabase(
+        databaseName: 'vault_edge_drift_example.db',
         directory: directory?.path,
       );
       print('Database created successfully');
@@ -94,12 +96,6 @@ class DriftService {
       final fileRepository = EdgeDriftFileRepository(
         database: _state.database!,
         profileId: profileId,
-        maxFileSize: FileUtils.defaultMaxFileSize,
-        allowedExtensions: [
-          ...FileUtils.defaultAllowedExtensions,
-          'zip',
-          'rar',
-        ],
       );
 
       _state = _state.copyWith(
@@ -119,16 +115,16 @@ class DriftService {
   Future<void> loadCurrentFolder() async {
     try {
       print('Loading folder: ${_state.currentFolderId ?? "root"}');
-      final items = await _state.fileRepository!.getFolder(
+      final items = (await _state.fileRepository!.getFolder(
         folderId: _state.currentFolderId,
-      );
+      )).items;
 
       print('Loaded ${items.length} items in folder');
 
       _state = _state.copyWith(
         currentItems: items,
         status:
-            'Loaded ${items.length} items (Max: ${(_state.fileRepository!.maxFileSize / (1024 * 1024)).toStringAsFixed(0)}MB, Extensions: ${_state.fileRepository!.allowedExtensions.join(', ')})',
+            'Loaded ${items.length} items (Max: ${(FileUtils.defaultMaxFileSize / (1024 * 1024)).toStringAsFixed(0)}MB, Extensions: ${FileUtils.defaultAllowedExtensions.join(', ')})',
       );
     } catch (e, st) {
       print('Error loading folder: $e\n$st');
@@ -235,8 +231,9 @@ class DriftService {
         print('Viewing file: ${item.name}');
         _updateStatus('Loading file content...');
 
-        final content =
-            await _state.fileRepository!.getFileContent(fileId: item.id);
+        final content = await _state.fileRepository!.getFileContent(
+          fileId: item.id,
+        );
 
         final fileSize = FileUtils.formatFileSize(content.length);
 
@@ -323,7 +320,7 @@ class DriftService {
   /// Recursively delete folder contents
   Future<void> _deleteFolderContents(String folderId) async {
     final contents = await _state.fileRepository!.getFolder(folderId: folderId);
-    for (final content in contents) {
+    for (final content in contents.items) {
       if (content is Folder) {
         await _deleteFolderContents(content.id);
         await _state.fileRepository!.deleteFolder(folderId: content.id);
@@ -342,10 +339,7 @@ class DriftService {
       await _state.profileRepository!.deleteProfile(profileId: profileId);
 
       if (_state.selectedProfileId == profileId) {
-        _state = _state.copyWith(
-          selectedProfileId: null,
-          currentItems: [],
-        );
+        _state = _state.copyWith(selectedProfileId: null, currentItems: []);
       }
 
       print('Profile deleted!');

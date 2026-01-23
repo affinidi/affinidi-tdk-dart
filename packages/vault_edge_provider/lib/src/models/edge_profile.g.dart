@@ -34,7 +34,6 @@ class _$EdgeProfileCWProxyImpl implements _$EdgeProfileCWProxy {
       this(description: description);
 
   @override
-
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `EdgeProfile(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage

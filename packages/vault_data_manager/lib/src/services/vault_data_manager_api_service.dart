@@ -44,24 +44,25 @@ class VaultDataManagerApiService
   VaultDataManagerApiService({
     required AffinidiTdkVaultDataManagerClient apiClient,
     Dio? dio,
-  })  : _dio = dio ??
-            ((_apiTimeOutInMilliseconds != null)
-                ? Dio(
-                    BaseOptions(
-                      connectTimeout: Duration(
-                        milliseconds: _apiTimeOutInMilliseconds!,
-                      ),
-                      receiveTimeout: Duration(
-                        milliseconds: _apiTimeOutInMilliseconds!,
-                      ),
-                    ),
-                  )
-                : Dio()),
-        _filesApi = apiClient.getFilesApi(),
-        _nodesApi = apiClient.getNodesApi(),
-        _configApi = apiClient.getConfigurationApi(),
-        _profileDataApi = apiClient.getProfileDataApi(),
-        _accountsApi = apiClient.getAccountsApi();
+  }) : _dio =
+           dio ??
+           ((_apiTimeOutInMilliseconds != null)
+               ? Dio(
+                   BaseOptions(
+                     connectTimeout: Duration(
+                       milliseconds: _apiTimeOutInMilliseconds!,
+                     ),
+                     receiveTimeout: Duration(
+                       milliseconds: _apiTimeOutInMilliseconds!,
+                     ),
+                   ),
+                 )
+               : Dio()),
+       _filesApi = apiClient.getFilesApi(),
+       _nodesApi = apiClient.getNodesApi(),
+       _configApi = apiClient.getConfigurationApi(),
+       _profileDataApi = apiClient.getProfileDataApi(),
+       _accountsApi = apiClient.getAccountsApi();
 
   @override
   Future<Response<CreateNodeOK>> createFile({
@@ -103,7 +104,7 @@ class VaultDataManagerApiService
 
     final hasPropertiesForForFileUpload =
         createNodeResponse.data?.url != null &&
-            createNodeResponse.data?.fields != null;
+        createNodeResponse.data?.fields != null;
 
     if (!hasPropertiesForForFileUpload) {
       Error.throwWithStackTrace(
@@ -172,7 +173,7 @@ class VaultDataManagerApiService
 
     final hasPropertiesForForFileUpload =
         createNodeResponse.data?.url != null &&
-            createNodeResponse.data?.fields != null;
+        createNodeResponse.data?.fields != null;
 
     if (!hasPropertiesForForFileUpload) {
       Error.throwWithStackTrace(
@@ -618,10 +619,10 @@ class VaultDataManagerApiService
 
   @pragma('vm:prefer-inline')
   String _getVcRootIdByProfileId(String profileId) => base64.encode(
-        utf8.encode(
-          '${utf8.decode(base64.decode(profileId))}#$vcRootNodeIdUtf8Encoded',
-        ),
-      );
+    utf8.encode(
+      '${utf8.decode(base64.decode(profileId))}#$vcRootNodeIdUtf8Encoded',
+    ),
+  );
 
   @override
   Future<Response> downloadNodeContents({

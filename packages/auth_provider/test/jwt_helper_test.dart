@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:affinidi_tdk_auth_provider/src/iam_client.dart';
 import 'package:affinidi_tdk_auth_provider/src/jwt_helper.dart';
-import 'package:test/test.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
-import 'package:path/path.dart' as path;
 import 'package:mocktail/mocktail.dart';
+import 'package:path/path.dart' as path;
+import 'package:test/test.dart';
 
 class MockIamClient extends Mock implements IamClient {}
 
@@ -25,8 +25,8 @@ void validateJWTClaims(String token, String audience, String tokenId) {
 
 void main() {
   group('JWTHelper Tests', () {
-    final mockAudience = "test-audience";
-    final mockTokenId = "test-token";
+    final mockAudience = 'test-audience';
+    final mockTokenId = 'test-token';
     group('signPayload with unencrypted private keys', () {
       late String keyOpensslRsa2048;
       late String keyOpensslRsa4096;
@@ -136,7 +136,7 @@ void main() {
     });
 
     group('signPayload with encrypted private keys', () {
-      final String passphrase = 'hello';
+      final passphrase = 'hello';
       late String keyOpensslRsa2048Aes128;
       late String keyOpensslRsa2048Aes192;
       late String keyOpensslRsa2048Aes256;

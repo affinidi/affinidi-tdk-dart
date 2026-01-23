@@ -1,8 +1,7 @@
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:affinidi_tdk_wallets_client/affinidi_tdk_wallets_client.dart';
 import 'package:built_value/json_object.dart';
 import 'package:test/test.dart';
-import 'package:affinidi_tdk_wallets_client/affinidi_tdk_wallets_client.dart';
-
-import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 
 import 'helpers/helpers.dart';
 
@@ -11,11 +10,11 @@ void main() {
     late WalletApi walletApi;
     late String walletId;
     late String walletIdDidWeb;
-    late String holderDid;
+    late String? holderDid;
 
     setUpAll(() async {
       final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
-      String basePathOverride = replaceBaseDomain(
+      var basePathOverride = replaceBaseDomain(
         AffinidiTdkWalletsClient.basePath,
         apiGwUrl,
       );
@@ -28,7 +27,7 @@ void main() {
       walletApi = apiClient.getWalletApi();
 
       final wallet = await ResourceFactory.createWallet();
-      walletId = wallet.id;
+      walletId = wallet.id!;
       holderDid = wallet.did;
     });
 
@@ -41,8 +40,8 @@ void main() {
       final name = 'Test DID Web Wallet';
       final description = 'Test wallet description';
 
-      String randomStr = generateRandomString(10);
-      String didWebUrl = '$randomStr.com';
+      var randomStr = generateRandomString(10);
+      var didWebUrl = '$randomStr.com';
 
       final walletInputBuilder = CreateWalletInputBuilder()
         ..name = name
@@ -52,8 +51,7 @@ void main() {
 
       final createdWallet = (await walletApi.createWallet(
         createWalletInput: walletInputBuilder.build(),
-      ))
-          .data;
+      )).data;
 
       expect(createdWallet, isNotNull);
       expect(createdWallet!.wallet, isNotNull);
@@ -96,8 +94,7 @@ void main() {
       final signedVC = (await walletApi.signCredential(
         walletId: walletId,
         signCredentialInputDto: signCredentialBuilder.build(),
-      ))
-          .data;
+      )).data;
 
       expect(signedVC?.signedCredential, isNotNull);
     });
@@ -109,8 +106,10 @@ void main() {
         'sub': 'dc9c399b-eb50-4761-a91c-deee13a47054',
         'iat': DateTime.now().millisecondsSinceEpoch ~/ 1000,
         'exp':
-            (DateTime.now().add(Duration(hours: 1))).millisecondsSinceEpoch ~/
-                1000,
+            DateTime.now()
+                .add(const Duration(hours: 1))
+                .millisecondsSinceEpoch ~/
+            1000,
       };
 
       final jsonHeader = JsonObject(header);
@@ -123,8 +122,7 @@ void main() {
       final result = (await walletApi.signJwtToken(
         walletId: walletId,
         signJwtToken: signTokenBuilder.build(),
-      ))
-          .data;
+      )).data;
 
       expect(result?.signedJwt, isNotNull);
     });
@@ -154,8 +152,7 @@ void main() {
       final wallet = (await walletApi.updateWallet(
         walletId: walletId,
         updateWalletInput: walletInputBuilder.build(),
-      ))
-          .data;
+      )).data;
 
       expect(wallet, isNotNull);
       expect(wallet!.name, equals(updatedName));

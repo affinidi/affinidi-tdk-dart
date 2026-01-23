@@ -1,7 +1,7 @@
-import 'package:uuid/uuid.dart';
-import 'package:test/test.dart';
-import 'package:affinidi_tdk_iam_client/affinidi_tdk_iam_client.dart';
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:affinidi_tdk_iam_client/affinidi_tdk_iam_client.dart';
+import 'package:test/test.dart';
+import 'package:uuid/uuid.dart';
 
 import 'helpers/helpers.dart';
 
@@ -17,7 +17,7 @@ void main() {
       tokenId = env.tokenId;
 
       final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
-      String basePathOverride = replaceBaseDomain(
+      var basePathOverride = replaceBaseDomain(
         AffinidiTdkIamClient.basePath,
         apiGwUrl,
       );
@@ -32,9 +32,9 @@ void main() {
     });
 
     group('Principals management', () {
-      final uuid = Uuid();
-      final String testPrincipalId = uuid.v4();
-      final String principalType = 'token';
+      final uuid = const Uuid();
+      final testPrincipalId = uuid.v4();
+      final principalType = 'token';
 
       test('Adds principal to project', () async {
         final addUserToProjectInputBuilder = AddUserToProjectInputBuilder()
@@ -43,8 +43,7 @@ void main() {
 
         final statusCode = (await projectsApi.addPrincipalToProject(
           addUserToProjectInput: addUserToProjectInputBuilder.build(),
-        ))
-            .statusCode;
+        )).statusCode;
 
         expect(statusCode, 204);
       });
@@ -61,8 +60,7 @@ void main() {
         final statusCode = (await projectsApi.deletePrincipalFromProject(
           principalId: testPrincipalId,
           principalType: principalType,
-        ))
-            .statusCode;
+        )).statusCode;
 
         expect(statusCode, 204);
       });
@@ -72,8 +70,7 @@ void main() {
       final result = (await policiesApi.getPolicies(
         principalId: tokenId,
         principalType: 'token',
-      ))
-          .data;
+      )).data;
 
       expect(result?.version, isNotNull);
       expect(result?.statement, isNotNull);

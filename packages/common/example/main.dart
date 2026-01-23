@@ -1,5 +1,5 @@
-import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_auth_provider/affinidi_tdk_auth_provider.dart';
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_credential_issuance_client/affinidi_tdk_credential_issuance_client.dart';
 import 'package:affinidi_tdk_iota_client/affinidi_tdk_iota_client.dart';
 
@@ -33,8 +33,7 @@ Future<String> _claimCredentialExample(AuthProvider authProvider) async {
   final offer = (await issuanceApi.startIssuance(
     projectId: '',
     startIssuanceInput: startIssuanceInputBuilder.build(),
-  ))
-      .data;
+  )).data;
 
   // Use the vault utilities from the common package to build the claim link
   final affinidiVaultClaimLink = VaultUtils.buildClaimLink(
@@ -59,10 +58,9 @@ Future<String> _shareCredentialExample(AuthProvider authProvider) async {
         ..redirectUri = ''
         ..correlationId = '';
   final iotaRequest = (await iotaApi.initiateDataSharingRequest(
-    initiateDataSharingRequestInput:
-        initiateDataSharingRequestInputBuilder.build(),
-  ))
-      .data;
+    initiateDataSharingRequestInput: initiateDataSharingRequestInputBuilder
+        .build(),
+  )).data;
 
   // Use the vault utilities from the common package to build the share link
   final affinidiVaultClaimLink = VaultUtils.buildShareLink(

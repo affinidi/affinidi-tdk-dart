@@ -6,9 +6,9 @@ void main() {
   final envTypeLocal = EnvironmentType.local;
   final envTypeDev = EnvironmentType.dev;
   final envTypeProd = EnvironmentType.prod;
-  final Environment local = Environment.getEnvironmentConfig(envTypeLocal);
-  final Environment dev = Environment.getEnvironmentConfig(envTypeDev);
-  final Environment prod = Environment.getEnvironmentConfig(envTypeProd);
+  final local = Environment.getEnvironmentConfig(envTypeLocal);
+  final dev = Environment.getEnvironmentConfig(envTypeDev);
+  final prod = Environment.getEnvironmentConfig(envTypeProd);
 
   group('Environment Tests', () {
     test('fetchEnvironment returns prod by default', () {

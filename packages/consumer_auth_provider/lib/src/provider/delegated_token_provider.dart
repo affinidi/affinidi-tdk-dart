@@ -28,25 +28,26 @@ class DelegatedTokenProvider extends TokenProvider with JwtTokenDidChecker {
     required DidSigner signer,
     Dio? client,
     ElementsRegion region = ElementsRegion.apSoutheast1,
-  })  : _signer = signer,
-        _dioInstance = client ??
-            ((_apiTimeOutInMilliseconds != null)
-                ? Dio(
-                    BaseOptions(
-                      connectTimeout: Duration(
-                        milliseconds: _apiTimeOutInMilliseconds!,
-                      ),
-                      receiveTimeout: Duration(
-                        milliseconds: _apiTimeOutInMilliseconds!,
-                      ),
-                    ),
-                  )
-                : Dio()),
-        _tokenEndpoint = Environment.fetchConsumerAudienceUrl(
-          null,
-          null,
-          region,
-        );
+  }) : _signer = signer,
+       _dioInstance =
+           client ??
+           ((_apiTimeOutInMilliseconds != null)
+               ? Dio(
+                   BaseOptions(
+                     connectTimeout: Duration(
+                       milliseconds: _apiTimeOutInMilliseconds!,
+                     ),
+                     receiveTimeout: Duration(
+                       milliseconds: _apiTimeOutInMilliseconds!,
+                     ),
+                   ),
+                 )
+               : Dio()),
+       _tokenEndpoint = Environment.fetchConsumerAudienceUrl(
+         null,
+         null,
+         region,
+       );
 
   /// Retrieves a token for the specified profile DID.
   ///

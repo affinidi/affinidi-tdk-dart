@@ -74,9 +74,9 @@ void main() {
       test('it encrypts the DEK by wallet crypto material', () async {
         final encryptedDek = await vaultDataManagerEncryptionService
             .encryptDekByWalletCryptoMaterial(
-          encryptionKey: encryptionKey,
-          dek: dek,
-        );
+              encryptionKey: encryptionKey,
+              dek: dek,
+            );
         expect(encryptedDek, isNotNull);
         verify(
           () => mockCryptographyService.encryptToBytes(any(), any()),
@@ -121,9 +121,9 @@ void main() {
       test('it converts the DEK to API encrypted DEK', () async {
         final apiEncrypted = await vaultDataManagerEncryptionService
             .getDekEncryptedByApiPublicKey(
-          encryptionKey: encryptionKey,
-          encryptedDekBase64: encryptedDekBase64,
-        );
+              encryptionKey: encryptionKey,
+              encryptedDekBase64: encryptedDekBase64,
+            );
         expect(apiEncrypted, isNotNull);
         verify(
           () => mockCryptographyService.decryptFromBytes(any(), any()),

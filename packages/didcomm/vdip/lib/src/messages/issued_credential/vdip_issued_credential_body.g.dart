@@ -8,25 +8,22 @@ part of 'vdip_issued_credential_body.dart';
 
 VdipIssuedCredentialBody _$VdipIssuedCredentialBodyFromJson(
   Map<String, dynamic> json,
-) =>
-    VdipIssuedCredentialBody._(
-      credential: json['credential'] as String,
-      credentialFormat: $enumDecode(
-        _$CredentialFormatEnumMap,
-        json['credential_format'],
-      ),
-      comment: json['comment'] as String?,
-    );
+) => VdipIssuedCredentialBody._(
+  credential: json['credential'] as String,
+  credentialFormat: $enumDecode(
+    _$CredentialFormatEnumMap,
+    json['credential_format'],
+  ),
+  comment: json['comment'] as String?,
+);
 
 Map<String, dynamic> _$VdipIssuedCredentialBodyToJson(
   VdipIssuedCredentialBody instance,
-) =>
-    <String, dynamic>{
-      'credential': instance.credential,
-      'credential_format':
-          _$CredentialFormatEnumMap[instance.credentialFormat]!,
-      if (instance.comment case final value?) 'comment': value,
-    };
+) => <String, dynamic>{
+  'credential': instance.credential,
+  'credential_format': _$CredentialFormatEnumMap[instance.credentialFormat]!,
+  if (instance.comment case final value?) 'comment': value,
+};
 
 const _$CredentialFormatEnumMap = {
   CredentialFormat.sdJwtVc: 'sd_jwt_vc',

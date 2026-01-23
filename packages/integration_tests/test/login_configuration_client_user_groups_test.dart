@@ -1,5 +1,5 @@
-import 'package:affinidi_tdk_login_configuration_client/affinidi_tdk_login_configuration_client.dart';
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:affinidi_tdk_login_configuration_client/affinidi_tdk_login_configuration_client.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart';
 import 'package:test/test.dart';
@@ -14,7 +14,7 @@ void main() {
 
     setUpAll(() async {
       final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
-      String basePathOverride = replaceBaseDomain(
+      var basePathOverride = replaceBaseDomain(
         AffinidiTdkLoginConfigurationClient.basePath,
         apiGwUrl,
       );
@@ -30,16 +30,16 @@ void main() {
     });
 
     group('User groups', () {
-      final String groupName = 'test_group_name';
+      final groupName = 'test_group_name';
 
       test('Creates user group', () async {
         final createGroupInput = CreateGroupInputBuilder()
           ..groupName = groupName
           ..name = 'test';
 
-        final response = (await groupApi.createGroup(
+        final response = await groupApi.createGroup(
           createGroupInput: createGroupInput.build(),
-        ));
+        );
 
         expect(response.statusCode, 201);
         expect(response.data!.ari, isNotEmpty);
@@ -65,8 +65,7 @@ void main() {
 
           final statusCode = (await allowListApi.allowGroups(
             groupNamesInput: groupNamesInputBuilder.build(),
-          ))
-              .statusCode;
+          )).statusCode;
 
           expect(statusCode, 200);
         });
@@ -85,15 +84,14 @@ void main() {
 
           final statusCode = (await allowListApi.disallowGroups(
             groupNamesInput: groupNamesInputBuilder.build(),
-          ))
-              .statusCode;
+          )).statusCode;
 
           expect(statusCode, 200);
         });
       });
 
       group('Deny List', () {
-        final String blockUserId = 'test';
+        final blockUserId = 'test';
 
         test('Block groups', () async {
           final groupNamesInputBuilder = GroupNamesInputBuilder()
@@ -101,8 +99,7 @@ void main() {
 
           final statusCode = (await denyListApi.blockGroups(
             groupNamesInput: groupNamesInputBuilder.build(),
-          ))
-              .statusCode;
+          )).statusCode;
 
           expect(statusCode, 200);
         });
@@ -121,8 +118,7 @@ void main() {
 
           final statusCode = (await denyListApi.unblockGroups(
             groupNamesInput: groupNamesInputBuilder.build(),
-          ))
-              .statusCode;
+          )).statusCode;
 
           expect(statusCode, 200);
         });
@@ -133,8 +129,7 @@ void main() {
 
           final statusCode = (await denyListApi.blockUsers(
             blockedUsersInput: blockedUsersInputBuilder.build(),
-          ))
-              .statusCode;
+          )).statusCode;
 
           expect(statusCode, 200);
         });
@@ -152,8 +147,7 @@ void main() {
 
           final statusCode = (await denyListApi.unblockUsers(
             blockedUsersInput: blockedUsersInputBuilder.build(),
-          ))
-              .statusCode;
+          )).statusCode;
 
           expect(statusCode, 200);
         });

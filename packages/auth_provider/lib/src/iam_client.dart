@@ -6,8 +6,8 @@ import 'package:http/http.dart' as http;
 class IamClient {
   /// Creates a new instance of [IamClient].
   IamClient({required String apiGatewayUrl, http.Client? httpClient})
-      : _httpClient = httpClient ?? http.Client(),
-        _apiGatewayUrl = apiGatewayUrl;
+    : _httpClient = httpClient ?? http.Client(),
+      _apiGatewayUrl = apiGatewayUrl;
 
   final http.Client _httpClient;
   final String _apiGatewayUrl;
@@ -23,12 +23,12 @@ class IamClient {
       throw Exception('Failed to fetch public key');
     }
 
-    final data = jsonDecode(response.body);
+    final data = jsonDecode(response.body) as Map<String, dynamic>;
 
-    if (data['keys'] == null || data['keys'].isEmpty) {
+    if (data['keys'] == null || (data['keys'] as List).isEmpty) {
       throw Exception('No keys found in JWKS');
     }
 
-    return data['keys'][0];
+    return data['keys'][0] as Map<String, dynamic>;
   }
 }

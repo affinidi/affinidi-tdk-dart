@@ -81,9 +81,9 @@ class Vault {
     required VaultStore vaultStore,
     required Map<String, ProfileRepository> profileRepositories,
     String? defaultProfileRepositoryId,
-  })  : _wallet = wallet,
-        _vaultStore = vaultStore,
-        _profileRepositories = Map.unmodifiable(profileRepositories) {
+  }) : _wallet = wallet,
+       _vaultStore = vaultStore,
+       _profileRepositories = Map.unmodifiable(profileRepositories) {
     if (_profileRepositories.entries.isEmpty) {
       Error.throwWithStackTrace(
         TdkException(
@@ -302,8 +302,9 @@ class Vault {
     VaultCancelToken? cancelToken,
   }) async {
     final profiles = await listProfiles();
-    final profile =
-        profiles.where((profile) => profile.id == profileId).firstOrNull;
+    final profile = profiles
+        .where((profile) => profile.id == profileId)
+        .firstOrNull;
 
     if (profile == null) {
       Error.throwWithStackTrace(
@@ -362,8 +363,9 @@ class Vault {
     VaultCancelToken? cancelToken,
   }) async {
     final profiles = await listProfiles();
-    final profile =
-        profiles.where((profile) => profile.id == profileId).firstOrNull;
+    final profile = profiles
+        .where((profile) => profile.id == profileId)
+        .firstOrNull;
 
     if (profile == null) {
       Error.throwWithStackTrace(

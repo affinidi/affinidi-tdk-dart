@@ -44,7 +44,8 @@ extension DioAdapterExtensions on DioAdapter {
     if (statusCode == null && exception == null) {
       throw ArgumentError('Either statusCode or exception must be provided');
     }
-    final dioException = exception ??
+    final dioException =
+        exception ??
         DioExceptionFixtures.withStatusCode(statusCode!, url: url, data: data);
     final responseStatus = statusCode ?? 0;
 

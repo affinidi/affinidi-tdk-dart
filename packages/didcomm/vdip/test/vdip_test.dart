@@ -95,7 +95,7 @@ Future<void> main() async {
             test('VDIP credential issuance works correctly', () async {
               final testCompleter = Completer<PlainTextMessage>();
 
-              final credential = await generateEmailLdVcV1(
+              final credential = await generateEmailLdVcV2(
                 holderDid: holderDidDocument.id,
                 holderEmail: holderEmail,
                 issuerSigner: issuerSigner,
@@ -112,31 +112,32 @@ Future<void> main() async {
                 onFeatureQuery: (message) async {
                   await vdipIssuer.disclose(queryMessage: message);
                 },
-                onRequestToIssueCredential: ({
-                  required message,
-                  assertionValidationResult,
-                  holderDidFromAssertion,
-                  challenge,
-                }) async {
-                  final holderDid = message.from!;
-                  final body = VdipRequestIssuanceMessageBody.fromJson(
-                    message.body!,
-                  );
+                onRequestToIssueCredential:
+                    ({
+                      required message,
+                      assertionValidationResult,
+                      holderDidFromAssertion,
+                      challenge,
+                    }) async {
+                      final holderDid = message.from!;
+                      final body = VdipRequestIssuanceMessageBody.fromJson(
+                        message.body!,
+                      );
 
-                  if (body.proposalId != proposalId) {
-                    testCompleter.completeError(
-                      Exception('Proposal ID does not match'),
-                    );
-                    return;
-                  }
+                      if (body.proposalId != proposalId) {
+                        testCompleter.completeError(
+                          Exception('Proposal ID does not match'),
+                        );
+                        return;
+                      }
 
-                  await vdipIssuer.sendIssuedCredentials(
-                    holderDid: holderDid,
-                    verifiableCredential: credential,
-                    comment: comment,
-                    attachments: [attachment],
-                  );
-                },
+                      await vdipIssuer.sendIssuedCredentials(
+                        holderDid: holderDid,
+                        verifiableCredential: credential,
+                        comment: comment,
+                        attachments: [attachment],
+                      );
+                    },
                 onProblemReport: (message) async {
                   testCompleter.completeError(message);
                   await mockMediator.stopConnections();
@@ -178,8 +179,8 @@ Future<void> main() async {
                 issuerDid: issuerDidDocument.id,
                 featureQueries:
                     FeatureDiscoveryHelper.getFeatureQueriesByDisclosures(
-                  FeatureDiscoveryHelper.vdipIssuerDisclosures,
-                ),
+                      FeatureDiscoveryHelper.vdipIssuerDisclosures,
+                    ),
               );
 
               // Wait a bit for feature discovery
@@ -190,7 +191,7 @@ Future<void> main() async {
                 issuerDid: issuerDidDocument.id,
                 options: RequestCredentialsOptions(
                   proposalId: proposalId,
-                  credentialFormat: CredentialFormat.w3cV1,
+                  credentialFormat: CredentialFormat.w3cV2,
                   comment: comment,
                 ),
               );
@@ -203,11 +204,11 @@ Future<void> main() async {
                 actual.body!,
               );
               expect(actualBody.comment, comment);
-              expect(actualBody.credentialFormat, CredentialFormat.w3cV1);
+              expect(actualBody.credentialFormat, CredentialFormat.w3cV2);
               expect(actual.attachments?.first.toJson(), attachment.toJson());
 
               final credentialSerialized = actualBody.credential;
-              final verifiableCredential = VcDataModelV1.fromJson(
+              final verifiableCredential = VcDataModelV2.fromJson(
                 credentialSerialized,
               );
 
@@ -228,52 +229,53 @@ Future<void> main() async {
                 );
 
                 vdipIssuer.listenForIncomingMessages(
-                  onRequestToIssueCredential: ({
-                    required message,
-                    assertionValidationResult,
-                    holderDidFromAssertion,
-                    challenge,
-                  }) async {
-                    if (assertionValidationResult == null ||
-                        !assertionValidationResult.isValid) {
-                      testCompleter.completeError(
-                        Exception('Assertion is not valid'),
-                      );
-                      return;
-                    }
+                  onRequestToIssueCredential:
+                      ({
+                        required message,
+                        assertionValidationResult,
+                        holderDidFromAssertion,
+                        challenge,
+                      }) async {
+                        if (assertionValidationResult == null ||
+                            !assertionValidationResult.isValid) {
+                          testCompleter.completeError(
+                            Exception('Assertion is not valid'),
+                          );
+                          return;
+                        }
 
-                    if (holderDidFromAssertion == null) {
-                      testCompleter.completeError(
-                        Exception('Holder DID from assertion is missing'),
-                      );
-                      return;
-                    }
+                        if (holderDidFromAssertion == null) {
+                          testCompleter.completeError(
+                            Exception('Holder DID from assertion is missing'),
+                          );
+                          return;
+                        }
 
-                    final body = VdipRequestIssuanceMessageBody.fromJson(
-                      message.body!,
-                    );
+                        final body = VdipRequestIssuanceMessageBody.fromJson(
+                          message.body!,
+                        );
 
-                    if (body.holderDid != holderDidFromAssertion) {
-                      testCompleter.completeError(
-                        Exception('Holder DID does not match assertion'),
-                      );
-                      return;
-                    }
+                        if (body.holderDid != holderDidFromAssertion) {
+                          testCompleter.completeError(
+                            Exception('Holder DID does not match assertion'),
+                          );
+                          return;
+                        }
 
-                    // Issue credential for the specific holder
-                    final credential = await generateEmailLdVcV1(
-                      holderDid: holderDidFromAssertion,
-                      holderEmail: holderEmail,
-                      issuerSigner: issuerSigner,
-                    );
+                        // Issue credential for the specific holder
+                        final credential = await generateEmailLdVcV2(
+                          holderDid: holderDidFromAssertion,
+                          holderEmail: holderEmail,
+                          issuerSigner: issuerSigner,
+                        );
 
-                    await vdipIssuer.sendIssuedCredentials(
-                      holderDid: message.from!,
-                      verifiableCredential: credential,
-                      comment: comment,
-                      attachments: [attachment],
-                    );
-                  },
+                        await vdipIssuer.sendIssuedCredentials(
+                          holderDid: message.from!,
+                          verifiableCredential: credential,
+                          comment: comment,
+                          attachments: [attachment],
+                        );
+                      },
                   onProblemReport: (message) async {
                     testCompleter.completeError(message);
                     await mockMediator.stopConnections();
@@ -305,7 +307,7 @@ Future<void> main() async {
                   assertionSigner: holderSigner,
                   options: RequestCredentialsOptions(
                     proposalId: proposalId,
-                    credentialFormat: CredentialFormat.w3cV1,
+                    credentialFormat: CredentialFormat.w3cV2,
                     comment: comment,
                   ),
                 );
@@ -334,16 +336,17 @@ Future<void> main() async {
               );
 
               vdipIssuer.listenForIncomingMessages(
-                onRequestToIssueCredential: ({
-                  required message,
-                  assertionValidationResult,
-                  holderDidFromAssertion,
-                  challenge,
-                }) async {
-                  // Complete with the received challenge
-                  testCompleter.complete(challenge);
-                  await mockMediator.stopConnections();
-                },
+                onRequestToIssueCredential:
+                    ({
+                      required message,
+                      assertionValidationResult,
+                      holderDidFromAssertion,
+                      challenge,
+                    }) async {
+                      // Complete with the received challenge
+                      testCompleter.complete(challenge);
+                      await mockMediator.stopConnections();
+                    },
                 onProblemReport: (message) async {
                   testCompleter.completeError(message);
                   await mockMediator.stopConnections();
@@ -363,7 +366,7 @@ Future<void> main() async {
                 options: RequestCredentialsOptions(
                   proposalId: proposalId,
                   challenge: expectedChallenge,
-                  credentialFormat: CredentialFormat.w3cV1,
+                  credentialFormat: CredentialFormat.w3cV2,
                 ),
               );
 
@@ -434,8 +437,8 @@ Future<void> main() async {
                 issuerDid: issuerDidDocument.id,
                 featureQueries:
                     FeatureDiscoveryHelper.getFeatureQueriesByDisclosures(
-                  FeatureDiscoveryHelper.vdipIssuerDisclosures,
-                ),
+                      FeatureDiscoveryHelper.vdipIssuerDisclosures,
+                    ),
               );
 
               final actual = await testCompleter.future;
@@ -500,21 +503,22 @@ Future<void> main() async {
       );
 
       sut.listenForIncomingMessages(
-        onRequestToIssueCredential: ({
-          required message,
-          assertionValidationResult,
-          holderDidFromAssertion,
-          challenge,
-        }) async {
-          testCompleter.complete(assertionValidationResult);
-        },
+        onRequestToIssueCredential:
+            ({
+              required message,
+              assertionValidationResult,
+              holderDidFromAssertion,
+              challenge,
+            }) async {
+              testCompleter.complete(assertionValidationResult);
+            },
         onProblemReport: (message) async {
           testCompleter.completeError(message);
         },
       );
 
-      final issueTime =
-          (DateTime.timestamp().millisecondsSinceEpoch / 1000).floor();
+      final issueTime = (DateTime.timestamp().millisecondsSinceEpoch / 1000)
+          .floor();
 
       final payload = {
         'proposalId': proposalId,
@@ -564,21 +568,22 @@ Future<void> main() async {
       );
 
       vdipIssuer.listenForIncomingMessages(
-        onRequestToIssueCredential: ({
-          required message,
-          assertionValidationResult,
-          holderDidFromAssertion,
-          challenge,
-        }) async {
-          testCompleter.complete(assertionValidationResult);
-        },
+        onRequestToIssueCredential:
+            ({
+              required message,
+              assertionValidationResult,
+              holderDidFromAssertion,
+              challenge,
+            }) async {
+              testCompleter.complete(assertionValidationResult);
+            },
         onProblemReport: (message) async {
           testCompleter.completeError(message);
         },
       );
 
-      final issueTime =
-          (DateTime.timestamp().millisecondsSinceEpoch / 1000).floor();
+      final issueTime = (DateTime.timestamp().millisecondsSinceEpoch / 1000)
+          .floor();
 
       final payload = {
         'proposalId': proposalId,
@@ -628,14 +633,15 @@ Future<void> main() async {
       );
 
       vdipIssuer.listenForIncomingMessages(
-        onRequestToIssueCredential: ({
-          required message,
-          assertionValidationResult,
-          holderDidFromAssertion,
-          challenge,
-        }) async {
-          testCompleter.complete(assertionValidationResult);
-        },
+        onRequestToIssueCredential:
+            ({
+              required message,
+              assertionValidationResult,
+              holderDidFromAssertion,
+              challenge,
+            }) async {
+              testCompleter.complete(assertionValidationResult);
+            },
         onProblemReport: (message) async {
           testCompleter.completeError(message);
         },
@@ -643,8 +649,8 @@ Future<void> main() async {
 
       await mockMediator.startConnections();
 
-      final issueTime =
-          (DateTime.timestamp().millisecondsSinceEpoch / 1000).floor();
+      final issueTime = (DateTime.timestamp().millisecondsSinceEpoch / 1000)
+          .floor();
 
       final payload = {
         'proposalId': proposalId,
@@ -694,14 +700,15 @@ Future<void> main() async {
       );
 
       vdipIssuer.listenForIncomingMessages(
-        onRequestToIssueCredential: ({
-          required message,
-          assertionValidationResult,
-          holderDidFromAssertion,
-          challenge,
-        }) async {
-          testCompleter.complete(assertionValidationResult);
-        },
+        onRequestToIssueCredential:
+            ({
+              required message,
+              assertionValidationResult,
+              holderDidFromAssertion,
+              challenge,
+            }) async {
+              testCompleter.complete(assertionValidationResult);
+            },
         onProblemReport: (message) async {
           testCompleter.completeError(message);
         },
@@ -710,8 +717,8 @@ Future<void> main() async {
       await mockMediator.startConnections();
 
       // Create assertion with a different issuer DID in the audience
-      final issueTime =
-          (DateTime.timestamp().millisecondsSinceEpoch / 1000).floor();
+      final issueTime = (DateTime.timestamp().millisecondsSinceEpoch / 1000)
+          .floor();
 
       final payload = {
         'proposalId': proposalId,
@@ -988,8 +995,8 @@ Future<void> main() async {
         didMethod: 'did:key',
         keyType: KeyType.p256,
       );
-      final differentHolderDidDocument =
-          await differentHolderDidManager.getDidDocument();
+      final differentHolderDidDocument = await differentHolderDidManager
+          .getDidDocument();
       final differentHolderDid = differentHolderDidDocument.id;
 
       final tokenPayload = {

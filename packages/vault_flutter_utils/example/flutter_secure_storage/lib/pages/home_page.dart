@@ -15,7 +15,7 @@ class HomePage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Secure Key Storage'),
+        title: const Text('Secure Key Storage'),
       ),
       body: Center(
         child: Column(

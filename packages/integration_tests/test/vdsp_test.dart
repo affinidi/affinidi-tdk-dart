@@ -17,8 +17,8 @@ Future<void> main() async {
 
   final mediatorDid = await readDid(config.mediatorDidPath);
 
-  final mediatorDidDocument =
-      await UniversalDIDResolver.defaultResolver.resolveDid(mediatorDid);
+  final mediatorDidDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(mediatorDid);
 
   group('VDSP Holder and Verifier Clients Integration Tests', () {
     late String holderEmail;
@@ -31,7 +31,7 @@ Future<void> main() async {
 
     late DidSigner holderSigner;
 
-    late List<LdVcDataModelV1> holderVerifiableCredentials;
+    late List<LdVcDataModelV2> holderVerifiableCredentials;
     late DcqlCredentialQuery verifierDcql;
 
     setUp(() async {
@@ -117,11 +117,11 @@ Future<void> main() async {
 
       holderVerifiableCredentials = await Future.wait(
         [
-          VcDataModelV1(
-            context: [
-              dmV1ContextUrl,
+          VcDataModelV2(
+            context: JsonLdContext.fromJson([
+              dmV2ContextUrl,
               'https://schema.affinidi.io/TEmailV1R0.jsonld',
-            ],
+            ]),
             credentialSchema: [
               CredentialSchema(
                 id: Uri.parse('https://schema.affinidi.io/TEmailV1R0.json'),
@@ -131,7 +131,6 @@ Future<void> main() async {
             id: Uri.parse(const Uuid().v4()),
             issuer: Issuer.uri(issuerSigner.did),
             type: {'VerifiableCredential', 'Email'},
-            issuanceDate: DateTime.now().toUtc(),
             credentialSubject: [
               CredentialSubject.fromJson({
                 'id': holderSigner.did,
@@ -140,7 +139,7 @@ Future<void> main() async {
             ],
           ),
         ].map((unsignedCredential) async {
-          final suite = LdVcDm1Suite();
+          final suite = LdVcDm2Suite();
           final issuedCredential = await suite.issue(
             unsignedData: unsignedCredential,
             proofGenerator: DataIntegrityEcdsaJcsGenerator(
@@ -214,9 +213,9 @@ Future<void> main() async {
 
           final unsupportedFeatureDisclosures =
               FeatureDiscoveryHelper.getUnsupportedFeatures(
-            expectedFeatureDisclosures: expectedFeatures,
-            actualFeatureDisclosures: body.disclosures,
-          );
+                expectedFeatureDisclosures: expectedFeatures,
+                actualFeatureDisclosures: body.disclosures,
+              );
 
           if (unsupportedFeatureDisclosures.isNotEmpty) {
             await vdspVerifier.mediatorClient.packAndSendMessage(
@@ -247,32 +246,37 @@ Future<void> main() async {
             ),
           );
         },
-        onDataResponse: ({
-          required VdspDataResponseMessage message,
-          required bool presentationAndCredentialsAreValid,
-          VerifiablePresentation? verifiablePresentation,
-          required VerificationResult presentationVerificationResult,
-          required List<VerificationResult> credentialVerificationResults,
-        }) async {
-          if (message.from == null) {
-            throw ArgumentError.notNull('from');
-          }
+        onDataResponse:
+            ({
+              required VdspDataResponseMessage message,
+              required bool presentationAndCredentialsAreValid,
+              VerifiablePresentation? verifiablePresentation,
+              required VerificationResult presentationVerificationResult,
+              required List<VerificationResult> credentialVerificationResults,
+            }) async {
+              if (message.from == null) {
+                throw ArgumentError.notNull('from');
+              }
 
-          final result = presentationAndCredentialsAreValid &&
-              verifiablePresentation?.proof.first.challenge ==
-                  verifierChallenge &&
-              verifiablePresentation!.proof.first.domain?.first ==
-                  verifierDomain;
+              final result =
+                  presentationAndCredentialsAreValid &&
+                  verifiablePresentation?.proof.first.challenge ==
+                      verifierChallenge &&
+                  verifiablePresentation!.proof.first.domain?.first ==
+                      verifierDomain;
 
-          await vdspVerifier.sendDataProcessingResult(
-            holderDid: message.from!,
-            result: {
-              'success': result,
-              'email': verifiablePresentation
-                  ?.verifiableCredential.first.credentialSubject.first['email'],
+              await vdspVerifier.sendDataProcessingResult(
+                holderDid: message.from!,
+                result: {
+                  'success': result,
+                  'email': verifiablePresentation
+                      ?.verifiableCredential
+                      .first
+                      .credentialSubject
+                      .first['email'],
+                },
+              );
             },
-          );
-        },
         onProblemReport: (message) async {
           testCompleter.complete(message);
           await ConnectionPool.instance.stopConnections();

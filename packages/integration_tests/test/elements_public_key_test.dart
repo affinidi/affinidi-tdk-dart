@@ -1,9 +1,9 @@
-import 'package:test/test.dart';
 import 'package:affinidi_tdk_auth_provider/src/iam_client.dart';
 import 'package:affinidi_tdk_auth_provider/src/jwt_helper.dart';
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
-import 'package:pointycastle/export.dart' as pce;
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:pointycastle/export.dart' as pce;
+import 'package:test/test.dart';
 
 void main() {
   group('Affinidi Elements Public Key Tests', () {

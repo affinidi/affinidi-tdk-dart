@@ -5,9 +5,9 @@ class MockEdgeRepositoryFactory implements EdgeRepositoryFactoryInterface {
     required EdgeProfileRepositoryInterface profileRepository,
     required EdgeFileRepositoryInterface fileRepository,
     required EdgeCredentialsRepositoryInterface credentialRepository,
-  })  : _credentialRepository = credentialRepository,
-        _fileRepository = fileRepository,
-        _profileRepository = profileRepository;
+  }) : _credentialRepository = credentialRepository,
+       _fileRepository = fileRepository,
+       _profileRepository = profileRepository;
 
   final EdgeProfileRepositoryInterface _profileRepository;
   final EdgeFileRepositoryInterface _fileRepository;

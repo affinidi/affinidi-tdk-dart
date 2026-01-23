@@ -22,21 +22,22 @@ class CisTokenProvider extends TokenProvider {
     Dio? client,
     ElementsRegion region = ElementsRegion.apSoutheast1,
     Environment? env,
-  })  : _signer = signer,
-        _client = client ??
-            ((_apiTimeOutInMilliseconds != null)
-                ? Dio(
-                    BaseOptions(
-                      connectTimeout: Duration(
-                        milliseconds: _apiTimeOutInMilliseconds!,
-                      ),
-                      receiveTimeout: Duration(
-                        milliseconds: _apiTimeOutInMilliseconds!,
-                      ),
-                    ),
-                  )
-                : Dio()),
-        _tokenEndpoint = Environment.fetchConsumerCisUrl(env, null, region);
+  }) : _signer = signer,
+       _client =
+           client ??
+           ((_apiTimeOutInMilliseconds != null)
+               ? Dio(
+                   BaseOptions(
+                     connectTimeout: Duration(
+                       milliseconds: _apiTimeOutInMilliseconds!,
+                     ),
+                     receiveTimeout: Duration(
+                       milliseconds: _apiTimeOutInMilliseconds!,
+                     ),
+                   ),
+                 )
+               : Dio()),
+       _tokenEndpoint = Environment.fetchConsumerCisUrl(env, null, region);
 
   final DidSigner _signer;
   final Dio _client;
@@ -64,7 +65,7 @@ class CisTokenProvider extends TokenProvider {
 
   /// Exchanges a pre-authorization code for an access token and authorization details.
   Future<({String accessToken, List<dynamic>? authorizationDetails})>
-      exchangePreAuthCodeForToken({
+  exchangePreAuthCodeForToken({
     required String tokenEndpoint,
     required String preAuthCode,
     String? txCode,

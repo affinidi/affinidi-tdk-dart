@@ -2,9 +2,10 @@ import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediat
     hide CredentialFormat;
 import 'package:affinidi_tdk_vdsp/affinidi_tdk_vdsp.dart';
 import 'package:dcql/dcql.dart';
-import '../../../integration_tests/test/test_config.dart';
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../../integration_tests/test/test_config.dart';
 
 // Run commands below in your terminal to generate keys for Alice and Bob:
 // openssl ecparam -name prime256v1 -genkey -noout -out example/keys/alice_private_key.pem
@@ -23,8 +24,8 @@ Future<void> main() async {
 
   final mediatorDid = await readDid(config.mediatorDidPath);
 
-  final mediatorDidDocument =
-      await UniversalDIDResolver.defaultResolver.resolveDid(mediatorDid);
+  final mediatorDidDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(mediatorDid);
 
   final issuerKeyStore = InMemoryKeyStore();
   final issuerWallet = PersistentWallet(issuerKeyStore);
@@ -98,17 +99,17 @@ Future<void> main() async {
     config.configureAcl(
       mediatorDidDocument: mediatorDidDocument,
       didManager: holderDidManager,
-      theirDids: [(await issuerDidManager.getDidDocument()).id],
+      theirDids: [(await verifierDidManager.getDidDocument()).id],
     ),
   ]);
 
   final holderVerifiableCredentials = await Future.wait(
     [
-      VcDataModelV1(
-        context: [
-          dmV1ContextUrl,
+      VcDataModelV2(
+        context: JsonLdContext.fromJson([
+          dmV2ContextUrl,
           'https://schema.affinidi.io/TEmailV1R0.jsonld',
-        ],
+        ]),
         credentialSchema: [
           CredentialSchema(
             id: Uri.parse('https://schema.affinidi.io/TEmailV1R0.json'),
@@ -118,7 +119,6 @@ Future<void> main() async {
         id: Uri.parse(const Uuid().v4()),
         issuer: Issuer.uri(issuerSigner.did),
         type: {'VerifiableCredential', 'Email'},
-        issuanceDate: DateTime.now().toUtc(),
         credentialSubject: [
           CredentialSubject.fromJson({
             'id': holderSigner.did,
@@ -127,7 +127,7 @@ Future<void> main() async {
         ],
       ),
     ].map((unsignedCredential) async {
-      final suite = LdVcDm1Suite();
+      final suite = LdVcDm2Suite();
       final issuedCredential = await suite.issue(
         unsignedData: unsignedCredential,
         proofGenerator: DataIntegrityEcdsaJcsGenerator(signer: issuerSigner),
@@ -196,9 +196,9 @@ Future<void> main() async {
 
       final unsupportedFeatureDisclosures =
           FeatureDiscoveryHelper.getUnsupportedFeatures(
-        expectedFeatureDisclosures: expectedFeatures,
-        actualFeatureDisclosures: body.disclosures,
-      );
+            expectedFeatureDisclosures: expectedFeatures,
+            actualFeatureDisclosures: body.disclosures,
+          );
 
       if (unsupportedFeatureDisclosures.isNotEmpty) {
         await vdspVerifier.mediatorClient.packAndSendMessage(
@@ -229,42 +229,46 @@ Future<void> main() async {
         ),
       );
     },
-    onDataResponse: ({
-      required VdspDataResponseMessage message,
-      required bool presentationAndCredentialsAreValid,
-      VerifiablePresentation? verifiablePresentation,
-      required VerificationResult presentationVerificationResult,
-      required List<VerificationResult> credentialVerificationResults,
-    }) async {
-      prettyPrint(
-        'Verifier received Data Response Message',
-        object: message,
-      );
+    onDataResponse:
+        ({
+          required VdspDataResponseMessage message,
+          required bool presentationAndCredentialsAreValid,
+          VerifiablePresentation? verifiablePresentation,
+          required VerificationResult presentationVerificationResult,
+          required List<VerificationResult> credentialVerificationResults,
+        }) async {
+          prettyPrint(
+            'Verifier received Data Response Message',
+            object: message,
+          );
 
-      prettyPrint(
-        'VP and VCs are valid',
-        object: presentationAndCredentialsAreValid,
-      );
+          prettyPrint(
+            'VP and VCs are valid',
+            object: presentationAndCredentialsAreValid,
+          );
 
-      prettyPrint(
-        'Verifiable Presentation',
-        object: verifiablePresentation,
-      );
+          prettyPrint(
+            'Verifiable Presentation',
+            object: verifiablePresentation,
+          );
 
-      if (message.from == null) {
-        throw ArgumentError.notNull('from');
-      }
+          if (message.from == null) {
+            throw ArgumentError.notNull('from');
+          }
 
-      // domain and challenge check to prevent replay attacks
-      final result = presentationAndCredentialsAreValid &&
-          verifiablePresentation?.proof.first.challenge == verifierChallenge &&
-          verifiablePresentation!.proof.first.domain?.first == verifierDomain;
+          // domain and challenge check to prevent replay attacks
+          final result =
+              presentationAndCredentialsAreValid &&
+              verifiablePresentation?.proof.first.challenge ==
+                  verifierChallenge &&
+              verifiablePresentation!.proof.first.domain?.first ==
+                  verifierDomain;
 
-      await vdspVerifier.sendDataProcessingResult(
-        holderDid: message.from!,
-        result: {'success': result},
-      );
-    },
+          await vdspVerifier.sendDataProcessingResult(
+            holderDid: message.from!,
+            result: {'success': result},
+          );
+        },
     onProblemReport: (message) async {
       prettyPrint('A problem has occurred', object: message);
 
