@@ -89,9 +89,8 @@ class _$VcClaimedErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ActionForbiddenErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
       );
     }
   }
@@ -102,11 +101,9 @@ class _$VcClaimedErrorSerializer
     VcClaimedError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -122,52 +119,39 @@ class _$VcClaimedErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(VcClaimedErrorNameEnum),
-                  )
-                  as VcClaimedErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(VcClaimedErrorNameEnum),
+          ) as VcClaimedErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(VcClaimedErrorMessageEnum),
-                  )
-                  as VcClaimedErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(VcClaimedErrorMessageEnum),
+          ) as VcClaimedErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      VcClaimedErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as VcClaimedErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(VcClaimedErrorHttpStatusCodeEnum),
+          ) as VcClaimedErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ActionForbiddenErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ActionForbiddenErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
+          ) as BuiltList<ActionForbiddenErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -217,10 +201,9 @@ class VcClaimedErrorNameEnum extends EnumClass {
 
 class VcClaimedErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(
-    wireName: r'The requested VC has already been claimed by the user',
-  )
+      wireName: r'The requested VC has already been claimed by the user')
   static const VcClaimedErrorMessageEnum
-  theRequestedVCHasAlreadyBeenClaimedByTheUser =
+      theRequestedVCHasAlreadyBeenClaimedByTheUser =
       _$vcClaimedErrorMessageEnum_theRequestedVCHasAlreadyBeenClaimedByTheUser;
 
   static Serializer<VcClaimedErrorMessageEnum> get serializer =>

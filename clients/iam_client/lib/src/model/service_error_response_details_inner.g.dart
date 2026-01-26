@@ -17,20 +17,17 @@ class _$ServiceErrorResponseDetailsInner
   @override
   final String? location;
 
-  factory _$ServiceErrorResponseDetailsInner([
-    void Function(ServiceErrorResponseDetailsInnerBuilder)? updates,
-  ]) => (ServiceErrorResponseDetailsInnerBuilder()..update(updates))._build();
+  factory _$ServiceErrorResponseDetailsInner(
+          [void Function(ServiceErrorResponseDetailsInnerBuilder)? updates]) =>
+      (ServiceErrorResponseDetailsInnerBuilder()..update(updates))._build();
 
-  _$ServiceErrorResponseDetailsInner._({
-    required this.issue,
-    this.field,
-    this.value,
-    this.location,
-  }) : super._();
+  _$ServiceErrorResponseDetailsInner._(
+      {required this.issue, this.field, this.value, this.location})
+      : super._();
   @override
   ServiceErrorResponseDetailsInner rebuild(
-    void Function(ServiceErrorResponseDetailsInnerBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(ServiceErrorResponseDetailsInnerBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   ServiceErrorResponseDetailsInnerBuilder toBuilder() =>
@@ -70,10 +67,8 @@ class _$ServiceErrorResponseDetailsInner
 
 class ServiceErrorResponseDetailsInnerBuilder
     implements
-        Builder<
-          ServiceErrorResponseDetailsInner,
-          ServiceErrorResponseDetailsInnerBuilder
-        > {
+        Builder<ServiceErrorResponseDetailsInner,
+            ServiceErrorResponseDetailsInnerBuilder> {
   _$ServiceErrorResponseDetailsInner? _$v;
 
   String? _issue;
@@ -122,14 +117,10 @@ class ServiceErrorResponseDetailsInnerBuilder
   ServiceErrorResponseDetailsInner build() => _build();
 
   _$ServiceErrorResponseDetailsInner _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$ServiceErrorResponseDetailsInner._(
           issue: BuiltValueNullFieldError.checkNotNull(
-            issue,
-            r'ServiceErrorResponseDetailsInner',
-            'issue',
-          ),
+              issue, r'ServiceErrorResponseDetailsInner', 'issue'),
           field: field,
           value: value,
           location: location,

@@ -12,15 +12,15 @@ class _$VerifyCredentialV2Input extends VerifyCredentialV2Input {
   @override
   final BuiltList<BuiltMap<String, JsonObject?>>? ldpVcs;
 
-  factory _$VerifyCredentialV2Input([
-    void Function(VerifyCredentialV2InputBuilder)? updates,
-  ]) => (VerifyCredentialV2InputBuilder()..update(updates))._build();
+  factory _$VerifyCredentialV2Input(
+          [void Function(VerifyCredentialV2InputBuilder)? updates]) =>
+      (VerifyCredentialV2InputBuilder()..update(updates))._build();
 
   _$VerifyCredentialV2Input._({this.jwtVcs, this.ldpVcs}) : super._();
   @override
   VerifyCredentialV2Input rebuild(
-    void Function(VerifyCredentialV2InputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(VerifyCredentialV2InputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   VerifyCredentialV2InputBuilder toBuilder() =>
@@ -97,8 +97,7 @@ class VerifyCredentialV2InputBuilder
   _$VerifyCredentialV2Input _build() {
     _$VerifyCredentialV2Input _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$VerifyCredentialV2Input._(
             jwtVcs: _jwtVcs?.build(),
             ldpVcs: _ldpVcs?.build(),
@@ -112,10 +111,7 @@ class VerifyCredentialV2InputBuilder
         _ldpVcs?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'VerifyCredentialV2Input',
-          _$failedField,
-          e.toString(),
-        );
+            r'VerifyCredentialV2Input', _$failedField, e.toString());
       }
       rethrow;
     }

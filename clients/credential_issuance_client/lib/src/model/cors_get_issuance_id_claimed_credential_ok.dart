@@ -15,18 +15,16 @@ part 'cors_get_issuance_id_claimed_credential_ok.g.dart';
 @BuiltValue()
 abstract class CorsGetIssuanceIdClaimedCredentialOK
     implements
-        Built<
-          CorsGetIssuanceIdClaimedCredentialOK,
-          CorsGetIssuanceIdClaimedCredentialOKBuilder
-        > {
+        Built<CorsGetIssuanceIdClaimedCredentialOK,
+            CorsGetIssuanceIdClaimedCredentialOKBuilder> {
   @BuiltValueField(wireName: r'corsGetIssuanceIdClaimedCredentialOk')
   String? get corsGetIssuanceIdClaimedCredentialOk;
 
   CorsGetIssuanceIdClaimedCredentialOK._();
 
-  factory CorsGetIssuanceIdClaimedCredentialOK([
-    void updates(CorsGetIssuanceIdClaimedCredentialOKBuilder b),
-  ]) = _$CorsGetIssuanceIdClaimedCredentialOK;
+  factory CorsGetIssuanceIdClaimedCredentialOK(
+          [void updates(CorsGetIssuanceIdClaimedCredentialOKBuilder b)]) =
+      _$CorsGetIssuanceIdClaimedCredentialOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsGetIssuanceIdClaimedCredentialOKBuilder b) => b;
@@ -41,7 +39,7 @@ class _$CorsGetIssuanceIdClaimedCredentialOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsGetIssuanceIdClaimedCredentialOK,
-    _$CorsGetIssuanceIdClaimedCredentialOK,
+    _$CorsGetIssuanceIdClaimedCredentialOK
   ];
 
   @override
@@ -67,11 +65,9 @@ class _$CorsGetIssuanceIdClaimedCredentialOKSerializer
     CorsGetIssuanceIdClaimedCredentialOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -87,12 +83,10 @@ class _$CorsGetIssuanceIdClaimedCredentialOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsGetIssuanceIdClaimedCredentialOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsGetIssuanceIdClaimedCredentialOk = valueDes;
           break;
         default:

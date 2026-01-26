@@ -10,15 +10,15 @@ class _$CorsGetScannedFileInfoOK extends CorsGetScannedFileInfoOK {
   @override
   final String? corsGetScannedFileInfoOk;
 
-  factory _$CorsGetScannedFileInfoOK([
-    void Function(CorsGetScannedFileInfoOKBuilder)? updates,
-  ]) => (CorsGetScannedFileInfoOKBuilder()..update(updates))._build();
+  factory _$CorsGetScannedFileInfoOK(
+          [void Function(CorsGetScannedFileInfoOKBuilder)? updates]) =>
+      (CorsGetScannedFileInfoOKBuilder()..update(updates))._build();
 
   _$CorsGetScannedFileInfoOK._({this.corsGetScannedFileInfoOk}) : super._();
   @override
   CorsGetScannedFileInfoOK rebuild(
-    void Function(CorsGetScannedFileInfoOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CorsGetScannedFileInfoOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CorsGetScannedFileInfoOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$CorsGetScannedFileInfoOK extends CorsGetScannedFileInfoOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'CorsGetScannedFileInfoOK',
-    )..add('corsGetScannedFileInfoOk', corsGetScannedFileInfoOk)).toString();
+    return (newBuiltValueToStringHelper(r'CorsGetScannedFileInfoOK')
+          ..add('corsGetScannedFileInfoOk', corsGetScannedFileInfoOk))
+        .toString();
   }
 }
 
@@ -84,8 +84,7 @@ class CorsGetScannedFileInfoOKBuilder
   CorsGetScannedFileInfoOK build() => _build();
 
   _$CorsGetScannedFileInfoOK _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CorsGetScannedFileInfoOK._(
           corsGetScannedFileInfoOk: corsGetScannedFileInfoOk,
         );

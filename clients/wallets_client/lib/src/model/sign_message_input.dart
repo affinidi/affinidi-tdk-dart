@@ -72,11 +72,9 @@ class _$SignMessageInputSerializer
     SignMessageInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -92,23 +90,17 @@ class _$SignMessageInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'plainTextMessage':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.plainTextMessage = valueDes;
           break;
         case r'signatureScheme':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      SignMessageInputSignatureSchemeEnum,
-                    ),
-                  )
-                  as SignMessageInputSignatureSchemeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(SignMessageInputSignatureSchemeEnum),
+          ) as SignMessageInputSignatureSchemeEnum;
           result.signatureScheme = valueDes;
           break;
         default:

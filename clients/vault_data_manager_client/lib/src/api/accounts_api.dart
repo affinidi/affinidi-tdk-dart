@@ -48,7 +48,9 @@ class AccountsApi {
     final _path = r'/v1/accounts';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -68,13 +70,14 @@ class AccountsApi {
 
     try {
       const _type = FullType(CreateAccountInput);
-      _bodyData = _serializers.serialize(
-        createAccountInput,
-        specifiedType: _type,
-      );
+      _bodyData =
+          _serializers.serialize(createAccountInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -97,10 +100,9 @@ class AccountsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(CreateAccountOK),
-                )
-                as CreateAccountOK;
+              rawResponse,
+              specifiedType: const FullType(CreateAccountOK),
+            ) as CreateAccountOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -147,18 +149,14 @@ class AccountsApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/accounts/{accountIndex}'.replaceAll(
-      '{'
-      r'accountIndex'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        accountIndex,
-        const FullType(int),
-      ).toString(),
-    );
+        '{' r'accountIndex' '}',
+        encodeQueryParameter(_serializers, accountIndex, const FullType(int))
+            .toString());
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -188,10 +186,9 @@ class AccountsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(DeleteAccountDto),
-                )
-                as DeleteAccountDto;
+              rawResponse,
+              specifiedType: const FullType(DeleteAccountDto),
+            ) as DeleteAccountDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -242,7 +239,9 @@ class AccountsApi {
     final _path = r'/v1/accounts';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -259,17 +258,11 @@ class AccountsApi {
 
     final _queryParameters = <String, dynamic>{
       if (limit != null)
-        r'limit': encodeQueryParameter(
-          _serializers,
-          limit,
-          const FullType(int),
-        ),
+        r'limit':
+            encodeQueryParameter(_serializers, limit, const FullType(int)),
       if (exclusiveStartKey != null)
         r'exclusiveStartKey': encodeQueryParameter(
-          _serializers,
-          exclusiveStartKey,
-          const FullType(String),
-        ),
+            _serializers, exclusiveStartKey, const FullType(String)),
     };
 
     final _response = await _dio.request<Object>(
@@ -288,10 +281,9 @@ class AccountsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(ListAccountsDto),
-                )
-                as ListAccountsDto;
+              rawResponse,
+              specifiedType: const FullType(ListAccountsDto),
+            ) as ListAccountsDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -340,18 +332,14 @@ class AccountsApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/accounts/{accountIndex}'.replaceAll(
-      '{'
-      r'accountIndex'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        accountIndex,
-        const FullType(int),
-      ).toString(),
-    );
+        '{' r'accountIndex' '}',
+        encodeQueryParameter(_serializers, accountIndex, const FullType(int))
+            .toString());
     final _options = Options(
       method: r'PUT',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -371,13 +359,14 @@ class AccountsApi {
 
     try {
       const _type = FullType(UpdateAccountInput);
-      _bodyData = _serializers.serialize(
-        updateAccountInput,
-        specifiedType: _type,
-      );
+      _bodyData =
+          _serializers.serialize(updateAccountInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -400,10 +389,9 @@ class AccountsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(UpdateAccountDto),
-                )
-                as UpdateAccountDto;
+              rawResponse,
+              specifiedType: const FullType(UpdateAccountDto),
+            ) as UpdateAccountDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

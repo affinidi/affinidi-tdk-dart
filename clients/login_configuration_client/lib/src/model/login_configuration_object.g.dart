@@ -38,31 +38,31 @@ class _$LoginConfigurationObject extends LoginConfigurationObject {
   @override
   final TokenEndpointAuthMethod tokenEndpointAuthMethod;
 
-  factory _$LoginConfigurationObject([
-    void Function(LoginConfigurationObjectBuilder)? updates,
-  ]) => (LoginConfigurationObjectBuilder()..update(updates))._build();
+  factory _$LoginConfigurationObject(
+          [void Function(LoginConfigurationObjectBuilder)? updates]) =>
+      (LoginConfigurationObjectBuilder()..update(updates))._build();
 
-  _$LoginConfigurationObject._({
-    required this.ari,
-    this.configurationId,
-    required this.projectId,
-    required this.name,
-    this.redirectUris,
-    this.postLogoutRedirectUris,
-    this.scope,
-    this.clientId,
-    required this.creationDate,
-    this.vpDefinition,
-    this.presentationDefinition,
-    this.dcqlQuery,
-    required this.idTokenMapping,
-    required this.clientMetadata,
-    required this.tokenEndpointAuthMethod,
-  }) : super._();
+  _$LoginConfigurationObject._(
+      {required this.ari,
+      this.configurationId,
+      required this.projectId,
+      required this.name,
+      this.redirectUris,
+      this.postLogoutRedirectUris,
+      this.scope,
+      this.clientId,
+      required this.creationDate,
+      this.vpDefinition,
+      this.presentationDefinition,
+      this.dcqlQuery,
+      required this.idTokenMapping,
+      required this.clientMetadata,
+      required this.tokenEndpointAuthMethod})
+      : super._();
   @override
   LoginConfigurationObject rebuild(
-    void Function(LoginConfigurationObjectBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(LoginConfigurationObjectBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   LoginConfigurationObjectBuilder toBuilder() =>
@@ -203,15 +203,15 @@ class LoginConfigurationObjectBuilder
       _$this._clientMetadata ??=
           LoginConfigurationClientMetadataOutputBuilder();
   set clientMetadata(
-    LoginConfigurationClientMetadataOutputBuilder? clientMetadata,
-  ) => _$this._clientMetadata = clientMetadata;
+          LoginConfigurationClientMetadataOutputBuilder? clientMetadata) =>
+      _$this._clientMetadata = clientMetadata;
 
   TokenEndpointAuthMethod? _tokenEndpointAuthMethod;
   TokenEndpointAuthMethod? get tokenEndpointAuthMethod =>
       _$this._tokenEndpointAuthMethod;
   set tokenEndpointAuthMethod(
-    TokenEndpointAuthMethod? tokenEndpointAuthMethod,
-  ) => _$this._tokenEndpointAuthMethod = tokenEndpointAuthMethod;
+          TokenEndpointAuthMethod? tokenEndpointAuthMethod) =>
+      _$this._tokenEndpointAuthMethod = tokenEndpointAuthMethod;
 
   LoginConfigurationObjectBuilder() {
     LoginConfigurationObject._defaults(this);
@@ -256,44 +256,30 @@ class LoginConfigurationObjectBuilder
   _$LoginConfigurationObject _build() {
     _$LoginConfigurationObject _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$LoginConfigurationObject._(
             ari: BuiltValueNullFieldError.checkNotNull(
-              ari,
-              r'LoginConfigurationObject',
-              'ari',
-            ),
+                ari, r'LoginConfigurationObject', 'ari'),
             configurationId: configurationId,
             projectId: BuiltValueNullFieldError.checkNotNull(
-              projectId,
-              r'LoginConfigurationObject',
-              'projectId',
-            ),
+                projectId, r'LoginConfigurationObject', 'projectId'),
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'LoginConfigurationObject',
-              'name',
-            ),
+                name, r'LoginConfigurationObject', 'name'),
             redirectUris: _redirectUris?.build(),
             postLogoutRedirectUris: _postLogoutRedirectUris?.build(),
             scope: scope,
             clientId: clientId,
             creationDate: BuiltValueNullFieldError.checkNotNull(
-              creationDate,
-              r'LoginConfigurationObject',
-              'creationDate',
-            ),
+                creationDate, r'LoginConfigurationObject', 'creationDate'),
             vpDefinition: vpDefinition,
             presentationDefinition: presentationDefinition,
             dcqlQuery: dcqlQuery,
             idTokenMapping: idTokenMapping.build(),
             clientMetadata: clientMetadata.build(),
             tokenEndpointAuthMethod: BuiltValueNullFieldError.checkNotNull(
-              tokenEndpointAuthMethod,
-              r'LoginConfigurationObject',
-              'tokenEndpointAuthMethod',
-            ),
+                tokenEndpointAuthMethod,
+                r'LoginConfigurationObject',
+                'tokenEndpointAuthMethod'),
           );
     } catch (_) {
       late String _$failedField;
@@ -309,10 +295,7 @@ class LoginConfigurationObjectBuilder
         clientMetadata.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'LoginConfigurationObject',
-          _$failedField,
-          e.toString(),
-        );
+            r'LoginConfigurationObject', _$failedField, e.toString());
       }
       rethrow;
     }

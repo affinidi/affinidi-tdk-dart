@@ -12,16 +12,16 @@ class _$ListIssuanceRecordResponse extends ListIssuanceRecordResponse {
   @override
   final String? lastEvaluatedKey;
 
-  factory _$ListIssuanceRecordResponse([
-    void Function(ListIssuanceRecordResponseBuilder)? updates,
-  ]) => (ListIssuanceRecordResponseBuilder()..update(updates))._build();
+  factory _$ListIssuanceRecordResponse(
+          [void Function(ListIssuanceRecordResponseBuilder)? updates]) =>
+      (ListIssuanceRecordResponseBuilder()..update(updates))._build();
 
   _$ListIssuanceRecordResponse._({this.flowData, this.lastEvaluatedKey})
-    : super._();
+      : super._();
   @override
   ListIssuanceRecordResponse rebuild(
-    void Function(ListIssuanceRecordResponseBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(ListIssuanceRecordResponseBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   ListIssuanceRecordResponseBuilder toBuilder() =>
@@ -98,8 +98,7 @@ class ListIssuanceRecordResponseBuilder
   _$ListIssuanceRecordResponse _build() {
     _$ListIssuanceRecordResponse _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$ListIssuanceRecordResponse._(
             flowData: _flowData?.build(),
             lastEvaluatedKey: lastEvaluatedKey,
@@ -111,10 +110,7 @@ class ListIssuanceRecordResponseBuilder
         _flowData?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'ListIssuanceRecordResponse',
-          _$failedField,
-          e.toString(),
-        );
+            r'ListIssuanceRecordResponse', _$failedField, e.toString());
       }
       rethrow;
     }

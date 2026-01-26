@@ -70,11 +70,9 @@ class _$RedirectResponseSerializer
     RedirectResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -90,21 +88,17 @@ class _$RedirectResponseSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'type':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(RedirectResponseTypeEnum),
-                  )
-                  as RedirectResponseTypeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(RedirectResponseTypeEnum),
+          ) as RedirectResponseTypeEnum;
           result.type = valueDes;
           break;
         case r'to':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.to = valueDes;
           break;
         default:

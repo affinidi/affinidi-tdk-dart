@@ -23,10 +23,8 @@ part 'initiate_data_sharing_request_input.g.dart';
 @BuiltValue()
 abstract class InitiateDataSharingRequestInput
     implements
-        Built<
-          InitiateDataSharingRequestInput,
-          InitiateDataSharingRequestInputBuilder
-        > {
+        Built<InitiateDataSharingRequestInput,
+            InitiateDataSharingRequestInputBuilder> {
   /// The ID of the query.
   @BuiltValueField(wireName: r'queryId')
   String get queryId;
@@ -62,9 +60,9 @@ abstract class InitiateDataSharingRequestInput
 
   InitiateDataSharingRequestInput._();
 
-  factory InitiateDataSharingRequestInput([
-    void updates(InitiateDataSharingRequestInputBuilder b),
-  ]) = _$InitiateDataSharingRequestInput;
+  factory InitiateDataSharingRequestInput(
+          [void updates(InitiateDataSharingRequestInputBuilder b)]) =
+      _$InitiateDataSharingRequestInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(InitiateDataSharingRequestInputBuilder b) => b;
@@ -79,7 +77,7 @@ class _$InitiateDataSharingRequestInputSerializer
   @override
   final Iterable<Type> types = const [
     InitiateDataSharingRequestInput,
-    _$InitiateDataSharingRequestInput,
+    _$InitiateDataSharingRequestInput
   ];
 
   @override
@@ -142,11 +140,9 @@ class _$InitiateDataSharingRequestInputSerializer
     InitiateDataSharingRequestInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -162,74 +158,60 @@ class _$InitiateDataSharingRequestInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'queryId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.queryId = valueDes;
           break;
         case r'correlationId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.correlationId = valueDes;
           break;
         case r'tokenMaxAge':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.tokenMaxAge = valueDes;
           break;
         case r'nonce':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.nonce = valueDes;
           break;
         case r'redirectUri':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.redirectUri = valueDes;
           break;
         case r'configurationId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.configurationId = valueDes;
           break;
         case r'userDid':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.userDid = valueDes;
           break;
         case r'mode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      InitiateDataSharingRequestInputModeEnum,
-                    ),
-                  )
-                  as InitiateDataSharingRequestInputModeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(InitiateDataSharingRequestInputModeEnum),
+          ) as InitiateDataSharingRequestInputModeEnum;
           result.mode = valueDes;
           break;
         default:

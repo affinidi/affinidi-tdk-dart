@@ -10,15 +10,15 @@ class _$CorsBatchCredentialOK extends CorsBatchCredentialOK {
   @override
   final String? corsBatchCredentialOk;
 
-  factory _$CorsBatchCredentialOK([
-    void Function(CorsBatchCredentialOKBuilder)? updates,
-  ]) => (CorsBatchCredentialOKBuilder()..update(updates))._build();
+  factory _$CorsBatchCredentialOK(
+          [void Function(CorsBatchCredentialOKBuilder)? updates]) =>
+      (CorsBatchCredentialOKBuilder()..update(updates))._build();
 
   _$CorsBatchCredentialOK._({this.corsBatchCredentialOk}) : super._();
   @override
   CorsBatchCredentialOK rebuild(
-    void Function(CorsBatchCredentialOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CorsBatchCredentialOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CorsBatchCredentialOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$CorsBatchCredentialOK extends CorsBatchCredentialOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'CorsBatchCredentialOK',
-    )..add('corsBatchCredentialOk', corsBatchCredentialOk)).toString();
+    return (newBuiltValueToStringHelper(r'CorsBatchCredentialOK')
+          ..add('corsBatchCredentialOk', corsBatchCredentialOk))
+        .toString();
   }
 }
 
@@ -83,9 +83,10 @@ class CorsBatchCredentialOKBuilder
   CorsBatchCredentialOK build() => _build();
 
   _$CorsBatchCredentialOK _build() {
-    final _$result =
-        _$v ??
-        _$CorsBatchCredentialOK._(corsBatchCredentialOk: corsBatchCredentialOk);
+    final _$result = _$v ??
+        _$CorsBatchCredentialOK._(
+          corsBatchCredentialOk: corsBatchCredentialOk,
+        );
     replace(_$result);
     return _$result;
   }

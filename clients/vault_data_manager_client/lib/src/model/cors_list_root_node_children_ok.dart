@@ -21,9 +21,9 @@ abstract class CorsListRootNodeChildrenOK
 
   CorsListRootNodeChildrenOK._();
 
-  factory CorsListRootNodeChildrenOK([
-    void updates(CorsListRootNodeChildrenOKBuilder b),
-  ]) = _$CorsListRootNodeChildrenOK;
+  factory CorsListRootNodeChildrenOK(
+          [void updates(CorsListRootNodeChildrenOKBuilder b)]) =
+      _$CorsListRootNodeChildrenOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsListRootNodeChildrenOKBuilder b) => b;
@@ -38,7 +38,7 @@ class _$CorsListRootNodeChildrenOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsListRootNodeChildrenOK,
-    _$CorsListRootNodeChildrenOK,
+    _$CorsListRootNodeChildrenOK
   ];
 
   @override
@@ -64,11 +64,9 @@ class _$CorsListRootNodeChildrenOKSerializer
     CorsListRootNodeChildrenOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -84,12 +82,10 @@ class _$CorsListRootNodeChildrenOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsListRootNodeChildrenOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsListRootNodeChildrenOk = valueDes;
           break;
         default:

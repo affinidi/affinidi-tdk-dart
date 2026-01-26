@@ -10,15 +10,15 @@ class _$CorsUpdateAccessVfsOK extends CorsUpdateAccessVfsOK {
   @override
   final String? corsUpdateAccessVfsOk;
 
-  factory _$CorsUpdateAccessVfsOK([
-    void Function(CorsUpdateAccessVfsOKBuilder)? updates,
-  ]) => (CorsUpdateAccessVfsOKBuilder()..update(updates))._build();
+  factory _$CorsUpdateAccessVfsOK(
+          [void Function(CorsUpdateAccessVfsOKBuilder)? updates]) =>
+      (CorsUpdateAccessVfsOKBuilder()..update(updates))._build();
 
   _$CorsUpdateAccessVfsOK._({this.corsUpdateAccessVfsOk}) : super._();
   @override
   CorsUpdateAccessVfsOK rebuild(
-    void Function(CorsUpdateAccessVfsOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CorsUpdateAccessVfsOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CorsUpdateAccessVfsOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$CorsUpdateAccessVfsOK extends CorsUpdateAccessVfsOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'CorsUpdateAccessVfsOK',
-    )..add('corsUpdateAccessVfsOk', corsUpdateAccessVfsOk)).toString();
+    return (newBuiltValueToStringHelper(r'CorsUpdateAccessVfsOK')
+          ..add('corsUpdateAccessVfsOk', corsUpdateAccessVfsOk))
+        .toString();
   }
 }
 
@@ -83,9 +83,10 @@ class CorsUpdateAccessVfsOKBuilder
   CorsUpdateAccessVfsOK build() => _build();
 
   _$CorsUpdateAccessVfsOK _build() {
-    final _$result =
-        _$v ??
-        _$CorsUpdateAccessVfsOK._(corsUpdateAccessVfsOk: corsUpdateAccessVfsOk);
+    final _$result = _$v ??
+        _$CorsUpdateAccessVfsOK._(
+          corsUpdateAccessVfsOk: corsUpdateAccessVfsOk,
+        );
     replace(_$result);
     return _$result;
   }

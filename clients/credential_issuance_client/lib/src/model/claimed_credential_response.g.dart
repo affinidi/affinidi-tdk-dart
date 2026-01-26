@@ -12,16 +12,16 @@ class _$ClaimedCredentialResponse extends ClaimedCredentialResponse {
   @override
   final BuiltList<BuiltMap<String, JsonObject?>>? credentials;
 
-  factory _$ClaimedCredentialResponse([
-    void Function(ClaimedCredentialResponseBuilder)? updates,
-  ]) => (ClaimedCredentialResponseBuilder()..update(updates))._build();
+  factory _$ClaimedCredentialResponse(
+          [void Function(ClaimedCredentialResponseBuilder)? updates]) =>
+      (ClaimedCredentialResponseBuilder()..update(updates))._build();
 
   _$ClaimedCredentialResponse._({this.credential, this.credentials})
-    : super._();
+      : super._();
   @override
   ClaimedCredentialResponse rebuild(
-    void Function(ClaimedCredentialResponseBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(ClaimedCredentialResponseBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   ClaimedCredentialResponseBuilder toBuilder() =>
@@ -100,8 +100,7 @@ class ClaimedCredentialResponseBuilder
   _$ClaimedCredentialResponse _build() {
     _$ClaimedCredentialResponse _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$ClaimedCredentialResponse._(
             credential: _credential?.build(),
             credentials: _credentials?.build(),
@@ -115,10 +114,7 @@ class ClaimedCredentialResponseBuilder
         _credentials?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'ClaimedCredentialResponse',
-          _$failedField,
-          e.toString(),
-        );
+            r'ClaimedCredentialResponse', _$failedField, e.toString());
       }
       rethrow;
     }

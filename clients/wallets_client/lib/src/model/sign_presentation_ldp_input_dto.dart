@@ -45,9 +45,9 @@ abstract class SignPresentationLdpInputDto
 
   SignPresentationLdpInputDto._();
 
-  factory SignPresentationLdpInputDto([
-    void updates(SignPresentationLdpInputDtoBuilder b),
-  ]) = _$SignPresentationLdpInputDto;
+  factory SignPresentationLdpInputDto(
+          [void updates(SignPresentationLdpInputDtoBuilder b)]) =
+      _$SignPresentationLdpInputDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SignPresentationLdpInputDtoBuilder b) => b;
@@ -62,7 +62,7 @@ class _$SignPresentationLdpInputDtoSerializer
   @override
   final Iterable<Type> types = const [
     SignPresentationLdpInputDto,
-    _$SignPresentationLdpInputDto,
+    _$SignPresentationLdpInputDto
   ];
 
   @override
@@ -82,18 +82,16 @@ class _$SignPresentationLdpInputDtoSerializer
       yield r'signatureScheme';
       yield serializers.serialize(
         object.signatureScheme,
-        specifiedType: const FullType(
-          SignPresentationLdpInputDtoSignatureSchemeEnum,
-        ),
+        specifiedType:
+            const FullType(SignPresentationLdpInputDtoSignatureSchemeEnum),
       );
     }
     if (object.signatureSuite != null) {
       yield r'signatureSuite';
       yield serializers.serialize(
         object.signatureSuite,
-        specifiedType: const FullType(
-          SignPresentationLdpInputDtoSignatureSuiteEnum,
-        ),
+        specifiedType:
+            const FullType(SignPresentationLdpInputDtoSignatureSuiteEnum),
       );
     }
     if (object.domain != null) {
@@ -118,11 +116,9 @@ class _$SignPresentationLdpInputDtoSerializer
     SignPresentationLdpInputDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -138,54 +134,40 @@ class _$SignPresentationLdpInputDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'unsignedPresentation':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.unsignedPresentation = valueDes;
           break;
         case r'signatureScheme':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      SignPresentationLdpInputDtoSignatureSchemeEnum,
-                    ),
-                  )
-                  as SignPresentationLdpInputDtoSignatureSchemeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(SignPresentationLdpInputDtoSignatureSchemeEnum),
+          ) as SignPresentationLdpInputDtoSignatureSchemeEnum;
           result.signatureScheme = valueDes;
           break;
         case r'signatureSuite':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      SignPresentationLdpInputDtoSignatureSuiteEnum,
-                    ),
-                  )
-                  as SignPresentationLdpInputDtoSignatureSuiteEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(SignPresentationLdpInputDtoSignatureSuiteEnum),
+          ) as SignPresentationLdpInputDtoSignatureSuiteEnum;
           result.signatureSuite = valueDes;
           break;
         case r'domain':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.domain.replace(valueDes);
           break;
         case r'challenge':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.challenge = valueDes;
           break;
         default:
@@ -220,7 +202,7 @@ class _$SignPresentationLdpInputDtoSerializer
 class SignPresentationLdpInputDtoSignatureSchemeEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'ecdsa_secp256k1_sha256')
   static const SignPresentationLdpInputDtoSignatureSchemeEnum
-  ecdsaSecp256k1Sha256 =
+      ecdsaSecp256k1Sha256 =
       _$signPresentationLdpInputDtoSignatureSchemeEnum_ecdsaSecp256k1Sha256;
   @BuiltValueEnumConst(wireName: r'ecdsa_p256_sha256')
   static const SignPresentationLdpInputDtoSignatureSchemeEnum ecdsaP256Sha256 =
@@ -230,10 +212,11 @@ class SignPresentationLdpInputDtoSignatureSchemeEnum extends EnumClass {
       _$signPresentationLdpInputDtoSignatureSchemeEnum_ed25519;
 
   static Serializer<SignPresentationLdpInputDtoSignatureSchemeEnum>
-  get serializer => _$signPresentationLdpInputDtoSignatureSchemeEnumSerializer;
+      get serializer =>
+          _$signPresentationLdpInputDtoSignatureSchemeEnumSerializer;
 
   const SignPresentationLdpInputDtoSignatureSchemeEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<SignPresentationLdpInputDtoSignatureSchemeEnum> get values =>
       _$signPresentationLdpInputDtoSignatureSchemeEnumValues;
@@ -265,14 +248,15 @@ class SignPresentationLdpInputDtoSignatureSuiteEnum extends EnumClass {
   /// W3C signature suite for canonicalization. Defaults to rdfc variants for each algorithm (ecdsa-rdfc-2019 for P256, eddsa-rdfc-2022 for Ed25519, EcdsaSecp256k1Signature2019 for secp256k1).
   @BuiltValueEnumConst(wireName: r'EcdsaSecp256k1Signature2019')
   static const SignPresentationLdpInputDtoSignatureSuiteEnum
-  ecdsaSecp256k1Signature2019 =
+      ecdsaSecp256k1Signature2019 =
       _$signPresentationLdpInputDtoSignatureSuiteEnum_ecdsaSecp256k1Signature2019;
 
   static Serializer<SignPresentationLdpInputDtoSignatureSuiteEnum>
-  get serializer => _$signPresentationLdpInputDtoSignatureSuiteEnumSerializer;
+      get serializer =>
+          _$signPresentationLdpInputDtoSignatureSuiteEnumSerializer;
 
   const SignPresentationLdpInputDtoSignatureSuiteEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<SignPresentationLdpInputDtoSignatureSuiteEnum> get values =>
       _$signPresentationLdpInputDtoSignatureSuiteEnumValues;

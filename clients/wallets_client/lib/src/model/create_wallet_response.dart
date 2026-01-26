@@ -37,7 +37,7 @@ class _$CreateWalletResponseSerializer
   @override
   final Iterable<Type> types = const [
     CreateWalletResponse,
-    _$CreateWalletResponse,
+    _$CreateWalletResponse
   ];
 
   @override
@@ -63,11 +63,9 @@ class _$CreateWalletResponseSerializer
     CreateWalletResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -83,12 +81,10 @@ class _$CreateWalletResponseSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'wallet':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(WalletDto),
-                  )
-                  as WalletDto;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(WalletDto),
+          ) as WalletDto;
           result.wallet.replace(valueDes);
           break;
         default:

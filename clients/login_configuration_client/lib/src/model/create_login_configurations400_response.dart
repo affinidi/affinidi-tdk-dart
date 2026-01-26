@@ -24,18 +24,16 @@ part 'create_login_configurations400_response.g.dart';
 @BuiltValue()
 abstract class CreateLoginConfigurations400Response
     implements
-        Built<
-          CreateLoginConfigurations400Response,
-          CreateLoginConfigurations400ResponseBuilder
-        > {
+        Built<CreateLoginConfigurations400Response,
+            CreateLoginConfigurations400ResponseBuilder> {
   /// One Of [CreateHydraNetworkError], [CreateProjectNetworkError], [InvalidParameterError]
   OneOf get oneOf;
 
   CreateLoginConfigurations400Response._();
 
-  factory CreateLoginConfigurations400Response([
-    void updates(CreateLoginConfigurations400ResponseBuilder b),
-  ]) = _$CreateLoginConfigurations400Response;
+  factory CreateLoginConfigurations400Response(
+          [void updates(CreateLoginConfigurations400ResponseBuilder b)]) =
+      _$CreateLoginConfigurations400Response;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateLoginConfigurations400ResponseBuilder b) => b;
@@ -50,16 +48,14 @@ class _$CreateLoginConfigurations400ResponseSerializer
   @override
   final Iterable<Type> types = const [
     CreateLoginConfigurations400Response,
-    _$CreateLoginConfigurations400Response,
+    _$CreateLoginConfigurations400Response
   ];
 
   @override
   final String wireName = r'CreateLoginConfigurations400Response';
 
-  Iterable<Object?> _serializeProperties(
-    Serializers serializers,
-    CreateLoginConfigurations400Response object,
-  ) sync* {}
+  Iterable<Object?> _serializeProperties(Serializers serializers,
+      CreateLoginConfigurations400Response object) sync* {}
 
   @override
   Object serialize(
@@ -68,10 +64,8 @@ class _$CreateLoginConfigurations400ResponseSerializer
     FullType specifiedType = FullType.unspecified,
   }) {
     final oneOf = object.oneOf;
-    return serializers.serialize(
-      oneOf.value,
-      specifiedType: FullType(oneOf.valueType),
-    )!;
+    return serializers.serialize(oneOf.value,
+        specifiedType: FullType(oneOf.valueType))!;
   }
 
   @override
@@ -88,9 +82,8 @@ class _$CreateLoginConfigurations400ResponseSerializer
       FullType(CreateProjectNetworkError),
     ]);
     oneOfDataSrc = serialized;
-    result.oneOf =
-        serializers.deserialize(oneOfDataSrc, specifiedType: targetType)
-            as OneOf;
+    result.oneOf = serializers.deserialize(oneOfDataSrc,
+        specifiedType: targetType) as OneOf;
     return result.build();
   }
 }
@@ -98,14 +91,15 @@ class _$CreateLoginConfigurations400ResponseSerializer
 class CreateLoginConfigurations400ResponseNameEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'CreateProjectNetworkError')
   static const CreateLoginConfigurations400ResponseNameEnum
-  createProjectNetworkError =
+      createProjectNetworkError =
       _$createLoginConfigurations400ResponseNameEnum_createProjectNetworkError;
 
   static Serializer<CreateLoginConfigurations400ResponseNameEnum>
-  get serializer => _$createLoginConfigurations400ResponseNameEnumSerializer;
+      get serializer =>
+          _$createLoginConfigurations400ResponseNameEnumSerializer;
 
   const CreateLoginConfigurations400ResponseNameEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<CreateLoginConfigurations400ResponseNameEnum> get values =>
       _$createLoginConfigurations400ResponseNameEnumValues;
@@ -116,14 +110,15 @@ class CreateLoginConfigurations400ResponseNameEnum extends EnumClass {
 class CreateLoginConfigurations400ResponseMessageEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'CreateProjectNetworkError')
   static const CreateLoginConfigurations400ResponseMessageEnum
-  createProjectNetworkError =
+      createProjectNetworkError =
       _$createLoginConfigurations400ResponseMessageEnum_createProjectNetworkError;
 
   static Serializer<CreateLoginConfigurations400ResponseMessageEnum>
-  get serializer => _$createLoginConfigurations400ResponseMessageEnumSerializer;
+      get serializer =>
+          _$createLoginConfigurations400ResponseMessageEnumSerializer;
 
   const CreateLoginConfigurations400ResponseMessageEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<CreateLoginConfigurations400ResponseMessageEnum> get values =>
       _$createLoginConfigurations400ResponseMessageEnumValues;
@@ -134,19 +129,20 @@ class CreateLoginConfigurations400ResponseMessageEnum extends EnumClass {
 class CreateLoginConfigurations400ResponseHttpStatusCodeEnum extends EnumClass {
   @BuiltValueEnumConst(wireNumber: 400)
   static const CreateLoginConfigurations400ResponseHttpStatusCodeEnum
-  number400 =
+      number400 =
       _$createLoginConfigurations400ResponseHttpStatusCodeEnum_number400;
 
   static Serializer<CreateLoginConfigurations400ResponseHttpStatusCodeEnum>
-  get serializer =>
-      _$createLoginConfigurations400ResponseHttpStatusCodeEnumSerializer;
+      get serializer =>
+          _$createLoginConfigurations400ResponseHttpStatusCodeEnumSerializer;
 
   const CreateLoginConfigurations400ResponseHttpStatusCodeEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<CreateLoginConfigurations400ResponseHttpStatusCodeEnum>
-  get values => _$createLoginConfigurations400ResponseHttpStatusCodeEnumValues;
+      get values =>
+          _$createLoginConfigurations400ResponseHttpStatusCodeEnumValues;
   static CreateLoginConfigurations400ResponseHttpStatusCodeEnum valueOf(
-    String name,
-  ) => _$createLoginConfigurations400ResponseHttpStatusCodeEnumValueOf(name);
+          String name) =>
+      _$createLoginConfigurations400ResponseHttpStatusCodeEnumValueOf(name);
 }

@@ -17,10 +17,8 @@ part 'verify_presentation_v2_input_pex_query.g.dart';
 @BuiltValue()
 abstract class VerifyPresentationV2InputPexQuery
     implements
-        Built<
-          VerifyPresentationV2InputPexQuery,
-          VerifyPresentationV2InputPexQueryBuilder
-        > {
+        Built<VerifyPresentationV2InputPexQuery,
+            VerifyPresentationV2InputPexQueryBuilder> {
   /// Presentation definition for the verification request
   @BuiltValueField(wireName: r'presentationDefinition')
   JsonObject? get presentationDefinition;
@@ -31,9 +29,9 @@ abstract class VerifyPresentationV2InputPexQuery
 
   VerifyPresentationV2InputPexQuery._();
 
-  factory VerifyPresentationV2InputPexQuery([
-    void updates(VerifyPresentationV2InputPexQueryBuilder b),
-  ]) = _$VerifyPresentationV2InputPexQuery;
+  factory VerifyPresentationV2InputPexQuery(
+          [void updates(VerifyPresentationV2InputPexQueryBuilder b)]) =
+      _$VerifyPresentationV2InputPexQuery;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(VerifyPresentationV2InputPexQueryBuilder b) => b;
@@ -48,7 +46,7 @@ class _$VerifyPresentationV2InputPexQuerySerializer
   @override
   final Iterable<Type> types = const [
     VerifyPresentationV2InputPexQuery,
-    _$VerifyPresentationV2InputPexQuery,
+    _$VerifyPresentationV2InputPexQuery
   ];
 
   @override
@@ -81,11 +79,9 @@ class _$VerifyPresentationV2InputPexQuerySerializer
     VerifyPresentationV2InputPexQuery object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -101,21 +97,17 @@ class _$VerifyPresentationV2InputPexQuerySerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'presentationDefinition':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.presentationDefinition = valueDes;
           break;
         case r'presentationSubmission':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.presentationSubmission = valueDes;
           break;
         default:

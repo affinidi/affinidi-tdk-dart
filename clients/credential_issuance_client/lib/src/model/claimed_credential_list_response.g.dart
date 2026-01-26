@@ -12,16 +12,16 @@ class _$ClaimedCredentialListResponse extends ClaimedCredentialListResponse {
   @override
   final String? lastEvaluatedKey;
 
-  factory _$ClaimedCredentialListResponse([
-    void Function(ClaimedCredentialListResponseBuilder)? updates,
-  ]) => (ClaimedCredentialListResponseBuilder()..update(updates))._build();
+  factory _$ClaimedCredentialListResponse(
+          [void Function(ClaimedCredentialListResponseBuilder)? updates]) =>
+      (ClaimedCredentialListResponseBuilder()..update(updates))._build();
 
   _$ClaimedCredentialListResponse._({this.credentials, this.lastEvaluatedKey})
-    : super._();
+      : super._();
   @override
   ClaimedCredentialListResponse rebuild(
-    void Function(ClaimedCredentialListResponseBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(ClaimedCredentialListResponseBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   ClaimedCredentialListResponseBuilder toBuilder() =>
@@ -55,10 +55,8 @@ class _$ClaimedCredentialListResponse extends ClaimedCredentialListResponse {
 
 class ClaimedCredentialListResponseBuilder
     implements
-        Builder<
-          ClaimedCredentialListResponse,
-          ClaimedCredentialListResponseBuilder
-        > {
+        Builder<ClaimedCredentialListResponse,
+            ClaimedCredentialListResponseBuilder> {
   _$ClaimedCredentialListResponse? _$v;
 
   ListBuilder<BuiltMap<String, JsonObject?>>? _credentials;
@@ -102,8 +100,7 @@ class ClaimedCredentialListResponseBuilder
   _$ClaimedCredentialListResponse _build() {
     _$ClaimedCredentialListResponse _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$ClaimedCredentialListResponse._(
             credentials: _credentials?.build(),
             lastEvaluatedKey: lastEvaluatedKey,
@@ -115,10 +112,7 @@ class ClaimedCredentialListResponseBuilder
         _credentials?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'ClaimedCredentialListResponse',
-          _$failedField,
-          e.toString(),
-        );
+            r'ClaimedCredentialListResponse', _$failedField, e.toString());
       }
       rethrow;
     }

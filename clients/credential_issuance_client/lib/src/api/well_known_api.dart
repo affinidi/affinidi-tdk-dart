@@ -32,7 +32,7 @@ class WellKnownApi {
   /// Returns a [Future] containing a [Response] with a [WellKnownOpenIdCredentialIssuerResponse] as data
   /// Throws [DioException] if API call or serialization fails
   Future<Response<WellKnownOpenIdCredentialIssuerResponse>>
-  getWellKnownOpenIdCredentialIssuer({
+      getWellKnownOpenIdCredentialIssuer({
     required String projectId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -43,19 +43,19 @@ class WellKnownApi {
   }) async {
     final _path = r'/v1/{projectId}/.well-known/openid-credential-issuer'
         .replaceAll(
-          '{'
-          r'projectId'
-          '}',
-          encodeQueryParameter(
-            _serializers,
-            projectId,
-            const FullType(String),
-          ).toString(),
-        );
+            '{' r'projectId' '}',
+            encodeQueryParameter(
+                    _serializers, projectId, const FullType(String))
+                .toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
-      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[],
+        ...?extra,
+      },
       validateStatus: validateStatus,
     );
 
@@ -74,12 +74,10 @@ class WellKnownApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(
-                    WellKnownOpenIdCredentialIssuerResponse,
-                  ),
-                )
-                as WellKnownOpenIdCredentialIssuerResponse;
+              rawResponse,
+              specifiedType:
+                  const FullType(WellKnownOpenIdCredentialIssuerResponse),
+            ) as WellKnownOpenIdCredentialIssuerResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

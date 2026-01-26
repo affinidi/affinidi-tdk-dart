@@ -56,5 +56,4 @@ lib/src/model/unexpected_error.dart
 lib/src/model/update_access_input.dart
 lib/src/model/update_access_output.dart
 lib/src/serializers.dart
-project.json
 pubspec.yaml

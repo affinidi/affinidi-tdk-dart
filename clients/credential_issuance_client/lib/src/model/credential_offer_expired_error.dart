@@ -42,9 +42,9 @@ abstract class CredentialOfferExpiredError
 
   CredentialOfferExpiredError._();
 
-  factory CredentialOfferExpiredError([
-    void updates(CredentialOfferExpiredErrorBuilder b),
-  ]) = _$CredentialOfferExpiredError;
+  factory CredentialOfferExpiredError(
+          [void updates(CredentialOfferExpiredErrorBuilder b)]) =
+      _$CredentialOfferExpiredError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CredentialOfferExpiredErrorBuilder b) => b;
@@ -59,7 +59,7 @@ class _$CredentialOfferExpiredErrorSerializer
   @override
   final Iterable<Type> types = const [
     CredentialOfferExpiredError,
-    _$CredentialOfferExpiredError,
+    _$CredentialOfferExpiredError
   ];
 
   @override
@@ -83,9 +83,8 @@ class _$CredentialOfferExpiredErrorSerializer
     yield r'httpStatusCode';
     yield serializers.serialize(
       object.httpStatusCode,
-      specifiedType: const FullType(
-        CredentialOfferExpiredErrorHttpStatusCodeEnum,
-      ),
+      specifiedType:
+          const FullType(CredentialOfferExpiredErrorHttpStatusCodeEnum),
     );
     yield r'traceId';
     yield serializers.serialize(
@@ -96,9 +95,8 @@ class _$CredentialOfferExpiredErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ActionForbiddenErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
       );
     }
   }
@@ -109,11 +107,9 @@ class _$CredentialOfferExpiredErrorSerializer
     CredentialOfferExpiredError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -129,56 +125,41 @@ class _$CredentialOfferExpiredErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CredentialOfferExpiredErrorNameEnum,
-                    ),
-                  )
-                  as CredentialOfferExpiredErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CredentialOfferExpiredErrorNameEnum),
+          ) as CredentialOfferExpiredErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CredentialOfferExpiredErrorMessageEnum,
-                    ),
-                  )
-                  as CredentialOfferExpiredErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(CredentialOfferExpiredErrorMessageEnum),
+          ) as CredentialOfferExpiredErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CredentialOfferExpiredErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as CredentialOfferExpiredErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(CredentialOfferExpiredErrorHttpStatusCodeEnum),
+          ) as CredentialOfferExpiredErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ActionForbiddenErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ActionForbiddenErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
+          ) as BuiltList<ActionForbiddenErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -248,10 +229,11 @@ class CredentialOfferExpiredErrorHttpStatusCodeEnum extends EnumClass {
       _$credentialOfferExpiredErrorHttpStatusCodeEnum_number400;
 
   static Serializer<CredentialOfferExpiredErrorHttpStatusCodeEnum>
-  get serializer => _$credentialOfferExpiredErrorHttpStatusCodeEnumSerializer;
+      get serializer =>
+          _$credentialOfferExpiredErrorHttpStatusCodeEnumSerializer;
 
   const CredentialOfferExpiredErrorHttpStatusCodeEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<CredentialOfferExpiredErrorHttpStatusCodeEnum> get values =>
       _$credentialOfferExpiredErrorHttpStatusCodeEnumValues;

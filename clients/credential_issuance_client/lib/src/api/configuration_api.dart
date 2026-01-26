@@ -46,7 +46,9 @@ class ConfigurationApi {
     final _path = r'/v1/configurations';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -66,13 +68,14 @@ class ConfigurationApi {
 
     try {
       const _type = FullType(CreateIssuanceConfigInput);
-      _bodyData = _serializers.serialize(
-        createIssuanceConfigInput,
-        specifiedType: _type,
-      );
+      _bodyData = _serializers.serialize(createIssuanceConfigInput,
+          specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -95,10 +98,9 @@ class ConfigurationApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(IssuanceConfigDto),
-                )
-                as IssuanceConfigDto;
+              rawResponse,
+              specifiedType: const FullType(IssuanceConfigDto),
+            ) as IssuanceConfigDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -145,18 +147,15 @@ class ConfigurationApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/configurations/{configurationId}'.replaceAll(
-      '{'
-      r'configurationId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        configurationId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'configurationId' '}',
+        encodeQueryParameter(
+                _serializers, configurationId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -206,18 +205,15 @@ class ConfigurationApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/configurations/{configurationId}'.replaceAll(
-      '{'
-      r'configurationId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        configurationId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'configurationId' '}',
+        encodeQueryParameter(
+                _serializers, configurationId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -247,10 +243,9 @@ class ConfigurationApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(IssuanceConfigDto),
-                )
-                as IssuanceConfigDto;
+              rawResponse,
+              specifiedType: const FullType(IssuanceConfigDto),
+            ) as IssuanceConfigDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -297,7 +292,9 @@ class ConfigurationApi {
     final _path = r'/v1/configurations';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -327,10 +324,9 @@ class ConfigurationApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(IssuanceConfigListResponse),
-                )
-                as IssuanceConfigListResponse;
+              rawResponse,
+              specifiedType: const FullType(IssuanceConfigListResponse),
+            ) as IssuanceConfigListResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -379,18 +375,15 @@ class ConfigurationApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/configurations/{configurationId}'.replaceAll(
-      '{'
-      r'configurationId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        configurationId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'configurationId' '}',
+        encodeQueryParameter(
+                _serializers, configurationId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'PUT',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -410,13 +403,14 @@ class ConfigurationApi {
 
     try {
       const _type = FullType(UpdateIssuanceConfigInput);
-      _bodyData = _serializers.serialize(
-        updateIssuanceConfigInput,
-        specifiedType: _type,
-      );
+      _bodyData = _serializers.serialize(updateIssuanceConfigInput,
+          specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -439,10 +433,9 @@ class ConfigurationApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(IssuanceConfigDto),
-                )
-                as IssuanceConfigDto;
+              rawResponse,
+              specifiedType: const FullType(IssuanceConfigDto),
+            ) as IssuanceConfigDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

@@ -40,19 +40,18 @@ class DefaultApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/auth/{proxy+}'.replaceAll(
-      '{'
-      r'proxy'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        proxy,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'proxy' '}',
+        encodeQueryParameter(_serializers, proxy, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{...?headers},
-      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[],
+        ...?extra,
+      },
       validateStatus: validateStatus,
     );
 
@@ -91,19 +90,18 @@ class DefaultApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/auth/{proxy+}'.replaceAll(
-      '{'
-      r'proxy'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        proxy,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'proxy' '}',
+        encodeQueryParameter(_serializers, proxy, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
-      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[],
+        ...?extra,
+      },
       validateStatus: validateStatus,
     );
 
@@ -142,19 +140,18 @@ class DefaultApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/auth/{proxy+}'.replaceAll(
-      '{'
-      r'proxy'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        proxy,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'proxy' '}',
+        encodeQueryParameter(_serializers, proxy, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{...?headers},
-      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[],
+        ...?extra,
+      },
       validateStatus: validateStatus,
     );
 
@@ -193,19 +190,18 @@ class DefaultApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/auth/{proxy+}'.replaceAll(
-      '{'
-      r'proxy'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        proxy,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'proxy' '}',
+        encodeQueryParameter(_serializers, proxy, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
-      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[],
+        ...?extra,
+      },
       validateStatus: validateStatus,
     );
 
@@ -244,19 +240,18 @@ class DefaultApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/auth/{proxy+}'.replaceAll(
-      '{'
-      r'proxy'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        proxy,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'proxy' '}',
+        encodeQueryParameter(_serializers, proxy, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'PUT',
-      headers: <String, dynamic>{...?headers},
-      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[],
+        ...?extra,
+      },
       validateStatus: validateStatus,
     );
 
@@ -295,19 +290,18 @@ class DefaultApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/idp/{proxy+}'.replaceAll(
-      '{'
-      r'proxy'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        proxy,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'proxy' '}',
+        encodeQueryParameter(_serializers, proxy, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{...?headers},
-      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[],
+        ...?extra,
+      },
       validateStatus: validateStatus,
     );
 
@@ -346,19 +340,18 @@ class DefaultApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/idp/{proxy+}'.replaceAll(
-      '{'
-      r'proxy'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        proxy,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'proxy' '}',
+        encodeQueryParameter(_serializers, proxy, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
-      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[],
+        ...?extra,
+      },
       validateStatus: validateStatus,
     );
 
@@ -397,19 +390,18 @@ class DefaultApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/idp/{proxy+}'.replaceAll(
-      '{'
-      r'proxy'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        proxy,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'proxy' '}',
+        encodeQueryParameter(_serializers, proxy, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{...?headers},
-      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[],
+        ...?extra,
+      },
       validateStatus: validateStatus,
     );
 
@@ -448,19 +440,18 @@ class DefaultApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/idp/{proxy+}'.replaceAll(
-      '{'
-      r'proxy'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        proxy,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'proxy' '}',
+        encodeQueryParameter(_serializers, proxy, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
-      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[],
+        ...?extra,
+      },
       validateStatus: validateStatus,
     );
 
@@ -499,19 +490,18 @@ class DefaultApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/idp/{proxy+}'.replaceAll(
-      '{'
-      r'proxy'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        proxy,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'proxy' '}',
+        encodeQueryParameter(_serializers, proxy, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'PUT',
-      headers: <String, dynamic>{...?headers},
-      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[],
+        ...?extra,
+      },
       validateStatus: validateStatus,
     );
 

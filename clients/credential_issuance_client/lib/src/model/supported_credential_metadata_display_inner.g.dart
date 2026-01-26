@@ -19,22 +19,24 @@ class _$SupportedCredentialMetadataDisplayInner
   @override
   final String? textColor;
 
-  factory _$SupportedCredentialMetadataDisplayInner([
-    void Function(SupportedCredentialMetadataDisplayInnerBuilder)? updates,
-  ]) => (SupportedCredentialMetadataDisplayInnerBuilder()..update(updates))
-      ._build();
+  factory _$SupportedCredentialMetadataDisplayInner(
+          [void Function(SupportedCredentialMetadataDisplayInnerBuilder)?
+              updates]) =>
+      (SupportedCredentialMetadataDisplayInnerBuilder()..update(updates))
+          ._build();
 
-  _$SupportedCredentialMetadataDisplayInner._({
-    required this.name,
-    this.locale,
-    this.logo,
-    this.backgroundColor,
-    this.textColor,
-  }) : super._();
+  _$SupportedCredentialMetadataDisplayInner._(
+      {required this.name,
+      this.locale,
+      this.logo,
+      this.backgroundColor,
+      this.textColor})
+      : super._();
   @override
   SupportedCredentialMetadataDisplayInner rebuild(
-    void Function(SupportedCredentialMetadataDisplayInnerBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(SupportedCredentialMetadataDisplayInnerBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   SupportedCredentialMetadataDisplayInnerBuilder toBuilder() =>
@@ -66,8 +68,7 @@ class _$SupportedCredentialMetadataDisplayInner
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'SupportedCredentialMetadataDisplayInner',
-          )
+            r'SupportedCredentialMetadataDisplayInner')
           ..add('name', name)
           ..add('locale', locale)
           ..add('logo', logo)
@@ -79,10 +80,8 @@ class _$SupportedCredentialMetadataDisplayInner
 
 class SupportedCredentialMetadataDisplayInnerBuilder
     implements
-        Builder<
-          SupportedCredentialMetadataDisplayInner,
-          SupportedCredentialMetadataDisplayInnerBuilder
-        > {
+        Builder<SupportedCredentialMetadataDisplayInner,
+            SupportedCredentialMetadataDisplayInnerBuilder> {
   _$SupportedCredentialMetadataDisplayInner? _$v;
 
   String? _name;
@@ -132,8 +131,7 @@ class SupportedCredentialMetadataDisplayInnerBuilder
 
   @override
   void update(
-    void Function(SupportedCredentialMetadataDisplayInnerBuilder)? updates,
-  ) {
+      void Function(SupportedCredentialMetadataDisplayInnerBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -143,14 +141,10 @@ class SupportedCredentialMetadataDisplayInnerBuilder
   _$SupportedCredentialMetadataDisplayInner _build() {
     _$SupportedCredentialMetadataDisplayInner _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$SupportedCredentialMetadataDisplayInner._(
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'SupportedCredentialMetadataDisplayInner',
-              'name',
-            ),
+                name, r'SupportedCredentialMetadataDisplayInner', 'name'),
             locale: locale,
             logo: _logo?.build(),
             backgroundColor: backgroundColor,
@@ -163,10 +157,9 @@ class SupportedCredentialMetadataDisplayInnerBuilder
         _logo?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'SupportedCredentialMetadataDisplayInner',
-          _$failedField,
-          e.toString(),
-        );
+            r'SupportedCredentialMetadataDisplayInner',
+            _$failedField,
+            e.toString());
       }
       rethrow;
     }

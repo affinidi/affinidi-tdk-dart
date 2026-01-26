@@ -88,11 +88,9 @@ class _$NestedDescriptorSerializer
     NestedDescriptor object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -108,39 +106,31 @@ class _$NestedDescriptorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.id = valueDes;
           break;
         case r'path':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.path = valueDes;
           break;
         case r'path_nested':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(NestedDescriptor),
-                  )
-                  as NestedDescriptor;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(NestedDescriptor),
+          ) as NestedDescriptor;
           result.pathNested.replace(valueDes);
           break;
         case r'format':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.format = valueDes;
           break;
         default:

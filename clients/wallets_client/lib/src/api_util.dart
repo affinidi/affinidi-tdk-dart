@@ -13,10 +13,7 @@ import 'package:dio/dio.dart';
 /// Returns primitive or String.
 /// Returns List/Map if the value is BuildList/BuiltMap.
 dynamic encodeFormParameter(
-  Serializers serializers,
-  dynamic value,
-  FullType type,
-) {
+    Serializers serializers, dynamic value, FullType type) {
   if (value == null) {
     return '';
   }

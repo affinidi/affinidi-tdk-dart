@@ -37,9 +37,9 @@ class _$GetAccessOutput extends GetAccessOutput {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'GetAccessOutput',
-    )..add('permissions', permissions)).toString();
+    return (newBuiltValueToStringHelper(r'GetAccessOutput')
+          ..add('permissions', permissions))
+        .toString();
   }
 }
 
@@ -82,7 +82,10 @@ class GetAccessOutputBuilder
   _$GetAccessOutput _build() {
     _$GetAccessOutput _$result;
     try {
-      _$result = _$v ?? _$GetAccessOutput._(permissions: permissions.build());
+      _$result = _$v ??
+          _$GetAccessOutput._(
+            permissions: permissions.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -90,10 +93,7 @@ class GetAccessOutputBuilder
         permissions.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'GetAccessOutput',
-          _$failedField,
-          e.toString(),
-        );
+            r'GetAccessOutput', _$failedField, e.toString());
       }
       rethrow;
     }

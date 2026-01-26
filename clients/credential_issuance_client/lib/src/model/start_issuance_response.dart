@@ -36,9 +36,8 @@ abstract class StartIssuanceResponse
 
   StartIssuanceResponse._();
 
-  factory StartIssuanceResponse([
-    void updates(StartIssuanceResponseBuilder b),
-  ]) = _$StartIssuanceResponse;
+  factory StartIssuanceResponse(
+      [void updates(StartIssuanceResponseBuilder b)]) = _$StartIssuanceResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(StartIssuanceResponseBuilder b) => b;
@@ -53,7 +52,7 @@ class _$StartIssuanceResponseSerializer
   @override
   final Iterable<Type> types = const [
     StartIssuanceResponse,
-    _$StartIssuanceResponse,
+    _$StartIssuanceResponse
   ];
 
   @override
@@ -94,11 +93,9 @@ class _$StartIssuanceResponseSerializer
     StartIssuanceResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -114,36 +111,31 @@ class _$StartIssuanceResponseSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'credentialOfferUri':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.credentialOfferUri = valueDes;
           break;
         case r'txCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.txCode = valueDes;
           break;
         case r'issuanceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.issuanceId = valueDes;
           break;
         case r'expiresIn':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.expiresIn = valueDes;
           break;
         default:

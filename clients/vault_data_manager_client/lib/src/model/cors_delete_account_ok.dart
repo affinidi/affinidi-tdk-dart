@@ -36,7 +36,7 @@ class _$CorsDeleteAccountOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsDeleteAccountOK,
-    _$CorsDeleteAccountOK,
+    _$CorsDeleteAccountOK
   ];
 
   @override
@@ -62,11 +62,9 @@ class _$CorsDeleteAccountOKSerializer
     CorsDeleteAccountOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -82,12 +80,10 @@ class _$CorsDeleteAccountOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsDeleteAccountOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsDeleteAccountOk = valueDes;
           break;
         default:

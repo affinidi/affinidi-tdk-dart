@@ -26,9 +26,9 @@ abstract class PrepareRequestCreatedData
 
   PrepareRequestCreatedData._();
 
-  factory PrepareRequestCreatedData([
-    void updates(PrepareRequestCreatedDataBuilder b),
-  ]) = _$PrepareRequestCreatedData;
+  factory PrepareRequestCreatedData(
+          [void updates(PrepareRequestCreatedDataBuilder b)]) =
+      _$PrepareRequestCreatedData;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(PrepareRequestCreatedDataBuilder b) => b;
@@ -43,7 +43,7 @@ class _$PrepareRequestCreatedDataSerializer
   @override
   final Iterable<Type> types = const [
     PrepareRequestCreatedData,
-    _$PrepareRequestCreatedData,
+    _$PrepareRequestCreatedData
   ];
 
   @override
@@ -72,11 +72,9 @@ class _$PrepareRequestCreatedDataSerializer
     PrepareRequestCreatedData object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -92,21 +90,17 @@ class _$PrepareRequestCreatedDataSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'jwt':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.jwt = valueDes;
           break;
         case r'correlationId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.correlationId = valueDes;
           break;
         default:

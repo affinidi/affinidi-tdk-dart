@@ -10,15 +10,15 @@ class _$SignCredentialsLdpResultDto extends SignCredentialsLdpResultDto {
   @override
   final JsonObject credential;
 
-  factory _$SignCredentialsLdpResultDto([
-    void Function(SignCredentialsLdpResultDtoBuilder)? updates,
-  ]) => (SignCredentialsLdpResultDtoBuilder()..update(updates))._build();
+  factory _$SignCredentialsLdpResultDto(
+          [void Function(SignCredentialsLdpResultDtoBuilder)? updates]) =>
+      (SignCredentialsLdpResultDtoBuilder()..update(updates))._build();
 
   _$SignCredentialsLdpResultDto._({required this.credential}) : super._();
   @override
   SignCredentialsLdpResultDto rebuild(
-    void Function(SignCredentialsLdpResultDtoBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(SignCredentialsLdpResultDtoBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   SignCredentialsLdpResultDtoBuilder toBuilder() =>
@@ -41,18 +41,16 @@ class _$SignCredentialsLdpResultDto extends SignCredentialsLdpResultDto {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'SignCredentialsLdpResultDto',
-    )..add('credential', credential)).toString();
+    return (newBuiltValueToStringHelper(r'SignCredentialsLdpResultDto')
+          ..add('credential', credential))
+        .toString();
   }
 }
 
 class SignCredentialsLdpResultDtoBuilder
     implements
-        Builder<
-          SignCredentialsLdpResultDto,
-          SignCredentialsLdpResultDtoBuilder
-        > {
+        Builder<SignCredentialsLdpResultDto,
+            SignCredentialsLdpResultDtoBuilder> {
   _$SignCredentialsLdpResultDto? _$v;
 
   JsonObject? _credential;
@@ -86,14 +84,10 @@ class SignCredentialsLdpResultDtoBuilder
   SignCredentialsLdpResultDto build() => _build();
 
   _$SignCredentialsLdpResultDto _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$SignCredentialsLdpResultDto._(
           credential: BuiltValueNullFieldError.checkNotNull(
-            credential,
-            r'SignCredentialsLdpResultDto',
-            'credential',
-          ),
+              credential, r'SignCredentialsLdpResultDto', 'credential'),
         );
     replace(_$result);
     return _$result;

@@ -17,20 +17,17 @@ class _$InvalidParameterErrorDetailsInner
   @override
   final String? location;
 
-  factory _$InvalidParameterErrorDetailsInner([
-    void Function(InvalidParameterErrorDetailsInnerBuilder)? updates,
-  ]) => (InvalidParameterErrorDetailsInnerBuilder()..update(updates))._build();
+  factory _$InvalidParameterErrorDetailsInner(
+          [void Function(InvalidParameterErrorDetailsInnerBuilder)? updates]) =>
+      (InvalidParameterErrorDetailsInnerBuilder()..update(updates))._build();
 
-  _$InvalidParameterErrorDetailsInner._({
-    required this.issue,
-    this.field,
-    this.value,
-    this.location,
-  }) : super._();
+  _$InvalidParameterErrorDetailsInner._(
+      {required this.issue, this.field, this.value, this.location})
+      : super._();
   @override
   InvalidParameterErrorDetailsInner rebuild(
-    void Function(InvalidParameterErrorDetailsInnerBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(InvalidParameterErrorDetailsInnerBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   InvalidParameterErrorDetailsInnerBuilder toBuilder() =>
@@ -70,10 +67,8 @@ class _$InvalidParameterErrorDetailsInner
 
 class InvalidParameterErrorDetailsInnerBuilder
     implements
-        Builder<
-          InvalidParameterErrorDetailsInner,
-          InvalidParameterErrorDetailsInnerBuilder
-        > {
+        Builder<InvalidParameterErrorDetailsInner,
+            InvalidParameterErrorDetailsInnerBuilder> {
   _$InvalidParameterErrorDetailsInner? _$v;
 
   String? _issue;
@@ -115,8 +110,7 @@ class InvalidParameterErrorDetailsInnerBuilder
 
   @override
   void update(
-    void Function(InvalidParameterErrorDetailsInnerBuilder)? updates,
-  ) {
+      void Function(InvalidParameterErrorDetailsInnerBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -124,14 +118,10 @@ class InvalidParameterErrorDetailsInnerBuilder
   InvalidParameterErrorDetailsInner build() => _build();
 
   _$InvalidParameterErrorDetailsInner _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$InvalidParameterErrorDetailsInner._(
           issue: BuiltValueNullFieldError.checkNotNull(
-            issue,
-            r'InvalidParameterErrorDetailsInner',
-            'issue',
-          ),
+              issue, r'InvalidParameterErrorDetailsInner', 'issue'),
           field: field,
           value: value,
           location: location,

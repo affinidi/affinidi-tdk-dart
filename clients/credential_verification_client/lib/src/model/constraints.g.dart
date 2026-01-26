@@ -7,15 +7,14 @@ part of 'constraints.dart';
 // **************************************************************************
 
 const ConstraintsLimitDisclosureEnum
-_$constraintsLimitDisclosureEnum_required_ =
+    _$constraintsLimitDisclosureEnum_required_ =
     const ConstraintsLimitDisclosureEnum._('required_');
 const ConstraintsLimitDisclosureEnum
-_$constraintsLimitDisclosureEnum_preferred =
+    _$constraintsLimitDisclosureEnum_preferred =
     const ConstraintsLimitDisclosureEnum._('preferred');
 
 ConstraintsLimitDisclosureEnum _$constraintsLimitDisclosureEnumValueOf(
-  String name,
-) {
+    String name) {
   switch (name) {
     case 'required_':
       return _$constraintsLimitDisclosureEnum_required_;
@@ -27,24 +26,21 @@ ConstraintsLimitDisclosureEnum _$constraintsLimitDisclosureEnumValueOf(
 }
 
 final BuiltSet<ConstraintsLimitDisclosureEnum>
-_$constraintsLimitDisclosureEnumValues =
-    BuiltSet<ConstraintsLimitDisclosureEnum>(
-      const <ConstraintsLimitDisclosureEnum>[
-        _$constraintsLimitDisclosureEnum_required_,
-        _$constraintsLimitDisclosureEnum_preferred,
-      ],
-    );
+    _$constraintsLimitDisclosureEnumValues = BuiltSet<
+        ConstraintsLimitDisclosureEnum>(const <ConstraintsLimitDisclosureEnum>[
+  _$constraintsLimitDisclosureEnum_required_,
+  _$constraintsLimitDisclosureEnum_preferred,
+]);
 
 const ConstraintsSubjectIsIssuerEnum
-_$constraintsSubjectIsIssuerEnum_required_ =
+    _$constraintsSubjectIsIssuerEnum_required_ =
     const ConstraintsSubjectIsIssuerEnum._('required_');
 const ConstraintsSubjectIsIssuerEnum
-_$constraintsSubjectIsIssuerEnum_preferred =
+    _$constraintsSubjectIsIssuerEnum_preferred =
     const ConstraintsSubjectIsIssuerEnum._('preferred');
 
 ConstraintsSubjectIsIssuerEnum _$constraintsSubjectIsIssuerEnumValueOf(
-  String name,
-) {
+    String name) {
   switch (name) {
     case 'required_':
       return _$constraintsSubjectIsIssuerEnum_required_;
@@ -56,19 +52,17 @@ ConstraintsSubjectIsIssuerEnum _$constraintsSubjectIsIssuerEnumValueOf(
 }
 
 final BuiltSet<ConstraintsSubjectIsIssuerEnum>
-_$constraintsSubjectIsIssuerEnumValues =
-    BuiltSet<ConstraintsSubjectIsIssuerEnum>(
-      const <ConstraintsSubjectIsIssuerEnum>[
-        _$constraintsSubjectIsIssuerEnum_required_,
-        _$constraintsSubjectIsIssuerEnum_preferred,
-      ],
-    );
+    _$constraintsSubjectIsIssuerEnumValues = BuiltSet<
+        ConstraintsSubjectIsIssuerEnum>(const <ConstraintsSubjectIsIssuerEnum>[
+  _$constraintsSubjectIsIssuerEnum_required_,
+  _$constraintsSubjectIsIssuerEnum_preferred,
+]);
 
 Serializer<ConstraintsLimitDisclosureEnum>
-_$constraintsLimitDisclosureEnumSerializer =
+    _$constraintsLimitDisclosureEnumSerializer =
     _$ConstraintsLimitDisclosureEnumSerializer();
 Serializer<ConstraintsSubjectIsIssuerEnum>
-_$constraintsSubjectIsIssuerEnumSerializer =
+    _$constraintsSubjectIsIssuerEnumSerializer =
     _$ConstraintsSubjectIsIssuerEnumSerializer();
 
 class _$ConstraintsLimitDisclosureEnumSerializer
@@ -89,19 +83,16 @@ class _$ConstraintsLimitDisclosureEnumSerializer
 
   @override
   Object serialize(
-    Serializers serializers,
-    ConstraintsLimitDisclosureEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, ConstraintsLimitDisclosureEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   ConstraintsLimitDisclosureEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => ConstraintsLimitDisclosureEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      ConstraintsLimitDisclosureEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$ConstraintsSubjectIsIssuerEnumSerializer
@@ -122,19 +113,16 @@ class _$ConstraintsSubjectIsIssuerEnumSerializer
 
   @override
   Object serialize(
-    Serializers serializers,
-    ConstraintsSubjectIsIssuerEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, ConstraintsSubjectIsIssuerEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   ConstraintsSubjectIsIssuerEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => ConstraintsSubjectIsIssuerEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      ConstraintsSubjectIsIssuerEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$Constraints extends Constraints {
@@ -154,14 +142,14 @@ class _$Constraints extends Constraints {
   factory _$Constraints([void Function(ConstraintsBuilder)? updates]) =>
       (ConstraintsBuilder()..update(updates))._build();
 
-  _$Constraints._({
-    this.limitDisclosure,
-    this.statuses,
-    this.fields,
-    this.subjectIsIssuer,
-    this.isHolder,
-    this.sameSubject,
-  }) : super._();
+  _$Constraints._(
+      {this.limitDisclosure,
+      this.statuses,
+      this.fields,
+      this.subjectIsIssuer,
+      this.isHolder,
+      this.sameSubject})
+      : super._();
   @override
   Constraints rebuild(void Function(ConstraintsBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -278,8 +266,7 @@ class ConstraintsBuilder implements Builder<Constraints, ConstraintsBuilder> {
   _$Constraints _build() {
     _$Constraints _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$Constraints._(
             limitDisclosure: limitDisclosure,
             statuses: _statuses?.build(),
@@ -302,10 +289,7 @@ class ConstraintsBuilder implements Builder<Constraints, ConstraintsBuilder> {
         _sameSubject?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'Constraints',
-          _$failedField,
-          e.toString(),
-        );
+            r'Constraints', _$failedField, e.toString());
       }
       rethrow;
     }

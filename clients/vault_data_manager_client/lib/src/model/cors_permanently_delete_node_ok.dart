@@ -21,9 +21,9 @@ abstract class CorsPermanentlyDeleteNodeOK
 
   CorsPermanentlyDeleteNodeOK._();
 
-  factory CorsPermanentlyDeleteNodeOK([
-    void updates(CorsPermanentlyDeleteNodeOKBuilder b),
-  ]) = _$CorsPermanentlyDeleteNodeOK;
+  factory CorsPermanentlyDeleteNodeOK(
+          [void updates(CorsPermanentlyDeleteNodeOKBuilder b)]) =
+      _$CorsPermanentlyDeleteNodeOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsPermanentlyDeleteNodeOKBuilder b) => b;
@@ -38,7 +38,7 @@ class _$CorsPermanentlyDeleteNodeOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsPermanentlyDeleteNodeOK,
-    _$CorsPermanentlyDeleteNodeOK,
+    _$CorsPermanentlyDeleteNodeOK
   ];
 
   @override
@@ -64,11 +64,9 @@ class _$CorsPermanentlyDeleteNodeOKSerializer
     CorsPermanentlyDeleteNodeOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -84,12 +82,10 @@ class _$CorsPermanentlyDeleteNodeOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsPermanentlyDeleteNodeOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsPermanentlyDeleteNodeOk = valueDes;
           break;
         default:

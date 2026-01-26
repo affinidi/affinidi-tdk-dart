@@ -7,17 +7,17 @@ part of 'update_issuance_config_input.dart';
 // **************************************************************************
 
 const UpdateIssuanceConfigInputFormatEnum
-_$updateIssuanceConfigInputFormatEnum_ldpVc =
+    _$updateIssuanceConfigInputFormatEnum_ldpVc =
     const UpdateIssuanceConfigInputFormatEnum._('ldpVc');
 const UpdateIssuanceConfigInputFormatEnum
-_$updateIssuanceConfigInputFormatEnum_jwtVcJsonLd =
+    _$updateIssuanceConfigInputFormatEnum_jwtVcJsonLd =
     const UpdateIssuanceConfigInputFormatEnum._('jwtVcJsonLd');
 const UpdateIssuanceConfigInputFormatEnum
-_$updateIssuanceConfigInputFormatEnum_sdJwtVcJsonLd =
+    _$updateIssuanceConfigInputFormatEnum_sdJwtVcJsonLd =
     const UpdateIssuanceConfigInputFormatEnum._('sdJwtVcJsonLd');
 
 UpdateIssuanceConfigInputFormatEnum
-_$updateIssuanceConfigInputFormatEnumValueOf(String name) {
+    _$updateIssuanceConfigInputFormatEnumValueOf(String name) {
   switch (name) {
     case 'ldpVc':
       return _$updateIssuanceConfigInputFormatEnum_ldpVc;
@@ -31,17 +31,15 @@ _$updateIssuanceConfigInputFormatEnumValueOf(String name) {
 }
 
 final BuiltSet<UpdateIssuanceConfigInputFormatEnum>
-_$updateIssuanceConfigInputFormatEnumValues =
-    BuiltSet<UpdateIssuanceConfigInputFormatEnum>(
-      const <UpdateIssuanceConfigInputFormatEnum>[
-        _$updateIssuanceConfigInputFormatEnum_ldpVc,
-        _$updateIssuanceConfigInputFormatEnum_jwtVcJsonLd,
-        _$updateIssuanceConfigInputFormatEnum_sdJwtVcJsonLd,
-      ],
-    );
+    _$updateIssuanceConfigInputFormatEnumValues = BuiltSet<
+        UpdateIssuanceConfigInputFormatEnum>(const <UpdateIssuanceConfigInputFormatEnum>[
+  _$updateIssuanceConfigInputFormatEnum_ldpVc,
+  _$updateIssuanceConfigInputFormatEnum_jwtVcJsonLd,
+  _$updateIssuanceConfigInputFormatEnum_sdJwtVcJsonLd,
+]);
 
 Serializer<UpdateIssuanceConfigInputFormatEnum>
-_$updateIssuanceConfigInputFormatEnumSerializer =
+    _$updateIssuanceConfigInputFormatEnumSerializer =
     _$UpdateIssuanceConfigInputFormatEnumSerializer();
 
 class _$UpdateIssuanceConfigInputFormatEnumSerializer
@@ -59,26 +57,23 @@ class _$UpdateIssuanceConfigInputFormatEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    UpdateIssuanceConfigInputFormatEnum,
+    UpdateIssuanceConfigInputFormatEnum
   ];
   @override
   final String wireName = 'UpdateIssuanceConfigInputFormatEnum';
 
   @override
   Object serialize(
-    Serializers serializers,
-    UpdateIssuanceConfigInputFormatEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, UpdateIssuanceConfigInputFormatEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   UpdateIssuanceConfigInputFormatEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => UpdateIssuanceConfigInputFormatEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      UpdateIssuanceConfigInputFormatEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$UpdateIssuanceConfigInput extends UpdateIssuanceConfigInput {
@@ -103,26 +98,26 @@ class _$UpdateIssuanceConfigInput extends UpdateIssuanceConfigInput {
   @override
   final CisConfigurationWebhookSetting? webhook;
 
-  factory _$UpdateIssuanceConfigInput([
-    void Function(UpdateIssuanceConfigInputBuilder)? updates,
-  ]) => (UpdateIssuanceConfigInputBuilder()..update(updates))._build();
+  factory _$UpdateIssuanceConfigInput(
+          [void Function(UpdateIssuanceConfigInputBuilder)? updates]) =>
+      (UpdateIssuanceConfigInputBuilder()..update(updates))._build();
 
-  _$UpdateIssuanceConfigInput._({
-    this.name,
-    this.description,
-    this.issuerWalletId,
-    this.credentialOfferDuration,
-    this.format,
-    this.issuerUri,
-    this.credentialSupported,
-    this.issuerMetadata,
-    this.returnUris,
-    this.webhook,
-  }) : super._();
+  _$UpdateIssuanceConfigInput._(
+      {this.name,
+      this.description,
+      this.issuerWalletId,
+      this.credentialOfferDuration,
+      this.format,
+      this.issuerUri,
+      this.credentialSupported,
+      this.issuerMetadata,
+      this.returnUris,
+      this.webhook})
+      : super._();
   @override
   UpdateIssuanceConfigInput rebuild(
-    void Function(UpdateIssuanceConfigInputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(UpdateIssuanceConfigInputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   UpdateIssuanceConfigInputBuilder toBuilder() =>
@@ -214,8 +209,8 @@ class UpdateIssuanceConfigInputBuilder
   ListBuilder<CredentialSupportedObject> get credentialSupported =>
       _$this._credentialSupported ??= ListBuilder<CredentialSupportedObject>();
   set credentialSupported(
-    ListBuilder<CredentialSupportedObject>? credentialSupported,
-  ) => _$this._credentialSupported = credentialSupported;
+          ListBuilder<CredentialSupportedObject>? credentialSupported) =>
+      _$this._credentialSupported = credentialSupported;
 
   MapBuilder<String, JsonObject?>? _issuerMetadata;
   MapBuilder<String, JsonObject?> get issuerMetadata =>
@@ -273,8 +268,7 @@ class UpdateIssuanceConfigInputBuilder
   _$UpdateIssuanceConfigInput _build() {
     _$UpdateIssuanceConfigInput _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$UpdateIssuanceConfigInput._(
             name: name,
             description: description,
@@ -300,10 +294,7 @@ class UpdateIssuanceConfigInputBuilder
         _webhook?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'UpdateIssuanceConfigInput',
-          _$failedField,
-          e.toString(),
-        );
+            r'UpdateIssuanceConfigInput', _$failedField, e.toString());
       }
       rethrow;
     }

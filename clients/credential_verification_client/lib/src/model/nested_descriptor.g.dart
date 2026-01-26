@@ -16,16 +16,13 @@ class _$NestedDescriptor extends NestedDescriptor {
   @override
   final String format;
 
-  factory _$NestedDescriptor([
-    void Function(NestedDescriptorBuilder)? updates,
-  ]) => (NestedDescriptorBuilder()..update(updates))._build();
+  factory _$NestedDescriptor(
+          [void Function(NestedDescriptorBuilder)? updates]) =>
+      (NestedDescriptorBuilder()..update(updates))._build();
 
-  _$NestedDescriptor._({
-    this.id,
-    required this.path,
-    this.pathNested,
-    required this.format,
-  }) : super._();
+  _$NestedDescriptor._(
+      {this.id, required this.path, this.pathNested, required this.format})
+      : super._();
   @override
   NestedDescriptor rebuild(void Function(NestedDescriptorBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -120,21 +117,14 @@ class NestedDescriptorBuilder
   _$NestedDescriptor _build() {
     _$NestedDescriptor _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$NestedDescriptor._(
             id: id,
             path: BuiltValueNullFieldError.checkNotNull(
-              path,
-              r'NestedDescriptor',
-              'path',
-            ),
+                path, r'NestedDescriptor', 'path'),
             pathNested: _pathNested?.build(),
             format: BuiltValueNullFieldError.checkNotNull(
-              format,
-              r'NestedDescriptor',
-              'format',
-            ),
+                format, r'NestedDescriptor', 'format'),
           );
     } catch (_) {
       late String _$failedField;
@@ -143,10 +133,7 @@ class NestedDescriptorBuilder
         _pathNested?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'NestedDescriptor',
-          _$failedField,
-          e.toString(),
-        );
+            r'NestedDescriptor', _$failedField, e.toString());
       }
       rethrow;
     }

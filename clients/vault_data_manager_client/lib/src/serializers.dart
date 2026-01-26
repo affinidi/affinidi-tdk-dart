@@ -134,14 +134,13 @@ part 'serializers.g.dart';
   UpdateProfileDataInput,
   UpdateProfileDataOK,
 ])
-Serializers serializers =
-    (_$serializers.toBuilder()
-          ..add(NodeDto.serializer)
-          ..add(const OneOfSerializer())
-          ..add(const AnyOfSerializer())
-          ..add(const DateSerializer())
-          ..add(Iso8601DateTimeSerializer()))
-        .build();
+Serializers serializers = (_$serializers.toBuilder()
+      ..add(NodeDto.serializer)
+      ..add(const OneOfSerializer())
+      ..add(const AnyOfSerializer())
+      ..add(const DateSerializer())
+      ..add(Iso8601DateTimeSerializer()))
+    .build();
 
 Serializers standardSerializers =
     (serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

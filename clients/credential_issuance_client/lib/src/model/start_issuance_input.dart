@@ -86,9 +86,8 @@ class _$StartIssuanceInputSerializer
     yield r'data';
     yield serializers.serialize(
       object.data,
-      specifiedType: const FullType(BuiltList, [
-        FullType(StartIssuanceInputDataInner),
-      ]),
+      specifiedType:
+          const FullType(BuiltList, [FullType(StartIssuanceInputDataInner)]),
     );
   }
 
@@ -98,11 +97,9 @@ class _$StartIssuanceInputSerializer
     StartIssuanceInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -118,43 +115,32 @@ class _$StartIssuanceInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'claimMode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      StartIssuanceInputClaimModeEnum,
-                    ),
-                  )
-                  as StartIssuanceInputClaimModeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(StartIssuanceInputClaimModeEnum),
+          ) as StartIssuanceInputClaimModeEnum;
           result.claimMode = valueDes;
           break;
         case r'holderDid':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.holderDid = valueDes;
           break;
         case r'issuanceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.issuanceId = valueDes;
           break;
         case r'data':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(StartIssuanceInputDataInner),
-                    ]),
-                  )
-                  as BuiltList<StartIssuanceInputDataInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(StartIssuanceInputDataInner)]),
+          ) as BuiltList<StartIssuanceInputDataInner>;
           result.data.replace(valueDes);
           break;
         default:

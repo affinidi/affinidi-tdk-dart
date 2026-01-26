@@ -20,9 +20,9 @@ abstract class CorsGetConfigurationOK
 
   CorsGetConfigurationOK._();
 
-  factory CorsGetConfigurationOK([
-    void updates(CorsGetConfigurationOKBuilder b),
-  ]) = _$CorsGetConfigurationOK;
+  factory CorsGetConfigurationOK(
+          [void updates(CorsGetConfigurationOKBuilder b)]) =
+      _$CorsGetConfigurationOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsGetConfigurationOKBuilder b) => b;
@@ -37,7 +37,7 @@ class _$CorsGetConfigurationOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsGetConfigurationOK,
-    _$CorsGetConfigurationOK,
+    _$CorsGetConfigurationOK
   ];
 
   @override
@@ -63,11 +63,9 @@ class _$CorsGetConfigurationOKSerializer
     CorsGetConfigurationOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -83,12 +81,10 @@ class _$CorsGetConfigurationOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsGetConfigurationOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsGetConfigurationOk = valueDes;
           break;
         default:

@@ -37,9 +37,9 @@ abstract class SignCredentialInputDto
 
   SignCredentialInputDto._();
 
-  factory SignCredentialInputDto([
-    void updates(SignCredentialInputDtoBuilder b),
-  ]) = _$SignCredentialInputDto;
+  factory SignCredentialInputDto(
+          [void updates(SignCredentialInputDtoBuilder b)]) =
+      _$SignCredentialInputDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SignCredentialInputDtoBuilder b) => b;
@@ -54,7 +54,7 @@ class _$SignCredentialInputDtoSerializer
   @override
   final Iterable<Type> types = const [
     SignCredentialInputDto,
-    _$SignCredentialInputDto,
+    _$SignCredentialInputDto
   ];
 
   @override
@@ -83,18 +83,16 @@ class _$SignCredentialInputDtoSerializer
       yield r'credentialFormat';
       yield serializers.serialize(
         object.credentialFormat,
-        specifiedType: const FullType(
-          SignCredentialInputDtoCredentialFormatEnum,
-        ),
+        specifiedType:
+            const FullType(SignCredentialInputDtoCredentialFormatEnum),
       );
     }
     if (object.unsignedCredentialParams != null) {
       yield r'unsignedCredentialParams';
       yield serializers.serialize(
         object.unsignedCredentialParams,
-        specifiedType: const FullType(
-          SignCredentialInputDtoUnsignedCredentialParams,
-        ),
+        specifiedType:
+            const FullType(SignCredentialInputDtoUnsignedCredentialParams),
       );
     }
   }
@@ -105,11 +103,9 @@ class _$SignCredentialInputDtoSerializer
     SignCredentialInputDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -125,43 +121,33 @@ class _$SignCredentialInputDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'unsignedCredential':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.unsignedCredential = valueDes;
           break;
         case r'revocable':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.revocable = valueDes;
           break;
         case r'credentialFormat':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      SignCredentialInputDtoCredentialFormatEnum,
-                    ),
-                  )
-                  as SignCredentialInputDtoCredentialFormatEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(SignCredentialInputDtoCredentialFormatEnum),
+          ) as SignCredentialInputDtoCredentialFormatEnum;
           result.credentialFormat = valueDes;
           break;
         case r'unsignedCredentialParams':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      SignCredentialInputDtoUnsignedCredentialParams,
-                    ),
-                  )
-                  as SignCredentialInputDtoUnsignedCredentialParams;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(SignCredentialInputDtoUnsignedCredentialParams),
+          ) as SignCredentialInputDtoUnsignedCredentialParams;
           result.unsignedCredentialParams.replace(valueDes);
           break;
         default:
@@ -205,7 +191,7 @@ class SignCredentialInputDtoCredentialFormatEnum extends EnumClass {
       _$signCredentialInputDtoCredentialFormatEnum_sdJwtVcJsonLd;
 
   static Serializer<SignCredentialInputDtoCredentialFormatEnum>
-  get serializer => _$signCredentialInputDtoCredentialFormatEnumSerializer;
+      get serializer => _$signCredentialInputDtoCredentialFormatEnumSerializer;
 
   const SignCredentialInputDtoCredentialFormatEnum._(String name) : super(name);
 

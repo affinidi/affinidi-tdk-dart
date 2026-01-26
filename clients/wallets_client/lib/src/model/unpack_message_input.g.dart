@@ -10,15 +10,15 @@ class _$UnpackMessageInput extends UnpackMessageInput {
   @override
   final JsonObject message;
 
-  factory _$UnpackMessageInput([
-    void Function(UnpackMessageInputBuilder)? updates,
-  ]) => (UnpackMessageInputBuilder()..update(updates))._build();
+  factory _$UnpackMessageInput(
+          [void Function(UnpackMessageInputBuilder)? updates]) =>
+      (UnpackMessageInputBuilder()..update(updates))._build();
 
   _$UnpackMessageInput._({required this.message}) : super._();
   @override
   UnpackMessageInput rebuild(
-    void Function(UnpackMessageInputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(UnpackMessageInputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   UnpackMessageInputBuilder toBuilder() =>
@@ -40,9 +40,9 @@ class _$UnpackMessageInput extends UnpackMessageInput {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'UnpackMessageInput',
-    )..add('message', message)).toString();
+    return (newBuiltValueToStringHelper(r'UnpackMessageInput')
+          ..add('message', message))
+        .toString();
   }
 }
 
@@ -81,14 +81,10 @@ class UnpackMessageInputBuilder
   UnpackMessageInput build() => _build();
 
   _$UnpackMessageInput _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$UnpackMessageInput._(
           message: BuiltValueNullFieldError.checkNotNull(
-            message,
-            r'UnpackMessageInput',
-            'message',
-          ),
+              message, r'UnpackMessageInput', 'message'),
         );
     replace(_$result);
     return _$result;

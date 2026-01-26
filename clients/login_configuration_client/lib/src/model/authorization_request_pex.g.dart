@@ -18,21 +18,21 @@ class _$AuthorizationRequestPex extends AuthorizationRequestPex {
   @override
   final String? nonce;
 
-  factory _$AuthorizationRequestPex([
-    void Function(AuthorizationRequestPexBuilder)? updates,
-  ]) => (AuthorizationRequestPexBuilder()..update(updates))._build();
+  factory _$AuthorizationRequestPex(
+          [void Function(AuthorizationRequestPexBuilder)? updates]) =>
+      (AuthorizationRequestPexBuilder()..update(updates))._build();
 
-  _$AuthorizationRequestPex._({
-    required this.state,
-    required this.presentationDefinition,
-    this.ari,
-    this.clientId,
-    this.nonce,
-  }) : super._();
+  _$AuthorizationRequestPex._(
+      {required this.state,
+      required this.presentationDefinition,
+      this.ari,
+      this.clientId,
+      this.nonce})
+      : super._();
   @override
   AuthorizationRequestPex rebuild(
-    void Function(AuthorizationRequestPexBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(AuthorizationRequestPexBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   AuthorizationRequestPexBuilder toBuilder() =>
@@ -130,19 +130,14 @@ class AuthorizationRequestPexBuilder
   AuthorizationRequestPex build() => _build();
 
   _$AuthorizationRequestPex _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$AuthorizationRequestPex._(
           state: BuiltValueNullFieldError.checkNotNull(
-            state,
-            r'AuthorizationRequestPex',
-            'state',
-          ),
+              state, r'AuthorizationRequestPex', 'state'),
           presentationDefinition: BuiltValueNullFieldError.checkNotNull(
-            presentationDefinition,
-            r'AuthorizationRequestPex',
-            'presentationDefinition',
-          ),
+              presentationDefinition,
+              r'AuthorizationRequestPex',
+              'presentationDefinition'),
           ari: ari,
           clientId: clientId,
           nonce: nonce,

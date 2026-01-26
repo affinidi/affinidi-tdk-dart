@@ -28,9 +28,8 @@ abstract class AuthcryptMessageInput
 
   AuthcryptMessageInput._();
 
-  factory AuthcryptMessageInput([
-    void updates(AuthcryptMessageInputBuilder b),
-  ]) = _$AuthcryptMessageInput;
+  factory AuthcryptMessageInput(
+      [void updates(AuthcryptMessageInputBuilder b)]) = _$AuthcryptMessageInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AuthcryptMessageInputBuilder b) => b;
@@ -45,7 +44,7 @@ class _$AuthcryptMessageInputSerializer
   @override
   final Iterable<Type> types = const [
     AuthcryptMessageInput,
-    _$AuthcryptMessageInput,
+    _$AuthcryptMessageInput
   ];
 
   @override
@@ -76,11 +75,9 @@ class _$AuthcryptMessageInputSerializer
     AuthcryptMessageInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -96,23 +93,18 @@ class _$AuthcryptMessageInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'plainTextMessage':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.plainTextMessage = valueDes;
           break;
         case r'signatureScheme':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      AuthcryptMessageInputSignatureSchemeEnum,
-                    ),
-                  )
-                  as AuthcryptMessageInputSignatureSchemeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(AuthcryptMessageInputSignatureSchemeEnum),
+          ) as AuthcryptMessageInputSignatureSchemeEnum;
           result.signatureScheme = valueDes;
           break;
         default:

@@ -29,17 +29,17 @@ class _$WalletDto extends WalletDto {
   factory _$WalletDto([void Function(WalletDtoBuilder)? updates]) =>
       (WalletDtoBuilder()..update(updates))._build();
 
-  _$WalletDto._({
-    this.id,
-    this.did,
-    this.name,
-    this.description,
-    this.didDocument,
-    this.ari,
-    this.keys,
-    this.createdAt,
-    this.modifiedAt,
-  }) : super._();
+  _$WalletDto._(
+      {this.id,
+      this.did,
+      this.name,
+      this.description,
+      this.didDocument,
+      this.ari,
+      this.keys,
+      this.createdAt,
+      this.modifiedAt})
+      : super._();
   @override
   WalletDto rebuild(void Function(WalletDtoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -171,8 +171,7 @@ class WalletDtoBuilder implements Builder<WalletDto, WalletDtoBuilder> {
   _$WalletDto _build() {
     _$WalletDto _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$WalletDto._(
             id: id,
             did: did,
@@ -191,10 +190,7 @@ class WalletDtoBuilder implements Builder<WalletDto, WalletDtoBuilder> {
         _keys?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'WalletDto',
-          _$failedField,
-          e.toString(),
-        );
+            r'WalletDto', _$failedField, e.toString());
       }
       rethrow;
     }

@@ -15,19 +15,17 @@ part 'list_issuance_response_issuances_inner.g.dart';
 @BuiltValue()
 abstract class ListIssuanceResponseIssuancesInner
     implements
-        Built<
-          ListIssuanceResponseIssuancesInner,
-          ListIssuanceResponseIssuancesInnerBuilder
-        > {
+        Built<ListIssuanceResponseIssuancesInner,
+            ListIssuanceResponseIssuancesInnerBuilder> {
   /// issuance id
   @BuiltValueField(wireName: r'id')
   String get id;
 
   ListIssuanceResponseIssuancesInner._();
 
-  factory ListIssuanceResponseIssuancesInner([
-    void updates(ListIssuanceResponseIssuancesInnerBuilder b),
-  ]) = _$ListIssuanceResponseIssuancesInner;
+  factory ListIssuanceResponseIssuancesInner(
+          [void updates(ListIssuanceResponseIssuancesInnerBuilder b)]) =
+      _$ListIssuanceResponseIssuancesInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ListIssuanceResponseIssuancesInnerBuilder b) => b;
@@ -42,7 +40,7 @@ class _$ListIssuanceResponseIssuancesInnerSerializer
   @override
   final Iterable<Type> types = const [
     ListIssuanceResponseIssuancesInner,
-    _$ListIssuanceResponseIssuancesInner,
+    _$ListIssuanceResponseIssuancesInner
   ];
 
   @override
@@ -66,11 +64,9 @@ class _$ListIssuanceResponseIssuancesInnerSerializer
     ListIssuanceResponseIssuancesInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -86,12 +82,10 @@ class _$ListIssuanceResponseIssuancesInnerSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.id = valueDes;
           break;
         default:

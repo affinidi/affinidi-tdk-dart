@@ -53,9 +53,9 @@ abstract class PresentationDefinition
 
   PresentationDefinition._();
 
-  factory PresentationDefinition([
-    void updates(PresentationDefinitionBuilder b),
-  ]) = _$PresentationDefinition;
+  factory PresentationDefinition(
+          [void updates(PresentationDefinitionBuilder b)]) =
+      _$PresentationDefinition;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(PresentationDefinitionBuilder b) => b;
@@ -70,7 +70,7 @@ class _$PresentationDefinitionSerializer
   @override
   final Iterable<Type> types = const [
     PresentationDefinition,
-    _$PresentationDefinition,
+    _$PresentationDefinition
   ];
 
   @override
@@ -111,9 +111,8 @@ class _$PresentationDefinitionSerializer
       yield r'submission_requirements';
       yield serializers.serialize(
         object.submissionRequirements,
-        specifiedType: const FullType(BuiltList, [
-          FullType(SubmissionRequirement),
-        ]),
+        specifiedType:
+            const FullType(BuiltList, [FullType(SubmissionRequirement)]),
       );
     }
     yield r'input_descriptors';
@@ -125,10 +124,8 @@ class _$PresentationDefinitionSerializer
       yield r'frame';
       yield serializers.serialize(
         object.frame,
-        specifiedType: const FullType(BuiltMap, [
-          FullType(String),
-          FullType.nullable(JsonObject),
-        ]),
+        specifiedType: const FullType(
+            BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
       );
     }
   }
@@ -139,11 +136,9 @@ class _$PresentationDefinitionSerializer
     PresentationDefinition object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -159,73 +154,55 @@ class _$PresentationDefinitionSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.id = valueDes;
           break;
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'purpose':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.purpose = valueDes;
           break;
         case r'format':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(Format),
-                  )
-                  as Format;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(Format),
+          ) as Format;
           result.format.replace(valueDes);
           break;
         case r'submission_requirements':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(SubmissionRequirement),
-                    ]),
-                  )
-                  as BuiltList<SubmissionRequirement>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(BuiltList, [FullType(SubmissionRequirement)]),
+          ) as BuiltList<SubmissionRequirement>;
           result.submissionRequirements.replace(valueDes);
           break;
         case r'input_descriptors':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(InputDescriptor),
-                    ]),
-                  )
-                  as BuiltList<InputDescriptor>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(BuiltList, [FullType(InputDescriptor)]),
+          ) as BuiltList<InputDescriptor>;
           result.inputDescriptors.replace(valueDes);
           break;
         case r'frame':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltMap, [
-                      FullType(String),
-                      FullType.nullable(JsonObject),
-                    ]),
-                  )
-                  as BuiltMap<String, JsonObject?>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
+          ) as BuiltMap<String, JsonObject?>;
           result.frame.replace(valueDes);
           break;
         default:

@@ -7,11 +7,11 @@ part of 'flow_data_status_lists_details_inner.dart';
 // **************************************************************************
 
 const FlowDataStatusListsDetailsInnerStatusListPurposeEnum
-_$flowDataStatusListsDetailsInnerStatusListPurposeEnum_REVOKED =
+    _$flowDataStatusListsDetailsInnerStatusListPurposeEnum_REVOKED =
     const FlowDataStatusListsDetailsInnerStatusListPurposeEnum._('REVOKED');
 
 FlowDataStatusListsDetailsInnerStatusListPurposeEnum
-_$flowDataStatusListsDetailsInnerStatusListPurposeEnumValueOf(String name) {
+    _$flowDataStatusListsDetailsInnerStatusListPurposeEnumValueOf(String name) {
   switch (name) {
     case 'REVOKED':
       return _$flowDataStatusListsDetailsInnerStatusListPurposeEnum_REVOKED;
@@ -21,19 +21,17 @@ _$flowDataStatusListsDetailsInnerStatusListPurposeEnumValueOf(String name) {
 }
 
 final BuiltSet<FlowDataStatusListsDetailsInnerStatusListPurposeEnum>
-_$flowDataStatusListsDetailsInnerStatusListPurposeEnumValues =
-    BuiltSet<FlowDataStatusListsDetailsInnerStatusListPurposeEnum>(
-      const <FlowDataStatusListsDetailsInnerStatusListPurposeEnum>[
-        _$flowDataStatusListsDetailsInnerStatusListPurposeEnum_REVOKED,
-      ],
-    );
+    _$flowDataStatusListsDetailsInnerStatusListPurposeEnumValues = BuiltSet<
+        FlowDataStatusListsDetailsInnerStatusListPurposeEnum>(const <FlowDataStatusListsDetailsInnerStatusListPurposeEnum>[
+  _$flowDataStatusListsDetailsInnerStatusListPurposeEnum_REVOKED,
+]);
 
 const FlowDataStatusListsDetailsInnerStandardEnum
-_$flowDataStatusListsDetailsInnerStandardEnum_revocationList2020 =
+    _$flowDataStatusListsDetailsInnerStandardEnum_revocationList2020 =
     const FlowDataStatusListsDetailsInnerStandardEnum._('revocationList2020');
 
 FlowDataStatusListsDetailsInnerStandardEnum
-_$flowDataStatusListsDetailsInnerStandardEnumValueOf(String name) {
+    _$flowDataStatusListsDetailsInnerStandardEnumValueOf(String name) {
   switch (name) {
     case 'revocationList2020':
       return _$flowDataStatusListsDetailsInnerStandardEnum_revocationList2020;
@@ -43,25 +41,22 @@ _$flowDataStatusListsDetailsInnerStandardEnumValueOf(String name) {
 }
 
 final BuiltSet<FlowDataStatusListsDetailsInnerStandardEnum>
-_$flowDataStatusListsDetailsInnerStandardEnumValues =
-    BuiltSet<FlowDataStatusListsDetailsInnerStandardEnum>(
-      const <FlowDataStatusListsDetailsInnerStandardEnum>[
-        _$flowDataStatusListsDetailsInnerStandardEnum_revocationList2020,
-      ],
-    );
+    _$flowDataStatusListsDetailsInnerStandardEnumValues = BuiltSet<
+        FlowDataStatusListsDetailsInnerStandardEnum>(const <FlowDataStatusListsDetailsInnerStandardEnum>[
+  _$flowDataStatusListsDetailsInnerStandardEnum_revocationList2020,
+]);
 
 Serializer<FlowDataStatusListsDetailsInnerStatusListPurposeEnum>
-_$flowDataStatusListsDetailsInnerStatusListPurposeEnumSerializer =
+    _$flowDataStatusListsDetailsInnerStatusListPurposeEnumSerializer =
     _$FlowDataStatusListsDetailsInnerStatusListPurposeEnumSerializer();
 Serializer<FlowDataStatusListsDetailsInnerStandardEnum>
-_$flowDataStatusListsDetailsInnerStandardEnumSerializer =
+    _$flowDataStatusListsDetailsInnerStandardEnumSerializer =
     _$FlowDataStatusListsDetailsInnerStandardEnumSerializer();
 
 class _$FlowDataStatusListsDetailsInnerStatusListPurposeEnumSerializer
     implements
         PrimitiveSerializer<
-          FlowDataStatusListsDetailsInnerStatusListPurposeEnum
-        > {
+            FlowDataStatusListsDetailsInnerStatusListPurposeEnum> {
   static const Map<String, Object> _toWire = const <String, Object>{
     'REVOKED': 'REVOKED',
   };
@@ -71,27 +66,24 @@ class _$FlowDataStatusListsDetailsInnerStatusListPurposeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    FlowDataStatusListsDetailsInnerStatusListPurposeEnum,
+    FlowDataStatusListsDetailsInnerStatusListPurposeEnum
   ];
   @override
   final String wireName =
       'FlowDataStatusListsDetailsInnerStatusListPurposeEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    FlowDataStatusListsDetailsInnerStatusListPurposeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          FlowDataStatusListsDetailsInnerStatusListPurposeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   FlowDataStatusListsDetailsInnerStatusListPurposeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => FlowDataStatusListsDetailsInnerStatusListPurposeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      FlowDataStatusListsDetailsInnerStatusListPurposeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$FlowDataStatusListsDetailsInnerStandardEnumSerializer
@@ -106,26 +98,23 @@ class _$FlowDataStatusListsDetailsInnerStandardEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    FlowDataStatusListsDetailsInnerStandardEnum,
+    FlowDataStatusListsDetailsInnerStandardEnum
   ];
   @override
   final String wireName = 'FlowDataStatusListsDetailsInnerStandardEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    FlowDataStatusListsDetailsInnerStandardEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          FlowDataStatusListsDetailsInnerStandardEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   FlowDataStatusListsDetailsInnerStandardEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => FlowDataStatusListsDetailsInnerStandardEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      FlowDataStatusListsDetailsInnerStandardEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$FlowDataStatusListsDetailsInner
@@ -145,23 +134,23 @@ class _$FlowDataStatusListsDetailsInner
   @override
   final String? statusActivatedAt;
 
-  factory _$FlowDataStatusListsDetailsInner([
-    void Function(FlowDataStatusListsDetailsInnerBuilder)? updates,
-  ]) => (FlowDataStatusListsDetailsInnerBuilder()..update(updates))._build();
+  factory _$FlowDataStatusListsDetailsInner(
+          [void Function(FlowDataStatusListsDetailsInnerBuilder)? updates]) =>
+      (FlowDataStatusListsDetailsInnerBuilder()..update(updates))._build();
 
-  _$FlowDataStatusListsDetailsInner._({
-    required this.statusListPurpose,
-    required this.statusListId,
-    required this.statusListIndex,
-    required this.standard,
-    required this.isActive,
-    this.statusActivationReason,
-    this.statusActivatedAt,
-  }) : super._();
+  _$FlowDataStatusListsDetailsInner._(
+      {required this.statusListPurpose,
+      required this.statusListId,
+      required this.statusListIndex,
+      required this.standard,
+      required this.isActive,
+      this.statusActivationReason,
+      this.statusActivatedAt})
+      : super._();
   @override
   FlowDataStatusListsDetailsInner rebuild(
-    void Function(FlowDataStatusListsDetailsInnerBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(FlowDataStatusListsDetailsInnerBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   FlowDataStatusListsDetailsInnerBuilder toBuilder() =>
@@ -210,18 +199,17 @@ class _$FlowDataStatusListsDetailsInner
 
 class FlowDataStatusListsDetailsInnerBuilder
     implements
-        Builder<
-          FlowDataStatusListsDetailsInner,
-          FlowDataStatusListsDetailsInnerBuilder
-        > {
+        Builder<FlowDataStatusListsDetailsInner,
+            FlowDataStatusListsDetailsInnerBuilder> {
   _$FlowDataStatusListsDetailsInner? _$v;
 
   FlowDataStatusListsDetailsInnerStatusListPurposeEnum? _statusListPurpose;
   FlowDataStatusListsDetailsInnerStatusListPurposeEnum? get statusListPurpose =>
       _$this._statusListPurpose;
   set statusListPurpose(
-    FlowDataStatusListsDetailsInnerStatusListPurposeEnum? statusListPurpose,
-  ) => _$this._statusListPurpose = statusListPurpose;
+          FlowDataStatusListsDetailsInnerStatusListPurposeEnum?
+              statusListPurpose) =>
+      _$this._statusListPurpose = statusListPurpose;
 
   String? _statusListId;
   String? get statusListId => _$this._statusListId;
@@ -284,34 +272,22 @@ class FlowDataStatusListsDetailsInnerBuilder
   FlowDataStatusListsDetailsInner build() => _build();
 
   _$FlowDataStatusListsDetailsInner _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$FlowDataStatusListsDetailsInner._(
           statusListPurpose: BuiltValueNullFieldError.checkNotNull(
-            statusListPurpose,
-            r'FlowDataStatusListsDetailsInner',
-            'statusListPurpose',
-          ),
+              statusListPurpose,
+              r'FlowDataStatusListsDetailsInner',
+              'statusListPurpose'),
           statusListId: BuiltValueNullFieldError.checkNotNull(
-            statusListId,
-            r'FlowDataStatusListsDetailsInner',
-            'statusListId',
-          ),
+              statusListId, r'FlowDataStatusListsDetailsInner', 'statusListId'),
           statusListIndex: BuiltValueNullFieldError.checkNotNull(
-            statusListIndex,
-            r'FlowDataStatusListsDetailsInner',
-            'statusListIndex',
-          ),
+              statusListIndex,
+              r'FlowDataStatusListsDetailsInner',
+              'statusListIndex'),
           standard: BuiltValueNullFieldError.checkNotNull(
-            standard,
-            r'FlowDataStatusListsDetailsInner',
-            'standard',
-          ),
+              standard, r'FlowDataStatusListsDetailsInner', 'standard'),
           isActive: BuiltValueNullFieldError.checkNotNull(
-            isActive,
-            r'FlowDataStatusListsDetailsInner',
-            'isActive',
-          ),
+              isActive, r'FlowDataStatusListsDetailsInner', 'isActive'),
           statusActivationReason: statusActivationReason,
           statusActivatedAt: statusActivatedAt,
         );

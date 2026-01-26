@@ -20,9 +20,9 @@ abstract class CorsUpdateProfileDataOK
 
   CorsUpdateProfileDataOK._();
 
-  factory CorsUpdateProfileDataOK([
-    void updates(CorsUpdateProfileDataOKBuilder b),
-  ]) = _$CorsUpdateProfileDataOK;
+  factory CorsUpdateProfileDataOK(
+          [void updates(CorsUpdateProfileDataOKBuilder b)]) =
+      _$CorsUpdateProfileDataOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsUpdateProfileDataOKBuilder b) => b;
@@ -37,7 +37,7 @@ class _$CorsUpdateProfileDataOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsUpdateProfileDataOK,
-    _$CorsUpdateProfileDataOK,
+    _$CorsUpdateProfileDataOK
   ];
 
   @override
@@ -63,11 +63,9 @@ class _$CorsUpdateProfileDataOKSerializer
     CorsUpdateProfileDataOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -83,12 +81,10 @@ class _$CorsUpdateProfileDataOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsUpdateProfileDataOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsUpdateProfileDataOk = valueDes;
           break;
         default:

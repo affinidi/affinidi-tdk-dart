@@ -10,15 +10,15 @@ class _$AuthcryptMessageResultDto extends AuthcryptMessageResultDto {
   @override
   final JsonObject authcryptedMessage;
 
-  factory _$AuthcryptMessageResultDto([
-    void Function(AuthcryptMessageResultDtoBuilder)? updates,
-  ]) => (AuthcryptMessageResultDtoBuilder()..update(updates))._build();
+  factory _$AuthcryptMessageResultDto(
+          [void Function(AuthcryptMessageResultDtoBuilder)? updates]) =>
+      (AuthcryptMessageResultDtoBuilder()..update(updates))._build();
 
   _$AuthcryptMessageResultDto._({required this.authcryptedMessage}) : super._();
   @override
   AuthcryptMessageResultDto rebuild(
-    void Function(AuthcryptMessageResultDtoBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(AuthcryptMessageResultDtoBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   AuthcryptMessageResultDtoBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$AuthcryptMessageResultDto extends AuthcryptMessageResultDto {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'AuthcryptMessageResultDto',
-    )..add('authcryptedMessage', authcryptedMessage)).toString();
+    return (newBuiltValueToStringHelper(r'AuthcryptMessageResultDto')
+          ..add('authcryptedMessage', authcryptedMessage))
+        .toString();
   }
 }
 
@@ -84,14 +84,12 @@ class AuthcryptMessageResultDtoBuilder
   AuthcryptMessageResultDto build() => _build();
 
   _$AuthcryptMessageResultDto _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$AuthcryptMessageResultDto._(
           authcryptedMessage: BuiltValueNullFieldError.checkNotNull(
-            authcryptedMessage,
-            r'AuthcryptMessageResultDto',
-            'authcryptedMessage',
-          ),
+              authcryptedMessage,
+              r'AuthcryptMessageResultDto',
+              'authcryptedMessage'),
         );
     replace(_$result);
     return _$result;

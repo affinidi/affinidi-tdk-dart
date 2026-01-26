@@ -23,14 +23,14 @@ class _$DcqlQueryDto extends DcqlQueryDto {
   factory _$DcqlQueryDto([void Function(DcqlQueryDtoBuilder)? updates]) =>
       (DcqlQueryDtoBuilder()..update(updates))._build();
 
-  _$DcqlQueryDto._({
-    required this.ari,
-    required this.queryId,
-    required this.name,
-    required this.description,
-    required this.configurationAri,
-    required this.dcqlQuery,
-  }) : super._();
+  _$DcqlQueryDto._(
+      {required this.ari,
+      required this.queryId,
+      required this.name,
+      required this.description,
+      required this.configurationAri,
+      required this.dcqlQuery})
+      : super._();
   @override
   DcqlQueryDto rebuild(void Function(DcqlQueryDtoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -137,39 +137,20 @@ class DcqlQueryDtoBuilder
   DcqlQueryDto build() => _build();
 
   _$DcqlQueryDto _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$DcqlQueryDto._(
           ari: BuiltValueNullFieldError.checkNotNull(
-            ari,
-            r'DcqlQueryDto',
-            'ari',
-          ),
+              ari, r'DcqlQueryDto', 'ari'),
           queryId: BuiltValueNullFieldError.checkNotNull(
-            queryId,
-            r'DcqlQueryDto',
-            'queryId',
-          ),
+              queryId, r'DcqlQueryDto', 'queryId'),
           name: BuiltValueNullFieldError.checkNotNull(
-            name,
-            r'DcqlQueryDto',
-            'name',
-          ),
+              name, r'DcqlQueryDto', 'name'),
           description: BuiltValueNullFieldError.checkNotNull(
-            description,
-            r'DcqlQueryDto',
-            'description',
-          ),
+              description, r'DcqlQueryDto', 'description'),
           configurationAri: BuiltValueNullFieldError.checkNotNull(
-            configurationAri,
-            r'DcqlQueryDto',
-            'configurationAri',
-          ),
+              configurationAri, r'DcqlQueryDto', 'configurationAri'),
           dcqlQuery: BuiltValueNullFieldError.checkNotNull(
-            dcqlQuery,
-            r'DcqlQueryDto',
-            'dcqlQuery',
-          ),
+              dcqlQuery, r'DcqlQueryDto', 'dcqlQuery'),
         );
     replace(_$result);
     return _$result;

@@ -7,13 +7,12 @@ part of 'project_credential_config_exist_error.dart';
 // **************************************************************************
 
 const ProjectCredentialConfigExistErrorNameEnum
-_$projectCredentialConfigExistErrorNameEnum_projectCredentialConfigExistError =
+    _$projectCredentialConfigExistErrorNameEnum_projectCredentialConfigExistError =
     const ProjectCredentialConfigExistErrorNameEnum._(
-      'projectCredentialConfigExistError',
-    );
+        'projectCredentialConfigExistError');
 
 ProjectCredentialConfigExistErrorNameEnum
-_$projectCredentialConfigExistErrorNameEnumValueOf(String name) {
+    _$projectCredentialConfigExistErrorNameEnumValueOf(String name) {
   switch (name) {
     case 'projectCredentialConfigExistError':
       return _$projectCredentialConfigExistErrorNameEnum_projectCredentialConfigExistError;
@@ -23,21 +22,18 @@ _$projectCredentialConfigExistErrorNameEnumValueOf(String name) {
 }
 
 final BuiltSet<ProjectCredentialConfigExistErrorNameEnum>
-_$projectCredentialConfigExistErrorNameEnumValues =
-    BuiltSet<ProjectCredentialConfigExistErrorNameEnum>(const <
-      ProjectCredentialConfigExistErrorNameEnum
-    >[
-      _$projectCredentialConfigExistErrorNameEnum_projectCredentialConfigExistError,
-    ]);
+    _$projectCredentialConfigExistErrorNameEnumValues = BuiltSet<
+        ProjectCredentialConfigExistErrorNameEnum>(const <ProjectCredentialConfigExistErrorNameEnum>[
+  _$projectCredentialConfigExistErrorNameEnum_projectCredentialConfigExistError,
+]);
 
 const ProjectCredentialConfigExistErrorMessageEnum
-_$projectCredentialConfigExistErrorMessageEnum_credentialConfigurationAlreadyExistsForThisProjectAndOnlyOneConfigurationIsAllowedPerProject =
+    _$projectCredentialConfigExistErrorMessageEnum_credentialConfigurationAlreadyExistsForThisProjectAndOnlyOneConfigurationIsAllowedPerProject =
     const ProjectCredentialConfigExistErrorMessageEnum._(
-      'credentialConfigurationAlreadyExistsForThisProjectAndOnlyOneConfigurationIsAllowedPerProject',
-    );
+        'credentialConfigurationAlreadyExistsForThisProjectAndOnlyOneConfigurationIsAllowedPerProject');
 
 ProjectCredentialConfigExistErrorMessageEnum
-_$projectCredentialConfigExistErrorMessageEnumValueOf(String name) {
+    _$projectCredentialConfigExistErrorMessageEnumValueOf(String name) {
   switch (name) {
     case 'credentialConfigurationAlreadyExistsForThisProjectAndOnlyOneConfigurationIsAllowedPerProject':
       return _$projectCredentialConfigExistErrorMessageEnum_credentialConfigurationAlreadyExistsForThisProjectAndOnlyOneConfigurationIsAllowedPerProject;
@@ -47,19 +43,17 @@ _$projectCredentialConfigExistErrorMessageEnumValueOf(String name) {
 }
 
 final BuiltSet<ProjectCredentialConfigExistErrorMessageEnum>
-_$projectCredentialConfigExistErrorMessageEnumValues =
-    BuiltSet<ProjectCredentialConfigExistErrorMessageEnum>(const <
-      ProjectCredentialConfigExistErrorMessageEnum
-    >[
-      _$projectCredentialConfigExistErrorMessageEnum_credentialConfigurationAlreadyExistsForThisProjectAndOnlyOneConfigurationIsAllowedPerProject,
-    ]);
+    _$projectCredentialConfigExistErrorMessageEnumValues = BuiltSet<
+        ProjectCredentialConfigExistErrorMessageEnum>(const <ProjectCredentialConfigExistErrorMessageEnum>[
+  _$projectCredentialConfigExistErrorMessageEnum_credentialConfigurationAlreadyExistsForThisProjectAndOnlyOneConfigurationIsAllowedPerProject,
+]);
 
 const ProjectCredentialConfigExistErrorHttpStatusCodeEnum
-_$projectCredentialConfigExistErrorHttpStatusCodeEnum_number400 =
+    _$projectCredentialConfigExistErrorHttpStatusCodeEnum_number400 =
     const ProjectCredentialConfigExistErrorHttpStatusCodeEnum._('number400');
 
 ProjectCredentialConfigExistErrorHttpStatusCodeEnum
-_$projectCredentialConfigExistErrorHttpStatusCodeEnumValueOf(String name) {
+    _$projectCredentialConfigExistErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$projectCredentialConfigExistErrorHttpStatusCodeEnum_number400;
@@ -69,21 +63,19 @@ _$projectCredentialConfigExistErrorHttpStatusCodeEnumValueOf(String name) {
 }
 
 final BuiltSet<ProjectCredentialConfigExistErrorHttpStatusCodeEnum>
-_$projectCredentialConfigExistErrorHttpStatusCodeEnumValues =
-    BuiltSet<ProjectCredentialConfigExistErrorHttpStatusCodeEnum>(
-      const <ProjectCredentialConfigExistErrorHttpStatusCodeEnum>[
-        _$projectCredentialConfigExistErrorHttpStatusCodeEnum_number400,
-      ],
-    );
+    _$projectCredentialConfigExistErrorHttpStatusCodeEnumValues = BuiltSet<
+        ProjectCredentialConfigExistErrorHttpStatusCodeEnum>(const <ProjectCredentialConfigExistErrorHttpStatusCodeEnum>[
+  _$projectCredentialConfigExistErrorHttpStatusCodeEnum_number400,
+]);
 
 Serializer<ProjectCredentialConfigExistErrorNameEnum>
-_$projectCredentialConfigExistErrorNameEnumSerializer =
+    _$projectCredentialConfigExistErrorNameEnumSerializer =
     _$ProjectCredentialConfigExistErrorNameEnumSerializer();
 Serializer<ProjectCredentialConfigExistErrorMessageEnum>
-_$projectCredentialConfigExistErrorMessageEnumSerializer =
+    _$projectCredentialConfigExistErrorMessageEnumSerializer =
     _$ProjectCredentialConfigExistErrorMessageEnumSerializer();
 Serializer<ProjectCredentialConfigExistErrorHttpStatusCodeEnum>
-_$projectCredentialConfigExistErrorHttpStatusCodeEnumSerializer =
+    _$projectCredentialConfigExistErrorHttpStatusCodeEnumSerializer =
     _$ProjectCredentialConfigExistErrorHttpStatusCodeEnumSerializer();
 
 class _$ProjectCredentialConfigExistErrorNameEnumSerializer
@@ -97,26 +89,23 @@ class _$ProjectCredentialConfigExistErrorNameEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    ProjectCredentialConfigExistErrorNameEnum,
+    ProjectCredentialConfigExistErrorNameEnum
   ];
   @override
   final String wireName = 'ProjectCredentialConfigExistErrorNameEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    ProjectCredentialConfigExistErrorNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          ProjectCredentialConfigExistErrorNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   ProjectCredentialConfigExistErrorNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => ProjectCredentialConfigExistErrorNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      ProjectCredentialConfigExistErrorNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$ProjectCredentialConfigExistErrorMessageEnumSerializer
@@ -133,33 +122,29 @@ class _$ProjectCredentialConfigExistErrorMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    ProjectCredentialConfigExistErrorMessageEnum,
+    ProjectCredentialConfigExistErrorMessageEnum
   ];
   @override
   final String wireName = 'ProjectCredentialConfigExistErrorMessageEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    ProjectCredentialConfigExistErrorMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          ProjectCredentialConfigExistErrorMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   ProjectCredentialConfigExistErrorMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => ProjectCredentialConfigExistErrorMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      ProjectCredentialConfigExistErrorMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$ProjectCredentialConfigExistErrorHttpStatusCodeEnumSerializer
     implements
         PrimitiveSerializer<
-          ProjectCredentialConfigExistErrorHttpStatusCodeEnum
-        > {
+            ProjectCredentialConfigExistErrorHttpStatusCodeEnum> {
   static const Map<String, Object> _toWire = const <String, Object>{
     'number400': 400,
   };
@@ -169,26 +154,23 @@ class _$ProjectCredentialConfigExistErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    ProjectCredentialConfigExistErrorHttpStatusCodeEnum,
+    ProjectCredentialConfigExistErrorHttpStatusCodeEnum
   ];
   @override
   final String wireName = 'ProjectCredentialConfigExistErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    ProjectCredentialConfigExistErrorHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          ProjectCredentialConfigExistErrorHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   ProjectCredentialConfigExistErrorHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => ProjectCredentialConfigExistErrorHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      ProjectCredentialConfigExistErrorHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$ProjectCredentialConfigExistError
@@ -204,21 +186,21 @@ class _$ProjectCredentialConfigExistError
   @override
   final BuiltList<ActionForbiddenErrorDetailsInner>? details;
 
-  factory _$ProjectCredentialConfigExistError([
-    void Function(ProjectCredentialConfigExistErrorBuilder)? updates,
-  ]) => (ProjectCredentialConfigExistErrorBuilder()..update(updates))._build();
+  factory _$ProjectCredentialConfigExistError(
+          [void Function(ProjectCredentialConfigExistErrorBuilder)? updates]) =>
+      (ProjectCredentialConfigExistErrorBuilder()..update(updates))._build();
 
-  _$ProjectCredentialConfigExistError._({
-    required this.name,
-    required this.message,
-    required this.httpStatusCode,
-    required this.traceId,
-    this.details,
-  }) : super._();
+  _$ProjectCredentialConfigExistError._(
+      {required this.name,
+      required this.message,
+      required this.httpStatusCode,
+      required this.traceId,
+      this.details})
+      : super._();
   @override
   ProjectCredentialConfigExistError rebuild(
-    void Function(ProjectCredentialConfigExistErrorBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(ProjectCredentialConfigExistErrorBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   ProjectCredentialConfigExistErrorBuilder toBuilder() =>
@@ -261,10 +243,8 @@ class _$ProjectCredentialConfigExistError
 
 class ProjectCredentialConfigExistErrorBuilder
     implements
-        Builder<
-          ProjectCredentialConfigExistError,
-          ProjectCredentialConfigExistErrorBuilder
-        > {
+        Builder<ProjectCredentialConfigExistError,
+            ProjectCredentialConfigExistErrorBuilder> {
   _$ProjectCredentialConfigExistError? _$v;
 
   ProjectCredentialConfigExistErrorNameEnum? _name;
@@ -281,8 +261,9 @@ class ProjectCredentialConfigExistErrorBuilder
   ProjectCredentialConfigExistErrorHttpStatusCodeEnum? get httpStatusCode =>
       _$this._httpStatusCode;
   set httpStatusCode(
-    ProjectCredentialConfigExistErrorHttpStatusCodeEnum? httpStatusCode,
-  ) => _$this._httpStatusCode = httpStatusCode;
+          ProjectCredentialConfigExistErrorHttpStatusCodeEnum?
+              httpStatusCode) =>
+      _$this._httpStatusCode = httpStatusCode;
 
   String? _traceId;
   String? get traceId => _$this._traceId;
@@ -318,8 +299,7 @@ class ProjectCredentialConfigExistErrorBuilder
 
   @override
   void update(
-    void Function(ProjectCredentialConfigExistErrorBuilder)? updates,
-  ) {
+      void Function(ProjectCredentialConfigExistErrorBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -329,29 +309,18 @@ class ProjectCredentialConfigExistErrorBuilder
   _$ProjectCredentialConfigExistError _build() {
     _$ProjectCredentialConfigExistError _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$ProjectCredentialConfigExistError._(
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'ProjectCredentialConfigExistError',
-              'name',
-            ),
+                name, r'ProjectCredentialConfigExistError', 'name'),
             message: BuiltValueNullFieldError.checkNotNull(
-              message,
-              r'ProjectCredentialConfigExistError',
-              'message',
-            ),
+                message, r'ProjectCredentialConfigExistError', 'message'),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-              httpStatusCode,
-              r'ProjectCredentialConfigExistError',
-              'httpStatusCode',
-            ),
+                httpStatusCode,
+                r'ProjectCredentialConfigExistError',
+                'httpStatusCode'),
             traceId: BuiltValueNullFieldError.checkNotNull(
-              traceId,
-              r'ProjectCredentialConfigExistError',
-              'traceId',
-            ),
+                traceId, r'ProjectCredentialConfigExistError', 'traceId'),
             details: _details?.build(),
           );
     } catch (_) {
@@ -361,10 +330,7 @@ class ProjectCredentialConfigExistErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'ProjectCredentialConfigExistError',
-          _$failedField,
-          e.toString(),
-        );
+            r'ProjectCredentialConfigExistError', _$failedField, e.toString());
       }
       rethrow;
     }

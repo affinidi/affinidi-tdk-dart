@@ -26,9 +26,9 @@ abstract class LoginSessionForIDPInput
 
   LoginSessionForIDPInput._();
 
-  factory LoginSessionForIDPInput([
-    void updates(LoginSessionForIDPInputBuilder b),
-  ]) = _$LoginSessionForIDPInput;
+  factory LoginSessionForIDPInput(
+          [void updates(LoginSessionForIDPInputBuilder b)]) =
+      _$LoginSessionForIDPInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(LoginSessionForIDPInputBuilder b) => b;
@@ -43,7 +43,7 @@ class _$LoginSessionForIDPInputSerializer
   @override
   final Iterable<Type> types = const [
     LoginSessionForIDPInput,
-    _$LoginSessionForIDPInput,
+    _$LoginSessionForIDPInput
   ];
 
   @override
@@ -72,11 +72,9 @@ class _$LoginSessionForIDPInputSerializer
     LoginSessionForIDPInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -92,21 +90,17 @@ class _$LoginSessionForIDPInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'loginChallenge':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.loginChallenge = valueDes;
           break;
         case r'clientId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.clientId = valueDes;
           break;
         default:

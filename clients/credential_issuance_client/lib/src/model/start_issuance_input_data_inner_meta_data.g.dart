@@ -11,17 +11,17 @@ class _$StartIssuanceInputDataInnerMetaData
   @override
   final DateTime expirationDate;
 
-  factory _$StartIssuanceInputDataInnerMetaData([
-    void Function(StartIssuanceInputDataInnerMetaDataBuilder)? updates,
-  ]) =>
+  factory _$StartIssuanceInputDataInnerMetaData(
+          [void Function(StartIssuanceInputDataInnerMetaDataBuilder)?
+              updates]) =>
       (StartIssuanceInputDataInnerMetaDataBuilder()..update(updates))._build();
 
   _$StartIssuanceInputDataInnerMetaData._({required this.expirationDate})
-    : super._();
+      : super._();
   @override
   StartIssuanceInputDataInnerMetaData rebuild(
-    void Function(StartIssuanceInputDataInnerMetaDataBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(StartIssuanceInputDataInnerMetaDataBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   StartIssuanceInputDataInnerMetaDataBuilder toBuilder() =>
@@ -44,18 +44,16 @@ class _$StartIssuanceInputDataInnerMetaData
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'StartIssuanceInputDataInnerMetaData',
-    )..add('expirationDate', expirationDate)).toString();
+    return (newBuiltValueToStringHelper(r'StartIssuanceInputDataInnerMetaData')
+          ..add('expirationDate', expirationDate))
+        .toString();
   }
 }
 
 class StartIssuanceInputDataInnerMetaDataBuilder
     implements
-        Builder<
-          StartIssuanceInputDataInnerMetaData,
-          StartIssuanceInputDataInnerMetaDataBuilder
-        > {
+        Builder<StartIssuanceInputDataInnerMetaData,
+            StartIssuanceInputDataInnerMetaDataBuilder> {
   _$StartIssuanceInputDataInnerMetaData? _$v;
 
   DateTime? _expirationDate;
@@ -83,8 +81,7 @@ class StartIssuanceInputDataInnerMetaDataBuilder
 
   @override
   void update(
-    void Function(StartIssuanceInputDataInnerMetaDataBuilder)? updates,
-  ) {
+      void Function(StartIssuanceInputDataInnerMetaDataBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -92,14 +89,10 @@ class StartIssuanceInputDataInnerMetaDataBuilder
   StartIssuanceInputDataInnerMetaData build() => _build();
 
   _$StartIssuanceInputDataInnerMetaData _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$StartIssuanceInputDataInnerMetaData._(
-          expirationDate: BuiltValueNullFieldError.checkNotNull(
-            expirationDate,
-            r'StartIssuanceInputDataInnerMetaData',
-            'expirationDate',
-          ),
+          expirationDate: BuiltValueNullFieldError.checkNotNull(expirationDate,
+              r'StartIssuanceInputDataInnerMetaData', 'expirationDate'),
         );
     replace(_$result);
     return _$result;

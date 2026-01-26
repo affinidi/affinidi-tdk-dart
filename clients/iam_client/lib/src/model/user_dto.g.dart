@@ -37,9 +37,9 @@ class _$UserDto extends UserDto {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'UserDto',
-    )..add('principalId', principalId)).toString();
+    return (newBuiltValueToStringHelper(r'UserDto')
+          ..add('principalId', principalId))
+        .toString();
   }
 }
 
@@ -77,14 +77,10 @@ class UserDtoBuilder implements Builder<UserDto, UserDtoBuilder> {
   UserDto build() => _build();
 
   _$UserDto _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$UserDto._(
           principalId: BuiltValueNullFieldError.checkNotNull(
-            principalId,
-            r'UserDto',
-            'principalId',
-          ),
+              principalId, r'UserDto', 'principalId'),
         );
     replace(_$result);
     return _$result;

@@ -22,9 +22,9 @@ abstract class UnpackMessageResultDto
 
   UnpackMessageResultDto._();
 
-  factory UnpackMessageResultDto([
-    void updates(UnpackMessageResultDtoBuilder b),
-  ]) = _$UnpackMessageResultDto;
+  factory UnpackMessageResultDto(
+          [void updates(UnpackMessageResultDtoBuilder b)]) =
+      _$UnpackMessageResultDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UnpackMessageResultDtoBuilder b) => b;
@@ -39,7 +39,7 @@ class _$UnpackMessageResultDtoSerializer
   @override
   final Iterable<Type> types = const [
     UnpackMessageResultDto,
-    _$UnpackMessageResultDto,
+    _$UnpackMessageResultDto
   ];
 
   @override
@@ -63,11 +63,9 @@ class _$UnpackMessageResultDtoSerializer
     UnpackMessageResultDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -83,12 +81,10 @@ class _$UnpackMessageResultDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.message = valueDes;
           break;
         default:

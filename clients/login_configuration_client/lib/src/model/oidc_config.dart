@@ -77,7 +77,7 @@ abstract class OIDCConfig implements Built<OIDCConfig, OIDCConfigBuilder> {
   /// OpenID Connect Verifiable Credentials Supported JSON array containing a list of the Verifiable  Credentials supported by this authorization server.
   @BuiltValueField(wireName: r'credentials_supported_draft_00')
   BuiltList<OIDCConfigCredentialsSupportedDraft00Inner>?
-  get credentialsSupportedDraft00;
+      get credentialsSupportedDraft00;
 
   /// OpenID Connect End-Session Endpoint URL at the OP to which an RP can perform  a redirect to request that the End-User be  logged out at the OP.
   @BuiltValueField(wireName: r'end_session_endpoint')
@@ -245,9 +245,8 @@ class _$OIDCConfigSerializer implements PrimitiveSerializer<OIDCConfig> {
       yield r'credentials_supported_draft_00';
       yield serializers.serialize(
         object.credentialsSupportedDraft00,
-        specifiedType: const FullType(BuiltList, [
-          FullType(OIDCConfigCredentialsSupportedDraft00Inner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(OIDCConfigCredentialsSupportedDraft00Inner)]),
       );
     }
     if (object.endSessionEndpoint != null) {
@@ -403,11 +402,9 @@ class _$OIDCConfigSerializer implements PrimitiveSerializer<OIDCConfig> {
     OIDCConfig object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -423,310 +420,221 @@ class _$OIDCConfigSerializer implements PrimitiveSerializer<OIDCConfig> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'authorization_endpoint':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.authorizationEndpoint = valueDes;
           break;
         case r'backchannel_logout_session_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.backchannelLogoutSessionSupported = valueDes;
           break;
         case r'backchannel_logout_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.backchannelLogoutSupported = valueDes;
           break;
         case r'claims_parameter_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.claimsParameterSupported = valueDes;
           break;
         case r'claims_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.claimsSupported.replace(valueDes);
           break;
         case r'code_challenge_methods_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.codeChallengeMethodsSupported.replace(valueDes);
           break;
         case r'credentials_endpoint_draft_00':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.credentialsEndpointDraft00 = valueDes;
           break;
         case r'credentials_supported_draft_00':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(OIDCConfigCredentialsSupportedDraft00Inner),
-                    ]),
-                  )
-                  as BuiltList<OIDCConfigCredentialsSupportedDraft00Inner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList,
+                [FullType(OIDCConfigCredentialsSupportedDraft00Inner)]),
+          ) as BuiltList<OIDCConfigCredentialsSupportedDraft00Inner>;
           result.credentialsSupportedDraft00.replace(valueDes);
           break;
         case r'end_session_endpoint':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.endSessionEndpoint = valueDes;
           break;
         case r'frontchannel_logout_session_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.frontchannelLogoutSessionSupported = valueDes;
           break;
         case r'frontchannel_logout_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.frontchannelLogoutSupported = valueDes;
           break;
         case r'grant_types_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.grantTypesSupported.replace(valueDes);
           break;
         case r'id_token_signed_response_alg':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.idTokenSignedResponseAlg.replace(valueDes);
           break;
         case r'id_token_signing_alg_values_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.idTokenSigningAlgValuesSupported.replace(valueDes);
           break;
         case r'issuer':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.issuer = valueDes;
           break;
         case r'jwks_uri':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.jwksUri = valueDes;
           break;
         case r'registration_endpoint':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.registrationEndpoint = valueDes;
           break;
         case r'request_object_signing_alg_values_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.requestObjectSigningAlgValuesSupported.replace(valueDes);
           break;
         case r'request_parameter_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.requestParameterSupported = valueDes;
           break;
         case r'request_uri_parameter_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.requestUriParameterSupported = valueDes;
           break;
         case r'require_request_uri_registration':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.requireRequestUriRegistration = valueDes;
           break;
         case r'response_modes_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.responseModesSupported.replace(valueDes);
           break;
         case r'response_types_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.responseTypesSupported.replace(valueDes);
           break;
         case r'revocation_endpoint':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.revocationEndpoint = valueDes;
           break;
         case r'scopes_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.scopesSupported.replace(valueDes);
           break;
         case r'subject_types_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.subjectTypesSupported.replace(valueDes);
           break;
         case r'token_endpoint':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.tokenEndpoint = valueDes;
           break;
         case r'token_endpoint_auth_methods_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.tokenEndpointAuthMethodsSupported.replace(valueDes);
           break;
         case r'userinfo_endpoint':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.userinfoEndpoint = valueDes;
           break;
         case r'userinfo_signed_response_alg':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.userinfoSignedResponseAlg.replace(valueDes);
           break;
         case r'userinfo_signing_alg_values_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.userinfoSigningAlgValuesSupported.replace(valueDes);
           break;
         default:

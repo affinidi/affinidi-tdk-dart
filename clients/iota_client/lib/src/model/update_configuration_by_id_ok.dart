@@ -21,9 +21,9 @@ abstract class UpdateConfigurationByIdOK
 
   UpdateConfigurationByIdOK._();
 
-  factory UpdateConfigurationByIdOK([
-    void updates(UpdateConfigurationByIdOKBuilder b),
-  ]) = _$UpdateConfigurationByIdOK;
+  factory UpdateConfigurationByIdOK(
+          [void updates(UpdateConfigurationByIdOKBuilder b)]) =
+      _$UpdateConfigurationByIdOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UpdateConfigurationByIdOKBuilder b) => b;
@@ -38,7 +38,7 @@ class _$UpdateConfigurationByIdOKSerializer
   @override
   final Iterable<Type> types = const [
     UpdateConfigurationByIdOK,
-    _$UpdateConfigurationByIdOK,
+    _$UpdateConfigurationByIdOK
   ];
 
   @override
@@ -64,11 +64,9 @@ class _$UpdateConfigurationByIdOKSerializer
     UpdateConfigurationByIdOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -84,12 +82,10 @@ class _$UpdateConfigurationByIdOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'updateConfigurationByIdOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.updateConfigurationByIdOk = valueDes;
           break;
         default:
