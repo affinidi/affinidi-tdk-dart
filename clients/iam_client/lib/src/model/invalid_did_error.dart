@@ -89,9 +89,8 @@ class _$InvalidDIDErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ServiceErrorResponseDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
       );
     }
   }
@@ -102,11 +101,9 @@ class _$InvalidDIDErrorSerializer
     InvalidDIDError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -122,52 +119,39 @@ class _$InvalidDIDErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(InvalidDIDErrorNameEnum),
-                  )
-                  as InvalidDIDErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(InvalidDIDErrorNameEnum),
+          ) as InvalidDIDErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(InvalidDIDErrorMessageEnum),
-                  )
-                  as InvalidDIDErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(InvalidDIDErrorMessageEnum),
+          ) as InvalidDIDErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      InvalidDIDErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as InvalidDIDErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(InvalidDIDErrorHttpStatusCodeEnum),
+          ) as InvalidDIDErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ServiceErrorResponseDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ServiceErrorResponseDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
+          ) as BuiltList<ServiceErrorResponseDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -217,10 +201,9 @@ class InvalidDIDErrorNameEnum extends EnumClass {
 
 class InvalidDIDErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(
-    wireName: r'Unable to resolve DID method. Invalid public key',
-  )
+      wireName: r'Unable to resolve DID method. Invalid public key')
   static const InvalidDIDErrorMessageEnum
-  unableToResolveDIDMethodPeriodInvalidPublicKey =
+      unableToResolveDIDMethodPeriodInvalidPublicKey =
       _$invalidDIDErrorMessageEnum_unableToResolveDIDMethodPeriodInvalidPublicKey;
 
   static Serializer<InvalidDIDErrorMessageEnum> get serializer =>

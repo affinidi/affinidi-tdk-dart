@@ -15,18 +15,16 @@ part 'cors_restore_node_from_trashbin_ok.g.dart';
 @BuiltValue()
 abstract class CorsRestoreNodeFromTrashbinOK
     implements
-        Built<
-          CorsRestoreNodeFromTrashbinOK,
-          CorsRestoreNodeFromTrashbinOKBuilder
-        > {
+        Built<CorsRestoreNodeFromTrashbinOK,
+            CorsRestoreNodeFromTrashbinOKBuilder> {
   @BuiltValueField(wireName: r'corsRestoreNodeFromTrashbinOk')
   String? get corsRestoreNodeFromTrashbinOk;
 
   CorsRestoreNodeFromTrashbinOK._();
 
-  factory CorsRestoreNodeFromTrashbinOK([
-    void updates(CorsRestoreNodeFromTrashbinOKBuilder b),
-  ]) = _$CorsRestoreNodeFromTrashbinOK;
+  factory CorsRestoreNodeFromTrashbinOK(
+          [void updates(CorsRestoreNodeFromTrashbinOKBuilder b)]) =
+      _$CorsRestoreNodeFromTrashbinOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsRestoreNodeFromTrashbinOKBuilder b) => b;
@@ -41,7 +39,7 @@ class _$CorsRestoreNodeFromTrashbinOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsRestoreNodeFromTrashbinOK,
-    _$CorsRestoreNodeFromTrashbinOK,
+    _$CorsRestoreNodeFromTrashbinOK
   ];
 
   @override
@@ -67,11 +65,9 @@ class _$CorsRestoreNodeFromTrashbinOKSerializer
     CorsRestoreNodeFromTrashbinOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -87,12 +83,10 @@ class _$CorsRestoreNodeFromTrashbinOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsRestoreNodeFromTrashbinOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsRestoreNodeFromTrashbinOk = valueDes;
           break;
         default:

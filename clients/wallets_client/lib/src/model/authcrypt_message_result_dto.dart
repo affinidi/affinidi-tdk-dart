@@ -23,9 +23,9 @@ abstract class AuthcryptMessageResultDto
 
   AuthcryptMessageResultDto._();
 
-  factory AuthcryptMessageResultDto([
-    void updates(AuthcryptMessageResultDtoBuilder b),
-  ]) = _$AuthcryptMessageResultDto;
+  factory AuthcryptMessageResultDto(
+          [void updates(AuthcryptMessageResultDtoBuilder b)]) =
+      _$AuthcryptMessageResultDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AuthcryptMessageResultDtoBuilder b) => b;
@@ -40,7 +40,7 @@ class _$AuthcryptMessageResultDtoSerializer
   @override
   final Iterable<Type> types = const [
     AuthcryptMessageResultDto,
-    _$AuthcryptMessageResultDto,
+    _$AuthcryptMessageResultDto
   ];
 
   @override
@@ -64,11 +64,9 @@ class _$AuthcryptMessageResultDtoSerializer
     AuthcryptMessageResultDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -84,12 +82,10 @@ class _$AuthcryptMessageResultDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'authcryptedMessage':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.authcryptedMessage = valueDes;
           break;
         default:

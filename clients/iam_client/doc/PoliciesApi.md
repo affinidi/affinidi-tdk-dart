@@ -1,24 +1,24 @@
 # affinidi_tdk_iam_client.api.PoliciesApi
 
 ## Load the API package
-
 ```dart
 import 'package:affinidi_tdk_iam_client/api.dart';
 ```
 
 All URIs are relative to *https://apse1.api.affinidi.io/iam*
 
-| Method                                              | HTTP request                                  | Description |
-| --------------------------------------------------- | --------------------------------------------- | ----------- |
-| [**getPolicies**](PoliciesApi.md#getpolicies)       | **GET** /v1/policies/principals/{principalId} |
-| [**updatePolicies**](PoliciesApi.md#updatepolicies) | **PUT** /v1/policies/principals/{principalId} |
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**getPolicies**](PoliciesApi.md#getpolicies) | **GET** /v1/policies/principals/{principalId} | 
+[**updatePolicies**](PoliciesApi.md#updatepolicies) | **PUT** /v1/policies/principals/{principalId} | 
+
 
 # **getPolicies**
-
 > PolicyDto getPolicies(principalId, principalType)
 
-### Example
 
+
+### Example
 ```dart
 import 'package:affinidi_tdk_iam_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -27,8 +27,8 @@ import 'package:affinidi_tdk_iam_client/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('ProjectTokenAuth').apiKeyPrefix = 'Bearer';
 
 final api = AffinidiTdkIamClient().getPoliciesApi();
-final String principalId = principalId_example; // String |
-final String principalType = principalType_example; // String |
+final String principalId = principalId_example; // String | 
+final String principalType = principalType_example; // String | 
 
 try {
     final response = api.getPolicies(principalId, principalType);
@@ -40,10 +40,10 @@ try {
 
 ### Parameters
 
-| Name              | Type       | Description | Notes |
-| ----------------- | ---------- | ----------- | ----- |
-| **principalId**   | **String** |             |
-| **principalType** | **String** |             |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **principalId** | **String**|  | 
+ **principalType** | **String**|  | 
 
 ### Return type
 
@@ -55,17 +55,17 @@ try {
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: application/json
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **updatePolicies**
-
 > PolicyDto updatePolicies(principalId, principalType, policyDto)
 
-### Example
 
+
+### Example
 ```dart
 import 'package:affinidi_tdk_iam_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -74,8 +74,8 @@ import 'package:affinidi_tdk_iam_client/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('ProjectTokenAuth').apiKeyPrefix = 'Bearer';
 
 final api = AffinidiTdkIamClient().getPoliciesApi();
-final String principalId = principalId_example; // String |
-final String principalType = principalType_example; // String |
+final String principalId = principalId_example; // String | 
+final String principalType = principalType_example; // String | 
 final PolicyDto policyDto = ; // PolicyDto | UpdatePolicies
 
 try {
@@ -88,11 +88,11 @@ try {
 
 ### Parameters
 
-| Name              | Type                          | Description    | Notes |
-| ----------------- | ----------------------------- | -------------- | ----- |
-| **principalId**   | **String**                    |                |
-| **principalType** | **String**                    |                |
-| **policyDto**     | [**PolicyDto**](PolicyDto.md) | UpdatePolicies |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **principalId** | **String**|  | 
+ **principalType** | **String**|  | 
+ **policyDto** | [**PolicyDto**](PolicyDto.md)| UpdatePolicies | 
 
 ### Return type
 
@@ -104,7 +104,8 @@ try {
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
-- **Accept**: application/json
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+

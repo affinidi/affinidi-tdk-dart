@@ -89,9 +89,8 @@ class _$InvalidProofErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ActionForbiddenErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
       );
     }
   }
@@ -102,11 +101,9 @@ class _$InvalidProofErrorSerializer
     InvalidProofError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -122,52 +119,39 @@ class _$InvalidProofErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(InvalidProofErrorNameEnum),
-                  )
-                  as InvalidProofErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(InvalidProofErrorNameEnum),
+          ) as InvalidProofErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(InvalidProofErrorMessageEnum),
-                  )
-                  as InvalidProofErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(InvalidProofErrorMessageEnum),
+          ) as InvalidProofErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      InvalidProofErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as InvalidProofErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(InvalidProofErrorHttpStatusCodeEnum),
+          ) as InvalidProofErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ActionForbiddenErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ActionForbiddenErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
+          ) as BuiltList<ActionForbiddenErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -217,10 +201,9 @@ class InvalidProofErrorNameEnum extends EnumClass {
 
 class InvalidProofErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(
-    wireName: r'The proof in the Credential Request is invalid',
-  )
+      wireName: r'The proof in the Credential Request is invalid')
   static const InvalidProofErrorMessageEnum
-  theProofInTheCredentialRequestIsInvalid =
+      theProofInTheCredentialRequestIsInvalid =
       _$invalidProofErrorMessageEnum_theProofInTheCredentialRequestIsInvalid;
 
   static Serializer<InvalidProofErrorMessageEnum> get serializer =>

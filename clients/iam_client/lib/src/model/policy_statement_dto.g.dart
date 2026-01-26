@@ -16,20 +16,20 @@ class _$PolicyStatementDto extends PolicyStatementDto {
   @override
   final BuiltList<String> resource;
 
-  factory _$PolicyStatementDto([
-    void Function(PolicyStatementDtoBuilder)? updates,
-  ]) => (PolicyStatementDtoBuilder()..update(updates))._build();
+  factory _$PolicyStatementDto(
+          [void Function(PolicyStatementDtoBuilder)? updates]) =>
+      (PolicyStatementDtoBuilder()..update(updates))._build();
 
-  _$PolicyStatementDto._({
-    required this.action,
-    required this.effect,
-    required this.principal,
-    required this.resource,
-  }) : super._();
+  _$PolicyStatementDto._(
+      {required this.action,
+      required this.effect,
+      required this.principal,
+      required this.resource})
+      : super._();
   @override
   PolicyStatementDto rebuild(
-    void Function(PolicyStatementDtoBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(PolicyStatementDtoBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   PolicyStatementDtoBuilder toBuilder() =>
@@ -122,15 +122,11 @@ class PolicyStatementDtoBuilder
   _$PolicyStatementDto _build() {
     _$PolicyStatementDto _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$PolicyStatementDto._(
             action: action.build(),
             effect: BuiltValueNullFieldError.checkNotNull(
-              effect,
-              r'PolicyStatementDto',
-              'effect',
-            ),
+                effect, r'PolicyStatementDto', 'effect'),
             principal: principal.build(),
             resource: resource.build(),
           );
@@ -146,10 +142,7 @@ class PolicyStatementDtoBuilder
         resource.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'PolicyStatementDto',
-          _$failedField,
-          e.toString(),
-        );
+            r'PolicyStatementDto', _$failedField, e.toString());
       }
       rethrow;
     }

@@ -21,10 +21,8 @@ part 'principal_cannot_be_deleted_error.g.dart';
 @BuiltValue()
 abstract class PrincipalCannotBeDeletedError
     implements
-        Built<
-          PrincipalCannotBeDeletedError,
-          PrincipalCannotBeDeletedErrorBuilder
-        > {
+        Built<PrincipalCannotBeDeletedError,
+            PrincipalCannotBeDeletedErrorBuilder> {
   @BuiltValueField(wireName: r'name')
   PrincipalCannotBeDeletedErrorNameEnum get name;
   // enum nameEnum {  PrincipalCannotBeDeletedError,  };
@@ -45,9 +43,9 @@ abstract class PrincipalCannotBeDeletedError
 
   PrincipalCannotBeDeletedError._();
 
-  factory PrincipalCannotBeDeletedError([
-    void updates(PrincipalCannotBeDeletedErrorBuilder b),
-  ]) = _$PrincipalCannotBeDeletedError;
+  factory PrincipalCannotBeDeletedError(
+          [void updates(PrincipalCannotBeDeletedErrorBuilder b)]) =
+      _$PrincipalCannotBeDeletedError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(PrincipalCannotBeDeletedErrorBuilder b) => b;
@@ -62,7 +60,7 @@ class _$PrincipalCannotBeDeletedErrorSerializer
   @override
   final Iterable<Type> types = const [
     PrincipalCannotBeDeletedError,
-    _$PrincipalCannotBeDeletedError,
+    _$PrincipalCannotBeDeletedError
   ];
 
   @override
@@ -86,9 +84,8 @@ class _$PrincipalCannotBeDeletedErrorSerializer
     yield r'httpStatusCode';
     yield serializers.serialize(
       object.httpStatusCode,
-      specifiedType: const FullType(
-        PrincipalCannotBeDeletedErrorHttpStatusCodeEnum,
-      ),
+      specifiedType:
+          const FullType(PrincipalCannotBeDeletedErrorHttpStatusCodeEnum),
     );
     yield r'traceId';
     yield serializers.serialize(
@@ -99,9 +96,8 @@ class _$PrincipalCannotBeDeletedErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ServiceErrorResponseDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
       );
     }
   }
@@ -112,11 +108,9 @@ class _$PrincipalCannotBeDeletedErrorSerializer
     PrincipalCannotBeDeletedError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -132,56 +126,42 @@ class _$PrincipalCannotBeDeletedErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      PrincipalCannotBeDeletedErrorNameEnum,
-                    ),
-                  )
-                  as PrincipalCannotBeDeletedErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(PrincipalCannotBeDeletedErrorNameEnum),
+          ) as PrincipalCannotBeDeletedErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      PrincipalCannotBeDeletedErrorMessageEnum,
-                    ),
-                  )
-                  as PrincipalCannotBeDeletedErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(PrincipalCannotBeDeletedErrorMessageEnum),
+          ) as PrincipalCannotBeDeletedErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      PrincipalCannotBeDeletedErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as PrincipalCannotBeDeletedErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(PrincipalCannotBeDeletedErrorHttpStatusCodeEnum),
+          ) as PrincipalCannotBeDeletedErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ServiceErrorResponseDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ServiceErrorResponseDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
+          ) as BuiltList<ServiceErrorResponseDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -216,7 +196,7 @@ class _$PrincipalCannotBeDeletedErrorSerializer
 class PrincipalCannotBeDeletedErrorNameEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'PrincipalCannotBeDeletedError')
   static const PrincipalCannotBeDeletedErrorNameEnum
-  principalCannotBeDeletedError =
+      principalCannotBeDeletedError =
       _$principalCannotBeDeletedErrorNameEnum_principalCannotBeDeletedError;
 
   static Serializer<PrincipalCannotBeDeletedErrorNameEnum> get serializer =>
@@ -232,11 +212,10 @@ class PrincipalCannotBeDeletedErrorNameEnum extends EnumClass {
 
 class PrincipalCannotBeDeletedErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(
-    wireName:
-        r'Cannot delete own record from the project with the same principalId',
-  )
+      wireName:
+          r'Cannot delete own record from the project with the same principalId')
   static const PrincipalCannotBeDeletedErrorMessageEnum
-  cannotDeleteOwnRecordFromTheProjectWithTheSamePrincipalId =
+      cannotDeleteOwnRecordFromTheProjectWithTheSamePrincipalId =
       _$principalCannotBeDeletedErrorMessageEnum_cannotDeleteOwnRecordFromTheProjectWithTheSamePrincipalId;
 
   static Serializer<PrincipalCannotBeDeletedErrorMessageEnum> get serializer =>
@@ -256,10 +235,11 @@ class PrincipalCannotBeDeletedErrorHttpStatusCodeEnum extends EnumClass {
       _$principalCannotBeDeletedErrorHttpStatusCodeEnum_number409;
 
   static Serializer<PrincipalCannotBeDeletedErrorHttpStatusCodeEnum>
-  get serializer => _$principalCannotBeDeletedErrorHttpStatusCodeEnumSerializer;
+      get serializer =>
+          _$principalCannotBeDeletedErrorHttpStatusCodeEnumSerializer;
 
   const PrincipalCannotBeDeletedErrorHttpStatusCodeEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<PrincipalCannotBeDeletedErrorHttpStatusCodeEnum> get values =>
       _$principalCannotBeDeletedErrorHttpStatusCodeEnumValues;

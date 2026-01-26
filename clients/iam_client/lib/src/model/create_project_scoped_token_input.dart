@@ -15,18 +15,16 @@ part 'create_project_scoped_token_input.g.dart';
 @BuiltValue()
 abstract class CreateProjectScopedTokenInput
     implements
-        Built<
-          CreateProjectScopedTokenInput,
-          CreateProjectScopedTokenInputBuilder
-        > {
+        Built<CreateProjectScopedTokenInput,
+            CreateProjectScopedTokenInputBuilder> {
   @BuiltValueField(wireName: r'projectId')
   String get projectId;
 
   CreateProjectScopedTokenInput._();
 
-  factory CreateProjectScopedTokenInput([
-    void updates(CreateProjectScopedTokenInputBuilder b),
-  ]) = _$CreateProjectScopedTokenInput;
+  factory CreateProjectScopedTokenInput(
+          [void updates(CreateProjectScopedTokenInputBuilder b)]) =
+      _$CreateProjectScopedTokenInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateProjectScopedTokenInputBuilder b) => b;
@@ -41,7 +39,7 @@ class _$CreateProjectScopedTokenInputSerializer
   @override
   final Iterable<Type> types = const [
     CreateProjectScopedTokenInput,
-    _$CreateProjectScopedTokenInput,
+    _$CreateProjectScopedTokenInput
   ];
 
   @override
@@ -65,11 +63,9 @@ class _$CreateProjectScopedTokenInputSerializer
     CreateProjectScopedTokenInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -85,12 +81,10 @@ class _$CreateProjectScopedTokenInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'projectId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.projectId = valueDes;
           break;
         default:

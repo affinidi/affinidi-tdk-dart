@@ -32,9 +32,9 @@ abstract class CredentialOfferResponse
 
   CredentialOfferResponse._();
 
-  factory CredentialOfferResponse([
-    void updates(CredentialOfferResponseBuilder b),
-  ]) = _$CredentialOfferResponse;
+  factory CredentialOfferResponse(
+          [void updates(CredentialOfferResponseBuilder b)]) =
+      _$CredentialOfferResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CredentialOfferResponseBuilder b) => b;
@@ -49,7 +49,7 @@ class _$CredentialOfferResponseSerializer
   @override
   final Iterable<Type> types = const [
     CredentialOfferResponse,
-    _$CredentialOfferResponse,
+    _$CredentialOfferResponse
   ];
 
   @override
@@ -83,11 +83,9 @@ class _$CredentialOfferResponseSerializer
     CredentialOfferResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -103,34 +101,24 @@ class _$CredentialOfferResponseSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'credential_issuer':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.credentialIssuer = valueDes;
           break;
         case r'credential_configuration_ids':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.credentialConfigurationIds.replace(valueDes);
           break;
         case r'grants':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CredentialOfferResponseGrants,
-                    ),
-                  )
-                  as CredentialOfferResponseGrants;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CredentialOfferResponseGrants),
+          ) as CredentialOfferResponseGrants;
           result.grants.replace(valueDes);
           break;
         default:

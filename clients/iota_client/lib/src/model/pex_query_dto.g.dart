@@ -23,14 +23,14 @@ class _$PexQueryDto extends PexQueryDto {
   factory _$PexQueryDto([void Function(PexQueryDtoBuilder)? updates]) =>
       (PexQueryDtoBuilder()..update(updates))._build();
 
-  _$PexQueryDto._({
-    required this.ari,
-    required this.queryId,
-    required this.name,
-    required this.description,
-    required this.configurationAri,
-    required this.vpDefinition,
-  }) : super._();
+  _$PexQueryDto._(
+      {required this.ari,
+      required this.queryId,
+      required this.name,
+      required this.description,
+      required this.configurationAri,
+      required this.vpDefinition})
+      : super._();
   @override
   PexQueryDto rebuild(void Function(PexQueryDtoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -136,39 +136,20 @@ class PexQueryDtoBuilder implements Builder<PexQueryDto, PexQueryDtoBuilder> {
   PexQueryDto build() => _build();
 
   _$PexQueryDto _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$PexQueryDto._(
-          ari: BuiltValueNullFieldError.checkNotNull(
-            ari,
-            r'PexQueryDto',
-            'ari',
-          ),
+          ari:
+              BuiltValueNullFieldError.checkNotNull(ari, r'PexQueryDto', 'ari'),
           queryId: BuiltValueNullFieldError.checkNotNull(
-            queryId,
-            r'PexQueryDto',
-            'queryId',
-          ),
+              queryId, r'PexQueryDto', 'queryId'),
           name: BuiltValueNullFieldError.checkNotNull(
-            name,
-            r'PexQueryDto',
-            'name',
-          ),
+              name, r'PexQueryDto', 'name'),
           description: BuiltValueNullFieldError.checkNotNull(
-            description,
-            r'PexQueryDto',
-            'description',
-          ),
+              description, r'PexQueryDto', 'description'),
           configurationAri: BuiltValueNullFieldError.checkNotNull(
-            configurationAri,
-            r'PexQueryDto',
-            'configurationAri',
-          ),
+              configurationAri, r'PexQueryDto', 'configurationAri'),
           vpDefinition: BuiltValueNullFieldError.checkNotNull(
-            vpDefinition,
-            r'PexQueryDto',
-            'vpDefinition',
-          ),
+              vpDefinition, r'PexQueryDto', 'vpDefinition'),
         );
     replace(_$result);
     return _$result;

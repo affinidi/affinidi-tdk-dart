@@ -41,9 +41,9 @@ abstract class VerifyPresentationInput
 
   VerifyPresentationInput._();
 
-  factory VerifyPresentationInput([
-    void updates(VerifyPresentationInputBuilder b),
-  ]) = _$VerifyPresentationInput;
+  factory VerifyPresentationInput(
+          [void updates(VerifyPresentationInputBuilder b)]) =
+      _$VerifyPresentationInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(VerifyPresentationInputBuilder b) => b;
@@ -58,7 +58,7 @@ class _$VerifyPresentationInputSerializer
   @override
   final Iterable<Type> types = const [
     VerifyPresentationInput,
-    _$VerifyPresentationInput,
+    _$VerifyPresentationInput
   ];
 
   @override
@@ -119,11 +119,9 @@ class _$VerifyPresentationInputSerializer
     VerifyPresentationInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -139,57 +137,45 @@ class _$VerifyPresentationInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'verifiablePresentation':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.verifiablePresentation = valueDes;
           break;
         case r'signedPresentation':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.signedPresentation = valueDes;
           break;
         case r'presentationDefinition':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.presentationDefinition = valueDes;
           break;
         case r'presentationSubmission':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.presentationSubmission = valueDes;
           break;
         case r'dcqlQuery':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.dcqlQuery = valueDes;
           break;
         case r'challenge':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.challenge = valueDes;
           break;
         default:

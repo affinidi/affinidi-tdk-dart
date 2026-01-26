@@ -89,9 +89,8 @@ class _$AlreadyExistsErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(InvalidParameterErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
       );
     }
   }
@@ -102,11 +101,9 @@ class _$AlreadyExistsErrorSerializer
     AlreadyExistsError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -122,54 +119,39 @@ class _$AlreadyExistsErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(AlreadyExistsErrorNameEnum),
-                  )
-                  as AlreadyExistsErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(AlreadyExistsErrorNameEnum),
+          ) as AlreadyExistsErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      AlreadyExistsErrorMessageEnum,
-                    ),
-                  )
-                  as AlreadyExistsErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(AlreadyExistsErrorMessageEnum),
+          ) as AlreadyExistsErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      AlreadyExistsErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as AlreadyExistsErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(AlreadyExistsErrorHttpStatusCodeEnum),
+          ) as AlreadyExistsErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(InvalidParameterErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<InvalidParameterErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
+          ) as BuiltList<InvalidParameterErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -220,7 +202,7 @@ class AlreadyExistsErrorNameEnum extends EnumClass {
 class AlreadyExistsErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'Already exists: ${param}.')
   static const AlreadyExistsErrorMessageEnum
-  alreadyExistsColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod =
+      alreadyExistsColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod =
       _$alreadyExistsErrorMessageEnum_alreadyExistsColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod;
 
   static Serializer<AlreadyExistsErrorMessageEnum> get serializer =>

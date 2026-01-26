@@ -66,11 +66,9 @@ class _$ProjectListSerializer implements PrimitiveSerializer<ProjectList> {
     ProjectList object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -86,23 +84,17 @@ class _$ProjectListSerializer implements PrimitiveSerializer<ProjectList> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'projects':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ProjectDto),
-                    ]),
-                  )
-                  as BuiltList<ProjectDto>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(ProjectDto)]),
+          ) as BuiltList<ProjectDto>;
           result.projects.replace(valueDes);
           break;
         case r'lastEvaluatedKey':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.lastEvaluatedKey = valueDes;
           break;
         default:

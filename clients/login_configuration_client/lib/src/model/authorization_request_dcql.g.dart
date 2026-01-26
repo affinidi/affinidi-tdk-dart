@@ -18,21 +18,21 @@ class _$AuthorizationRequestDcql extends AuthorizationRequestDcql {
   @override
   final String? nonce;
 
-  factory _$AuthorizationRequestDcql([
-    void Function(AuthorizationRequestDcqlBuilder)? updates,
-  ]) => (AuthorizationRequestDcqlBuilder()..update(updates))._build();
+  factory _$AuthorizationRequestDcql(
+          [void Function(AuthorizationRequestDcqlBuilder)? updates]) =>
+      (AuthorizationRequestDcqlBuilder()..update(updates))._build();
 
-  _$AuthorizationRequestDcql._({
-    required this.state,
-    required this.dcqlQuery,
-    this.ari,
-    this.clientId,
-    this.nonce,
-  }) : super._();
+  _$AuthorizationRequestDcql._(
+      {required this.state,
+      required this.dcqlQuery,
+      this.ari,
+      this.clientId,
+      this.nonce})
+      : super._();
   @override
   AuthorizationRequestDcql rebuild(
-    void Function(AuthorizationRequestDcqlBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(AuthorizationRequestDcqlBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   AuthorizationRequestDcqlBuilder toBuilder() =>
@@ -129,19 +129,12 @@ class AuthorizationRequestDcqlBuilder
   AuthorizationRequestDcql build() => _build();
 
   _$AuthorizationRequestDcql _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$AuthorizationRequestDcql._(
           state: BuiltValueNullFieldError.checkNotNull(
-            state,
-            r'AuthorizationRequestDcql',
-            'state',
-          ),
+              state, r'AuthorizationRequestDcql', 'state'),
           dcqlQuery: BuiltValueNullFieldError.checkNotNull(
-            dcqlQuery,
-            r'AuthorizationRequestDcql',
-            'dcqlQuery',
-          ),
+              dcqlQuery, r'AuthorizationRequestDcql', 'dcqlQuery'),
           ari: ari,
           clientId: clientId,
           nonce: nonce,

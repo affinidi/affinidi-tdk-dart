@@ -17,10 +17,8 @@ part 'well_known_open_id_credential_issuer_response_credentials_supported_inner.
 @BuiltValue()
 abstract class WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner
     implements
-        Built<
-          WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner,
-          WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder
-        > {
+        Built<WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner,
+            WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder> {
   /// It is a String that identifies a Credential that is being requested to be issued.
   @BuiltValueField(wireName: r'credentialTypeId')
   String get credentialTypeId;
@@ -35,34 +33,33 @@ abstract class WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner
 
   WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner._();
 
-  factory WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner([
-    void updates(
-      WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder b,
-    ),
-  ]) = _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner;
+  factory WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner(
+          [void updates(
+              WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder
+                  b)]) =
+      _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(
-    WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder b,
-  ) => b;
+          WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder
+              b) =>
+      b;
 
   @BuiltValueSerializer(custom: true)
   static Serializer<
-    WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner
-  >
-  get serializer =>
-      _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerSerializer();
+          WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner>
+      get serializer =>
+          _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerSerializer();
 }
 
 class _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerSerializer
     implements
         PrimitiveSerializer<
-          WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner
-        > {
+            WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner> {
   @override
   final Iterable<Type> types = const [
     WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner,
-    _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner,
+    _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner
   ];
 
   @override
@@ -97,11 +94,9 @@ class _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerSerializ
     WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -110,7 +105,7 @@ class _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerSerializ
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
     required WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder
-    result,
+        result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
@@ -118,30 +113,24 @@ class _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerSerializ
       final value = serializedList[i + 1];
       switch (key) {
         case r'credentialTypeId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.credentialTypeId = valueDes;
           break;
         case r'jsonSchemaUrl':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.jsonSchemaUrl = valueDes;
           break;
         case r'jsonLdContextUrl':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.jsonLdContextUrl = valueDes;
           break;
         default:

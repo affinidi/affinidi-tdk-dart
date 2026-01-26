@@ -128,5 +128,4 @@ lib/src/model/user_dto.dart
 lib/src/model/user_list.dart
 lib/src/model/whoami_dto.dart
 lib/src/serializers.dart
-project.json
 pubspec.yaml

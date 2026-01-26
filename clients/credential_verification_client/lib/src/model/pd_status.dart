@@ -57,11 +57,9 @@ class _$PdStatusSerializer implements PrimitiveSerializer<PdStatus> {
     PdStatus object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -77,12 +75,10 @@ class _$PdStatusSerializer implements PrimitiveSerializer<PdStatus> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'directive':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(PdStatusDirectiveEnum),
-                  )
-                  as PdStatusDirectiveEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(PdStatusDirectiveEnum),
+          ) as PdStatusDirectiveEnum;
           result.directive = valueDes;
           break;
         default:

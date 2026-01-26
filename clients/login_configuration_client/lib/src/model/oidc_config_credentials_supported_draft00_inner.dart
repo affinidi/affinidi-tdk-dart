@@ -19,10 +19,8 @@ part 'oidc_config_credentials_supported_draft00_inner.g.dart';
 @BuiltValue()
 abstract class OIDCConfigCredentialsSupportedDraft00Inner
     implements
-        Built<
-          OIDCConfigCredentialsSupportedDraft00Inner,
-          OIDCConfigCredentialsSupportedDraft00InnerBuilder
-        > {
+        Built<OIDCConfigCredentialsSupportedDraft00Inner,
+            OIDCConfigCredentialsSupportedDraft00InnerBuilder> {
   @BuiltValueField(wireName: r'cryptographic_binding_methods_supported')
   BuiltList<String>? get cryptographicBindingMethodsSupported;
 
@@ -37,9 +35,9 @@ abstract class OIDCConfigCredentialsSupportedDraft00Inner
 
   OIDCConfigCredentialsSupportedDraft00Inner._();
 
-  factory OIDCConfigCredentialsSupportedDraft00Inner([
-    void updates(OIDCConfigCredentialsSupportedDraft00InnerBuilder b),
-  ]) = _$OIDCConfigCredentialsSupportedDraft00Inner;
+  factory OIDCConfigCredentialsSupportedDraft00Inner(
+          [void updates(OIDCConfigCredentialsSupportedDraft00InnerBuilder b)]) =
+      _$OIDCConfigCredentialsSupportedDraft00Inner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(OIDCConfigCredentialsSupportedDraft00InnerBuilder b) =>
@@ -47,7 +45,8 @@ abstract class OIDCConfigCredentialsSupportedDraft00Inner
 
   @BuiltValueSerializer(custom: true)
   static Serializer<OIDCConfigCredentialsSupportedDraft00Inner>
-  get serializer => _$OIDCConfigCredentialsSupportedDraft00InnerSerializer();
+      get serializer =>
+          _$OIDCConfigCredentialsSupportedDraft00InnerSerializer();
 }
 
 class _$OIDCConfigCredentialsSupportedDraft00InnerSerializer
@@ -55,7 +54,7 @@ class _$OIDCConfigCredentialsSupportedDraft00InnerSerializer
   @override
   final Iterable<Type> types = const [
     OIDCConfigCredentialsSupportedDraft00Inner,
-    _$OIDCConfigCredentialsSupportedDraft00Inner,
+    _$OIDCConfigCredentialsSupportedDraft00Inner
   ];
 
   @override
@@ -102,11 +101,9 @@ class _$OIDCConfigCredentialsSupportedDraft00InnerSerializer
     OIDCConfigCredentialsSupportedDraft00Inner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -122,45 +119,31 @@ class _$OIDCConfigCredentialsSupportedDraft00InnerSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'cryptographic_binding_methods_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.cryptographicBindingMethodsSupported.replace(valueDes);
           break;
         case r'cryptographic_suites_supported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.cryptographicSuitesSupported.replace(valueDes);
           break;
         case r'format':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.format = valueDes;
           break;
         case r'types':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.types.replace(valueDes);
           break;
         default:

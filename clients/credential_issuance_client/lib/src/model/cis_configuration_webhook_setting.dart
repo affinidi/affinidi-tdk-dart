@@ -17,10 +17,8 @@ part 'cis_configuration_webhook_setting.g.dart';
 @BuiltValue()
 abstract class CisConfigurationWebhookSetting
     implements
-        Built<
-          CisConfigurationWebhookSetting,
-          CisConfigurationWebhookSettingBuilder
-        > {
+        Built<CisConfigurationWebhookSetting,
+            CisConfigurationWebhookSettingBuilder> {
   /// flag to enabled or disabled the webhook
   @BuiltValueField(wireName: r'enabled')
   bool get enabled;
@@ -30,9 +28,9 @@ abstract class CisConfigurationWebhookSetting
 
   CisConfigurationWebhookSetting._();
 
-  factory CisConfigurationWebhookSetting([
-    void updates(CisConfigurationWebhookSettingBuilder b),
-  ]) = _$CisConfigurationWebhookSetting;
+  factory CisConfigurationWebhookSetting(
+          [void updates(CisConfigurationWebhookSettingBuilder b)]) =
+      _$CisConfigurationWebhookSetting;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CisConfigurationWebhookSettingBuilder b) =>
@@ -48,7 +46,7 @@ class _$CisConfigurationWebhookSettingSerializer
   @override
   final Iterable<Type> types = const [
     CisConfigurationWebhookSetting,
-    _$CisConfigurationWebhookSetting,
+    _$CisConfigurationWebhookSetting
   ];
 
   @override
@@ -79,11 +77,9 @@ class _$CisConfigurationWebhookSettingSerializer
     CisConfigurationWebhookSetting object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -99,23 +95,18 @@ class _$CisConfigurationWebhookSettingSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'enabled':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.enabled = valueDes;
           break;
         case r'endpoint':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CisConfigurationWebhookSettingEndpoint,
-                    ),
-                  )
-                  as CisConfigurationWebhookSettingEndpoint;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(CisConfigurationWebhookSettingEndpoint),
+          ) as CisConfigurationWebhookSettingEndpoint;
           result.endpoint.replace(valueDes);
           break;
         default:

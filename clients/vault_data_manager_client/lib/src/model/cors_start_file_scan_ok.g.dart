@@ -10,15 +10,15 @@ class _$CorsStartFileScanOK extends CorsStartFileScanOK {
   @override
   final String? corsStartFileScanOk;
 
-  factory _$CorsStartFileScanOK([
-    void Function(CorsStartFileScanOKBuilder)? updates,
-  ]) => (CorsStartFileScanOKBuilder()..update(updates))._build();
+  factory _$CorsStartFileScanOK(
+          [void Function(CorsStartFileScanOKBuilder)? updates]) =>
+      (CorsStartFileScanOKBuilder()..update(updates))._build();
 
   _$CorsStartFileScanOK._({this.corsStartFileScanOk}) : super._();
   @override
   CorsStartFileScanOK rebuild(
-    void Function(CorsStartFileScanOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CorsStartFileScanOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CorsStartFileScanOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$CorsStartFileScanOK extends CorsStartFileScanOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'CorsStartFileScanOK',
-    )..add('corsStartFileScanOk', corsStartFileScanOk)).toString();
+    return (newBuiltValueToStringHelper(r'CorsStartFileScanOK')
+          ..add('corsStartFileScanOk', corsStartFileScanOk))
+        .toString();
   }
 }
 
@@ -83,9 +83,10 @@ class CorsStartFileScanOKBuilder
   CorsStartFileScanOK build() => _build();
 
   _$CorsStartFileScanOK _build() {
-    final _$result =
-        _$v ??
-        _$CorsStartFileScanOK._(corsStartFileScanOk: corsStartFileScanOk);
+    final _$result = _$v ??
+        _$CorsStartFileScanOK._(
+          corsStartFileScanOk: corsStartFileScanOk,
+        );
     replace(_$result);
     return _$result;
   }

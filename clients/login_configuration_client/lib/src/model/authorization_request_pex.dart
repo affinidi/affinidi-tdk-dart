@@ -41,9 +41,9 @@ abstract class AuthorizationRequestPex
 
   AuthorizationRequestPex._();
 
-  factory AuthorizationRequestPex([
-    void updates(AuthorizationRequestPexBuilder b),
-  ]) = _$AuthorizationRequestPex;
+  factory AuthorizationRequestPex(
+          [void updates(AuthorizationRequestPexBuilder b)]) =
+      _$AuthorizationRequestPex;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AuthorizationRequestPexBuilder b) => b;
@@ -58,7 +58,7 @@ class _$AuthorizationRequestPexSerializer
   @override
   final Iterable<Type> types = const [
     AuthorizationRequestPex,
-    _$AuthorizationRequestPex,
+    _$AuthorizationRequestPex
   ];
 
   @override
@@ -108,11 +108,9 @@ class _$AuthorizationRequestPexSerializer
     AuthorizationRequestPex object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -128,48 +126,38 @@ class _$AuthorizationRequestPexSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'state':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.state = valueDes;
           break;
         case r'presentationDefinition':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.presentationDefinition = valueDes;
           break;
         case r'ari':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.ari = valueDes;
           break;
         case r'clientId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.clientId = valueDes;
           break;
         case r'nonce':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.nonce = valueDes;
           break;
         default:

@@ -11,18 +11,18 @@ class _$GetRevocationListCredentialResultDto
   @override
   final JsonObject revocationListCredential;
 
-  factory _$GetRevocationListCredentialResultDto([
-    void Function(GetRevocationListCredentialResultDtoBuilder)? updates,
-  ]) =>
+  factory _$GetRevocationListCredentialResultDto(
+          [void Function(GetRevocationListCredentialResultDtoBuilder)?
+              updates]) =>
       (GetRevocationListCredentialResultDtoBuilder()..update(updates))._build();
 
-  _$GetRevocationListCredentialResultDto._({
-    required this.revocationListCredential,
-  }) : super._();
+  _$GetRevocationListCredentialResultDto._(
+      {required this.revocationListCredential})
+      : super._();
   @override
   GetRevocationListCredentialResultDto rebuild(
-    void Function(GetRevocationListCredentialResultDtoBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(GetRevocationListCredentialResultDtoBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   GetRevocationListCredentialResultDtoBuilder toBuilder() =>
@@ -45,18 +45,16 @@ class _$GetRevocationListCredentialResultDto
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'GetRevocationListCredentialResultDto',
-    )..add('revocationListCredential', revocationListCredential)).toString();
+    return (newBuiltValueToStringHelper(r'GetRevocationListCredentialResultDto')
+          ..add('revocationListCredential', revocationListCredential))
+        .toString();
   }
 }
 
 class GetRevocationListCredentialResultDtoBuilder
     implements
-        Builder<
-          GetRevocationListCredentialResultDto,
-          GetRevocationListCredentialResultDtoBuilder
-        > {
+        Builder<GetRevocationListCredentialResultDto,
+            GetRevocationListCredentialResultDtoBuilder> {
   _$GetRevocationListCredentialResultDto? _$v;
 
   JsonObject? _revocationListCredential;
@@ -84,8 +82,7 @@ class GetRevocationListCredentialResultDtoBuilder
 
   @override
   void update(
-    void Function(GetRevocationListCredentialResultDtoBuilder)? updates,
-  ) {
+      void Function(GetRevocationListCredentialResultDtoBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -93,14 +90,12 @@ class GetRevocationListCredentialResultDtoBuilder
   GetRevocationListCredentialResultDto build() => _build();
 
   _$GetRevocationListCredentialResultDto _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$GetRevocationListCredentialResultDto._(
           revocationListCredential: BuiltValueNullFieldError.checkNotNull(
-            revocationListCredential,
-            r'GetRevocationListCredentialResultDto',
-            'revocationListCredential',
-          ),
+              revocationListCredential,
+              r'GetRevocationListCredentialResultDto',
+              'revocationListCredential'),
         );
     replace(_$result);
     return _$result;

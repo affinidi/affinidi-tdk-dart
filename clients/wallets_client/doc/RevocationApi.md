@@ -1,28 +1,28 @@
 # affinidi_tdk_wallets_client.api.RevocationApi
 
 ## Load the API package
-
 ```dart
 import 'package:affinidi_tdk_wallets_client/api.dart';
 ```
 
 All URIs are relative to *https://apse1.api.affinidi.io/cwe*
 
-| Method                                                                              | HTTP request                                                                       | Description                        |
-| ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------- |
-| [**getRevocationCredentialStatus**](RevocationApi.md#getrevocationcredentialstatus) | **GET** /v1/projects/{projectId}/wallets/{walletId}/revocation-statuses/{statusId} |
-| [**getRevocationListCredential**](RevocationApi.md#getrevocationlistcredential)     | **GET** /v1/wallets/{walletId}/revocation-list/{listId}                            | Return revocation list credential. |
-| [**revokeCredential**](RevocationApi.md#revokecredential)                           | **POST** /v1/wallets/{walletId}/revoke                                             | Revoke Credential.                 |
-| [**revokeCredentials**](RevocationApi.md#revokecredentials)                         | **POST** /v2/wallets/{walletId}/credentials/revoke                                 | Revoke Credentials.                |
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**getRevocationCredentialStatus**](RevocationApi.md#getrevocationcredentialstatus) | **GET** /v1/projects/{projectId}/wallets/{walletId}/revocation-statuses/{statusId} | 
+[**getRevocationListCredential**](RevocationApi.md#getrevocationlistcredential) | **GET** /v1/wallets/{walletId}/revocation-list/{listId} | Return revocation list credential.
+[**revokeCredential**](RevocationApi.md#revokecredential) | **POST** /v1/wallets/{walletId}/revoke | Revoke Credential.
+[**revokeCredentials**](RevocationApi.md#revokecredentials) | **POST** /v2/wallets/{walletId}/credentials/revoke | Revoke Credentials.
+
 
 # **getRevocationCredentialStatus**
-
 > GetRevocationListCredentialResultDto getRevocationCredentialStatus(projectId, walletId, statusId)
+
+
 
 Get revocation status list as RevocationListCredential
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_wallets_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -45,11 +45,11 @@ try {
 
 ### Parameters
 
-| Name          | Type       | Description                | Notes |
-| ------------- | ---------- | -------------------------- | ----- |
-| **projectId** | **String** | Description for projectId. |
-| **walletId**  | **String** | Description for walletId.  |
-| **statusId**  | **String** | Description for statusId.  |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **projectId** | **String**| Description for projectId. | 
+ **walletId** | **String**| Description for walletId. | 
+ **statusId** | **String**| Description for statusId. | 
 
 ### Return type
 
@@ -61,13 +61,12 @@ try {
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: application/json
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getRevocationListCredential**
-
 > GetRevocationListCredentialResultDto getRevocationListCredential(listId, walletId)
 
 Return revocation list credential.
@@ -75,7 +74,6 @@ Return revocation list credential.
 Get revocation list 2020 Credential (required to check if VC revoked). It is a public endpoint.
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_wallets_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -84,7 +82,7 @@ import 'package:affinidi_tdk_wallets_client/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('ProjectTokenAuth').apiKeyPrefix = 'Bearer';
 
 final api = AffinidiTdkWalletsClient().getRevocationApi();
-final String listId = listId_example; // String |
+final String listId = listId_example; // String | 
 final String walletId = walletId_example; // String | id of the wallet
 
 try {
@@ -97,10 +95,10 @@ try {
 
 ### Parameters
 
-| Name         | Type       | Description      | Notes |
-| ------------ | ---------- | ---------------- | ----- |
-| **listId**   | **String** |                  |
-| **walletId** | **String** | id of the wallet |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **listId** | **String**|  | 
+ **walletId** | **String**| id of the wallet | 
 
 ### Return type
 
@@ -112,13 +110,12 @@ try {
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: application/json
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **revokeCredential**
-
 > revokeCredential(walletId, revokeCredentialInput)
 
 Revoke Credential.
@@ -126,7 +123,6 @@ Revoke Credential.
 Update index/credetial at appropriate revocation list (set revoken is true).
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_wallets_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -147,10 +143,10 @@ try {
 
 ### Parameters
 
-| Name                      | Type                                                  | Description      | Notes |
-| ------------------------- | ----------------------------------------------------- | ---------------- | ----- |
-| **walletId**              | **String**                                            | id of the wallet |
-| **revokeCredentialInput** | [**RevokeCredentialInput**](RevokeCredentialInput.md) | RevokeCredential |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **walletId** | **String**| id of the wallet | 
+ **revokeCredentialInput** | [**RevokeCredentialInput**](RevokeCredentialInput.md)| RevokeCredential | 
 
 ### Return type
 
@@ -162,13 +158,12 @@ void (empty response body)
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
-- **Accept**: application/json
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **revokeCredentials**
-
 > revokeCredentials(walletId, revokeCredentialsInput)
 
 Revoke Credentials.
@@ -176,7 +171,6 @@ Revoke Credentials.
 Update index/credential at appropriate revocation list (set revoked is true).
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_wallets_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -197,10 +191,10 @@ try {
 
 ### Parameters
 
-| Name                       | Type                                                    | Description       | Notes |
-| -------------------------- | ------------------------------------------------------- | ----------------- | ----- |
-| **walletId**               | **String**                                              | id of the wallet  |
-| **revokeCredentialsInput** | [**RevokeCredentialsInput**](RevokeCredentialsInput.md) | RevokeCredentials |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **walletId** | **String**| id of the wallet | 
+ **revokeCredentialsInput** | [**RevokeCredentialsInput**](RevokeCredentialsInput.md)| RevokeCredentials | 
 
 ### Return type
 
@@ -212,7 +206,8 @@ void (empty response body)
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
-- **Accept**: application/json
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+

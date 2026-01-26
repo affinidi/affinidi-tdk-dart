@@ -84,5 +84,4 @@ lib/src/model/verify_presentation_v2_input_pex_query.dart
 lib/src/model/w3c_credential_status.dart
 lib/src/model/w3c_proof.dart
 lib/src/serializers.dart
-project.json
 pubspec.yaml

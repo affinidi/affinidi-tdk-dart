@@ -43,18 +43,14 @@ class PoliciesApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/policies/principals/{principalId}'.replaceAll(
-      '{'
-      r'principalId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        principalId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'principalId' '}',
+        encodeQueryParameter(_serializers, principalId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -71,10 +67,7 @@ class PoliciesApi {
 
     final _queryParameters = <String, dynamic>{
       r'principalType': encodeQueryParameter(
-        _serializers,
-        principalType,
-        const FullType(String),
-      ),
+          _serializers, principalType, const FullType(String)),
     };
 
     final _response = await _dio.request<Object>(
@@ -93,10 +86,9 @@ class PoliciesApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(PolicyDto),
-                )
-                as PolicyDto;
+              rawResponse,
+              specifiedType: const FullType(PolicyDto),
+            ) as PolicyDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -147,18 +139,14 @@ class PoliciesApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/policies/principals/{principalId}'.replaceAll(
-      '{'
-      r'principalId'
-      '}',
-      encodeQueryParameter(
-        _serializers,
-        principalId,
-        const FullType(String),
-      ).toString(),
-    );
+        '{' r'principalId' '}',
+        encodeQueryParameter(_serializers, principalId, const FullType(String))
+            .toString());
     final _options = Options(
       method: r'PUT',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -176,10 +164,7 @@ class PoliciesApi {
 
     final _queryParameters = <String, dynamic>{
       r'principalType': encodeQueryParameter(
-        _serializers,
-        principalType,
-        const FullType(String),
-      ),
+          _serializers, principalType, const FullType(String)),
     };
 
     dynamic _bodyData;
@@ -217,10 +202,9 @@ class PoliciesApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(PolicyDto),
-                )
-                as PolicyDto;
+              rawResponse,
+              specifiedType: const FullType(PolicyDto),
+            ) as PolicyDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

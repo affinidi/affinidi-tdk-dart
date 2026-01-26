@@ -75,11 +75,9 @@ class _$PermissionSerializer implements PrimitiveSerializer<Permission> {
     Permission object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -95,34 +93,24 @@ class _$PermissionSerializer implements PrimitiveSerializer<Permission> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'rights':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(RightsEnum),
-                    ]),
-                  )
-                  as BuiltList<RightsEnum>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(RightsEnum)]),
+          ) as BuiltList<RightsEnum>;
           result.rights.replace(valueDes);
           break;
         case r'nodeIds':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.nodeIds.replace(valueDes);
           break;
         case r'expiresAt':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(DateTime),
-                  )
-                  as DateTime;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(DateTime),
+          ) as DateTime;
           result.expiresAt = valueDes;
           break;
         default:

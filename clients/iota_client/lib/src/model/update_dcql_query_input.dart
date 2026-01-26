@@ -42,7 +42,7 @@ class _$UpdateDcqlQueryInputSerializer
   @override
   final Iterable<Type> types = const [
     UpdateDcqlQueryInput,
-    _$UpdateDcqlQueryInput,
+    _$UpdateDcqlQueryInput
   ];
 
   @override
@@ -75,11 +75,9 @@ class _$UpdateDcqlQueryInputSerializer
     UpdateDcqlQueryInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -95,21 +93,17 @@ class _$UpdateDcqlQueryInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'dcqlQuery':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.dcqlQuery = valueDes;
           break;
         case r'description':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.description = valueDes;
           break;
         default:

@@ -10,15 +10,15 @@ class _$SignPresentationLdpResultDto extends SignPresentationLdpResultDto {
   @override
   final JsonObject presentation;
 
-  factory _$SignPresentationLdpResultDto([
-    void Function(SignPresentationLdpResultDtoBuilder)? updates,
-  ]) => (SignPresentationLdpResultDtoBuilder()..update(updates))._build();
+  factory _$SignPresentationLdpResultDto(
+          [void Function(SignPresentationLdpResultDtoBuilder)? updates]) =>
+      (SignPresentationLdpResultDtoBuilder()..update(updates))._build();
 
   _$SignPresentationLdpResultDto._({required this.presentation}) : super._();
   @override
   SignPresentationLdpResultDto rebuild(
-    void Function(SignPresentationLdpResultDtoBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(SignPresentationLdpResultDtoBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   SignPresentationLdpResultDtoBuilder toBuilder() =>
@@ -41,18 +41,16 @@ class _$SignPresentationLdpResultDto extends SignPresentationLdpResultDto {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'SignPresentationLdpResultDto',
-    )..add('presentation', presentation)).toString();
+    return (newBuiltValueToStringHelper(r'SignPresentationLdpResultDto')
+          ..add('presentation', presentation))
+        .toString();
   }
 }
 
 class SignPresentationLdpResultDtoBuilder
     implements
-        Builder<
-          SignPresentationLdpResultDto,
-          SignPresentationLdpResultDtoBuilder
-        > {
+        Builder<SignPresentationLdpResultDto,
+            SignPresentationLdpResultDtoBuilder> {
   _$SignPresentationLdpResultDto? _$v;
 
   JsonObject? _presentation;
@@ -87,14 +85,10 @@ class SignPresentationLdpResultDtoBuilder
   SignPresentationLdpResultDto build() => _build();
 
   _$SignPresentationLdpResultDto _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$SignPresentationLdpResultDto._(
           presentation: BuiltValueNullFieldError.checkNotNull(
-            presentation,
-            r'SignPresentationLdpResultDto',
-            'presentation',
-          ),
+              presentation, r'SignPresentationLdpResultDto', 'presentation'),
         );
     replace(_$result);
     return _$result;

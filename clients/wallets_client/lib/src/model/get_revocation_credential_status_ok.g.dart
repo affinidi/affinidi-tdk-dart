@@ -11,16 +11,16 @@ class _$GetRevocationCredentialStatusOK
   @override
   final JsonObject revocationListCredential;
 
-  factory _$GetRevocationCredentialStatusOK([
-    void Function(GetRevocationCredentialStatusOKBuilder)? updates,
-  ]) => (GetRevocationCredentialStatusOKBuilder()..update(updates))._build();
+  factory _$GetRevocationCredentialStatusOK(
+          [void Function(GetRevocationCredentialStatusOKBuilder)? updates]) =>
+      (GetRevocationCredentialStatusOKBuilder()..update(updates))._build();
 
   _$GetRevocationCredentialStatusOK._({required this.revocationListCredential})
-    : super._();
+      : super._();
   @override
   GetRevocationCredentialStatusOK rebuild(
-    void Function(GetRevocationCredentialStatusOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(GetRevocationCredentialStatusOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   GetRevocationCredentialStatusOKBuilder toBuilder() =>
@@ -43,18 +43,16 @@ class _$GetRevocationCredentialStatusOK
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'GetRevocationCredentialStatusOK',
-    )..add('revocationListCredential', revocationListCredential)).toString();
+    return (newBuiltValueToStringHelper(r'GetRevocationCredentialStatusOK')
+          ..add('revocationListCredential', revocationListCredential))
+        .toString();
   }
 }
 
 class GetRevocationCredentialStatusOKBuilder
     implements
-        Builder<
-          GetRevocationCredentialStatusOK,
-          GetRevocationCredentialStatusOKBuilder
-        > {
+        Builder<GetRevocationCredentialStatusOK,
+            GetRevocationCredentialStatusOKBuilder> {
   _$GetRevocationCredentialStatusOK? _$v;
 
   JsonObject? _revocationListCredential;
@@ -89,14 +87,12 @@ class GetRevocationCredentialStatusOKBuilder
   GetRevocationCredentialStatusOK build() => _build();
 
   _$GetRevocationCredentialStatusOK _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$GetRevocationCredentialStatusOK._(
           revocationListCredential: BuiltValueNullFieldError.checkNotNull(
-            revocationListCredential,
-            r'GetRevocationCredentialStatusOK',
-            'revocationListCredential',
-          ),
+              revocationListCredential,
+              r'GetRevocationCredentialStatusOK',
+              'revocationListCredential'),
         );
     replace(_$result);
     return _$result;

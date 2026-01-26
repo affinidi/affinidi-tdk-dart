@@ -7,12 +7,11 @@ part of 'invalid_did_parameter_error.dart';
 // **************************************************************************
 
 const InvalidDidParameterErrorNameEnum
-_$invalidDidParameterErrorNameEnum_invalidDidParameterError =
+    _$invalidDidParameterErrorNameEnum_invalidDidParameterError =
     const InvalidDidParameterErrorNameEnum._('invalidDidParameterError');
 
 InvalidDidParameterErrorNameEnum _$invalidDidParameterErrorNameEnumValueOf(
-  String name,
-) {
+    String name) {
   switch (name) {
     case 'invalidDidParameterError':
       return _$invalidDidParameterErrorNameEnum_invalidDidParameterError;
@@ -22,21 +21,18 @@ InvalidDidParameterErrorNameEnum _$invalidDidParameterErrorNameEnumValueOf(
 }
 
 final BuiltSet<InvalidDidParameterErrorNameEnum>
-_$invalidDidParameterErrorNameEnumValues =
-    BuiltSet<InvalidDidParameterErrorNameEnum>(
-      const <InvalidDidParameterErrorNameEnum>[
-        _$invalidDidParameterErrorNameEnum_invalidDidParameterError,
-      ],
-    );
+    _$invalidDidParameterErrorNameEnumValues = BuiltSet<
+        InvalidDidParameterErrorNameEnum>(const <InvalidDidParameterErrorNameEnum>[
+  _$invalidDidParameterErrorNameEnum_invalidDidParameterError,
+]);
 
 const InvalidDidParameterErrorMessageEnum
-_$invalidDidParameterErrorMessageEnum_givenDidInFieldToDidIsInvalidPeriodUseOnlyResolvableFormOfDidPeriod =
+    _$invalidDidParameterErrorMessageEnum_givenDidInFieldToDidIsInvalidPeriodUseOnlyResolvableFormOfDidPeriod =
     const InvalidDidParameterErrorMessageEnum._(
-      'givenDidInFieldToDidIsInvalidPeriodUseOnlyResolvableFormOfDidPeriod',
-    );
+        'givenDidInFieldToDidIsInvalidPeriodUseOnlyResolvableFormOfDidPeriod');
 
 InvalidDidParameterErrorMessageEnum
-_$invalidDidParameterErrorMessageEnumValueOf(String name) {
+    _$invalidDidParameterErrorMessageEnumValueOf(String name) {
   switch (name) {
     case 'givenDidInFieldToDidIsInvalidPeriodUseOnlyResolvableFormOfDidPeriod':
       return _$invalidDidParameterErrorMessageEnum_givenDidInFieldToDidIsInvalidPeriodUseOnlyResolvableFormOfDidPeriod;
@@ -46,19 +42,17 @@ _$invalidDidParameterErrorMessageEnumValueOf(String name) {
 }
 
 final BuiltSet<InvalidDidParameterErrorMessageEnum>
-_$invalidDidParameterErrorMessageEnumValues =
-    BuiltSet<InvalidDidParameterErrorMessageEnum>(const <
-      InvalidDidParameterErrorMessageEnum
-    >[
-      _$invalidDidParameterErrorMessageEnum_givenDidInFieldToDidIsInvalidPeriodUseOnlyResolvableFormOfDidPeriod,
-    ]);
+    _$invalidDidParameterErrorMessageEnumValues = BuiltSet<
+        InvalidDidParameterErrorMessageEnum>(const <InvalidDidParameterErrorMessageEnum>[
+  _$invalidDidParameterErrorMessageEnum_givenDidInFieldToDidIsInvalidPeriodUseOnlyResolvableFormOfDidPeriod,
+]);
 
 const InvalidDidParameterErrorHttpStatusCodeEnum
-_$invalidDidParameterErrorHttpStatusCodeEnum_number400 =
+    _$invalidDidParameterErrorHttpStatusCodeEnum_number400 =
     const InvalidDidParameterErrorHttpStatusCodeEnum._('number400');
 
 InvalidDidParameterErrorHttpStatusCodeEnum
-_$invalidDidParameterErrorHttpStatusCodeEnumValueOf(String name) {
+    _$invalidDidParameterErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$invalidDidParameterErrorHttpStatusCodeEnum_number400;
@@ -68,21 +62,19 @@ _$invalidDidParameterErrorHttpStatusCodeEnumValueOf(String name) {
 }
 
 final BuiltSet<InvalidDidParameterErrorHttpStatusCodeEnum>
-_$invalidDidParameterErrorHttpStatusCodeEnumValues =
-    BuiltSet<InvalidDidParameterErrorHttpStatusCodeEnum>(
-      const <InvalidDidParameterErrorHttpStatusCodeEnum>[
-        _$invalidDidParameterErrorHttpStatusCodeEnum_number400,
-      ],
-    );
+    _$invalidDidParameterErrorHttpStatusCodeEnumValues = BuiltSet<
+        InvalidDidParameterErrorHttpStatusCodeEnum>(const <InvalidDidParameterErrorHttpStatusCodeEnum>[
+  _$invalidDidParameterErrorHttpStatusCodeEnum_number400,
+]);
 
 Serializer<InvalidDidParameterErrorNameEnum>
-_$invalidDidParameterErrorNameEnumSerializer =
+    _$invalidDidParameterErrorNameEnumSerializer =
     _$InvalidDidParameterErrorNameEnumSerializer();
 Serializer<InvalidDidParameterErrorMessageEnum>
-_$invalidDidParameterErrorMessageEnumSerializer =
+    _$invalidDidParameterErrorMessageEnumSerializer =
     _$InvalidDidParameterErrorMessageEnumSerializer();
 Serializer<InvalidDidParameterErrorHttpStatusCodeEnum>
-_$invalidDidParameterErrorHttpStatusCodeEnumSerializer =
+    _$invalidDidParameterErrorHttpStatusCodeEnumSerializer =
     _$InvalidDidParameterErrorHttpStatusCodeEnumSerializer();
 
 class _$InvalidDidParameterErrorNameEnumSerializer
@@ -101,19 +93,16 @@ class _$InvalidDidParameterErrorNameEnumSerializer
 
   @override
   Object serialize(
-    Serializers serializers,
-    InvalidDidParameterErrorNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, InvalidDidParameterErrorNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InvalidDidParameterErrorNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InvalidDidParameterErrorNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InvalidDidParameterErrorNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InvalidDidParameterErrorMessageEnumSerializer
@@ -129,26 +118,23 @@ class _$InvalidDidParameterErrorMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    InvalidDidParameterErrorMessageEnum,
+    InvalidDidParameterErrorMessageEnum
   ];
   @override
   final String wireName = 'InvalidDidParameterErrorMessageEnum';
 
   @override
   Object serialize(
-    Serializers serializers,
-    InvalidDidParameterErrorMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, InvalidDidParameterErrorMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InvalidDidParameterErrorMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InvalidDidParameterErrorMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InvalidDidParameterErrorMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InvalidDidParameterErrorHttpStatusCodeEnumSerializer
@@ -162,26 +148,23 @@ class _$InvalidDidParameterErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    InvalidDidParameterErrorHttpStatusCodeEnum,
+    InvalidDidParameterErrorHttpStatusCodeEnum
   ];
   @override
   final String wireName = 'InvalidDidParameterErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    InvalidDidParameterErrorHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          InvalidDidParameterErrorHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InvalidDidParameterErrorHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InvalidDidParameterErrorHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InvalidDidParameterErrorHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InvalidDidParameterError extends InvalidDidParameterError {
@@ -196,21 +179,21 @@ class _$InvalidDidParameterError extends InvalidDidParameterError {
   @override
   final BuiltList<ServiceErrorResponseDetailsInner>? details;
 
-  factory _$InvalidDidParameterError([
-    void Function(InvalidDidParameterErrorBuilder)? updates,
-  ]) => (InvalidDidParameterErrorBuilder()..update(updates))._build();
+  factory _$InvalidDidParameterError(
+          [void Function(InvalidDidParameterErrorBuilder)? updates]) =>
+      (InvalidDidParameterErrorBuilder()..update(updates))._build();
 
-  _$InvalidDidParameterError._({
-    required this.name,
-    required this.message,
-    required this.httpStatusCode,
-    required this.traceId,
-    this.details,
-  }) : super._();
+  _$InvalidDidParameterError._(
+      {required this.name,
+      required this.message,
+      required this.httpStatusCode,
+      required this.traceId,
+      this.details})
+      : super._();
   @override
   InvalidDidParameterError rebuild(
-    void Function(InvalidDidParameterErrorBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(InvalidDidParameterErrorBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   InvalidDidParameterErrorBuilder toBuilder() =>
@@ -269,8 +252,8 @@ class InvalidDidParameterErrorBuilder
   InvalidDidParameterErrorHttpStatusCodeEnum? get httpStatusCode =>
       _$this._httpStatusCode;
   set httpStatusCode(
-    InvalidDidParameterErrorHttpStatusCodeEnum? httpStatusCode,
-  ) => _$this._httpStatusCode = httpStatusCode;
+          InvalidDidParameterErrorHttpStatusCodeEnum? httpStatusCode) =>
+      _$this._httpStatusCode = httpStatusCode;
 
   String? _traceId;
   String? get traceId => _$this._traceId;
@@ -315,29 +298,16 @@ class InvalidDidParameterErrorBuilder
   _$InvalidDidParameterError _build() {
     _$InvalidDidParameterError _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$InvalidDidParameterError._(
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'InvalidDidParameterError',
-              'name',
-            ),
+                name, r'InvalidDidParameterError', 'name'),
             message: BuiltValueNullFieldError.checkNotNull(
-              message,
-              r'InvalidDidParameterError',
-              'message',
-            ),
+                message, r'InvalidDidParameterError', 'message'),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-              httpStatusCode,
-              r'InvalidDidParameterError',
-              'httpStatusCode',
-            ),
+                httpStatusCode, r'InvalidDidParameterError', 'httpStatusCode'),
             traceId: BuiltValueNullFieldError.checkNotNull(
-              traceId,
-              r'InvalidDidParameterError',
-              'traceId',
-            ),
+                traceId, r'InvalidDidParameterError', 'traceId'),
             details: _details?.build(),
           );
     } catch (_) {
@@ -347,10 +317,7 @@ class InvalidDidParameterErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'InvalidDidParameterError',
-          _$failedField,
-          e.toString(),
-        );
+            r'InvalidDidParameterError', _$failedField, e.toString());
       }
       rethrow;
     }

@@ -16,10 +16,8 @@ part 'aws_credential_exchange_operation_ok.g.dart';
 @BuiltValue()
 abstract class AwsCredentialExchangeOperationOK
     implements
-        Built<
-          AwsCredentialExchangeOperationOK,
-          AwsCredentialExchangeOperationOKBuilder
-        > {
+        Built<AwsCredentialExchangeOperationOK,
+            AwsCredentialExchangeOperationOKBuilder> {
   @BuiltValueField(wireName: r'token')
   String get token;
 
@@ -28,9 +26,9 @@ abstract class AwsCredentialExchangeOperationOK
 
   AwsCredentialExchangeOperationOK._();
 
-  factory AwsCredentialExchangeOperationOK([
-    void updates(AwsCredentialExchangeOperationOKBuilder b),
-  ]) = _$AwsCredentialExchangeOperationOK;
+  factory AwsCredentialExchangeOperationOK(
+          [void updates(AwsCredentialExchangeOperationOKBuilder b)]) =
+      _$AwsCredentialExchangeOperationOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AwsCredentialExchangeOperationOKBuilder b) => b;
@@ -45,7 +43,7 @@ class _$AwsCredentialExchangeOperationOKSerializer
   @override
   final Iterable<Type> types = const [
     AwsCredentialExchangeOperationOK,
-    _$AwsCredentialExchangeOperationOK,
+    _$AwsCredentialExchangeOperationOK
   ];
 
   @override
@@ -74,11 +72,9 @@ class _$AwsCredentialExchangeOperationOKSerializer
     AwsCredentialExchangeOperationOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -94,21 +90,17 @@ class _$AwsCredentialExchangeOperationOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'token':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.token = valueDes;
           break;
         case r'identityId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.identityId = valueDes;
           break;
         default:

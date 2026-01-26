@@ -13,23 +13,23 @@ class _$WellKnownOpenIdCredentialIssuerResponseDisplayLogo
   @override
   final String? altText;
 
-  factory _$WellKnownOpenIdCredentialIssuerResponseDisplayLogo([
-    void Function(WellKnownOpenIdCredentialIssuerResponseDisplayLogoBuilder)?
-    updates,
-  ]) =>
+  factory _$WellKnownOpenIdCredentialIssuerResponseDisplayLogo(
+          [void Function(
+                  WellKnownOpenIdCredentialIssuerResponseDisplayLogoBuilder)?
+              updates]) =>
       (WellKnownOpenIdCredentialIssuerResponseDisplayLogoBuilder()
             ..update(updates))
           ._build();
 
-  _$WellKnownOpenIdCredentialIssuerResponseDisplayLogo._({
-    required this.uri,
-    this.altText,
-  }) : super._();
+  _$WellKnownOpenIdCredentialIssuerResponseDisplayLogo._(
+      {required this.uri, this.altText})
+      : super._();
   @override
   WellKnownOpenIdCredentialIssuerResponseDisplayLogo rebuild(
-    void Function(WellKnownOpenIdCredentialIssuerResponseDisplayLogoBuilder)
-    updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(
+                  WellKnownOpenIdCredentialIssuerResponseDisplayLogoBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   WellKnownOpenIdCredentialIssuerResponseDisplayLogoBuilder toBuilder() =>
@@ -56,8 +56,7 @@ class _$WellKnownOpenIdCredentialIssuerResponseDisplayLogo
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'WellKnownOpenIdCredentialIssuerResponseDisplayLogo',
-          )
+            r'WellKnownOpenIdCredentialIssuerResponseDisplayLogo')
           ..add('uri', uri)
           ..add('altText', altText))
         .toString();
@@ -66,10 +65,8 @@ class _$WellKnownOpenIdCredentialIssuerResponseDisplayLogo
 
 class WellKnownOpenIdCredentialIssuerResponseDisplayLogoBuilder
     implements
-        Builder<
-          WellKnownOpenIdCredentialIssuerResponseDisplayLogo,
-          WellKnownOpenIdCredentialIssuerResponseDisplayLogoBuilder
-        > {
+        Builder<WellKnownOpenIdCredentialIssuerResponseDisplayLogo,
+            WellKnownOpenIdCredentialIssuerResponseDisplayLogoBuilder> {
   _$WellKnownOpenIdCredentialIssuerResponseDisplayLogo? _$v;
 
   String? _uri;
@@ -101,9 +98,8 @@ class WellKnownOpenIdCredentialIssuerResponseDisplayLogoBuilder
 
   @override
   void update(
-    void Function(WellKnownOpenIdCredentialIssuerResponseDisplayLogoBuilder)?
-    updates,
-  ) {
+      void Function(WellKnownOpenIdCredentialIssuerResponseDisplayLogoBuilder)?
+          updates) {
     if (updates != null) updates(this);
   }
 
@@ -111,14 +107,10 @@ class WellKnownOpenIdCredentialIssuerResponseDisplayLogoBuilder
   WellKnownOpenIdCredentialIssuerResponseDisplayLogo build() => _build();
 
   _$WellKnownOpenIdCredentialIssuerResponseDisplayLogo _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$WellKnownOpenIdCredentialIssuerResponseDisplayLogo._(
-          uri: BuiltValueNullFieldError.checkNotNull(
-            uri,
-            r'WellKnownOpenIdCredentialIssuerResponseDisplayLogo',
-            'uri',
-          ),
+          uri: BuiltValueNullFieldError.checkNotNull(uri,
+              r'WellKnownOpenIdCredentialIssuerResponseDisplayLogo', 'uri'),
           altText: altText,
         );
     replace(_$result);

@@ -28,9 +28,9 @@ abstract class VerifyCredentialV2Input
 
   VerifyCredentialV2Input._();
 
-  factory VerifyCredentialV2Input([
-    void updates(VerifyCredentialV2InputBuilder b),
-  ]) = _$VerifyCredentialV2Input;
+  factory VerifyCredentialV2Input(
+          [void updates(VerifyCredentialV2InputBuilder b)]) =
+      _$VerifyCredentialV2Input;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(VerifyCredentialV2InputBuilder b) => b;
@@ -45,7 +45,7 @@ class _$VerifyCredentialV2InputSerializer
   @override
   final Iterable<Type> types = const [
     VerifyCredentialV2Input,
-    _$VerifyCredentialV2Input,
+    _$VerifyCredentialV2Input
   ];
 
   @override
@@ -68,7 +68,7 @@ class _$VerifyCredentialV2InputSerializer
       yield serializers.serialize(
         object.ldpVcs,
         specifiedType: const FullType(BuiltList, [
-          FullType(BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
+          FullType(BuiltMap, [FullType(String), FullType.nullable(JsonObject)])
         ]),
       );
     }
@@ -80,11 +80,9 @@ class _$VerifyCredentialV2InputSerializer
     VerifyCredentialV2Input object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -100,28 +98,20 @@ class _$VerifyCredentialV2InputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'jwtVcs':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.jwtVcs.replace(valueDes);
           break;
         case r'ldpVcs':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(BuiltMap, [
-                        FullType(String),
-                        FullType.nullable(JsonObject),
-                      ]),
-                    ]),
-                  )
-                  as BuiltList<BuiltMap<String, JsonObject?>>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [
+              FullType(
+                  BuiltMap, [FullType(String), FullType.nullable(JsonObject)])
+            ]),
+          ) as BuiltList<BuiltMap<String, JsonObject?>>;
           result.ldpVcs.replace(valueDes);
           break;
         default:

@@ -57,7 +57,7 @@ class _$EntityNotFoundErrorSerializer
   @override
   final Iterable<Type> types = const [
     EntityNotFoundError,
-    _$EntityNotFoundError,
+    _$EntityNotFoundError
   ];
 
   @override
@@ -92,9 +92,8 @@ class _$EntityNotFoundErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ServiceErrorResponseDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
       );
     }
   }
@@ -105,11 +104,9 @@ class _$EntityNotFoundErrorSerializer
     EntityNotFoundError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -125,54 +122,40 @@ class _$EntityNotFoundErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(EntityNotFoundErrorNameEnum),
-                  )
-                  as EntityNotFoundErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(EntityNotFoundErrorNameEnum),
+          ) as EntityNotFoundErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      EntityNotFoundErrorMessageEnum,
-                    ),
-                  )
-                  as EntityNotFoundErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(EntityNotFoundErrorMessageEnum),
+          ) as EntityNotFoundErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      EntityNotFoundErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as EntityNotFoundErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(EntityNotFoundErrorHttpStatusCodeEnum),
+          ) as EntityNotFoundErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ServiceErrorResponseDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ServiceErrorResponseDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
+          ) as BuiltList<ServiceErrorResponseDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:

@@ -7,12 +7,11 @@ part of 'revocation_forbidden_error.dart';
 // **************************************************************************
 
 const RevocationForbiddenErrorNameEnum
-_$revocationForbiddenErrorNameEnum_revocationForbiddenError =
+    _$revocationForbiddenErrorNameEnum_revocationForbiddenError =
     const RevocationForbiddenErrorNameEnum._('revocationForbiddenError');
 
 RevocationForbiddenErrorNameEnum _$revocationForbiddenErrorNameEnumValueOf(
-  String name,
-) {
+    String name) {
   switch (name) {
     case 'revocationForbiddenError':
       return _$revocationForbiddenErrorNameEnum_revocationForbiddenError;
@@ -22,21 +21,18 @@ RevocationForbiddenErrorNameEnum _$revocationForbiddenErrorNameEnumValueOf(
 }
 
 final BuiltSet<RevocationForbiddenErrorNameEnum>
-_$revocationForbiddenErrorNameEnumValues =
-    BuiltSet<RevocationForbiddenErrorNameEnum>(
-      const <RevocationForbiddenErrorNameEnum>[
-        _$revocationForbiddenErrorNameEnum_revocationForbiddenError,
-      ],
-    );
+    _$revocationForbiddenErrorNameEnumValues = BuiltSet<
+        RevocationForbiddenErrorNameEnum>(const <RevocationForbiddenErrorNameEnum>[
+  _$revocationForbiddenErrorNameEnum_revocationForbiddenError,
+]);
 
 const RevocationForbiddenErrorMessageEnum
-_$revocationForbiddenErrorMessageEnum_relatedVCHasNotBeenClaimedYet =
+    _$revocationForbiddenErrorMessageEnum_relatedVCHasNotBeenClaimedYet =
     const RevocationForbiddenErrorMessageEnum._(
-      'relatedVCHasNotBeenClaimedYet',
-    );
+        'relatedVCHasNotBeenClaimedYet');
 
 RevocationForbiddenErrorMessageEnum
-_$revocationForbiddenErrorMessageEnumValueOf(String name) {
+    _$revocationForbiddenErrorMessageEnumValueOf(String name) {
   switch (name) {
     case 'relatedVCHasNotBeenClaimedYet':
       return _$revocationForbiddenErrorMessageEnum_relatedVCHasNotBeenClaimedYet;
@@ -46,19 +42,17 @@ _$revocationForbiddenErrorMessageEnumValueOf(String name) {
 }
 
 final BuiltSet<RevocationForbiddenErrorMessageEnum>
-_$revocationForbiddenErrorMessageEnumValues =
-    BuiltSet<RevocationForbiddenErrorMessageEnum>(
-      const <RevocationForbiddenErrorMessageEnum>[
-        _$revocationForbiddenErrorMessageEnum_relatedVCHasNotBeenClaimedYet,
-      ],
-    );
+    _$revocationForbiddenErrorMessageEnumValues = BuiltSet<
+        RevocationForbiddenErrorMessageEnum>(const <RevocationForbiddenErrorMessageEnum>[
+  _$revocationForbiddenErrorMessageEnum_relatedVCHasNotBeenClaimedYet,
+]);
 
 const RevocationForbiddenErrorHttpStatusCodeEnum
-_$revocationForbiddenErrorHttpStatusCodeEnum_number400 =
+    _$revocationForbiddenErrorHttpStatusCodeEnum_number400 =
     const RevocationForbiddenErrorHttpStatusCodeEnum._('number400');
 
 RevocationForbiddenErrorHttpStatusCodeEnum
-_$revocationForbiddenErrorHttpStatusCodeEnumValueOf(String name) {
+    _$revocationForbiddenErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$revocationForbiddenErrorHttpStatusCodeEnum_number400;
@@ -68,21 +62,19 @@ _$revocationForbiddenErrorHttpStatusCodeEnumValueOf(String name) {
 }
 
 final BuiltSet<RevocationForbiddenErrorHttpStatusCodeEnum>
-_$revocationForbiddenErrorHttpStatusCodeEnumValues =
-    BuiltSet<RevocationForbiddenErrorHttpStatusCodeEnum>(
-      const <RevocationForbiddenErrorHttpStatusCodeEnum>[
-        _$revocationForbiddenErrorHttpStatusCodeEnum_number400,
-      ],
-    );
+    _$revocationForbiddenErrorHttpStatusCodeEnumValues = BuiltSet<
+        RevocationForbiddenErrorHttpStatusCodeEnum>(const <RevocationForbiddenErrorHttpStatusCodeEnum>[
+  _$revocationForbiddenErrorHttpStatusCodeEnum_number400,
+]);
 
 Serializer<RevocationForbiddenErrorNameEnum>
-_$revocationForbiddenErrorNameEnumSerializer =
+    _$revocationForbiddenErrorNameEnumSerializer =
     _$RevocationForbiddenErrorNameEnumSerializer();
 Serializer<RevocationForbiddenErrorMessageEnum>
-_$revocationForbiddenErrorMessageEnumSerializer =
+    _$revocationForbiddenErrorMessageEnumSerializer =
     _$RevocationForbiddenErrorMessageEnumSerializer();
 Serializer<RevocationForbiddenErrorHttpStatusCodeEnum>
-_$revocationForbiddenErrorHttpStatusCodeEnumSerializer =
+    _$revocationForbiddenErrorHttpStatusCodeEnumSerializer =
     _$RevocationForbiddenErrorHttpStatusCodeEnumSerializer();
 
 class _$RevocationForbiddenErrorNameEnumSerializer
@@ -101,19 +93,16 @@ class _$RevocationForbiddenErrorNameEnumSerializer
 
   @override
   Object serialize(
-    Serializers serializers,
-    RevocationForbiddenErrorNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, RevocationForbiddenErrorNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   RevocationForbiddenErrorNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => RevocationForbiddenErrorNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      RevocationForbiddenErrorNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$RevocationForbiddenErrorMessageEnumSerializer
@@ -127,26 +116,23 @@ class _$RevocationForbiddenErrorMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    RevocationForbiddenErrorMessageEnum,
+    RevocationForbiddenErrorMessageEnum
   ];
   @override
   final String wireName = 'RevocationForbiddenErrorMessageEnum';
 
   @override
   Object serialize(
-    Serializers serializers,
-    RevocationForbiddenErrorMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, RevocationForbiddenErrorMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   RevocationForbiddenErrorMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => RevocationForbiddenErrorMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      RevocationForbiddenErrorMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$RevocationForbiddenErrorHttpStatusCodeEnumSerializer
@@ -160,26 +146,23 @@ class _$RevocationForbiddenErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    RevocationForbiddenErrorHttpStatusCodeEnum,
+    RevocationForbiddenErrorHttpStatusCodeEnum
   ];
   @override
   final String wireName = 'RevocationForbiddenErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    RevocationForbiddenErrorHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          RevocationForbiddenErrorHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   RevocationForbiddenErrorHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => RevocationForbiddenErrorHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      RevocationForbiddenErrorHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$RevocationForbiddenError extends RevocationForbiddenError {
@@ -194,21 +177,21 @@ class _$RevocationForbiddenError extends RevocationForbiddenError {
   @override
   final BuiltList<ActionForbiddenErrorDetailsInner>? details;
 
-  factory _$RevocationForbiddenError([
-    void Function(RevocationForbiddenErrorBuilder)? updates,
-  ]) => (RevocationForbiddenErrorBuilder()..update(updates))._build();
+  factory _$RevocationForbiddenError(
+          [void Function(RevocationForbiddenErrorBuilder)? updates]) =>
+      (RevocationForbiddenErrorBuilder()..update(updates))._build();
 
-  _$RevocationForbiddenError._({
-    required this.name,
-    required this.message,
-    required this.httpStatusCode,
-    required this.traceId,
-    this.details,
-  }) : super._();
+  _$RevocationForbiddenError._(
+      {required this.name,
+      required this.message,
+      required this.httpStatusCode,
+      required this.traceId,
+      this.details})
+      : super._();
   @override
   RevocationForbiddenError rebuild(
-    void Function(RevocationForbiddenErrorBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(RevocationForbiddenErrorBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   RevocationForbiddenErrorBuilder toBuilder() =>
@@ -267,8 +250,8 @@ class RevocationForbiddenErrorBuilder
   RevocationForbiddenErrorHttpStatusCodeEnum? get httpStatusCode =>
       _$this._httpStatusCode;
   set httpStatusCode(
-    RevocationForbiddenErrorHttpStatusCodeEnum? httpStatusCode,
-  ) => _$this._httpStatusCode = httpStatusCode;
+          RevocationForbiddenErrorHttpStatusCodeEnum? httpStatusCode) =>
+      _$this._httpStatusCode = httpStatusCode;
 
   String? _traceId;
   String? get traceId => _$this._traceId;
@@ -313,29 +296,16 @@ class RevocationForbiddenErrorBuilder
   _$RevocationForbiddenError _build() {
     _$RevocationForbiddenError _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$RevocationForbiddenError._(
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'RevocationForbiddenError',
-              'name',
-            ),
+                name, r'RevocationForbiddenError', 'name'),
             message: BuiltValueNullFieldError.checkNotNull(
-              message,
-              r'RevocationForbiddenError',
-              'message',
-            ),
+                message, r'RevocationForbiddenError', 'message'),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-              httpStatusCode,
-              r'RevocationForbiddenError',
-              'httpStatusCode',
-            ),
+                httpStatusCode, r'RevocationForbiddenError', 'httpStatusCode'),
             traceId: BuiltValueNullFieldError.checkNotNull(
-              traceId,
-              r'RevocationForbiddenError',
-              'traceId',
-            ),
+                traceId, r'RevocationForbiddenError', 'traceId'),
             details: _details?.build(),
           );
     } catch (_) {
@@ -345,10 +315,7 @@ class RevocationForbiddenErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'RevocationForbiddenError',
-          _$failedField,
-          e.toString(),
-        );
+            r'RevocationForbiddenError', _$failedField, e.toString());
       }
       rethrow;
     }

@@ -10,15 +10,15 @@ class _$UnpackMessageResultDto extends UnpackMessageResultDto {
   @override
   final JsonObject message;
 
-  factory _$UnpackMessageResultDto([
-    void Function(UnpackMessageResultDtoBuilder)? updates,
-  ]) => (UnpackMessageResultDtoBuilder()..update(updates))._build();
+  factory _$UnpackMessageResultDto(
+          [void Function(UnpackMessageResultDtoBuilder)? updates]) =>
+      (UnpackMessageResultDtoBuilder()..update(updates))._build();
 
   _$UnpackMessageResultDto._({required this.message}) : super._();
   @override
   UnpackMessageResultDto rebuild(
-    void Function(UnpackMessageResultDtoBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(UnpackMessageResultDtoBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   UnpackMessageResultDtoBuilder toBuilder() =>
@@ -40,9 +40,9 @@ class _$UnpackMessageResultDto extends UnpackMessageResultDto {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'UnpackMessageResultDto',
-    )..add('message', message)).toString();
+    return (newBuiltValueToStringHelper(r'UnpackMessageResultDto')
+          ..add('message', message))
+        .toString();
   }
 }
 
@@ -81,14 +81,10 @@ class UnpackMessageResultDtoBuilder
   UnpackMessageResultDto build() => _build();
 
   _$UnpackMessageResultDto _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$UnpackMessageResultDto._(
           message: BuiltValueNullFieldError.checkNotNull(
-            message,
-            r'UnpackMessageResultDto',
-            'message',
-          ),
+              message, r'UnpackMessageResultDto', 'message'),
         );
     replace(_$result);
     return _$result;

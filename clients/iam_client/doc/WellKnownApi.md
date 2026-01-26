@@ -1,24 +1,24 @@
 # affinidi_tdk_iam_client.api.WellKnownApi
 
 ## Load the API package
-
 ```dart
 import 'package:affinidi_tdk_iam_client/api.dart';
 ```
 
 All URIs are relative to *https://apse1.api.affinidi.io/iam*
 
-| Method                                                   | HTTP request                   | Description |
-| -------------------------------------------------------- | ------------------------------ | ----------- |
-| [**getWellKnownDid**](WellKnownApi.md#getwellknowndid)   | **GET** /.well-known/did.json  |
-| [**getWellKnownJwks**](WellKnownApi.md#getwellknownjwks) | **GET** /.well-known/jwks.json |
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**getWellKnownDid**](WellKnownApi.md#getwellknowndid) | **GET** /.well-known/did.json | 
+[**getWellKnownJwks**](WellKnownApi.md#getwellknownjwks) | **GET** /.well-known/jwks.json | 
+
 
 # **getWellKnownDid**
-
 > JsonObject getWellKnownDid()
 
-### Example
 
+
+### Example
 ```dart
 import 'package:affinidi_tdk_iam_client/api.dart';
 
@@ -33,7 +33,6 @@ try {
 ```
 
 ### Parameters
-
 This endpoint does not need any parameter.
 
 ### Return type
@@ -46,17 +45,17 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: application/json
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getWellKnownJwks**
-
 > JsonWebKeySetDto getWellKnownJwks()
 
-### Example
 
+
+### Example
 ```dart
 import 'package:affinidi_tdk_iam_client/api.dart';
 
@@ -71,7 +70,6 @@ try {
 ```
 
 ### Parameters
-
 This endpoint does not need any parameter.
 
 ### Return type
@@ -84,7 +82,8 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: application/json
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+

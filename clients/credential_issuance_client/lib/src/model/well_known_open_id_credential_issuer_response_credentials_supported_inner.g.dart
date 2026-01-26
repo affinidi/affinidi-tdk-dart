@@ -15,34 +15,31 @@ class _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner
   @override
   final String jsonLdContextUrl;
 
-  factory _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner([
-    void Function(
-      WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder,
-    )?
-    updates,
-  ]) =>
+  factory _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner(
+          [void Function(
+                  WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder)?
+              updates]) =>
       (WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder()
             ..update(updates))
           ._build();
 
-  _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner._({
-    required this.credentialTypeId,
-    required this.jsonSchemaUrl,
-    required this.jsonLdContextUrl,
-  }) : super._();
+  _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner._(
+      {required this.credentialTypeId,
+      required this.jsonSchemaUrl,
+      required this.jsonLdContextUrl})
+      : super._();
   @override
   WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner rebuild(
-    void Function(
-      WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder,
-    )
-    updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(
+                  WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder
-  toBuilder() =>
-      WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder()
-        ..replace(this);
+      toBuilder() =>
+          WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder()
+            ..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -67,8 +64,7 @@ class _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner',
-          )
+            r'WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner')
           ..add('credentialTypeId', credentialTypeId)
           ..add('jsonSchemaUrl', jsonSchemaUrl)
           ..add('jsonLdContextUrl', jsonLdContextUrl))
@@ -79,9 +75,8 @@ class _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner
 class WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder
     implements
         Builder<
-          WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner,
-          WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder
-        > {
+            WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner,
+            WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder> {
   _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner? _$v;
 
   String? _credentialTypeId;
@@ -101,12 +96,11 @@ class WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder
 
   WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder() {
     WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner._defaults(
-      this,
-    );
+        this);
   }
 
   WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder
-  get _$this {
+      get _$this {
     final $v = _$v;
     if ($v != null) {
       _credentialTypeId = $v.credentialTypeId;
@@ -119,20 +113,16 @@ class WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder
 
   @override
   void replace(
-    WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner other,
-  ) {
-    _$v =
-        other
-            as _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner;
+      WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner other) {
+    _$v = other
+        as _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner;
   }
 
   @override
   void update(
-    void Function(
-      WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder,
-    )?
-    updates,
-  ) {
+      void Function(
+              WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder)?
+          updates) {
     if (updates != null) updates(this);
   }
 
@@ -141,24 +131,20 @@ class WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInnerBuilder
       _build();
 
   _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner._(
           credentialTypeId: BuiltValueNullFieldError.checkNotNull(
-            credentialTypeId,
-            r'WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner',
-            'credentialTypeId',
-          ),
+              credentialTypeId,
+              r'WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner',
+              'credentialTypeId'),
           jsonSchemaUrl: BuiltValueNullFieldError.checkNotNull(
-            jsonSchemaUrl,
-            r'WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner',
-            'jsonSchemaUrl',
-          ),
+              jsonSchemaUrl,
+              r'WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner',
+              'jsonSchemaUrl'),
           jsonLdContextUrl: BuiltValueNullFieldError.checkNotNull(
-            jsonLdContextUrl,
-            r'WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner',
-            'jsonLdContextUrl',
-          ),
+              jsonLdContextUrl,
+              r'WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner',
+              'jsonLdContextUrl'),
         );
     replace(_$result);
     return _$result;

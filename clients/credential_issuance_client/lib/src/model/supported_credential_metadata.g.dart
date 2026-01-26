@@ -10,15 +10,15 @@ class _$SupportedCredentialMetadata extends SupportedCredentialMetadata {
   @override
   final BuiltList<SupportedCredentialMetadataDisplayInner>? display;
 
-  factory _$SupportedCredentialMetadata([
-    void Function(SupportedCredentialMetadataBuilder)? updates,
-  ]) => (SupportedCredentialMetadataBuilder()..update(updates))._build();
+  factory _$SupportedCredentialMetadata(
+          [void Function(SupportedCredentialMetadataBuilder)? updates]) =>
+      (SupportedCredentialMetadataBuilder()..update(updates))._build();
 
   _$SupportedCredentialMetadata._({this.display}) : super._();
   @override
   SupportedCredentialMetadata rebuild(
-    void Function(SupportedCredentialMetadataBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(SupportedCredentialMetadataBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   SupportedCredentialMetadataBuilder toBuilder() =>
@@ -40,18 +40,16 @@ class _$SupportedCredentialMetadata extends SupportedCredentialMetadata {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'SupportedCredentialMetadata',
-    )..add('display', display)).toString();
+    return (newBuiltValueToStringHelper(r'SupportedCredentialMetadata')
+          ..add('display', display))
+        .toString();
   }
 }
 
 class SupportedCredentialMetadataBuilder
     implements
-        Builder<
-          SupportedCredentialMetadata,
-          SupportedCredentialMetadataBuilder
-        > {
+        Builder<SupportedCredentialMetadata,
+            SupportedCredentialMetadataBuilder> {
   _$SupportedCredentialMetadata? _$v;
 
   ListBuilder<SupportedCredentialMetadataDisplayInner>? _display;
@@ -90,8 +88,10 @@ class SupportedCredentialMetadataBuilder
   _$SupportedCredentialMetadata _build() {
     _$SupportedCredentialMetadata _$result;
     try {
-      _$result =
-          _$v ?? _$SupportedCredentialMetadata._(display: _display?.build());
+      _$result = _$v ??
+          _$SupportedCredentialMetadata._(
+            display: _display?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -99,10 +99,7 @@ class SupportedCredentialMetadataBuilder
         _display?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'SupportedCredentialMetadata',
-          _$failedField,
-          e.toString(),
-        );
+            r'SupportedCredentialMetadata', _$failedField, e.toString());
       }
       rethrow;
     }

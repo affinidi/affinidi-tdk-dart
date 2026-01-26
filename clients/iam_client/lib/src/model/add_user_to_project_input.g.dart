@@ -12,18 +12,17 @@ class _$AddUserToProjectInput extends AddUserToProjectInput {
   @override
   final String principalType;
 
-  factory _$AddUserToProjectInput([
-    void Function(AddUserToProjectInputBuilder)? updates,
-  ]) => (AddUserToProjectInputBuilder()..update(updates))._build();
+  factory _$AddUserToProjectInput(
+          [void Function(AddUserToProjectInputBuilder)? updates]) =>
+      (AddUserToProjectInputBuilder()..update(updates))._build();
 
-  _$AddUserToProjectInput._({
-    required this.principalId,
-    required this.principalType,
-  }) : super._();
+  _$AddUserToProjectInput._(
+      {required this.principalId, required this.principalType})
+      : super._();
   @override
   AddUserToProjectInput rebuild(
-    void Function(AddUserToProjectInputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(AddUserToProjectInputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   AddUserToProjectInputBuilder toBuilder() =>
@@ -96,19 +95,12 @@ class AddUserToProjectInputBuilder
   AddUserToProjectInput build() => _build();
 
   _$AddUserToProjectInput _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$AddUserToProjectInput._(
           principalId: BuiltValueNullFieldError.checkNotNull(
-            principalId,
-            r'AddUserToProjectInput',
-            'principalId',
-          ),
+              principalId, r'AddUserToProjectInput', 'principalId'),
           principalType: BuiltValueNullFieldError.checkNotNull(
-            principalType,
-            r'AddUserToProjectInput',
-            'principalType',
-          ),
+              principalType, r'AddUserToProjectInput', 'principalType'),
         );
     replace(_$result);
     return _$result;

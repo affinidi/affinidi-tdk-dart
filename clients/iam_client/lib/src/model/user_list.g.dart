@@ -92,8 +92,7 @@ class UserListBuilder implements Builder<UserList, UserListBuilder> {
   _$UserList _build() {
     _$UserList _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$UserList._(
             records: records.build(),
             lastEvaluatedKey: lastEvaluatedKey,
@@ -105,10 +104,7 @@ class UserListBuilder implements Builder<UserList, UserListBuilder> {
         records.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'UserList',
-          _$failedField,
-          e.toString(),
-        );
+            r'UserList', _$failedField, e.toString());
       }
       rethrow;
     }

@@ -31,18 +31,18 @@ class _$WalletV2Dto extends WalletV2Dto {
   factory _$WalletV2Dto([void Function(WalletV2DtoBuilder)? updates]) =>
       (WalletV2DtoBuilder()..update(updates))._build();
 
-  _$WalletV2Dto._({
-    this.id,
-    this.did,
-    this.name,
-    this.description,
-    this.didDocument,
-    this.ari,
-    this.algorithm,
-    this.keys,
-    this.createdAt,
-    this.modifiedAt,
-  }) : super._();
+  _$WalletV2Dto._(
+      {this.id,
+      this.did,
+      this.name,
+      this.description,
+      this.didDocument,
+      this.ari,
+      this.algorithm,
+      this.keys,
+      this.createdAt,
+      this.modifiedAt})
+      : super._();
   @override
   WalletV2Dto rebuild(void Function(WalletV2DtoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -182,8 +182,7 @@ class WalletV2DtoBuilder implements Builder<WalletV2Dto, WalletV2DtoBuilder> {
   _$WalletV2Dto _build() {
     _$WalletV2Dto _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$WalletV2Dto._(
             id: id,
             did: did,
@@ -203,10 +202,7 @@ class WalletV2DtoBuilder implements Builder<WalletV2Dto, WalletV2DtoBuilder> {
         _keys?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'WalletV2Dto',
-          _$failedField,
-          e.toString(),
-        );
+            r'WalletV2Dto', _$failedField, e.toString());
       }
       rethrow;
     }

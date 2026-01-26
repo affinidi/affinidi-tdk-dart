@@ -176,5 +176,4 @@ lib/src/model/well_known_open_id_credential_issuer_response_credentials_supporte
 lib/src/model/well_known_open_id_credential_issuer_response_display.dart
 lib/src/model/well_known_open_id_credential_issuer_response_display_logo.dart
 lib/src/serializers.dart
-project.json
 pubspec.yaml

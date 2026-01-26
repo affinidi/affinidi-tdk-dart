@@ -7,11 +7,11 @@ part of 'create_issuance_config400_response.dart';
 // **************************************************************************
 
 const CreateIssuanceConfig400ResponseNameEnum
-_$createIssuanceConfig400ResponseNameEnum_invalidIssuerWalletError =
+    _$createIssuanceConfig400ResponseNameEnum_invalidIssuerWalletError =
     const CreateIssuanceConfig400ResponseNameEnum._('invalidIssuerWalletError');
 
 CreateIssuanceConfig400ResponseNameEnum
-_$createIssuanceConfig400ResponseNameEnumValueOf(String name) {
+    _$createIssuanceConfig400ResponseNameEnumValueOf(String name) {
   switch (name) {
     case 'invalidIssuerWalletError':
       return _$createIssuanceConfig400ResponseNameEnum_invalidIssuerWalletError;
@@ -21,21 +21,18 @@ _$createIssuanceConfig400ResponseNameEnumValueOf(String name) {
 }
 
 final BuiltSet<CreateIssuanceConfig400ResponseNameEnum>
-_$createIssuanceConfig400ResponseNameEnumValues =
-    BuiltSet<CreateIssuanceConfig400ResponseNameEnum>(
-      const <CreateIssuanceConfig400ResponseNameEnum>[
-        _$createIssuanceConfig400ResponseNameEnum_invalidIssuerWalletError,
-      ],
-    );
+    _$createIssuanceConfig400ResponseNameEnumValues = BuiltSet<
+        CreateIssuanceConfig400ResponseNameEnum>(const <CreateIssuanceConfig400ResponseNameEnum>[
+  _$createIssuanceConfig400ResponseNameEnum_invalidIssuerWalletError,
+]);
 
 const CreateIssuanceConfig400ResponseMessageEnum
-_$createIssuanceConfig400ResponseMessageEnum_issuerWalletIdIsInvalid =
+    _$createIssuanceConfig400ResponseMessageEnum_issuerWalletIdIsInvalid =
     const CreateIssuanceConfig400ResponseMessageEnum._(
-      'issuerWalletIdIsInvalid',
-    );
+        'issuerWalletIdIsInvalid');
 
 CreateIssuanceConfig400ResponseMessageEnum
-_$createIssuanceConfig400ResponseMessageEnumValueOf(String name) {
+    _$createIssuanceConfig400ResponseMessageEnumValueOf(String name) {
   switch (name) {
     case 'issuerWalletIdIsInvalid':
       return _$createIssuanceConfig400ResponseMessageEnum_issuerWalletIdIsInvalid;
@@ -45,19 +42,17 @@ _$createIssuanceConfig400ResponseMessageEnumValueOf(String name) {
 }
 
 final BuiltSet<CreateIssuanceConfig400ResponseMessageEnum>
-_$createIssuanceConfig400ResponseMessageEnumValues =
-    BuiltSet<CreateIssuanceConfig400ResponseMessageEnum>(
-      const <CreateIssuanceConfig400ResponseMessageEnum>[
-        _$createIssuanceConfig400ResponseMessageEnum_issuerWalletIdIsInvalid,
-      ],
-    );
+    _$createIssuanceConfig400ResponseMessageEnumValues = BuiltSet<
+        CreateIssuanceConfig400ResponseMessageEnum>(const <CreateIssuanceConfig400ResponseMessageEnum>[
+  _$createIssuanceConfig400ResponseMessageEnum_issuerWalletIdIsInvalid,
+]);
 
 const CreateIssuanceConfig400ResponseHttpStatusCodeEnum
-_$createIssuanceConfig400ResponseHttpStatusCodeEnum_number400 =
+    _$createIssuanceConfig400ResponseHttpStatusCodeEnum_number400 =
     const CreateIssuanceConfig400ResponseHttpStatusCodeEnum._('number400');
 
 CreateIssuanceConfig400ResponseHttpStatusCodeEnum
-_$createIssuanceConfig400ResponseHttpStatusCodeEnumValueOf(String name) {
+    _$createIssuanceConfig400ResponseHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$createIssuanceConfig400ResponseHttpStatusCodeEnum_number400;
@@ -67,21 +62,19 @@ _$createIssuanceConfig400ResponseHttpStatusCodeEnumValueOf(String name) {
 }
 
 final BuiltSet<CreateIssuanceConfig400ResponseHttpStatusCodeEnum>
-_$createIssuanceConfig400ResponseHttpStatusCodeEnumValues =
-    BuiltSet<CreateIssuanceConfig400ResponseHttpStatusCodeEnum>(
-      const <CreateIssuanceConfig400ResponseHttpStatusCodeEnum>[
-        _$createIssuanceConfig400ResponseHttpStatusCodeEnum_number400,
-      ],
-    );
+    _$createIssuanceConfig400ResponseHttpStatusCodeEnumValues = BuiltSet<
+        CreateIssuanceConfig400ResponseHttpStatusCodeEnum>(const <CreateIssuanceConfig400ResponseHttpStatusCodeEnum>[
+  _$createIssuanceConfig400ResponseHttpStatusCodeEnum_number400,
+]);
 
 Serializer<CreateIssuanceConfig400ResponseNameEnum>
-_$createIssuanceConfig400ResponseNameEnumSerializer =
+    _$createIssuanceConfig400ResponseNameEnumSerializer =
     _$CreateIssuanceConfig400ResponseNameEnumSerializer();
 Serializer<CreateIssuanceConfig400ResponseMessageEnum>
-_$createIssuanceConfig400ResponseMessageEnumSerializer =
+    _$createIssuanceConfig400ResponseMessageEnumSerializer =
     _$CreateIssuanceConfig400ResponseMessageEnumSerializer();
 Serializer<CreateIssuanceConfig400ResponseHttpStatusCodeEnum>
-_$createIssuanceConfig400ResponseHttpStatusCodeEnumSerializer =
+    _$createIssuanceConfig400ResponseHttpStatusCodeEnumSerializer =
     _$CreateIssuanceConfig400ResponseHttpStatusCodeEnumSerializer();
 
 class _$CreateIssuanceConfig400ResponseNameEnumSerializer
@@ -95,26 +88,23 @@ class _$CreateIssuanceConfig400ResponseNameEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CreateIssuanceConfig400ResponseNameEnum,
+    CreateIssuanceConfig400ResponseNameEnum
   ];
   @override
   final String wireName = 'CreateIssuanceConfig400ResponseNameEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    CreateIssuanceConfig400ResponseNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          CreateIssuanceConfig400ResponseNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   CreateIssuanceConfig400ResponseNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => CreateIssuanceConfig400ResponseNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      CreateIssuanceConfig400ResponseNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$CreateIssuanceConfig400ResponseMessageEnumSerializer
@@ -128,26 +118,23 @@ class _$CreateIssuanceConfig400ResponseMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CreateIssuanceConfig400ResponseMessageEnum,
+    CreateIssuanceConfig400ResponseMessageEnum
   ];
   @override
   final String wireName = 'CreateIssuanceConfig400ResponseMessageEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    CreateIssuanceConfig400ResponseMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          CreateIssuanceConfig400ResponseMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   CreateIssuanceConfig400ResponseMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => CreateIssuanceConfig400ResponseMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      CreateIssuanceConfig400ResponseMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$CreateIssuanceConfig400ResponseHttpStatusCodeEnumSerializer
@@ -162,26 +149,23 @@ class _$CreateIssuanceConfig400ResponseHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CreateIssuanceConfig400ResponseHttpStatusCodeEnum,
+    CreateIssuanceConfig400ResponseHttpStatusCodeEnum
   ];
   @override
   final String wireName = 'CreateIssuanceConfig400ResponseHttpStatusCodeEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    CreateIssuanceConfig400ResponseHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          CreateIssuanceConfig400ResponseHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   CreateIssuanceConfig400ResponseHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => CreateIssuanceConfig400ResponseHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      CreateIssuanceConfig400ResponseHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$CreateIssuanceConfig400Response
@@ -189,15 +173,15 @@ class _$CreateIssuanceConfig400Response
   @override
   final OneOf oneOf;
 
-  factory _$CreateIssuanceConfig400Response([
-    void Function(CreateIssuanceConfig400ResponseBuilder)? updates,
-  ]) => (CreateIssuanceConfig400ResponseBuilder()..update(updates))._build();
+  factory _$CreateIssuanceConfig400Response(
+          [void Function(CreateIssuanceConfig400ResponseBuilder)? updates]) =>
+      (CreateIssuanceConfig400ResponseBuilder()..update(updates))._build();
 
   _$CreateIssuanceConfig400Response._({required this.oneOf}) : super._();
   @override
   CreateIssuanceConfig400Response rebuild(
-    void Function(CreateIssuanceConfig400ResponseBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CreateIssuanceConfig400ResponseBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CreateIssuanceConfig400ResponseBuilder toBuilder() =>
@@ -219,18 +203,16 @@ class _$CreateIssuanceConfig400Response
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'CreateIssuanceConfig400Response',
-    )..add('oneOf', oneOf)).toString();
+    return (newBuiltValueToStringHelper(r'CreateIssuanceConfig400Response')
+          ..add('oneOf', oneOf))
+        .toString();
   }
 }
 
 class CreateIssuanceConfig400ResponseBuilder
     implements
-        Builder<
-          CreateIssuanceConfig400Response,
-          CreateIssuanceConfig400ResponseBuilder
-        > {
+        Builder<CreateIssuanceConfig400Response,
+            CreateIssuanceConfig400ResponseBuilder> {
   _$CreateIssuanceConfig400Response? _$v;
 
   OneOf? _oneOf;
@@ -264,14 +246,10 @@ class CreateIssuanceConfig400ResponseBuilder
   CreateIssuanceConfig400Response build() => _build();
 
   _$CreateIssuanceConfig400Response _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CreateIssuanceConfig400Response._(
           oneOf: BuiltValueNullFieldError.checkNotNull(
-            oneOf,
-            r'CreateIssuanceConfig400Response',
-            'oneOf',
-          ),
+              oneOf, r'CreateIssuanceConfig400Response', 'oneOf'),
         );
     replace(_$result);
     return _$result;

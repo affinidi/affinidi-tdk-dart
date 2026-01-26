@@ -12,18 +12,17 @@ class _$VerifyCredentialInput extends VerifyCredentialInput {
   @override
   final BuiltMap<String, JsonObject?>? issuerDidDocument;
 
-  factory _$VerifyCredentialInput([
-    void Function(VerifyCredentialInputBuilder)? updates,
-  ]) => (VerifyCredentialInputBuilder()..update(updates))._build();
+  factory _$VerifyCredentialInput(
+          [void Function(VerifyCredentialInputBuilder)? updates]) =>
+      (VerifyCredentialInputBuilder()..update(updates))._build();
 
-  _$VerifyCredentialInput._({
-    required this.verifiableCredentials,
-    this.issuerDidDocument,
-  }) : super._();
+  _$VerifyCredentialInput._(
+      {required this.verifiableCredentials, this.issuerDidDocument})
+      : super._();
   @override
   VerifyCredentialInput rebuild(
-    void Function(VerifyCredentialInputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(VerifyCredentialInputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   VerifyCredentialInputBuilder toBuilder() =>
@@ -101,8 +100,7 @@ class VerifyCredentialInputBuilder
   _$VerifyCredentialInput _build() {
     _$VerifyCredentialInput _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$VerifyCredentialInput._(
             verifiableCredentials: verifiableCredentials.build(),
             issuerDidDocument: _issuerDidDocument?.build(),
@@ -116,10 +114,7 @@ class VerifyCredentialInputBuilder
         _issuerDidDocument?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'VerifyCredentialInput',
-          _$failedField,
-          e.toString(),
-        );
+            r'VerifyCredentialInput', _$failedField, e.toString());
       }
       rethrow;
     }

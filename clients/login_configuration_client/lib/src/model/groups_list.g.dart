@@ -37,9 +37,8 @@ class _$GroupsList extends GroupsList {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'GroupsList',
-    )..add('groups', groups)).toString();
+    return (newBuiltValueToStringHelper(r'GroupsList')..add('groups', groups))
+        .toString();
   }
 }
 
@@ -80,7 +79,10 @@ class GroupsListBuilder implements Builder<GroupsList, GroupsListBuilder> {
   _$GroupsList _build() {
     _$GroupsList _$result;
     try {
-      _$result = _$v ?? _$GroupsList._(groups: _groups?.build());
+      _$result = _$v ??
+          _$GroupsList._(
+            groups: _groups?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -88,10 +90,7 @@ class GroupsListBuilder implements Builder<GroupsList, GroupsListBuilder> {
         _groups?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'GroupsList',
-          _$failedField,
-          e.toString(),
-        );
+            r'GroupsList', _$failedField, e.toString());
       }
       rethrow;
     }

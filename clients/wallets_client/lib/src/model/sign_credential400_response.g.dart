@@ -7,12 +7,11 @@ part of 'sign_credential400_response.dart';
 // **************************************************************************
 
 const SignCredential400ResponseNameEnum
-_$signCredential400ResponseNameEnum_signingFailedError =
+    _$signCredential400ResponseNameEnum_signingFailedError =
     const SignCredential400ResponseNameEnum._('signingFailedError');
 
 SignCredential400ResponseNameEnum _$signCredential400ResponseNameEnumValueOf(
-  String name,
-) {
+    String name) {
   switch (name) {
     case 'signingFailedError':
       return _$signCredential400ResponseNameEnum_signingFailedError;
@@ -22,19 +21,17 @@ SignCredential400ResponseNameEnum _$signCredential400ResponseNameEnumValueOf(
 }
 
 final BuiltSet<SignCredential400ResponseNameEnum>
-_$signCredential400ResponseNameEnumValues =
-    BuiltSet<SignCredential400ResponseNameEnum>(
-      const <SignCredential400ResponseNameEnum>[
-        _$signCredential400ResponseNameEnum_signingFailedError,
-      ],
-    );
+    _$signCredential400ResponseNameEnumValues = BuiltSet<
+        SignCredential400ResponseNameEnum>(const <SignCredential400ResponseNameEnum>[
+  _$signCredential400ResponseNameEnum_signingFailedError,
+]);
 
 const SignCredential400ResponseMessageEnum
-_$signCredential400ResponseMessageEnum_signingFailedPeriod =
+    _$signCredential400ResponseMessageEnum_signingFailedPeriod =
     const SignCredential400ResponseMessageEnum._('signingFailedPeriod');
 
 SignCredential400ResponseMessageEnum
-_$signCredential400ResponseMessageEnumValueOf(String name) {
+    _$signCredential400ResponseMessageEnumValueOf(String name) {
   switch (name) {
     case 'signingFailedPeriod':
       return _$signCredential400ResponseMessageEnum_signingFailedPeriod;
@@ -44,19 +41,17 @@ _$signCredential400ResponseMessageEnumValueOf(String name) {
 }
 
 final BuiltSet<SignCredential400ResponseMessageEnum>
-_$signCredential400ResponseMessageEnumValues =
-    BuiltSet<SignCredential400ResponseMessageEnum>(
-      const <SignCredential400ResponseMessageEnum>[
-        _$signCredential400ResponseMessageEnum_signingFailedPeriod,
-      ],
-    );
+    _$signCredential400ResponseMessageEnumValues = BuiltSet<
+        SignCredential400ResponseMessageEnum>(const <SignCredential400ResponseMessageEnum>[
+  _$signCredential400ResponseMessageEnum_signingFailedPeriod,
+]);
 
 const SignCredential400ResponseHttpStatusCodeEnum
-_$signCredential400ResponseHttpStatusCodeEnum_number400 =
+    _$signCredential400ResponseHttpStatusCodeEnum_number400 =
     const SignCredential400ResponseHttpStatusCodeEnum._('number400');
 
 SignCredential400ResponseHttpStatusCodeEnum
-_$signCredential400ResponseHttpStatusCodeEnumValueOf(String name) {
+    _$signCredential400ResponseHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$signCredential400ResponseHttpStatusCodeEnum_number400;
@@ -66,21 +61,19 @@ _$signCredential400ResponseHttpStatusCodeEnumValueOf(String name) {
 }
 
 final BuiltSet<SignCredential400ResponseHttpStatusCodeEnum>
-_$signCredential400ResponseHttpStatusCodeEnumValues =
-    BuiltSet<SignCredential400ResponseHttpStatusCodeEnum>(
-      const <SignCredential400ResponseHttpStatusCodeEnum>[
-        _$signCredential400ResponseHttpStatusCodeEnum_number400,
-      ],
-    );
+    _$signCredential400ResponseHttpStatusCodeEnumValues = BuiltSet<
+        SignCredential400ResponseHttpStatusCodeEnum>(const <SignCredential400ResponseHttpStatusCodeEnum>[
+  _$signCredential400ResponseHttpStatusCodeEnum_number400,
+]);
 
 Serializer<SignCredential400ResponseNameEnum>
-_$signCredential400ResponseNameEnumSerializer =
+    _$signCredential400ResponseNameEnumSerializer =
     _$SignCredential400ResponseNameEnumSerializer();
 Serializer<SignCredential400ResponseMessageEnum>
-_$signCredential400ResponseMessageEnumSerializer =
+    _$signCredential400ResponseMessageEnumSerializer =
     _$SignCredential400ResponseMessageEnumSerializer();
 Serializer<SignCredential400ResponseHttpStatusCodeEnum>
-_$signCredential400ResponseHttpStatusCodeEnumSerializer =
+    _$signCredential400ResponseHttpStatusCodeEnumSerializer =
     _$SignCredential400ResponseHttpStatusCodeEnumSerializer();
 
 class _$SignCredential400ResponseNameEnumSerializer
@@ -99,19 +92,16 @@ class _$SignCredential400ResponseNameEnumSerializer
 
   @override
   Object serialize(
-    Serializers serializers,
-    SignCredential400ResponseNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, SignCredential400ResponseNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   SignCredential400ResponseNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => SignCredential400ResponseNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      SignCredential400ResponseNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$SignCredential400ResponseMessageEnumSerializer
@@ -125,26 +115,23 @@ class _$SignCredential400ResponseMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    SignCredential400ResponseMessageEnum,
+    SignCredential400ResponseMessageEnum
   ];
   @override
   final String wireName = 'SignCredential400ResponseMessageEnum';
 
   @override
   Object serialize(
-    Serializers serializers,
-    SignCredential400ResponseMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, SignCredential400ResponseMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   SignCredential400ResponseMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => SignCredential400ResponseMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      SignCredential400ResponseMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$SignCredential400ResponseHttpStatusCodeEnumSerializer
@@ -159,41 +146,38 @@ class _$SignCredential400ResponseHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    SignCredential400ResponseHttpStatusCodeEnum,
+    SignCredential400ResponseHttpStatusCodeEnum
   ];
   @override
   final String wireName = 'SignCredential400ResponseHttpStatusCodeEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    SignCredential400ResponseHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          SignCredential400ResponseHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   SignCredential400ResponseHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => SignCredential400ResponseHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      SignCredential400ResponseHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$SignCredential400Response extends SignCredential400Response {
   @override
   final OneOf oneOf;
 
-  factory _$SignCredential400Response([
-    void Function(SignCredential400ResponseBuilder)? updates,
-  ]) => (SignCredential400ResponseBuilder()..update(updates))._build();
+  factory _$SignCredential400Response(
+          [void Function(SignCredential400ResponseBuilder)? updates]) =>
+      (SignCredential400ResponseBuilder()..update(updates))._build();
 
   _$SignCredential400Response._({required this.oneOf}) : super._();
   @override
   SignCredential400Response rebuild(
-    void Function(SignCredential400ResponseBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(SignCredential400ResponseBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   SignCredential400ResponseBuilder toBuilder() =>
@@ -215,9 +199,9 @@ class _$SignCredential400Response extends SignCredential400Response {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'SignCredential400Response',
-    )..add('oneOf', oneOf)).toString();
+    return (newBuiltValueToStringHelper(r'SignCredential400Response')
+          ..add('oneOf', oneOf))
+        .toString();
   }
 }
 
@@ -257,14 +241,10 @@ class SignCredential400ResponseBuilder
   SignCredential400Response build() => _build();
 
   _$SignCredential400Response _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$SignCredential400Response._(
           oneOf: BuiltValueNullFieldError.checkNotNull(
-            oneOf,
-            r'SignCredential400Response',
-            'oneOf',
-          ),
+              oneOf, r'SignCredential400Response', 'oneOf'),
         );
     replace(_$result);
     return _$result;

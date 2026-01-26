@@ -62,7 +62,7 @@ class _$CreateWalletV2InputSerializer
   @override
   final Iterable<Type> types = const [
     CreateWalletV2Input,
-    _$CreateWalletV2Input,
+    _$CreateWalletV2Input
   ];
 
   @override
@@ -116,11 +116,9 @@ class _$CreateWalletV2InputSerializer
     CreateWalletV2Input object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -136,52 +134,38 @@ class _$CreateWalletV2InputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.description = valueDes;
           break;
         case r'didMethod':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CreateWalletV2InputDidMethodEnum,
-                    ),
-                  )
-                  as CreateWalletV2InputDidMethodEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CreateWalletV2InputDidMethodEnum),
+          ) as CreateWalletV2InputDidMethodEnum;
           result.didMethod = valueDes;
           break;
         case r'didWebUrl':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.didWebUrl = valueDes;
           break;
         case r'algorithm':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CreateWalletV2InputAlgorithmEnum,
-                    ),
-                  )
-                  as CreateWalletV2InputAlgorithmEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CreateWalletV2InputAlgorithmEnum),
+          ) as CreateWalletV2InputAlgorithmEnum;
           result.algorithm = valueDes;
           break;
         default:

@@ -7,7 +7,7 @@ part of 'invalid_groups_error.dart';
 // **************************************************************************
 
 const InvalidGroupsErrorNameEnum
-_$invalidGroupsErrorNameEnum_invalidGroupsError =
+    _$invalidGroupsErrorNameEnum_invalidGroupsError =
     const InvalidGroupsErrorNameEnum._('invalidGroupsError');
 
 InvalidGroupsErrorNameEnum _$invalidGroupsErrorNameEnumValueOf(String name) {
@@ -21,16 +21,15 @@ InvalidGroupsErrorNameEnum _$invalidGroupsErrorNameEnumValueOf(String name) {
 
 final BuiltSet<InvalidGroupsErrorNameEnum> _$invalidGroupsErrorNameEnumValues =
     BuiltSet<InvalidGroupsErrorNameEnum>(const <InvalidGroupsErrorNameEnum>[
-      _$invalidGroupsErrorNameEnum_invalidGroupsError,
-    ]);
+  _$invalidGroupsErrorNameEnum_invalidGroupsError,
+]);
 
 const InvalidGroupsErrorMessageEnum
-_$invalidGroupsErrorMessageEnum_invalidGroupsNames =
+    _$invalidGroupsErrorMessageEnum_invalidGroupsNames =
     const InvalidGroupsErrorMessageEnum._('invalidGroupsNames');
 
 InvalidGroupsErrorMessageEnum _$invalidGroupsErrorMessageEnumValueOf(
-  String name,
-) {
+    String name) {
   switch (name) {
     case 'invalidGroupsNames':
       return _$invalidGroupsErrorMessageEnum_invalidGroupsNames;
@@ -40,18 +39,17 @@ InvalidGroupsErrorMessageEnum _$invalidGroupsErrorMessageEnumValueOf(
 }
 
 final BuiltSet<InvalidGroupsErrorMessageEnum>
-_$invalidGroupsErrorMessageEnumValues = BuiltSet<InvalidGroupsErrorMessageEnum>(
-  const <InvalidGroupsErrorMessageEnum>[
-    _$invalidGroupsErrorMessageEnum_invalidGroupsNames,
-  ],
-);
+    _$invalidGroupsErrorMessageEnumValues = BuiltSet<
+        InvalidGroupsErrorMessageEnum>(const <InvalidGroupsErrorMessageEnum>[
+  _$invalidGroupsErrorMessageEnum_invalidGroupsNames,
+]);
 
 const InvalidGroupsErrorHttpStatusCodeEnum
-_$invalidGroupsErrorHttpStatusCodeEnum_number400 =
+    _$invalidGroupsErrorHttpStatusCodeEnum_number400 =
     const InvalidGroupsErrorHttpStatusCodeEnum._('number400');
 
 InvalidGroupsErrorHttpStatusCodeEnum
-_$invalidGroupsErrorHttpStatusCodeEnumValueOf(String name) {
+    _$invalidGroupsErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$invalidGroupsErrorHttpStatusCodeEnum_number400;
@@ -61,20 +59,18 @@ _$invalidGroupsErrorHttpStatusCodeEnumValueOf(String name) {
 }
 
 final BuiltSet<InvalidGroupsErrorHttpStatusCodeEnum>
-_$invalidGroupsErrorHttpStatusCodeEnumValues =
-    BuiltSet<InvalidGroupsErrorHttpStatusCodeEnum>(
-      const <InvalidGroupsErrorHttpStatusCodeEnum>[
-        _$invalidGroupsErrorHttpStatusCodeEnum_number400,
-      ],
-    );
+    _$invalidGroupsErrorHttpStatusCodeEnumValues = BuiltSet<
+        InvalidGroupsErrorHttpStatusCodeEnum>(const <InvalidGroupsErrorHttpStatusCodeEnum>[
+  _$invalidGroupsErrorHttpStatusCodeEnum_number400,
+]);
 
 Serializer<InvalidGroupsErrorNameEnum> _$invalidGroupsErrorNameEnumSerializer =
     _$InvalidGroupsErrorNameEnumSerializer();
 Serializer<InvalidGroupsErrorMessageEnum>
-_$invalidGroupsErrorMessageEnumSerializer =
+    _$invalidGroupsErrorMessageEnumSerializer =
     _$InvalidGroupsErrorMessageEnumSerializer();
 Serializer<InvalidGroupsErrorHttpStatusCodeEnum>
-_$invalidGroupsErrorHttpStatusCodeEnumSerializer =
+    _$invalidGroupsErrorHttpStatusCodeEnumSerializer =
     _$InvalidGroupsErrorHttpStatusCodeEnumSerializer();
 
 class _$InvalidGroupsErrorNameEnumSerializer
@@ -92,20 +88,16 @@ class _$InvalidGroupsErrorNameEnumSerializer
   final String wireName = 'InvalidGroupsErrorNameEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    InvalidGroupsErrorNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers, InvalidGroupsErrorNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InvalidGroupsErrorNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InvalidGroupsErrorNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InvalidGroupsErrorNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InvalidGroupsErrorMessageEnumSerializer
@@ -124,19 +116,16 @@ class _$InvalidGroupsErrorMessageEnumSerializer
 
   @override
   Object serialize(
-    Serializers serializers,
-    InvalidGroupsErrorMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, InvalidGroupsErrorMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InvalidGroupsErrorMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InvalidGroupsErrorMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InvalidGroupsErrorMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InvalidGroupsErrorHttpStatusCodeEnumSerializer
@@ -150,26 +139,23 @@ class _$InvalidGroupsErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    InvalidGroupsErrorHttpStatusCodeEnum,
+    InvalidGroupsErrorHttpStatusCodeEnum
   ];
   @override
   final String wireName = 'InvalidGroupsErrorHttpStatusCodeEnum';
 
   @override
   Object serialize(
-    Serializers serializers,
-    InvalidGroupsErrorHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, InvalidGroupsErrorHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InvalidGroupsErrorHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InvalidGroupsErrorHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InvalidGroupsErrorHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InvalidGroupsError extends InvalidGroupsError {
@@ -184,21 +170,21 @@ class _$InvalidGroupsError extends InvalidGroupsError {
   @override
   final BuiltList<InvalidParameterErrorDetailsInner>? details;
 
-  factory _$InvalidGroupsError([
-    void Function(InvalidGroupsErrorBuilder)? updates,
-  ]) => (InvalidGroupsErrorBuilder()..update(updates))._build();
+  factory _$InvalidGroupsError(
+          [void Function(InvalidGroupsErrorBuilder)? updates]) =>
+      (InvalidGroupsErrorBuilder()..update(updates))._build();
 
-  _$InvalidGroupsError._({
-    required this.name,
-    required this.message,
-    required this.httpStatusCode,
-    required this.traceId,
-    this.details,
-  }) : super._();
+  _$InvalidGroupsError._(
+      {required this.name,
+      required this.message,
+      required this.httpStatusCode,
+      required this.traceId,
+      this.details})
+      : super._();
   @override
   InvalidGroupsError rebuild(
-    void Function(InvalidGroupsErrorBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(InvalidGroupsErrorBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   InvalidGroupsErrorBuilder toBuilder() =>
@@ -301,29 +287,16 @@ class InvalidGroupsErrorBuilder
   _$InvalidGroupsError _build() {
     _$InvalidGroupsError _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$InvalidGroupsError._(
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'InvalidGroupsError',
-              'name',
-            ),
+                name, r'InvalidGroupsError', 'name'),
             message: BuiltValueNullFieldError.checkNotNull(
-              message,
-              r'InvalidGroupsError',
-              'message',
-            ),
+                message, r'InvalidGroupsError', 'message'),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-              httpStatusCode,
-              r'InvalidGroupsError',
-              'httpStatusCode',
-            ),
+                httpStatusCode, r'InvalidGroupsError', 'httpStatusCode'),
             traceId: BuiltValueNullFieldError.checkNotNull(
-              traceId,
-              r'InvalidGroupsError',
-              'traceId',
-            ),
+                traceId, r'InvalidGroupsError', 'traceId'),
             details: _details?.build(),
           );
     } catch (_) {
@@ -333,10 +306,7 @@ class InvalidGroupsErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'InvalidGroupsError',
-          _$failedField,
-          e.toString(),
-        );
+            r'InvalidGroupsError', _$failedField, e.toString());
       }
       rethrow;
     }

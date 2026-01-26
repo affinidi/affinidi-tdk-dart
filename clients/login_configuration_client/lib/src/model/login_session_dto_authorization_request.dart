@@ -23,18 +23,16 @@ part 'login_session_dto_authorization_request.g.dart';
 @BuiltValue()
 abstract class LoginSessionDtoAuthorizationRequest
     implements
-        Built<
-          LoginSessionDtoAuthorizationRequest,
-          LoginSessionDtoAuthorizationRequestBuilder
-        > {
+        Built<LoginSessionDtoAuthorizationRequest,
+            LoginSessionDtoAuthorizationRequestBuilder> {
   /// One Of [AuthorizationRequestDcql], [AuthorizationRequestPex]
   OneOf get oneOf;
 
   LoginSessionDtoAuthorizationRequest._();
 
-  factory LoginSessionDtoAuthorizationRequest([
-    void updates(LoginSessionDtoAuthorizationRequestBuilder b),
-  ]) = _$LoginSessionDtoAuthorizationRequest;
+  factory LoginSessionDtoAuthorizationRequest(
+          [void updates(LoginSessionDtoAuthorizationRequestBuilder b)]) =
+      _$LoginSessionDtoAuthorizationRequest;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(LoginSessionDtoAuthorizationRequestBuilder b) => b;
@@ -49,16 +47,14 @@ class _$LoginSessionDtoAuthorizationRequestSerializer
   @override
   final Iterable<Type> types = const [
     LoginSessionDtoAuthorizationRequest,
-    _$LoginSessionDtoAuthorizationRequest,
+    _$LoginSessionDtoAuthorizationRequest
   ];
 
   @override
   final String wireName = r'LoginSessionDtoAuthorizationRequest';
 
-  Iterable<Object?> _serializeProperties(
-    Serializers serializers,
-    LoginSessionDtoAuthorizationRequest object,
-  ) sync* {}
+  Iterable<Object?> _serializeProperties(Serializers serializers,
+      LoginSessionDtoAuthorizationRequest object) sync* {}
 
   @override
   Object serialize(
@@ -67,10 +63,8 @@ class _$LoginSessionDtoAuthorizationRequestSerializer
     FullType specifiedType = FullType.unspecified,
   }) {
     final oneOf = object.oneOf;
-    return serializers.serialize(
-      oneOf.value,
-      specifiedType: FullType(oneOf.valueType),
-    )!;
+    return serializers.serialize(oneOf.value,
+        specifiedType: FullType(oneOf.valueType))!;
   }
 
   @override
@@ -86,9 +80,8 @@ class _$LoginSessionDtoAuthorizationRequestSerializer
       FullType(AuthorizationRequestDcql),
     ]);
     oneOfDataSrc = serialized;
-    result.oneOf =
-        serializers.deserialize(oneOfDataSrc, specifiedType: targetType)
-            as OneOf;
+    result.oneOf = serializers.deserialize(oneOfDataSrc,
+        specifiedType: targetType) as OneOf;
     return result.build();
   }
 }

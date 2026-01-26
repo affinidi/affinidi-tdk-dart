@@ -11,18 +11,18 @@ class _$CorsGetIssuanceIdClaimedCredentialOK
   @override
   final String? corsGetIssuanceIdClaimedCredentialOk;
 
-  factory _$CorsGetIssuanceIdClaimedCredentialOK([
-    void Function(CorsGetIssuanceIdClaimedCredentialOKBuilder)? updates,
-  ]) =>
+  factory _$CorsGetIssuanceIdClaimedCredentialOK(
+          [void Function(CorsGetIssuanceIdClaimedCredentialOKBuilder)?
+              updates]) =>
       (CorsGetIssuanceIdClaimedCredentialOKBuilder()..update(updates))._build();
 
-  _$CorsGetIssuanceIdClaimedCredentialOK._({
-    this.corsGetIssuanceIdClaimedCredentialOk,
-  }) : super._();
+  _$CorsGetIssuanceIdClaimedCredentialOK._(
+      {this.corsGetIssuanceIdClaimedCredentialOk})
+      : super._();
   @override
   CorsGetIssuanceIdClaimedCredentialOK rebuild(
-    void Function(CorsGetIssuanceIdClaimedCredentialOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CorsGetIssuanceIdClaimedCredentialOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CorsGetIssuanceIdClaimedCredentialOKBuilder toBuilder() =>
@@ -47,29 +47,25 @@ class _$CorsGetIssuanceIdClaimedCredentialOK
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'CorsGetIssuanceIdClaimedCredentialOK')
-          ..add(
-            'corsGetIssuanceIdClaimedCredentialOk',
-            corsGetIssuanceIdClaimedCredentialOk,
-          ))
+          ..add('corsGetIssuanceIdClaimedCredentialOk',
+              corsGetIssuanceIdClaimedCredentialOk))
         .toString();
   }
 }
 
 class CorsGetIssuanceIdClaimedCredentialOKBuilder
     implements
-        Builder<
-          CorsGetIssuanceIdClaimedCredentialOK,
-          CorsGetIssuanceIdClaimedCredentialOKBuilder
-        > {
+        Builder<CorsGetIssuanceIdClaimedCredentialOK,
+            CorsGetIssuanceIdClaimedCredentialOKBuilder> {
   _$CorsGetIssuanceIdClaimedCredentialOK? _$v;
 
   String? _corsGetIssuanceIdClaimedCredentialOk;
   String? get corsGetIssuanceIdClaimedCredentialOk =>
       _$this._corsGetIssuanceIdClaimedCredentialOk;
   set corsGetIssuanceIdClaimedCredentialOk(
-    String? corsGetIssuanceIdClaimedCredentialOk,
-  ) => _$this._corsGetIssuanceIdClaimedCredentialOk =
-      corsGetIssuanceIdClaimedCredentialOk;
+          String? corsGetIssuanceIdClaimedCredentialOk) =>
+      _$this._corsGetIssuanceIdClaimedCredentialOk =
+          corsGetIssuanceIdClaimedCredentialOk;
 
   CorsGetIssuanceIdClaimedCredentialOKBuilder() {
     CorsGetIssuanceIdClaimedCredentialOK._defaults(this);
@@ -92,8 +88,7 @@ class CorsGetIssuanceIdClaimedCredentialOKBuilder
 
   @override
   void update(
-    void Function(CorsGetIssuanceIdClaimedCredentialOKBuilder)? updates,
-  ) {
+      void Function(CorsGetIssuanceIdClaimedCredentialOKBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -101,8 +96,7 @@ class CorsGetIssuanceIdClaimedCredentialOKBuilder
   CorsGetIssuanceIdClaimedCredentialOK build() => _build();
 
   _$CorsGetIssuanceIdClaimedCredentialOK _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CorsGetIssuanceIdClaimedCredentialOK._(
           corsGetIssuanceIdClaimedCredentialOk:
               corsGetIssuanceIdClaimedCredentialOk,

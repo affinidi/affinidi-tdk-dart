@@ -12,12 +12,12 @@ class _$EvaluateVpOutput extends EvaluateVpOutput {
   @override
   final BuiltList<String> errors;
 
-  factory _$EvaluateVpOutput([
-    void Function(EvaluateVpOutputBuilder)? updates,
-  ]) => (EvaluateVpOutputBuilder()..update(updates))._build();
+  factory _$EvaluateVpOutput(
+          [void Function(EvaluateVpOutputBuilder)? updates]) =>
+      (EvaluateVpOutputBuilder()..update(updates))._build();
 
   _$EvaluateVpOutput._({required this.result, required this.errors})
-    : super._();
+      : super._();
   @override
   EvaluateVpOutput rebuild(void Function(EvaluateVpOutputBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -94,14 +94,10 @@ class EvaluateVpOutputBuilder
   _$EvaluateVpOutput _build() {
     _$EvaluateVpOutput _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$EvaluateVpOutput._(
             result: BuiltValueNullFieldError.checkNotNull(
-              result,
-              r'EvaluateVpOutput',
-              'result',
-            ),
+                result, r'EvaluateVpOutput', 'result'),
             errors: errors.build(),
           );
     } catch (_) {
@@ -111,10 +107,7 @@ class EvaluateVpOutputBuilder
         errors.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'EvaluateVpOutput',
-          _$failedField,
-          e.toString(),
-        );
+            r'EvaluateVpOutput', _$failedField, e.toString());
       }
       rethrow;
     }

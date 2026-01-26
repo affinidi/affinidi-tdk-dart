@@ -21,9 +21,9 @@ abstract class CorsGetScannedFileInfoOK
 
   CorsGetScannedFileInfoOK._();
 
-  factory CorsGetScannedFileInfoOK([
-    void updates(CorsGetScannedFileInfoOKBuilder b),
-  ]) = _$CorsGetScannedFileInfoOK;
+  factory CorsGetScannedFileInfoOK(
+          [void updates(CorsGetScannedFileInfoOKBuilder b)]) =
+      _$CorsGetScannedFileInfoOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsGetScannedFileInfoOKBuilder b) => b;
@@ -38,7 +38,7 @@ class _$CorsGetScannedFileInfoOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsGetScannedFileInfoOK,
-    _$CorsGetScannedFileInfoOK,
+    _$CorsGetScannedFileInfoOK
   ];
 
   @override
@@ -64,11 +64,9 @@ class _$CorsGetScannedFileInfoOKSerializer
     CorsGetScannedFileInfoOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -84,12 +82,10 @@ class _$CorsGetScannedFileInfoOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsGetScannedFileInfoOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsGetScannedFileInfoOk = valueDes;
           break;
         default:

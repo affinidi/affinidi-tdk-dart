@@ -15,18 +15,16 @@ part 'cors_aws_exchange_credentials_ok.g.dart';
 @BuiltValue()
 abstract class CorsAwsExchangeCredentialsOK
     implements
-        Built<
-          CorsAwsExchangeCredentialsOK,
-          CorsAwsExchangeCredentialsOKBuilder
-        > {
+        Built<CorsAwsExchangeCredentialsOK,
+            CorsAwsExchangeCredentialsOKBuilder> {
   @BuiltValueField(wireName: r'corsAwsExchangeCredentialsOk')
   String? get corsAwsExchangeCredentialsOk;
 
   CorsAwsExchangeCredentialsOK._();
 
-  factory CorsAwsExchangeCredentialsOK([
-    void updates(CorsAwsExchangeCredentialsOKBuilder b),
-  ]) = _$CorsAwsExchangeCredentialsOK;
+  factory CorsAwsExchangeCredentialsOK(
+          [void updates(CorsAwsExchangeCredentialsOKBuilder b)]) =
+      _$CorsAwsExchangeCredentialsOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsAwsExchangeCredentialsOKBuilder b) => b;
@@ -41,7 +39,7 @@ class _$CorsAwsExchangeCredentialsOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsAwsExchangeCredentialsOK,
-    _$CorsAwsExchangeCredentialsOK,
+    _$CorsAwsExchangeCredentialsOK
   ];
 
   @override
@@ -67,11 +65,9 @@ class _$CorsAwsExchangeCredentialsOKSerializer
     CorsAwsExchangeCredentialsOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -87,12 +83,10 @@ class _$CorsAwsExchangeCredentialsOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsAwsExchangeCredentialsOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsAwsExchangeCredentialsOk = valueDes;
           break;
         default:

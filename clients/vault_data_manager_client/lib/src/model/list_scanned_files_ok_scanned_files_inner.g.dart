@@ -21,23 +21,23 @@ class _$ListScannedFilesOKScannedFilesInner
   @override
   final String name;
 
-  factory _$ListScannedFilesOKScannedFilesInner([
-    void Function(ListScannedFilesOKScannedFilesInnerBuilder)? updates,
-  ]) =>
+  factory _$ListScannedFilesOKScannedFilesInner(
+          [void Function(ListScannedFilesOKScannedFilesInnerBuilder)?
+              updates]) =>
       (ListScannedFilesOKScannedFilesInnerBuilder()..update(updates))._build();
 
-  _$ListScannedFilesOKScannedFilesInner._({
-    required this.jobId,
-    required this.status,
-    required this.profileId,
-    required this.nodeId,
-    required this.createdAt,
-    required this.name,
-  }) : super._();
+  _$ListScannedFilesOKScannedFilesInner._(
+      {required this.jobId,
+      required this.status,
+      required this.profileId,
+      required this.nodeId,
+      required this.createdAt,
+      required this.name})
+      : super._();
   @override
   ListScannedFilesOKScannedFilesInner rebuild(
-    void Function(ListScannedFilesOKScannedFilesInnerBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(ListScannedFilesOKScannedFilesInnerBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   ListScannedFilesOKScannedFilesInnerBuilder toBuilder() =>
@@ -83,10 +83,8 @@ class _$ListScannedFilesOKScannedFilesInner
 
 class ListScannedFilesOKScannedFilesInnerBuilder
     implements
-        Builder<
-          ListScannedFilesOKScannedFilesInner,
-          ListScannedFilesOKScannedFilesInnerBuilder
-        > {
+        Builder<ListScannedFilesOKScannedFilesInner,
+            ListScannedFilesOKScannedFilesInnerBuilder> {
   _$ListScannedFilesOKScannedFilesInner? _$v;
 
   String? _jobId;
@@ -138,8 +136,7 @@ class ListScannedFilesOKScannedFilesInnerBuilder
 
   @override
   void update(
-    void Function(ListScannedFilesOKScannedFilesInnerBuilder)? updates,
-  ) {
+      void Function(ListScannedFilesOKScannedFilesInnerBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -147,39 +144,20 @@ class ListScannedFilesOKScannedFilesInnerBuilder
   ListScannedFilesOKScannedFilesInner build() => _build();
 
   _$ListScannedFilesOKScannedFilesInner _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$ListScannedFilesOKScannedFilesInner._(
           jobId: BuiltValueNullFieldError.checkNotNull(
-            jobId,
-            r'ListScannedFilesOKScannedFilesInner',
-            'jobId',
-          ),
+              jobId, r'ListScannedFilesOKScannedFilesInner', 'jobId'),
           status: BuiltValueNullFieldError.checkNotNull(
-            status,
-            r'ListScannedFilesOKScannedFilesInner',
-            'status',
-          ),
+              status, r'ListScannedFilesOKScannedFilesInner', 'status'),
           profileId: BuiltValueNullFieldError.checkNotNull(
-            profileId,
-            r'ListScannedFilesOKScannedFilesInner',
-            'profileId',
-          ),
+              profileId, r'ListScannedFilesOKScannedFilesInner', 'profileId'),
           nodeId: BuiltValueNullFieldError.checkNotNull(
-            nodeId,
-            r'ListScannedFilesOKScannedFilesInner',
-            'nodeId',
-          ),
+              nodeId, r'ListScannedFilesOKScannedFilesInner', 'nodeId'),
           createdAt: BuiltValueNullFieldError.checkNotNull(
-            createdAt,
-            r'ListScannedFilesOKScannedFilesInner',
-            'createdAt',
-          ),
+              createdAt, r'ListScannedFilesOKScannedFilesInner', 'createdAt'),
           name: BuiltValueNullFieldError.checkNotNull(
-            name,
-            r'ListScannedFilesOKScannedFilesInner',
-            'name',
-          ),
+              name, r'ListScannedFilesOKScannedFilesInner', 'name'),
         );
     replace(_$result);
     return _$result;

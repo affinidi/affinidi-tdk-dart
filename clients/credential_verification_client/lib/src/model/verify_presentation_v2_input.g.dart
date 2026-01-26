@@ -18,21 +18,21 @@ class _$VerifyPresentationV2Input extends VerifyPresentationV2Input {
   @override
   final BuiltList<String>? domain;
 
-  factory _$VerifyPresentationV2Input([
-    void Function(VerifyPresentationV2InputBuilder)? updates,
-  ]) => (VerifyPresentationV2InputBuilder()..update(updates))._build();
+  factory _$VerifyPresentationV2Input(
+          [void Function(VerifyPresentationV2InputBuilder)? updates]) =>
+      (VerifyPresentationV2InputBuilder()..update(updates))._build();
 
-  _$VerifyPresentationV2Input._({
-    this.verifiablePresentation,
-    this.pexQuery,
-    this.dcqlQuery,
-    this.challenge,
-    this.domain,
-  }) : super._();
+  _$VerifyPresentationV2Input._(
+      {this.verifiablePresentation,
+      this.pexQuery,
+      this.dcqlQuery,
+      this.challenge,
+      this.domain})
+      : super._();
   @override
   VerifyPresentationV2Input rebuild(
-    void Function(VerifyPresentationV2InputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(VerifyPresentationV2InputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   VerifyPresentationV2InputBuilder toBuilder() =>
@@ -136,8 +136,7 @@ class VerifyPresentationV2InputBuilder
   _$VerifyPresentationV2Input _build() {
     _$VerifyPresentationV2Input _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$VerifyPresentationV2Input._(
             verifiablePresentation: verifiablePresentation,
             pexQuery: _pexQuery?.build(),
@@ -157,10 +156,7 @@ class VerifyPresentationV2InputBuilder
         _domain?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'VerifyPresentationV2Input',
-          _$failedField,
-          e.toString(),
-        );
+            r'VerifyPresentationV2Input', _$failedField, e.toString());
       }
       rethrow;
     }

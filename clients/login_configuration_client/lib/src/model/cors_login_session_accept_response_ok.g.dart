@@ -11,16 +11,16 @@ class _$CorsLoginSessionAcceptResponseOK
   @override
   final String? corsLoginSessionAcceptResponseOk;
 
-  factory _$CorsLoginSessionAcceptResponseOK([
-    void Function(CorsLoginSessionAcceptResponseOKBuilder)? updates,
-  ]) => (CorsLoginSessionAcceptResponseOKBuilder()..update(updates))._build();
+  factory _$CorsLoginSessionAcceptResponseOK(
+          [void Function(CorsLoginSessionAcceptResponseOKBuilder)? updates]) =>
+      (CorsLoginSessionAcceptResponseOKBuilder()..update(updates))._build();
 
   _$CorsLoginSessionAcceptResponseOK._({this.corsLoginSessionAcceptResponseOk})
-    : super._();
+      : super._();
   @override
   CorsLoginSessionAcceptResponseOK rebuild(
-    void Function(CorsLoginSessionAcceptResponseOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CorsLoginSessionAcceptResponseOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CorsLoginSessionAcceptResponseOKBuilder toBuilder() =>
@@ -45,29 +45,25 @@ class _$CorsLoginSessionAcceptResponseOK
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'CorsLoginSessionAcceptResponseOK')
-          ..add(
-            'corsLoginSessionAcceptResponseOk',
-            corsLoginSessionAcceptResponseOk,
-          ))
+          ..add('corsLoginSessionAcceptResponseOk',
+              corsLoginSessionAcceptResponseOk))
         .toString();
   }
 }
 
 class CorsLoginSessionAcceptResponseOKBuilder
     implements
-        Builder<
-          CorsLoginSessionAcceptResponseOK,
-          CorsLoginSessionAcceptResponseOKBuilder
-        > {
+        Builder<CorsLoginSessionAcceptResponseOK,
+            CorsLoginSessionAcceptResponseOKBuilder> {
   _$CorsLoginSessionAcceptResponseOK? _$v;
 
   String? _corsLoginSessionAcceptResponseOk;
   String? get corsLoginSessionAcceptResponseOk =>
       _$this._corsLoginSessionAcceptResponseOk;
   set corsLoginSessionAcceptResponseOk(
-    String? corsLoginSessionAcceptResponseOk,
-  ) => _$this._corsLoginSessionAcceptResponseOk =
-      corsLoginSessionAcceptResponseOk;
+          String? corsLoginSessionAcceptResponseOk) =>
+      _$this._corsLoginSessionAcceptResponseOk =
+          corsLoginSessionAcceptResponseOk;
 
   CorsLoginSessionAcceptResponseOKBuilder() {
     CorsLoginSessionAcceptResponseOK._defaults(this);
@@ -96,8 +92,7 @@ class CorsLoginSessionAcceptResponseOKBuilder
   CorsLoginSessionAcceptResponseOK build() => _build();
 
   _$CorsLoginSessionAcceptResponseOK _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CorsLoginSessionAcceptResponseOK._(
           corsLoginSessionAcceptResponseOk: corsLoginSessionAcceptResponseOk,
         );

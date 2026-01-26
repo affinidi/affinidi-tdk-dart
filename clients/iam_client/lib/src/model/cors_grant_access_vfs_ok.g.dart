@@ -10,15 +10,15 @@ class _$CorsGrantAccessVfsOK extends CorsGrantAccessVfsOK {
   @override
   final String? corsGrantAccessVfsOk;
 
-  factory _$CorsGrantAccessVfsOK([
-    void Function(CorsGrantAccessVfsOKBuilder)? updates,
-  ]) => (CorsGrantAccessVfsOKBuilder()..update(updates))._build();
+  factory _$CorsGrantAccessVfsOK(
+          [void Function(CorsGrantAccessVfsOKBuilder)? updates]) =>
+      (CorsGrantAccessVfsOKBuilder()..update(updates))._build();
 
   _$CorsGrantAccessVfsOK._({this.corsGrantAccessVfsOk}) : super._();
   @override
   CorsGrantAccessVfsOK rebuild(
-    void Function(CorsGrantAccessVfsOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CorsGrantAccessVfsOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CorsGrantAccessVfsOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$CorsGrantAccessVfsOK extends CorsGrantAccessVfsOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'CorsGrantAccessVfsOK',
-    )..add('corsGrantAccessVfsOk', corsGrantAccessVfsOk)).toString();
+    return (newBuiltValueToStringHelper(r'CorsGrantAccessVfsOK')
+          ..add('corsGrantAccessVfsOk', corsGrantAccessVfsOk))
+        .toString();
   }
 }
 
@@ -83,9 +83,10 @@ class CorsGrantAccessVfsOKBuilder
   CorsGrantAccessVfsOK build() => _build();
 
   _$CorsGrantAccessVfsOK _build() {
-    final _$result =
-        _$v ??
-        _$CorsGrantAccessVfsOK._(corsGrantAccessVfsOk: corsGrantAccessVfsOk);
+    final _$result = _$v ??
+        _$CorsGrantAccessVfsOK._(
+          corsGrantAccessVfsOk: corsGrantAccessVfsOk,
+        );
     replace(_$result);
     return _$result;
   }

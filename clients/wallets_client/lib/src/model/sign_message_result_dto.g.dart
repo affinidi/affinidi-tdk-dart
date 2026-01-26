@@ -10,15 +10,15 @@ class _$SignMessageResultDto extends SignMessageResultDto {
   @override
   final JsonObject signedMessage;
 
-  factory _$SignMessageResultDto([
-    void Function(SignMessageResultDtoBuilder)? updates,
-  ]) => (SignMessageResultDtoBuilder()..update(updates))._build();
+  factory _$SignMessageResultDto(
+          [void Function(SignMessageResultDtoBuilder)? updates]) =>
+      (SignMessageResultDtoBuilder()..update(updates))._build();
 
   _$SignMessageResultDto._({required this.signedMessage}) : super._();
   @override
   SignMessageResultDto rebuild(
-    void Function(SignMessageResultDtoBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(SignMessageResultDtoBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   SignMessageResultDtoBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$SignMessageResultDto extends SignMessageResultDto {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'SignMessageResultDto',
-    )..add('signedMessage', signedMessage)).toString();
+    return (newBuiltValueToStringHelper(r'SignMessageResultDto')
+          ..add('signedMessage', signedMessage))
+        .toString();
   }
 }
 
@@ -83,14 +83,10 @@ class SignMessageResultDtoBuilder
   SignMessageResultDto build() => _build();
 
   _$SignMessageResultDto _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$SignMessageResultDto._(
           signedMessage: BuiltValueNullFieldError.checkNotNull(
-            signedMessage,
-            r'SignMessageResultDto',
-            'signedMessage',
-          ),
+              signedMessage, r'SignMessageResultDto', 'signedMessage'),
         );
     replace(_$result);
     return _$result;

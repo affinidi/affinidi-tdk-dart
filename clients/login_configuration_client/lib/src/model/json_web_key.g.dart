@@ -37,9 +37,8 @@ class _$JsonWebKey extends JsonWebKey {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'JsonWebKey',
-    )..add('keys', keys)).toString();
+    return (newBuiltValueToStringHelper(r'JsonWebKey')..add('keys', keys))
+        .toString();
   }
 }
 
@@ -80,7 +79,10 @@ class JsonWebKeyBuilder implements Builder<JsonWebKey, JsonWebKeyBuilder> {
   _$JsonWebKey _build() {
     _$JsonWebKey _$result;
     try {
-      _$result = _$v ?? _$JsonWebKey._(keys: _keys?.build());
+      _$result = _$v ??
+          _$JsonWebKey._(
+            keys: _keys?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -88,10 +90,7 @@ class JsonWebKeyBuilder implements Builder<JsonWebKey, JsonWebKeyBuilder> {
         _keys?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'JsonWebKey',
-          _$failedField,
-          e.toString(),
-        );
+            r'JsonWebKey', _$failedField, e.toString());
       }
       rethrow;
     }

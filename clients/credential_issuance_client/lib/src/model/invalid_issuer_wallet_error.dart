@@ -42,9 +42,9 @@ abstract class InvalidIssuerWalletError
 
   InvalidIssuerWalletError._();
 
-  factory InvalidIssuerWalletError([
-    void updates(InvalidIssuerWalletErrorBuilder b),
-  ]) = _$InvalidIssuerWalletError;
+  factory InvalidIssuerWalletError(
+          [void updates(InvalidIssuerWalletErrorBuilder b)]) =
+      _$InvalidIssuerWalletError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(InvalidIssuerWalletErrorBuilder b) => b;
@@ -59,7 +59,7 @@ class _$InvalidIssuerWalletErrorSerializer
   @override
   final Iterable<Type> types = const [
     InvalidIssuerWalletError,
-    _$InvalidIssuerWalletError,
+    _$InvalidIssuerWalletError
   ];
 
   @override
@@ -94,9 +94,8 @@ class _$InvalidIssuerWalletErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ActionForbiddenErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
       );
     }
   }
@@ -107,11 +106,9 @@ class _$InvalidIssuerWalletErrorSerializer
     InvalidIssuerWalletError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -127,56 +124,40 @@ class _$InvalidIssuerWalletErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      InvalidIssuerWalletErrorNameEnum,
-                    ),
-                  )
-                  as InvalidIssuerWalletErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(InvalidIssuerWalletErrorNameEnum),
+          ) as InvalidIssuerWalletErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      InvalidIssuerWalletErrorMessageEnum,
-                    ),
-                  )
-                  as InvalidIssuerWalletErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(InvalidIssuerWalletErrorMessageEnum),
+          ) as InvalidIssuerWalletErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      InvalidIssuerWalletErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as InvalidIssuerWalletErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(InvalidIssuerWalletErrorHttpStatusCodeEnum),
+          ) as InvalidIssuerWalletErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ActionForbiddenErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ActionForbiddenErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
+          ) as BuiltList<ActionForbiddenErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -246,7 +227,7 @@ class InvalidIssuerWalletErrorHttpStatusCodeEnum extends EnumClass {
       _$invalidIssuerWalletErrorHttpStatusCodeEnum_number400;
 
   static Serializer<InvalidIssuerWalletErrorHttpStatusCodeEnum>
-  get serializer => _$invalidIssuerWalletErrorHttpStatusCodeEnumSerializer;
+      get serializer => _$invalidIssuerWalletErrorHttpStatusCodeEnumSerializer;
 
   const InvalidIssuerWalletErrorHttpStatusCodeEnum._(String name) : super(name);
 

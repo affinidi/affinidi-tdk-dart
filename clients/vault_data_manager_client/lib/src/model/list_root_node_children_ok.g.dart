@@ -10,15 +10,15 @@ class _$ListRootNodeChildrenOK extends ListRootNodeChildrenOK {
   @override
   final BuiltList<NodeDto>? nodes;
 
-  factory _$ListRootNodeChildrenOK([
-    void Function(ListRootNodeChildrenOKBuilder)? updates,
-  ]) => (ListRootNodeChildrenOKBuilder()..update(updates))._build();
+  factory _$ListRootNodeChildrenOK(
+          [void Function(ListRootNodeChildrenOKBuilder)? updates]) =>
+      (ListRootNodeChildrenOKBuilder()..update(updates))._build();
 
   _$ListRootNodeChildrenOK._({this.nodes}) : super._();
   @override
   ListRootNodeChildrenOK rebuild(
-    void Function(ListRootNodeChildrenOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(ListRootNodeChildrenOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   ListRootNodeChildrenOKBuilder toBuilder() =>
@@ -40,9 +40,9 @@ class _$ListRootNodeChildrenOK extends ListRootNodeChildrenOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'ListRootNodeChildrenOK',
-    )..add('nodes', nodes)).toString();
+    return (newBuiltValueToStringHelper(r'ListRootNodeChildrenOK')
+          ..add('nodes', nodes))
+        .toString();
   }
 }
 
@@ -83,7 +83,10 @@ class ListRootNodeChildrenOKBuilder
   _$ListRootNodeChildrenOK _build() {
     _$ListRootNodeChildrenOK _$result;
     try {
-      _$result = _$v ?? _$ListRootNodeChildrenOK._(nodes: _nodes?.build());
+      _$result = _$v ??
+          _$ListRootNodeChildrenOK._(
+            nodes: _nodes?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -91,10 +94,7 @@ class ListRootNodeChildrenOKBuilder
         _nodes?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'ListRootNodeChildrenOK',
-          _$failedField,
-          e.toString(),
-        );
+            r'ListRootNodeChildrenOK', _$failedField, e.toString());
       }
       rethrow;
     }

@@ -21,9 +21,9 @@ abstract class CorsLoginSessionForIdpOK
 
   CorsLoginSessionForIdpOK._();
 
-  factory CorsLoginSessionForIdpOK([
-    void updates(CorsLoginSessionForIdpOKBuilder b),
-  ]) = _$CorsLoginSessionForIdpOK;
+  factory CorsLoginSessionForIdpOK(
+          [void updates(CorsLoginSessionForIdpOKBuilder b)]) =
+      _$CorsLoginSessionForIdpOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsLoginSessionForIdpOKBuilder b) => b;
@@ -38,7 +38,7 @@ class _$CorsLoginSessionForIdpOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsLoginSessionForIdpOK,
-    _$CorsLoginSessionForIdpOK,
+    _$CorsLoginSessionForIdpOK
   ];
 
   @override
@@ -64,11 +64,9 @@ class _$CorsLoginSessionForIdpOKSerializer
     CorsLoginSessionForIdpOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -84,12 +82,10 @@ class _$CorsLoginSessionForIdpOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsLoginSessionForIdpOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsLoginSessionForIdpOk = valueDes;
           break;
         default:

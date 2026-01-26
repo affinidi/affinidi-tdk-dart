@@ -15,18 +15,16 @@ part 'cors_initiate_data_sharing_request_ok.g.dart';
 @BuiltValue()
 abstract class CorsInitiateDataSharingRequestOK
     implements
-        Built<
-          CorsInitiateDataSharingRequestOK,
-          CorsInitiateDataSharingRequestOKBuilder
-        > {
+        Built<CorsInitiateDataSharingRequestOK,
+            CorsInitiateDataSharingRequestOKBuilder> {
   @BuiltValueField(wireName: r'corsInitiateDataSharingRequestOk')
   String? get corsInitiateDataSharingRequestOk;
 
   CorsInitiateDataSharingRequestOK._();
 
-  factory CorsInitiateDataSharingRequestOK([
-    void updates(CorsInitiateDataSharingRequestOKBuilder b),
-  ]) = _$CorsInitiateDataSharingRequestOK;
+  factory CorsInitiateDataSharingRequestOK(
+          [void updates(CorsInitiateDataSharingRequestOKBuilder b)]) =
+      _$CorsInitiateDataSharingRequestOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsInitiateDataSharingRequestOKBuilder b) => b;
@@ -41,7 +39,7 @@ class _$CorsInitiateDataSharingRequestOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsInitiateDataSharingRequestOK,
-    _$CorsInitiateDataSharingRequestOK,
+    _$CorsInitiateDataSharingRequestOK
   ];
 
   @override
@@ -67,11 +65,9 @@ class _$CorsInitiateDataSharingRequestOKSerializer
     CorsInitiateDataSharingRequestOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -87,12 +83,10 @@ class _$CorsInitiateDataSharingRequestOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsInitiateDataSharingRequestOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsInitiateDataSharingRequestOk = valueDes;
           break;
         default:

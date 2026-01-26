@@ -1,29 +1,29 @@
 # affinidi_tdk_iota_client.api.DcqlQueryApi
 
 ## Load the API package
-
 ```dart
 import 'package:affinidi_tdk_iota_client/api.dart';
 ```
 
 All URIs are relative to *https://apse1.api.affinidi.io/ais*
 
-| Method                                                         | HTTP request                                                           | Description |
-| -------------------------------------------------------------- | ---------------------------------------------------------------------- | ----------- |
-| [**createDcqlQuery**](DcqlQueryApi.md#createdcqlquery)         | **POST** /v1/configurations/{configurationId}/dcql-queries             |
-| [**deleteDcqlQueryById**](DcqlQueryApi.md#deletedcqlquerybyid) | **DELETE** /v1/configurations/{configurationId}/dcql-queries/{queryId} |
-| [**getDcqlQueryById**](DcqlQueryApi.md#getdcqlquerybyid)       | **GET** /v1/configurations/{configurationId}/dcql-queries/{queryId}    |
-| [**listDcqlQueries**](DcqlQueryApi.md#listdcqlqueries)         | **GET** /v1/configurations/{configurationId}/dcql-queries              |
-| [**updateDcqlQueryById**](DcqlQueryApi.md#updatedcqlquerybyid) | **PATCH** /v1/configurations/{configurationId}/dcql-queries/{queryId}  |
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**createDcqlQuery**](DcqlQueryApi.md#createdcqlquery) | **POST** /v1/configurations/{configurationId}/dcql-queries | 
+[**deleteDcqlQueryById**](DcqlQueryApi.md#deletedcqlquerybyid) | **DELETE** /v1/configurations/{configurationId}/dcql-queries/{queryId} | 
+[**getDcqlQueryById**](DcqlQueryApi.md#getdcqlquerybyid) | **GET** /v1/configurations/{configurationId}/dcql-queries/{queryId} | 
+[**listDcqlQueries**](DcqlQueryApi.md#listdcqlqueries) | **GET** /v1/configurations/{configurationId}/dcql-queries | 
+[**updateDcqlQueryById**](DcqlQueryApi.md#updatedcqlquerybyid) | **PATCH** /v1/configurations/{configurationId}/dcql-queries/{queryId} | 
+
 
 # **createDcqlQuery**
-
 > DcqlQueryDto createDcqlQuery(configurationId, createDcqlQueryInput)
+
+
 
 Creates a new DCQL query in the configuration to query data.
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_iota_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -45,10 +45,10 @@ try {
 
 ### Parameters
 
-| Name                     | Type                                                | Description                                      | Notes |
-| ------------------------ | --------------------------------------------------- | ------------------------------------------------ | ----- |
-| **configurationId**      | **String**                                          | ID of the Affinidi Iota Framework configuration. |
-| **createDcqlQueryInput** | [**CreateDcqlQueryInput**](CreateDcqlQueryInput.md) | CreateDcqlQuery                                  |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **configurationId** | **String**| ID of the Affinidi Iota Framework configuration. | 
+ **createDcqlQueryInput** | [**CreateDcqlQueryInput**](CreateDcqlQueryInput.md)| CreateDcqlQuery | 
 
 ### Return type
 
@@ -60,19 +60,19 @@ try {
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
-- **Accept**: application/json
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **deleteDcqlQueryById**
-
 > deleteDcqlQueryById(configurationId, queryId)
+
+
 
 Deletes a DCQL query in the configuration by ID.
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_iota_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -93,10 +93,10 @@ try {
 
 ### Parameters
 
-| Name                | Type       | Description                                      | Notes |
-| ------------------- | ---------- | ------------------------------------------------ | ----- |
-| **configurationId** | **String** | ID of the Affinidi Iota Framework configuration. |
-| **queryId**         | **String** | The ID of the query.                             |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **configurationId** | **String**| ID of the Affinidi Iota Framework configuration. | 
+ **queryId** | **String**| The ID of the query. | 
 
 ### Return type
 
@@ -108,19 +108,19 @@ void (empty response body)
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: application/json
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getDcqlQueryById**
-
 > DcqlQueryDto getDcqlQueryById(configurationId, queryId)
+
+
 
 Retrieves a DCQL query in the configuration by ID.
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_iota_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -142,10 +142,10 @@ try {
 
 ### Parameters
 
-| Name                | Type       | Description                                      | Notes |
-| ------------------- | ---------- | ------------------------------------------------ | ----- |
-| **configurationId** | **String** | ID of the Affinidi Iota Framework configuration. |
-| **queryId**         | **String** | The ID of the query.                             |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **configurationId** | **String**| ID of the Affinidi Iota Framework configuration. | 
+ **queryId** | **String**| The ID of the query. | 
 
 ### Return type
 
@@ -157,19 +157,19 @@ try {
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: application/json
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **listDcqlQueries**
-
 > ListDcqlQueriesOK listDcqlQueries(configurationId, limit, exclusiveStartKey)
+
+
 
 Lists all DCQL queries in the configuration.
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_iota_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -192,11 +192,11 @@ try {
 
 ### Parameters
 
-| Name                  | Type       | Description                                                                                                                                                    | Notes      |
-| --------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| **configurationId**   | **String** | ID of the Affinidi Iota Framework configuration.                                                                                                               |
-| **limit**             | **int**    | Maximum number of records to fetch in a list                                                                                                                   | [optional] |
-| **exclusiveStartKey** | **String** | The base64url encoded key of the first item that this operation will evaluate (it is not returned). Use the value that was returned in the previous operation. | [optional] |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **configurationId** | **String**| ID of the Affinidi Iota Framework configuration. | 
+ **limit** | **int**| Maximum number of records to fetch in a list | [optional] 
+ **exclusiveStartKey** | **String**| The base64url encoded key of the first item that this operation will evaluate (it is not returned). Use the value that was returned in the previous operation. | [optional] 
 
 ### Return type
 
@@ -208,19 +208,19 @@ try {
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: application/json
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **updateDcqlQueryById**
-
 > DcqlQueryDto updateDcqlQueryById(configurationId, queryId, updateDcqlQueryInput)
+
+
 
 Updates the DCQL query in the configuration by ID.
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_iota_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -243,11 +243,11 @@ try {
 
 ### Parameters
 
-| Name                     | Type                                                | Description                                      | Notes |
-| ------------------------ | --------------------------------------------------- | ------------------------------------------------ | ----- |
-| **configurationId**      | **String**                                          | ID of the Affinidi Iota Framework configuration. |
-| **queryId**              | **String**                                          | The ID of the query.                             |
-| **updateDcqlQueryInput** | [**UpdateDcqlQueryInput**](UpdateDcqlQueryInput.md) | UpdateDcqlQueryById                              |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **configurationId** | **String**| ID of the Affinidi Iota Framework configuration. | 
+ **queryId** | **String**| The ID of the query. | 
+ **updateDcqlQueryInput** | [**UpdateDcqlQueryInput**](UpdateDcqlQueryInput.md)| UpdateDcqlQueryById | 
 
 ### Return type
 
@@ -259,7 +259,8 @@ try {
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
-- **Accept**: application/json
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+

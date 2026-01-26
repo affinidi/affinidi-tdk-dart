@@ -49,7 +49,9 @@ class DefaultApi {
     final _path = r'/v1/logged-consents';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -67,28 +69,16 @@ class DefaultApi {
     final _queryParameters = <String, dynamic>{
       if (configurationId != null)
         r'configurationId': encodeQueryParameter(
-          _serializers,
-          configurationId,
-          const FullType(String),
-        ),
+            _serializers, configurationId, const FullType(String)),
       if (userId != null)
-        r'userId': encodeQueryParameter(
-          _serializers,
-          userId,
-          const FullType(String),
-        ),
+        r'userId':
+            encodeQueryParameter(_serializers, userId, const FullType(String)),
       if (limit != null)
-        r'limit': encodeQueryParameter(
-          _serializers,
-          limit,
-          const FullType(int),
-        ),
+        r'limit':
+            encodeQueryParameter(_serializers, limit, const FullType(int)),
       if (exclusiveStartKey != null)
         r'exclusiveStartKey': encodeQueryParameter(
-          _serializers,
-          exclusiveStartKey,
-          const FullType(String),
-        ),
+            _serializers, exclusiveStartKey, const FullType(String)),
     };
 
     final _response = await _dio.request<Object>(
@@ -107,10 +97,9 @@ class DefaultApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(ListLoggedConsentsOK),
-                )
-                as ListLoggedConsentsOK;
+              rawResponse,
+              specifiedType: const FullType(ListLoggedConsentsOK),
+            ) as ListLoggedConsentsOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

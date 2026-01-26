@@ -176,19 +176,16 @@ class _$IssuanceConfigDtoSerializer
       yield r'credentialSupported';
       yield serializers.serialize(
         object.credentialSupported,
-        specifiedType: const FullType(BuiltList, [
-          FullType(CredentialSupportedObject),
-        ]),
+        specifiedType:
+            const FullType(BuiltList, [FullType(CredentialSupportedObject)]),
       );
     }
     if (object.issuerMetadata != null) {
       yield r'issuerMetadata';
       yield serializers.serialize(
         object.issuerMetadata,
-        specifiedType: const FullType(BuiltMap, [
-          FullType(String),
-          FullType.nullable(JsonObject),
-        ]),
+        specifiedType: const FullType(
+            BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
       );
     }
     if (object.version != null) {
@@ -220,11 +217,9 @@ class _$IssuanceConfigDtoSerializer
     IssuanceConfigDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -240,129 +235,103 @@ class _$IssuanceConfigDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.id = valueDes;
           break;
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.description = valueDes;
           break;
         case r'issuerDid':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.issuerDid = valueDes;
           break;
         case r'issuerWalletId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.issuerWalletId = valueDes;
           break;
         case r'credentialOfferDuration':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.credentialOfferDuration = valueDes;
           break;
         case r'cNonceDuration':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.cNonceDuration = valueDes;
           break;
         case r'format':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(IssuanceConfigDtoFormatEnum),
-                  )
-                  as IssuanceConfigDtoFormatEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(IssuanceConfigDtoFormatEnum),
+          ) as IssuanceConfigDtoFormatEnum;
           result.format = valueDes;
           break;
         case r'issuerUri':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.issuerUri = valueDes;
           break;
         case r'credentialSupported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(CredentialSupportedObject),
-                    ]),
-                  )
-                  as BuiltList<CredentialSupportedObject>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(CredentialSupportedObject)]),
+          ) as BuiltList<CredentialSupportedObject>;
           result.credentialSupported.replace(valueDes);
           break;
         case r'issuerMetadata':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltMap, [
-                      FullType(String),
-                      FullType.nullable(JsonObject),
-                    ]),
-                  )
-                  as BuiltMap<String, JsonObject?>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
+          ) as BuiltMap<String, JsonObject?>;
           result.issuerMetadata.replace(valueDes);
           break;
         case r'version':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.version = valueDes;
           break;
         case r'returnUris':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.returnUris.replace(valueDes);
           break;
         case r'webhook':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CisConfigurationWebhookSetting,
-                    ),
-                  )
-                  as CisConfigurationWebhookSetting;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CisConfigurationWebhookSetting),
+          ) as CisConfigurationWebhookSetting;
           result.webhook.replace(valueDes);
           break;
         default:

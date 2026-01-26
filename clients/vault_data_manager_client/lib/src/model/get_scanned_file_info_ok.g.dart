@@ -24,24 +24,24 @@ class _$GetScannedFileInfoOK extends GetScannedFileInfoOK {
   @override
   final String name;
 
-  factory _$GetScannedFileInfoOK([
-    void Function(GetScannedFileInfoOKBuilder)? updates,
-  ]) => (GetScannedFileInfoOKBuilder()..update(updates))._build();
+  factory _$GetScannedFileInfoOK(
+          [void Function(GetScannedFileInfoOKBuilder)? updates]) =>
+      (GetScannedFileInfoOKBuilder()..update(updates))._build();
 
-  _$GetScannedFileInfoOK._({
-    required this.data,
-    required this.jobId,
-    required this.status,
-    required this.profileId,
-    this.exclusiveStartKey,
-    required this.nodeId,
-    required this.createdAt,
-    required this.name,
-  }) : super._();
+  _$GetScannedFileInfoOK._(
+      {required this.data,
+      required this.jobId,
+      required this.status,
+      required this.profileId,
+      this.exclusiveStartKey,
+      required this.nodeId,
+      required this.createdAt,
+      required this.name})
+      : super._();
   @override
   GetScannedFileInfoOK rebuild(
-    void Function(GetScannedFileInfoOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(GetScannedFileInfoOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   GetScannedFileInfoOKBuilder toBuilder() =>
@@ -162,45 +162,23 @@ class GetScannedFileInfoOKBuilder
   GetScannedFileInfoOK build() => _build();
 
   _$GetScannedFileInfoOK _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$GetScannedFileInfoOK._(
           data: BuiltValueNullFieldError.checkNotNull(
-            data,
-            r'GetScannedFileInfoOK',
-            'data',
-          ),
+              data, r'GetScannedFileInfoOK', 'data'),
           jobId: BuiltValueNullFieldError.checkNotNull(
-            jobId,
-            r'GetScannedFileInfoOK',
-            'jobId',
-          ),
+              jobId, r'GetScannedFileInfoOK', 'jobId'),
           status: BuiltValueNullFieldError.checkNotNull(
-            status,
-            r'GetScannedFileInfoOK',
-            'status',
-          ),
+              status, r'GetScannedFileInfoOK', 'status'),
           profileId: BuiltValueNullFieldError.checkNotNull(
-            profileId,
-            r'GetScannedFileInfoOK',
-            'profileId',
-          ),
+              profileId, r'GetScannedFileInfoOK', 'profileId'),
           exclusiveStartKey: exclusiveStartKey,
           nodeId: BuiltValueNullFieldError.checkNotNull(
-            nodeId,
-            r'GetScannedFileInfoOK',
-            'nodeId',
-          ),
+              nodeId, r'GetScannedFileInfoOK', 'nodeId'),
           createdAt: BuiltValueNullFieldError.checkNotNull(
-            createdAt,
-            r'GetScannedFileInfoOK',
-            'createdAt',
-          ),
+              createdAt, r'GetScannedFileInfoOK', 'createdAt'),
           name: BuiltValueNullFieldError.checkNotNull(
-            name,
-            r'GetScannedFileInfoOK',
-            'name',
-          ),
+              name, r'GetScannedFileInfoOK', 'name'),
         );
     replace(_$result);
     return _$result;

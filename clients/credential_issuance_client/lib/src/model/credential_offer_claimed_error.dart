@@ -42,9 +42,9 @@ abstract class CredentialOfferClaimedError
 
   CredentialOfferClaimedError._();
 
-  factory CredentialOfferClaimedError([
-    void updates(CredentialOfferClaimedErrorBuilder b),
-  ]) = _$CredentialOfferClaimedError;
+  factory CredentialOfferClaimedError(
+          [void updates(CredentialOfferClaimedErrorBuilder b)]) =
+      _$CredentialOfferClaimedError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CredentialOfferClaimedErrorBuilder b) => b;
@@ -59,7 +59,7 @@ class _$CredentialOfferClaimedErrorSerializer
   @override
   final Iterable<Type> types = const [
     CredentialOfferClaimedError,
-    _$CredentialOfferClaimedError,
+    _$CredentialOfferClaimedError
   ];
 
   @override
@@ -83,9 +83,8 @@ class _$CredentialOfferClaimedErrorSerializer
     yield r'httpStatusCode';
     yield serializers.serialize(
       object.httpStatusCode,
-      specifiedType: const FullType(
-        CredentialOfferClaimedErrorHttpStatusCodeEnum,
-      ),
+      specifiedType:
+          const FullType(CredentialOfferClaimedErrorHttpStatusCodeEnum),
     );
     yield r'traceId';
     yield serializers.serialize(
@@ -96,9 +95,8 @@ class _$CredentialOfferClaimedErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ActionForbiddenErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
       );
     }
   }
@@ -109,11 +107,9 @@ class _$CredentialOfferClaimedErrorSerializer
     CredentialOfferClaimedError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -129,56 +125,41 @@ class _$CredentialOfferClaimedErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CredentialOfferClaimedErrorNameEnum,
-                    ),
-                  )
-                  as CredentialOfferClaimedErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CredentialOfferClaimedErrorNameEnum),
+          ) as CredentialOfferClaimedErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CredentialOfferClaimedErrorMessageEnum,
-                    ),
-                  )
-                  as CredentialOfferClaimedErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(CredentialOfferClaimedErrorMessageEnum),
+          ) as CredentialOfferClaimedErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CredentialOfferClaimedErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as CredentialOfferClaimedErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(CredentialOfferClaimedErrorHttpStatusCodeEnum),
+          ) as CredentialOfferClaimedErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ActionForbiddenErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ActionForbiddenErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
+          ) as BuiltList<ActionForbiddenErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -229,7 +210,7 @@ class CredentialOfferClaimedErrorNameEnum extends EnumClass {
 class CredentialOfferClaimedErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'Credential offer is already claimed')
   static const CredentialOfferClaimedErrorMessageEnum
-  credentialOfferIsAlreadyClaimed =
+      credentialOfferIsAlreadyClaimed =
       _$credentialOfferClaimedErrorMessageEnum_credentialOfferIsAlreadyClaimed;
 
   static Serializer<CredentialOfferClaimedErrorMessageEnum> get serializer =>
@@ -249,10 +230,11 @@ class CredentialOfferClaimedErrorHttpStatusCodeEnum extends EnumClass {
       _$credentialOfferClaimedErrorHttpStatusCodeEnum_number400;
 
   static Serializer<CredentialOfferClaimedErrorHttpStatusCodeEnum>
-  get serializer => _$credentialOfferClaimedErrorHttpStatusCodeEnumSerializer;
+      get serializer =>
+          _$credentialOfferClaimedErrorHttpStatusCodeEnumSerializer;
 
   const CredentialOfferClaimedErrorHttpStatusCodeEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<CredentialOfferClaimedErrorHttpStatusCodeEnum> get values =>
       _$credentialOfferClaimedErrorHttpStatusCodeEnumValues;

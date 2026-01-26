@@ -12,12 +12,12 @@ class _$GrantAccessInput extends GrantAccessInput {
   @override
   final BuiltList<RightsEnum> rights;
 
-  factory _$GrantAccessInput([
-    void Function(GrantAccessInputBuilder)? updates,
-  ]) => (GrantAccessInputBuilder()..update(updates))._build();
+  factory _$GrantAccessInput(
+          [void Function(GrantAccessInputBuilder)? updates]) =>
+      (GrantAccessInputBuilder()..update(updates))._build();
 
   _$GrantAccessInput._({required this.granteeDid, required this.rights})
-    : super._();
+      : super._();
   @override
   GrantAccessInput rebuild(void Function(GrantAccessInputBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -95,14 +95,10 @@ class GrantAccessInputBuilder
   _$GrantAccessInput _build() {
     _$GrantAccessInput _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$GrantAccessInput._(
             granteeDid: BuiltValueNullFieldError.checkNotNull(
-              granteeDid,
-              r'GrantAccessInput',
-              'granteeDid',
-            ),
+                granteeDid, r'GrantAccessInput', 'granteeDid'),
             rights: rights.build(),
           );
     } catch (_) {
@@ -112,10 +108,7 @@ class GrantAccessInputBuilder
         rights.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'GrantAccessInput',
-          _$failedField,
-          e.toString(),
-        );
+            r'GrantAccessInput', _$failedField, e.toString());
       }
       rethrow;
     }

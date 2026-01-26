@@ -14,19 +14,17 @@ class _$CallbackResponseOK extends CallbackResponseOK {
   @override
   final String message;
 
-  factory _$CallbackResponseOK([
-    void Function(CallbackResponseOKBuilder)? updates,
-  ]) => (CallbackResponseOKBuilder()..update(updates))._build();
+  factory _$CallbackResponseOK(
+          [void Function(CallbackResponseOKBuilder)? updates]) =>
+      (CallbackResponseOKBuilder()..update(updates))._build();
 
-  _$CallbackResponseOK._({
-    this.redirectUri,
-    this.responseCode,
-    required this.message,
-  }) : super._();
+  _$CallbackResponseOK._(
+      {this.redirectUri, this.responseCode, required this.message})
+      : super._();
   @override
   CallbackResponseOK rebuild(
-    void Function(CallbackResponseOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CallbackResponseOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CallbackResponseOKBuilder toBuilder() =>
@@ -106,16 +104,12 @@ class CallbackResponseOKBuilder
   CallbackResponseOK build() => _build();
 
   _$CallbackResponseOK _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CallbackResponseOK._(
           redirectUri: redirectUri,
           responseCode: responseCode,
           message: BuiltValueNullFieldError.checkNotNull(
-            message,
-            r'CallbackResponseOK',
-            'message',
-          ),
+              message, r'CallbackResponseOK', 'message'),
         );
     replace(_$result);
     return _$result;

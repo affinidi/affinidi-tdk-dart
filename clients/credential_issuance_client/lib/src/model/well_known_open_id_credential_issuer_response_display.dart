@@ -18,10 +18,8 @@ part 'well_known_open_id_credential_issuer_response_display.g.dart';
 @BuiltValue()
 abstract class WellKnownOpenIdCredentialIssuerResponseDisplay
     implements
-        Built<
-          WellKnownOpenIdCredentialIssuerResponseDisplay,
-          WellKnownOpenIdCredentialIssuerResponseDisplayBuilder
-        > {
+        Built<WellKnownOpenIdCredentialIssuerResponseDisplay,
+            WellKnownOpenIdCredentialIssuerResponseDisplayBuilder> {
   @BuiltValueField(wireName: r'name')
   String? get name;
 
@@ -33,19 +31,20 @@ abstract class WellKnownOpenIdCredentialIssuerResponseDisplay
 
   WellKnownOpenIdCredentialIssuerResponseDisplay._();
 
-  factory WellKnownOpenIdCredentialIssuerResponseDisplay([
-    void updates(WellKnownOpenIdCredentialIssuerResponseDisplayBuilder b),
-  ]) = _$WellKnownOpenIdCredentialIssuerResponseDisplay;
+  factory WellKnownOpenIdCredentialIssuerResponseDisplay(
+          [void updates(
+              WellKnownOpenIdCredentialIssuerResponseDisplayBuilder b)]) =
+      _$WellKnownOpenIdCredentialIssuerResponseDisplay;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(
-    WellKnownOpenIdCredentialIssuerResponseDisplayBuilder b,
-  ) => b;
+          WellKnownOpenIdCredentialIssuerResponseDisplayBuilder b) =>
+      b;
 
   @BuiltValueSerializer(custom: true)
   static Serializer<WellKnownOpenIdCredentialIssuerResponseDisplay>
-  get serializer =>
-      _$WellKnownOpenIdCredentialIssuerResponseDisplaySerializer();
+      get serializer =>
+          _$WellKnownOpenIdCredentialIssuerResponseDisplaySerializer();
 }
 
 class _$WellKnownOpenIdCredentialIssuerResponseDisplaySerializer
@@ -54,7 +53,7 @@ class _$WellKnownOpenIdCredentialIssuerResponseDisplaySerializer
   @override
   final Iterable<Type> types = const [
     WellKnownOpenIdCredentialIssuerResponseDisplay,
-    _$WellKnownOpenIdCredentialIssuerResponseDisplay,
+    _$WellKnownOpenIdCredentialIssuerResponseDisplay
   ];
 
   @override
@@ -83,9 +82,8 @@ class _$WellKnownOpenIdCredentialIssuerResponseDisplaySerializer
       yield r'logo';
       yield serializers.serialize(
         object.logo,
-        specifiedType: const FullType(
-          WellKnownOpenIdCredentialIssuerResponseDisplayLogo,
-        ),
+        specifiedType:
+            const FullType(WellKnownOpenIdCredentialIssuerResponseDisplayLogo),
       );
     }
   }
@@ -96,11 +94,9 @@ class _$WellKnownOpenIdCredentialIssuerResponseDisplaySerializer
     WellKnownOpenIdCredentialIssuerResponseDisplay object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -116,32 +112,25 @@ class _$WellKnownOpenIdCredentialIssuerResponseDisplaySerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'locale':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.locale = valueDes;
           break;
         case r'logo':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      WellKnownOpenIdCredentialIssuerResponseDisplayLogo,
-                    ),
-                  )
-                  as WellKnownOpenIdCredentialIssuerResponseDisplayLogo;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                WellKnownOpenIdCredentialIssuerResponseDisplayLogo),
+          ) as WellKnownOpenIdCredentialIssuerResponseDisplayLogo;
           result.logo.replace(valueDes);
           break;
         default:

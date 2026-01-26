@@ -36,7 +36,7 @@ class _$CorsStartFileScanOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsStartFileScanOK,
-    _$CorsStartFileScanOK,
+    _$CorsStartFileScanOK
   ];
 
   @override
@@ -62,11 +62,9 @@ class _$CorsStartFileScanOKSerializer
     CorsStartFileScanOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -82,12 +80,10 @@ class _$CorsStartFileScanOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsStartFileScanOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsStartFileScanOk = valueDes;
           break;
         default:

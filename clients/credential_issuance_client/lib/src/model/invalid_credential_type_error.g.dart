@@ -7,12 +7,11 @@ part of 'invalid_credential_type_error.dart';
 // **************************************************************************
 
 const InvalidCredentialTypeErrorNameEnum
-_$invalidCredentialTypeErrorNameEnum_invalidCredentialTypeError =
+    _$invalidCredentialTypeErrorNameEnum_invalidCredentialTypeError =
     const InvalidCredentialTypeErrorNameEnum._('invalidCredentialTypeError');
 
 InvalidCredentialTypeErrorNameEnum _$invalidCredentialTypeErrorNameEnumValueOf(
-  String name,
-) {
+    String name) {
   switch (name) {
     case 'invalidCredentialTypeError':
       return _$invalidCredentialTypeErrorNameEnum_invalidCredentialTypeError;
@@ -22,21 +21,18 @@ InvalidCredentialTypeErrorNameEnum _$invalidCredentialTypeErrorNameEnumValueOf(
 }
 
 final BuiltSet<InvalidCredentialTypeErrorNameEnum>
-_$invalidCredentialTypeErrorNameEnumValues =
-    BuiltSet<InvalidCredentialTypeErrorNameEnum>(
-      const <InvalidCredentialTypeErrorNameEnum>[
-        _$invalidCredentialTypeErrorNameEnum_invalidCredentialTypeError,
-      ],
-    );
+    _$invalidCredentialTypeErrorNameEnumValues = BuiltSet<
+        InvalidCredentialTypeErrorNameEnum>(const <InvalidCredentialTypeErrorNameEnum>[
+  _$invalidCredentialTypeErrorNameEnum_invalidCredentialTypeError,
+]);
 
 const InvalidCredentialTypeErrorMessageEnum
-_$invalidCredentialTypeErrorMessageEnum_theRequestedCredentialTypeIsNotSupported =
+    _$invalidCredentialTypeErrorMessageEnum_theRequestedCredentialTypeIsNotSupported =
     const InvalidCredentialTypeErrorMessageEnum._(
-      'theRequestedCredentialTypeIsNotSupported',
-    );
+        'theRequestedCredentialTypeIsNotSupported');
 
 InvalidCredentialTypeErrorMessageEnum
-_$invalidCredentialTypeErrorMessageEnumValueOf(String name) {
+    _$invalidCredentialTypeErrorMessageEnumValueOf(String name) {
   switch (name) {
     case 'theRequestedCredentialTypeIsNotSupported':
       return _$invalidCredentialTypeErrorMessageEnum_theRequestedCredentialTypeIsNotSupported;
@@ -46,19 +42,17 @@ _$invalidCredentialTypeErrorMessageEnumValueOf(String name) {
 }
 
 final BuiltSet<InvalidCredentialTypeErrorMessageEnum>
-_$invalidCredentialTypeErrorMessageEnumValues =
-    BuiltSet<InvalidCredentialTypeErrorMessageEnum>(const <
-      InvalidCredentialTypeErrorMessageEnum
-    >[
-      _$invalidCredentialTypeErrorMessageEnum_theRequestedCredentialTypeIsNotSupported,
-    ]);
+    _$invalidCredentialTypeErrorMessageEnumValues = BuiltSet<
+        InvalidCredentialTypeErrorMessageEnum>(const <InvalidCredentialTypeErrorMessageEnum>[
+  _$invalidCredentialTypeErrorMessageEnum_theRequestedCredentialTypeIsNotSupported,
+]);
 
 const InvalidCredentialTypeErrorHttpStatusCodeEnum
-_$invalidCredentialTypeErrorHttpStatusCodeEnum_number400 =
+    _$invalidCredentialTypeErrorHttpStatusCodeEnum_number400 =
     const InvalidCredentialTypeErrorHttpStatusCodeEnum._('number400');
 
 InvalidCredentialTypeErrorHttpStatusCodeEnum
-_$invalidCredentialTypeErrorHttpStatusCodeEnumValueOf(String name) {
+    _$invalidCredentialTypeErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$invalidCredentialTypeErrorHttpStatusCodeEnum_number400;
@@ -68,21 +62,19 @@ _$invalidCredentialTypeErrorHttpStatusCodeEnumValueOf(String name) {
 }
 
 final BuiltSet<InvalidCredentialTypeErrorHttpStatusCodeEnum>
-_$invalidCredentialTypeErrorHttpStatusCodeEnumValues =
-    BuiltSet<InvalidCredentialTypeErrorHttpStatusCodeEnum>(
-      const <InvalidCredentialTypeErrorHttpStatusCodeEnum>[
-        _$invalidCredentialTypeErrorHttpStatusCodeEnum_number400,
-      ],
-    );
+    _$invalidCredentialTypeErrorHttpStatusCodeEnumValues = BuiltSet<
+        InvalidCredentialTypeErrorHttpStatusCodeEnum>(const <InvalidCredentialTypeErrorHttpStatusCodeEnum>[
+  _$invalidCredentialTypeErrorHttpStatusCodeEnum_number400,
+]);
 
 Serializer<InvalidCredentialTypeErrorNameEnum>
-_$invalidCredentialTypeErrorNameEnumSerializer =
+    _$invalidCredentialTypeErrorNameEnumSerializer =
     _$InvalidCredentialTypeErrorNameEnumSerializer();
 Serializer<InvalidCredentialTypeErrorMessageEnum>
-_$invalidCredentialTypeErrorMessageEnumSerializer =
+    _$invalidCredentialTypeErrorMessageEnumSerializer =
     _$InvalidCredentialTypeErrorMessageEnumSerializer();
 Serializer<InvalidCredentialTypeErrorHttpStatusCodeEnum>
-_$invalidCredentialTypeErrorHttpStatusCodeEnumSerializer =
+    _$invalidCredentialTypeErrorHttpStatusCodeEnumSerializer =
     _$InvalidCredentialTypeErrorHttpStatusCodeEnumSerializer();
 
 class _$InvalidCredentialTypeErrorNameEnumSerializer
@@ -101,19 +93,16 @@ class _$InvalidCredentialTypeErrorNameEnumSerializer
 
   @override
   Object serialize(
-    Serializers serializers,
-    InvalidCredentialTypeErrorNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, InvalidCredentialTypeErrorNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InvalidCredentialTypeErrorNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InvalidCredentialTypeErrorNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InvalidCredentialTypeErrorNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InvalidCredentialTypeErrorMessageEnumSerializer
@@ -129,26 +118,23 @@ class _$InvalidCredentialTypeErrorMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    InvalidCredentialTypeErrorMessageEnum,
+    InvalidCredentialTypeErrorMessageEnum
   ];
   @override
   final String wireName = 'InvalidCredentialTypeErrorMessageEnum';
 
   @override
   Object serialize(
-    Serializers serializers,
-    InvalidCredentialTypeErrorMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, InvalidCredentialTypeErrorMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InvalidCredentialTypeErrorMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InvalidCredentialTypeErrorMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InvalidCredentialTypeErrorMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InvalidCredentialTypeErrorHttpStatusCodeEnumSerializer
@@ -163,26 +149,23 @@ class _$InvalidCredentialTypeErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    InvalidCredentialTypeErrorHttpStatusCodeEnum,
+    InvalidCredentialTypeErrorHttpStatusCodeEnum
   ];
   @override
   final String wireName = 'InvalidCredentialTypeErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    InvalidCredentialTypeErrorHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          InvalidCredentialTypeErrorHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InvalidCredentialTypeErrorHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InvalidCredentialTypeErrorHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InvalidCredentialTypeErrorHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InvalidCredentialTypeError extends InvalidCredentialTypeError {
@@ -197,21 +180,21 @@ class _$InvalidCredentialTypeError extends InvalidCredentialTypeError {
   @override
   final BuiltList<ActionForbiddenErrorDetailsInner>? details;
 
-  factory _$InvalidCredentialTypeError([
-    void Function(InvalidCredentialTypeErrorBuilder)? updates,
-  ]) => (InvalidCredentialTypeErrorBuilder()..update(updates))._build();
+  factory _$InvalidCredentialTypeError(
+          [void Function(InvalidCredentialTypeErrorBuilder)? updates]) =>
+      (InvalidCredentialTypeErrorBuilder()..update(updates))._build();
 
-  _$InvalidCredentialTypeError._({
-    required this.name,
-    required this.message,
-    required this.httpStatusCode,
-    required this.traceId,
-    this.details,
-  }) : super._();
+  _$InvalidCredentialTypeError._(
+      {required this.name,
+      required this.message,
+      required this.httpStatusCode,
+      required this.traceId,
+      this.details})
+      : super._();
   @override
   InvalidCredentialTypeError rebuild(
-    void Function(InvalidCredentialTypeErrorBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(InvalidCredentialTypeErrorBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   InvalidCredentialTypeErrorBuilder toBuilder() =>
@@ -270,8 +253,8 @@ class InvalidCredentialTypeErrorBuilder
   InvalidCredentialTypeErrorHttpStatusCodeEnum? get httpStatusCode =>
       _$this._httpStatusCode;
   set httpStatusCode(
-    InvalidCredentialTypeErrorHttpStatusCodeEnum? httpStatusCode,
-  ) => _$this._httpStatusCode = httpStatusCode;
+          InvalidCredentialTypeErrorHttpStatusCodeEnum? httpStatusCode) =>
+      _$this._httpStatusCode = httpStatusCode;
 
   String? _traceId;
   String? get traceId => _$this._traceId;
@@ -316,29 +299,18 @@ class InvalidCredentialTypeErrorBuilder
   _$InvalidCredentialTypeError _build() {
     _$InvalidCredentialTypeError _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$InvalidCredentialTypeError._(
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'InvalidCredentialTypeError',
-              'name',
-            ),
+                name, r'InvalidCredentialTypeError', 'name'),
             message: BuiltValueNullFieldError.checkNotNull(
-              message,
-              r'InvalidCredentialTypeError',
-              'message',
-            ),
+                message, r'InvalidCredentialTypeError', 'message'),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-              httpStatusCode,
-              r'InvalidCredentialTypeError',
-              'httpStatusCode',
-            ),
+                httpStatusCode,
+                r'InvalidCredentialTypeError',
+                'httpStatusCode'),
             traceId: BuiltValueNullFieldError.checkNotNull(
-              traceId,
-              r'InvalidCredentialTypeError',
-              'traceId',
-            ),
+                traceId, r'InvalidCredentialTypeError', 'traceId'),
             details: _details?.build(),
           );
     } catch (_) {
@@ -348,10 +320,7 @@ class InvalidCredentialTypeErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'InvalidCredentialTypeError',
-          _$failedField,
-          e.toString(),
-        );
+            r'InvalidCredentialTypeError', _$failedField, e.toString());
       }
       rethrow;
     }

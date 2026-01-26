@@ -42,9 +42,9 @@ abstract class RevocationForbiddenError
 
   RevocationForbiddenError._();
 
-  factory RevocationForbiddenError([
-    void updates(RevocationForbiddenErrorBuilder b),
-  ]) = _$RevocationForbiddenError;
+  factory RevocationForbiddenError(
+          [void updates(RevocationForbiddenErrorBuilder b)]) =
+      _$RevocationForbiddenError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(RevocationForbiddenErrorBuilder b) => b;
@@ -59,7 +59,7 @@ class _$RevocationForbiddenErrorSerializer
   @override
   final Iterable<Type> types = const [
     RevocationForbiddenError,
-    _$RevocationForbiddenError,
+    _$RevocationForbiddenError
   ];
 
   @override
@@ -94,9 +94,8 @@ class _$RevocationForbiddenErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ActionForbiddenErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
       );
     }
   }
@@ -107,11 +106,9 @@ class _$RevocationForbiddenErrorSerializer
     RevocationForbiddenError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -127,56 +124,40 @@ class _$RevocationForbiddenErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      RevocationForbiddenErrorNameEnum,
-                    ),
-                  )
-                  as RevocationForbiddenErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(RevocationForbiddenErrorNameEnum),
+          ) as RevocationForbiddenErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      RevocationForbiddenErrorMessageEnum,
-                    ),
-                  )
-                  as RevocationForbiddenErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(RevocationForbiddenErrorMessageEnum),
+          ) as RevocationForbiddenErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      RevocationForbiddenErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as RevocationForbiddenErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(RevocationForbiddenErrorHttpStatusCodeEnum),
+          ) as RevocationForbiddenErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ActionForbiddenErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ActionForbiddenErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
+          ) as BuiltList<ActionForbiddenErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -227,7 +208,7 @@ class RevocationForbiddenErrorNameEnum extends EnumClass {
 class RevocationForbiddenErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'Related VC has not been claimed yet')
   static const RevocationForbiddenErrorMessageEnum
-  relatedVCHasNotBeenClaimedYet =
+      relatedVCHasNotBeenClaimedYet =
       _$revocationForbiddenErrorMessageEnum_relatedVCHasNotBeenClaimedYet;
 
   static Serializer<RevocationForbiddenErrorMessageEnum> get serializer =>
@@ -247,7 +228,7 @@ class RevocationForbiddenErrorHttpStatusCodeEnum extends EnumClass {
       _$revocationForbiddenErrorHttpStatusCodeEnum_number400;
 
   static Serializer<RevocationForbiddenErrorHttpStatusCodeEnum>
-  get serializer => _$revocationForbiddenErrorHttpStatusCodeEnumSerializer;
+      get serializer => _$revocationForbiddenErrorHttpStatusCodeEnumSerializer;
 
   const RevocationForbiddenErrorHttpStatusCodeEnum._(String name) : super(name);
 
