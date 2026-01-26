@@ -29,8 +29,8 @@ abstract class CreateWalletInput
 
   /// Define how DID of your wallet is created and resolved
   @BuiltValueField(wireName: r'didMethod')
-  CreateWalletInputDidMethodEnum get didMethod;
-  // enum didMethodEnum {  key,  web,  };
+  CreateWalletInputDidMethodEnum? get didMethod;
+  // enum didMethodEnum {  key,  web,  peer0,  };
 
   /// URL of the DID. Required if the did method is web
   @BuiltValueField(wireName: r'didWebUrl')
@@ -76,11 +76,13 @@ class _$CreateWalletInputSerializer
         specifiedType: const FullType(String),
       );
     }
-    yield r'didMethod';
-    yield serializers.serialize(
-      object.didMethod,
-      specifiedType: const FullType(CreateWalletInputDidMethodEnum),
-    );
+    if (object.didMethod != null) {
+      yield r'didMethod';
+      yield serializers.serialize(
+        object.didMethod,
+        specifiedType: const FullType(CreateWalletInputDidMethodEnum),
+      );
+    }
     if (object.didWebUrl != null) {
       yield r'didWebUrl';
       yield serializers.serialize(
@@ -192,6 +194,11 @@ class CreateWalletInputDidMethodEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'web')
   static const CreateWalletInputDidMethodEnum web =
       _$createWalletInputDidMethodEnum_web;
+
+  /// Define how DID of your wallet is created and resolved
+  @BuiltValueEnumConst(wireName: r'peer0')
+  static const CreateWalletInputDidMethodEnum peer0 =
+      _$createWalletInputDidMethodEnum_peer0;
 
   static Serializer<CreateWalletInputDidMethodEnum> get serializer =>
       _$createWalletInputDidMethodEnumSerializer;

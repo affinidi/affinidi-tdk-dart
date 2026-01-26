@@ -4,15 +4,11 @@
 
 import 'dart:async';
 
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:affinidi_tdk_iam_client/src/model/consumer_auth_token_endpoint_input.dart';
 import 'package:affinidi_tdk_iam_client/src/model/consumer_auth_token_endpoint_output.dart';
-import 'package:affinidi_tdk_iam_client/src/model/invalid_did_error.dart';
-import 'package:affinidi_tdk_iam_client/src/model/unauthorized_error.dart';
-import 'package:affinidi_tdk_iam_client/src/model/unexpected_error.dart';
 
 class ConsumerAuthApi {
   final Dio _dio;

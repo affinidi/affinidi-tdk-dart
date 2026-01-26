@@ -13,6 +13,8 @@ Serializers _$serializers =
           ..add(ActionForbiddenErrorMessageEnum.serializer)
           ..add(ActionForbiddenErrorNameEnum.serializer)
           ..add(AddUserToGroupInput.serializer)
+          ..add(AuthorizationRequestDcql.serializer)
+          ..add(AuthorizationRequestPex.serializer)
           ..add(BlockedUsers.serializer)
           ..add(BlockedUsersInput.serializer)
           ..add(CorsLoginSessionAcceptResponseOK.serializer)

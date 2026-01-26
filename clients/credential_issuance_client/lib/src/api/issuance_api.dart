@@ -4,19 +4,13 @@
 
 import 'dart:async';
 
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:affinidi_tdk_credential_issuance_client/src/api_util.dart';
-import 'package:affinidi_tdk_credential_issuance_client/src/model/action_forbidden_error.dart';
 import 'package:affinidi_tdk_credential_issuance_client/src/model/credential_response.dart';
-import 'package:affinidi_tdk_credential_issuance_client/src/model/invalid_jwt_token_error.dart';
-import 'package:affinidi_tdk_credential_issuance_client/src/model/invalid_parameter_error.dart';
 import 'package:affinidi_tdk_credential_issuance_client/src/model/issuance_state_response.dart';
 import 'package:affinidi_tdk_credential_issuance_client/src/model/list_issuance_response.dart';
-import 'package:affinidi_tdk_credential_issuance_client/src/model/not_found_error.dart';
-import 'package:affinidi_tdk_credential_issuance_client/src/model/start_issuance400_response.dart';
 import 'package:affinidi_tdk_credential_issuance_client/src/model/start_issuance_input.dart';
 import 'package:affinidi_tdk_credential_issuance_client/src/model/start_issuance_response.dart';
 

@@ -16,8 +16,6 @@ import 'package:affinidi_tdk_credential_verification_client/src/model/date.dart'
 
 import 'package:affinidi_tdk_credential_verification_client/src/model/constraints.dart';
 import 'package:affinidi_tdk_credential_verification_client/src/model/constraints_statuses.dart';
-import 'package:affinidi_tdk_credential_verification_client/src/model/credential_requirements.dart';
-import 'package:affinidi_tdk_credential_verification_client/src/model/credential_requirements_constraints.dart';
 import 'package:affinidi_tdk_credential_verification_client/src/model/descriptor.dart';
 import 'package:affinidi_tdk_credential_verification_client/src/model/error.dart';
 import 'package:affinidi_tdk_credential_verification_client/src/model/error_detail.dart';
@@ -43,8 +41,11 @@ import 'package:affinidi_tdk_credential_verification_client/src/model/validate_j
 import 'package:affinidi_tdk_credential_verification_client/src/model/validate_jwt_output.dart';
 import 'package:affinidi_tdk_credential_verification_client/src/model/verify_credential_input.dart';
 import 'package:affinidi_tdk_credential_verification_client/src/model/verify_credential_output.dart';
+import 'package:affinidi_tdk_credential_verification_client/src/model/verify_credential_v2_input.dart';
 import 'package:affinidi_tdk_credential_verification_client/src/model/verify_presentation_input.dart';
 import 'package:affinidi_tdk_credential_verification_client/src/model/verify_presentation_output.dart';
+import 'package:affinidi_tdk_credential_verification_client/src/model/verify_presentation_v2_input.dart';
+import 'package:affinidi_tdk_credential_verification_client/src/model/verify_presentation_v2_input_pex_query.dart';
 import 'package:affinidi_tdk_credential_verification_client/src/model/w3c_credential_status.dart';
 import 'package:affinidi_tdk_credential_verification_client/src/model/w3c_proof.dart';
 
@@ -53,8 +54,6 @@ part 'serializers.g.dart';
 @SerializersFor([
   Constraints,
   ConstraintsStatuses,
-  CredentialRequirements,
-  CredentialRequirementsConstraints,
   Descriptor,
   Error,
   ErrorDetail,
@@ -80,13 +79,23 @@ part 'serializers.g.dart';
   ValidateJwtOutput,
   VerifyCredentialInput,
   VerifyCredentialOutput,
+  VerifyCredentialV2Input,
   VerifyPresentationInput,
   VerifyPresentationOutput,
+  VerifyPresentationV2Input,
+  VerifyPresentationV2InputPexQuery,
   W3cCredentialStatus,
   W3cProof,
 ])
 Serializers serializers =
     (_$serializers.toBuilder()
+          ..addBuilderFactory(
+            const FullType(BuiltMap, [
+              FullType(String),
+              FullType.nullable(JsonObject),
+            ]),
+            () => MapBuilder<String, JsonObject>(),
+          )
           ..add(const OneOfSerializer())
           ..add(const AnyOfSerializer())
           ..add(const DateSerializer())

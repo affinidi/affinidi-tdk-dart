@@ -1,27 +1,27 @@
 # affinidi_tdk_vault_data_manager_client.api.FilesApi
 
 ## Load the API package
+
 ```dart
 import 'package:affinidi_tdk_vault_data_manager_client/api.dart';
 ```
 
 All URIs are relative to *https://api.vault.affinidi.com/vfs*
 
-Method | HTTP request | Description
-------------- | ------------- | -------------
-[**getScannedFileInfo**](FilesApi.md#getscannedfileinfo) | **GET** /v1/scanned-files/{scannedFileJobId} | 
-[**listScannedFiles**](FilesApi.md#listscannedfiles) | **GET** /v1/scanned-files/ | 
-[**startFileScan**](FilesApi.md#startfilescan) | **POST** /v1/nodes/{nodeId}/file/scan | 
-
+| Method                                                   | HTTP request                                 | Description |
+| -------------------------------------------------------- | -------------------------------------------- | ----------- |
+| [**getScannedFileInfo**](FilesApi.md#getscannedfileinfo) | **GET** /v1/scanned-files/{scannedFileJobId} |
+| [**listScannedFiles**](FilesApi.md#listscannedfiles)     | **GET** /v1/scanned-files/                   |
+| [**startFileScan**](FilesApi.md#startfilescan)           | **POST** /v1/nodes/{nodeId}/file/scan        |
 
 # **getScannedFileInfo**
+
 > GetScannedFileInfoOK getScannedFileInfo(scannedFileJobId, exclusiveStartKey)
-
-
 
 Get the details of a scanned file using the textract jobId
 
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_vault_data_manager_client/api.dart';
 // TODO Configure API key authorization: ConsumerTokenAuth
@@ -43,10 +43,10 @@ try {
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **scannedFileJobId** | **String**| Scanned file jobId. | 
- **exclusiveStartKey** | **String**| The base64url encoded key of the first item that this operation will evaluate (it is not returned). Use the value that was returned in the previous operation. | [optional] 
+| Name                  | Type       | Description                                                                                                                                                    | Notes      |
+| --------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| **scannedFileJobId**  | **String** | Scanned file jobId.                                                                                                                                            |
+| **exclusiveStartKey** | **String** | The base64url encoded key of the first item that this operation will evaluate (it is not returned). Use the value that was returned in the previous operation. | [optional] |
 
 ### Return type
 
@@ -58,19 +58,19 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **listScannedFiles**
+
 > ListScannedFilesOK listScannedFiles()
-
-
 
 List all the the scanned files with all the details, e.g. status and jobId
 
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_vault_data_manager_client/api.dart';
 // TODO Configure API key authorization: ConsumerTokenAuth
@@ -89,6 +89,7 @@ try {
 ```
 
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
@@ -101,19 +102,19 @@ This endpoint does not need any parameter.
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **startFileScan**
+
 > StartFileScanOK startFileScan(nodeId, startFileScanInput)
-
-
 
 Start a scan of the file under this node and provide a textract job
 
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_vault_data_manager_client/api.dart';
 // TODO Configure API key authorization: ConsumerTokenAuth
@@ -135,10 +136,10 @@ try {
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **nodeId** | **String**| Description for nodeId. | 
- **startFileScanInput** | [**StartFileScanInput**](StartFileScanInput.md)| StartFileScan | 
+| Name                   | Type                                            | Description             | Notes |
+| ---------------------- | ----------------------------------------------- | ----------------------- | ----- |
+| **nodeId**             | **String**                                      | Description for nodeId. |
+| **startFileScanInput** | [**StartFileScanInput**](StartFileScanInput.md) | StartFileScan           |
 
 ### Return type
 
@@ -150,8 +151,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-

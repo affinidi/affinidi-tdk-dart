@@ -6,7 +6,6 @@
 import 'package:affinidi_tdk_credential_issuance_client/src/model/change_status_forbidden_error.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:affinidi_tdk_credential_issuance_client/src/model/invalid_parameter_error.dart';
-import 'package:affinidi_tdk_credential_issuance_client/src/model/action_forbidden_error_details_inner.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:one_of/one_of.dart';

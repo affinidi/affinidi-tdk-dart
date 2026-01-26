@@ -23,7 +23,7 @@ part 'iota_configuration_dto.g.dart';
 /// * [enableVerification] - Cryptographically verifies the data shared by the user when enabled.
 /// * [enableConsentAuditLog] - Records the consent the user gave when they shared their data, including the type of data shared.
 /// * [clientMetadata]
-/// * [mode] - Determines whether to handle the data-sharing request using the WebSocket or Redirect flow.
+/// * [mode] - Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
 /// * [redirectUris] - List of allowed URLs to redirect users, including the response from the request. This is required if the selected data-sharing mode is Redirect.
 /// * [enableIdvProviders] - Enables identity verification from user with a 3rd-party provider when a verified identity document is not found.
 @BuiltValue()
@@ -68,10 +68,10 @@ abstract class IotaConfigurationDto
   @BuiltValueField(wireName: r'clientMetadata')
   IotaConfigurationDtoClientMetadata get clientMetadata;
 
-  /// Determines whether to handle the data-sharing request using the WebSocket or Redirect flow.
+  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
   @BuiltValueField(wireName: r'mode')
   IotaConfigurationDtoModeEnum? get mode;
-  // enum modeEnum {  redirect,  websocket,  };
+  // enum modeEnum {  redirect,  websocket,  didcomm,  };
 
   /// List of allowed URLs to redirect users, including the response from the request. This is required if the selected data-sharing mode is Redirect.
   @BuiltValueField(wireName: r'redirectUris')
@@ -359,15 +359,20 @@ class _$IotaConfigurationDtoSerializer
 }
 
 class IotaConfigurationDtoModeEnum extends EnumClass {
-  /// Determines whether to handle the data-sharing request using the WebSocket or Redirect flow.
+  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
   @BuiltValueEnumConst(wireName: r'redirect')
   static const IotaConfigurationDtoModeEnum redirect =
       _$iotaConfigurationDtoModeEnum_redirect;
 
-  /// Determines whether to handle the data-sharing request using the WebSocket or Redirect flow.
+  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
   @BuiltValueEnumConst(wireName: r'websocket')
   static const IotaConfigurationDtoModeEnum websocket =
       _$iotaConfigurationDtoModeEnum_websocket;
+
+  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
+  @BuiltValueEnumConst(wireName: r'didcomm')
+  static const IotaConfigurationDtoModeEnum didcomm =
+      _$iotaConfigurationDtoModeEnum_didcomm;
 
   static Serializer<IotaConfigurationDtoModeEnum> get serializer =>
       _$iotaConfigurationDtoModeEnumSerializer;

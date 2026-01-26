@@ -4,14 +4,11 @@
 
 import 'dart:async';
 
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:affinidi_tdk_iota_client/src/api_util.dart';
-import 'package:affinidi_tdk_iota_client/src/model/invalid_parameter_error.dart';
 import 'package:affinidi_tdk_iota_client/src/model/list_logged_consents_ok.dart';
-import 'package:affinidi_tdk_iota_client/src/model/operation_forbidden_error.dart';
 
 class DefaultApi {
   final Dio _dio;

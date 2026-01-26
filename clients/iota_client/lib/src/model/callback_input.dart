@@ -14,6 +14,7 @@ part 'callback_input.g.dart';
 /// * [state] - A randomly generated string that follows a valid UUID (version 1-5) format to validate the session.
 /// * [presentationSubmission] - A JSON string format that describes the link between the Verifiable Presentation and Presentation Definition for the verifier. The presentation submission follows the OID4VP standard.
 /// * [vpToken] - A JSON string format containing the data the user consented to share in a Verifiable Presentation format. The VP Token follows the OID4VP standard.
+/// * [responseCode] - Used only for internal system flows. This field is not applicable for external client integrations and will not produce valid results  when used outside of internal contexts.
 /// * [error] - A short string indicating the error code reported by the service. It follows the OAuth 2.0 error code format (e.g., invalid_request, access_denied). The default is access_denied.
 /// * [errorDescription] - A human-readable description that provides detailed information about the error.
 /// * [onboarded] - It specifies whether the data sharing flow triggered an onboarding process to the Affinidi Vault [New User].
@@ -31,6 +32,10 @@ abstract class CallbackInput
   /// A JSON string format containing the data the user consented to share in a Verifiable Presentation format. The VP Token follows the OID4VP standard.
   @BuiltValueField(wireName: r'vp_token')
   String? get vpToken;
+
+  /// Used only for internal system flows. This field is not applicable for external client integrations and will not produce valid results  when used outside of internal contexts.
+  @BuiltValueField(wireName: r'response_code')
+  String? get responseCode;
 
   /// A short string indicating the error code reported by the service. It follows the OAuth 2.0 error code format (e.g., invalid_request, access_denied). The default is access_denied.
   @BuiltValueField(wireName: r'error')
@@ -85,6 +90,13 @@ class _$CallbackInputSerializer implements PrimitiveSerializer<CallbackInput> {
       yield r'vp_token';
       yield serializers.serialize(
         object.vpToken,
+        specifiedType: const FullType(String),
+      );
+    }
+    if (object.responseCode != null) {
+      yield r'response_code';
+      yield serializers.serialize(
+        object.responseCode,
         specifiedType: const FullType(String),
       );
     }
@@ -162,6 +174,15 @@ class _$CallbackInputSerializer implements PrimitiveSerializer<CallbackInput> {
                   )
                   as String;
           result.vpToken = valueDes;
+          break;
+        case r'response_code':
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
+          result.responseCode = valueDes;
           break;
         case r'error':
           final valueDes =

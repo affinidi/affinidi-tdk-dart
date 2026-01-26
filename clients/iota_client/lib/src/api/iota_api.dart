@@ -4,7 +4,6 @@
 
 import 'dart:async';
 
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
@@ -15,11 +14,8 @@ import 'package:affinidi_tdk_iota_client/src/model/fetch_iotavp_response_input.d
 import 'package:affinidi_tdk_iota_client/src/model/fetch_iotavp_response_ok.dart';
 import 'package:affinidi_tdk_iota_client/src/model/initiate_data_sharing_request_input.dart';
 import 'package:affinidi_tdk_iota_client/src/model/initiate_data_sharing_request_ok.dart';
-import 'package:affinidi_tdk_iota_client/src/model/invalid_parameter_error.dart';
 import 'package:affinidi_tdk_iota_client/src/model/iota_exchange_credentials.dart';
 import 'package:affinidi_tdk_iota_client/src/model/iota_exchange_credentials_ok.dart';
-import 'package:affinidi_tdk_iota_client/src/model/not_found_error.dart';
-import 'package:affinidi_tdk_iota_client/src/model/operation_forbidden_error.dart';
 
 class IotaApi {
   final Dio _dio;

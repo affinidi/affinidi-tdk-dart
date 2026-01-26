@@ -10,6 +10,8 @@ const IotaConfigurationDtoModeEnum _$iotaConfigurationDtoModeEnum_redirect =
     const IotaConfigurationDtoModeEnum._('redirect');
 const IotaConfigurationDtoModeEnum _$iotaConfigurationDtoModeEnum_websocket =
     const IotaConfigurationDtoModeEnum._('websocket');
+const IotaConfigurationDtoModeEnum _$iotaConfigurationDtoModeEnum_didcomm =
+    const IotaConfigurationDtoModeEnum._('didcomm');
 
 IotaConfigurationDtoModeEnum _$iotaConfigurationDtoModeEnumValueOf(
   String name,
@@ -19,6 +21,8 @@ IotaConfigurationDtoModeEnum _$iotaConfigurationDtoModeEnumValueOf(
       return _$iotaConfigurationDtoModeEnum_redirect;
     case 'websocket':
       return _$iotaConfigurationDtoModeEnum_websocket;
+    case 'didcomm':
+      return _$iotaConfigurationDtoModeEnum_didcomm;
     default:
       throw ArgumentError(name);
   }
@@ -29,6 +33,7 @@ _$iotaConfigurationDtoModeEnumValues =
     BuiltSet<IotaConfigurationDtoModeEnum>(const <IotaConfigurationDtoModeEnum>[
       _$iotaConfigurationDtoModeEnum_redirect,
       _$iotaConfigurationDtoModeEnum_websocket,
+      _$iotaConfigurationDtoModeEnum_didcomm,
     ]);
 
 Serializer<IotaConfigurationDtoModeEnum>
@@ -40,10 +45,12 @@ class _$IotaConfigurationDtoModeEnumSerializer
   static const Map<String, Object> _toWire = const <String, Object>{
     'redirect': 'redirect',
     'websocket': 'websocket',
+    'didcomm': 'didcomm',
   };
   static const Map<Object, String> _fromWire = const <Object, String>{
     'redirect': 'redirect',
     'websocket': 'websocket',
+    'didcomm': 'didcomm',
   };
 
   @override

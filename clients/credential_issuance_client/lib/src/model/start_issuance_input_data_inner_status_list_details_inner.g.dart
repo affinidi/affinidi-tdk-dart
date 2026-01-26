@@ -37,11 +37,6 @@ _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnum_revocationList20
     const StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum._(
       'revocationList2020',
     );
-const StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum
-_$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnum_bitstringStatusListV1 =
-    const StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum._(
-      'bitstringStatusListV1',
-    );
 
 StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum
 _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnumValueOf(
@@ -50,8 +45,6 @@ _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnumValueOf(
   switch (name) {
     case 'revocationList2020':
       return _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnum_revocationList2020;
-    case 'bitstringStatusListV1':
-      return _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnum_bitstringStatusListV1;
     default:
       throw ArgumentError(name);
   }
@@ -63,7 +56,6 @@ _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnumValues =
       StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum
     >(const <StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnum>[
       _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnum_revocationList2020,
-      _$startIssuanceInputDataInnerStatusListDetailsInnerStandardEnum_bitstringStatusListV1,
     ]);
 
 Serializer<StartIssuanceInputDataInnerStatusListDetailsInnerPurposeEnum>
@@ -117,11 +109,9 @@ class _$StartIssuanceInputDataInnerStatusListDetailsInnerStandardEnumSerializer
         > {
   static const Map<String, Object> _toWire = const <String, Object>{
     'revocationList2020': 'RevocationList2020',
-    'bitstringStatusListV1': 'BitstringStatusListV1',
   };
   static const Map<Object, String> _fromWire = const <Object, String>{
     'RevocationList2020': 'revocationList2020',
-    'BitstringStatusListV1': 'bitstringStatusListV1',
   };
 
   @override

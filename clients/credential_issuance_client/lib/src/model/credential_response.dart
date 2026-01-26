@@ -4,7 +4,6 @@
 
 // ignore_for_file: unused_element
 import 'package:affinidi_tdk_credential_issuance_client/src/model/credential_response_deferred.dart';
-import 'package:affinidi_tdk_credential_issuance_client/src/model/credential_response_immediate_credential.dart';
 import 'package:affinidi_tdk_credential_issuance_client/src/model/credential_response_immediate.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';

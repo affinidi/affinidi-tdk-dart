@@ -11,7 +11,7 @@ part 'pex_query_dto.g.dart';
 /// PexQueryDto
 ///
 /// Properties:
-/// * [ari] - The unique resource identifier of the qeuery.
+/// * [ari] - The unique resource identifier of the query.
 /// * [queryId] - The ID of the query.
 /// * [name] - The name of the presentation definition to quickly identify the query.
 /// * [description] - An optional description of what the query is used for.
@@ -19,7 +19,7 @@ part 'pex_query_dto.g.dart';
 /// * [vpDefinition] - The presentation definition describing the data requirement that must be satisfied by the user. The value is in a JSON stringify format.
 @BuiltValue()
 abstract class PexQueryDto implements Built<PexQueryDto, PexQueryDtoBuilder> {
-  /// The unique resource identifier of the qeuery.
+  /// The unique resource identifier of the query.
   @BuiltValueField(wireName: r'ari')
   String get ari;
 

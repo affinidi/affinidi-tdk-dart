@@ -4,15 +4,11 @@
 
 import 'dart:async';
 
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:affinidi_tdk_iam_client/src/api_util.dart';
-import 'package:affinidi_tdk_iam_client/src/model/invalid_parameter_error.dart';
-import 'package:affinidi_tdk_iam_client/src/model/not_found_error.dart';
 import 'package:affinidi_tdk_iam_client/src/model/policy_dto.dart';
-import 'package:affinidi_tdk_iam_client/src/model/unexpected_error.dart';
 
 class PoliciesApi {
   final Dio _dio;

@@ -1,29 +1,29 @@
 # affinidi_tdk_login_configuration_client.api.GroupApi
 
 ## Load the API package
+
 ```dart
 import 'package:affinidi_tdk_login_configuration_client/api.dart';
 ```
 
 All URIs are relative to *https://apse1.api.affinidi.io/vpa*
 
-Method | HTTP request | Description
-------------- | ------------- | -------------
-[**addUserToGroup**](GroupApi.md#addusertogroup) | **POST** /v1/groups/{groupName}/users | 
-[**createGroup**](GroupApi.md#creategroup) | **POST** /v1/groups | 
-[**deleteGroup**](GroupApi.md#deletegroup) | **DELETE** /v1/groups/{groupName} | 
-[**getGroupById**](GroupApi.md#getgroupbyid) | **GET** /v1/groups/{groupName} | 
-[**listGroupUserMappings**](GroupApi.md#listgroupusermappings) | **GET** /v1/groups/{groupName}/users | 
-[**listGroups**](GroupApi.md#listgroups) | **GET** /v1/groups | 
-[**removeUserFromGroup**](GroupApi.md#removeuserfromgroup) | **DELETE** /v1/groups/{groupName}/users | 
-
+| Method                                                         | HTTP request                            | Description |
+| -------------------------------------------------------------- | --------------------------------------- | ----------- |
+| [**addUserToGroup**](GroupApi.md#addusertogroup)               | **POST** /v1/groups/{groupName}/users   |
+| [**createGroup**](GroupApi.md#creategroup)                     | **POST** /v1/groups                     |
+| [**deleteGroup**](GroupApi.md#deletegroup)                     | **DELETE** /v1/groups/{groupName}       |
+| [**getGroupById**](GroupApi.md#getgroupbyid)                   | **GET** /v1/groups/{groupName}          |
+| [**listGroupUserMappings**](GroupApi.md#listgroupusermappings) | **GET** /v1/groups/{groupName}/users    |
+| [**listGroups**](GroupApi.md#listgroups)                       | **GET** /v1/groups                      |
+| [**removeUserFromGroup**](GroupApi.md#removeuserfromgroup)     | **DELETE** /v1/groups/{groupName}/users |
 
 # **addUserToGroup**
+
 > GroupUserMappingDto addUserToGroup(groupName, addUserToGroupInput)
 
-
-
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_login_configuration_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -32,7 +32,7 @@ import 'package:affinidi_tdk_login_configuration_client/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('ProjectTokenAuth').apiKeyPrefix = 'Bearer';
 
 final api = AffinidiTdkLoginConfigurationClient().getGroupApi();
-final String groupName = groupName_example; // String | 
+final String groupName = groupName_example; // String |
 final AddUserToGroupInput addUserToGroupInput = ; // AddUserToGroupInput | AddUserToGroup
 
 try {
@@ -45,10 +45,10 @@ try {
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **groupName** | **String**|  | 
- **addUserToGroupInput** | [**AddUserToGroupInput**](AddUserToGroupInput.md)| AddUserToGroup | 
+| Name                    | Type                                              | Description    | Notes |
+| ----------------------- | ------------------------------------------------- | -------------- | ----- |
+| **groupName**           | **String**                                        |                |
+| **addUserToGroupInput** | [**AddUserToGroupInput**](AddUserToGroupInput.md) | AddUserToGroup |
 
 ### Return type
 
@@ -60,17 +60,17 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **createGroup**
+
 > GroupDto createGroup(createGroupInput)
 
-
-
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_login_configuration_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -91,9 +91,9 @@ try {
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **createGroupInput** | [**CreateGroupInput**](CreateGroupInput.md)| CreateGroup | 
+| Name                 | Type                                        | Description | Notes |
+| -------------------- | ------------------------------------------- | ----------- | ----- |
+| **createGroupInput** | [**CreateGroupInput**](CreateGroupInput.md) | CreateGroup |
 
 ### Return type
 
@@ -105,17 +105,17 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **deleteGroup**
+
 > deleteGroup(groupName)
 
-
-
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_login_configuration_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -124,7 +124,7 @@ import 'package:affinidi_tdk_login_configuration_client/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('ProjectTokenAuth').apiKeyPrefix = 'Bearer';
 
 final api = AffinidiTdkLoginConfigurationClient().getGroupApi();
-final String groupName = groupName_example; // String | 
+final String groupName = groupName_example; // String |
 
 try {
     api.deleteGroup(groupName);
@@ -135,9 +135,9 @@ try {
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **groupName** | **String**|  | 
+| Name          | Type       | Description | Notes |
+| ------------- | ---------- | ----------- | ----- |
+| **groupName** | **String** |             |
 
 ### Return type
 
@@ -149,17 +149,17 @@ void (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getGroupById**
+
 > GroupDto getGroupById(groupName)
 
-
-
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_login_configuration_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -168,7 +168,7 @@ import 'package:affinidi_tdk_login_configuration_client/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('ProjectTokenAuth').apiKeyPrefix = 'Bearer';
 
 final api = AffinidiTdkLoginConfigurationClient().getGroupApi();
-final String groupName = groupName_example; // String | 
+final String groupName = groupName_example; // String |
 
 try {
     final response = api.getGroupById(groupName);
@@ -180,9 +180,9 @@ try {
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **groupName** | **String**|  | 
+| Name          | Type       | Description | Notes |
+| ------------- | ---------- | ----------- | ----- |
+| **groupName** | **String** |             |
 
 ### Return type
 
@@ -194,17 +194,17 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **listGroupUserMappings**
+
 > GroupUserMappingsList listGroupUserMappings(groupName, limit, exclusiveStartKey, sortOrder)
 
-
-
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_login_configuration_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -213,7 +213,7 @@ import 'package:affinidi_tdk_login_configuration_client/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('ProjectTokenAuth').apiKeyPrefix = 'Bearer';
 
 final api = AffinidiTdkLoginConfigurationClient().getGroupApi();
-final String groupName = groupName_example; // String | 
+final String groupName = groupName_example; // String |
 final int limit = 56; // int | Maximum number of records to fetch in a list
 final String exclusiveStartKey = exclusiveStartKey_example; // String | The base64url encoded key of the first item that this operation will evaluate (it is not returned). Use the value that was returned in the previous operation.
 final String sortOrder = sortOrder_example; // String | sort response in specific order. By default it is in desc order
@@ -228,12 +228,12 @@ try {
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **groupName** | **String**|  | 
- **limit** | **int**| Maximum number of records to fetch in a list | [optional] 
- **exclusiveStartKey** | **String**| The base64url encoded key of the first item that this operation will evaluate (it is not returned). Use the value that was returned in the previous operation. | [optional] 
- **sortOrder** | **String**| sort response in specific order. By default it is in desc order | [optional] 
+| Name                  | Type       | Description                                                                                                                                                    | Notes      |
+| --------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| **groupName**         | **String** |                                                                                                                                                                |
+| **limit**             | **int**    | Maximum number of records to fetch in a list                                                                                                                   | [optional] |
+| **exclusiveStartKey** | **String** | The base64url encoded key of the first item that this operation will evaluate (it is not returned). Use the value that was returned in the previous operation. | [optional] |
+| **sortOrder**         | **String** | sort response in specific order. By default it is in desc order                                                                                                | [optional] |
 
 ### Return type
 
@@ -245,17 +245,17 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **listGroups**
+
 > GroupsList listGroups()
 
-
-
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_login_configuration_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -274,6 +274,7 @@ try {
 ```
 
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
@@ -286,17 +287,17 @@ This endpoint does not need any parameter.
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **removeUserFromGroup**
+
 > removeUserFromGroup(groupName, removeUserFromGroupInput)
 
-
-
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_login_configuration_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -305,7 +306,7 @@ import 'package:affinidi_tdk_login_configuration_client/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('ProjectTokenAuth').apiKeyPrefix = 'Bearer';
 
 final api = AffinidiTdkLoginConfigurationClient().getGroupApi();
-final String groupName = groupName_example; // String | 
+final String groupName = groupName_example; // String |
 final RemoveUserFromGroupInput removeUserFromGroupInput = ; // RemoveUserFromGroupInput | Remove user from group
 
 try {
@@ -317,10 +318,10 @@ try {
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **groupName** | **String**|  | 
- **removeUserFromGroupInput** | [**RemoveUserFromGroupInput**](RemoveUserFromGroupInput.md)| Remove user from group | 
+| Name                         | Type                                                        | Description            | Notes |
+| ---------------------------- | ----------------------------------------------------------- | ---------------------- | ----- |
+| **groupName**                | **String**                                                  |                        |
+| **removeUserFromGroupInput** | [**RemoveUserFromGroupInput**](RemoveUserFromGroupInput.md) | Remove user from group |
 
 ### Return type
 
@@ -332,8 +333,7 @@ void (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-

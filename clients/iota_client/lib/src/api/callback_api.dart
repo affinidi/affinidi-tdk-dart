@@ -4,14 +4,11 @@
 
 import 'dart:async';
 
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:affinidi_tdk_iota_client/src/model/callback_input.dart';
 import 'package:affinidi_tdk_iota_client/src/model/callback_response_ok.dart';
-import 'package:affinidi_tdk_iota_client/src/model/invalid_parameter_error.dart';
-import 'package:affinidi_tdk_iota_client/src/model/operation_forbidden_error.dart';
 
 class CallbackApi {
   final Dio _dio;

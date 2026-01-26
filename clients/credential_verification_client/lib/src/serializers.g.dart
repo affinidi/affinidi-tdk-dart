@@ -12,8 +12,6 @@ Serializers _$serializers =
           ..add(ConstraintsLimitDisclosureEnum.serializer)
           ..add(ConstraintsStatuses.serializer)
           ..add(ConstraintsSubjectIsIssuerEnum.serializer)
-          ..add(CredentialRequirements.serializer)
-          ..add(CredentialRequirementsConstraints.serializer)
           ..add(Descriptor.serializer)
           ..add(Error.serializer)
           ..add(ErrorDetail.serializer)
@@ -49,8 +47,11 @@ Serializers _$serializers =
           ..add(ValidateJwtOutput.serializer)
           ..add(VerifyCredentialInput.serializer)
           ..add(VerifyCredentialOutput.serializer)
+          ..add(VerifyCredentialV2Input.serializer)
           ..add(VerifyPresentationInput.serializer)
           ..add(VerifyPresentationOutput.serializer)
+          ..add(VerifyPresentationV2Input.serializer)
+          ..add(VerifyPresentationV2InputPexQuery.serializer)
           ..add(W3cCredentialStatus.serializer)
           ..add(W3cProof.serializer)
           ..addBuilderFactory(
@@ -138,6 +139,15 @@ Serializers _$serializers =
           )
           ..addBuilderFactory(
             const FullType(BuiltList, const [
+              const FullType(BuiltMap, const [
+                const FullType(String),
+                const FullType.nullable(JsonObject),
+              ]),
+            ]),
+            () => ListBuilder<BuiltMap<String, JsonObject?>>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, const [
               const FullType(SubmissionRequirement),
             ]),
             () => ListBuilder<SubmissionRequirement>(),
@@ -158,6 +168,17 @@ Serializers _$serializers =
               const FullType.nullable(JsonObject),
             ]),
             () => MapBuilder<String, JsonObject?>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltMap, const [
+              const FullType(String),
+              const FullType.nullable(JsonObject),
+            ]),
+            () => MapBuilder<String, JsonObject?>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, const [const FullType(String)]),
+            () => ListBuilder<String>(),
           ))
         .build();
 

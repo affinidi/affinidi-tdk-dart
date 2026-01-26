@@ -31,7 +31,7 @@ abstract class ProjectCredentialConfigExistError
 
   @BuiltValueField(wireName: r'message')
   ProjectCredentialConfigExistErrorMessageEnum get message;
-  // enum messageEnum {  Credential config is exist for the project, one config is allowed for each project,  };
+  // enum messageEnum {  Credential configuration already exists for this project and only one configuration is allowed per project,  };
 
   @BuiltValueField(wireName: r'httpStatusCode')
   ProjectCredentialConfigExistErrorHttpStatusCodeEnum get httpStatusCode;
@@ -235,11 +235,11 @@ class ProjectCredentialConfigExistErrorNameEnum extends EnumClass {
 class ProjectCredentialConfigExistErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(
     wireName:
-        r'Credential config is exist for the project, one config is allowed for each project',
+        r'Credential configuration already exists for this project and only one configuration is allowed per project',
   )
   static const ProjectCredentialConfigExistErrorMessageEnum
-  credentialConfigIsExistForTheProjectCommaOneConfigIsAllowedForEachProject =
-      _$projectCredentialConfigExistErrorMessageEnum_credentialConfigIsExistForTheProjectCommaOneConfigIsAllowedForEachProject;
+  credentialConfigurationAlreadyExistsForThisProjectAndOnlyOneConfigurationIsAllowedPerProject =
+      _$projectCredentialConfigExistErrorMessageEnum_credentialConfigurationAlreadyExistsForThisProjectAndOnlyOneConfigurationIsAllowedPerProject;
 
   static Serializer<ProjectCredentialConfigExistErrorMessageEnum>
   get serializer => _$projectCredentialConfigExistErrorMessageEnumSerializer;

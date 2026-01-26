@@ -1,29 +1,29 @@
 # affinidi_tdk_iota_client.api.IotaApi
 
 ## Load the API package
+
 ```dart
 import 'package:affinidi_tdk_iota_client/api.dart';
 ```
 
 All URIs are relative to *https://apse1.api.affinidi.io/ais*
 
-Method | HTTP request | Description
-------------- | ------------- | -------------
-[**awsExchangeCredentials**](IotaApi.md#awsexchangecredentials) | **POST** /v1/aws-exchange-credentials | 
-[**awsExchangeCredentialsProjectToken**](IotaApi.md#awsexchangecredentialsprojecttoken) | **POST** /v1/aws-exchange-credentials/project-token | 
-[**fetchIotaVpResponse**](IotaApi.md#fetchiotavpresponse) | **POST** /v1/fetch-iota-response | 
-[**initiateDataSharingRequest**](IotaApi.md#initiatedatasharingrequest) | **POST** /v1/initiate-data-sharing-request | 
-[**iotaExchangeCredentials**](IotaApi.md#iotaexchangecredentials) | **POST** /v1/exchange-credentials | 
-
+| Method                                                                                  | HTTP request                                        | Description |
+| --------------------------------------------------------------------------------------- | --------------------------------------------------- | ----------- |
+| [**awsExchangeCredentials**](IotaApi.md#awsexchangecredentials)                         | **POST** /v1/aws-exchange-credentials               |
+| [**awsExchangeCredentialsProjectToken**](IotaApi.md#awsexchangecredentialsprojecttoken) | **POST** /v1/aws-exchange-credentials/project-token |
+| [**fetchIotaVpResponse**](IotaApi.md#fetchiotavpresponse)                               | **POST** /v1/fetch-iota-response                    |
+| [**initiateDataSharingRequest**](IotaApi.md#initiatedatasharingrequest)                 | **POST** /v1/initiate-data-sharing-request          |
+| [**iotaExchangeCredentials**](IotaApi.md#iotaexchangecredentials)                       | **POST** /v1/exchange-credentials                   |
 
 # **awsExchangeCredentials**
+
 > AwsExchangeCredentialsOK awsExchangeCredentials(awsExchangeCredentials)
-
-
 
 Exchange a limited-scoped token into a Cognito credential to generate the identity credential. The identity credential initiates the secure WebSocket connection from the client. This method is used only in WebSocket data-sharing mode.
 
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_iota_client/api.dart';
 
@@ -40,9 +40,9 @@ try {
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **awsExchangeCredentials** | [**AwsExchangeCredentials**](AwsExchangeCredentials.md)| AwsExchangeCredentials | 
+| Name                       | Type                                                    | Description            | Notes |
+| -------------------------- | ------------------------------------------------------- | ---------------------- | ----- |
+| **awsExchangeCredentials** | [**AwsExchangeCredentials**](AwsExchangeCredentials.md) | AwsExchangeCredentials |
 
 ### Return type
 
@@ -54,19 +54,19 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **awsExchangeCredentialsProjectToken**
+
 > IotaExchangeCredentialsOK awsExchangeCredentialsProjectToken(awsExchangeCredentialsProjectToken)
-
-
 
 Exchange a Project Scoped Token into an identity credential directly to initiate a secure WebSocket connection. This method is used only in WebSocket data-sharing mode.
 
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_iota_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -87,9 +87,9 @@ try {
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **awsExchangeCredentialsProjectToken** | [**AwsExchangeCredentialsProjectToken**](AwsExchangeCredentialsProjectToken.md)| AwsExchangeCredentialsProjectToken | 
+| Name                                   | Type                                                                            | Description                        | Notes |
+| -------------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------- | ----- |
+| **awsExchangeCredentialsProjectToken** | [**AwsExchangeCredentialsProjectToken**](AwsExchangeCredentialsProjectToken.md) | AwsExchangeCredentialsProjectToken |
 
 ### Return type
 
@@ -101,19 +101,19 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **fetchIotaVpResponse**
+
 > FetchIOTAVPResponseOK fetchIotaVpResponse(fetchIOTAVPResponseInput)
-
-
 
 Fetches the client's callback that contains the user's shared data in a Verifiable Presentation format after a successful data-sharing flow.
 
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_iota_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -134,9 +134,9 @@ try {
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **fetchIOTAVPResponseInput** | [**FetchIOTAVPResponseInput**](FetchIOTAVPResponseInput.md)| FetchIOTAVPResponseInput | 
+| Name                         | Type                                                        | Description              | Notes |
+| ---------------------------- | ----------------------------------------------------------- | ------------------------ | ----- |
+| **fetchIOTAVPResponseInput** | [**FetchIOTAVPResponseInput**](FetchIOTAVPResponseInput.md) | FetchIOTAVPResponseInput |
 
 ### Return type
 
@@ -148,19 +148,19 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **initiateDataSharingRequest**
+
 > InitiateDataSharingRequestOK initiateDataSharingRequest(initiateDataSharingRequestInput)
-
-
 
 Generates the request token for the Redirect mode to initiate the data-sharing flow.
 
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_iota_client/api.dart';
 // TODO Configure API key authorization: ProjectTokenAuth
@@ -181,9 +181,9 @@ try {
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **initiateDataSharingRequestInput** | [**InitiateDataSharingRequestInput**](InitiateDataSharingRequestInput.md)| InitiateDataSharingRequestInput | 
+| Name                                | Type                                                                      | Description                     | Notes |
+| ----------------------------------- | ------------------------------------------------------------------------- | ------------------------------- | ----- |
+| **initiateDataSharingRequestInput** | [**InitiateDataSharingRequestInput**](InitiateDataSharingRequestInput.md) | InitiateDataSharingRequestInput |
 
 ### Return type
 
@@ -195,19 +195,19 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **iotaExchangeCredentials**
+
 > IotaExchangeCredentialsOK iotaExchangeCredentials(iotaExchangeCredentials)
-
-
 
 Exchange a limited-scoped token into an identity credential directly to initiate a secure WebSocket connection. This method is used only in WebSocket data-sharing mode.
 
 ### Example
+
 ```dart
 import 'package:affinidi_tdk_iota_client/api.dart';
 
@@ -224,9 +224,9 @@ try {
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **iotaExchangeCredentials** | [**IotaExchangeCredentials**](IotaExchangeCredentials.md)| IotaAwsExchangeCredentials | 
+| Name                        | Type                                                      | Description                | Notes |
+| --------------------------- | --------------------------------------------------------- | -------------------------- | ----- |
+| **iotaExchangeCredentials** | [**IotaExchangeCredentials**](IotaExchangeCredentials.md) | IotaAwsExchangeCredentials |
 
 ### Return type
 
@@ -238,8 +238,7 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-

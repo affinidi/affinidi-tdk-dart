@@ -11,6 +11,7 @@ import 'package:affinidi_tdk_iota_client/src/auth/bearer_auth.dart';
 import 'package:affinidi_tdk_iota_client/src/auth/oauth.dart';
 import 'package:affinidi_tdk_iota_client/src/api/callback_api.dart';
 import 'package:affinidi_tdk_iota_client/src/api/configurations_api.dart';
+import 'package:affinidi_tdk_iota_client/src/api/dcql_query_api.dart';
 import 'package:affinidi_tdk_iota_client/src/api/default_api.dart';
 import 'package:affinidi_tdk_iota_client/src/api/iota_api.dart';
 import 'package:affinidi_tdk_iota_client/src/api/pex_query_api.dart';
@@ -164,6 +165,12 @@ class AffinidiTdkIotaClient {
   /// by doing that all interceptors will not be executed
   ConfigurationsApi getConfigurationsApi() {
     return ConfigurationsApi(dio, serializers);
+  }
+
+  /// Get DcqlQueryApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  DcqlQueryApi getDcqlQueryApi() {
+    return DcqlQueryApi(dio, serializers);
   }
 
   /// Get DefaultApi instance, base route and serializer can be overridden by a given but be careful,
