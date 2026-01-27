@@ -19,12 +19,12 @@ class _$Descriptor extends Descriptor {
   factory _$Descriptor([void Function(DescriptorBuilder)? updates]) =>
       (DescriptorBuilder()..update(updates))._build();
 
-  _$Descriptor._({
-    required this.id,
-    required this.path,
-    this.pathNested,
-    required this.format,
-  }) : super._();
+  _$Descriptor._(
+      {required this.id,
+      required this.path,
+      this.pathNested,
+      required this.format})
+      : super._();
   @override
   Descriptor rebuild(void Function(DescriptorBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -117,21 +117,14 @@ class DescriptorBuilder implements Builder<Descriptor, DescriptorBuilder> {
   _$Descriptor _build() {
     _$Descriptor _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$Descriptor._(
             id: BuiltValueNullFieldError.checkNotNull(id, r'Descriptor', 'id'),
             path: BuiltValueNullFieldError.checkNotNull(
-              path,
-              r'Descriptor',
-              'path',
-            ),
+                path, r'Descriptor', 'path'),
             pathNested: _pathNested?.build(),
             format: BuiltValueNullFieldError.checkNotNull(
-              format,
-              r'Descriptor',
-              'format',
-            ),
+                format, r'Descriptor', 'format'),
           );
     } catch (_) {
       late String _$failedField;
@@ -140,10 +133,7 @@ class DescriptorBuilder implements Builder<Descriptor, DescriptorBuilder> {
         _pathNested?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'Descriptor',
-          _$failedField,
-          e.toString(),
-        );
+            r'Descriptor', _$failedField, e.toString());
       }
       rethrow;
     }

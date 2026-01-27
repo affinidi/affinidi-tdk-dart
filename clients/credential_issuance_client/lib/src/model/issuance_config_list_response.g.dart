@@ -10,15 +10,15 @@ class _$IssuanceConfigListResponse extends IssuanceConfigListResponse {
   @override
   final BuiltList<IssuanceConfigMiniDto> configurations;
 
-  factory _$IssuanceConfigListResponse([
-    void Function(IssuanceConfigListResponseBuilder)? updates,
-  ]) => (IssuanceConfigListResponseBuilder()..update(updates))._build();
+  factory _$IssuanceConfigListResponse(
+          [void Function(IssuanceConfigListResponseBuilder)? updates]) =>
+      (IssuanceConfigListResponseBuilder()..update(updates))._build();
 
   _$IssuanceConfigListResponse._({required this.configurations}) : super._();
   @override
   IssuanceConfigListResponse rebuild(
-    void Function(IssuanceConfigListResponseBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(IssuanceConfigListResponseBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   IssuanceConfigListResponseBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$IssuanceConfigListResponse extends IssuanceConfigListResponse {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'IssuanceConfigListResponse',
-    )..add('configurations', configurations)).toString();
+    return (newBuiltValueToStringHelper(r'IssuanceConfigListResponse')
+          ..add('configurations', configurations))
+        .toString();
   }
 }
 
@@ -87,8 +87,7 @@ class IssuanceConfigListResponseBuilder
   _$IssuanceConfigListResponse _build() {
     _$IssuanceConfigListResponse _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$IssuanceConfigListResponse._(
             configurations: configurations.build(),
           );
@@ -99,10 +98,7 @@ class IssuanceConfigListResponseBuilder
         configurations.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'IssuanceConfigListResponse',
-          _$failedField,
-          e.toString(),
-        );
+            r'IssuanceConfigListResponse', _$failedField, e.toString());
       }
       rethrow;
     }

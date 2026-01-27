@@ -15,19 +15,17 @@ part 'cis_configuration_webhook_setting_endpoint.g.dart';
 @BuiltValue()
 abstract class CisConfigurationWebhookSettingEndpoint
     implements
-        Built<
-          CisConfigurationWebhookSettingEndpoint,
-          CisConfigurationWebhookSettingEndpointBuilder
-        > {
+        Built<CisConfigurationWebhookSettingEndpoint,
+            CisConfigurationWebhookSettingEndpointBuilder> {
   /// url endpoint where notification will be sent with issuanceId after user has claimed the VC related to issuanceId
   @BuiltValueField(wireName: r'url')
   String? get url;
 
   CisConfigurationWebhookSettingEndpoint._();
 
-  factory CisConfigurationWebhookSettingEndpoint([
-    void updates(CisConfigurationWebhookSettingEndpointBuilder b),
-  ]) = _$CisConfigurationWebhookSettingEndpoint;
+  factory CisConfigurationWebhookSettingEndpoint(
+          [void updates(CisConfigurationWebhookSettingEndpointBuilder b)]) =
+      _$CisConfigurationWebhookSettingEndpoint;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CisConfigurationWebhookSettingEndpointBuilder b) => b;
@@ -42,7 +40,7 @@ class _$CisConfigurationWebhookSettingEndpointSerializer
   @override
   final Iterable<Type> types = const [
     CisConfigurationWebhookSettingEndpoint,
-    _$CisConfigurationWebhookSettingEndpoint,
+    _$CisConfigurationWebhookSettingEndpoint
   ];
 
   @override
@@ -68,11 +66,9 @@ class _$CisConfigurationWebhookSettingEndpointSerializer
     CisConfigurationWebhookSettingEndpoint object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -88,12 +84,10 @@ class _$CisConfigurationWebhookSettingEndpointSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'url':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.url = valueDes;
           break;
         default:

@@ -17,11 +17,9 @@ class _$CreateAccountOK extends CreateAccountOK {
   factory _$CreateAccountOK([void Function(CreateAccountOKBuilder)? updates]) =>
       (CreateAccountOKBuilder()..update(updates))._build();
 
-  _$CreateAccountOK._({
-    required this.accountIndex,
-    required this.accountDid,
-    this.metadata,
-  }) : super._();
+  _$CreateAccountOK._(
+      {required this.accountIndex, required this.accountDid, this.metadata})
+      : super._();
   @override
   CreateAccountOK rebuild(void Function(CreateAccountOKBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -103,19 +101,12 @@ class CreateAccountOKBuilder
   CreateAccountOK build() => _build();
 
   _$CreateAccountOK _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CreateAccountOK._(
           accountIndex: BuiltValueNullFieldError.checkNotNull(
-            accountIndex,
-            r'CreateAccountOK',
-            'accountIndex',
-          ),
+              accountIndex, r'CreateAccountOK', 'accountIndex'),
           accountDid: BuiltValueNullFieldError.checkNotNull(
-            accountDid,
-            r'CreateAccountOK',
-            'accountDid',
-          ),
+              accountDid, r'CreateAccountOK', 'accountDid'),
           metadata: metadata,
         );
     replace(_$result);

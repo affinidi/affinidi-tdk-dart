@@ -12,15 +12,15 @@ class _$UpdateDcqlQueryInput extends UpdateDcqlQueryInput {
   @override
   final String? description;
 
-  factory _$UpdateDcqlQueryInput([
-    void Function(UpdateDcqlQueryInputBuilder)? updates,
-  ]) => (UpdateDcqlQueryInputBuilder()..update(updates))._build();
+  factory _$UpdateDcqlQueryInput(
+          [void Function(UpdateDcqlQueryInputBuilder)? updates]) =>
+      (UpdateDcqlQueryInputBuilder()..update(updates))._build();
 
   _$UpdateDcqlQueryInput._({this.dcqlQuery, this.description}) : super._();
   @override
   UpdateDcqlQueryInput rebuild(
-    void Function(UpdateDcqlQueryInputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(UpdateDcqlQueryInputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   UpdateDcqlQueryInputBuilder toBuilder() =>
@@ -92,8 +92,7 @@ class UpdateDcqlQueryInputBuilder
   UpdateDcqlQueryInput build() => _build();
 
   _$UpdateDcqlQueryInput _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$UpdateDcqlQueryInput._(
           dcqlQuery: dcqlQuery,
           description: description,

@@ -10,15 +10,15 @@ class _$RestoreNodeFromTrashbin extends RestoreNodeFromTrashbin {
   @override
   final String? restoreToProfileId;
 
-  factory _$RestoreNodeFromTrashbin([
-    void Function(RestoreNodeFromTrashbinBuilder)? updates,
-  ]) => (RestoreNodeFromTrashbinBuilder()..update(updates))._build();
+  factory _$RestoreNodeFromTrashbin(
+          [void Function(RestoreNodeFromTrashbinBuilder)? updates]) =>
+      (RestoreNodeFromTrashbinBuilder()..update(updates))._build();
 
   _$RestoreNodeFromTrashbin._({this.restoreToProfileId}) : super._();
   @override
   RestoreNodeFromTrashbin rebuild(
-    void Function(RestoreNodeFromTrashbinBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(RestoreNodeFromTrashbinBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   RestoreNodeFromTrashbinBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$RestoreNodeFromTrashbin extends RestoreNodeFromTrashbin {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'RestoreNodeFromTrashbin',
-    )..add('restoreToProfileId', restoreToProfileId)).toString();
+    return (newBuiltValueToStringHelper(r'RestoreNodeFromTrashbin')
+          ..add('restoreToProfileId', restoreToProfileId))
+        .toString();
   }
 }
 
@@ -84,9 +84,10 @@ class RestoreNodeFromTrashbinBuilder
   RestoreNodeFromTrashbin build() => _build();
 
   _$RestoreNodeFromTrashbin _build() {
-    final _$result =
-        _$v ??
-        _$RestoreNodeFromTrashbin._(restoreToProfileId: restoreToProfileId);
+    final _$result = _$v ??
+        _$RestoreNodeFromTrashbin._(
+          restoreToProfileId: restoreToProfileId,
+        );
     replace(_$result);
     return _$result;
   }

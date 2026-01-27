@@ -7,12 +7,11 @@ part of 'invalid_jwt_token_error.dart';
 // **************************************************************************
 
 const InvalidJwtTokenErrorNameEnum
-_$invalidJwtTokenErrorNameEnum_invalidJwtTokenError =
+    _$invalidJwtTokenErrorNameEnum_invalidJwtTokenError =
     const InvalidJwtTokenErrorNameEnum._('invalidJwtTokenError');
 
 InvalidJwtTokenErrorNameEnum _$invalidJwtTokenErrorNameEnumValueOf(
-  String name,
-) {
+    String name) {
   switch (name) {
     case 'invalidJwtTokenError':
       return _$invalidJwtTokenErrorNameEnum_invalidJwtTokenError;
@@ -22,19 +21,17 @@ InvalidJwtTokenErrorNameEnum _$invalidJwtTokenErrorNameEnumValueOf(
 }
 
 final BuiltSet<InvalidJwtTokenErrorNameEnum>
-_$invalidJwtTokenErrorNameEnumValues = BuiltSet<InvalidJwtTokenErrorNameEnum>(
-  const <InvalidJwtTokenErrorNameEnum>[
-    _$invalidJwtTokenErrorNameEnum_invalidJwtTokenError,
-  ],
-);
+    _$invalidJwtTokenErrorNameEnumValues =
+    BuiltSet<InvalidJwtTokenErrorNameEnum>(const <InvalidJwtTokenErrorNameEnum>[
+  _$invalidJwtTokenErrorNameEnum_invalidJwtTokenError,
+]);
 
 const InvalidJwtTokenErrorMessageEnum
-_$invalidJwtTokenErrorMessageEnum_jWTTokenIsInvalid =
+    _$invalidJwtTokenErrorMessageEnum_jWTTokenIsInvalid =
     const InvalidJwtTokenErrorMessageEnum._('jWTTokenIsInvalid');
 
 InvalidJwtTokenErrorMessageEnum _$invalidJwtTokenErrorMessageEnumValueOf(
-  String name,
-) {
+    String name) {
   switch (name) {
     case 'jWTTokenIsInvalid':
       return _$invalidJwtTokenErrorMessageEnum_jWTTokenIsInvalid;
@@ -44,19 +41,17 @@ InvalidJwtTokenErrorMessageEnum _$invalidJwtTokenErrorMessageEnumValueOf(
 }
 
 final BuiltSet<InvalidJwtTokenErrorMessageEnum>
-_$invalidJwtTokenErrorMessageEnumValues =
-    BuiltSet<InvalidJwtTokenErrorMessageEnum>(
-      const <InvalidJwtTokenErrorMessageEnum>[
-        _$invalidJwtTokenErrorMessageEnum_jWTTokenIsInvalid,
-      ],
-    );
+    _$invalidJwtTokenErrorMessageEnumValues = BuiltSet<
+        InvalidJwtTokenErrorMessageEnum>(const <InvalidJwtTokenErrorMessageEnum>[
+  _$invalidJwtTokenErrorMessageEnum_jWTTokenIsInvalid,
+]);
 
 const InvalidJwtTokenErrorHttpStatusCodeEnum
-_$invalidJwtTokenErrorHttpStatusCodeEnum_number401 =
+    _$invalidJwtTokenErrorHttpStatusCodeEnum_number401 =
     const InvalidJwtTokenErrorHttpStatusCodeEnum._('number401');
 
 InvalidJwtTokenErrorHttpStatusCodeEnum
-_$invalidJwtTokenErrorHttpStatusCodeEnumValueOf(String name) {
+    _$invalidJwtTokenErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number401':
       return _$invalidJwtTokenErrorHttpStatusCodeEnum_number401;
@@ -66,21 +61,19 @@ _$invalidJwtTokenErrorHttpStatusCodeEnumValueOf(String name) {
 }
 
 final BuiltSet<InvalidJwtTokenErrorHttpStatusCodeEnum>
-_$invalidJwtTokenErrorHttpStatusCodeEnumValues =
-    BuiltSet<InvalidJwtTokenErrorHttpStatusCodeEnum>(
-      const <InvalidJwtTokenErrorHttpStatusCodeEnum>[
-        _$invalidJwtTokenErrorHttpStatusCodeEnum_number401,
-      ],
-    );
+    _$invalidJwtTokenErrorHttpStatusCodeEnumValues = BuiltSet<
+        InvalidJwtTokenErrorHttpStatusCodeEnum>(const <InvalidJwtTokenErrorHttpStatusCodeEnum>[
+  _$invalidJwtTokenErrorHttpStatusCodeEnum_number401,
+]);
 
 Serializer<InvalidJwtTokenErrorNameEnum>
-_$invalidJwtTokenErrorNameEnumSerializer =
+    _$invalidJwtTokenErrorNameEnumSerializer =
     _$InvalidJwtTokenErrorNameEnumSerializer();
 Serializer<InvalidJwtTokenErrorMessageEnum>
-_$invalidJwtTokenErrorMessageEnumSerializer =
+    _$invalidJwtTokenErrorMessageEnumSerializer =
     _$InvalidJwtTokenErrorMessageEnumSerializer();
 Serializer<InvalidJwtTokenErrorHttpStatusCodeEnum>
-_$invalidJwtTokenErrorHttpStatusCodeEnumSerializer =
+    _$invalidJwtTokenErrorHttpStatusCodeEnumSerializer =
     _$InvalidJwtTokenErrorHttpStatusCodeEnumSerializer();
 
 class _$InvalidJwtTokenErrorNameEnumSerializer
@@ -98,20 +91,16 @@ class _$InvalidJwtTokenErrorNameEnumSerializer
   final String wireName = 'InvalidJwtTokenErrorNameEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    InvalidJwtTokenErrorNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers, InvalidJwtTokenErrorNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InvalidJwtTokenErrorNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InvalidJwtTokenErrorNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InvalidJwtTokenErrorNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InvalidJwtTokenErrorMessageEnumSerializer
@@ -130,19 +119,16 @@ class _$InvalidJwtTokenErrorMessageEnumSerializer
 
   @override
   Object serialize(
-    Serializers serializers,
-    InvalidJwtTokenErrorMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, InvalidJwtTokenErrorMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InvalidJwtTokenErrorMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InvalidJwtTokenErrorMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InvalidJwtTokenErrorMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InvalidJwtTokenErrorHttpStatusCodeEnumSerializer
@@ -156,26 +142,23 @@ class _$InvalidJwtTokenErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    InvalidJwtTokenErrorHttpStatusCodeEnum,
+    InvalidJwtTokenErrorHttpStatusCodeEnum
   ];
   @override
   final String wireName = 'InvalidJwtTokenErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    InvalidJwtTokenErrorHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers,
+          InvalidJwtTokenErrorHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InvalidJwtTokenErrorHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InvalidJwtTokenErrorHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InvalidJwtTokenErrorHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InvalidJwtTokenError extends InvalidJwtTokenError {
@@ -190,21 +173,21 @@ class _$InvalidJwtTokenError extends InvalidJwtTokenError {
   @override
   final BuiltList<ServiceErrorResponseDetailsInner>? details;
 
-  factory _$InvalidJwtTokenError([
-    void Function(InvalidJwtTokenErrorBuilder)? updates,
-  ]) => (InvalidJwtTokenErrorBuilder()..update(updates))._build();
+  factory _$InvalidJwtTokenError(
+          [void Function(InvalidJwtTokenErrorBuilder)? updates]) =>
+      (InvalidJwtTokenErrorBuilder()..update(updates))._build();
 
-  _$InvalidJwtTokenError._({
-    required this.name,
-    required this.message,
-    required this.httpStatusCode,
-    required this.traceId,
-    this.details,
-  }) : super._();
+  _$InvalidJwtTokenError._(
+      {required this.name,
+      required this.message,
+      required this.httpStatusCode,
+      required this.traceId,
+      this.details})
+      : super._();
   @override
   InvalidJwtTokenError rebuild(
-    void Function(InvalidJwtTokenErrorBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(InvalidJwtTokenErrorBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   InvalidJwtTokenErrorBuilder toBuilder() =>
@@ -307,29 +290,16 @@ class InvalidJwtTokenErrorBuilder
   _$InvalidJwtTokenError _build() {
     _$InvalidJwtTokenError _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$InvalidJwtTokenError._(
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'InvalidJwtTokenError',
-              'name',
-            ),
+                name, r'InvalidJwtTokenError', 'name'),
             message: BuiltValueNullFieldError.checkNotNull(
-              message,
-              r'InvalidJwtTokenError',
-              'message',
-            ),
+                message, r'InvalidJwtTokenError', 'message'),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-              httpStatusCode,
-              r'InvalidJwtTokenError',
-              'httpStatusCode',
-            ),
+                httpStatusCode, r'InvalidJwtTokenError', 'httpStatusCode'),
             traceId: BuiltValueNullFieldError.checkNotNull(
-              traceId,
-              r'InvalidJwtTokenError',
-              'traceId',
-            ),
+                traceId, r'InvalidJwtTokenError', 'traceId'),
             details: _details?.build(),
           );
     } catch (_) {
@@ -339,10 +309,7 @@ class InvalidJwtTokenErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'InvalidJwtTokenError',
-          _$failedField,
-          e.toString(),
-        );
+            r'InvalidJwtTokenError', _$failedField, e.toString());
       }
       rethrow;
     }

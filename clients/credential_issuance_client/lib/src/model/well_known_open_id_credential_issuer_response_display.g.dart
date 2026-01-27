@@ -15,23 +15,20 @@ class _$WellKnownOpenIdCredentialIssuerResponseDisplay
   @override
   final WellKnownOpenIdCredentialIssuerResponseDisplayLogo? logo;
 
-  factory _$WellKnownOpenIdCredentialIssuerResponseDisplay([
-    void Function(WellKnownOpenIdCredentialIssuerResponseDisplayBuilder)?
-    updates,
-  ]) =>
+  factory _$WellKnownOpenIdCredentialIssuerResponseDisplay(
+          [void Function(WellKnownOpenIdCredentialIssuerResponseDisplayBuilder)?
+              updates]) =>
       (WellKnownOpenIdCredentialIssuerResponseDisplayBuilder()..update(updates))
           ._build();
 
-  _$WellKnownOpenIdCredentialIssuerResponseDisplay._({
-    this.name,
-    this.locale,
-    this.logo,
-  }) : super._();
+  _$WellKnownOpenIdCredentialIssuerResponseDisplay._(
+      {this.name, this.locale, this.logo})
+      : super._();
   @override
   WellKnownOpenIdCredentialIssuerResponseDisplay rebuild(
-    void Function(WellKnownOpenIdCredentialIssuerResponseDisplayBuilder)
-    updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(WellKnownOpenIdCredentialIssuerResponseDisplayBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   WellKnownOpenIdCredentialIssuerResponseDisplayBuilder toBuilder() =>
@@ -59,8 +56,7 @@ class _$WellKnownOpenIdCredentialIssuerResponseDisplay
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'WellKnownOpenIdCredentialIssuerResponseDisplay',
-          )
+            r'WellKnownOpenIdCredentialIssuerResponseDisplay')
           ..add('name', name)
           ..add('locale', locale)
           ..add('logo', logo))
@@ -70,10 +66,8 @@ class _$WellKnownOpenIdCredentialIssuerResponseDisplay
 
 class WellKnownOpenIdCredentialIssuerResponseDisplayBuilder
     implements
-        Builder<
-          WellKnownOpenIdCredentialIssuerResponseDisplay,
-          WellKnownOpenIdCredentialIssuerResponseDisplayBuilder
-        > {
+        Builder<WellKnownOpenIdCredentialIssuerResponseDisplay,
+            WellKnownOpenIdCredentialIssuerResponseDisplayBuilder> {
   _$WellKnownOpenIdCredentialIssuerResponseDisplay? _$v;
 
   String? _name;
@@ -113,9 +107,8 @@ class WellKnownOpenIdCredentialIssuerResponseDisplayBuilder
 
   @override
   void update(
-    void Function(WellKnownOpenIdCredentialIssuerResponseDisplayBuilder)?
-    updates,
-  ) {
+      void Function(WellKnownOpenIdCredentialIssuerResponseDisplayBuilder)?
+          updates) {
     if (updates != null) updates(this);
   }
 
@@ -125,8 +118,7 @@ class WellKnownOpenIdCredentialIssuerResponseDisplayBuilder
   _$WellKnownOpenIdCredentialIssuerResponseDisplay _build() {
     _$WellKnownOpenIdCredentialIssuerResponseDisplay _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$WellKnownOpenIdCredentialIssuerResponseDisplay._(
             name: name,
             locale: locale,
@@ -139,10 +131,9 @@ class WellKnownOpenIdCredentialIssuerResponseDisplayBuilder
         _logo?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'WellKnownOpenIdCredentialIssuerResponseDisplay',
-          _$failedField,
-          e.toString(),
-        );
+            r'WellKnownOpenIdCredentialIssuerResponseDisplay',
+            _$failedField,
+            e.toString());
       }
       rethrow;
     }

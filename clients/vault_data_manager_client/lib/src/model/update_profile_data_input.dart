@@ -26,9 +26,9 @@ abstract class UpdateProfileDataInput
 
   UpdateProfileDataInput._();
 
-  factory UpdateProfileDataInput([
-    void updates(UpdateProfileDataInputBuilder b),
-  ]) = _$UpdateProfileDataInput;
+  factory UpdateProfileDataInput(
+          [void updates(UpdateProfileDataInputBuilder b)]) =
+      _$UpdateProfileDataInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UpdateProfileDataInputBuilder b) => b;
@@ -43,7 +43,7 @@ class _$UpdateProfileDataInputSerializer
   @override
   final Iterable<Type> types = const [
     UpdateProfileDataInput,
-    _$UpdateProfileDataInput,
+    _$UpdateProfileDataInput
   ];
 
   @override
@@ -72,11 +72,9 @@ class _$UpdateProfileDataInputSerializer
     UpdateProfileDataInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -92,21 +90,17 @@ class _$UpdateProfileDataInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'dek':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.dek = valueDes;
           break;
         case r'data':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.data = valueDes;
           break;
         default:

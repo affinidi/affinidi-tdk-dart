@@ -42,9 +42,9 @@ abstract class InvalidDidParameterError
 
   InvalidDidParameterError._();
 
-  factory InvalidDidParameterError([
-    void updates(InvalidDidParameterErrorBuilder b),
-  ]) = _$InvalidDidParameterError;
+  factory InvalidDidParameterError(
+          [void updates(InvalidDidParameterErrorBuilder b)]) =
+      _$InvalidDidParameterError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(InvalidDidParameterErrorBuilder b) => b;
@@ -59,7 +59,7 @@ class _$InvalidDidParameterErrorSerializer
   @override
   final Iterable<Type> types = const [
     InvalidDidParameterError,
-    _$InvalidDidParameterError,
+    _$InvalidDidParameterError
   ];
 
   @override
@@ -94,9 +94,8 @@ class _$InvalidDidParameterErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ServiceErrorResponseDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
       );
     }
   }
@@ -107,11 +106,9 @@ class _$InvalidDidParameterErrorSerializer
     InvalidDidParameterError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -127,56 +124,40 @@ class _$InvalidDidParameterErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      InvalidDidParameterErrorNameEnum,
-                    ),
-                  )
-                  as InvalidDidParameterErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(InvalidDidParameterErrorNameEnum),
+          ) as InvalidDidParameterErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      InvalidDidParameterErrorMessageEnum,
-                    ),
-                  )
-                  as InvalidDidParameterErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(InvalidDidParameterErrorMessageEnum),
+          ) as InvalidDidParameterErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      InvalidDidParameterErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as InvalidDidParameterErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(InvalidDidParameterErrorHttpStatusCodeEnum),
+          ) as InvalidDidParameterErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ServiceErrorResponseDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ServiceErrorResponseDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
+          ) as BuiltList<ServiceErrorResponseDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -226,11 +207,10 @@ class InvalidDidParameterErrorNameEnum extends EnumClass {
 
 class InvalidDidParameterErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(
-    wireName:
-        r'Given did in field toDid is invalid. Use only resolvable form of did.',
-  )
+      wireName:
+          r'Given did in field toDid is invalid. Use only resolvable form of did.')
   static const InvalidDidParameterErrorMessageEnum
-  givenDidInFieldToDidIsInvalidPeriodUseOnlyResolvableFormOfDidPeriod =
+      givenDidInFieldToDidIsInvalidPeriodUseOnlyResolvableFormOfDidPeriod =
       _$invalidDidParameterErrorMessageEnum_givenDidInFieldToDidIsInvalidPeriodUseOnlyResolvableFormOfDidPeriod;
 
   static Serializer<InvalidDidParameterErrorMessageEnum> get serializer =>
@@ -250,7 +230,7 @@ class InvalidDidParameterErrorHttpStatusCodeEnum extends EnumClass {
       _$invalidDidParameterErrorHttpStatusCodeEnum_number400;
 
   static Serializer<InvalidDidParameterErrorHttpStatusCodeEnum>
-  get serializer => _$invalidDidParameterErrorHttpStatusCodeEnumSerializer;
+      get serializer => _$invalidDidParameterErrorHttpStatusCodeEnumSerializer;
 
   const InvalidDidParameterErrorHttpStatusCodeEnum._(String name) : super(name);
 

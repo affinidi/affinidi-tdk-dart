@@ -52,38 +52,38 @@ class _$GetDetailedNodeInfoOK extends GetDetailedNodeInfoOK {
   @override
   final String? metadata;
 
-  factory _$GetDetailedNodeInfoOK([
-    void Function(GetDetailedNodeInfoOKBuilder)? updates,
-  ]) => (GetDetailedNodeInfoOKBuilder()..update(updates))._build();
+  factory _$GetDetailedNodeInfoOK(
+          [void Function(GetDetailedNodeInfoOKBuilder)? updates]) =>
+      (GetDetailedNodeInfoOKBuilder()..update(updates))._build();
 
-  _$GetDetailedNodeInfoOK._({
-    this.getUrl,
-    required this.nodeId,
-    required this.status,
-    this.fileCount,
-    this.profileCount,
-    this.folderCount,
-    this.vcCount,
-    required this.name,
-    required this.consumerId,
-    required this.parentNodeId,
-    required this.profileId,
-    required this.createdAt,
-    required this.modifiedAt,
-    required this.createdBy,
-    required this.modifiedBy,
-    this.description,
-    required this.type,
-    this.link,
-    this.schema,
-    this.consumedFileStorage,
-    this.edekInfo,
-    this.metadata,
-  }) : super._();
+  _$GetDetailedNodeInfoOK._(
+      {this.getUrl,
+      required this.nodeId,
+      required this.status,
+      this.fileCount,
+      this.profileCount,
+      this.folderCount,
+      this.vcCount,
+      required this.name,
+      required this.consumerId,
+      required this.parentNodeId,
+      required this.profileId,
+      required this.createdAt,
+      required this.modifiedAt,
+      required this.createdBy,
+      required this.modifiedBy,
+      this.description,
+      required this.type,
+      this.link,
+      this.schema,
+      this.consumedFileStorage,
+      this.edekInfo,
+      this.metadata})
+      : super._();
   @override
   GetDetailedNodeInfoOK rebuild(
-    void Function(GetDetailedNodeInfoOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(GetDetailedNodeInfoOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   GetDetailedNodeInfoOKBuilder toBuilder() =>
@@ -328,70 +328,36 @@ class GetDetailedNodeInfoOKBuilder
   _$GetDetailedNodeInfoOK _build() {
     _$GetDetailedNodeInfoOK _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$GetDetailedNodeInfoOK._(
             getUrl: getUrl,
             nodeId: BuiltValueNullFieldError.checkNotNull(
-              nodeId,
-              r'GetDetailedNodeInfoOK',
-              'nodeId',
-            ),
+                nodeId, r'GetDetailedNodeInfoOK', 'nodeId'),
             status: BuiltValueNullFieldError.checkNotNull(
-              status,
-              r'GetDetailedNodeInfoOK',
-              'status',
-            ),
+                status, r'GetDetailedNodeInfoOK', 'status'),
             fileCount: fileCount,
             profileCount: profileCount,
             folderCount: folderCount,
             vcCount: vcCount,
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'GetDetailedNodeInfoOK',
-              'name',
-            ),
+                name, r'GetDetailedNodeInfoOK', 'name'),
             consumerId: BuiltValueNullFieldError.checkNotNull(
-              consumerId,
-              r'GetDetailedNodeInfoOK',
-              'consumerId',
-            ),
+                consumerId, r'GetDetailedNodeInfoOK', 'consumerId'),
             parentNodeId: BuiltValueNullFieldError.checkNotNull(
-              parentNodeId,
-              r'GetDetailedNodeInfoOK',
-              'parentNodeId',
-            ),
+                parentNodeId, r'GetDetailedNodeInfoOK', 'parentNodeId'),
             profileId: BuiltValueNullFieldError.checkNotNull(
-              profileId,
-              r'GetDetailedNodeInfoOK',
-              'profileId',
-            ),
+                profileId, r'GetDetailedNodeInfoOK', 'profileId'),
             createdAt: BuiltValueNullFieldError.checkNotNull(
-              createdAt,
-              r'GetDetailedNodeInfoOK',
-              'createdAt',
-            ),
+                createdAt, r'GetDetailedNodeInfoOK', 'createdAt'),
             modifiedAt: BuiltValueNullFieldError.checkNotNull(
-              modifiedAt,
-              r'GetDetailedNodeInfoOK',
-              'modifiedAt',
-            ),
+                modifiedAt, r'GetDetailedNodeInfoOK', 'modifiedAt'),
             createdBy: BuiltValueNullFieldError.checkNotNull(
-              createdBy,
-              r'GetDetailedNodeInfoOK',
-              'createdBy',
-            ),
+                createdBy, r'GetDetailedNodeInfoOK', 'createdBy'),
             modifiedBy: BuiltValueNullFieldError.checkNotNull(
-              modifiedBy,
-              r'GetDetailedNodeInfoOK',
-              'modifiedBy',
-            ),
+                modifiedBy, r'GetDetailedNodeInfoOK', 'modifiedBy'),
             description: description,
             type: BuiltValueNullFieldError.checkNotNull(
-              type,
-              r'GetDetailedNodeInfoOK',
-              'type',
-            ),
+                type, r'GetDetailedNodeInfoOK', 'type'),
             link: link,
             schema: schema,
             consumedFileStorage: consumedFileStorage,
@@ -405,10 +371,7 @@ class GetDetailedNodeInfoOKBuilder
         _edekInfo?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'GetDetailedNodeInfoOK',
-          _$failedField,
-          e.toString(),
-        );
+            r'GetDetailedNodeInfoOK', _$failedField, e.toString());
       }
       rethrow;
     }

@@ -15,10 +15,9 @@ class _$MoveNodeInput extends MoveNodeInput {
   factory _$MoveNodeInput([void Function(MoveNodeInputBuilder)? updates]) =>
       (MoveNodeInputBuilder()..update(updates))._build();
 
-  _$MoveNodeInput._({
-    required this.destinationNodeId,
-    this.resolveNameConflictsAutomatically,
-  }) : super._();
+  _$MoveNodeInput._(
+      {required this.destinationNodeId, this.resolveNameConflictsAutomatically})
+      : super._();
   @override
   MoveNodeInput rebuild(void Function(MoveNodeInputBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -48,10 +47,8 @@ class _$MoveNodeInput extends MoveNodeInput {
   String toString() {
     return (newBuiltValueToStringHelper(r'MoveNodeInput')
           ..add('destinationNodeId', destinationNodeId)
-          ..add(
-            'resolveNameConflictsAutomatically',
-            resolveNameConflictsAutomatically,
-          ))
+          ..add('resolveNameConflictsAutomatically',
+              resolveNameConflictsAutomatically))
         .toString();
   }
 }
@@ -69,9 +66,9 @@ class MoveNodeInputBuilder
   bool? get resolveNameConflictsAutomatically =>
       _$this._resolveNameConflictsAutomatically;
   set resolveNameConflictsAutomatically(
-    bool? resolveNameConflictsAutomatically,
-  ) => _$this._resolveNameConflictsAutomatically =
-      resolveNameConflictsAutomatically;
+          bool? resolveNameConflictsAutomatically) =>
+      _$this._resolveNameConflictsAutomatically =
+          resolveNameConflictsAutomatically;
 
   MoveNodeInputBuilder() {
     MoveNodeInput._defaults(this);
@@ -101,14 +98,10 @@ class MoveNodeInputBuilder
   MoveNodeInput build() => _build();
 
   _$MoveNodeInput _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$MoveNodeInput._(
           destinationNodeId: BuiltValueNullFieldError.checkNotNull(
-            destinationNodeId,
-            r'MoveNodeInput',
-            'destinationNodeId',
-          ),
+              destinationNodeId, r'MoveNodeInput', 'destinationNodeId'),
           resolveNameConflictsAutomatically: resolveNameConflictsAutomatically,
         );
     replace(_$result);

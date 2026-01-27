@@ -16,7 +16,7 @@ class _$ListAccountsDto extends ListAccountsDto {
       (ListAccountsDtoBuilder()..update(updates))._build();
 
   _$ListAccountsDto._({required this.records, this.lastEvaluatedKey})
-    : super._();
+      : super._();
   @override
   ListAccountsDto rebuild(void Function(ListAccountsDtoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -94,8 +94,7 @@ class ListAccountsDtoBuilder
   _$ListAccountsDto _build() {
     _$ListAccountsDto _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$ListAccountsDto._(
             records: records.build(),
             lastEvaluatedKey: lastEvaluatedKey,
@@ -107,10 +106,7 @@ class ListAccountsDtoBuilder
         records.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'ListAccountsDto',
-          _$failedField,
-          e.toString(),
-        );
+            r'ListAccountsDto', _$failedField, e.toString());
       }
       rethrow;
     }

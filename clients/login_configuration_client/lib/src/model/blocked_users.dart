@@ -67,11 +67,9 @@ class _$BlockedUsersSerializer implements PrimitiveSerializer<BlockedUsers> {
     BlockedUsers object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -87,23 +85,17 @@ class _$BlockedUsersSerializer implements PrimitiveSerializer<BlockedUsers> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'userIds':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.userIds.replace(valueDes);
           break;
         case r'pageToken':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(JsonObject),
+          ) as JsonObject;
           result.pageToken = valueDes;
           break;
         default:

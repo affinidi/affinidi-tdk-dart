@@ -12,16 +12,16 @@ class _$CisConfigurationWebhookSetting extends CisConfigurationWebhookSetting {
   @override
   final CisConfigurationWebhookSettingEndpoint? endpoint;
 
-  factory _$CisConfigurationWebhookSetting([
-    void Function(CisConfigurationWebhookSettingBuilder)? updates,
-  ]) => (CisConfigurationWebhookSettingBuilder()..update(updates))._build();
+  factory _$CisConfigurationWebhookSetting(
+          [void Function(CisConfigurationWebhookSettingBuilder)? updates]) =>
+      (CisConfigurationWebhookSettingBuilder()..update(updates))._build();
 
   _$CisConfigurationWebhookSetting._({required this.enabled, this.endpoint})
-    : super._();
+      : super._();
   @override
   CisConfigurationWebhookSetting rebuild(
-    void Function(CisConfigurationWebhookSettingBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CisConfigurationWebhookSettingBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CisConfigurationWebhookSettingBuilder toBuilder() =>
@@ -55,10 +55,8 @@ class _$CisConfigurationWebhookSetting extends CisConfigurationWebhookSetting {
 
 class CisConfigurationWebhookSettingBuilder
     implements
-        Builder<
-          CisConfigurationWebhookSetting,
-          CisConfigurationWebhookSettingBuilder
-        > {
+        Builder<CisConfigurationWebhookSetting,
+            CisConfigurationWebhookSettingBuilder> {
   _$CisConfigurationWebhookSetting? _$v;
 
   bool? _enabled;
@@ -101,14 +99,10 @@ class CisConfigurationWebhookSettingBuilder
   _$CisConfigurationWebhookSetting _build() {
     _$CisConfigurationWebhookSetting _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$CisConfigurationWebhookSetting._(
             enabled: BuiltValueNullFieldError.checkNotNull(
-              enabled,
-              r'CisConfigurationWebhookSetting',
-              'enabled',
-            ),
+                enabled, r'CisConfigurationWebhookSetting', 'enabled'),
             endpoint: _endpoint?.build(),
           );
     } catch (_) {
@@ -118,10 +112,7 @@ class CisConfigurationWebhookSettingBuilder
         _endpoint?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'CisConfigurationWebhookSetting',
-          _$failedField,
-          e.toString(),
-        );
+            r'CisConfigurationWebhookSetting', _$failedField, e.toString());
       }
       rethrow;
     }

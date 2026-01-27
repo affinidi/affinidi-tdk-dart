@@ -12,18 +12,17 @@ class _$RevokeCredentialsInput extends RevokeCredentialsInput {
   @override
   final String credentialId;
 
-  factory _$RevokeCredentialsInput([
-    void Function(RevokeCredentialsInputBuilder)? updates,
-  ]) => (RevokeCredentialsInputBuilder()..update(updates))._build();
+  factory _$RevokeCredentialsInput(
+          [void Function(RevokeCredentialsInputBuilder)? updates]) =>
+      (RevokeCredentialsInputBuilder()..update(updates))._build();
 
-  _$RevokeCredentialsInput._({
-    this.revocationReason,
-    required this.credentialId,
-  }) : super._();
+  _$RevokeCredentialsInput._(
+      {this.revocationReason, required this.credentialId})
+      : super._();
   @override
   RevokeCredentialsInput rebuild(
-    void Function(RevokeCredentialsInputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(RevokeCredentialsInputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   RevokeCredentialsInputBuilder toBuilder() =>
@@ -96,15 +95,11 @@ class RevokeCredentialsInputBuilder
   RevokeCredentialsInput build() => _build();
 
   _$RevokeCredentialsInput _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$RevokeCredentialsInput._(
           revocationReason: revocationReason,
           credentialId: BuiltValueNullFieldError.checkNotNull(
-            credentialId,
-            r'RevokeCredentialsInput',
-            'credentialId',
-          ),
+              credentialId, r'RevokeCredentialsInput', 'credentialId'),
         );
     replace(_$result);
     return _$result;

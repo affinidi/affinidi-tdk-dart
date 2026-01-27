@@ -20,9 +20,8 @@ abstract class CorsUpdateAccessVfsOK
 
   CorsUpdateAccessVfsOK._();
 
-  factory CorsUpdateAccessVfsOK([
-    void updates(CorsUpdateAccessVfsOKBuilder b),
-  ]) = _$CorsUpdateAccessVfsOK;
+  factory CorsUpdateAccessVfsOK(
+      [void updates(CorsUpdateAccessVfsOKBuilder b)]) = _$CorsUpdateAccessVfsOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsUpdateAccessVfsOKBuilder b) => b;
@@ -37,7 +36,7 @@ class _$CorsUpdateAccessVfsOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsUpdateAccessVfsOK,
-    _$CorsUpdateAccessVfsOK,
+    _$CorsUpdateAccessVfsOK
   ];
 
   @override
@@ -63,11 +62,9 @@ class _$CorsUpdateAccessVfsOKSerializer
     CorsUpdateAccessVfsOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -83,12 +80,10 @@ class _$CorsUpdateAccessVfsOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsUpdateAccessVfsOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsUpdateAccessVfsOk = valueDes;
           break;
         default:

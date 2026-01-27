@@ -22,23 +22,23 @@ class _$PresentationDefinition extends PresentationDefinition {
   @override
   final BuiltMap<String, JsonObject?>? frame;
 
-  factory _$PresentationDefinition([
-    void Function(PresentationDefinitionBuilder)? updates,
-  ]) => (PresentationDefinitionBuilder()..update(updates))._build();
+  factory _$PresentationDefinition(
+          [void Function(PresentationDefinitionBuilder)? updates]) =>
+      (PresentationDefinitionBuilder()..update(updates))._build();
 
-  _$PresentationDefinition._({
-    required this.id,
-    this.name,
-    this.purpose,
-    this.format,
-    this.submissionRequirements,
-    required this.inputDescriptors,
-    this.frame,
-  }) : super._();
+  _$PresentationDefinition._(
+      {required this.id,
+      this.name,
+      this.purpose,
+      this.format,
+      this.submissionRequirements,
+      required this.inputDescriptors,
+      this.frame})
+      : super._();
   @override
   PresentationDefinition rebuild(
-    void Function(PresentationDefinitionBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(PresentationDefinitionBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   PresentationDefinitionBuilder toBuilder() =>
@@ -109,8 +109,8 @@ class PresentationDefinitionBuilder
   ListBuilder<SubmissionRequirement> get submissionRequirements =>
       _$this._submissionRequirements ??= ListBuilder<SubmissionRequirement>();
   set submissionRequirements(
-    ListBuilder<SubmissionRequirement>? submissionRequirements,
-  ) => _$this._submissionRequirements = submissionRequirements;
+          ListBuilder<SubmissionRequirement>? submissionRequirements) =>
+      _$this._submissionRequirements = submissionRequirements;
 
   ListBuilder<InputDescriptor>? _inputDescriptors;
   ListBuilder<InputDescriptor> get inputDescriptors =>
@@ -158,14 +158,10 @@ class PresentationDefinitionBuilder
   _$PresentationDefinition _build() {
     _$PresentationDefinition _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$PresentationDefinition._(
             id: BuiltValueNullFieldError.checkNotNull(
-              id,
-              r'PresentationDefinition',
-              'id',
-            ),
+                id, r'PresentationDefinition', 'id'),
             name: name,
             purpose: purpose,
             format: _format?.build(),
@@ -186,10 +182,7 @@ class PresentationDefinitionBuilder
         _frame?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'PresentationDefinition',
-          _$failedField,
-          e.toString(),
-        );
+            r'PresentationDefinition', _$failedField, e.toString());
       }
       rethrow;
     }

@@ -17,21 +17,21 @@ class _$IotaExchangeCredentialsOKCredentials
   @override
   final String expiration;
 
-  factory _$IotaExchangeCredentialsOKCredentials([
-    void Function(IotaExchangeCredentialsOKCredentialsBuilder)? updates,
-  ]) =>
+  factory _$IotaExchangeCredentialsOKCredentials(
+          [void Function(IotaExchangeCredentialsOKCredentialsBuilder)?
+              updates]) =>
       (IotaExchangeCredentialsOKCredentialsBuilder()..update(updates))._build();
 
-  _$IotaExchangeCredentialsOKCredentials._({
-    required this.accessKeyId,
-    required this.secretKey,
-    required this.sessionToken,
-    required this.expiration,
-  }) : super._();
+  _$IotaExchangeCredentialsOKCredentials._(
+      {required this.accessKeyId,
+      required this.secretKey,
+      required this.sessionToken,
+      required this.expiration})
+      : super._();
   @override
   IotaExchangeCredentialsOKCredentials rebuild(
-    void Function(IotaExchangeCredentialsOKCredentialsBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(IotaExchangeCredentialsOKCredentialsBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   IotaExchangeCredentialsOKCredentialsBuilder toBuilder() =>
@@ -71,10 +71,8 @@ class _$IotaExchangeCredentialsOKCredentials
 
 class IotaExchangeCredentialsOKCredentialsBuilder
     implements
-        Builder<
-          IotaExchangeCredentialsOKCredentials,
-          IotaExchangeCredentialsOKCredentialsBuilder
-        > {
+        Builder<IotaExchangeCredentialsOKCredentials,
+            IotaExchangeCredentialsOKCredentialsBuilder> {
   _$IotaExchangeCredentialsOKCredentials? _$v;
 
   String? _accessKeyId;
@@ -116,8 +114,7 @@ class IotaExchangeCredentialsOKCredentialsBuilder
 
   @override
   void update(
-    void Function(IotaExchangeCredentialsOKCredentialsBuilder)? updates,
-  ) {
+      void Function(IotaExchangeCredentialsOKCredentialsBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -125,29 +122,16 @@ class IotaExchangeCredentialsOKCredentialsBuilder
   IotaExchangeCredentialsOKCredentials build() => _build();
 
   _$IotaExchangeCredentialsOKCredentials _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$IotaExchangeCredentialsOKCredentials._(
-          accessKeyId: BuiltValueNullFieldError.checkNotNull(
-            accessKeyId,
-            r'IotaExchangeCredentialsOKCredentials',
-            'accessKeyId',
-          ),
+          accessKeyId: BuiltValueNullFieldError.checkNotNull(accessKeyId,
+              r'IotaExchangeCredentialsOKCredentials', 'accessKeyId'),
           secretKey: BuiltValueNullFieldError.checkNotNull(
-            secretKey,
-            r'IotaExchangeCredentialsOKCredentials',
-            'secretKey',
-          ),
-          sessionToken: BuiltValueNullFieldError.checkNotNull(
-            sessionToken,
-            r'IotaExchangeCredentialsOKCredentials',
-            'sessionToken',
-          ),
-          expiration: BuiltValueNullFieldError.checkNotNull(
-            expiration,
-            r'IotaExchangeCredentialsOKCredentials',
-            'expiration',
-          ),
+              secretKey, r'IotaExchangeCredentialsOKCredentials', 'secretKey'),
+          sessionToken: BuiltValueNullFieldError.checkNotNull(sessionToken,
+              r'IotaExchangeCredentialsOKCredentials', 'sessionToken'),
+          expiration: BuiltValueNullFieldError.checkNotNull(expiration,
+              r'IotaExchangeCredentialsOKCredentials', 'expiration'),
         );
     replace(_$result);
     return _$result;

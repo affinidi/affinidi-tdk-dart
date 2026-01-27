@@ -20,9 +20,8 @@ abstract class CorsBatchCredentialOK
 
   CorsBatchCredentialOK._();
 
-  factory CorsBatchCredentialOK([
-    void updates(CorsBatchCredentialOKBuilder b),
-  ]) = _$CorsBatchCredentialOK;
+  factory CorsBatchCredentialOK(
+      [void updates(CorsBatchCredentialOKBuilder b)]) = _$CorsBatchCredentialOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsBatchCredentialOKBuilder b) => b;
@@ -37,7 +36,7 @@ class _$CorsBatchCredentialOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsBatchCredentialOK,
-    _$CorsBatchCredentialOK,
+    _$CorsBatchCredentialOK
   ];
 
   @override
@@ -63,11 +62,9 @@ class _$CorsBatchCredentialOKSerializer
     CorsBatchCredentialOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -83,12 +80,10 @@ class _$CorsBatchCredentialOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsBatchCredentialOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsBatchCredentialOk = valueDes;
           break;
         default:

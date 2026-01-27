@@ -10,15 +10,15 @@ class _$UpdateProfileDataOK extends UpdateProfileDataOK {
   @override
   final JsonObject? data;
 
-  factory _$UpdateProfileDataOK([
-    void Function(UpdateProfileDataOKBuilder)? updates,
-  ]) => (UpdateProfileDataOKBuilder()..update(updates))._build();
+  factory _$UpdateProfileDataOK(
+          [void Function(UpdateProfileDataOKBuilder)? updates]) =>
+      (UpdateProfileDataOKBuilder()..update(updates))._build();
 
   _$UpdateProfileDataOK._({this.data}) : super._();
   @override
   UpdateProfileDataOK rebuild(
-    void Function(UpdateProfileDataOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(UpdateProfileDataOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   UpdateProfileDataOKBuilder toBuilder() =>
@@ -40,9 +40,9 @@ class _$UpdateProfileDataOK extends UpdateProfileDataOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'UpdateProfileDataOK',
-    )..add('data', data)).toString();
+    return (newBuiltValueToStringHelper(r'UpdateProfileDataOK')
+          ..add('data', data))
+        .toString();
   }
 }
 
@@ -81,7 +81,10 @@ class UpdateProfileDataOKBuilder
   UpdateProfileDataOK build() => _build();
 
   _$UpdateProfileDataOK _build() {
-    final _$result = _$v ?? _$UpdateProfileDataOK._(data: data);
+    final _$result = _$v ??
+        _$UpdateProfileDataOK._(
+          data: data,
+        );
     replace(_$result);
     return _$result;
   }

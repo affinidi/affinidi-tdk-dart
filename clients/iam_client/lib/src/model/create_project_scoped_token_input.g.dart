@@ -10,15 +10,15 @@ class _$CreateProjectScopedTokenInput extends CreateProjectScopedTokenInput {
   @override
   final String projectId;
 
-  factory _$CreateProjectScopedTokenInput([
-    void Function(CreateProjectScopedTokenInputBuilder)? updates,
-  ]) => (CreateProjectScopedTokenInputBuilder()..update(updates))._build();
+  factory _$CreateProjectScopedTokenInput(
+          [void Function(CreateProjectScopedTokenInputBuilder)? updates]) =>
+      (CreateProjectScopedTokenInputBuilder()..update(updates))._build();
 
   _$CreateProjectScopedTokenInput._({required this.projectId}) : super._();
   @override
   CreateProjectScopedTokenInput rebuild(
-    void Function(CreateProjectScopedTokenInputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CreateProjectScopedTokenInputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CreateProjectScopedTokenInputBuilder toBuilder() =>
@@ -41,18 +41,16 @@ class _$CreateProjectScopedTokenInput extends CreateProjectScopedTokenInput {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'CreateProjectScopedTokenInput',
-    )..add('projectId', projectId)).toString();
+    return (newBuiltValueToStringHelper(r'CreateProjectScopedTokenInput')
+          ..add('projectId', projectId))
+        .toString();
   }
 }
 
 class CreateProjectScopedTokenInputBuilder
     implements
-        Builder<
-          CreateProjectScopedTokenInput,
-          CreateProjectScopedTokenInputBuilder
-        > {
+        Builder<CreateProjectScopedTokenInput,
+            CreateProjectScopedTokenInputBuilder> {
   _$CreateProjectScopedTokenInput? _$v;
 
   String? _projectId;
@@ -86,14 +84,10 @@ class CreateProjectScopedTokenInputBuilder
   CreateProjectScopedTokenInput build() => _build();
 
   _$CreateProjectScopedTokenInput _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CreateProjectScopedTokenInput._(
           projectId: BuiltValueNullFieldError.checkNotNull(
-            projectId,
-            r'CreateProjectScopedTokenInput',
-            'projectId',
-          ),
+              projectId, r'CreateProjectScopedTokenInput', 'projectId'),
         );
     replace(_$result);
     return _$result;

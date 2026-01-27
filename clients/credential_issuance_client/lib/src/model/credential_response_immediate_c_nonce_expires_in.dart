@@ -14,18 +14,16 @@ part 'credential_response_immediate_c_nonce_expires_in.g.dart';
 @BuiltValue()
 abstract class CredentialResponseImmediateCNonceExpiresIn
     implements
-        Built<
-          CredentialResponseImmediateCNonceExpiresIn,
-          CredentialResponseImmediateCNonceExpiresInBuilder
-        > {
+        Built<CredentialResponseImmediateCNonceExpiresIn,
+            CredentialResponseImmediateCNonceExpiresInBuilder> {
   /// One Of [String], [num]
   OneOf get oneOf;
 
   CredentialResponseImmediateCNonceExpiresIn._();
 
-  factory CredentialResponseImmediateCNonceExpiresIn([
-    void updates(CredentialResponseImmediateCNonceExpiresInBuilder b),
-  ]) = _$CredentialResponseImmediateCNonceExpiresIn;
+  factory CredentialResponseImmediateCNonceExpiresIn(
+          [void updates(CredentialResponseImmediateCNonceExpiresInBuilder b)]) =
+      _$CredentialResponseImmediateCNonceExpiresIn;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CredentialResponseImmediateCNonceExpiresInBuilder b) =>
@@ -33,7 +31,8 @@ abstract class CredentialResponseImmediateCNonceExpiresIn
 
   @BuiltValueSerializer(custom: true)
   static Serializer<CredentialResponseImmediateCNonceExpiresIn>
-  get serializer => _$CredentialResponseImmediateCNonceExpiresInSerializer();
+      get serializer =>
+          _$CredentialResponseImmediateCNonceExpiresInSerializer();
 }
 
 class _$CredentialResponseImmediateCNonceExpiresInSerializer
@@ -41,16 +40,14 @@ class _$CredentialResponseImmediateCNonceExpiresInSerializer
   @override
   final Iterable<Type> types = const [
     CredentialResponseImmediateCNonceExpiresIn,
-    _$CredentialResponseImmediateCNonceExpiresIn,
+    _$CredentialResponseImmediateCNonceExpiresIn
   ];
 
   @override
   final String wireName = r'CredentialResponseImmediateCNonceExpiresIn';
 
-  Iterable<Object?> _serializeProperties(
-    Serializers serializers,
-    CredentialResponseImmediateCNonceExpiresIn object,
-  ) sync* {}
+  Iterable<Object?> _serializeProperties(Serializers serializers,
+      CredentialResponseImmediateCNonceExpiresIn object) sync* {}
 
   @override
   Object serialize(
@@ -59,10 +56,8 @@ class _$CredentialResponseImmediateCNonceExpiresInSerializer
     FullType specifiedType = FullType.unspecified,
   }) {
     final oneOf = object.oneOf;
-    return serializers.serialize(
-      oneOf.value,
-      specifiedType: FullType(oneOf.valueType),
-    )!;
+    return serializers.serialize(oneOf.value,
+        specifiedType: FullType(oneOf.valueType))!;
   }
 
   @override
@@ -73,11 +68,13 @@ class _$CredentialResponseImmediateCNonceExpiresInSerializer
   }) {
     final result = CredentialResponseImmediateCNonceExpiresInBuilder();
     Object? oneOfDataSrc;
-    final targetType = const FullType(OneOf, [FullType(num), FullType(String)]);
+    final targetType = const FullType(OneOf, [
+      FullType(num),
+      FullType(String),
+    ]);
     oneOfDataSrc = serialized;
-    result.oneOf =
-        serializers.deserialize(oneOfDataSrc, specifiedType: targetType)
-            as OneOf;
+    result.oneOf = serializers.deserialize(oneOfDataSrc,
+        specifiedType: targetType) as OneOf;
     return result.build();
   }
 }

@@ -120,29 +120,29 @@ class _$$NodeDto extends $NodeDto {
   factory _$$NodeDto([void Function($NodeDtoBuilder)? updates]) =>
       ($NodeDtoBuilder()..update(updates))._build();
 
-  _$$NodeDto._({
-    required this.nodeId,
-    required this.status,
-    this.fileCount,
-    this.profileCount,
-    this.folderCount,
-    this.vcCount,
-    required this.name,
-    required this.consumerId,
-    required this.parentNodeId,
-    required this.profileId,
-    required this.createdAt,
-    required this.modifiedAt,
-    required this.createdBy,
-    required this.modifiedBy,
-    this.description,
-    required this.type,
-    this.link,
-    this.schema,
-    this.consumedFileStorage,
-    this.edekInfo,
-    this.metadata,
-  }) : super._();
+  _$$NodeDto._(
+      {required this.nodeId,
+      required this.status,
+      this.fileCount,
+      this.profileCount,
+      this.folderCount,
+      this.vcCount,
+      required this.name,
+      required this.consumerId,
+      required this.parentNodeId,
+      required this.profileId,
+      required this.createdAt,
+      required this.modifiedAt,
+      required this.createdBy,
+      required this.modifiedBy,
+      this.description,
+      required this.type,
+      this.link,
+      this.schema,
+      this.consumedFileStorage,
+      this.edekInfo,
+      this.metadata})
+      : super._();
   @override
   $NodeDto rebuild(void Function($NodeDtoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -379,69 +379,35 @@ class $NodeDtoBuilder
   _$$NodeDto _build() {
     _$$NodeDto _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$$NodeDto._(
             nodeId: BuiltValueNullFieldError.checkNotNull(
-              nodeId,
-              r'$NodeDto',
-              'nodeId',
-            ),
+                nodeId, r'$NodeDto', 'nodeId'),
             status: BuiltValueNullFieldError.checkNotNull(
-              status,
-              r'$NodeDto',
-              'status',
-            ),
+                status, r'$NodeDto', 'status'),
             fileCount: fileCount,
             profileCount: profileCount,
             folderCount: folderCount,
             vcCount: vcCount,
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'$NodeDto',
-              'name',
-            ),
+                name, r'$NodeDto', 'name'),
             consumerId: BuiltValueNullFieldError.checkNotNull(
-              consumerId,
-              r'$NodeDto',
-              'consumerId',
-            ),
+                consumerId, r'$NodeDto', 'consumerId'),
             parentNodeId: BuiltValueNullFieldError.checkNotNull(
-              parentNodeId,
-              r'$NodeDto',
-              'parentNodeId',
-            ),
+                parentNodeId, r'$NodeDto', 'parentNodeId'),
             profileId: BuiltValueNullFieldError.checkNotNull(
-              profileId,
-              r'$NodeDto',
-              'profileId',
-            ),
+                profileId, r'$NodeDto', 'profileId'),
             createdAt: BuiltValueNullFieldError.checkNotNull(
-              createdAt,
-              r'$NodeDto',
-              'createdAt',
-            ),
+                createdAt, r'$NodeDto', 'createdAt'),
             modifiedAt: BuiltValueNullFieldError.checkNotNull(
-              modifiedAt,
-              r'$NodeDto',
-              'modifiedAt',
-            ),
+                modifiedAt, r'$NodeDto', 'modifiedAt'),
             createdBy: BuiltValueNullFieldError.checkNotNull(
-              createdBy,
-              r'$NodeDto',
-              'createdBy',
-            ),
+                createdBy, r'$NodeDto', 'createdBy'),
             modifiedBy: BuiltValueNullFieldError.checkNotNull(
-              modifiedBy,
-              r'$NodeDto',
-              'modifiedBy',
-            ),
+                modifiedBy, r'$NodeDto', 'modifiedBy'),
             description: description,
             type: BuiltValueNullFieldError.checkNotNull(
-              type,
-              r'$NodeDto',
-              'type',
-            ),
+                type, r'$NodeDto', 'type'),
             link: link,
             schema: schema,
             consumedFileStorage: consumedFileStorage,
@@ -455,10 +421,7 @@ class $NodeDtoBuilder
         _edekInfo?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'$NodeDto',
-          _$failedField,
-          e.toString(),
-        );
+            r'$NodeDto', _$failedField, e.toString());
       }
       rethrow;
     }

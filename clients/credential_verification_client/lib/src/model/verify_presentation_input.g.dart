@@ -20,22 +20,22 @@ class _$VerifyPresentationInput extends VerifyPresentationInput {
   @override
   final String? challenge;
 
-  factory _$VerifyPresentationInput([
-    void Function(VerifyPresentationInputBuilder)? updates,
-  ]) => (VerifyPresentationInputBuilder()..update(updates))._build();
+  factory _$VerifyPresentationInput(
+          [void Function(VerifyPresentationInputBuilder)? updates]) =>
+      (VerifyPresentationInputBuilder()..update(updates))._build();
 
-  _$VerifyPresentationInput._({
-    this.verifiablePresentation,
-    this.signedPresentation,
-    this.presentationDefinition,
-    this.presentationSubmission,
-    this.dcqlQuery,
-    this.challenge,
-  }) : super._();
+  _$VerifyPresentationInput._(
+      {this.verifiablePresentation,
+      this.signedPresentation,
+      this.presentationDefinition,
+      this.presentationSubmission,
+      this.dcqlQuery,
+      this.challenge})
+      : super._();
   @override
   VerifyPresentationInput rebuild(
-    void Function(VerifyPresentationInputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(VerifyPresentationInputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   VerifyPresentationInputBuilder toBuilder() =>
@@ -144,8 +144,7 @@ class VerifyPresentationInputBuilder
   VerifyPresentationInput build() => _build();
 
   _$VerifyPresentationInput _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$VerifyPresentationInput._(
           verifiablePresentation: verifiablePresentation,
           signedPresentation: signedPresentation,

@@ -45,7 +45,7 @@ class _$ConstraintsStatusesSerializer
   @override
   final Iterable<Type> types = const [
     ConstraintsStatuses,
-    _$ConstraintsStatuses,
+    _$ConstraintsStatuses
   ];
 
   @override
@@ -85,11 +85,9 @@ class _$ConstraintsStatusesSerializer
     ConstraintsStatuses object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -105,30 +103,24 @@ class _$ConstraintsStatusesSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'active':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(PdStatus),
-                  )
-                  as PdStatus;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(PdStatus),
+          ) as PdStatus;
           result.active.replace(valueDes);
           break;
         case r'suspended':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(PdStatus),
-                  )
-                  as PdStatus;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(PdStatus),
+          ) as PdStatus;
           result.suspended.replace(valueDes);
           break;
         case r'revoked':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(PdStatus),
-                  )
-                  as PdStatus;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(PdStatus),
+          ) as PdStatus;
           result.revoked.replace(valueDes);
           break;
         default:

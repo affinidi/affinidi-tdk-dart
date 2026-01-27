@@ -10,15 +10,15 @@ class _$ListIssuanceResponse extends ListIssuanceResponse {
   @override
   final BuiltList<ListIssuanceResponseIssuancesInner> issuances;
 
-  factory _$ListIssuanceResponse([
-    void Function(ListIssuanceResponseBuilder)? updates,
-  ]) => (ListIssuanceResponseBuilder()..update(updates))._build();
+  factory _$ListIssuanceResponse(
+          [void Function(ListIssuanceResponseBuilder)? updates]) =>
+      (ListIssuanceResponseBuilder()..update(updates))._build();
 
   _$ListIssuanceResponse._({required this.issuances}) : super._();
   @override
   ListIssuanceResponse rebuild(
-    void Function(ListIssuanceResponseBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(ListIssuanceResponseBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   ListIssuanceResponseBuilder toBuilder() =>
@@ -40,9 +40,9 @@ class _$ListIssuanceResponse extends ListIssuanceResponse {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'ListIssuanceResponse',
-    )..add('issuances', issuances)).toString();
+    return (newBuiltValueToStringHelper(r'ListIssuanceResponse')
+          ..add('issuances', issuances))
+        .toString();
   }
 }
 
@@ -85,7 +85,10 @@ class ListIssuanceResponseBuilder
   _$ListIssuanceResponse _build() {
     _$ListIssuanceResponse _$result;
     try {
-      _$result = _$v ?? _$ListIssuanceResponse._(issuances: issuances.build());
+      _$result = _$v ??
+          _$ListIssuanceResponse._(
+            issuances: issuances.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -93,10 +96,7 @@ class ListIssuanceResponseBuilder
         issuances.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'ListIssuanceResponse',
-          _$failedField,
-          e.toString(),
-        );
+            r'ListIssuanceResponse', _$failedField, e.toString());
       }
       rethrow;
     }

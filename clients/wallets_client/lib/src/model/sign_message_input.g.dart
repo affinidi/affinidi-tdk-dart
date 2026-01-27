@@ -7,17 +7,17 @@ part of 'sign_message_input.dart';
 // **************************************************************************
 
 const SignMessageInputSignatureSchemeEnum
-_$signMessageInputSignatureSchemeEnum_ecdsaSecp256k1Sha256 =
+    _$signMessageInputSignatureSchemeEnum_ecdsaSecp256k1Sha256 =
     const SignMessageInputSignatureSchemeEnum._('ecdsaSecp256k1Sha256');
 const SignMessageInputSignatureSchemeEnum
-_$signMessageInputSignatureSchemeEnum_ecdsaP256Sha256 =
+    _$signMessageInputSignatureSchemeEnum_ecdsaP256Sha256 =
     const SignMessageInputSignatureSchemeEnum._('ecdsaP256Sha256');
 const SignMessageInputSignatureSchemeEnum
-_$signMessageInputSignatureSchemeEnum_ed25519 =
+    _$signMessageInputSignatureSchemeEnum_ed25519 =
     const SignMessageInputSignatureSchemeEnum._('ed25519');
 
 SignMessageInputSignatureSchemeEnum
-_$signMessageInputSignatureSchemeEnumValueOf(String name) {
+    _$signMessageInputSignatureSchemeEnumValueOf(String name) {
   switch (name) {
     case 'ecdsaSecp256k1Sha256':
       return _$signMessageInputSignatureSchemeEnum_ecdsaSecp256k1Sha256;
@@ -31,17 +31,15 @@ _$signMessageInputSignatureSchemeEnumValueOf(String name) {
 }
 
 final BuiltSet<SignMessageInputSignatureSchemeEnum>
-_$signMessageInputSignatureSchemeEnumValues =
-    BuiltSet<SignMessageInputSignatureSchemeEnum>(
-      const <SignMessageInputSignatureSchemeEnum>[
-        _$signMessageInputSignatureSchemeEnum_ecdsaSecp256k1Sha256,
-        _$signMessageInputSignatureSchemeEnum_ecdsaP256Sha256,
-        _$signMessageInputSignatureSchemeEnum_ed25519,
-      ],
-    );
+    _$signMessageInputSignatureSchemeEnumValues = BuiltSet<
+        SignMessageInputSignatureSchemeEnum>(const <SignMessageInputSignatureSchemeEnum>[
+  _$signMessageInputSignatureSchemeEnum_ecdsaSecp256k1Sha256,
+  _$signMessageInputSignatureSchemeEnum_ecdsaP256Sha256,
+  _$signMessageInputSignatureSchemeEnum_ed25519,
+]);
 
 Serializer<SignMessageInputSignatureSchemeEnum>
-_$signMessageInputSignatureSchemeEnumSerializer =
+    _$signMessageInputSignatureSchemeEnumSerializer =
     _$SignMessageInputSignatureSchemeEnumSerializer();
 
 class _$SignMessageInputSignatureSchemeEnumSerializer
@@ -59,26 +57,23 @@ class _$SignMessageInputSignatureSchemeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    SignMessageInputSignatureSchemeEnum,
+    SignMessageInputSignatureSchemeEnum
   ];
   @override
   final String wireName = 'SignMessageInputSignatureSchemeEnum';
 
   @override
   Object serialize(
-    Serializers serializers,
-    SignMessageInputSignatureSchemeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, SignMessageInputSignatureSchemeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   SignMessageInputSignatureSchemeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => SignMessageInputSignatureSchemeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      SignMessageInputSignatureSchemeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$SignMessageInput extends SignMessageInput {
@@ -87,12 +82,12 @@ class _$SignMessageInput extends SignMessageInput {
   @override
   final SignMessageInputSignatureSchemeEnum? signatureScheme;
 
-  factory _$SignMessageInput([
-    void Function(SignMessageInputBuilder)? updates,
-  ]) => (SignMessageInputBuilder()..update(updates))._build();
+  factory _$SignMessageInput(
+          [void Function(SignMessageInputBuilder)? updates]) =>
+      (SignMessageInputBuilder()..update(updates))._build();
 
   _$SignMessageInput._({required this.plainTextMessage, this.signatureScheme})
-    : super._();
+      : super._();
   @override
   SignMessageInput rebuild(void Function(SignMessageInputBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -170,14 +165,10 @@ class SignMessageInputBuilder
   SignMessageInput build() => _build();
 
   _$SignMessageInput _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$SignMessageInput._(
           plainTextMessage: BuiltValueNullFieldError.checkNotNull(
-            plainTextMessage,
-            r'SignMessageInput',
-            'plainTextMessage',
-          ),
+              plainTextMessage, r'SignMessageInput', 'plainTextMessage'),
           signatureScheme: signatureScheme,
         );
     replace(_$result);

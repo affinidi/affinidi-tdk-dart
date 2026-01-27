@@ -20,14 +20,13 @@ NotFoundErrorNameEnum _$notFoundErrorNameEnumValueOf(String name) {
 
 final BuiltSet<NotFoundErrorNameEnum> _$notFoundErrorNameEnumValues =
     BuiltSet<NotFoundErrorNameEnum>(const <NotFoundErrorNameEnum>[
-      _$notFoundErrorNameEnum_notFoundError,
-    ]);
+  _$notFoundErrorNameEnum_notFoundError,
+]);
 
 const NotFoundErrorMessageEnum
-_$notFoundErrorMessageEnum_notFoundColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod =
+    _$notFoundErrorMessageEnum_notFoundColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod =
     const NotFoundErrorMessageEnum._(
-      'notFoundColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod',
-    );
+        'notFoundColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod');
 
 NotFoundErrorMessageEnum _$notFoundErrorMessageEnumValueOf(String name) {
   switch (name) {
@@ -38,20 +37,17 @@ NotFoundErrorMessageEnum _$notFoundErrorMessageEnumValueOf(String name) {
   }
 }
 
-final BuiltSet<NotFoundErrorMessageEnum>
-_$notFoundErrorMessageEnumValues = BuiltSet<NotFoundErrorMessageEnum>(const <
-  NotFoundErrorMessageEnum
->[
+final BuiltSet<NotFoundErrorMessageEnum> _$notFoundErrorMessageEnumValues =
+    BuiltSet<NotFoundErrorMessageEnum>(const <NotFoundErrorMessageEnum>[
   _$notFoundErrorMessageEnum_notFoundColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod,
 ]);
 
 const NotFoundErrorHttpStatusCodeEnum
-_$notFoundErrorHttpStatusCodeEnum_number404 =
+    _$notFoundErrorHttpStatusCodeEnum_number404 =
     const NotFoundErrorHttpStatusCodeEnum._('number404');
 
 NotFoundErrorHttpStatusCodeEnum _$notFoundErrorHttpStatusCodeEnumValueOf(
-  String name,
-) {
+    String name) {
   switch (name) {
     case 'number404':
       return _$notFoundErrorHttpStatusCodeEnum_number404;
@@ -61,19 +57,17 @@ NotFoundErrorHttpStatusCodeEnum _$notFoundErrorHttpStatusCodeEnumValueOf(
 }
 
 final BuiltSet<NotFoundErrorHttpStatusCodeEnum>
-_$notFoundErrorHttpStatusCodeEnumValues =
-    BuiltSet<NotFoundErrorHttpStatusCodeEnum>(
-      const <NotFoundErrorHttpStatusCodeEnum>[
-        _$notFoundErrorHttpStatusCodeEnum_number404,
-      ],
-    );
+    _$notFoundErrorHttpStatusCodeEnumValues = BuiltSet<
+        NotFoundErrorHttpStatusCodeEnum>(const <NotFoundErrorHttpStatusCodeEnum>[
+  _$notFoundErrorHttpStatusCodeEnum_number404,
+]);
 
 Serializer<NotFoundErrorNameEnum> _$notFoundErrorNameEnumSerializer =
     _$NotFoundErrorNameEnumSerializer();
 Serializer<NotFoundErrorMessageEnum> _$notFoundErrorMessageEnumSerializer =
     _$NotFoundErrorMessageEnumSerializer();
 Serializer<NotFoundErrorHttpStatusCodeEnum>
-_$notFoundErrorHttpStatusCodeEnumSerializer =
+    _$notFoundErrorHttpStatusCodeEnumSerializer =
     _$NotFoundErrorHttpStatusCodeEnumSerializer();
 
 class _$NotFoundErrorNameEnumSerializer
@@ -91,20 +85,15 @@ class _$NotFoundErrorNameEnumSerializer
   final String wireName = 'NotFoundErrorNameEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    NotFoundErrorNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers, NotFoundErrorNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
-  NotFoundErrorNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => NotFoundErrorNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+  NotFoundErrorNameEnum deserialize(Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      NotFoundErrorNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$NotFoundErrorMessageEnumSerializer
@@ -124,20 +113,16 @@ class _$NotFoundErrorMessageEnumSerializer
   final String wireName = 'NotFoundErrorMessageEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    NotFoundErrorMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers, NotFoundErrorMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   NotFoundErrorMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => NotFoundErrorMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      NotFoundErrorMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$NotFoundErrorHttpStatusCodeEnumSerializer
@@ -156,19 +141,16 @@ class _$NotFoundErrorHttpStatusCodeEnumSerializer
 
   @override
   Object serialize(
-    Serializers serializers,
-    NotFoundErrorHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, NotFoundErrorHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   NotFoundErrorHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => NotFoundErrorHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      NotFoundErrorHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$NotFoundError extends NotFoundError {
@@ -186,13 +168,13 @@ class _$NotFoundError extends NotFoundError {
   factory _$NotFoundError([void Function(NotFoundErrorBuilder)? updates]) =>
       (NotFoundErrorBuilder()..update(updates))._build();
 
-  _$NotFoundError._({
-    required this.name,
-    required this.message,
-    required this.httpStatusCode,
-    required this.traceId,
-    this.details,
-  }) : super._();
+  _$NotFoundError._(
+      {required this.name,
+      required this.message,
+      required this.httpStatusCode,
+      required this.traceId,
+      this.details})
+      : super._();
   @override
   NotFoundError rebuild(void Function(NotFoundErrorBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -295,29 +277,16 @@ class NotFoundErrorBuilder
   _$NotFoundError _build() {
     _$NotFoundError _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$NotFoundError._(
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'NotFoundError',
-              'name',
-            ),
+                name, r'NotFoundError', 'name'),
             message: BuiltValueNullFieldError.checkNotNull(
-              message,
-              r'NotFoundError',
-              'message',
-            ),
+                message, r'NotFoundError', 'message'),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-              httpStatusCode,
-              r'NotFoundError',
-              'httpStatusCode',
-            ),
+                httpStatusCode, r'NotFoundError', 'httpStatusCode'),
             traceId: BuiltValueNullFieldError.checkNotNull(
-              traceId,
-              r'NotFoundError',
-              'traceId',
-            ),
+                traceId, r'NotFoundError', 'traceId'),
             details: _details?.build(),
           );
     } catch (_) {
@@ -327,10 +296,7 @@ class NotFoundErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'NotFoundError',
-          _$failedField,
-          e.toString(),
-        );
+            r'NotFoundError', _$failedField, e.toString());
       }
       rethrow;
     }

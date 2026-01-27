@@ -116,11 +116,9 @@ class _$ConstraintsSerializer implements PrimitiveSerializer<Constraints> {
     Constraints object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -136,65 +134,45 @@ class _$ConstraintsSerializer implements PrimitiveSerializer<Constraints> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'limit_disclosure':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      ConstraintsLimitDisclosureEnum,
-                    ),
-                  )
-                  as ConstraintsLimitDisclosureEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(ConstraintsLimitDisclosureEnum),
+          ) as ConstraintsLimitDisclosureEnum;
           result.limitDisclosure = valueDes;
           break;
         case r'statuses':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(ConstraintsStatuses),
-                  )
-                  as ConstraintsStatuses;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(ConstraintsStatuses),
+          ) as ConstraintsStatuses;
           result.statuses.replace(valueDes);
           break;
         case r'fields':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [FullType(Field)]),
-                  )
-                  as BuiltList<Field>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(Field)]),
+          ) as BuiltList<Field>;
           result.fields.replace(valueDes);
           break;
         case r'subject_is_issuer':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      ConstraintsSubjectIsIssuerEnum,
-                    ),
-                  )
-                  as ConstraintsSubjectIsIssuerEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(ConstraintsSubjectIsIssuerEnum),
+          ) as ConstraintsSubjectIsIssuerEnum;
           result.subjectIsIssuer = valueDes;
           break;
         case r'is_holder':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(HolderSubject),
-                    ]),
-                  )
-                  as BuiltList<HolderSubject>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(HolderSubject)]),
+          ) as BuiltList<HolderSubject>;
           result.isHolder.replace(valueDes);
           break;
         case r'same_subject':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(HolderSubject),
-                    ]),
-                  )
-                  as BuiltList<HolderSubject>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(HolderSubject)]),
+          ) as BuiltList<HolderSubject>;
           result.sameSubject.replace(valueDes);
           break;
         default:

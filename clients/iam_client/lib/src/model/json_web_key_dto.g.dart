@@ -29,17 +29,17 @@ class _$JsonWebKeyDto extends JsonWebKeyDto {
   factory _$JsonWebKeyDto([void Function(JsonWebKeyDtoBuilder)? updates]) =>
       (JsonWebKeyDtoBuilder()..update(updates))._build();
 
-  _$JsonWebKeyDto._({
-    required this.kid,
-    required this.kty,
-    this.n,
-    this.e,
-    this.x,
-    this.y,
-    this.crv,
-    required this.alg,
-    required this.use,
-  }) : super._();
+  _$JsonWebKeyDto._(
+      {required this.kid,
+      required this.kty,
+      this.n,
+      this.e,
+      this.x,
+      this.y,
+      this.crv,
+      required this.alg,
+      required this.use})
+      : super._();
   @override
   JsonWebKeyDto rebuild(void Function(JsonWebKeyDtoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -169,34 +169,21 @@ class JsonWebKeyDtoBuilder
   JsonWebKeyDto build() => _build();
 
   _$JsonWebKeyDto _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$JsonWebKeyDto._(
           kid: BuiltValueNullFieldError.checkNotNull(
-            kid,
-            r'JsonWebKeyDto',
-            'kid',
-          ),
+              kid, r'JsonWebKeyDto', 'kid'),
           kty: BuiltValueNullFieldError.checkNotNull(
-            kty,
-            r'JsonWebKeyDto',
-            'kty',
-          ),
+              kty, r'JsonWebKeyDto', 'kty'),
           n: n,
           e: e,
           x: x,
           y: y,
           crv: crv,
           alg: BuiltValueNullFieldError.checkNotNull(
-            alg,
-            r'JsonWebKeyDto',
-            'alg',
-          ),
+              alg, r'JsonWebKeyDto', 'alg'),
           use: BuiltValueNullFieldError.checkNotNull(
-            use,
-            r'JsonWebKeyDto',
-            'use',
-          ),
+              use, r'JsonWebKeyDto', 'use'),
         );
     replace(_$result);
     return _$result;

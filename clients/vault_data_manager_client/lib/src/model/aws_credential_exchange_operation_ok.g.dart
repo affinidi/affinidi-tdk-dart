@@ -13,18 +13,17 @@ class _$AwsCredentialExchangeOperationOK
   @override
   final String identityId;
 
-  factory _$AwsCredentialExchangeOperationOK([
-    void Function(AwsCredentialExchangeOperationOKBuilder)? updates,
-  ]) => (AwsCredentialExchangeOperationOKBuilder()..update(updates))._build();
+  factory _$AwsCredentialExchangeOperationOK(
+          [void Function(AwsCredentialExchangeOperationOKBuilder)? updates]) =>
+      (AwsCredentialExchangeOperationOKBuilder()..update(updates))._build();
 
-  _$AwsCredentialExchangeOperationOK._({
-    required this.token,
-    required this.identityId,
-  }) : super._();
+  _$AwsCredentialExchangeOperationOK._(
+      {required this.token, required this.identityId})
+      : super._();
   @override
   AwsCredentialExchangeOperationOK rebuild(
-    void Function(AwsCredentialExchangeOperationOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(AwsCredentialExchangeOperationOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   AwsCredentialExchangeOperationOKBuilder toBuilder() =>
@@ -58,10 +57,8 @@ class _$AwsCredentialExchangeOperationOK
 
 class AwsCredentialExchangeOperationOKBuilder
     implements
-        Builder<
-          AwsCredentialExchangeOperationOK,
-          AwsCredentialExchangeOperationOKBuilder
-        > {
+        Builder<AwsCredentialExchangeOperationOK,
+            AwsCredentialExchangeOperationOKBuilder> {
   _$AwsCredentialExchangeOperationOK? _$v;
 
   String? _token;
@@ -100,19 +97,12 @@ class AwsCredentialExchangeOperationOKBuilder
   AwsCredentialExchangeOperationOK build() => _build();
 
   _$AwsCredentialExchangeOperationOK _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$AwsCredentialExchangeOperationOK._(
           token: BuiltValueNullFieldError.checkNotNull(
-            token,
-            r'AwsCredentialExchangeOperationOK',
-            'token',
-          ),
+              token, r'AwsCredentialExchangeOperationOK', 'token'),
           identityId: BuiltValueNullFieldError.checkNotNull(
-            identityId,
-            r'AwsCredentialExchangeOperationOK',
-            'identityId',
-          ),
+              identityId, r'AwsCredentialExchangeOperationOK', 'identityId'),
         );
     replace(_$result);
     return _$result;

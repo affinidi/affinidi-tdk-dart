@@ -2,39 +2,34 @@
 
 Affinidi TDK dart client for Affinidi CONSUMER IAM
 
+
 ## Requirements
 
-- Dart 3.6.0+
-- Dio 5.0.0+ (https://pub.dev/packages/dio)
+* Dart 3.6.0+
+* Dio 5.0.0+ (https://pub.dev/packages/dio)
 
 ## Installation & Usage
 
 ### pub.dev
-
 To use the package from [pub.dev](https://pub.dev), please include the following in pubspec.yaml
-
 ```yaml
 dependencies:
-  affinidi_tdk_consumer_iam_client: ^1.0.0
+  affinidi_tdk_consumer_iam_client: ^1.2.0
 ```
 
 ### Github
-
 This Dart package is published to Github, please include the following in pubspec.yaml
-
 ```yaml
 dependencies:
   affinidi_tdk_consumer_iam_client:
     git:
-      url: https://github.com/affinidi/affinidi-tdk.git
+      url: https://github.com/affinidi/affinidi-tdk-dart.git
       ref: main
-      path: clients/dart/consumer_iam_client
+      path: clients/consumer_iam_client
 ```
 
 ### Local development
-
 To use the package from your local drive, please include the following in pubspec.yaml
-
 ```yaml
 dependencies:
   affinidi_tdk_consumer_iam_client:
@@ -56,7 +51,7 @@ import 'package:affinidi_tdk_consumer_iam_client/affinidi_tdk_consumer_iam_clien
 
 
 final api = AffinidiTdkConsumerIamClient().getAuthzApi();
-final String granteeDid = granteeDid_example; // String |
+final String granteeDid = granteeDid_example; // String | 
 
 try {
     api.deleteAccessVfs(granteeDid);
@@ -70,46 +65,50 @@ try {
 
 All URIs are relative to *https://apse1.api.affinidi.io/cid*
 
-| Class                                       | Method                                                                            | HTTP request                                 | Description                                              |
-| ------------------------------------------- | --------------------------------------------------------------------------------- | -------------------------------------------- | -------------------------------------------------------- |
-| [_AuthzApi_](doc/AuthzApi.md)               | [**deleteAccessVfs**](doc/AuthzApi.md#deleteaccessvfs)                            | **DELETE** /v1/authz/vfs/access/{granteeDid} | delete access of granteeDid                              |
-| [_AuthzApi_](doc/AuthzApi.md)               | [**getAccessVfs**](doc/AuthzApi.md#getaccessvfs)                                  | **GET** /v1/authz/vfs/access/{granteeDid}    | Get permissions to the virtual file system for a subject |
-| [_AuthzApi_](doc/AuthzApi.md)               | [**grantAccessVfs**](doc/AuthzApi.md#grantaccessvfs)                              | **POST** /v1/authz/vfs/access/{granteeDid}   | Grant access to the virtual file system                  |
-| [_AuthzApi_](doc/AuthzApi.md)               | [**updateAccessVfs**](doc/AuthzApi.md#updateaccessvfs)                            | **PUT** /v1/authz/vfs/access/{granteeDid}    | Update access of granteeDid                              |
-| [_ConsumerAuthApi_](doc/ConsumerAuthApi.md) | [**consumerAuthTokenEndpoint**](doc/ConsumerAuthApi.md#consumerauthtokenendpoint) | **POST** /v1/consumer/oauth2/token           | The Consumer OAuth 2.0 Token Endpoint                    |
-| [_WellKnownApi_](doc/WellKnownApi.md)       | [**getWellKnownJwks**](doc/WellKnownApi.md#getwellknownjwks)                      | **GET** /.well-known/jwks.json               |
+Class | Method | HTTP request | Description
+------------ | ------------- | ------------- | -------------
+[*AuthzApi*](doc/AuthzApi.md) | [**deleteAccessVfs**](doc/AuthzApi.md#deleteaccessvfs) | **DELETE** /v1/authz/vfs/access/{granteeDid} | delete access of granteeDid
+[*AuthzApi*](doc/AuthzApi.md) | [**getAccessVfs**](doc/AuthzApi.md#getaccessvfs) | **GET** /v1/authz/vfs/access/{granteeDid} | Get permissions to the virtual file system for a subject
+[*AuthzApi*](doc/AuthzApi.md) | [**grantAccessVfs**](doc/AuthzApi.md#grantaccessvfs) | **POST** /v1/authz/vfs/access/{granteeDid} | Grant access to the virtual file system
+[*AuthzApi*](doc/AuthzApi.md) | [**updateAccessVfs**](doc/AuthzApi.md#updateaccessvfs) | **PUT** /v1/authz/vfs/access/{granteeDid} | Update access of granteeDid
+[*ConsumerAuthApi*](doc/ConsumerAuthApi.md) | [**consumerAuthTokenEndpoint**](doc/ConsumerAuthApi.md#consumerauthtokenendpoint) | **POST** /v1/consumer/oauth2/token | The Consumer OAuth 2.0 Token Endpoint
+[*WellKnownApi*](doc/WellKnownApi.md) | [**getWellKnownJwks**](doc/WellKnownApi.md#getwellknownjwks) | **GET** /.well-known/jwks.json | 
+
 
 ## Documentation For Models
 
-- [ConsumerAuthTokenEndpointInput](doc/ConsumerAuthTokenEndpointInput.md)
-- [ConsumerAuthTokenEndpointOutput](doc/ConsumerAuthTokenEndpointOutput.md)
-- [CorsConsumerAuthTokenEndpointOK](doc/CorsConsumerAuthTokenEndpointOK.md)
-- [GetAccessOutput](doc/GetAccessOutput.md)
-- [GrantAccessInput](doc/GrantAccessInput.md)
-- [GrantAccessOutput](doc/GrantAccessOutput.md)
-- [InvalidDIDError](doc/InvalidDIDError.md)
-- [InvalidJwtTokenError](doc/InvalidJwtTokenError.md)
-- [InvalidJwtTokenErrorDetailsInner](doc/InvalidJwtTokenErrorDetailsInner.md)
-- [InvalidParameterError](doc/InvalidParameterError.md)
-- [JsonWebKeyDto](doc/JsonWebKeyDto.md)
-- [JsonWebKeySetDto](doc/JsonWebKeySetDto.md)
-- [Permission](doc/Permission.md)
-- [RightsEnum](doc/RightsEnum.md)
-- [UnauthorizedError](doc/UnauthorizedError.md)
-- [UnexpectedError](doc/UnexpectedError.md)
-- [UpdateAccessInput](doc/UpdateAccessInput.md)
-- [UpdateAccessOutput](doc/UpdateAccessOutput.md)
+ - [ConsumerAuthTokenEndpointInput](doc/ConsumerAuthTokenEndpointInput.md)
+ - [ConsumerAuthTokenEndpointOutput](doc/ConsumerAuthTokenEndpointOutput.md)
+ - [CorsConsumerAuthTokenEndpointOK](doc/CorsConsumerAuthTokenEndpointOK.md)
+ - [GetAccessOutput](doc/GetAccessOutput.md)
+ - [GrantAccessInput](doc/GrantAccessInput.md)
+ - [GrantAccessOutput](doc/GrantAccessOutput.md)
+ - [InvalidDIDError](doc/InvalidDIDError.md)
+ - [InvalidJwtTokenError](doc/InvalidJwtTokenError.md)
+ - [InvalidJwtTokenErrorDetailsInner](doc/InvalidJwtTokenErrorDetailsInner.md)
+ - [InvalidParameterError](doc/InvalidParameterError.md)
+ - [JsonWebKeyDto](doc/JsonWebKeyDto.md)
+ - [JsonWebKeySetDto](doc/JsonWebKeySetDto.md)
+ - [Permission](doc/Permission.md)
+ - [RightsEnum](doc/RightsEnum.md)
+ - [UnauthorizedError](doc/UnauthorizedError.md)
+ - [UnexpectedError](doc/UnexpectedError.md)
+ - [UpdateAccessInput](doc/UpdateAccessInput.md)
+ - [UpdateAccessOutput](doc/UpdateAccessOutput.md)
+
 
 ## Documentation For Authorization
 
-Authentication schemes defined for the API:
 
+Authentication schemes defined for the API:
 ### ConsumerTokenAuth
 
 - **Type**: API key
 - **API key parameter name**: authorization
 - **Location**: HTTP header
 
+
 ## Author
 
 info@affinidi.com
+

@@ -15,18 +15,16 @@ part 'cors_consumer_auth_token_endpoint_ok.g.dart';
 @BuiltValue()
 abstract class CorsConsumerAuthTokenEndpointOK
     implements
-        Built<
-          CorsConsumerAuthTokenEndpointOK,
-          CorsConsumerAuthTokenEndpointOKBuilder
-        > {
+        Built<CorsConsumerAuthTokenEndpointOK,
+            CorsConsumerAuthTokenEndpointOKBuilder> {
   @BuiltValueField(wireName: r'corsConsumerAuthTokenEndpointOk')
   String? get corsConsumerAuthTokenEndpointOk;
 
   CorsConsumerAuthTokenEndpointOK._();
 
-  factory CorsConsumerAuthTokenEndpointOK([
-    void updates(CorsConsumerAuthTokenEndpointOKBuilder b),
-  ]) = _$CorsConsumerAuthTokenEndpointOK;
+  factory CorsConsumerAuthTokenEndpointOK(
+          [void updates(CorsConsumerAuthTokenEndpointOKBuilder b)]) =
+      _$CorsConsumerAuthTokenEndpointOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsConsumerAuthTokenEndpointOKBuilder b) => b;
@@ -41,7 +39,7 @@ class _$CorsConsumerAuthTokenEndpointOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsConsumerAuthTokenEndpointOK,
-    _$CorsConsumerAuthTokenEndpointOK,
+    _$CorsConsumerAuthTokenEndpointOK
   ];
 
   @override
@@ -67,11 +65,9 @@ class _$CorsConsumerAuthTokenEndpointOKSerializer
     CorsConsumerAuthTokenEndpointOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -87,12 +83,10 @@ class _$CorsConsumerAuthTokenEndpointOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsConsumerAuthTokenEndpointOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsConsumerAuthTokenEndpointOk = valueDes;
           break;
         default:

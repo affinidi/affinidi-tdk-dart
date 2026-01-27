@@ -22,10 +22,8 @@ part 'flow_data_status_lists_details_inner.g.dart';
 @BuiltValue()
 abstract class FlowDataStatusListsDetailsInner
     implements
-        Built<
-          FlowDataStatusListsDetailsInner,
-          FlowDataStatusListsDetailsInnerBuilder
-        > {
+        Built<FlowDataStatusListsDetailsInner,
+            FlowDataStatusListsDetailsInnerBuilder> {
   /// Purpose of status list to which credential is added
   @BuiltValueField(wireName: r'statusListPurpose')
   FlowDataStatusListsDetailsInnerStatusListPurposeEnum get statusListPurpose;
@@ -57,9 +55,9 @@ abstract class FlowDataStatusListsDetailsInner
 
   FlowDataStatusListsDetailsInner._();
 
-  factory FlowDataStatusListsDetailsInner([
-    void updates(FlowDataStatusListsDetailsInnerBuilder b),
-  ]) = _$FlowDataStatusListsDetailsInner;
+  factory FlowDataStatusListsDetailsInner(
+          [void updates(FlowDataStatusListsDetailsInnerBuilder b)]) =
+      _$FlowDataStatusListsDetailsInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(FlowDataStatusListsDetailsInnerBuilder b) => b;
@@ -74,7 +72,7 @@ class _$FlowDataStatusListsDetailsInnerSerializer
   @override
   final Iterable<Type> types = const [
     FlowDataStatusListsDetailsInner,
-    _$FlowDataStatusListsDetailsInner,
+    _$FlowDataStatusListsDetailsInner
   ];
 
   @override
@@ -88,9 +86,8 @@ class _$FlowDataStatusListsDetailsInnerSerializer
     yield r'statusListPurpose';
     yield serializers.serialize(
       object.statusListPurpose,
-      specifiedType: const FullType(
-        FlowDataStatusListsDetailsInnerStatusListPurposeEnum,
-      ),
+      specifiedType:
+          const FullType(FlowDataStatusListsDetailsInnerStatusListPurposeEnum),
     );
     yield r'statusListId';
     yield serializers.serialize(
@@ -105,9 +102,8 @@ class _$FlowDataStatusListsDetailsInnerSerializer
     yield r'standard';
     yield serializers.serialize(
       object.standard,
-      specifiedType: const FullType(
-        FlowDataStatusListsDetailsInnerStandardEnum,
-      ),
+      specifiedType:
+          const FullType(FlowDataStatusListsDetailsInnerStandardEnum),
     );
     yield r'isActive';
     yield serializers.serialize(
@@ -136,11 +132,9 @@ class _$FlowDataStatusListsDetailsInnerSerializer
     FlowDataStatusListsDetailsInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -156,70 +150,54 @@ class _$FlowDataStatusListsDetailsInnerSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'statusListPurpose':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      FlowDataStatusListsDetailsInnerStatusListPurposeEnum,
-                    ),
-                  )
-                  as FlowDataStatusListsDetailsInnerStatusListPurposeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                FlowDataStatusListsDetailsInnerStatusListPurposeEnum),
+          ) as FlowDataStatusListsDetailsInnerStatusListPurposeEnum;
           result.statusListPurpose = valueDes;
           break;
         case r'statusListId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.statusListId = valueDes;
           break;
         case r'statusListIndex':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.statusListIndex = valueDes;
           break;
         case r'standard':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      FlowDataStatusListsDetailsInnerStandardEnum,
-                    ),
-                  )
-                  as FlowDataStatusListsDetailsInnerStandardEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(FlowDataStatusListsDetailsInnerStandardEnum),
+          ) as FlowDataStatusListsDetailsInnerStandardEnum;
           result.standard = valueDes;
           break;
         case r'isActive':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(bool),
-                  )
-                  as bool;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(bool),
+          ) as bool;
           result.isActive = valueDes;
           break;
         case r'statusActivationReason':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.statusActivationReason = valueDes;
           break;
         case r'statusActivatedAt':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.statusActivatedAt = valueDes;
           break;
         default:
@@ -258,17 +236,18 @@ class FlowDataStatusListsDetailsInnerStatusListPurposeEnum extends EnumClass {
       _$flowDataStatusListsDetailsInnerStatusListPurposeEnum_REVOKED;
 
   static Serializer<FlowDataStatusListsDetailsInnerStatusListPurposeEnum>
-  get serializer =>
-      _$flowDataStatusListsDetailsInnerStatusListPurposeEnumSerializer;
+      get serializer =>
+          _$flowDataStatusListsDetailsInnerStatusListPurposeEnumSerializer;
 
   const FlowDataStatusListsDetailsInnerStatusListPurposeEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<FlowDataStatusListsDetailsInnerStatusListPurposeEnum>
-  get values => _$flowDataStatusListsDetailsInnerStatusListPurposeEnumValues;
+      get values =>
+          _$flowDataStatusListsDetailsInnerStatusListPurposeEnumValues;
   static FlowDataStatusListsDetailsInnerStatusListPurposeEnum valueOf(
-    String name,
-  ) => _$flowDataStatusListsDetailsInnerStatusListPurposeEnumValueOf(name);
+          String name) =>
+      _$flowDataStatusListsDetailsInnerStatusListPurposeEnumValueOf(name);
 }
 
 class FlowDataStatusListsDetailsInnerStandardEnum extends EnumClass {
@@ -277,10 +256,10 @@ class FlowDataStatusListsDetailsInnerStandardEnum extends EnumClass {
       _$flowDataStatusListsDetailsInnerStandardEnum_revocationList2020;
 
   static Serializer<FlowDataStatusListsDetailsInnerStandardEnum>
-  get serializer => _$flowDataStatusListsDetailsInnerStandardEnumSerializer;
+      get serializer => _$flowDataStatusListsDetailsInnerStandardEnumSerializer;
 
   const FlowDataStatusListsDetailsInnerStandardEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<FlowDataStatusListsDetailsInnerStandardEnum> get values =>
       _$flowDataStatusListsDetailsInnerStandardEnumValues;

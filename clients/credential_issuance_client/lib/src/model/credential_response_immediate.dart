@@ -32,9 +32,9 @@ abstract class CredentialResponseImmediate
 
   CredentialResponseImmediate._();
 
-  factory CredentialResponseImmediate([
-    void updates(CredentialResponseImmediateBuilder b),
-  ]) = _$CredentialResponseImmediate;
+  factory CredentialResponseImmediate(
+          [void updates(CredentialResponseImmediateBuilder b)]) =
+      _$CredentialResponseImmediate;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CredentialResponseImmediateBuilder b) => b;
@@ -49,7 +49,7 @@ class _$CredentialResponseImmediateSerializer
   @override
   final Iterable<Type> types = const [
     CredentialResponseImmediate,
-    _$CredentialResponseImmediate,
+    _$CredentialResponseImmediate
   ];
 
   @override
@@ -83,11 +83,9 @@ class _$CredentialResponseImmediateSerializer
     CredentialResponseImmediate object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -103,34 +101,26 @@ class _$CredentialResponseImmediateSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'credential':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CredentialResponseImmediateCredential,
-                    ),
-                  )
-                  as CredentialResponseImmediateCredential;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(CredentialResponseImmediateCredential),
+          ) as CredentialResponseImmediateCredential;
           result.credential.replace(valueDes);
           break;
         case r'c_nonce':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.cNonce = valueDes;
           break;
         case r'c_nonce_expires_in':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CredentialResponseImmediateCNonceExpiresIn,
-                    ),
-                  )
-                  as CredentialResponseImmediateCNonceExpiresIn;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(CredentialResponseImmediateCNonceExpiresIn),
+          ) as CredentialResponseImmediateCNonceExpiresIn;
           result.cNonceExpiresIn.replace(valueDes);
           break;
         default:

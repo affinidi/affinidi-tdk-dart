@@ -21,10 +21,8 @@ part 'public_key_cannot_be_resolved_from_did_error.g.dart';
 @BuiltValue()
 abstract class PublicKeyCannotBeResolvedFromDidError
     implements
-        Built<
-          PublicKeyCannotBeResolvedFromDidError,
-          PublicKeyCannotBeResolvedFromDidErrorBuilder
-        > {
+        Built<PublicKeyCannotBeResolvedFromDidError,
+            PublicKeyCannotBeResolvedFromDidErrorBuilder> {
   @BuiltValueField(wireName: r'name')
   PublicKeyCannotBeResolvedFromDidErrorNameEnum get name;
   // enum nameEnum {  PublicKeyCannotBeResolvedFromDidError,  };
@@ -45,9 +43,9 @@ abstract class PublicKeyCannotBeResolvedFromDidError
 
   PublicKeyCannotBeResolvedFromDidError._();
 
-  factory PublicKeyCannotBeResolvedFromDidError([
-    void updates(PublicKeyCannotBeResolvedFromDidErrorBuilder b),
-  ]) = _$PublicKeyCannotBeResolvedFromDidError;
+  factory PublicKeyCannotBeResolvedFromDidError(
+          [void updates(PublicKeyCannotBeResolvedFromDidErrorBuilder b)]) =
+      _$PublicKeyCannotBeResolvedFromDidError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(PublicKeyCannotBeResolvedFromDidErrorBuilder b) => b;
@@ -62,7 +60,7 @@ class _$PublicKeyCannotBeResolvedFromDidErrorSerializer
   @override
   final Iterable<Type> types = const [
     PublicKeyCannotBeResolvedFromDidError,
-    _$PublicKeyCannotBeResolvedFromDidError,
+    _$PublicKeyCannotBeResolvedFromDidError
   ];
 
   @override
@@ -76,23 +74,20 @@ class _$PublicKeyCannotBeResolvedFromDidErrorSerializer
     yield r'name';
     yield serializers.serialize(
       object.name,
-      specifiedType: const FullType(
-        PublicKeyCannotBeResolvedFromDidErrorNameEnum,
-      ),
+      specifiedType:
+          const FullType(PublicKeyCannotBeResolvedFromDidErrorNameEnum),
     );
     yield r'message';
     yield serializers.serialize(
       object.message,
-      specifiedType: const FullType(
-        PublicKeyCannotBeResolvedFromDidErrorMessageEnum,
-      ),
+      specifiedType:
+          const FullType(PublicKeyCannotBeResolvedFromDidErrorMessageEnum),
     );
     yield r'httpStatusCode';
     yield serializers.serialize(
       object.httpStatusCode,
       specifiedType: const FullType(
-        PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum,
-      ),
+          PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum),
     );
     yield r'traceId';
     yield serializers.serialize(
@@ -103,9 +98,8 @@ class _$PublicKeyCannotBeResolvedFromDidErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ServiceErrorResponseDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
       );
     }
   }
@@ -116,11 +110,9 @@ class _$PublicKeyCannotBeResolvedFromDidErrorSerializer
     PublicKeyCannotBeResolvedFromDidError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -136,56 +128,42 @@ class _$PublicKeyCannotBeResolvedFromDidErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      PublicKeyCannotBeResolvedFromDidErrorNameEnum,
-                    ),
-                  )
-                  as PublicKeyCannotBeResolvedFromDidErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(PublicKeyCannotBeResolvedFromDidErrorNameEnum),
+          ) as PublicKeyCannotBeResolvedFromDidErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      PublicKeyCannotBeResolvedFromDidErrorMessageEnum,
-                    ),
-                  )
-                  as PublicKeyCannotBeResolvedFromDidErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                PublicKeyCannotBeResolvedFromDidErrorMessageEnum),
+          ) as PublicKeyCannotBeResolvedFromDidErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum),
+          ) as PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ServiceErrorResponseDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ServiceErrorResponseDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
+          ) as BuiltList<ServiceErrorResponseDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -220,14 +198,15 @@ class _$PublicKeyCannotBeResolvedFromDidErrorSerializer
 class PublicKeyCannotBeResolvedFromDidErrorNameEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'PublicKeyCannotBeResolvedFromDidError')
   static const PublicKeyCannotBeResolvedFromDidErrorNameEnum
-  publicKeyCannotBeResolvedFromDidError =
+      publicKeyCannotBeResolvedFromDidError =
       _$publicKeyCannotBeResolvedFromDidErrorNameEnum_publicKeyCannotBeResolvedFromDidError;
 
   static Serializer<PublicKeyCannotBeResolvedFromDidErrorNameEnum>
-  get serializer => _$publicKeyCannotBeResolvedFromDidErrorNameEnumSerializer;
+      get serializer =>
+          _$publicKeyCannotBeResolvedFromDidErrorNameEnumSerializer;
 
   const PublicKeyCannotBeResolvedFromDidErrorNameEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<PublicKeyCannotBeResolvedFromDidErrorNameEnum> get values =>
       _$publicKeyCannotBeResolvedFromDidErrorNameEnumValues;
@@ -237,43 +216,43 @@ class PublicKeyCannotBeResolvedFromDidErrorNameEnum extends EnumClass {
 
 class PublicKeyCannotBeResolvedFromDidErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(
-    wireName: r'Unable to resolve DID method. Invalid public key',
-  )
+      wireName: r'Unable to resolve DID method. Invalid public key')
   static const PublicKeyCannotBeResolvedFromDidErrorMessageEnum
-  unableToResolveDIDMethodPeriodInvalidPublicKey =
+      unableToResolveDIDMethodPeriodInvalidPublicKey =
       _$publicKeyCannotBeResolvedFromDidErrorMessageEnum_unableToResolveDIDMethodPeriodInvalidPublicKey;
 
   static Serializer<PublicKeyCannotBeResolvedFromDidErrorMessageEnum>
-  get serializer =>
-      _$publicKeyCannotBeResolvedFromDidErrorMessageEnumSerializer;
+      get serializer =>
+          _$publicKeyCannotBeResolvedFromDidErrorMessageEnumSerializer;
 
   const PublicKeyCannotBeResolvedFromDidErrorMessageEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<PublicKeyCannotBeResolvedFromDidErrorMessageEnum>
-  get values => _$publicKeyCannotBeResolvedFromDidErrorMessageEnumValues;
+      get values => _$publicKeyCannotBeResolvedFromDidErrorMessageEnumValues;
   static PublicKeyCannotBeResolvedFromDidErrorMessageEnum valueOf(
-    String name,
-  ) => _$publicKeyCannotBeResolvedFromDidErrorMessageEnumValueOf(name);
+          String name) =>
+      _$publicKeyCannotBeResolvedFromDidErrorMessageEnumValueOf(name);
 }
 
 class PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum
     extends EnumClass {
   @BuiltValueEnumConst(wireNumber: 400)
   static const PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum
-  number400 =
+      number400 =
       _$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum_number400;
 
   static Serializer<PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum>
-  get serializer =>
-      _$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnumSerializer;
+      get serializer =>
+          _$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnumSerializer;
 
   const PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum._(String name)
-    : super(name);
+      : super(name);
 
   static BuiltSet<PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum>
-  get values => _$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnumValues;
+      get values =>
+          _$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnumValues;
   static PublicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnum valueOf(
-    String name,
-  ) => _$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnumValueOf(name);
+          String name) =>
+      _$publicKeyCannotBeResolvedFromDidErrorHttpStatusCodeEnumValueOf(name);
 }

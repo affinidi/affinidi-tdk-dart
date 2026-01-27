@@ -47,9 +47,7 @@ class _$InlineObjectSerializer implements PrimitiveSerializer<InlineObject> {
   final String wireName = r'InlineObject';
 
   Iterable<Object?> _serializeProperties(
-    Serializers serializers,
-    InlineObject object,
-  ) sync* {}
+      Serializers serializers, InlineObject object) sync* {}
 
   @override
   Object serialize(
@@ -58,10 +56,8 @@ class _$InlineObjectSerializer implements PrimitiveSerializer<InlineObject> {
     FullType specifiedType = FullType.unspecified,
   }) {
     final oneOf = object.oneOf;
-    return serializers.serialize(
-      oneOf.value,
-      specifiedType: FullType(oneOf.valueType),
-    )!;
+    return serializers.serialize(oneOf.value,
+        specifiedType: FullType(oneOf.valueType))!;
   }
 
   @override
@@ -79,9 +75,8 @@ class _$InlineObjectSerializer implements PrimitiveSerializer<InlineObject> {
       FullType(InvalidVPTokenCreationTimeError),
     ]);
     oneOfDataSrc = serialized;
-    result.oneOf =
-        serializers.deserialize(oneOfDataSrc, specifiedType: targetType)
-            as OneOf;
+    result.oneOf = serializers.deserialize(oneOfDataSrc,
+        specifiedType: targetType) as OneOf;
     return result.build();
   }
 }

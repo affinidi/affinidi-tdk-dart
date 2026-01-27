@@ -20,15 +20,14 @@ UnauthorizedErrorNameEnum _$unauthorizedErrorNameEnumValueOf(String name) {
 
 final BuiltSet<UnauthorizedErrorNameEnum> _$unauthorizedErrorNameEnumValues =
     BuiltSet<UnauthorizedErrorNameEnum>(const <UnauthorizedErrorNameEnum>[
-      _$unauthorizedErrorNameEnum_unauthorizedError,
-    ]);
+  _$unauthorizedErrorNameEnum_unauthorizedError,
+]);
 
 const UnauthorizedErrorMessageEnum _$unauthorizedErrorMessageEnum_unauthorized =
     const UnauthorizedErrorMessageEnum._('unauthorized');
 
 UnauthorizedErrorMessageEnum _$unauthorizedErrorMessageEnumValueOf(
-  String name,
-) {
+    String name) {
   switch (name) {
     case 'unauthorized':
       return _$unauthorizedErrorMessageEnum_unauthorized;
@@ -38,18 +37,17 @@ UnauthorizedErrorMessageEnum _$unauthorizedErrorMessageEnumValueOf(
 }
 
 final BuiltSet<UnauthorizedErrorMessageEnum>
-_$unauthorizedErrorMessageEnumValues = BuiltSet<UnauthorizedErrorMessageEnum>(
-  const <UnauthorizedErrorMessageEnum>[
-    _$unauthorizedErrorMessageEnum_unauthorized,
-  ],
-);
+    _$unauthorizedErrorMessageEnumValues =
+    BuiltSet<UnauthorizedErrorMessageEnum>(const <UnauthorizedErrorMessageEnum>[
+  _$unauthorizedErrorMessageEnum_unauthorized,
+]);
 
 const UnauthorizedErrorHttpStatusCodeEnum
-_$unauthorizedErrorHttpStatusCodeEnum_number401 =
+    _$unauthorizedErrorHttpStatusCodeEnum_number401 =
     const UnauthorizedErrorHttpStatusCodeEnum._('number401');
 
 UnauthorizedErrorHttpStatusCodeEnum
-_$unauthorizedErrorHttpStatusCodeEnumValueOf(String name) {
+    _$unauthorizedErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number401':
       return _$unauthorizedErrorHttpStatusCodeEnum_number401;
@@ -59,20 +57,18 @@ _$unauthorizedErrorHttpStatusCodeEnumValueOf(String name) {
 }
 
 final BuiltSet<UnauthorizedErrorHttpStatusCodeEnum>
-_$unauthorizedErrorHttpStatusCodeEnumValues =
-    BuiltSet<UnauthorizedErrorHttpStatusCodeEnum>(
-      const <UnauthorizedErrorHttpStatusCodeEnum>[
-        _$unauthorizedErrorHttpStatusCodeEnum_number401,
-      ],
-    );
+    _$unauthorizedErrorHttpStatusCodeEnumValues = BuiltSet<
+        UnauthorizedErrorHttpStatusCodeEnum>(const <UnauthorizedErrorHttpStatusCodeEnum>[
+  _$unauthorizedErrorHttpStatusCodeEnum_number401,
+]);
 
 Serializer<UnauthorizedErrorNameEnum> _$unauthorizedErrorNameEnumSerializer =
     _$UnauthorizedErrorNameEnumSerializer();
 Serializer<UnauthorizedErrorMessageEnum>
-_$unauthorizedErrorMessageEnumSerializer =
+    _$unauthorizedErrorMessageEnumSerializer =
     _$UnauthorizedErrorMessageEnumSerializer();
 Serializer<UnauthorizedErrorHttpStatusCodeEnum>
-_$unauthorizedErrorHttpStatusCodeEnumSerializer =
+    _$unauthorizedErrorHttpStatusCodeEnumSerializer =
     _$UnauthorizedErrorHttpStatusCodeEnumSerializer();
 
 class _$UnauthorizedErrorNameEnumSerializer
@@ -90,20 +86,16 @@ class _$UnauthorizedErrorNameEnumSerializer
   final String wireName = 'UnauthorizedErrorNameEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    UnauthorizedErrorNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers, UnauthorizedErrorNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   UnauthorizedErrorNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => UnauthorizedErrorNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      UnauthorizedErrorNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$UnauthorizedErrorMessageEnumSerializer
@@ -121,20 +113,16 @@ class _$UnauthorizedErrorMessageEnumSerializer
   final String wireName = 'UnauthorizedErrorMessageEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    UnauthorizedErrorMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers, UnauthorizedErrorMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   UnauthorizedErrorMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => UnauthorizedErrorMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      UnauthorizedErrorMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$UnauthorizedErrorHttpStatusCodeEnumSerializer
@@ -148,26 +136,23 @@ class _$UnauthorizedErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    UnauthorizedErrorHttpStatusCodeEnum,
+    UnauthorizedErrorHttpStatusCodeEnum
   ];
   @override
   final String wireName = 'UnauthorizedErrorHttpStatusCodeEnum';
 
   @override
   Object serialize(
-    Serializers serializers,
-    UnauthorizedErrorHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, UnauthorizedErrorHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   UnauthorizedErrorHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => UnauthorizedErrorHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      UnauthorizedErrorHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$UnauthorizedError extends UnauthorizedError {
@@ -182,17 +167,17 @@ class _$UnauthorizedError extends UnauthorizedError {
   @override
   final BuiltList<InvalidParameterErrorDetailsInner>? details;
 
-  factory _$UnauthorizedError([
-    void Function(UnauthorizedErrorBuilder)? updates,
-  ]) => (UnauthorizedErrorBuilder()..update(updates))._build();
+  factory _$UnauthorizedError(
+          [void Function(UnauthorizedErrorBuilder)? updates]) =>
+      (UnauthorizedErrorBuilder()..update(updates))._build();
 
-  _$UnauthorizedError._({
-    required this.name,
-    required this.message,
-    required this.httpStatusCode,
-    required this.traceId,
-    this.details,
-  }) : super._();
+  _$UnauthorizedError._(
+      {required this.name,
+      required this.message,
+      required this.httpStatusCode,
+      required this.traceId,
+      this.details})
+      : super._();
   @override
   UnauthorizedError rebuild(void Function(UnauthorizedErrorBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -298,29 +283,16 @@ class UnauthorizedErrorBuilder
   _$UnauthorizedError _build() {
     _$UnauthorizedError _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$UnauthorizedError._(
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'UnauthorizedError',
-              'name',
-            ),
+                name, r'UnauthorizedError', 'name'),
             message: BuiltValueNullFieldError.checkNotNull(
-              message,
-              r'UnauthorizedError',
-              'message',
-            ),
+                message, r'UnauthorizedError', 'message'),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-              httpStatusCode,
-              r'UnauthorizedError',
-              'httpStatusCode',
-            ),
+                httpStatusCode, r'UnauthorizedError', 'httpStatusCode'),
             traceId: BuiltValueNullFieldError.checkNotNull(
-              traceId,
-              r'UnauthorizedError',
-              'traceId',
-            ),
+                traceId, r'UnauthorizedError', 'traceId'),
             details: _details?.build(),
           );
     } catch (_) {
@@ -330,10 +302,7 @@ class UnauthorizedErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'UnauthorizedError',
-          _$failedField,
-          e.toString(),
-        );
+            r'UnauthorizedError', _$failedField, e.toString());
       }
       rethrow;
     }

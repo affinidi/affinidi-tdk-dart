@@ -47,18 +47,15 @@ class DcqlQueryApi {
   }) async {
     final _path = r'/v1/configurations/{configurationId}/dcql-queries'
         .replaceAll(
-          '{'
-          r'configurationId'
-          '}',
-          encodeQueryParameter(
-            _serializers,
-            configurationId,
-            const FullType(String),
-          ).toString(),
-        );
+            '{' r'configurationId' '}',
+            encodeQueryParameter(
+                    _serializers, configurationId, const FullType(String))
+                .toString());
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -78,13 +75,14 @@ class DcqlQueryApi {
 
     try {
       const _type = FullType(CreateDcqlQueryInput);
-      _bodyData = _serializers.serialize(
-        createDcqlQueryInput,
-        specifiedType: _type,
-      );
+      _bodyData =
+          _serializers.serialize(createDcqlQueryInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -107,10 +105,9 @@ class DcqlQueryApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(DcqlQueryDto),
-                )
-                as DcqlQueryDto;
+              rawResponse,
+              specifiedType: const FullType(DcqlQueryDto),
+            ) as DcqlQueryDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -160,28 +157,19 @@ class DcqlQueryApi {
   }) async {
     final _path = r'/v1/configurations/{configurationId}/dcql-queries/{queryId}'
         .replaceAll(
-          '{'
-          r'configurationId'
-          '}',
-          encodeQueryParameter(
-            _serializers,
-            configurationId,
-            const FullType(String),
-          ).toString(),
-        )
+            '{' r'configurationId' '}',
+            encodeQueryParameter(
+                    _serializers, configurationId, const FullType(String))
+                .toString())
         .replaceAll(
-          '{'
-          r'queryId'
-          '}',
-          encodeQueryParameter(
-            _serializers,
-            queryId,
-            const FullType(String),
-          ).toString(),
-        );
+            '{' r'queryId' '}',
+            encodeQueryParameter(_serializers, queryId, const FullType(String))
+                .toString());
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -234,28 +222,19 @@ class DcqlQueryApi {
   }) async {
     final _path = r'/v1/configurations/{configurationId}/dcql-queries/{queryId}'
         .replaceAll(
-          '{'
-          r'configurationId'
-          '}',
-          encodeQueryParameter(
-            _serializers,
-            configurationId,
-            const FullType(String),
-          ).toString(),
-        )
+            '{' r'configurationId' '}',
+            encodeQueryParameter(
+                    _serializers, configurationId, const FullType(String))
+                .toString())
         .replaceAll(
-          '{'
-          r'queryId'
-          '}',
-          encodeQueryParameter(
-            _serializers,
-            queryId,
-            const FullType(String),
-          ).toString(),
-        );
+            '{' r'queryId' '}',
+            encodeQueryParameter(_serializers, queryId, const FullType(String))
+                .toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -285,10 +264,9 @@ class DcqlQueryApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(DcqlQueryDto),
-                )
-                as DcqlQueryDto;
+              rawResponse,
+              specifiedType: const FullType(DcqlQueryDto),
+            ) as DcqlQueryDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -340,18 +318,15 @@ class DcqlQueryApi {
   }) async {
     final _path = r'/v1/configurations/{configurationId}/dcql-queries'
         .replaceAll(
-          '{'
-          r'configurationId'
-          '}',
-          encodeQueryParameter(
-            _serializers,
-            configurationId,
-            const FullType(String),
-          ).toString(),
-        );
+            '{' r'configurationId' '}',
+            encodeQueryParameter(
+                    _serializers, configurationId, const FullType(String))
+                .toString());
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -368,17 +343,11 @@ class DcqlQueryApi {
 
     final _queryParameters = <String, dynamic>{
       if (limit != null)
-        r'limit': encodeQueryParameter(
-          _serializers,
-          limit,
-          const FullType(int),
-        ),
+        r'limit':
+            encodeQueryParameter(_serializers, limit, const FullType(int)),
       if (exclusiveStartKey != null)
         r'exclusiveStartKey': encodeQueryParameter(
-          _serializers,
-          exclusiveStartKey,
-          const FullType(String),
-        ),
+            _serializers, exclusiveStartKey, const FullType(String)),
     };
 
     final _response = await _dio.request<Object>(
@@ -397,10 +366,9 @@ class DcqlQueryApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(ListDcqlQueriesOK),
-                )
-                as ListDcqlQueriesOK;
+              rawResponse,
+              specifiedType: const FullType(ListDcqlQueriesOK),
+            ) as ListDcqlQueriesOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -452,28 +420,19 @@ class DcqlQueryApi {
   }) async {
     final _path = r'/v1/configurations/{configurationId}/dcql-queries/{queryId}'
         .replaceAll(
-          '{'
-          r'configurationId'
-          '}',
-          encodeQueryParameter(
-            _serializers,
-            configurationId,
-            const FullType(String),
-          ).toString(),
-        )
+            '{' r'configurationId' '}',
+            encodeQueryParameter(
+                    _serializers, configurationId, const FullType(String))
+                .toString())
         .replaceAll(
-          '{'
-          r'queryId'
-          '}',
-          encodeQueryParameter(
-            _serializers,
-            queryId,
-            const FullType(String),
-          ).toString(),
-        );
+            '{' r'queryId' '}',
+            encodeQueryParameter(_serializers, queryId, const FullType(String))
+                .toString());
     final _options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{...?headers},
+      headers: <String, dynamic>{
+        ...?headers,
+      },
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -493,13 +452,14 @@ class DcqlQueryApi {
 
     try {
       const _type = FullType(UpdateDcqlQueryInput);
-      _bodyData = _serializers.serialize(
-        updateDcqlQueryInput,
-        specifiedType: _type,
-      );
+      _bodyData =
+          _serializers.serialize(updateDcqlQueryInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(_dio.options, _path),
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -522,10 +482,9 @@ class DcqlQueryApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-                  rawResponse,
-                  specifiedType: const FullType(DcqlQueryDto),
-                )
-                as DcqlQueryDto;
+              rawResponse,
+              specifiedType: const FullType(DcqlQueryDto),
+            ) as DcqlQueryDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

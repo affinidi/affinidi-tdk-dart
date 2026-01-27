@@ -16,10 +16,8 @@ part 'aws_exchange_credentials_project_token_ok_credentials.g.dart';
 @BuiltValue()
 abstract class AwsExchangeCredentialsProjectTokenOKCredentials
     implements
-        Built<
-          AwsExchangeCredentialsProjectTokenOKCredentials,
-          AwsExchangeCredentialsProjectTokenOKCredentialsBuilder
-        > {
+        Built<AwsExchangeCredentialsProjectTokenOKCredentials,
+            AwsExchangeCredentialsProjectTokenOKCredentialsBuilder> {
   @BuiltValueField(wireName: r'identityId')
   String get identityId;
 
@@ -28,19 +26,20 @@ abstract class AwsExchangeCredentialsProjectTokenOKCredentials
 
   AwsExchangeCredentialsProjectTokenOKCredentials._();
 
-  factory AwsExchangeCredentialsProjectTokenOKCredentials([
-    void updates(AwsExchangeCredentialsProjectTokenOKCredentialsBuilder b),
-  ]) = _$AwsExchangeCredentialsProjectTokenOKCredentials;
+  factory AwsExchangeCredentialsProjectTokenOKCredentials(
+          [void updates(
+              AwsExchangeCredentialsProjectTokenOKCredentialsBuilder b)]) =
+      _$AwsExchangeCredentialsProjectTokenOKCredentials;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(
-    AwsExchangeCredentialsProjectTokenOKCredentialsBuilder b,
-  ) => b;
+          AwsExchangeCredentialsProjectTokenOKCredentialsBuilder b) =>
+      b;
 
   @BuiltValueSerializer(custom: true)
   static Serializer<AwsExchangeCredentialsProjectTokenOKCredentials>
-  get serializer =>
-      _$AwsExchangeCredentialsProjectTokenOKCredentialsSerializer();
+      get serializer =>
+          _$AwsExchangeCredentialsProjectTokenOKCredentialsSerializer();
 }
 
 class _$AwsExchangeCredentialsProjectTokenOKCredentialsSerializer
@@ -49,7 +48,7 @@ class _$AwsExchangeCredentialsProjectTokenOKCredentialsSerializer
   @override
   final Iterable<Type> types = const [
     AwsExchangeCredentialsProjectTokenOKCredentials,
-    _$AwsExchangeCredentialsProjectTokenOKCredentials,
+    _$AwsExchangeCredentialsProjectTokenOKCredentials
   ];
 
   @override
@@ -78,11 +77,9 @@ class _$AwsExchangeCredentialsProjectTokenOKCredentialsSerializer
     AwsExchangeCredentialsProjectTokenOKCredentials object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -98,21 +95,17 @@ class _$AwsExchangeCredentialsProjectTokenOKCredentialsSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'identityId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.identityId = valueDes;
           break;
         case r'token':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.token = valueDes;
           break;
         default:

@@ -13,19 +13,20 @@ class _$BatchCredentialInputCredentialRequestsInner
   @override
   final CredentialProof proof;
 
-  factory _$BatchCredentialInputCredentialRequestsInner([
-    void Function(BatchCredentialInputCredentialRequestsInnerBuilder)? updates,
-  ]) => (BatchCredentialInputCredentialRequestsInnerBuilder()..update(updates))
-      ._build();
+  factory _$BatchCredentialInputCredentialRequestsInner(
+          [void Function(BatchCredentialInputCredentialRequestsInnerBuilder)?
+              updates]) =>
+      (BatchCredentialInputCredentialRequestsInnerBuilder()..update(updates))
+          ._build();
 
-  _$BatchCredentialInputCredentialRequestsInner._({
-    this.credentialIdentifier,
-    required this.proof,
-  }) : super._();
+  _$BatchCredentialInputCredentialRequestsInner._(
+      {this.credentialIdentifier, required this.proof})
+      : super._();
   @override
   BatchCredentialInputCredentialRequestsInner rebuild(
-    void Function(BatchCredentialInputCredentialRequestsInnerBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(BatchCredentialInputCredentialRequestsInnerBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   BatchCredentialInputCredentialRequestsInnerBuilder toBuilder() =>
@@ -51,8 +52,7 @@ class _$BatchCredentialInputCredentialRequestsInner
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'BatchCredentialInputCredentialRequestsInner',
-          )
+            r'BatchCredentialInputCredentialRequestsInner')
           ..add('credentialIdentifier', credentialIdentifier)
           ..add('proof', proof))
         .toString();
@@ -61,10 +61,8 @@ class _$BatchCredentialInputCredentialRequestsInner
 
 class BatchCredentialInputCredentialRequestsInnerBuilder
     implements
-        Builder<
-          BatchCredentialInputCredentialRequestsInner,
-          BatchCredentialInputCredentialRequestsInnerBuilder
-        > {
+        Builder<BatchCredentialInputCredentialRequestsInner,
+            BatchCredentialInputCredentialRequestsInnerBuilder> {
   _$BatchCredentialInputCredentialRequestsInner? _$v;
 
   String? _credentialIdentifier;
@@ -98,8 +96,8 @@ class BatchCredentialInputCredentialRequestsInnerBuilder
 
   @override
   void update(
-    void Function(BatchCredentialInputCredentialRequestsInnerBuilder)? updates,
-  ) {
+      void Function(BatchCredentialInputCredentialRequestsInnerBuilder)?
+          updates) {
     if (updates != null) updates(this);
   }
 
@@ -109,8 +107,7 @@ class BatchCredentialInputCredentialRequestsInnerBuilder
   _$BatchCredentialInputCredentialRequestsInner _build() {
     _$BatchCredentialInputCredentialRequestsInner _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$BatchCredentialInputCredentialRequestsInner._(
             credentialIdentifier: credentialIdentifier,
             proof: proof.build(),
@@ -122,10 +119,9 @@ class BatchCredentialInputCredentialRequestsInnerBuilder
         proof.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'BatchCredentialInputCredentialRequestsInner',
-          _$failedField,
-          e.toString(),
-        );
+            r'BatchCredentialInputCredentialRequestsInner',
+            _$failedField,
+            e.toString());
       }
       rethrow;
     }

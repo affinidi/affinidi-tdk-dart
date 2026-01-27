@@ -17,20 +17,17 @@ class _$InvalidJwtTokenErrorDetailsInner
   @override
   final String? location;
 
-  factory _$InvalidJwtTokenErrorDetailsInner([
-    void Function(InvalidJwtTokenErrorDetailsInnerBuilder)? updates,
-  ]) => (InvalidJwtTokenErrorDetailsInnerBuilder()..update(updates))._build();
+  factory _$InvalidJwtTokenErrorDetailsInner(
+          [void Function(InvalidJwtTokenErrorDetailsInnerBuilder)? updates]) =>
+      (InvalidJwtTokenErrorDetailsInnerBuilder()..update(updates))._build();
 
-  _$InvalidJwtTokenErrorDetailsInner._({
-    required this.issue,
-    this.field,
-    this.value,
-    this.location,
-  }) : super._();
+  _$InvalidJwtTokenErrorDetailsInner._(
+      {required this.issue, this.field, this.value, this.location})
+      : super._();
   @override
   InvalidJwtTokenErrorDetailsInner rebuild(
-    void Function(InvalidJwtTokenErrorDetailsInnerBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(InvalidJwtTokenErrorDetailsInnerBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   InvalidJwtTokenErrorDetailsInnerBuilder toBuilder() =>
@@ -70,10 +67,8 @@ class _$InvalidJwtTokenErrorDetailsInner
 
 class InvalidJwtTokenErrorDetailsInnerBuilder
     implements
-        Builder<
-          InvalidJwtTokenErrorDetailsInner,
-          InvalidJwtTokenErrorDetailsInnerBuilder
-        > {
+        Builder<InvalidJwtTokenErrorDetailsInner,
+            InvalidJwtTokenErrorDetailsInnerBuilder> {
   _$InvalidJwtTokenErrorDetailsInner? _$v;
 
   String? _issue;
@@ -122,14 +117,10 @@ class InvalidJwtTokenErrorDetailsInnerBuilder
   InvalidJwtTokenErrorDetailsInner build() => _build();
 
   _$InvalidJwtTokenErrorDetailsInner _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$InvalidJwtTokenErrorDetailsInner._(
           issue: BuiltValueNullFieldError.checkNotNull(
-            issue,
-            r'InvalidJwtTokenErrorDetailsInner',
-            'issue',
-          ),
+              issue, r'InvalidJwtTokenErrorDetailsInner', 'issue'),
           field: field,
           value: value,
           location: location,

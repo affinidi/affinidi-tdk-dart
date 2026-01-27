@@ -93,8 +93,7 @@ class ProjectListBuilder implements Builder<ProjectList, ProjectListBuilder> {
   _$ProjectList _build() {
     _$ProjectList _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$ProjectList._(
             projects: projects.build(),
             lastEvaluatedKey: lastEvaluatedKey,
@@ -106,10 +105,7 @@ class ProjectListBuilder implements Builder<ProjectList, ProjectListBuilder> {
         projects.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'ProjectList',
-          _$failedField,
-          e.toString(),
-        );
+            r'ProjectList', _$failedField, e.toString());
       }
       rethrow;
     }

@@ -20,14 +20,13 @@ InvalidDIDErrorNameEnum _$invalidDIDErrorNameEnumValueOf(String name) {
 
 final BuiltSet<InvalidDIDErrorNameEnum> _$invalidDIDErrorNameEnumValues =
     BuiltSet<InvalidDIDErrorNameEnum>(const <InvalidDIDErrorNameEnum>[
-      _$invalidDIDErrorNameEnum_invalidDIDError,
-    ]);
+  _$invalidDIDErrorNameEnum_invalidDIDError,
+]);
 
 const InvalidDIDErrorMessageEnum
-_$invalidDIDErrorMessageEnum_unableToResolveDIDMethodPeriodInvalidPublicKey =
+    _$invalidDIDErrorMessageEnum_unableToResolveDIDMethodPeriodInvalidPublicKey =
     const InvalidDIDErrorMessageEnum._(
-      'unableToResolveDIDMethodPeriodInvalidPublicKey',
-    );
+        'unableToResolveDIDMethodPeriodInvalidPublicKey');
 
 InvalidDIDErrorMessageEnum _$invalidDIDErrorMessageEnumValueOf(String name) {
   switch (name) {
@@ -38,20 +37,17 @@ InvalidDIDErrorMessageEnum _$invalidDIDErrorMessageEnumValueOf(String name) {
   }
 }
 
-final BuiltSet<InvalidDIDErrorMessageEnum>
-_$invalidDIDErrorMessageEnumValues = BuiltSet<InvalidDIDErrorMessageEnum>(
-  const <InvalidDIDErrorMessageEnum>[
-    _$invalidDIDErrorMessageEnum_unableToResolveDIDMethodPeriodInvalidPublicKey,
-  ],
-);
+final BuiltSet<InvalidDIDErrorMessageEnum> _$invalidDIDErrorMessageEnumValues =
+    BuiltSet<InvalidDIDErrorMessageEnum>(const <InvalidDIDErrorMessageEnum>[
+  _$invalidDIDErrorMessageEnum_unableToResolveDIDMethodPeriodInvalidPublicKey,
+]);
 
 const InvalidDIDErrorHttpStatusCodeEnum
-_$invalidDIDErrorHttpStatusCodeEnum_number400 =
+    _$invalidDIDErrorHttpStatusCodeEnum_number400 =
     const InvalidDIDErrorHttpStatusCodeEnum._('number400');
 
 InvalidDIDErrorHttpStatusCodeEnum _$invalidDIDErrorHttpStatusCodeEnumValueOf(
-  String name,
-) {
+    String name) {
   switch (name) {
     case 'number400':
       return _$invalidDIDErrorHttpStatusCodeEnum_number400;
@@ -61,19 +57,17 @@ InvalidDIDErrorHttpStatusCodeEnum _$invalidDIDErrorHttpStatusCodeEnumValueOf(
 }
 
 final BuiltSet<InvalidDIDErrorHttpStatusCodeEnum>
-_$invalidDIDErrorHttpStatusCodeEnumValues =
-    BuiltSet<InvalidDIDErrorHttpStatusCodeEnum>(
-      const <InvalidDIDErrorHttpStatusCodeEnum>[
-        _$invalidDIDErrorHttpStatusCodeEnum_number400,
-      ],
-    );
+    _$invalidDIDErrorHttpStatusCodeEnumValues = BuiltSet<
+        InvalidDIDErrorHttpStatusCodeEnum>(const <InvalidDIDErrorHttpStatusCodeEnum>[
+  _$invalidDIDErrorHttpStatusCodeEnum_number400,
+]);
 
 Serializer<InvalidDIDErrorNameEnum> _$invalidDIDErrorNameEnumSerializer =
     _$InvalidDIDErrorNameEnumSerializer();
 Serializer<InvalidDIDErrorMessageEnum> _$invalidDIDErrorMessageEnumSerializer =
     _$InvalidDIDErrorMessageEnumSerializer();
 Serializer<InvalidDIDErrorHttpStatusCodeEnum>
-_$invalidDIDErrorHttpStatusCodeEnumSerializer =
+    _$invalidDIDErrorHttpStatusCodeEnumSerializer =
     _$InvalidDIDErrorHttpStatusCodeEnumSerializer();
 
 class _$InvalidDIDErrorNameEnumSerializer
@@ -91,20 +85,16 @@ class _$InvalidDIDErrorNameEnumSerializer
   final String wireName = 'InvalidDIDErrorNameEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    InvalidDIDErrorNameEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers, InvalidDIDErrorNameEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InvalidDIDErrorNameEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InvalidDIDErrorNameEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InvalidDIDErrorNameEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InvalidDIDErrorMessageEnumSerializer
@@ -124,20 +114,16 @@ class _$InvalidDIDErrorMessageEnumSerializer
   final String wireName = 'InvalidDIDErrorMessageEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    InvalidDIDErrorMessageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers, InvalidDIDErrorMessageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InvalidDIDErrorMessageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InvalidDIDErrorMessageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InvalidDIDErrorMessageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InvalidDIDErrorHttpStatusCodeEnumSerializer
@@ -156,19 +142,16 @@ class _$InvalidDIDErrorHttpStatusCodeEnumSerializer
 
   @override
   Object serialize(
-    Serializers serializers,
-    InvalidDIDErrorHttpStatusCodeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, InvalidDIDErrorHttpStatusCodeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   InvalidDIDErrorHttpStatusCodeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => InvalidDIDErrorHttpStatusCodeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      InvalidDIDErrorHttpStatusCodeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$InvalidDIDError extends InvalidDIDError {
@@ -186,13 +169,13 @@ class _$InvalidDIDError extends InvalidDIDError {
   factory _$InvalidDIDError([void Function(InvalidDIDErrorBuilder)? updates]) =>
       (InvalidDIDErrorBuilder()..update(updates))._build();
 
-  _$InvalidDIDError._({
-    required this.name,
-    required this.message,
-    required this.httpStatusCode,
-    required this.traceId,
-    this.details,
-  }) : super._();
+  _$InvalidDIDError._(
+      {required this.name,
+      required this.message,
+      required this.httpStatusCode,
+      required this.traceId,
+      this.details})
+      : super._();
   @override
   InvalidDIDError rebuild(void Function(InvalidDIDErrorBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -296,29 +279,16 @@ class InvalidDIDErrorBuilder
   _$InvalidDIDError _build() {
     _$InvalidDIDError _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$InvalidDIDError._(
             name: BuiltValueNullFieldError.checkNotNull(
-              name,
-              r'InvalidDIDError',
-              'name',
-            ),
+                name, r'InvalidDIDError', 'name'),
             message: BuiltValueNullFieldError.checkNotNull(
-              message,
-              r'InvalidDIDError',
-              'message',
-            ),
+                message, r'InvalidDIDError', 'message'),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-              httpStatusCode,
-              r'InvalidDIDError',
-              'httpStatusCode',
-            ),
+                httpStatusCode, r'InvalidDIDError', 'httpStatusCode'),
             traceId: BuiltValueNullFieldError.checkNotNull(
-              traceId,
-              r'InvalidDIDError',
-              'traceId',
-            ),
+                traceId, r'InvalidDIDError', 'traceId'),
             details: _details?.build(),
           );
     } catch (_) {
@@ -328,10 +298,7 @@ class InvalidDIDErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'InvalidDIDError',
-          _$failedField,
-          e.toString(),
-        );
+            r'InvalidDIDError', _$failedField, e.toString());
       }
       rethrow;
     }

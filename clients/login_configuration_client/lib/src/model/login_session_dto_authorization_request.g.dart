@@ -11,16 +11,16 @@ class _$LoginSessionDtoAuthorizationRequest
   @override
   final OneOf oneOf;
 
-  factory _$LoginSessionDtoAuthorizationRequest([
-    void Function(LoginSessionDtoAuthorizationRequestBuilder)? updates,
-  ]) =>
+  factory _$LoginSessionDtoAuthorizationRequest(
+          [void Function(LoginSessionDtoAuthorizationRequestBuilder)?
+              updates]) =>
       (LoginSessionDtoAuthorizationRequestBuilder()..update(updates))._build();
 
   _$LoginSessionDtoAuthorizationRequest._({required this.oneOf}) : super._();
   @override
   LoginSessionDtoAuthorizationRequest rebuild(
-    void Function(LoginSessionDtoAuthorizationRequestBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(LoginSessionDtoAuthorizationRequestBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   LoginSessionDtoAuthorizationRequestBuilder toBuilder() =>
@@ -42,18 +42,16 @@ class _$LoginSessionDtoAuthorizationRequest
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'LoginSessionDtoAuthorizationRequest',
-    )..add('oneOf', oneOf)).toString();
+    return (newBuiltValueToStringHelper(r'LoginSessionDtoAuthorizationRequest')
+          ..add('oneOf', oneOf))
+        .toString();
   }
 }
 
 class LoginSessionDtoAuthorizationRequestBuilder
     implements
-        Builder<
-          LoginSessionDtoAuthorizationRequest,
-          LoginSessionDtoAuthorizationRequestBuilder
-        > {
+        Builder<LoginSessionDtoAuthorizationRequest,
+            LoginSessionDtoAuthorizationRequestBuilder> {
   _$LoginSessionDtoAuthorizationRequest? _$v;
 
   OneOf? _oneOf;
@@ -80,8 +78,7 @@ class LoginSessionDtoAuthorizationRequestBuilder
 
   @override
   void update(
-    void Function(LoginSessionDtoAuthorizationRequestBuilder)? updates,
-  ) {
+      void Function(LoginSessionDtoAuthorizationRequestBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -89,14 +86,10 @@ class LoginSessionDtoAuthorizationRequestBuilder
   LoginSessionDtoAuthorizationRequest build() => _build();
 
   _$LoginSessionDtoAuthorizationRequest _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$LoginSessionDtoAuthorizationRequest._(
           oneOf: BuiltValueNullFieldError.checkNotNull(
-            oneOf,
-            r'LoginSessionDtoAuthorizationRequest',
-            'oneOf',
-          ),
+              oneOf, r'LoginSessionDtoAuthorizationRequest', 'oneOf'),
         );
     replace(_$result);
     return _$result;

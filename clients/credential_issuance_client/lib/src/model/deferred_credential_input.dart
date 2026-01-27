@@ -21,9 +21,9 @@ abstract class DeferredCredentialInput
 
   DeferredCredentialInput._();
 
-  factory DeferredCredentialInput([
-    void updates(DeferredCredentialInputBuilder b),
-  ]) = _$DeferredCredentialInput;
+  factory DeferredCredentialInput(
+          [void updates(DeferredCredentialInputBuilder b)]) =
+      _$DeferredCredentialInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(DeferredCredentialInputBuilder b) => b;
@@ -38,7 +38,7 @@ class _$DeferredCredentialInputSerializer
   @override
   final Iterable<Type> types = const [
     DeferredCredentialInput,
-    _$DeferredCredentialInput,
+    _$DeferredCredentialInput
   ];
 
   @override
@@ -62,11 +62,9 @@ class _$DeferredCredentialInputSerializer
     DeferredCredentialInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -82,12 +80,10 @@ class _$DeferredCredentialInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'transaction_id':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.transactionId = valueDes;
           break;
         default:

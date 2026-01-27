@@ -23,9 +23,9 @@ abstract class IssuanceConfigListResponse
 
   IssuanceConfigListResponse._();
 
-  factory IssuanceConfigListResponse([
-    void updates(IssuanceConfigListResponseBuilder b),
-  ]) = _$IssuanceConfigListResponse;
+  factory IssuanceConfigListResponse(
+          [void updates(IssuanceConfigListResponseBuilder b)]) =
+      _$IssuanceConfigListResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(IssuanceConfigListResponseBuilder b) => b;
@@ -40,7 +40,7 @@ class _$IssuanceConfigListResponseSerializer
   @override
   final Iterable<Type> types = const [
     IssuanceConfigListResponse,
-    _$IssuanceConfigListResponse,
+    _$IssuanceConfigListResponse
   ];
 
   @override
@@ -54,9 +54,8 @@ class _$IssuanceConfigListResponseSerializer
     yield r'configurations';
     yield serializers.serialize(
       object.configurations,
-      specifiedType: const FullType(BuiltList, [
-        FullType(IssuanceConfigMiniDto),
-      ]),
+      specifiedType:
+          const FullType(BuiltList, [FullType(IssuanceConfigMiniDto)]),
     );
   }
 
@@ -66,11 +65,9 @@ class _$IssuanceConfigListResponseSerializer
     IssuanceConfigListResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -86,14 +83,11 @@ class _$IssuanceConfigListResponseSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'configurations':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(IssuanceConfigMiniDto),
-                    ]),
-                  )
-                  as BuiltList<IssuanceConfigMiniDto>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(BuiltList, [FullType(IssuanceConfigMiniDto)]),
+          ) as BuiltList<IssuanceConfigMiniDto>;
           result.configurations.replace(valueDes);
           break;
         default:

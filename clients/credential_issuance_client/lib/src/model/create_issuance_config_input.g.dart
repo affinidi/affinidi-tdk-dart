@@ -7,17 +7,17 @@ part of 'create_issuance_config_input.dart';
 // **************************************************************************
 
 const CreateIssuanceConfigInputFormatEnum
-_$createIssuanceConfigInputFormatEnum_ldpVc =
+    _$createIssuanceConfigInputFormatEnum_ldpVc =
     const CreateIssuanceConfigInputFormatEnum._('ldpVc');
 const CreateIssuanceConfigInputFormatEnum
-_$createIssuanceConfigInputFormatEnum_jwtVcJsonLd =
+    _$createIssuanceConfigInputFormatEnum_jwtVcJsonLd =
     const CreateIssuanceConfigInputFormatEnum._('jwtVcJsonLd');
 const CreateIssuanceConfigInputFormatEnum
-_$createIssuanceConfigInputFormatEnum_sdJwtVcJsonLd =
+    _$createIssuanceConfigInputFormatEnum_sdJwtVcJsonLd =
     const CreateIssuanceConfigInputFormatEnum._('sdJwtVcJsonLd');
 
 CreateIssuanceConfigInputFormatEnum
-_$createIssuanceConfigInputFormatEnumValueOf(String name) {
+    _$createIssuanceConfigInputFormatEnumValueOf(String name) {
   switch (name) {
     case 'ldpVc':
       return _$createIssuanceConfigInputFormatEnum_ldpVc;
@@ -31,17 +31,15 @@ _$createIssuanceConfigInputFormatEnumValueOf(String name) {
 }
 
 final BuiltSet<CreateIssuanceConfigInputFormatEnum>
-_$createIssuanceConfigInputFormatEnumValues =
-    BuiltSet<CreateIssuanceConfigInputFormatEnum>(
-      const <CreateIssuanceConfigInputFormatEnum>[
-        _$createIssuanceConfigInputFormatEnum_ldpVc,
-        _$createIssuanceConfigInputFormatEnum_jwtVcJsonLd,
-        _$createIssuanceConfigInputFormatEnum_sdJwtVcJsonLd,
-      ],
-    );
+    _$createIssuanceConfigInputFormatEnumValues = BuiltSet<
+        CreateIssuanceConfigInputFormatEnum>(const <CreateIssuanceConfigInputFormatEnum>[
+  _$createIssuanceConfigInputFormatEnum_ldpVc,
+  _$createIssuanceConfigInputFormatEnum_jwtVcJsonLd,
+  _$createIssuanceConfigInputFormatEnum_sdJwtVcJsonLd,
+]);
 
 Serializer<CreateIssuanceConfigInputFormatEnum>
-_$createIssuanceConfigInputFormatEnumSerializer =
+    _$createIssuanceConfigInputFormatEnumSerializer =
     _$CreateIssuanceConfigInputFormatEnumSerializer();
 
 class _$CreateIssuanceConfigInputFormatEnumSerializer
@@ -59,26 +57,23 @@ class _$CreateIssuanceConfigInputFormatEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CreateIssuanceConfigInputFormatEnum,
+    CreateIssuanceConfigInputFormatEnum
   ];
   @override
   final String wireName = 'CreateIssuanceConfigInputFormatEnum';
 
   @override
   Object serialize(
-    Serializers serializers,
-    CreateIssuanceConfigInputFormatEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, CreateIssuanceConfigInputFormatEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   CreateIssuanceConfigInputFormatEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => CreateIssuanceConfigInputFormatEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      CreateIssuanceConfigInputFormatEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$CreateIssuanceConfigInput extends CreateIssuanceConfigInput {
@@ -101,25 +96,25 @@ class _$CreateIssuanceConfigInput extends CreateIssuanceConfigInput {
   @override
   final CisConfigurationWebhookSetting? webhook;
 
-  factory _$CreateIssuanceConfigInput([
-    void Function(CreateIssuanceConfigInputBuilder)? updates,
-  ]) => (CreateIssuanceConfigInputBuilder()..update(updates))._build();
+  factory _$CreateIssuanceConfigInput(
+          [void Function(CreateIssuanceConfigInputBuilder)? updates]) =>
+      (CreateIssuanceConfigInputBuilder()..update(updates))._build();
 
-  _$CreateIssuanceConfigInput._({
-    this.name,
-    this.description,
-    required this.issuerWalletId,
-    this.credentialOfferDuration,
-    this.format,
-    required this.credentialSupported,
-    this.issuerMetadata,
-    this.returnUris,
-    this.webhook,
-  }) : super._();
+  _$CreateIssuanceConfigInput._(
+      {this.name,
+      this.description,
+      required this.issuerWalletId,
+      this.credentialOfferDuration,
+      this.format,
+      required this.credentialSupported,
+      this.issuerMetadata,
+      this.returnUris,
+      this.webhook})
+      : super._();
   @override
   CreateIssuanceConfigInput rebuild(
-    void Function(CreateIssuanceConfigInputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CreateIssuanceConfigInputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CreateIssuanceConfigInputBuilder toBuilder() =>
@@ -204,8 +199,8 @@ class CreateIssuanceConfigInputBuilder
   ListBuilder<CredentialSupportedObject> get credentialSupported =>
       _$this._credentialSupported ??= ListBuilder<CredentialSupportedObject>();
   set credentialSupported(
-    ListBuilder<CredentialSupportedObject>? credentialSupported,
-  ) => _$this._credentialSupported = credentialSupported;
+          ListBuilder<CredentialSupportedObject>? credentialSupported) =>
+      _$this._credentialSupported = credentialSupported;
 
   MapBuilder<String, JsonObject?>? _issuerMetadata;
   MapBuilder<String, JsonObject?> get issuerMetadata =>
@@ -262,16 +257,12 @@ class CreateIssuanceConfigInputBuilder
   _$CreateIssuanceConfigInput _build() {
     _$CreateIssuanceConfigInput _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$CreateIssuanceConfigInput._(
             name: name,
             description: description,
             issuerWalletId: BuiltValueNullFieldError.checkNotNull(
-              issuerWalletId,
-              r'CreateIssuanceConfigInput',
-              'issuerWalletId',
-            ),
+                issuerWalletId, r'CreateIssuanceConfigInput', 'issuerWalletId'),
             credentialOfferDuration: credentialOfferDuration,
             format: format,
             credentialSupported: credentialSupported.build(),
@@ -292,10 +283,7 @@ class CreateIssuanceConfigInputBuilder
         _webhook?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'CreateIssuanceConfigInput',
-          _$failedField,
-          e.toString(),
-        );
+            r'CreateIssuanceConfigInput', _$failedField, e.toString());
       }
       rethrow;
     }

@@ -12,8 +12,7 @@ const SubmissionRequirementRuleEnum _$submissionRequirementRuleEnum_pick =
     const SubmissionRequirementRuleEnum._('pick');
 
 SubmissionRequirementRuleEnum _$submissionRequirementRuleEnumValueOf(
-  String name,
-) {
+    String name) {
   switch (name) {
     case 'all':
       return _$submissionRequirementRuleEnum_all;
@@ -25,15 +24,14 @@ SubmissionRequirementRuleEnum _$submissionRequirementRuleEnumValueOf(
 }
 
 final BuiltSet<SubmissionRequirementRuleEnum>
-_$submissionRequirementRuleEnumValues = BuiltSet<SubmissionRequirementRuleEnum>(
-  const <SubmissionRequirementRuleEnum>[
-    _$submissionRequirementRuleEnum_all,
-    _$submissionRequirementRuleEnum_pick,
-  ],
-);
+    _$submissionRequirementRuleEnumValues = BuiltSet<
+        SubmissionRequirementRuleEnum>(const <SubmissionRequirementRuleEnum>[
+  _$submissionRequirementRuleEnum_all,
+  _$submissionRequirementRuleEnum_pick,
+]);
 
 Serializer<SubmissionRequirementRuleEnum>
-_$submissionRequirementRuleEnumSerializer =
+    _$submissionRequirementRuleEnumSerializer =
     _$SubmissionRequirementRuleEnumSerializer();
 
 class _$SubmissionRequirementRuleEnumSerializer
@@ -54,19 +52,16 @@ class _$SubmissionRequirementRuleEnumSerializer
 
   @override
   Object serialize(
-    Serializers serializers,
-    SubmissionRequirementRuleEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+          Serializers serializers, SubmissionRequirementRuleEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
   SubmissionRequirementRuleEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => SubmissionRequirementRuleEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+          Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      SubmissionRequirementRuleEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$SubmissionRequirement extends SubmissionRequirement {
@@ -87,24 +82,24 @@ class _$SubmissionRequirement extends SubmissionRequirement {
   @override
   final BuiltList<SubmissionRequirement>? fromNested;
 
-  factory _$SubmissionRequirement([
-    void Function(SubmissionRequirementBuilder)? updates,
-  ]) => (SubmissionRequirementBuilder()..update(updates))._build();
+  factory _$SubmissionRequirement(
+          [void Function(SubmissionRequirementBuilder)? updates]) =>
+      (SubmissionRequirementBuilder()..update(updates))._build();
 
-  _$SubmissionRequirement._({
-    this.name,
-    this.purpose,
-    required this.rule,
-    this.count,
-    this.min,
-    this.max,
-    this.from,
-    this.fromNested,
-  }) : super._();
+  _$SubmissionRequirement._(
+      {this.name,
+      this.purpose,
+      required this.rule,
+      this.count,
+      this.min,
+      this.max,
+      this.from,
+      this.fromNested})
+      : super._();
   @override
   SubmissionRequirement rebuild(
-    void Function(SubmissionRequirementBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(SubmissionRequirementBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   SubmissionRequirementBuilder toBuilder() =>
@@ -228,16 +223,12 @@ class SubmissionRequirementBuilder
   _$SubmissionRequirement _build() {
     _$SubmissionRequirement _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$SubmissionRequirement._(
             name: name,
             purpose: purpose,
             rule: BuiltValueNullFieldError.checkNotNull(
-              rule,
-              r'SubmissionRequirement',
-              'rule',
-            ),
+                rule, r'SubmissionRequirement', 'rule'),
             count: count,
             min: min,
             max: max,
@@ -251,10 +242,7 @@ class SubmissionRequirementBuilder
         _fromNested?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'SubmissionRequirement',
-          _$failedField,
-          e.toString(),
-        );
+            r'SubmissionRequirement', _$failedField, e.toString());
       }
       rethrow;
     }

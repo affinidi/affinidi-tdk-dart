@@ -21,9 +21,9 @@ abstract class IotaExchangeCredentials
 
   IotaExchangeCredentials._();
 
-  factory IotaExchangeCredentials([
-    void updates(IotaExchangeCredentialsBuilder b),
-  ]) = _$IotaExchangeCredentials;
+  factory IotaExchangeCredentials(
+          [void updates(IotaExchangeCredentialsBuilder b)]) =
+      _$IotaExchangeCredentials;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(IotaExchangeCredentialsBuilder b) => b;
@@ -38,7 +38,7 @@ class _$IotaExchangeCredentialsSerializer
   @override
   final Iterable<Type> types = const [
     IotaExchangeCredentials,
-    _$IotaExchangeCredentials,
+    _$IotaExchangeCredentials
   ];
 
   @override
@@ -62,11 +62,9 @@ class _$IotaExchangeCredentialsSerializer
     IotaExchangeCredentials object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -82,12 +80,10 @@ class _$IotaExchangeCredentialsSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'assertion':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.assertion = valueDes;
           break;
         default:

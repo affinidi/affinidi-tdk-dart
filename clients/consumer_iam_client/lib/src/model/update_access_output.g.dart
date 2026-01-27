@@ -10,15 +10,15 @@ class _$UpdateAccessOutput extends UpdateAccessOutput {
   @override
   final bool success;
 
-  factory _$UpdateAccessOutput([
-    void Function(UpdateAccessOutputBuilder)? updates,
-  ]) => (UpdateAccessOutputBuilder()..update(updates))._build();
+  factory _$UpdateAccessOutput(
+          [void Function(UpdateAccessOutputBuilder)? updates]) =>
+      (UpdateAccessOutputBuilder()..update(updates))._build();
 
   _$UpdateAccessOutput._({required this.success}) : super._();
   @override
   UpdateAccessOutput rebuild(
-    void Function(UpdateAccessOutputBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(UpdateAccessOutputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   UpdateAccessOutputBuilder toBuilder() =>
@@ -40,9 +40,9 @@ class _$UpdateAccessOutput extends UpdateAccessOutput {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'UpdateAccessOutput',
-    )..add('success', success)).toString();
+    return (newBuiltValueToStringHelper(r'UpdateAccessOutput')
+          ..add('success', success))
+        .toString();
   }
 }
 
@@ -81,14 +81,10 @@ class UpdateAccessOutputBuilder
   UpdateAccessOutput build() => _build();
 
   _$UpdateAccessOutput _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$UpdateAccessOutput._(
           success: BuiltValueNullFieldError.checkNotNull(
-            success,
-            r'UpdateAccessOutput',
-            'success',
-          ),
+              success, r'UpdateAccessOutput', 'success'),
         );
     replace(_$result);
     return _$result;

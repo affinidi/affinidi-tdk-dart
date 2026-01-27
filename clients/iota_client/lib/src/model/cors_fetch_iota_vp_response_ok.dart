@@ -21,9 +21,9 @@ abstract class CorsFetchIotaVpResponseOK
 
   CorsFetchIotaVpResponseOK._();
 
-  factory CorsFetchIotaVpResponseOK([
-    void updates(CorsFetchIotaVpResponseOKBuilder b),
-  ]) = _$CorsFetchIotaVpResponseOK;
+  factory CorsFetchIotaVpResponseOK(
+          [void updates(CorsFetchIotaVpResponseOKBuilder b)]) =
+      _$CorsFetchIotaVpResponseOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsFetchIotaVpResponseOKBuilder b) => b;
@@ -38,7 +38,7 @@ class _$CorsFetchIotaVpResponseOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsFetchIotaVpResponseOK,
-    _$CorsFetchIotaVpResponseOK,
+    _$CorsFetchIotaVpResponseOK
   ];
 
   @override
@@ -64,11 +64,9 @@ class _$CorsFetchIotaVpResponseOKSerializer
     CorsFetchIotaVpResponseOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -84,12 +82,10 @@ class _$CorsFetchIotaVpResponseOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsFetchIotaVpResponseOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsFetchIotaVpResponseOk = valueDes;
           break;
         default:

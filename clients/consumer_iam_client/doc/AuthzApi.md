@@ -1,22 +1,21 @@
 # affinidi_tdk_consumer_iam_client.api.AuthzApi
 
 ## Load the API package
-
 ```dart
 import 'package:affinidi_tdk_consumer_iam_client/api.dart';
 ```
 
 All URIs are relative to *https://apse1.api.affinidi.io/cid*
 
-| Method                                             | HTTP request                                 | Description                                              |
-| -------------------------------------------------- | -------------------------------------------- | -------------------------------------------------------- |
-| [**deleteAccessVfs**](AuthzApi.md#deleteaccessvfs) | **DELETE** /v1/authz/vfs/access/{granteeDid} | delete access of granteeDid                              |
-| [**getAccessVfs**](AuthzApi.md#getaccessvfs)       | **GET** /v1/authz/vfs/access/{granteeDid}    | Get permissions to the virtual file system for a subject |
-| [**grantAccessVfs**](AuthzApi.md#grantaccessvfs)   | **POST** /v1/authz/vfs/access/{granteeDid}   | Grant access to the virtual file system                  |
-| [**updateAccessVfs**](AuthzApi.md#updateaccessvfs) | **PUT** /v1/authz/vfs/access/{granteeDid}    | Update access of granteeDid                              |
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**deleteAccessVfs**](AuthzApi.md#deleteaccessvfs) | **DELETE** /v1/authz/vfs/access/{granteeDid} | delete access of granteeDid
+[**getAccessVfs**](AuthzApi.md#getaccessvfs) | **GET** /v1/authz/vfs/access/{granteeDid} | Get permissions to the virtual file system for a subject
+[**grantAccessVfs**](AuthzApi.md#grantaccessvfs) | **POST** /v1/authz/vfs/access/{granteeDid} | Grant access to the virtual file system
+[**updateAccessVfs**](AuthzApi.md#updateaccessvfs) | **PUT** /v1/authz/vfs/access/{granteeDid} | Update access of granteeDid
+
 
 # **deleteAccessVfs**
-
 > deleteAccessVfs(granteeDid)
 
 delete access of granteeDid
@@ -24,7 +23,6 @@ delete access of granteeDid
 deleteAccessVfs
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_consumer_iam_client/api.dart';
 // TODO Configure API key authorization: ConsumerTokenAuth
@@ -33,7 +31,7 @@ import 'package:affinidi_tdk_consumer_iam_client/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('ConsumerTokenAuth').apiKeyPrefix = 'Bearer';
 
 final api = AffinidiTdkConsumerIamClient().getAuthzApi();
-final String granteeDid = granteeDid_example; // String |
+final String granteeDid = granteeDid_example; // String | 
 
 try {
     api.deleteAccessVfs(granteeDid);
@@ -44,9 +42,9 @@ try {
 
 ### Parameters
 
-| Name           | Type       | Description | Notes |
-| -------------- | ---------- | ----------- | ----- |
-| **granteeDid** | **String** |             |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **granteeDid** | **String**|  | 
 
 ### Return type
 
@@ -58,13 +56,12 @@ void (empty response body)
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: application/json
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getAccessVfs**
-
 > GetAccessOutput getAccessVfs(granteeDid)
 
 Get permissions to the virtual file system for a subject
@@ -72,7 +69,6 @@ Get permissions to the virtual file system for a subject
 Retrieves access rights granted to a subject for the virtual file system
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_consumer_iam_client/api.dart';
 // TODO Configure API key authorization: ConsumerTokenAuth
@@ -81,7 +77,7 @@ import 'package:affinidi_tdk_consumer_iam_client/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('ConsumerTokenAuth').apiKeyPrefix = 'Bearer';
 
 final api = AffinidiTdkConsumerIamClient().getAuthzApi();
-final String granteeDid = granteeDid_example; // String |
+final String granteeDid = granteeDid_example; // String | 
 
 try {
     final response = api.getAccessVfs(granteeDid);
@@ -93,9 +89,9 @@ try {
 
 ### Parameters
 
-| Name           | Type       | Description | Notes |
-| -------------- | ---------- | ----------- | ----- |
-| **granteeDid** | **String** |             |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **granteeDid** | **String**|  | 
 
 ### Return type
 
@@ -107,13 +103,12 @@ try {
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: application/json
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **grantAccessVfs**
-
 > GrantAccessOutput grantAccessVfs(granteeDid, grantAccessInput)
 
 Grant access to the virtual file system
@@ -121,7 +116,6 @@ Grant access to the virtual file system
 Grants access rights to a subject for the virtual file system
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_consumer_iam_client/api.dart';
 // TODO Configure API key authorization: ConsumerTokenAuth
@@ -130,7 +124,7 @@ import 'package:affinidi_tdk_consumer_iam_client/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('ConsumerTokenAuth').apiKeyPrefix = 'Bearer';
 
 final api = AffinidiTdkConsumerIamClient().getAuthzApi();
-final String granteeDid = granteeDid_example; // String |
+final String granteeDid = granteeDid_example; // String | 
 final GrantAccessInput grantAccessInput = ; // GrantAccessInput | Grant access to virtual file system
 
 try {
@@ -143,10 +137,10 @@ try {
 
 ### Parameters
 
-| Name                 | Type                                        | Description                         | Notes |
-| -------------------- | ------------------------------------------- | ----------------------------------- | ----- |
-| **granteeDid**       | **String**                                  |                                     |
-| **grantAccessInput** | [**GrantAccessInput**](GrantAccessInput.md) | Grant access to virtual file system |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **granteeDid** | **String**|  | 
+ **grantAccessInput** | [**GrantAccessInput**](GrantAccessInput.md)| Grant access to virtual file system | 
 
 ### Return type
 
@@ -158,13 +152,12 @@ try {
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
-- **Accept**: application/json
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **updateAccessVfs**
-
 > UpdateAccessOutput updateAccessVfs(granteeDid, updateAccessInput)
 
 Update access of granteeDid
@@ -172,7 +165,6 @@ Update access of granteeDid
 updateAccessVfs
 
 ### Example
-
 ```dart
 import 'package:affinidi_tdk_consumer_iam_client/api.dart';
 // TODO Configure API key authorization: ConsumerTokenAuth
@@ -181,7 +173,7 @@ import 'package:affinidi_tdk_consumer_iam_client/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('ConsumerTokenAuth').apiKeyPrefix = 'Bearer';
 
 final api = AffinidiTdkConsumerIamClient().getAuthzApi();
-final String granteeDid = granteeDid_example; // String |
+final String granteeDid = granteeDid_example; // String | 
 final UpdateAccessInput updateAccessInput = ; // UpdateAccessInput | update access to virtual file system
 
 try {
@@ -194,10 +186,10 @@ try {
 
 ### Parameters
 
-| Name                  | Type                                          | Description                          | Notes |
-| --------------------- | --------------------------------------------- | ------------------------------------ | ----- |
-| **granteeDid**        | **String**                                    |                                      |
-| **updateAccessInput** | [**UpdateAccessInput**](UpdateAccessInput.md) | update access to virtual file system |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **granteeDid** | **String**|  | 
+ **updateAccessInput** | [**UpdateAccessInput**](UpdateAccessInput.md)| update access to virtual file system | 
 
 ### Return type
 
@@ -209,7 +201,8 @@ try {
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
-- **Accept**: application/json
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+

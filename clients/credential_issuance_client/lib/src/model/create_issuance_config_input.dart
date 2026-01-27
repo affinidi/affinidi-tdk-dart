@@ -63,9 +63,9 @@ abstract class CreateIssuanceConfigInput
 
   CreateIssuanceConfigInput._();
 
-  factory CreateIssuanceConfigInput([
-    void updates(CreateIssuanceConfigInputBuilder b),
-  ]) = _$CreateIssuanceConfigInput;
+  factory CreateIssuanceConfigInput(
+          [void updates(CreateIssuanceConfigInputBuilder b)]) =
+      _$CreateIssuanceConfigInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateIssuanceConfigInputBuilder b) => b;
@@ -80,7 +80,7 @@ class _$CreateIssuanceConfigInputSerializer
   @override
   final Iterable<Type> types = const [
     CreateIssuanceConfigInput,
-    _$CreateIssuanceConfigInput,
+    _$CreateIssuanceConfigInput
   ];
 
   @override
@@ -127,18 +127,15 @@ class _$CreateIssuanceConfigInputSerializer
     yield r'credentialSupported';
     yield serializers.serialize(
       object.credentialSupported,
-      specifiedType: const FullType(BuiltList, [
-        FullType(CredentialSupportedObject),
-      ]),
+      specifiedType:
+          const FullType(BuiltList, [FullType(CredentialSupportedObject)]),
     );
     if (object.issuerMetadata != null) {
       yield r'issuerMetadata';
       yield serializers.serialize(
         object.issuerMetadata,
-        specifiedType: const FullType(BuiltMap, [
-          FullType(String),
-          FullType.nullable(JsonObject),
-        ]),
+        specifiedType: const FullType(
+            BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
       );
     }
     if (object.returnUris != null) {
@@ -163,11 +160,9 @@ class _$CreateIssuanceConfigInputSerializer
     CreateIssuanceConfigInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -183,92 +178,68 @@ class _$CreateIssuanceConfigInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.name = valueDes;
           break;
         case r'description':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.description = valueDes;
           break;
         case r'issuerWalletId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.issuerWalletId = valueDes;
           break;
         case r'credentialOfferDuration':
-          final valueDes =
-              serializers.deserialize(value, specifiedType: const FullType(int))
-                  as int;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
           result.credentialOfferDuration = valueDes;
           break;
         case r'format':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CreateIssuanceConfigInputFormatEnum,
-                    ),
-                  )
-                  as CreateIssuanceConfigInputFormatEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CreateIssuanceConfigInputFormatEnum),
+          ) as CreateIssuanceConfigInputFormatEnum;
           result.format = valueDes;
           break;
         case r'credentialSupported':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(CredentialSupportedObject),
-                    ]),
-                  )
-                  as BuiltList<CredentialSupportedObject>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(CredentialSupportedObject)]),
+          ) as BuiltList<CredentialSupportedObject>;
           result.credentialSupported.replace(valueDes);
           break;
         case r'issuerMetadata':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltMap, [
-                      FullType(String),
-                      FullType.nullable(JsonObject),
-                    ]),
-                  )
-                  as BuiltMap<String, JsonObject?>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
+          ) as BuiltMap<String, JsonObject?>;
           result.issuerMetadata.replace(valueDes);
           break;
         case r'returnUris':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.returnUris.replace(valueDes);
           break;
         case r'webhook':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      CisConfigurationWebhookSetting,
-                    ),
-                  )
-                  as CisConfigurationWebhookSetting;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(CisConfigurationWebhookSetting),
+          ) as CisConfigurationWebhookSetting;
           result.webhook.replace(valueDes);
           break;
         default:

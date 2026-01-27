@@ -10,15 +10,15 @@ class _$CorsGetConfigurationOK extends CorsGetConfigurationOK {
   @override
   final String? corsGetConfigurationOk;
 
-  factory _$CorsGetConfigurationOK([
-    void Function(CorsGetConfigurationOKBuilder)? updates,
-  ]) => (CorsGetConfigurationOKBuilder()..update(updates))._build();
+  factory _$CorsGetConfigurationOK(
+          [void Function(CorsGetConfigurationOKBuilder)? updates]) =>
+      (CorsGetConfigurationOKBuilder()..update(updates))._build();
 
   _$CorsGetConfigurationOK._({this.corsGetConfigurationOk}) : super._();
   @override
   CorsGetConfigurationOK rebuild(
-    void Function(CorsGetConfigurationOKBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CorsGetConfigurationOKBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CorsGetConfigurationOKBuilder toBuilder() =>
@@ -41,9 +41,9 @@ class _$CorsGetConfigurationOK extends CorsGetConfigurationOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'CorsGetConfigurationOK',
-    )..add('corsGetConfigurationOk', corsGetConfigurationOk)).toString();
+    return (newBuiltValueToStringHelper(r'CorsGetConfigurationOK')
+          ..add('corsGetConfigurationOk', corsGetConfigurationOk))
+        .toString();
   }
 }
 
@@ -83,8 +83,7 @@ class CorsGetConfigurationOKBuilder
   CorsGetConfigurationOK build() => _build();
 
   _$CorsGetConfigurationOK _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$CorsGetConfigurationOK._(
           corsGetConfigurationOk: corsGetConfigurationOk,
         );

@@ -57,7 +57,7 @@ class _$TooManyRequestsErrorSerializer
   @override
   final Iterable<Type> types = const [
     TooManyRequestsError,
-    _$TooManyRequestsError,
+    _$TooManyRequestsError
   ];
 
   @override
@@ -92,9 +92,8 @@ class _$TooManyRequestsErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ServiceErrorResponseDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
       );
     }
   }
@@ -105,11 +104,9 @@ class _$TooManyRequestsErrorSerializer
     TooManyRequestsError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -125,54 +122,40 @@ class _$TooManyRequestsErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(TooManyRequestsErrorNameEnum),
-                  )
-                  as TooManyRequestsErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(TooManyRequestsErrorNameEnum),
+          ) as TooManyRequestsErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      TooManyRequestsErrorMessageEnum,
-                    ),
-                  )
-                  as TooManyRequestsErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(TooManyRequestsErrorMessageEnum),
+          ) as TooManyRequestsErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      TooManyRequestsErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as TooManyRequestsErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(TooManyRequestsErrorHttpStatusCodeEnum),
+          ) as TooManyRequestsErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ServiceErrorResponseDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<ServiceErrorResponseDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
+          ) as BuiltList<ServiceErrorResponseDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -222,11 +205,10 @@ class TooManyRequestsErrorNameEnum extends EnumClass {
 
 class TooManyRequestsErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(
-    wireName:
-        r'Too many concurrent requests to the same wallet. The operation failed after multiple retry attempts due to concurrent updates. Please retry your request after a short delay.',
-  )
+      wireName:
+          r'Too many concurrent requests to the same wallet. The operation failed after multiple retry attempts due to concurrent updates. Please retry your request after a short delay.')
   static const TooManyRequestsErrorMessageEnum
-  tooManyConcurrentRequestsToTheSameWalletPeriodTheOperationFailedAfterMultipleRetryAttemptsDueToConcurrentUpdatesPeriodPleaseRetryYourRequestAfterAShortDelayPeriod =
+      tooManyConcurrentRequestsToTheSameWalletPeriodTheOperationFailedAfterMultipleRetryAttemptsDueToConcurrentUpdatesPeriodPleaseRetryYourRequestAfterAShortDelayPeriod =
       _$tooManyRequestsErrorMessageEnum_tooManyConcurrentRequestsToTheSameWalletPeriodTheOperationFailedAfterMultipleRetryAttemptsDueToConcurrentUpdatesPeriodPleaseRetryYourRequestAfterAShortDelayPeriod;
 
   static Serializer<TooManyRequestsErrorMessageEnum> get serializer =>

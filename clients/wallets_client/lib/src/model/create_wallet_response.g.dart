@@ -10,15 +10,15 @@ class _$CreateWalletResponse extends CreateWalletResponse {
   @override
   final WalletDto? wallet;
 
-  factory _$CreateWalletResponse([
-    void Function(CreateWalletResponseBuilder)? updates,
-  ]) => (CreateWalletResponseBuilder()..update(updates))._build();
+  factory _$CreateWalletResponse(
+          [void Function(CreateWalletResponseBuilder)? updates]) =>
+      (CreateWalletResponseBuilder()..update(updates))._build();
 
   _$CreateWalletResponse._({this.wallet}) : super._();
   @override
   CreateWalletResponse rebuild(
-    void Function(CreateWalletResponseBuilder) updates,
-  ) => (toBuilder()..update(updates)).build();
+          void Function(CreateWalletResponseBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CreateWalletResponseBuilder toBuilder() =>
@@ -40,9 +40,9 @@ class _$CreateWalletResponse extends CreateWalletResponse {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(
-      r'CreateWalletResponse',
-    )..add('wallet', wallet)).toString();
+    return (newBuiltValueToStringHelper(r'CreateWalletResponse')
+          ..add('wallet', wallet))
+        .toString();
   }
 }
 
@@ -83,7 +83,10 @@ class CreateWalletResponseBuilder
   _$CreateWalletResponse _build() {
     _$CreateWalletResponse _$result;
     try {
-      _$result = _$v ?? _$CreateWalletResponse._(wallet: _wallet?.build());
+      _$result = _$v ??
+          _$CreateWalletResponse._(
+            wallet: _wallet?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -91,10 +94,7 @@ class CreateWalletResponseBuilder
         _wallet?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'CreateWalletResponse',
-          _$failedField,
-          e.toString(),
-        );
+            r'CreateWalletResponse', _$failedField, e.toString());
       }
       rethrow;
     }

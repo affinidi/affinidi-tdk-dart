@@ -15,18 +15,16 @@ part 'cors_login_session_reject_response_ok.g.dart';
 @BuiltValue()
 abstract class CorsLoginSessionRejectResponseOK
     implements
-        Built<
-          CorsLoginSessionRejectResponseOK,
-          CorsLoginSessionRejectResponseOKBuilder
-        > {
+        Built<CorsLoginSessionRejectResponseOK,
+            CorsLoginSessionRejectResponseOKBuilder> {
   @BuiltValueField(wireName: r'corsLoginSessionRejectResponseOk')
   String? get corsLoginSessionRejectResponseOk;
 
   CorsLoginSessionRejectResponseOK._();
 
-  factory CorsLoginSessionRejectResponseOK([
-    void updates(CorsLoginSessionRejectResponseOKBuilder b),
-  ]) = _$CorsLoginSessionRejectResponseOK;
+  factory CorsLoginSessionRejectResponseOK(
+          [void updates(CorsLoginSessionRejectResponseOKBuilder b)]) =
+      _$CorsLoginSessionRejectResponseOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsLoginSessionRejectResponseOKBuilder b) => b;
@@ -41,7 +39,7 @@ class _$CorsLoginSessionRejectResponseOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsLoginSessionRejectResponseOK,
-    _$CorsLoginSessionRejectResponseOK,
+    _$CorsLoginSessionRejectResponseOK
   ];
 
   @override
@@ -67,11 +65,9 @@ class _$CorsLoginSessionRejectResponseOKSerializer
     CorsLoginSessionRejectResponseOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -87,12 +83,10 @@ class _$CorsLoginSessionRejectResponseOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsLoginSessionRejectResponseOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsLoginSessionRejectResponseOk = valueDes;
           break;
         default:

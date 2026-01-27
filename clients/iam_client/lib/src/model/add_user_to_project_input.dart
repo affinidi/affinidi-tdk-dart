@@ -24,9 +24,8 @@ abstract class AddUserToProjectInput
 
   AddUserToProjectInput._();
 
-  factory AddUserToProjectInput([
-    void updates(AddUserToProjectInputBuilder b),
-  ]) = _$AddUserToProjectInput;
+  factory AddUserToProjectInput(
+      [void updates(AddUserToProjectInputBuilder b)]) = _$AddUserToProjectInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AddUserToProjectInputBuilder b) => b;
@@ -41,7 +40,7 @@ class _$AddUserToProjectInputSerializer
   @override
   final Iterable<Type> types = const [
     AddUserToProjectInput,
-    _$AddUserToProjectInput,
+    _$AddUserToProjectInput
   ];
 
   @override
@@ -70,11 +69,9 @@ class _$AddUserToProjectInputSerializer
     AddUserToProjectInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -90,21 +87,17 @@ class _$AddUserToProjectInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'principalId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.principalId = valueDes;
           break;
         case r'principalType':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.principalType = valueDes;
           break;
         default:

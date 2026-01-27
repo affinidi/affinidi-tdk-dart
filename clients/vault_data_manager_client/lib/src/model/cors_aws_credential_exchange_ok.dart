@@ -21,9 +21,9 @@ abstract class CorsAwsCredentialExchangeOK
 
   CorsAwsCredentialExchangeOK._();
 
-  factory CorsAwsCredentialExchangeOK([
-    void updates(CorsAwsCredentialExchangeOKBuilder b),
-  ]) = _$CorsAwsCredentialExchangeOK;
+  factory CorsAwsCredentialExchangeOK(
+          [void updates(CorsAwsCredentialExchangeOKBuilder b)]) =
+      _$CorsAwsCredentialExchangeOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CorsAwsCredentialExchangeOKBuilder b) => b;
@@ -38,7 +38,7 @@ class _$CorsAwsCredentialExchangeOKSerializer
   @override
   final Iterable<Type> types = const [
     CorsAwsCredentialExchangeOK,
-    _$CorsAwsCredentialExchangeOK,
+    _$CorsAwsCredentialExchangeOK
   ];
 
   @override
@@ -64,11 +64,9 @@ class _$CorsAwsCredentialExchangeOKSerializer
     CorsAwsCredentialExchangeOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -84,12 +82,10 @@ class _$CorsAwsCredentialExchangeOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'corsAwsCredentialExchangeOk':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.corsAwsCredentialExchangeOk = valueDes;
           break;
         default:

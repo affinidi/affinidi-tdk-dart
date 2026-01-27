@@ -42,9 +42,9 @@ abstract class InvalidClaimContextError
 
   InvalidClaimContextError._();
 
-  factory InvalidClaimContextError([
-    void updates(InvalidClaimContextErrorBuilder b),
-  ]) = _$InvalidClaimContextError;
+  factory InvalidClaimContextError(
+          [void updates(InvalidClaimContextErrorBuilder b)]) =
+      _$InvalidClaimContextError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(InvalidClaimContextErrorBuilder b) => b;
@@ -59,7 +59,7 @@ class _$InvalidClaimContextErrorSerializer
   @override
   final Iterable<Type> types = const [
     InvalidClaimContextError,
-    _$InvalidClaimContextError,
+    _$InvalidClaimContextError
   ];
 
   @override
@@ -94,9 +94,8 @@ class _$InvalidClaimContextErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(BuiltList, [
-          FullType(InvalidParameterErrorDetailsInner),
-        ]),
+        specifiedType: const FullType(
+            BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
       );
     }
   }
@@ -107,11 +106,9 @@ class _$InvalidClaimContextErrorSerializer
     InvalidClaimContextError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -127,56 +124,40 @@ class _$InvalidClaimContextErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      InvalidClaimContextErrorNameEnum,
-                    ),
-                  )
-                  as InvalidClaimContextErrorNameEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(InvalidClaimContextErrorNameEnum),
+          ) as InvalidClaimContextErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      InvalidClaimContextErrorMessageEnum,
-                    ),
-                  )
-                  as InvalidClaimContextErrorMessageEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(InvalidClaimContextErrorMessageEnum),
+          ) as InvalidClaimContextErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      InvalidClaimContextErrorHttpStatusCodeEnum,
-                    ),
-                  )
-                  as InvalidClaimContextErrorHttpStatusCodeEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType:
+                const FullType(InvalidClaimContextErrorHttpStatusCodeEnum),
+          ) as InvalidClaimContextErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(InvalidParameterErrorDetailsInner),
-                    ]),
-                  )
-                  as BuiltList<InvalidParameterErrorDetailsInner>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
+          ) as BuiltList<InvalidParameterErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -246,7 +227,7 @@ class InvalidClaimContextErrorHttpStatusCodeEnum extends EnumClass {
       _$invalidClaimContextErrorHttpStatusCodeEnum_number400;
 
   static Serializer<InvalidClaimContextErrorHttpStatusCodeEnum>
-  get serializer => _$invalidClaimContextErrorHttpStatusCodeEnumSerializer;
+      get serializer => _$invalidClaimContextErrorHttpStatusCodeEnumSerializer;
 
   const InvalidClaimContextErrorHttpStatusCodeEnum._(String name) : super(name);
 

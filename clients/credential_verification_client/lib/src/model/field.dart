@@ -102,11 +102,9 @@ class _$FieldSerializer implements PrimitiveSerializer<Field> {
     Field object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(
-      serializers,
-      object,
-      specifiedType: specifiedType,
-    ).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -122,50 +120,38 @@ class _$FieldSerializer implements PrimitiveSerializer<Field> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.id = valueDes;
           break;
         case r'path':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(String),
-                    ]),
-                  )
-                  as BuiltList<String>;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(BuiltList, [FullType(String)]),
+          ) as BuiltList<String>;
           result.path.replace(valueDes);
           break;
         case r'purpose':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
           result.purpose = valueDes;
           break;
         case r'filter':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(Filter),
-                  )
-                  as Filter;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(Filter),
+          ) as Filter;
           result.filter.replace(valueDes);
           break;
         case r'predicate':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(FieldPredicateEnum),
-                  )
-                  as FieldPredicateEnum;
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(FieldPredicateEnum),
+          ) as FieldPredicateEnum;
           result.predicate = valueDes;
           break;
         default:
