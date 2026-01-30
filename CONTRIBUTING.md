@@ -159,7 +159,7 @@ When working on packages in the `packages/` directory:
 - Ensure `pubspec.yaml` version constraints are appropriate.
 - Add examples in the `example/` directory for new features.
 - Update the package README with usage instructions.
-- Verify that your package builds successfully before submitting.
+- Verify that your package passed lint and test checks locally successfully before submitting.
 
 ### Client-Specific Guidelines
 
