@@ -8,45 +8,60 @@ When contributing to this repository, please first discuss the change you wish t
 
 - **Dart SDK**: Version 3.8.0 or higher (check with `dart --version`).
 - **Flutter SDK**: Required if working on Flutter-specific packages (check with `flutter --version`).
+- **Melos**: Version 7.0.0-dev.9 or higher for monorepo management (install with `dart pub global activate melos`).
 
 ### Setting Up Your Development Environment
 
-1. Clone the repository.
+1. Clone the repository:
 
     ```bash
     git clone git@github.com:affinidi/affinidi-tdk-dart.git
     ```
 
-2. Install dependencies:
+2. Bootstrap the project using Melos:
 
    ```bash
-   # From the root directory
-   dart pub get
+   melos bootstrap
    ```
 
-3. For working on specific packages, navigate to the package directory and install its dependencies:
-
-   ```bash
-   cd packages/<package_name>
-   dart pub get
-   ```
-
-4. Ensure all dependencies are properly resolved before starting development.
+   This command will:
+   - Install dependencies for all packages and clients.
+   - Link local package dependencies.
+   - Generate necessary files.
 
 ### Working with the Monorepo
 
-This repository uses a monorepo structure with multiple packages and clients. When making changes:
+This repository uses [Melos](https://melos.invertase.dev/) to manage the monorepo. Melos provides scripts for common tasks:
 
+- **Fix code issues automatically**: `melos fix` - Applies automated fixes using `dart fix --apply`.
+- **Analyse all packages**: `melos analyze` - Runs static analysis across all packages.
+- **Run all tests**: `melos test` - Executes Flutter tests, Dart tests, and generates coverage report.
+- **Run Flutter tests only**: `melos test-flutter` - Runs tests in Flutter packages with coverage.
+- **Run Dart tests only**: `melos test-dart` - Runs tests in Dart-only packages with coverage.
+- **Run integration tests**: `melos test-integration` - Executes integration test suite.
+- **Generate coverage report**: `melos coverage-report` - Creates comprehensive coverage report.
+- **Run a command in a specific package**: `melos exec --scope=<package_name> -- <command>`.
+
+When making changes:
+
+- Use `melos bootstrap` after pulling changes to ensure dependencies are up-to-date.
 - Test your changes in the specific package you're modifying.
 - If your changes affect multiple packages, test all affected packages.
-- Ensure local package dependencies are working correctly.
-- Run tests from the package directory where you made changes.
+- Use Melos scripts to ensure consistency across the monorepo.
+- Run `melos fix` to automatically apply available fixes before committing.
 
 ### Code Quality Expectations
 
 1. **Analysis**: Ensure your code passes static analysis.
 
    ```bash
+   # Analyse all packages in the monorepo
+   melos analyze
+
+   # Analyse a specific package
+   melos exec --scope=<package_name> -- dart analyze
+
+   # Analyse from a specific directory
    dart analyze
    ```
 
@@ -55,7 +70,11 @@ This repository uses a monorepo structure with multiple packages and clients. Wh
 2. **Formatting**: Use Dart's built-in formatter.
 
    ```bash
+   # Format all files in the current directory
    dart format .
+
+   # Format a specific package
+   melos exec --scope=<package_name> -- dart format .
    ```
 
    All code must be formatted using `dart format` with default settings (120 character line length).
@@ -63,13 +82,34 @@ This repository uses a monorepo structure with multiple packages and clients. Wh
 3. **Testing**: Ensure your code is covered with tests.
 
    ```bash
-   dart test
+   # Run all tests across the monorepo (Flutter + Dart + coverage report)
+   melos test
+
+   # Run tests for Dart packages only (with coverage)
+   melos test-dart
+
+   # Run tests for Flutter packages only (with coverage)
+   melos test-flutter
+
+   # Run integration tests
+   melos test-integration
+
+   # Generate coverage report
+   melos coverage-report
+
+   # Run tests for a specific Dart package
+   melos exec --scope=<package_name> -- dart run coverage:test_with_coverage
+
+   # Run tests for a specific Flutter package
+   melos exec --scope=<package_name> -- flutter test --coverage
    ```
 
    - Write unit tests for all public APIs.
    - Add integration tests for end-to-end scenarios (NOTE: no mocks/stubs in integration tests).
+   - For Flutter packages: write widget tests for UI components.
    - Aim for meaningful test coverage, not just high percentages.
    - Tests should be deterministic and not depend on external services.
+   - Coverage is automatically generated when running `melos test-dart` or `melos test-flutter`.
 
 4. **Documentation**: Document all public APIs.
 
@@ -96,7 +136,9 @@ This repository uses a monorepo structure with multiple packages and clients. Wh
 7. **Pull Request Quality**:
 
    - Ensure all CI/CD pipeline checks pass.
-   - Run `dart analyze`, `dart format`, and `dart test` before submitting.
+   - Run `melos fix` to apply automated fixes.
+   - Run `melos analyze` to check for analysis errors.
+   - Run `melos test` to execute all tests with coverage.
    - Remove debugging code, commented-out code, and unnecessary print statements.
    - Keep commits focused and atomic.
    - Write clear commit messages following conventional commit format.
