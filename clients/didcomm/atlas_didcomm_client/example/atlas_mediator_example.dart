@@ -68,7 +68,7 @@ Future<void> main() async {
     }
 
     // wait for deletion
-    await _waitUntilMediators(
+    await _waitUntil(
       predicate: (mediators) => mediators.isNotEmpty,
       atlasClient: atlasClient,
       firstTimeout: const Duration(minutes: 10),
@@ -89,7 +89,7 @@ Future<void> main() async {
       serviceSize: ServiceSize.tiny,
       mediatorAclMode: MediatorAclMode.explicitDeny,
       name: 'Example Mediator',
-      description: 'Example mediator created by atlas_example.dart',
+      description: 'Example mediator created by atlas_mediator_example.dart',
     ),
   );
 
@@ -99,7 +99,7 @@ Future<void> main() async {
   prettyPrint('Deployment response', object: deploymentResponse.response);
 
   // wait for completed deployment
-  await _waitUntilMediators(
+  await _waitUntil(
     predicate: (mediators) => mediators.any(
       (mediator) =>
           mediator.deploymentStatus != DeploymentStatus.createComplete,
@@ -181,7 +181,7 @@ Future<void> main() async {
   prettyPrint('Destroy response', object: destroyResponse);
 
   // wait for deletion
-  await _waitUntilMediators(
+  await _waitUntil(
     predicate: (mediators) => mediators.isNotEmpty,
     atlasClient: atlasClient,
     firstTimeout: const Duration(minutes: 10),
@@ -195,7 +195,7 @@ Future<void> main() async {
   await ConnectionPool.instance.stopConnections();
 }
 
-Future<void> _waitUntilMediators({
+Future<void> _waitUntil({
   required bool Function(List<MediatorInstanceMetadata>) predicate,
   required DidcommAtlasClient atlasClient,
   required Duration firstTimeout,
