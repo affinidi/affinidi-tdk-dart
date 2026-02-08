@@ -61,7 +61,7 @@ Future<void> main() async {
 
     for (final instance in existingInstances.instances) {
       final destroyResponse = await atlasClient.destroyMediatorInstance(
-        mediatorId: instance.id,
+        serviceId: instance.id,
       );
 
       prettyPrint('Destroy response', object: destroyResponse);
@@ -117,8 +117,8 @@ Future<void> main() async {
 
   final updateMetadataResponse = await atlasClient
       .updateMediatorInstanceDeployment(
-        mediatorId: deployedMediator.mediatorId,
-        options: const UpdateMediatorInstanceDeploymentOptions(
+        options: UpdateMediatorInstanceDeploymentOptions(
+          serviceId: deployedMediator.serviceId,
           name: 'Example Mediator (updated)',
           description:
               'Example mediator metadata updated by atlas_example.dart',
@@ -137,7 +137,7 @@ Future<void> main() async {
   }
 
   final mediatorMetadata = await atlasClient.getMediatorInstanceMetadata(
-    mediatorId: deployedMediator.mediatorId,
+    serviceId: deployedMediator.serviceId,
   );
 
   final mediatorDid = mediatorMetadata.response.did;
@@ -150,7 +150,10 @@ Future<void> main() async {
 
   final updateConfigurationResponse = await atlasClient
       .updateMediatorInstanceConfiguration(
-        configurationData: UpdateInstanceConfigurationOptions(acl: acl),
+        options: UpdateMediatorInstanceConfigurationOptions(
+          serviceId: deployedMediator.serviceId,
+          acl: acl,
+        ),
       );
 
   prettyPrint(
@@ -159,7 +162,7 @@ Future<void> main() async {
   );
 
   final finalMediatorMetadata = await atlasClient.getMediatorInstanceMetadata(
-    mediatorId: deployedMediator.mediatorId,
+    serviceId: deployedMediator.serviceId,
   );
 
   prettyPrint('Metadata after updates', object: finalMediatorMetadata);
@@ -172,7 +175,7 @@ Future<void> main() async {
   final destroyingStart = DateTime.now();
 
   final destroyResponse = await atlasClient.destroyMediatorInstance(
-    mediatorId: deployedMediator.mediatorId,
+    serviceId: deployedMediator.serviceId,
   );
 
   prettyPrint('Destroy response', object: destroyResponse);

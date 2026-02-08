@@ -2,10 +2,15 @@ import 'package:affinidi_tdk_atlas_didcomm_client/affinidi_tdk_atlas_didcomm_cli
 import 'package:test/test.dart';
 
 void main() {
-  group('UpdateMediatorInstanceDeploymentOptions', () {
-    test('should create empty options with all fields null', () {
-      final options = const UpdateMediatorInstanceDeploymentOptions();
+  const testServiceId = 'test-service-id';
 
+  group('UpdateMediatorInstanceDeploymentOptions', () {
+    test('should create options with only required serviceId', () {
+      final options = const UpdateMediatorInstanceDeploymentOptions(
+        serviceId: testServiceId,
+      );
+
+      expect(options.serviceId, testServiceId);
       expect(options.serviceSize, isNull);
       expect(options.mediatorAclMode, isNull);
       expect(options.name, isNull);
@@ -14,9 +19,11 @@ void main() {
 
     test('should create options with only serviceSize', () {
       final options = const UpdateMediatorInstanceDeploymentOptions(
+        serviceId: testServiceId,
         serviceSize: ServiceSize.medium,
       );
 
+      expect(options.serviceId, testServiceId);
       expect(options.serviceSize, ServiceSize.medium);
       expect(options.mediatorAclMode, isNull);
       expect(options.name, isNull);
@@ -25,9 +32,11 @@ void main() {
 
     test('should create options with only mediatorAclMode', () {
       final options = const UpdateMediatorInstanceDeploymentOptions(
+        serviceId: testServiceId,
         mediatorAclMode: MediatorAclMode.explicitAllow,
       );
 
+      expect(options.serviceId, testServiceId);
       expect(options.serviceSize, isNull);
       expect(options.mediatorAclMode, MediatorAclMode.explicitAllow);
       expect(options.name, isNull);
@@ -36,12 +45,14 @@ void main() {
 
     test('should create options with all fields', () {
       final options = const UpdateMediatorInstanceDeploymentOptions(
+        serviceId: testServiceId,
         serviceSize: ServiceSize.large,
         mediatorAclMode: MediatorAclMode.explicitDeny,
         name: 'Updated Mediator',
         description: 'Updated description',
       );
 
+      expect(options.serviceId, testServiceId);
       expect(options.serviceSize, ServiceSize.large);
       expect(options.mediatorAclMode, MediatorAclMode.explicitDeny);
       expect(options.name, 'Updated Mediator');
@@ -50,12 +61,14 @@ void main() {
 
     test('should serialize to JSON with only non-null fields', () {
       final options = const UpdateMediatorInstanceDeploymentOptions(
+        serviceId: testServiceId,
         serviceSize: ServiceSize.small,
         name: 'Updated Name',
       );
 
       final json = options.toJson();
 
+      expect(json['serviceId'], testServiceId);
       expect(json['serviceSize'], 'small');
       expect(json['name'], 'Updated Name');
       expect(json.containsKey('mediatorAclMode'), isFalse);
@@ -64,6 +77,7 @@ void main() {
 
     test('should serialize to JSON with all fields', () {
       final options = const UpdateMediatorInstanceDeploymentOptions(
+        serviceId: testServiceId,
         serviceSize: ServiceSize.tiny,
         mediatorAclMode: MediatorAclMode.explicitAllow,
         name: 'Test',
@@ -72,6 +86,7 @@ void main() {
 
       final json = options.toJson();
 
+      expect(json['serviceId'], testServiceId);
       expect(json['serviceSize'], 'tiny');
       expect(json['mediatorAclMode'], 'explicit_allow');
       expect(json['name'], 'Test');
@@ -80,6 +95,7 @@ void main() {
 
     test('should deserialize from JSON correctly', () {
       final json = {
+        'serviceId': testServiceId,
         'serviceSize': 'medium',
         'mediatorAclMode': 'explicit_deny',
         'name': 'Test Mediator',
@@ -88,28 +104,19 @@ void main() {
 
       final options = UpdateMediatorInstanceDeploymentOptions.fromJson(json);
 
+      expect(options.serviceId, testServiceId);
       expect(options.serviceSize, ServiceSize.medium);
       expect(options.mediatorAclMode, MediatorAclMode.explicitDeny);
       expect(options.name, 'Test Mediator');
       expect(options.description, 'Test description');
     });
 
-    test('should deserialize from empty JSON', () {
-      final json = <String, dynamic>{};
-
-      final options = UpdateMediatorInstanceDeploymentOptions.fromJson(json);
-
-      expect(options.serviceSize, isNull);
-      expect(options.mediatorAclMode, isNull);
-      expect(options.name, isNull);
-      expect(options.description, isNull);
-    });
-
     test('should handle partial updates - only serviceSize', () {
-      final json = {'serviceSize': 'large'};
+      final json = {'serviceId': testServiceId, 'serviceSize': 'large'};
 
       final options = UpdateMediatorInstanceDeploymentOptions.fromJson(json);
 
+      expect(options.serviceId, testServiceId);
       expect(options.serviceSize, ServiceSize.large);
       expect(options.mediatorAclMode, isNull);
       expect(options.name, isNull);
@@ -118,6 +125,7 @@ void main() {
 
     test('should round-trip through JSON', () {
       final original = const UpdateMediatorInstanceDeploymentOptions(
+        serviceId: testServiceId,
         serviceSize: ServiceSize.dev,
         mediatorAclMode: MediatorAclMode.explicitAllow,
         name: 'Round-trip test',
@@ -129,6 +137,7 @@ void main() {
         json,
       );
 
+      expect(deserialized.serviceId, original.serviceId);
       expect(deserialized.serviceSize, original.serviceSize);
       expect(deserialized.mediatorAclMode, original.mediatorAclMode);
       expect(deserialized.name, original.name);
@@ -138,13 +147,14 @@ void main() {
     test('should support partial updates scenario', () {
       // Simulate updating only name and description, keeping size and ACL mode unchanged
       final updateOptions = const UpdateMediatorInstanceDeploymentOptions(
+        serviceId: testServiceId,
         name: 'New Name',
         description: 'New Description',
       );
 
       final json = updateOptions.toJson();
 
-      expect(json.keys.length, 2);
+      expect(json['serviceId'], testServiceId);
       expect(json['name'], 'New Name');
       expect(json['description'], 'New Description');
       expect(json.containsKey('serviceSize'), isFalse);

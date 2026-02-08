@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../../models/service_type/service_type.dart';
 import '../base_messages/base_response_message.dart';
 
 part 'deploy_instance_response_message.g.dart';
@@ -11,39 +12,59 @@ sealed class DeployInstanceResponse {
 
   /// Factory constructor to create the appropriate response type from JSON.
   factory DeployInstanceResponse.fromJson(Map<String, dynamic> json) {
-    // Determine the type based on which ID field is present
-    if (json.containsKey('mediatorId')) {
-      return DeployMediatorInstanceResponse.fromJson(json);
-    } else if (json.containsKey('mpxId')) {
-      return DeployMpxInstanceResponse.fromJson(json);
-    } else if (json.containsKey('trId')) {
-      return DeployTrustRegistryInstanceResponse.fromJson(json);
-    } else {
-      throw ArgumentError('Unknown deploy instance response type');
-    }
+    // Determine the type based on serviceType field
+    final serviceType = json['serviceType'] as String?;
+    return switch (serviceType) {
+      'MEDIATOR' => DeployMediatorInstanceResponse.fromJson(json),
+      'MPX' => DeployMpxInstanceResponse.fromJson(json),
+      'TR' => DeployTrustRegistryInstanceResponse.fromJson(json),
+      _ => throw ArgumentError(
+        'Unknown deploy instance response type: $serviceType',
+      ),
+    };
   }
 
   /// Converts this response to JSON.
   Map<String, dynamic> toJson();
+
+  /// The service ID.
+  String get serviceId;
+
+  /// The service request ID.
+  String get serviceRequestId;
+
+  /// The optional message.
+  String? get message;
+
+  /// The service type.
+  ServiceType? get serviceType;
 }
 
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
 /// Response data for deploy mediator instance operation.
 final class DeployMediatorInstanceResponse extends DeployInstanceResponse {
-  /// The ID of the deployed mediator instance.
-  final String mediatorId;
+  /// The service ID.
+  @override
+  final String serviceId;
 
   /// The service request ID.
+  @override
   final String serviceRequestId;
 
   /// The deployment message/status.
+  @override
   final String? message;
+
+  /// The service type.
+  @override
+  final ServiceType? serviceType;
 
   /// Creates a deploy mediator instance response.
   DeployMediatorInstanceResponse({
-    required this.mediatorId,
+    required this.serviceId,
     required this.serviceRequestId,
     this.message,
+    this.serviceType,
   }) : super();
 
   /// Creates a deploy mediator instance response from JSON.
@@ -57,20 +78,28 @@ final class DeployMediatorInstanceResponse extends DeployInstanceResponse {
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
 /// Response data for deploy MPX instance operation.
 final class DeployMpxInstanceResponse extends DeployInstanceResponse {
-  /// The ID of the deployed MPX instance.
-  final String mpxId;
+  /// The service ID.
+  @override
+  final String serviceId;
 
   /// The service request ID.
+  @override
   final String serviceRequestId;
 
   /// The deployment message/status.
+  @override
   final String? message;
+
+  /// The service type.
+  @override
+  final ServiceType? serviceType;
 
   /// Creates a deploy MPX instance response.
   DeployMpxInstanceResponse({
-    required this.mpxId,
+    required this.serviceId,
     required this.serviceRequestId,
     this.message,
+    this.serviceType,
   }) : super();
 
   /// Creates a deploy MPX instance response from JSON.
@@ -84,20 +113,28 @@ final class DeployMpxInstanceResponse extends DeployInstanceResponse {
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
 /// Response data for deploy trust registry instance operation.
 final class DeployTrustRegistryInstanceResponse extends DeployInstanceResponse {
-  /// The ID of the deployed trust registry instance.
-  final String trId;
+  /// The service ID.
+  @override
+  final String serviceId;
 
   /// The service request ID.
+  @override
   final String serviceRequestId;
 
   /// The deployment message/status.
+  @override
   final String? message;
+
+  /// The service type.
+  @override
+  final ServiceType? serviceType;
 
   /// Creates a deploy trust registry instance response.
   DeployTrustRegistryInstanceResponse({
-    required this.trId,
+    required this.serviceId,
     required this.serviceRequestId,
     this.message,
+    this.serviceType,
   }) : super();
 
   /// Creates a deploy trust registry instance response from JSON.
@@ -143,7 +180,7 @@ class DeployInstanceResponseMessage
       expiresTime: expiresTime,
       threadId: threadId,
       body: body,
-      operationName: 'deployMediatorInstance',
+      operationName: 'deployServiceInstance',
     );
   }
 
@@ -165,7 +202,7 @@ class DeployInstanceResponseMessage
       expiresTime: expiresTime,
       threadId: threadId,
       body: body,
-      operationName: 'deployMpxInstance',
+      operationName: 'deployServiceInstance',
     );
   }
 
@@ -187,7 +224,7 @@ class DeployInstanceResponseMessage
       expiresTime: expiresTime,
       threadId: threadId,
       body: body,
-      operationName: 'deployTrInstance',
+      operationName: 'deployServiceInstance',
     );
   }
 }

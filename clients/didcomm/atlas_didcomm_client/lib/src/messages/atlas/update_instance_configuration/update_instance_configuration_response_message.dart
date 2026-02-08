@@ -17,7 +17,7 @@ class UpdateMediatorInstanceConfigurationResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-         operationName: 'updateMediatorInstanceConfiguration',
+         operationName: 'updateServiceInstanceConfiguration',
          fromJson: UpdateMediatorInstanceConfigurationResponse.fromJson,
        );
 }

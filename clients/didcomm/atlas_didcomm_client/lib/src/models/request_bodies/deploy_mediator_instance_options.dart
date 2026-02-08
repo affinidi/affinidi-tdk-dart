@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../mediator_acl_mode/mediator_acl_mode.dart';
 import '../service_size/service_size.dart';
+import 'base_options.dart';
 
 part 'deploy_mediator_instance_options.g.dart';
 
@@ -9,7 +10,11 @@ part 'deploy_mediator_instance_options.g.dart';
 ///
 /// This defines the configuration for deploying a new Affinidi Messaging Mediator service instance.
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-class DeployMediatorInstanceOptions {
+class DeployMediatorInstanceOptions extends BaseOptions {
+  @override
+  @JsonKey(includeToJson: true)
+  final String serviceType = 'mediator';
+
   /// The size of the service instance to deploy.
   ///
   /// Available sizes: dev, tiny, small, medium, large.

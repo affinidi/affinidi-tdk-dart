@@ -21,7 +21,6 @@ class UpdateInstanceDeploymentRequestMessage extends BaseRequestMessage {
   factory UpdateInstanceDeploymentRequestMessage.mediator({
     required String id,
     required List<String> to,
-    required String mediatorId,
     required UpdateMediatorInstanceDeploymentOptions options,
     String? from,
     DateTime? createdTime,
@@ -34,9 +33,9 @@ class UpdateInstanceDeploymentRequestMessage extends BaseRequestMessage {
       from: from,
       createdTime: createdTime,
       expiresTime: expiresTime,
-      body: {'mediatorId': mediatorId, ...options.toJson()},
+      body: options.toJson(),
       threadId: threadId,
-      operationName: 'updateMediatorInstanceDeployment',
+      operationName: 'updateServiceInstanceDeployment',
     );
   }
 
@@ -44,7 +43,6 @@ class UpdateInstanceDeploymentRequestMessage extends BaseRequestMessage {
   factory UpdateInstanceDeploymentRequestMessage.meetingPlace({
     required String id,
     required List<String> to,
-    required String mpxId,
     required UpdateMpxInstanceDeploymentOptions options,
     String? from,
     DateTime? createdTime,
@@ -57,9 +55,9 @@ class UpdateInstanceDeploymentRequestMessage extends BaseRequestMessage {
       from: from,
       createdTime: createdTime,
       expiresTime: expiresTime,
-      body: {'mpxId': mpxId, ...options.toJson()},
+      body: options.toJson(),
       threadId: threadId,
-      operationName: 'updateMpxInstanceDeployment',
+      operationName: 'updateServiceInstanceDeployment',
     );
   }
 
@@ -67,7 +65,6 @@ class UpdateInstanceDeploymentRequestMessage extends BaseRequestMessage {
   factory UpdateInstanceDeploymentRequestMessage.trustRegistry({
     required String id,
     required List<String> to,
-    required String trId,
     required UpdateTrInstanceDeploymentOptions options,
     String? from,
     DateTime? createdTime,
@@ -80,9 +77,9 @@ class UpdateInstanceDeploymentRequestMessage extends BaseRequestMessage {
       from: from,
       createdTime: createdTime,
       expiresTime: expiresTime,
-      body: {'trId': trId, ...options.toJson()},
+      body: options.toJson(),
       threadId: threadId,
-      operationName: 'updateTrInstanceDeployment',
+      operationName: 'updateServiceInstanceDeployment',
     );
   }
 }

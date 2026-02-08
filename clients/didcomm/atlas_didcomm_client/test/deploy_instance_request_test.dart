@@ -2,9 +2,119 @@ import 'package:affinidi_tdk_atlas_didcomm_client/affinidi_tdk_atlas_didcomm_cli
 import 'package:test/test.dart';
 
 void main() {
-  group('BaseDeployInstanceRequest', () {
-    test('should create request with all optional fields', () {
-      final request = DeployInstanceRequestMessage.mediator(
+  group('DeployMediatorInstanceOptions', () {
+    test('should create options with required fields only', () {
+      const options = DeployMediatorInstanceOptions(
+        serviceSize: ServiceSize.small,
+        mediatorAclMode: MediatorAclMode.explicitDeny,
+      );
+
+      expect(options.serviceSize, ServiceSize.small);
+      expect(options.mediatorAclMode, MediatorAclMode.explicitDeny);
+      expect(options.administratorDids, isNull);
+      expect(options.name, isNull);
+      expect(options.description, isNull);
+    });
+
+    test('should create options with all fields', () {
+      const options = DeployMediatorInstanceOptions(
+        serviceSize: ServiceSize.medium,
+        mediatorAclMode: MediatorAclMode.explicitAllow,
+        administratorDids: 'did:example:admin',
+        name: 'Test Instance',
+        description: 'Test description',
+      );
+
+      expect(options.serviceSize, ServiceSize.medium);
+      expect(options.mediatorAclMode, MediatorAclMode.explicitAllow);
+      expect(options.administratorDids, 'did:example:admin');
+      expect(options.name, 'Test Instance');
+      expect(options.description, 'Test description');
+    });
+
+    test('should serialize to JSON with all fields', () {
+      const options = DeployMediatorInstanceOptions(
+        serviceSize: ServiceSize.large,
+        mediatorAclMode: MediatorAclMode.explicitDeny,
+        administratorDids: 'did:example:admin',
+        name: 'Test Instance',
+        description: 'Test description',
+      );
+
+      final json = options.toJson();
+
+      expect(json['serviceSize'], 'large');
+      expect(json['mediatorAclMode'], 'explicit_deny');
+      expect(json['administratorDids'], 'did:example:admin');
+      expect(json['name'], 'Test Instance');
+      expect(json['description'], 'Test description');
+    });
+
+    test('should serialize to JSON without null fields', () {
+      const options = DeployMediatorInstanceOptions(
+        serviceSize: ServiceSize.tiny,
+        mediatorAclMode: MediatorAclMode.explicitAllow,
+      );
+
+      final json = options.toJson();
+
+      expect(json['serviceSize'], 'tiny');
+      expect(json['mediatorAclMode'], 'explicit_allow');
+      expect(json.containsKey('administratorDids'), isFalse);
+      expect(json.containsKey('name'), isFalse);
+      expect(json.containsKey('description'), isFalse);
+    });
+
+    test('should deserialize from JSON with all fields', () {
+      final json = {
+        'serviceSize': 'medium',
+        'mediatorAclMode': 'explicit_deny',
+        'administratorDids': 'did:example:admin',
+        'name': 'Test Instance',
+        'description': 'Test description',
+      };
+
+      final options = DeployMediatorInstanceOptions.fromJson(json);
+
+      expect(options.serviceSize, ServiceSize.medium);
+      expect(options.mediatorAclMode, MediatorAclMode.explicitDeny);
+      expect(options.administratorDids, 'did:example:admin');
+      expect(options.name, 'Test Instance');
+      expect(options.description, 'Test description');
+    });
+
+    test('should deserialize from JSON with only required fields', () {
+      final json = {
+        'serviceSize': 'small',
+        'mediatorAclMode': 'explicit_allow',
+      };
+
+      final options = DeployMediatorInstanceOptions.fromJson(json);
+
+      expect(options.serviceSize, ServiceSize.small);
+      expect(options.mediatorAclMode, MediatorAclMode.explicitAllow);
+      expect(options.administratorDids, isNull);
+      expect(options.name, isNull);
+      expect(options.description, isNull);
+    });
+
+    test('should handle extra fields in JSON', () {
+      final json = {
+        'serviceSize': 'tiny',
+        'mediatorAclMode': 'explicit_deny',
+        'extraField': 'should be ignored',
+      };
+
+      final options = DeployMediatorInstanceOptions.fromJson(json);
+
+      expect(options.serviceSize, ServiceSize.tiny);
+      expect(options.mediatorAclMode, MediatorAclMode.explicitDeny);
+    });
+  });
+
+  group('DeployInstanceRequestMessage', () {
+    test('should create mediator message with options in body', () {
+      final message = DeployInstanceRequestMessage.mediator(
         id: 'test-id',
         to: ['did:example:alice'],
         options: const DeployMediatorInstanceOptions(
@@ -16,147 +126,49 @@ void main() {
         ),
       );
 
-      expect(request.body!['administratorDids'], 'did:example:admin');
-      expect(request.body!['serviceSize'], 'small');
-      expect(request.body!['mediatorAclMode'], 'explicit_deny');
-      expect(request.body!['name'], 'Test Instance');
-      expect(request.body!['description'], 'Test description');
+      expect(message.body!['serviceSize'], 'small');
+      expect(message.body!['mediatorAclMode'], 'explicit_deny');
+      expect(message.body!['administratorDids'], 'did:example:admin');
+      expect(message.body!['name'], 'Test Instance');
+      expect(message.body!['description'], 'Test description');
     });
 
-    test('should serialize to JSON correctly with all fields', () {
-      final request = DeployInstanceRequestMessage.mediator(
+    test('should create meeting place message with options in body', () {
+      final message = DeployInstanceRequestMessage.meetingPlace(
         id: 'test-id',
         to: ['did:example:alice'],
-        options: const DeployMediatorInstanceOptions(
+        options: const DeployMpxInstanceOptions(
           serviceSize: ServiceSize.medium,
-          mediatorAclMode: MediatorAclMode.explicitDeny,
-          administratorDids: 'did:example:admin',
-          name: 'Test Instance',
-          description: 'Test description',
+          name: 'MPX Instance',
+          description: 'Meeting place description',
         ),
       );
 
-      final json = request.toJson();
-
-      expect(json['administratorDids'], 'did:example:admin');
-      expect(json['serviceSize'], 'medium');
-      expect(json['mediatorAclMode'], 'explicit_deny');
-      expect(json['name'], 'Test Instance');
-      expect(json['description'], 'Test description');
+      expect(message.body!['serviceSize'], 'medium');
+      expect(message.body!['name'], 'MPX Instance');
+      expect(message.body!['description'], 'Meeting place description');
     });
 
-    test('should serialize to JSON without proper fields', () {
-      final request = DeployInstanceRequestMessage.mediator(
+    test('should create trust registry message with options in body', () {
+      final message = DeployInstanceRequestMessage.trustRegistry(
         id: 'test-id',
         to: ['did:example:alice'],
-        options: const DeployMediatorInstanceOptions(
+        options: const DeployTrInstanceOptions(
           serviceSize: ServiceSize.large,
-          mediatorAclMode: MediatorAclMode.explicitDeny,
+          defaultMediatorDid: 'did:example:mediator',
           administratorDids: 'did:example:admin',
-          name: 'Test Instance',
-          description: 'Test description',
+          corsAllowedOrigins: 'https://example.com',
+          name: 'TR Instance',
+          description: 'Trust registry description',
         ),
       );
 
-      final json = request.toJson();
-      expect(json.containsKey('administratorDids'), isFalse);
-      expect(json.containsKey('serviceSize'), isFalse);
-      expect(json.containsKey('mediatorAclMode'), isFalse);
-      expect(json.containsKey('name'), isFalse);
-      expect(json.containsKey('description'), isFalse);
-    });
-
-    test('should deserialize from JSON correctly', () {
-      final json = {
-        'administratorDids': 'did:example:admin',
-        'serviceSize': 'tiny',
-        'mediatorAclMode': 'explicit_deny',
-        'name': 'Test Instance',
-        'description': 'Test description',
-      };
-
-      final request = DeployInstanceRequestMessage.mediator(
-        id: 'test-id',
-        to: ['did:example:alice'],
-        options: DeployMediatorInstanceOptions.fromJson(json),
-      );
-
-      final jsonRequest = request.toJson();
-
-      expect(jsonRequest['administratorDids'], 'did:example:admin');
-      expect(jsonRequest['serviceSize'], 'tiny');
-      expect(jsonRequest['mediatorAclMode'], 'explicit_deny');
-      expect(jsonRequest['name'], 'Test Instance');
-      expect(jsonRequest['description'], 'Test description');
-    });
-
-    test('should deserialize from JSON with only required field', () {
-      final json = {'serviceSize': 'small'};
-
-      final request = DeployInstanceRequestMessage.mediator(
-        id: 'test-id',
-        to: ['did:example:alice'],
-        options: DeployMediatorInstanceOptions.fromJson(json),
-      );
-
-      final jsonRequest = request.toJson();
-
-      expect(jsonRequest['serviceSize'], 'small');
-      expect(jsonRequest['administratorDids'], isNull);
-      expect(jsonRequest['mediatorAclMode'], isNull);
-      expect(jsonRequest['name'], isNull);
-      expect(jsonRequest['description'], isNull);
-    });
-
-    test('should throw TypeError when serviceSize is missing', () {
-      final json = <String, dynamic>{};
-
-      expect(
-        () => DeployInstanceRequestMessage.mediator(
-          id: 'test-id',
-          to: ['did:example:alice'],
-          options: DeployMediatorInstanceOptions.fromJson(json),
-        ),
-        throwsA(isA<TypeError>()),
-      );
-    });
-
-    test('should handle null values in JSON', () {
-      final json = {
-        'serviceSize': 'tiny',
-        'administratorDids': null,
-        'mediatorAclMode': null,
-        'name': null,
-        'description': null,
-      };
-
-      final request = DeployInstanceRequestMessage.mediator(
-        id: 'test-id',
-        to: ['did:example:alice'],
-        options: DeployMediatorInstanceOptions.fromJson(json),
-      );
-
-      final jsonRequest = request.toJson();
-
-      expect(jsonRequest['serviceSize'], 'tiny');
-      expect(jsonRequest['administratorDids'], isNull);
-      expect(jsonRequest['mediatorAclMode'], isNull);
-      expect(jsonRequest['name'], isNull);
-      expect(jsonRequest['description'], isNull);
-    });
-
-    test('should handle extra fields in JSON', () {
-      final json = {'serviceSize': 'tiny', 'extraField': 'should be ignored'};
-
-      final request = DeployInstanceRequestMessage.mediator(
-        id: 'test-id',
-        to: ['did:example:alice'],
-        options: DeployMediatorInstanceOptions.fromJson(json),
-      );
-
-      final jsonRequest = request.toJson();
-
-      expect(jsonRequest['serviceSize'], 'tiny');
+      expect(message.body!['serviceSize'], 'large');
+      expect(message.body!['defaultMediatorDid'], 'did:example:mediator');
+      expect(message.body!['administratorDids'], 'did:example:admin');
+      expect(message.body!['corsAllowedOrigins'], 'https://example.com');
+      expect(message.body!['name'], 'TR Instance');
+      expect(message.body!['description'], 'Trust registry description');
     });
   });
 }

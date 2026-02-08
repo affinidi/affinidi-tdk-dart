@@ -1,4 +1,6 @@
-import '../../../models/request_bodies/get_instances_list_request_options.dart';
+import '../../../models/request_bodies/get_mediator_instances_list_request_options.dart';
+import '../../../models/request_bodies/get_mpx_instances_list_request_options.dart';
+import '../../../models/request_bodies/get_tr_instances_list_request_options.dart';
 import '../base_messages/base_request_message.dart';
 
 /// Message for getting list of instances.
@@ -19,7 +21,7 @@ class GetInstancesListMessage extends BaseRequestMessage {
   factory GetInstancesListMessage.mediator({
     required String id,
     required List<String> to,
-    required GetInstancesListRequestOptions options,
+    required GetMediatorInstancesListRequestOptions options,
     String? from,
     DateTime? createdTime,
     DateTime? expiresTime,
@@ -33,7 +35,7 @@ class GetInstancesListMessage extends BaseRequestMessage {
       expiresTime: expiresTime,
       body: options.toJson(),
       threadId: threadId,
-      operationName: 'getMediatorInstancesList',
+      operationName: 'getServiceInstancesList',
     );
   }
 
@@ -41,7 +43,7 @@ class GetInstancesListMessage extends BaseRequestMessage {
   factory GetInstancesListMessage.meetingPlace({
     required String id,
     required List<String> to,
-    required GetInstancesListRequestOptions options,
+    required GetMpxInstancesListRequestOptions options,
     String? from,
     DateTime? createdTime,
     DateTime? expiresTime,
@@ -55,7 +57,7 @@ class GetInstancesListMessage extends BaseRequestMessage {
       expiresTime: expiresTime,
       body: options.toJson(),
       threadId: threadId,
-      operationName: 'getMpxInstanceList',
+      operationName: 'getServiceInstancesList',
     );
   }
 
@@ -63,10 +65,10 @@ class GetInstancesListMessage extends BaseRequestMessage {
   factory GetInstancesListMessage.trustRegistry({
     required String id,
     required List<String> to,
+    required GetTrInstancesListRequestOptions options,
     String? from,
     DateTime? createdTime,
     DateTime? expiresTime,
-    Map<String, dynamic> body = const {},
     String? threadId,
   }) {
     return GetInstancesListMessage._(
@@ -75,9 +77,9 @@ class GetInstancesListMessage extends BaseRequestMessage {
       from: from,
       createdTime: createdTime,
       expiresTime: expiresTime,
-      body: body,
+      body: options.toJson(),
       threadId: threadId,
-      operationName: 'getTrInstanceList',
+      operationName: 'getServiceInstancesList',
     );
   }
 }

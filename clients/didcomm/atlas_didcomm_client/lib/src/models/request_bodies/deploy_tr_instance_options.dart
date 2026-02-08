@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../service_size/service_size.dart';
+import 'base_options.dart';
 
 part 'deploy_tr_instance_options.g.dart';
 
@@ -8,7 +9,11 @@ part 'deploy_tr_instance_options.g.dart';
 ///
 /// This defines the configuration for deploying a new Affinidi Messaging Trust Registry service instance.
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-class DeployTrInstanceOptions {
+class DeployTrInstanceOptions extends BaseOptions {
+  @override
+  @JsonKey(includeToJson: true)
+  final String serviceType = 'tr';
+
   /// The size of the service instance to deploy.
   ///
   /// Available sizes: dev, tiny, small, medium, large.

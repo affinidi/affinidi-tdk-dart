@@ -1,3 +1,6 @@
+import '../../../models/request_bodies/update_mediator_instance_configuration_options.dart';
+import '../../../models/request_bodies/update_mpx_instance_configuration_options.dart';
+import '../../../models/request_bodies/update_tr_instance_configuration_options.dart';
 import '../base_messages/base_request_message.dart';
 
 /// Message for updating instance configuration.
@@ -18,10 +21,10 @@ class UpdateInstanceConfigurationRequestMessage extends BaseRequestMessage {
   factory UpdateInstanceConfigurationRequestMessage.mediator({
     required String id,
     required List<String> to,
+    required UpdateMediatorInstanceConfigurationOptions options,
     String? from,
     DateTime? createdTime,
     DateTime? expiresTime,
-    Map<String, dynamic> body = const {},
     String? threadId,
   }) {
     return UpdateInstanceConfigurationRequestMessage._(
@@ -30,9 +33,9 @@ class UpdateInstanceConfigurationRequestMessage extends BaseRequestMessage {
       from: from,
       createdTime: createdTime,
       expiresTime: expiresTime,
-      body: body,
+      body: options.toJson(),
       threadId: threadId,
-      operationName: 'updateMediatorInstanceConfiguration',
+      operationName: 'updateServiceInstanceConfiguration',
     );
   }
 
@@ -40,14 +43,21 @@ class UpdateInstanceConfigurationRequestMessage extends BaseRequestMessage {
   factory UpdateInstanceConfigurationRequestMessage.meetingPlace({
     required String id,
     required List<String> to,
+    required UpdateMpxInstanceConfigurationOptions options,
     String? from,
     DateTime? createdTime,
     DateTime? expiresTime,
-    Map<String, dynamic> body = const {},
     String? threadId,
   }) {
-    throw UnimplementedError(
-      'Meeting place configuration update is not yet implemented',
+    return UpdateInstanceConfigurationRequestMessage._(
+      id: id,
+      to: to,
+      from: from,
+      createdTime: createdTime,
+      expiresTime: expiresTime,
+      body: options.toJson(),
+      threadId: threadId,
+      operationName: 'updateServiceInstanceConfiguration',
     );
   }
 
@@ -55,14 +65,21 @@ class UpdateInstanceConfigurationRequestMessage extends BaseRequestMessage {
   factory UpdateInstanceConfigurationRequestMessage.trustRegistry({
     required String id,
     required List<String> to,
+    required UpdateTrInstanceConfigurationOptions options,
     String? from,
     DateTime? createdTime,
     DateTime? expiresTime,
-    Map<String, dynamic> body = const {},
     String? threadId,
   }) {
-    throw UnimplementedError(
-      'Trust registry configuration update is not yet implemented',
+    return UpdateInstanceConfigurationRequestMessage._(
+      id: id,
+      to: to,
+      from: from,
+      createdTime: createdTime,
+      expiresTime: expiresTime,
+      body: options.toJson(),
+      threadId: threadId,
+      operationName: 'updateServiceInstanceConfiguration',
     );
   }
 }

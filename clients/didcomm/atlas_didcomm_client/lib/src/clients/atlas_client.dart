@@ -21,9 +21,19 @@ import '../messages/atlas/update_instance_deployment/update_instance_deployment_
 import '../models/request_bodies/deploy_mediator_instance_options.dart';
 import '../models/request_bodies/deploy_mpx_instance_options.dart';
 import '../models/request_bodies/deploy_tr_instance_options.dart';
-import '../models/request_bodies/get_instance_requests_request_options.dart';
-import '../models/request_bodies/get_instances_list_request_options.dart';
-import '../models/request_bodies/update_instance_configuration_options.dart';
+import '../models/request_bodies/destroy_mediator_instance_options.dart';
+import '../models/request_bodies/destroy_mpx_instance_options.dart';
+import '../models/request_bodies/destroy_tr_instance_options.dart';
+import '../models/request_bodies/get_mediator_instance_metadata_options.dart';
+import '../models/request_bodies/get_mediator_instance_requests_request_options.dart';
+import '../models/request_bodies/get_mediator_instances_list_request_options.dart';
+import '../models/request_bodies/get_mpx_instance_metadata_options.dart';
+import '../models/request_bodies/get_mpx_instance_requests_request_options.dart';
+import '../models/request_bodies/get_mpx_instances_list_request_options.dart';
+import '../models/request_bodies/get_tr_instance_metadata_options.dart';
+import '../models/request_bodies/get_tr_instance_requests_request_options.dart';
+import '../models/request_bodies/get_tr_instances_list_request_options.dart';
+import '../models/request_bodies/update_mediator_instance_configuration_options.dart';
 import '../models/request_bodies/update_mediator_instance_deployment_options.dart';
 import '../models/request_bodies/update_mpx_instance_deployment_options.dart';
 import '../models/request_bodies/update_tr_instance_deployment_options.dart';
@@ -69,7 +79,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
 
     // TODO: add enum instead of hardcoding service type
     final mediatorService = atlasDidDocument.service.firstWhere(
-      (service) => service.type == 'DIDCommMessaging',
+      (service) => service.type.toString() == 'DIDCommMessaging',
     );
 
     final mediatorDid = mediatorService.id.split('#').first;
@@ -112,7 +122,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
     final requestMessage = GetInstancesListMessage.mediator(
       id: const Uuid().v4(),
       to: [serviceDidDocument.id],
-      options: GetInstancesListRequestOptions(
+      options: GetMediatorInstancesListRequestOptions(
         limit: limit,
         exclusiveStartKey: exclusiveStartKey,
       ),
@@ -213,11 +223,11 @@ class DidcommAtlasClient extends DidcommServiceClient {
 
   /// Gets the metadata for a specific mediator instance.
   Future<GetMediatorInstanceMetadataResponseMessage>
-  getMediatorInstanceMetadata({required String mediatorId}) async {
+  getMediatorInstanceMetadata({required String serviceId}) async {
     final requestMessage = GetInstanceMetadataRequestMessage.mediator(
       id: const Uuid().v4(),
       to: [serviceDidDocument.id],
-      instanceId: mediatorId,
+      options: GetMediatorInstanceMetadataOptions(serviceId: serviceId),
     );
 
     final responseMessage = await sendServiceMessage(requestMessage);
@@ -234,12 +244,12 @@ class DidcommAtlasClient extends DidcommServiceClient {
 
   /// Gets the metadata for a specific MPX instance.
   Future<GetMpxInstanceMetadataResponseMessage> getMpxInstanceMetadata({
-    required String mpxId,
+    required String serviceId,
   }) async {
     final requestMessage = GetInstanceMetadataRequestMessage.meetingPlace(
       id: const Uuid().v4(),
       to: [serviceDidDocument.id],
-      instanceId: mpxId,
+      options: GetMpxInstanceMetadataOptions(serviceId: serviceId),
     );
 
     final responseMessage = await sendServiceMessage(requestMessage);
@@ -256,12 +266,12 @@ class DidcommAtlasClient extends DidcommServiceClient {
 
   /// Gets the metadata for a specific Trust Registry instance.
   Future<GetTrInstanceMetadataResponseMessage> getTrInstanceMetadata({
-    required String trId,
+    required String serviceId,
   }) async {
     final requestMessage = GetInstanceMetadataRequestMessage.trustRegistry(
       id: const Uuid().v4(),
       to: [serviceDidDocument.id],
-      instanceId: trId,
+      options: GetTrInstanceMetadataOptions(serviceId: serviceId),
     );
 
     final responseMessage = await sendServiceMessage(requestMessage);
@@ -278,12 +288,12 @@ class DidcommAtlasClient extends DidcommServiceClient {
 
   /// Destroys a mediator instance.
   Future<DestroyInstanceResponseMessage> destroyMediatorInstance({
-    required String mediatorId,
+    required String serviceId,
   }) async {
     final requestMessage = DestroyInstanceRequestMessage.mediator(
       id: const Uuid().v4(),
       to: [serviceDidDocument.id],
-      instanceId: mediatorId,
+      options: DestroyMediatorInstanceOptions(serviceId: serviceId),
     );
 
     final responseMessage = await sendServiceMessage(requestMessage);
@@ -300,12 +310,12 @@ class DidcommAtlasClient extends DidcommServiceClient {
 
   /// Destroys an MPX instance.
   Future<DestroyInstanceResponseMessage> destroyMpxInstance({
-    required String mpxId,
+    required String serviceId,
   }) async {
     final requestMessage = DestroyInstanceRequestMessage.meetingPlace(
       id: const Uuid().v4(),
       to: [serviceDidDocument.id],
-      instanceId: mpxId,
+      options: DestroyMpxInstanceOptions(serviceId: serviceId),
     );
 
     final responseMessage = await sendServiceMessage(requestMessage);
@@ -322,12 +332,12 @@ class DidcommAtlasClient extends DidcommServiceClient {
 
   /// Destroys a Trust Registry instance.
   Future<DestroyInstanceResponseMessage> destroyTrInstance({
-    required String trId,
+    required String serviceId,
   }) async {
     final requestMessage = DestroyInstanceRequestMessage.trustRegistry(
       id: const Uuid().v4(),
       to: [serviceDidDocument.id],
-      instanceId: trId,
+      options: DestroyTrInstanceOptions(serviceId: serviceId),
     );
 
     final responseMessage = await sendServiceMessage(requestMessage);
@@ -345,13 +355,11 @@ class DidcommAtlasClient extends DidcommServiceClient {
   /// Updates the deployment configuration of a mediator instance.
   Future<UpdateMediatorInstanceDeploymentResponseMessage>
   updateMediatorInstanceDeployment({
-    required String mediatorId,
     required UpdateMediatorInstanceDeploymentOptions options,
   }) async {
     final requestMessage = UpdateInstanceDeploymentRequestMessage.mediator(
       id: const Uuid().v4(),
       to: [serviceDidDocument.id],
-      mediatorId: mediatorId,
       options: options,
     );
 
@@ -370,13 +378,11 @@ class DidcommAtlasClient extends DidcommServiceClient {
   /// Updates the deployment configuration of an MPX instance.
   Future<UpdateMediatorInstanceDeploymentResponseMessage>
   updateMpxInstanceDeployment({
-    required String mpxId,
     required UpdateMpxInstanceDeploymentOptions options,
   }) async {
     final requestMessage = UpdateInstanceDeploymentRequestMessage.meetingPlace(
       id: const Uuid().v4(),
       to: [serviceDidDocument.id],
-      mpxId: mpxId,
       options: options,
     );
 
@@ -395,13 +401,11 @@ class DidcommAtlasClient extends DidcommServiceClient {
   /// Updates the deployment configuration of a Trust Registry instance.
   Future<UpdateMediatorInstanceDeploymentResponseMessage>
   updateTrInstanceDeployment({
-    required String trId,
     required UpdateTrInstanceDeploymentOptions options,
   }) async {
     final requestMessage = UpdateInstanceDeploymentRequestMessage.trustRegistry(
       id: const Uuid().v4(),
       to: [serviceDidDocument.id],
-      trId: trId,
       options: options,
     );
 
@@ -420,12 +424,12 @@ class DidcommAtlasClient extends DidcommServiceClient {
   /// Updates the configuration of a mediator instance.
   Future<UpdateMediatorInstanceConfigurationResponseMessage>
   updateMediatorInstanceConfiguration({
-    required UpdateInstanceConfigurationOptions configurationData,
+    required UpdateMediatorInstanceConfigurationOptions options,
   }) async {
     final requestMessage = UpdateInstanceConfigurationRequestMessage.mediator(
       id: const Uuid().v4(),
       to: [serviceDidDocument.id],
-      body: configurationData.toJson(),
+      options: options,
     );
 
     final responseMessage = await sendServiceMessage(requestMessage);
@@ -442,15 +446,15 @@ class DidcommAtlasClient extends DidcommServiceClient {
 
   /// Gets the requests for mediators.
   Future<GetMediatorRequestsResponseMessage> getMediatorRequests({
-    String? mediatorId,
+    String? serviceId,
     int? limit,
     String? exclusiveStartKey,
   }) async {
     final requestMessage = GetRequestsMessage.mediator(
       id: const Uuid().v4(),
       to: [serviceDidDocument.id],
-      options: GetInstanceRequestsRequestOptions(
-        instanceId: mediatorId,
+      options: GetMediatorInstanceRequestsRequestOptions(
+        serviceId: serviceId,
         limit: limit,
         exclusiveStartKey: exclusiveStartKey,
       ),
@@ -470,15 +474,15 @@ class DidcommAtlasClient extends DidcommServiceClient {
 
   /// Gets the requests for MPX instances.
   Future<GetMpxRequestsResponseMessage> getMpxRequests({
-    String? mpxId,
+    String? serviceId,
     int? limit,
     String? exclusiveStartKey,
   }) async {
     final requestMessage = GetRequestsMessage.meetingPlace(
       id: const Uuid().v4(),
       to: [serviceDidDocument.id],
-      options: GetInstanceRequestsRequestOptions(
-        instanceId: mpxId,
+      options: GetMpxInstanceRequestsRequestOptions(
+        serviceId: serviceId,
         limit: limit,
         exclusiveStartKey: exclusiveStartKey,
       ),
@@ -498,15 +502,15 @@ class DidcommAtlasClient extends DidcommServiceClient {
 
   /// Gets the requests for Trust Registry instances.
   Future<GetTrRequestsResponseMessage> getTrRequests({
-    String? trId,
+    String? serviceId,
     int? limit,
     String? exclusiveStartKey,
   }) async {
     final requestMessage = GetRequestsMessage.trustRegistry(
       id: const Uuid().v4(),
       to: [serviceDidDocument.id],
-      options: GetInstanceRequestsRequestOptions(
-        instanceId: trId,
+      options: GetTrInstanceRequestsRequestOptions(
+        serviceId: serviceId,
         limit: limit,
         exclusiveStartKey: exclusiveStartKey,
       ),
@@ -532,7 +536,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
     final requestMessage = GetInstancesListMessage.meetingPlace(
       id: const Uuid().v4(),
       to: [serviceDidDocument.id],
-      options: GetInstancesListRequestOptions(
+      options: GetMpxInstancesListRequestOptions(
         limit: limit,
         exclusiveStartKey: exclusiveStartKey,
       ),
@@ -558,10 +562,10 @@ class DidcommAtlasClient extends DidcommServiceClient {
     final requestMessage = GetInstancesListMessage.trustRegistry(
       id: const Uuid().v4(),
       to: [serviceDidDocument.id],
-      body: GetInstancesListRequestOptions(
+      options: GetTrInstancesListRequestOptions(
         limit: limit,
         exclusiveStartKey: exclusiveStartKey,
-      ).toJson(),
+      ),
     );
 
     final responseMessage = await sendServiceMessage(requestMessage);

@@ -20,6 +20,7 @@ DeployTrInstanceOptions _$DeployTrInstanceOptionsFromJson(
 Map<String, dynamic> _$DeployTrInstanceOptionsToJson(
   DeployTrInstanceOptions instance,
 ) => <String, dynamic>{
+  'serviceType': instance.serviceType,
   'serviceSize': _$ServiceSizeEnumMap[instance.serviceSize]!,
   if (instance.name case final value?) 'name': value,
   if (instance.description case final value?) 'description': value,

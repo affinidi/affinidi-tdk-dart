@@ -35,7 +35,7 @@ class DeployInstanceRequestMessage extends BaseRequestMessage {
       expiresTime: expiresTime,
       body: options.toJson(),
       threadId: threadId,
-      operationName: 'deployMediatorInstance',
+      operationName: 'deployServiceInstance',
     );
   }
 
@@ -57,7 +57,7 @@ class DeployInstanceRequestMessage extends BaseRequestMessage {
       expiresTime: expiresTime,
       body: options.toJson(),
       threadId: threadId,
-      operationName: 'deployMpxInstance',
+      operationName: 'deployServiceInstance',
     );
   }
 
@@ -79,7 +79,7 @@ class DeployInstanceRequestMessage extends BaseRequestMessage {
       expiresTime: expiresTime,
       body: options.toJson(),
       threadId: threadId,
-      operationName: 'deployTrInstance',
+      operationName: 'deployServiceInstance',
     );
   }
 }

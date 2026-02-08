@@ -9,19 +9,15 @@ void main() {
       final message = DestroyInstanceRequestMessage.mediator(
         id: 'test-id',
         to: ['did:example:alice'],
-        instanceId: 'instance-id',
+        options: DestroyMediatorInstanceOptions(serviceId: 'instance-id'),
       );
 
-      expect(
-        message.type.toString(),
-        'affinidi.io/operations/ama/destroyMediatorInstance',
-      );
+      expect(message.body!['serviceId'], 'instance-id');
     });
 
     test('should preserve all constructor parameters', () {
       final now = DateTime.now();
       final expires = now.add(const Duration(hours: 1));
-      final body = {'key': 'value'};
       const threadId = 'thread-123';
 
       final message = DestroyInstanceRequestMessage.mediator(
@@ -30,7 +26,7 @@ void main() {
         from: 'did:example:bob',
         createdTime: now,
         expiresTime: expires,
-        instanceId: 'instance-id',
+        options: DestroyMediatorInstanceOptions(serviceId: 'instance-id'),
         threadId: threadId,
       );
 
@@ -39,18 +35,19 @@ void main() {
       expect(message.from, 'did:example:bob');
       expect(message.createdTime, now);
       expect(message.expiresTime, expires);
-      expect(message.body, body);
+      expect(message.body!['serviceId'], 'instance-id');
       expect(message.threadId, threadId);
     });
 
-    test('should handle empty body by default', () {
+    test('should have body with serviceId', () {
       final message = DestroyInstanceRequestMessage.mediator(
         id: 'test-id',
         to: ['did:example:alice'],
-        instanceId: 'instance-id',
+        options: DestroyMediatorInstanceOptions(serviceId: 'instance-id'),
       );
 
-      expect(message.body, isEmpty);
+      expect(message.body, isNotEmpty);
+      expect(message.body!['serviceId'], 'instance-id');
     });
   });
 
@@ -132,7 +129,7 @@ void main() {
         to: ['did:example:alice'],
       );
 
-      expect(() => responseMessage.response, throwsA(isA<TypeError>()));
+      expect(() => responseMessage.response, throwsA(isA<ArgumentError>()));
     });
 
     test('should preserve all constructor parameters', () {

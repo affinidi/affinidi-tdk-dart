@@ -17,6 +17,7 @@ DeployMpxInstanceOptions _$DeployMpxInstanceOptionsFromJson(
 Map<String, dynamic> _$DeployMpxInstanceOptionsToJson(
   DeployMpxInstanceOptions instance,
 ) => <String, dynamic>{
+  'serviceType': instance.serviceType,
   'serviceSize': _$ServiceSizeEnumMap[instance.serviceSize]!,
   if (instance.name case final value?) 'name': value,
   if (instance.description case final value?) 'description': value,

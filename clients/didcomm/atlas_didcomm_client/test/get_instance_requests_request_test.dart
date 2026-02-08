@@ -2,152 +2,147 @@ import 'package:affinidi_tdk_atlas_didcomm_client/affinidi_tdk_atlas_didcomm_cli
 import 'package:test/test.dart';
 
 void main() {
-  group('BaseGetInstanceRequestsRequest', () {
-    test(
-      'should create request with mediator instance type and no optional fields',
-      () {
-        final request = GetInstanceRequestsRequestOptions();
+  group('GetMediatorInstanceRequestsRequestOptions', () {
+    test('should create request with no fields', () {
+      final request = GetMediatorInstanceRequestsRequestOptions();
 
-        expect(request.instanceId, isNull);
-        expect(request.limit, isNull);
-        expect(request.exclusiveStartKey, isNull);
-      },
-    );
-
-    test('should create request with all fields for mediator', () {
-      final request = GetInstanceRequestsRequestOptions(
-        instanceId: 'mediator-123',
-        limit: 10,
-        exclusiveStartKey: 'key-456',
-      );
-
-      expect(request.instanceId, 'mediator-123');
-      expect(request.limit, 10);
-      expect(request.exclusiveStartKey, 'key-456');
-    });
-
-    test('should create request with only instanceId for mediator', () {
-      final request = GetInstanceRequestsRequestOptions(
-        instanceId: 'mediator-789',
-      );
-
-      expect(request.instanceId, 'mediator-789');
+      expect(request.serviceType, 'mediator');
+      expect(request.serviceId, isNull);
       expect(request.limit, isNull);
       expect(request.exclusiveStartKey, isNull);
     });
 
-    test('should serialize to JSON with all fields for mediator', () {
-      final request = GetInstanceRequestsRequestOptions(
-        instanceId: 'mediator-123',
+    test('should create request with all fields', () {
+      final request = GetMediatorInstanceRequestsRequestOptions(
+        serviceId: 'mediator-123',
+        limit: 10,
+        exclusiveStartKey: 'key-456',
+      );
+
+      expect(request.serviceType, 'mediator');
+      expect(request.serviceId, 'mediator-123');
+      expect(request.limit, 10);
+      expect(request.exclusiveStartKey, 'key-456');
+    });
+
+    test('should serialize to JSON with all fields', () {
+      final request = GetMediatorInstanceRequestsRequestOptions(
+        serviceId: 'mediator-123',
         limit: 20,
         exclusiveStartKey: 'key-abc',
       );
 
       final json = request.toJson();
 
-      expect(json['mediatorId'], 'mediator-123');
+      expect(json['serviceType'], 'mediator');
+      expect(json['serviceId'], 'mediator-123');
       expect(json['limit'], 20);
       expect(json['exclusiveStartKey'], 'key-abc');
-      expect(json.length, 3);
     });
 
-    test('should serialize to JSON with only instanceId for mediator', () {
-      final request = GetInstanceRequestsRequestOptions(
-        instanceId: 'mediator-456',
-      );
+    test('should serialize to JSON with only serviceType', () {
+      final request = GetMediatorInstanceRequestsRequestOptions();
 
       final json = request.toJson();
 
-      expect(json['mediatorId'], 'mediator-456');
-      expect(json.length, 1);
+      expect(json['serviceType'], 'mediator');
+      expect(json.containsKey('serviceId'), isFalse);
+      expect(json.containsKey('limit'), isFalse);
+      expect(json.containsKey('exclusiveStartKey'), isFalse);
     });
 
-    test('should serialize to JSON without instanceId for mediator', () {
-      final request = GetInstanceRequestsRequestOptions(
-        limit: 15,
-        exclusiveStartKey: 'key-xyz',
-      );
-
-      final json = request.toJson();
-
-      expect(json.containsKey('mediatorId'), isFalse);
-      expect(json['limit'], 15);
-      expect(json['exclusiveStartKey'], 'key-xyz');
-      expect(json.length, 2);
-    });
-
-    test('should serialize to JSON with no optional fields for mediator', () {
-      final request = GetInstanceRequestsRequestOptions();
-
-      final json = request.toJson();
-
-      expect(json.isEmpty, isTrue);
-    });
-
-    test('should deserialize from JSON with all fields for mediator', () {
+    test('should deserialize from JSON with all fields', () {
       final json = {
-        'mediatorId': 'mediator-123',
+        'serviceType': 'mediator',
+        'serviceId': 'mediator-123',
         'limit': 25,
         'exclusiveStartKey': 'key-def',
       };
 
-      final request = GetInstanceRequestsRequestOptions.fromJson(json);
+      final request = GetMediatorInstanceRequestsRequestOptions.fromJson(json);
 
-      expect(request.instanceId, 'mediator-123');
+      expect(request.serviceType, 'mediator');
+      expect(request.serviceId, 'mediator-123');
       expect(request.limit, 25);
       expect(request.exclusiveStartKey, 'key-def');
     });
+  });
 
-    test('should deserialize from JSON with only instanceId for mediator', () {
-      final json = {'mediatorId': 'mediator-789'};
+  group('GetMpxInstanceRequestsRequestOptions', () {
+    test('should create request with no fields', () {
+      final request = GetMpxInstanceRequestsRequestOptions();
 
-      final request = GetInstanceRequestsRequestOptions.fromJson(json);
-
-      expect(request.instanceId, 'mediator-789');
+      expect(request.serviceType, 'mpx');
+      expect(request.serviceId, isNull);
       expect(request.limit, isNull);
       expect(request.exclusiveStartKey, isNull);
     });
 
-    test('should deserialize from JSON without instanceId for mediator', () {
-      final json = {'limit': 30, 'exclusiveStartKey': 'key-ghi'};
+    test('should create request with all fields', () {
+      final request = GetMpxInstanceRequestsRequestOptions(
+        serviceId: 'mpx-789',
+        limit: 15,
+        exclusiveStartKey: 'key-xyz',
+      );
 
-      final request = GetInstanceRequestsRequestOptions.fromJson(json);
-
-      expect(request.instanceId, isNull);
-      expect(request.limit, 30);
-      expect(request.exclusiveStartKey, 'key-ghi');
+      expect(request.serviceType, 'mpx');
+      expect(request.serviceId, 'mpx-789');
+      expect(request.limit, 15);
+      expect(request.exclusiveStartKey, 'key-xyz');
     });
 
-    test('should deserialize from empty JSON for mediator', () {
-      final json = <String, dynamic>{};
+    test('should serialize to JSON with all fields', () {
+      final request = GetMpxInstanceRequestsRequestOptions(
+        serviceId: 'mpx-789',
+        limit: 30,
+        exclusiveStartKey: 'key-ghi',
+      );
 
-      final request = GetInstanceRequestsRequestOptions.fromJson(json);
+      final json = request.toJson();
 
-      expect(request.instanceId, isNull);
+      expect(json['serviceType'], 'mpx');
+      expect(json['serviceId'], 'mpx-789');
+      expect(json['limit'], 30);
+      expect(json['exclusiveStartKey'], 'key-ghi');
+    });
+  });
+
+  group('GetTrInstanceRequestsRequestOptions', () {
+    test('should create request with no fields', () {
+      final request = GetTrInstanceRequestsRequestOptions();
+
+      expect(request.serviceType, 'tr');
+      expect(request.serviceId, isNull);
       expect(request.limit, isNull);
       expect(request.exclusiveStartKey, isNull);
     });
 
-    test('should handle null instanceId in JSON for mediator', () {
-      final json = {'mediatorId': null, 'limit': 10};
+    test('should create request with all fields', () {
+      final request = GetTrInstanceRequestsRequestOptions(
+        serviceId: 'tr-456',
+        limit: 5,
+        exclusiveStartKey: 'key-jkl',
+      );
 
-      final request = GetInstanceRequestsRequestOptions.fromJson(json);
-
-      expect(request.instanceId, isNull);
-      expect(request.limit, 10);
-    });
-
-    test('should handle extra fields in JSON for mediator', () {
-      final json = {
-        'mediatorId': 'mediator-123',
-        'limit': 5,
-        'extraField': 'should be ignored',
-      };
-
-      final request = GetInstanceRequestsRequestOptions.fromJson(json);
-
-      expect(request.instanceId, 'mediator-123');
+      expect(request.serviceType, 'tr');
+      expect(request.serviceId, 'tr-456');
       expect(request.limit, 5);
+      expect(request.exclusiveStartKey, 'key-jkl');
+    });
+
+    test('should serialize to JSON with all fields', () {
+      final request = GetTrInstanceRequestsRequestOptions(
+        serviceId: 'tr-456',
+        limit: 40,
+        exclusiveStartKey: 'key-mno',
+      );
+
+      final json = request.toJson();
+
+      expect(json['serviceType'], 'tr');
+      expect(json['serviceId'], 'tr-456');
+      expect(json['limit'], 40);
+      expect(json['exclusiveStartKey'], 'key-mno');
     });
   });
 }

@@ -16,7 +16,7 @@ class GetMediatorRequestsResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-         operationName: 'getMediatorRequests',
+         operationName: 'getRequests',
          fromJson: GetMediatorRequestsResponseData.fromJson,
        );
 }
@@ -34,7 +34,7 @@ class GetMpxRequestsResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-         operationName: 'getMpxRequests',
+         operationName: 'getRequests',
          fromJson: GetMpxRequestsResponseData.fromJson,
        );
 }
@@ -52,7 +52,7 @@ class GetTrRequestsResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-         operationName: 'getTrRequests',
+         operationName: 'getRequests',
          fromJson: GetTrRequestsResponseData.fromJson,
        );
 }

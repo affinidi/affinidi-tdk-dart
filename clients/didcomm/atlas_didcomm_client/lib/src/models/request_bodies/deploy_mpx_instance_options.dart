@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../service_size/service_size.dart';
+import 'base_options.dart';
 
 part 'deploy_mpx_instance_options.g.dart';
 
@@ -8,7 +9,11 @@ part 'deploy_mpx_instance_options.g.dart';
 ///
 /// This defines the configuration for deploying a new Affinidi Messaging MPX service instance.
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-class DeployMpxInstanceOptions {
+class DeployMpxInstanceOptions extends BaseOptions {
+  @override
+  @JsonKey(includeToJson: true)
+  final String serviceType = 'mpx';
+
   /// The size of the service instance to deploy.
   ///
   /// Available sizes: dev, tiny, small, medium, large.

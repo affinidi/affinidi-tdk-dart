@@ -2,10 +2,15 @@ import 'package:affinidi_tdk_atlas_didcomm_client/affinidi_tdk_atlas_didcomm_cli
 import 'package:test/test.dart';
 
 void main() {
-  group('UpdateTrInstanceDeploymentOptions', () {
-    test('should create empty options with all fields null', () {
-      final options = const UpdateTrInstanceDeploymentOptions();
+  const testServiceId = 'test-service-id';
 
+  group('UpdateTrInstanceDeploymentOptions', () {
+    test('should create options with only required serviceId', () {
+      final options = const UpdateTrInstanceDeploymentOptions(
+        serviceId: testServiceId,
+      );
+
+      expect(options.serviceId, testServiceId);
       expect(options.serviceSize, isNull);
       expect(options.name, isNull);
       expect(options.description, isNull);
@@ -16,9 +21,11 @@ void main() {
 
     test('should create options with only serviceSize', () {
       final options = const UpdateTrInstanceDeploymentOptions(
+        serviceId: testServiceId,
         serviceSize: ServiceSize.large,
       );
 
+      expect(options.serviceId, testServiceId);
       expect(options.serviceSize, ServiceSize.large);
       expect(options.name, isNull);
       expect(options.description, isNull);
@@ -29,6 +36,7 @@ void main() {
 
     test('should create options with all fields', () {
       final options = const UpdateTrInstanceDeploymentOptions(
+        serviceId: testServiceId,
         serviceSize: ServiceSize.medium,
         name: 'Updated TR',
         description: 'Updated TR description',
@@ -37,6 +45,7 @@ void main() {
         corsAllowedOrigins: 'https://neworigin.com',
       );
 
+      expect(options.serviceId, testServiceId);
       expect(options.serviceSize, ServiceSize.medium);
       expect(options.name, 'Updated TR');
       expect(options.description, 'Updated TR description');
@@ -50,12 +59,14 @@ void main() {
 
     test('should serialize to JSON with only non-null fields', () {
       final options = const UpdateTrInstanceDeploymentOptions(
+        serviceId: testServiceId,
         defaultMediatorDid: 'did:example:mediator',
         corsAllowedOrigins: '*',
       );
 
       final json = options.toJson();
 
+      expect(json['serviceId'], testServiceId);
       expect(json['defaultMediatorDid'], 'did:example:mediator');
       expect(json['corsAllowedOrigins'], '*');
       expect(json.containsKey('serviceSize'), isFalse);
@@ -66,6 +77,7 @@ void main() {
 
     test('should serialize to JSON with all fields', () {
       final options = const UpdateTrInstanceDeploymentOptions(
+        serviceId: testServiceId,
         serviceSize: ServiceSize.small,
         name: 'Test TR',
         description: 'Test description',
@@ -76,6 +88,7 @@ void main() {
 
       final json = options.toJson();
 
+      expect(json['serviceId'], testServiceId);
       expect(json['serviceSize'], 'small');
       expect(json['name'], 'Test TR');
       expect(json['description'], 'Test description');
@@ -86,6 +99,7 @@ void main() {
 
     test('should deserialize from JSON correctly', () {
       final json = {
+        'serviceId': testServiceId,
         'serviceSize': 'tiny',
         'name': 'Test TR',
         'description': 'Test description',
@@ -96,6 +110,7 @@ void main() {
 
       final options = UpdateTrInstanceDeploymentOptions.fromJson(json);
 
+      expect(options.serviceId, testServiceId);
       expect(options.serviceSize, ServiceSize.tiny);
       expect(options.name, 'Test TR');
       expect(options.description, 'Test description');
@@ -107,24 +122,15 @@ void main() {
       expect(options.corsAllowedOrigins, 'https://example.com');
     });
 
-    test('should deserialize from empty JSON', () {
-      final json = <String, dynamic>{};
-
-      final options = UpdateTrInstanceDeploymentOptions.fromJson(json);
-
-      expect(options.serviceSize, isNull);
-      expect(options.name, isNull);
-      expect(options.description, isNull);
-      expect(options.defaultMediatorDid, isNull);
-      expect(options.administratorDids, isNull);
-      expect(options.corsAllowedOrigins, isNull);
-    });
-
     test('should handle partial updates - only CORS origins', () {
-      final json = {'corsAllowedOrigins': 'https://neworigin.com'};
+      final json = {
+        'serviceId': testServiceId,
+        'corsAllowedOrigins': 'https://neworigin.com',
+      };
 
       final options = UpdateTrInstanceDeploymentOptions.fromJson(json);
 
+      expect(options.serviceId, testServiceId);
       expect(options.serviceSize, isNull);
       expect(options.name, isNull);
       expect(options.description, isNull);
@@ -135,6 +141,7 @@ void main() {
 
     test('should round-trip through JSON', () {
       final original = const UpdateTrInstanceDeploymentOptions(
+        serviceId: testServiceId,
         serviceSize: ServiceSize.dev,
         name: 'Round-trip TR',
         description: 'Round-trip description',
@@ -146,6 +153,7 @@ void main() {
       final json = original.toJson();
       final deserialized = UpdateTrInstanceDeploymentOptions.fromJson(json);
 
+      expect(deserialized.serviceId, original.serviceId);
       expect(deserialized.serviceSize, original.serviceSize);
       expect(deserialized.name, original.name);
       expect(deserialized.description, original.description);
@@ -156,6 +164,7 @@ void main() {
 
     test('should support updating only TR-specific fields', () {
       final updateOptions = const UpdateTrInstanceDeploymentOptions(
+        serviceId: testServiceId,
         defaultMediatorDid: 'did:example:new-mediator',
         administratorDids: 'did:example:new-admin1,did:example:new-admin2',
         corsAllowedOrigins: 'https://new1.com,https://new2.com',
@@ -163,7 +172,7 @@ void main() {
 
       final json = updateOptions.toJson();
 
-      expect(json.keys.length, 3);
+      expect(json['serviceId'], testServiceId);
       expect(json['defaultMediatorDid'], 'did:example:new-mediator');
       expect(
         json['administratorDids'],
@@ -177,24 +186,26 @@ void main() {
 
     test('should support updating to wildcard CORS', () {
       final updateOptions = const UpdateTrInstanceDeploymentOptions(
+        serviceId: testServiceId,
         corsAllowedOrigins: '*',
       );
 
       final json = updateOptions.toJson();
 
-      expect(json.keys.length, 1);
+      expect(json['serviceId'], testServiceId);
       expect(json['corsAllowedOrigins'], '*');
     });
 
     test('should support updating administrators list', () {
       final updateOptions = const UpdateTrInstanceDeploymentOptions(
+        serviceId: testServiceId,
         administratorDids:
             'did:example:admin1,did:example:admin2,did:example:admin3',
       );
 
       final json = updateOptions.toJson();
 
-      expect(json.keys.length, 1);
+      expect(json['serviceId'], testServiceId);
       expect(json['administratorDids'], contains('did:example:admin1'));
       expect(json['administratorDids'], contains('did:example:admin2'));
       expect(json['administratorDids'], contains('did:example:admin3'));

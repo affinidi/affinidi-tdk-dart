@@ -1,3 +1,6 @@
+import '../../../models/request_bodies/get_mediator_instance_metadata_options.dart';
+import '../../../models/request_bodies/get_mpx_instance_metadata_options.dart';
+import '../../../models/request_bodies/get_tr_instance_metadata_options.dart';
 import '../base_messages/base_request_message.dart';
 
 /// Message for getting metadata of an instance.
@@ -18,7 +21,7 @@ class GetInstanceMetadataRequestMessage extends BaseRequestMessage {
   factory GetInstanceMetadataRequestMessage.mediator({
     required String id,
     required List<String> to,
-    required String instanceId,
+    required GetMediatorInstanceMetadataOptions options,
     String? from,
     DateTime? createdTime,
     DateTime? expiresTime,
@@ -30,9 +33,9 @@ class GetInstanceMetadataRequestMessage extends BaseRequestMessage {
       from: from,
       createdTime: createdTime,
       expiresTime: expiresTime,
-      body: {'mediatorId': instanceId},
+      body: options.toJson(),
       threadId: threadId,
-      operationName: 'getMediatorInstanceMetadata',
+      operationName: 'getServiceInstanceMetadata',
     );
   }
 
@@ -40,7 +43,7 @@ class GetInstanceMetadataRequestMessage extends BaseRequestMessage {
   factory GetInstanceMetadataRequestMessage.meetingPlace({
     required String id,
     required List<String> to,
-    required String instanceId,
+    required GetMpxInstanceMetadataOptions options,
     String? from,
     DateTime? createdTime,
     DateTime? expiresTime,
@@ -52,9 +55,9 @@ class GetInstanceMetadataRequestMessage extends BaseRequestMessage {
       from: from,
       createdTime: createdTime,
       expiresTime: expiresTime,
-      body: {'mpxId': instanceId},
+      body: options.toJson(),
       threadId: threadId,
-      operationName: 'getMpxInstanceMetadata',
+      operationName: 'getServiceInstanceMetadata',
     );
   }
 
@@ -62,7 +65,7 @@ class GetInstanceMetadataRequestMessage extends BaseRequestMessage {
   factory GetInstanceMetadataRequestMessage.trustRegistry({
     required String id,
     required List<String> to,
-    required String instanceId,
+    required GetTrInstanceMetadataOptions options,
     String? from,
     DateTime? createdTime,
     DateTime? expiresTime,
@@ -74,9 +77,9 @@ class GetInstanceMetadataRequestMessage extends BaseRequestMessage {
       from: from,
       createdTime: createdTime,
       expiresTime: expiresTime,
-      body: {'trId': instanceId},
+      body: options.toJson(),
       threadId: threadId,
-      operationName: 'getTrInstanceMetadata',
+      operationName: 'getServiceInstanceMetadata',
     );
   }
 }

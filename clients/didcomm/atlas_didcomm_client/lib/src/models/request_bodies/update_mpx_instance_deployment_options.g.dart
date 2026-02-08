@@ -9,6 +9,7 @@ part of 'update_mpx_instance_deployment_options.dart';
 UpdateMpxInstanceDeploymentOptions _$UpdateMpxInstanceDeploymentOptionsFromJson(
   Map<String, dynamic> json,
 ) => UpdateMpxInstanceDeploymentOptions(
+  serviceId: json['serviceId'] as String,
   serviceSize: $enumDecodeNullable(_$ServiceSizeEnumMap, json['serviceSize']),
   name: json['name'] as String?,
   description: json['description'] as String?,
@@ -17,6 +18,8 @@ UpdateMpxInstanceDeploymentOptions _$UpdateMpxInstanceDeploymentOptionsFromJson(
 Map<String, dynamic> _$UpdateMpxInstanceDeploymentOptionsToJson(
   UpdateMpxInstanceDeploymentOptions instance,
 ) => <String, dynamic>{
+  'serviceType': instance.serviceType,
+  'serviceId': instance.serviceId,
   if (_$ServiceSizeEnumMap[instance.serviceSize] case final value?)
     'serviceSize': value,
   if (instance.name case final value?) 'name': value,

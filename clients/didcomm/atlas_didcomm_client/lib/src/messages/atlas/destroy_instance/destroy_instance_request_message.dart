@@ -1,3 +1,6 @@
+import '../../../models/request_bodies/destroy_mediator_instance_options.dart';
+import '../../../models/request_bodies/destroy_mpx_instance_options.dart';
+import '../../../models/request_bodies/destroy_tr_instance_options.dart';
 import '../base_messages/base_request_message.dart';
 
 /// Message for destroying an instance.
@@ -18,7 +21,7 @@ class DestroyInstanceRequestMessage extends BaseRequestMessage {
   factory DestroyInstanceRequestMessage.mediator({
     required String id,
     required List<String> to,
-    required String instanceId,
+    required DestroyMediatorInstanceOptions options,
     String? from,
     DateTime? createdTime,
     DateTime? expiresTime,
@@ -30,9 +33,9 @@ class DestroyInstanceRequestMessage extends BaseRequestMessage {
       from: from,
       createdTime: createdTime,
       expiresTime: expiresTime,
-      body: {'mediatorId': instanceId},
+      body: options.toJson(),
       threadId: threadId,
-      operationName: 'destroyMediatorInstance',
+      operationName: 'destroyServiceInstance',
     );
   }
 
@@ -40,7 +43,7 @@ class DestroyInstanceRequestMessage extends BaseRequestMessage {
   factory DestroyInstanceRequestMessage.meetingPlace({
     required String id,
     required List<String> to,
-    required String instanceId,
+    required DestroyMpxInstanceOptions options,
     String? from,
     DateTime? createdTime,
     DateTime? expiresTime,
@@ -52,9 +55,9 @@ class DestroyInstanceRequestMessage extends BaseRequestMessage {
       from: from,
       createdTime: createdTime,
       expiresTime: expiresTime,
-      body: {'mpxId': instanceId},
+      body: options.toJson(),
       threadId: threadId,
-      operationName: 'destroyMpxInstance',
+      operationName: 'destroyServiceInstance',
     );
   }
 
@@ -62,7 +65,7 @@ class DestroyInstanceRequestMessage extends BaseRequestMessage {
   factory DestroyInstanceRequestMessage.trustRegistry({
     required String id,
     required List<String> to,
-    required String instanceId,
+    required DestroyTrInstanceOptions options,
     String? from,
     DateTime? createdTime,
     DateTime? expiresTime,
@@ -74,9 +77,9 @@ class DestroyInstanceRequestMessage extends BaseRequestMessage {
       from: from,
       createdTime: createdTime,
       expiresTime: expiresTime,
-      body: {'trId': instanceId},
+      body: options.toJson(),
       threadId: threadId,
-      operationName: 'destroyTrInstance',
+      operationName: 'destroyServiceInstance',
     );
   }
 }
