@@ -20,7 +20,7 @@ class GetMediatorInstancesListResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-         operationName: 'getMediatorInstancesList',
+         operationName: 'getServiceInstancesList',
          fromJson: MediatorInstanceBodyData.fromJson,
        );
 
@@ -41,7 +41,7 @@ class GetMpxInstancesListResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-         operationName: 'getMpxInstanceList',
+         operationName: 'getServiceInstancesList',
          fromJson: MpxInstanceBodyData.fromJson,
        );
 
@@ -62,7 +62,7 @@ class GetTrInstancesListResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-         operationName: 'getTrInstanceList',
+         operationName: 'getServiceInstancesList',
          fromJson: TrInstanceBodyData.fromJson,
        );
 

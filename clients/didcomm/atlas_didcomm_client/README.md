@@ -73,26 +73,34 @@ Below are common flows when working with the Atlas DIDComm client.
 
 ```dart
 import 'package:affinidi_tdk_atlas_didcomm_client/affinidi_tdk_atlas_didcomm_client.dart';
+import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediator_client.dart';
 import 'package:ssi/ssi.dart';
 
 Future<void> main() async {
 	// Prepare a DID manager with a wallet and key
 	final keyStore = InMemoryKeyStore();
 	final wallet = PersistentWallet(keyStore);
-	final didManager = DidKeyManager(
+	final didManager = DidPeerManager(
 		wallet: wallet,
 		store: InMemoryDidStore(),
 	);
 
-	final keyId = 'atlas-key-1';
+	const keyId = 'atlas-key-1';
 	await wallet.generateKey(keyId: keyId, keyType: KeyType.p256);
 	await didManager.addVerificationMethod(keyId);
 
-	// Initialise the Atlas client. Client options provide mediator & atlas DIDs.
+	// Initialise the Atlas client
 	final client = await DidcommAtlasClient.init(
 		didManager: didManager,
-		clientOptions: const AffinidiClientOptions(),
 	);
+
+	// Start connections before making requests
+	await ConnectionPool.instance.startConnections();
+
+	// ... use client ...
+
+	// Stop connections when done
+	await ConnectionPool.instance.stopConnections();
 }
 ```
 
@@ -100,40 +108,42 @@ Future<void> main() async {
 
 ```dart
 // Mediator instances
-final mediators = await client.getMediatorInstancesList(limit: 10);
-print(mediators.body);
+final mediators = await client.getMediatorInstancesList();
+print(mediators.instances);
 ```
 
 ### Deploy and destroy instances
 
 ```dart
 // Deploy Mediator
-final deployMed = await client.deployMediatorInstance(
-	options: DeployMediatorInstanceOptions(
+final deployResponse = await client.deployMediatorInstance(
+	options: const DeployMediatorInstanceOptions(
 		serviceSize: ServiceSize.small,
-		// ... other deployment options
+		mediatorAclMode: MediatorAclMode.explicitAllow,
 	),
 );
-print(deployMed.body);
+final deployedMediator = deployResponse.response as DeployMediatorInstanceResponse;
+print(deployedMediator.serviceId);
 
 // Destroy Mediator
-final destroyedMed = await client.destroyMediatorInstance(
-	mediatorId: deployMed.body.instanceId,
+final destroyResponse = await client.destroyMediatorInstance(
+	serviceId: deployedMediator.serviceId,
 );
-print(destroyedMed.body);
+print(destroyResponse);
 ```
 
 ### Get metadata and requests
 
 ```dart
 // Metadata
-final medMeta = await client.getMediatorInstanceMetadata(
-	mediatorId: 'mediator-123',
+final metadata = await client.getMediatorInstanceMetadata(
+	serviceId: 'mediator-123',
 );
-print(medMeta.body);
+print(metadata);
 
 // Requests
-final requests = await client.getMediatorRequests(limit: 20);
+final requests = await client.getMediatorRequests();
+print(requests);
 ```
 
 ### Update deployment/configuration
@@ -141,17 +151,15 @@ final requests = await client.getMediatorRequests(limit: 20);
 ```dart
 // Update deployment for Mediator
 await client.updateMediatorInstanceDeployment(
-	mediatorId: 'mediator-123',
 	options: UpdateMediatorInstanceDeploymentOptions(
-		serviceSize: ServiceSize.medium,
-		// ... additional deployment updates
+		serviceId: 'mediator-123',
 	),
 );
 
 // Update configuration for Mediator
 await client.updateMediatorInstanceConfiguration(
-	configurationData: UpdateInstanceConfigurationOptions(
-		// ... configuration fields
+	options: UpdateMediatorInstanceConfigurationOptions(
+		serviceId: 'mediator-123',
 	),
 );
 ```

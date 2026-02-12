@@ -36,7 +36,7 @@ class GetMediatorInstanceMetadataResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-         operationName: 'getMediatorInstanceMetadata',
+         operationName: 'getServiceInstanceMetadata',
          fromJson: MediatorInstanceMetadata.fromJson,
        );
 }
@@ -55,7 +55,7 @@ class GetMpxInstanceMetadataResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-         operationName: 'getMpxInstanceMetadata',
+         operationName: 'getServiceInstanceMetadata',
          fromJson: MpxInstanceMetadata.fromJson,
        );
 }
@@ -74,7 +74,7 @@ class GetTrInstanceMetadataResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-         operationName: 'getTrInstanceMetadata',
+         operationName: 'getServiceInstanceMetadata',
          fromJson: TrInstanceMetadata.fromJson,
        );
 }

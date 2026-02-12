@@ -17,7 +17,7 @@ class UpdateMediatorInstanceDeploymentResponseMessage
     super.threadId,
     super.body = const {},
   }) : super(
-         operationName: 'updateMediatorInstanceDeployment',
+         operationName: 'updateServiceInstanceDeployment',
          fromJson: UpdateMediatorInstanceDeploymentResponse.fromJson,
        );
 }

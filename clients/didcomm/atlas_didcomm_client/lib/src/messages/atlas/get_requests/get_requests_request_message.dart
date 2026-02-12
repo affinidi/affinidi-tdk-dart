@@ -1,4 +1,6 @@
-import '../../../models/request_bodies/get_instance_requests_request_options.dart';
+import '../../../models/request_bodies/get_mediator_instance_requests_request_options.dart';
+import '../../../models/request_bodies/get_mpx_instance_requests_request_options.dart';
+import '../../../models/request_bodies/get_tr_instance_requests_request_options.dart';
 import '../base_messages/base_request_message.dart';
 
 /// Message for getting instance requests.
@@ -19,7 +21,7 @@ class GetRequestsMessage extends BaseRequestMessage {
   factory GetRequestsMessage.mediator({
     required String id,
     required List<String> to,
-    required GetInstanceRequestsRequestOptions options,
+    required GetMediatorInstanceRequestsRequestOptions options,
     String? from,
     DateTime? createdTime,
     DateTime? expiresTime,
@@ -33,7 +35,7 @@ class GetRequestsMessage extends BaseRequestMessage {
       expiresTime: expiresTime,
       body: options.toJson(),
       threadId: threadId,
-      operationName: 'getMediatorRequests',
+      operationName: 'getRequests',
     );
   }
 
@@ -41,7 +43,7 @@ class GetRequestsMessage extends BaseRequestMessage {
   factory GetRequestsMessage.meetingPlace({
     required String id,
     required List<String> to,
-    required GetInstanceRequestsRequestOptions options,
+    required GetMpxInstanceRequestsRequestOptions options,
     String? from,
     DateTime? createdTime,
     DateTime? expiresTime,
@@ -55,7 +57,7 @@ class GetRequestsMessage extends BaseRequestMessage {
       expiresTime: expiresTime,
       body: options.toJson(),
       threadId: threadId,
-      operationName: 'getMpxRequests',
+      operationName: 'getRequests',
     );
   }
 
@@ -63,7 +65,7 @@ class GetRequestsMessage extends BaseRequestMessage {
   factory GetRequestsMessage.trustRegistry({
     required String id,
     required List<String> to,
-    required GetInstanceRequestsRequestOptions options,
+    required GetTrInstanceRequestsRequestOptions options,
     String? from,
     DateTime? createdTime,
     DateTime? expiresTime,
@@ -77,7 +79,7 @@ class GetRequestsMessage extends BaseRequestMessage {
       expiresTime: expiresTime,
       body: options.toJson(),
       threadId: threadId,
-      operationName: 'getTrRequests',
+      operationName: 'getRequests',
     );
   }
 }

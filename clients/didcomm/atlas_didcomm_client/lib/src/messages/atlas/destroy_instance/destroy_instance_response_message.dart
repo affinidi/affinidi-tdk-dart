@@ -54,7 +54,7 @@ class DestroyInstanceResponseMessage
       expiresTime: expiresTime,
       threadId: threadId,
       body: body,
-      operationName: 'destroyMediatorInstance',
+      operationName: 'destroyServiceInstance',
     );
   }
 
@@ -76,7 +76,7 @@ class DestroyInstanceResponseMessage
       expiresTime: expiresTime,
       threadId: threadId,
       body: body,
-      operationName: 'destroyMpxInstance',
+      operationName: 'destroyServiceInstance',
     );
   }
 
@@ -98,7 +98,7 @@ class DestroyInstanceResponseMessage
       expiresTime: expiresTime,
       threadId: threadId,
       body: body,
-      operationName: 'destroyTrInstance',
+      operationName: 'destroyServiceInstance',
     );
   }
 }

@@ -12,12 +12,5 @@ enum ServiceType {
 
   /// Trust registry service type.
   @JsonValue('TR')
-  trustRegistry;
-
-  /// Gets the identifier field name for this service type.
-  String get identifier => switch (this) {
-    ServiceType.mediator => 'mediatorId',
-    ServiceType.meetingPlace => 'mpxId',
-    ServiceType.trustRegistry => 'trId',
-  };
+  trustRegistry,
 }

@@ -22,6 +22,7 @@ DeployMediatorInstanceOptions _$DeployMediatorInstanceOptionsFromJson(
 Map<String, dynamic> _$DeployMediatorInstanceOptionsToJson(
   DeployMediatorInstanceOptions instance,
 ) => <String, dynamic>{
+  'serviceType': instance.serviceType,
   'serviceSize': _$ServiceSizeEnumMap[instance.serviceSize]!,
   'mediatorAclMode': _$MediatorAclModeEnumMap[instance.mediatorAclMode]!,
   if (instance.administratorDids case final value?) 'administratorDids': value,

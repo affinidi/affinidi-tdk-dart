@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../service_size/service_size.dart';
+import 'base_options.dart';
 
 part 'update_tr_instance_deployment_options.g.dart';
 
@@ -8,7 +9,14 @@ part 'update_tr_instance_deployment_options.g.dart';
 ///
 /// All fields are optional to support partial updates.
 @JsonSerializable(includeIfNull: false, explicitToJson: true)
-class UpdateTrInstanceDeploymentOptions {
+class UpdateTrInstanceDeploymentOptions extends BaseOptions {
+  @override
+  @JsonKey(includeToJson: true)
+  final String serviceType = 'tr';
+
+  /// The ID of the service instance.
+  final String serviceId;
+
   /// The size of the service instance.
   ///
   /// Available sizes: dev, tiny, small, medium, large.
@@ -42,6 +50,7 @@ class UpdateTrInstanceDeploymentOptions {
 
   /// Creates a [UpdateTrInstanceDeploymentOptions] instance.
   const UpdateTrInstanceDeploymentOptions({
+    required this.serviceId,
     this.serviceSize,
     this.name,
     this.description,

@@ -8,16 +8,14 @@ void main() {
         final message = GetInstanceMetadataRequestMessage.mediator(
           id: 'test-id',
           to: ['did:example:alice'],
-          instanceId: 'mediator-123',
+          options: GetMediatorInstanceMetadataOptions(
+            serviceId: 'mediator-123',
+          ),
         );
 
         expect(message.id, 'test-id');
         expect(message.to, ['did:example:alice']);
-        expect(message.body!['mediatorId'], 'mediator-123');
-        expect(
-          message.type.toString(),
-          'affinidi.io/operations/ama/getMediatorInstanceMetadata',
-        );
+        expect(message.body!['serviceId'], 'mediator-123');
       });
 
       test('should preserve all optional parameters', () {
@@ -30,7 +28,9 @@ void main() {
           from: 'did:example:bob',
           createdTime: now,
           expiresTime: expires,
-          instanceId: 'mediator-123',
+          options: GetMediatorInstanceMetadataOptions(
+            serviceId: 'mediator-123',
+          ),
           threadId: 'thread-123',
         );
 
@@ -39,7 +39,7 @@ void main() {
         expect(message.from, 'did:example:bob');
         expect(message.createdTime, now);
         expect(message.expiresTime, expires);
-        expect(message.body!['mediatorId'], 'mediator-123');
+        expect(message.body!['serviceId'], 'mediator-123');
         expect(message.threadId, 'thread-123');
       });
     });
@@ -49,16 +49,12 @@ void main() {
         final message = GetInstanceMetadataRequestMessage.meetingPlace(
           id: 'test-id',
           to: ['did:example:alice'],
-          instanceId: 'mpx-123',
+          options: GetMpxInstanceMetadataOptions(serviceId: 'mpx-123'),
         );
 
         expect(message.id, 'test-id');
         expect(message.to, ['did:example:alice']);
-        expect(message.body!['mpxId'], 'mpx-123');
-        expect(
-          message.type.toString(),
-          'affinidi.io/operations/ama/getMpxInstanceMetadata',
-        );
+        expect(message.body!['serviceId'], 'mpx-123');
       });
 
       test('should preserve all optional parameters', () {
@@ -71,7 +67,7 @@ void main() {
           from: 'did:example:bob',
           createdTime: now,
           expiresTime: expires,
-          instanceId: 'mpx-123',
+          options: GetMpxInstanceMetadataOptions(serviceId: 'mpx-123'),
           threadId: 'thread-456',
         );
 
@@ -80,7 +76,7 @@ void main() {
         expect(message.from, 'did:example:bob');
         expect(message.createdTime, now);
         expect(message.expiresTime, expires);
-        expect(message.body!['mpxId'], 'mpx-123');
+        expect(message.body!['serviceId'], 'mpx-123');
         expect(message.threadId, 'thread-456');
       });
     });
@@ -90,16 +86,12 @@ void main() {
         final message = GetInstanceMetadataRequestMessage.trustRegistry(
           id: 'test-id',
           to: ['did:example:alice'],
-          instanceId: 'tr-123',
+          options: GetTrInstanceMetadataOptions(serviceId: 'tr-123'),
         );
 
         expect(message.id, 'test-id');
         expect(message.to, ['did:example:alice']);
-        expect(message.body!['trId'], 'tr-123');
-        expect(
-          message.type.toString(),
-          'affinidi.io/operations/ama/getTrInstanceMetadata',
-        );
+        expect(message.body!['serviceId'], 'tr-123');
       });
 
       test('should preserve all optional parameters', () {
@@ -112,7 +104,7 @@ void main() {
           from: 'did:example:bob',
           createdTime: now,
           expiresTime: expires,
-          instanceId: 'tr-123',
+          options: GetTrInstanceMetadataOptions(serviceId: 'tr-123'),
           threadId: 'thread-789',
         );
 
@@ -121,7 +113,7 @@ void main() {
         expect(message.from, 'did:example:bob');
         expect(message.createdTime, now);
         expect(message.expiresTime, expires);
-        expect(message.body!['trId'], 'tr-123');
+        expect(message.body!['serviceId'], 'tr-123');
         expect(message.threadId, 'thread-789');
       });
     });

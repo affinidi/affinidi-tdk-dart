@@ -61,14 +61,14 @@ Future<void> main() async {
 
     for (final instance in existingInstances.instances) {
       final destroyResponse = await atlasClient.destroyMediatorInstance(
-        mediatorId: instance.id,
+        serviceId: instance.id,
       );
 
       prettyPrint('Destroy response', object: destroyResponse);
     }
 
     // wait for deletion
-    await _waitUntilMediators(
+    await _waitUntil(
       predicate: (mediators) => mediators.isNotEmpty,
       atlasClient: atlasClient,
       firstTimeout: const Duration(minutes: 10),
@@ -89,7 +89,7 @@ Future<void> main() async {
       serviceSize: ServiceSize.tiny,
       mediatorAclMode: MediatorAclMode.explicitDeny,
       name: 'Example Mediator',
-      description: 'Example mediator created by atlas_example.dart',
+      description: 'Example mediator created by atlas_mediator_example.dart',
     ),
   );
 
@@ -99,7 +99,7 @@ Future<void> main() async {
   prettyPrint('Deployment response', object: deploymentResponse.response);
 
   // wait for completed deployment
-  await _waitUntilMediators(
+  await _waitUntil(
     predicate: (mediators) => mediators.any(
       (mediator) =>
           mediator.deploymentStatus != DeploymentStatus.createComplete,
@@ -117,8 +117,8 @@ Future<void> main() async {
 
   final updateMetadataResponse = await atlasClient
       .updateMediatorInstanceDeployment(
-        mediatorId: deployedMediator.mediatorId,
-        options: const UpdateMediatorInstanceDeploymentOptions(
+        options: UpdateMediatorInstanceDeploymentOptions(
+          serviceId: deployedMediator.serviceId,
           name: 'Example Mediator (updated)',
           description:
               'Example mediator metadata updated by atlas_example.dart',
@@ -137,7 +137,7 @@ Future<void> main() async {
   }
 
   final mediatorMetadata = await atlasClient.getMediatorInstanceMetadata(
-    mediatorId: deployedMediator.mediatorId,
+    serviceId: deployedMediator.serviceId,
   );
 
   final mediatorDid = mediatorMetadata.response.did;
@@ -150,7 +150,10 @@ Future<void> main() async {
 
   final updateConfigurationResponse = await atlasClient
       .updateMediatorInstanceConfiguration(
-        configurationData: UpdateInstanceConfigurationOptions(acl: acl),
+        options: UpdateMediatorInstanceConfigurationOptions(
+          serviceId: deployedMediator.serviceId,
+          acl: acl,
+        ),
       );
 
   prettyPrint(
@@ -159,7 +162,7 @@ Future<void> main() async {
   );
 
   final finalMediatorMetadata = await atlasClient.getMediatorInstanceMetadata(
-    mediatorId: deployedMediator.mediatorId,
+    serviceId: deployedMediator.serviceId,
   );
 
   prettyPrint('Metadata after updates', object: finalMediatorMetadata);
@@ -172,13 +175,13 @@ Future<void> main() async {
   final destroyingStart = DateTime.now();
 
   final destroyResponse = await atlasClient.destroyMediatorInstance(
-    mediatorId: deployedMediator.mediatorId,
+    serviceId: deployedMediator.serviceId,
   );
 
   prettyPrint('Destroy response', object: destroyResponse);
 
   // wait for deletion
-  await _waitUntilMediators(
+  await _waitUntil(
     predicate: (mediators) => mediators.isNotEmpty,
     atlasClient: atlasClient,
     firstTimeout: const Duration(minutes: 10),
@@ -192,7 +195,7 @@ Future<void> main() async {
   await ConnectionPool.instance.stopConnections();
 }
 
-Future<void> _waitUntilMediators({
+Future<void> _waitUntil({
   required bool Function(List<MediatorInstanceMetadata>) predicate,
   required DidcommAtlasClient atlasClient,
   required Duration firstTimeout,
