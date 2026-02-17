@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
@@ -117,4 +118,9 @@ CredentialIssuanceEnvironment getCredentialIssuanceEnvironment() {
   return CredentialIssuanceEnvironment(
     credentialIssuanceData: credentialIssuanceData,
   );
+}
+
+Future<Uint8List> extractSeed(String seedFilePath) async {
+  final hexString = await File(seedFilePath).readAsString();
+  return Uint8List.fromList(hex.decode(hexString.trim()));
 }
