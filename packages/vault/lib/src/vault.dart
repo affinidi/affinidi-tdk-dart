@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediator_client.dart';
+import 'package:affinidi_tdk_vdsp/affinidi_tdk_vdsp.dart';
 import 'package:ssi/ssi.dart';
 
 import 'dto/shared_item_dto.dart';
@@ -19,8 +22,17 @@ import 'storage_interfaces/vault_store.dart';
 
 /// Manages vault operations and profile repositories.
 class Vault {
+  final String didcommDerivationPath;
+  final String bridgeIotaDid;
+
+  static const String _didCommServiceType = 'DIDCommMessaging';
+
   late final Wallet _wallet;
+  late final DidManager _didManager;
   final VaultStore _vaultStore;
+  late final DidDocument _mediatorDidDocument;
+  late final DidDocument _messagingDidDocument;
+  late final VdspHolder _vdspHolder;
   bool _initialized = false;
   Future<void>? _initializing;
 
@@ -66,6 +78,20 @@ class Vault {
     return _profileRepositories.entries.first.value;
   }
 
+  String get messagingDid {
+    if (!_initialized) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Must initialize vault by calling ensureInitialized',
+          code: TdkExceptionType.vaultNotInitialized.code,
+        ),
+        StackTrace.current,
+      );
+    }
+
+    return _messagingDidDocument.id;
+  }
+
   /// Creates a new instance of [Vault].
   ///
   /// [wallet] - The deterministic wallet to use.
@@ -81,9 +107,13 @@ class Vault {
     required VaultStore vaultStore,
     required Map<String, ProfileRepository> profileRepositories,
     String? defaultProfileRepositoryId,
+    required this.didcommDerivationPath,
+    required this.bridgeIotaDid,
   }) : _wallet = wallet,
        _vaultStore = vaultStore,
        _profileRepositories = Map.unmodifiable(profileRepositories) {
+    _didManager = DidKeyManager(store: InMemoryDidStore(), wallet: _wallet);
+
     if (_profileRepositories.entries.isEmpty) {
       Error.throwWithStackTrace(
         TdkException(
@@ -135,6 +165,9 @@ class Vault {
     VaultStore vaultStore, {
     required Map<String, ProfileRepository> profileRepositories,
     String? defaultProfileRepositoryId,
+    String didCommDerivationPath =
+        "m/44'/60'/0'/0/65535", // max uint as a address index
+    String bridgeIotaDid = 'did:web:did.affinidi.io:amb',
   }) async {
     final seed = await vaultStore.getSeed();
     if (seed == null) {
@@ -155,6 +188,8 @@ class Vault {
       vaultStore: vaultStore,
       profileRepositories: profileRepositories,
       defaultProfileRepositoryId: defaultProfileRepositoryId,
+      didcommDerivationPath: didCommDerivationPath,
+      bridgeIotaDid: bridgeIotaDid,
     );
   }
 
@@ -166,17 +201,18 @@ class Vault {
       return _initializing;
     }
 
-    _initializing = _configureAllProfileRepositories();
+    _initializing = Future.wait([
+      _configureAllProfileRepositories(),
+      Future.wait([
+        _configureDidManager().then((_) => _configureMessagingDidDocument()),
+        _configureMediatorDidDocument(),
+      ]).then((_) => _configureVdspHolder()),
+    ]);
+
     await _initializing;
 
     _initialized = true;
     _initializing = null;
-  }
-
-  Future<void> _configureAllProfileRepositories() async {
-    await Future.wait(
-      _profileRepositories.values.map(_configureProfileRepositoryIfNeeded),
-    );
   }
 
   Future<void> _configureProfileRepositoryIfNeeded(
@@ -189,6 +225,58 @@ class Vault {
         wallet: _wallet,
         keyStorage: _vaultStore, // Needed to retrieve and update accountIndex.
       ),
+    );
+  }
+
+  Future<void> _configureDidManager() async {
+    await _didManager.addVerificationMethod(didcommDerivationPath);
+  }
+
+  Future<void> _configureMessagingDidDocument() async {
+    _messagingDidDocument = await _didManager.getDidDocument();
+  }
+
+  Future<void> _configureMediatorDidDocument() async {
+    final bridgeIotaDidDocument = await UniversalDIDResolver.defaultResolver
+        .resolveDid(bridgeIotaDid);
+
+    final mediatorService = bridgeIotaDidDocument.service
+        .where((service) => service.type.toString() == _didCommServiceType)
+        .firstOrNull;
+
+    if (mediatorService == null) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message:
+              'No $_didCommServiceType service found when resolved $bridgeIotaDid',
+          code: TdkExceptionType.invalidDidDocument.code,
+        ),
+        StackTrace.current,
+      );
+    }
+
+    final mediatorDid = mediatorService.id.split('#').first;
+
+    _mediatorDidDocument = await UniversalDIDResolver.defaultResolver
+        .resolveDid(mediatorDid);
+  }
+
+  Future<void> _configureVdspHolder() async {
+    _vdspHolder = await VdspHolder.init(
+      mediatorDidDocument: _mediatorDidDocument,
+      didManager: _didManager,
+      clientOptions: const AffinidiClientOptions(),
+      authorizationProvider: await AffinidiAuthorizationProvider.init(
+        mediatorDidDocument: _mediatorDidDocument,
+        didManager: _didManager,
+      ),
+      featureDisclosures: FeatureDiscoveryHelper.vdspHolderDisclosures,
+    );
+  }
+
+  Future<void> _configureAllProfileRepositories() async {
+    await Future.wait(
+      _profileRepositories.values.map(_configureProfileRepositoryIfNeeded),
     );
   }
 
@@ -725,6 +813,17 @@ class Vault {
       granteeDid: granteeDid,
       permissionGroups: permissionGroups,
       cancelToken: cancelToken,
+    );
+  }
+
+  StreamSubscription listenForVdipRequests({
+    required void Function(VdspQueryDataMessage) onDataRequest,
+    void Function(ProblemReportMessage)? onProblemReport,
+  }) {
+    return _vdspHolder.listenForIncomingMessages(
+      // TODO: add check if sender is bridge IOTA DID to avoid processing messages from other senders
+      onDataRequest: onDataRequest,
+      onProblemReport: onProblemReport,
     );
   }
 }

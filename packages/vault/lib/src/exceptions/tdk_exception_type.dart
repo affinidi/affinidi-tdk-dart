@@ -28,7 +28,10 @@ enum TdkExceptionType {
   requestCancelled('request_cancelled'),
 
   /// Exception thrown when the provided time frame is invalid.
-  invalidTimeFrame('invalid_time_frame');
+  invalidTimeFrame('invalid_time_frame'),
+
+  /// Exception thrown when the DID document is invalid.
+  invalidDidDocument('invalid_did_document');
 
   /// Creates a new instance of [TdkExceptionType].
   ///
