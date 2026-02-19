@@ -1,25 +1,13 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediator_client.dart';
 import 'package:affinidi_tdk_vdsp/affinidi_tdk_vdsp.dart';
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
 
-import 'dto/shared_item_dto.dart';
-import 'dto/shared_profile_dto.dart';
+import '../affinidi_tdk_vault.dart';
 import 'exceptions/tdk_exception_type.dart';
-import 'helpers/vault_cancel_token.dart';
-import 'helpers/vault_progress_callback.dart';
-import 'item_permission.dart';
-import 'item_permissions_policy.dart';
-import 'permissions.dart';
-import 'profile.dart';
-import 'storage_interfaces/profile_access_sharing.dart';
-import 'storage_interfaces/profile_repository.dart';
-import 'storage_interfaces/repository_configuration.dart';
-import 'storage_interfaces/vault_store.dart';
 
 /// Manages vault operations and profile repositories.
 class Vault {
@@ -818,7 +806,7 @@ class Vault {
     );
   }
 
-  StreamSubscription listenForVdipRequests({
+  StreamSubscription listenForVdspRequests({
     required void Function(VdspQueryDataMessage) onDataRequest,
     void Function(ProblemReportMessage)? onProblemReport,
   }) {
@@ -826,6 +814,50 @@ class Vault {
       // TODO: add check if sender is bridge IOTA DID to avoid processing messages from other senders
       onDataRequest: onDataRequest,
       onProblemReport: onProblemReport,
+    );
+  }
+
+  Future<DataQueryResult> filterCredentialsForVdspQueryDataMessage(
+    VdspQueryDataMessage message, {
+    required CredentialStorage credentialStorage,
+  }) async {
+    final credentials = await credentialStorage.listCredentials();
+
+    return _vdspHolder.filterVerifiableCredentials(
+      requestMessage: message,
+      verifiableCredentials: credentials.items
+          .map(
+            (item) => item.verifiableCredential as ParsedVerifiableCredential,
+          )
+          .toList(),
+    );
+  }
+
+  Future<VdspDataResponseMessage> sendVdspDataResponse({
+    required VdspQueryDataMessage requestMessage,
+    DataQueryLanguage dataQueryLanguage = DataQueryLanguage.dcql,
+    VerifiableCredentialsDataModel verifiablePresentationDataModel =
+        VerifiableCredentialsDataModel.v2,
+    required List<ParsedVerifiableCredential> verifiableCredentials,
+    required Profile profile,
+  }) async {
+    final keyPair = await _wallet.generateKey(
+      keyId: _getDerivationPath(profile.accountIndex.toString()),
+    );
+
+    return await _vdspHolder.shareData(
+      requestMessage: requestMessage,
+      dataQueryLanguage: dataQueryLanguage,
+      verifiablePresentationDataModel: verifiablePresentationDataModel,
+      verifiableCredentials: verifiableCredentials,
+      verifiablePresentationSigner: DidSigner(
+        did: profile.did,
+        didKeyId: profile.did,
+        keyPair: keyPair,
+        signatureScheme: SignatureScheme.ecdsa_secp256k1_sha256,
+      ),
+      verifiablePresentationProofSuite:
+          DataIntegrityProofSuite.secp256k1Signature2019,
     );
   }
 
@@ -844,4 +876,8 @@ class Vault {
       accessListAddMessage,
     );
   }
+
+  // TODO: duplicated 3 times in the codebase, find a better way to manage it
+  String _getDerivationPath(String accountIndex) =>
+      "m/44'/60'/$accountIndex'/0'/0'";
 }
