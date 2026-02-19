@@ -27,9 +27,41 @@ void main() async {
 
   prettyPrint('Messaging DID', object: vault.messagingDid);
 
-  vault.listenForVdipRequests(
+  vault.listenForVdspRequests(
     onDataRequest: (message) async {
-      prettyPrint('VDSP message received', object: message);
+      if (defaultProfile.defaultCredentialStorage == null) {
+        throw Exception(
+          'Default Credential Storage was not configured in the vault',
+        );
+      }
+
+      // Here you can select a profile and storage if you have multiple ones.
+      // For simplicity, we use the default profile and its default credential storage.
+      final queryResult = await vault.filterCredentialsForVdspQueryDataMessage(
+        message,
+        credentialStorage: defaultProfile.defaultCredentialStorage!,
+      );
+
+      if (!queryResult.dcqlResult!.fulfilled) {
+        prettyPrint(
+          'No credentials matched the query criteria',
+          object: queryResult.dcqlResult,
+        );
+        return;
+      }
+
+      // Make sure a user reviews which credentials will be shared
+      prettyPrint(
+        'Credentials matching the query',
+        object: queryResult.verifiableCredentials,
+      );
+
+      await vault.sendVdspDataResponse(
+        requestMessage: message,
+        verifiableCredentials: queryResult.verifiableCredentials,
+        profile: defaultProfile,
+        verifiablePresentationDataModel: VerifiableCredentialsDataModel.v1,
+      );
     },
     onProblemReport: (message) async {
       prettyPrint('A problem has occurred', object: message);
@@ -213,9 +245,9 @@ Future<VerifiableCredential> _createEmailCredential({
     issuerDidManager.assertionMethod.first,
   );
 
-  final unsignedCredential = VcDataModelV2(
+  final unsignedCredential = VcDataModelV1(
     context: JsonLdContext.fromJson([
-      dmV2ContextUrl,
+      dmV1ContextUrl,
       'https://schema.affinidi.io/TEmailV1R0.jsonld',
     ]),
     credentialSchema: [
@@ -226,16 +258,17 @@ Future<VerifiableCredential> _createEmailCredential({
     ],
     id: Uri.parse(const Uuid().v4()),
     issuer: Issuer.uri(issuerSigner.did),
+    issuanceDate: DateTime.now().toUtc(),
     type: {'VerifiableCredential', _emailCredentialType},
     credentialSubject: [
       CredentialSubject.fromJson({'id': holderDid, 'email': email}),
     ],
   );
 
-  final suite = LdVcDm2Suite();
+  final suite = LdVcDm1Suite();
   final issuedCredential = await suite.issue(
     unsignedData: unsignedCredential,
-    proofGenerator: DataIntegrityEcdsaJcsGenerator(signer: issuerSigner),
+    proofGenerator: Secp256k1Signature2019Generator(signer: issuerSigner),
   );
 
   return issuedCredential;
