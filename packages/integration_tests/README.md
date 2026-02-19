@@ -4,7 +4,7 @@
 
 Ensure you have the following installed:
 
-- **dart 3.8.0+**
+- **Dart 3.8.0+**
 
 ## Setup Instructions
 
