@@ -3,6 +3,98 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2026-02-19
+
+Packages with breaking changes:
+
+ - [`affinidi_tdk_auth_provider` - `v2.0.0`](#affinidi_tdk_auth_provider---v200)
+ - [`affinidi_tdk_claim_verifiable_credential` - `v2.0.0`](#affinidi_tdk_claim_verifiable_credential---v200)
+ - [`affinidi_tdk_common` - `v2.0.0`](#affinidi_tdk_common---v200)
+ - [`affinidi_tdk_consumer_auth_provider` - `v5.0.0`](#affinidi_tdk_consumer_auth_provider---v500)
+ - [`affinidi_tdk_cryptography` - `v3.0.0`](#affinidi_tdk_cryptography---v300)
+ - [`affinidi_tdk_iota_core` - `v2.0.0`](#affinidi_tdk_iota_core---v200)
+ - [`affinidi_tdk_test_utilities` - `v2.0.0`](#affinidi_tdk_test_utilities---v200)
+ - [`affinidi_tdk_vault` - `v2.0.0`](#affinidi_tdk_vault---v200)
+ - [`affinidi_tdk_vault_data_manager` - `v2.0.0`](#affinidi_tdk_vault_data_manager---v200)
+ - [`affinidi_tdk_vault_flutter_utils` - `v2.0.0`](#affinidi_tdk_vault_flutter_utils---v200)
+ - [`affinidi_tdk_vault_edge_provider` - `v2.0.0`](#affinidi_tdk_vault_edge_provider---v200)
+ - [`affinidi_tdk_vault_edge_drift_provider` - `v2.0.0`](#affinidi_tdk_vault_edge_drift_provider---v200)
+ - [`affinidi_tdk_vdsp` - `v2.0.0`](#affinidi_tdk_vdsp---v200)
+ - [`affinidi_tdk_vdip` - `v2.0.0`](#affinidi_tdk_vdip---v200)
+ - [`affinidi_tdk_didcomm_mediator_client` - `v2.0.0`](#affinidi_tdk_didcomm_mediator_client---v200)
+
+---
+
+#### `affinidi_tdk_auth_provider` - `v2.0.0`
+
+ - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
+
+#### `affinidi_tdk_claim_verifiable_credential` - `v2.0.0`
+
+ - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
+ - **BREAKING CHANGE**: TDK depends on Dart SSI, which has been upgraded to a new major version.
+
+#### `affinidi_tdk_common` - `v2.0.0`
+
+ - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
+
+#### `affinidi_tdk_consumer_auth_provider` - `v5.0.0`
+
+ - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
+ - **BREAKING CHANGE**: TDK depends on Dart SSI, which has been upgraded to a new major version.
+
+#### `affinidi_tdk_cryptography` - `v3.0.0`
+
+ - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
+
+#### `affinidi_tdk_iota_core` - `v2.0.0`
+
+ - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
+
+#### `affinidi_tdk_test_utilities` - `v2.0.0`
+
+ - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
+
+#### `affinidi_tdk_vault` - `v2.0.0`
+
+ - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
+ - **BREAKING CHANGE**: TDK depends on Dart SSI, which has been upgraded to a new major version.
+
+#### `affinidi_tdk_vault_data_manager` - `v2.0.0`
+
+ - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
+ - **BREAKING CHANGE**: TDK depends on Dart SSI, which has been upgraded to a new major version.
+
+#### `affinidi_tdk_vault_flutter_utils` - `v2.0.0`
+
+ - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
+
+#### `affinidi_tdk_vault_edge_provider` - `v2.0.0`
+
+ - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
+ - **BREAKING CHANGE**: TDK depends on Dart SSI, which has been upgraded to a new major version.
+
+#### `affinidi_tdk_vault_edge_drift_provider` - `v2.0.0`
+
+ - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
+
+#### `affinidi_tdk_vdsp` - `v2.0.0`
+
+ - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
+ - **BREAKING CHANGE**: TDK depends on Dart SSI, which has been upgraded to a new major version.
+
+#### `affinidi_tdk_vdip` - `v2.0.0`
+
+ - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
+ - **BREAKING CHANGE**: TDK depends on Dart SSI, which has been upgraded to a new major version.
+
+#### `affinidi_tdk_didcomm_mediator_client` - `v2.0.0`
+
+ - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
+ - **BREAKING CHANGE**: TDK depends on Dart SSI, which has been upgraded to a new major version.
+
+---
+
 ## 2025-06-05
 
 ### Changes
