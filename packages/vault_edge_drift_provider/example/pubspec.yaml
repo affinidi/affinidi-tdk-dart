@@ -1,7 +1,7 @@
 name: vault_edge_drift_provider_example
 publish_to: "none"
 description: Example app for vault_edge_drift_provider
-version: 1.0.0
+version: 2.0.0
 
 environment:
   sdk: ^3.8.0
@@ -9,8 +9,8 @@ environment:
 resolution: workspace
 
 dependencies:
-  affinidi_tdk_vault: ^1.16.0
-  affinidi_tdk_vault_edge_drift_provider: ^1.6.0
+  affinidi_tdk_vault: ^2.0.0
+  affinidi_tdk_vault_edge_drift_provider: ^2.0.0
   drift: ^2.26.1
   file_picker: ^8.0.0+1
   flutter:
