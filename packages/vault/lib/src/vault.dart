@@ -5,6 +5,7 @@ import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediator_client.dart';
 import 'package:affinidi_tdk_vdsp/affinidi_tdk_vdsp.dart';
 import 'package:ssi/ssi.dart';
+import 'package:uuid/uuid.dart';
 
 import 'dto/shared_item_dto.dart';
 import 'dto/shared_profile_dto.dart';
@@ -28,7 +29,8 @@ class Vault {
   static const String _didCommServiceType = 'DIDCommMessaging';
 
   late final Wallet _wallet;
-  late final DidManager _didManager;
+  // TODO: make it private after Bridge starts working
+  late final DidManager didManager;
   final VaultStore _vaultStore;
   late final DidDocument _mediatorDidDocument;
   late final DidDocument _messagingDidDocument;
@@ -112,7 +114,7 @@ class Vault {
   }) : _wallet = wallet,
        _vaultStore = vaultStore,
        _profileRepositories = Map.unmodifiable(profileRepositories) {
-    _didManager = DidKeyManager(store: InMemoryDidStore(), wallet: _wallet);
+    didManager = DidKeyManager(store: InMemoryDidStore(), wallet: _wallet);
 
     if (_profileRepositories.entries.isEmpty) {
       Error.throwWithStackTrace(
@@ -206,7 +208,7 @@ class Vault {
       Future.wait([
         _configureDidManager().then((_) => _configureMessagingDidDocument()),
         _configureMediatorDidDocument(),
-      ]).then((_) => _configureVdspHolder()),
+      ]).then((_) => _configureVdspHolder().then((_) => _configureAcl())),
     ]);
 
     await _initializing;
@@ -229,11 +231,11 @@ class Vault {
   }
 
   Future<void> _configureDidManager() async {
-    await _didManager.addVerificationMethod(didcommDerivationPath);
+    await didManager.addVerificationMethod(didcommDerivationPath);
   }
 
   Future<void> _configureMessagingDidDocument() async {
-    _messagingDidDocument = await _didManager.getDidDocument();
+    _messagingDidDocument = await didManager.getDidDocument();
   }
 
   Future<void> _configureMediatorDidDocument() async {
@@ -264,11 +266,11 @@ class Vault {
   Future<void> _configureVdspHolder() async {
     _vdspHolder = await VdspHolder.init(
       mediatorDidDocument: _mediatorDidDocument,
-      didManager: _didManager,
+      didManager: didManager,
       clientOptions: const AffinidiClientOptions(),
       authorizationProvider: await AffinidiAuthorizationProvider.init(
         mediatorDidDocument: _mediatorDidDocument,
-        didManager: _didManager,
+        didManager: didManager,
       ),
       featureDisclosures: FeatureDiscoveryHelper.vdspHolderDisclosures,
     );
@@ -824,6 +826,22 @@ class Vault {
       // TODO: add check if sender is bridge IOTA DID to avoid processing messages from other senders
       onDataRequest: onDataRequest,
       onProblemReport: onProblemReport,
+    );
+  }
+
+  Future<void> _configureAcl() async {
+    final accessListAddMessage = AccessListAddMessage(
+      id: const Uuid().v4(),
+      from: _messagingDidDocument.id,
+      to: [_mediatorDidDocument.id],
+      theirDids: [bridgeIotaDid],
+      expiresTime: DateTime.now().add(
+        _vdspHolder.mediatorClient.clientOptions.messageExpiration,
+      ),
+    );
+
+    await _vdspHolder.mediatorClient.sendAclManagementMessage(
+      accessListAddMessage,
     );
   }
 }

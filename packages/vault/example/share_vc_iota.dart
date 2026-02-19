@@ -1,6 +1,9 @@
+import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediator_client.dart'
+    hide CredentialFormat;
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_data_manager/affinidi_tdk_vault_data_manager.dart';
-import 'package:didcomm/didcomm.dart';
+import 'package:affinidi_tdk_vdsp/affinidi_tdk_vdsp.dart';
+import 'package:dcql/dcql.dart';
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
 
@@ -22,14 +25,103 @@ void main() async {
 
   await _initializeCredentials(defaultProfile);
 
-  print('Messaging DID: ${vault.messagingDid}');
+  prettyPrint('Messaging DID', object: vault.messagingDid);
 
   vault.listenForVdipRequests(
-    onDataRequest: (message) {},
-    onProblemReport: (message) {},
+    onDataRequest: (message) async {
+      prettyPrint('VDSP message received', object: message);
+    },
+    onProblemReport: (message) async {
+      prettyPrint('A problem has occurred', object: message);
+      await ConnectionPool.instance.stopConnections();
+    },
+  );
+
+  final verifier = await _initializeVerifier(
+    bridgeIotaDid: vault.bridgeIotaDid,
+  );
+
+  final verifierChallenge = const Uuid().v4();
+  final verifierDomain = 'test.verifier.com';
+
+  verifier.listenForIncomingMessages(
+    onDataResponse:
+        ({
+          required VdspDataResponseMessage message,
+          required bool presentationAndCredentialsAreValid,
+          VerifiablePresentation? verifiablePresentation,
+          required VerificationResult presentationVerificationResult,
+          required List<VerificationResult> credentialVerificationResults,
+        }) async {
+          prettyPrint(
+            'Verifier received Data Response Message',
+            object: message,
+          );
+
+          prettyPrint(
+            'VP and VCs are valid',
+            object: presentationAndCredentialsAreValid,
+          );
+
+          prettyPrint(
+            'Verifiable Presentation',
+            object: verifiablePresentation,
+          );
+
+          if (message.from != vault.messagingDid) {
+            throw Exception('Unexpected sender DID: ${message.from}');
+          }
+          // domain and challenge check to prevent replay attacks
+          final result =
+              presentationAndCredentialsAreValid &&
+              verifiablePresentation?.proof.first.challenge ==
+                  verifierChallenge &&
+              verifiablePresentation!.proof.first.domain?.first ==
+                  verifierDomain;
+
+          prettyPrint('Verification result', object: result);
+          await ConnectionPool.instance.stopConnections();
+        },
+    onProblemReport: (message) async {
+      prettyPrint('A problem has occurred', object: message);
+      await ConnectionPool.instance.stopConnections();
+    },
   );
 
   await ConnectionPool.instance.startConnections();
+
+  await Future.wait([
+    _configureAcl(
+      mediatorDidDocument: verifier.mediatorClient.mediatorDidDocument,
+      didManager: verifier.didManager,
+      theirDids: [vault.messagingDid],
+    ),
+    _configureAcl(
+      mediatorDidDocument: verifier.mediatorClient.mediatorDidDocument,
+      didManager: vault.didManager,
+      theirDids: [(await verifier.didManager.getDidDocument()).id],
+    ),
+  ]);
+
+  await verifier.queryHolderData(
+    holderDid: vault.messagingDid,
+    dcqlQuery: DcqlCredentialQuery(
+      credentials: [
+        DcqlCredential(
+          id: const Uuid().v4(),
+          format: CredentialFormat.ldpVc,
+          claims: [
+            DcqlClaim(path: ['credentialSubject', 'email']),
+          ],
+        ),
+      ],
+    ),
+    operation: 'registerAgent',
+    proofContext: VdspQueryDataProofContext(
+      challenge: verifierChallenge,
+      domain: verifierDomain,
+    ),
+  );
 }
 
 Future<Vault> _initializeVault() async {
@@ -147,4 +239,82 @@ Future<VerifiableCredential> _createEmailCredential({
   );
 
   return issuedCredential;
+}
+
+// TODO: should be IOTA configuration. We use a VDSP mock until the bridge is fixed.
+Future<VdspVerifier> _initializeVerifier({
+  required String bridgeIotaDid,
+}) async {
+  final verifierKeyStore = InMemoryKeyStore();
+  final verifierWallet = PersistentWallet(verifierKeyStore);
+
+  final verifierDidManager = DidKeyManager(
+    wallet: verifierWallet,
+    store: InMemoryDidStore(),
+  );
+
+  final verifierKeyId = 'verifier-key-1';
+
+  await verifierWallet.generateKey(
+    keyType: KeyType.secp256k1,
+    keyId: verifierKeyId,
+  );
+  await verifierDidManager.addVerificationMethod(verifierKeyId);
+
+  final bridgeIotaDidDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(bridgeIotaDid);
+
+  final mediatorService = bridgeIotaDidDocument.service
+      .where((service) => service.type.toString() == 'DIDCommMessaging')
+      .firstOrNull;
+
+  if (mediatorService == null) {
+    throw Exception(
+      'No DIDCommMessaging service found in the bridge IOTA DID Document',
+    );
+  }
+
+  final mediatorDid = mediatorService.id.split('#').first;
+
+  final mediatorDidDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(mediatorDid);
+
+  return await VdspVerifier.init(
+    mediatorDidDocument: mediatorDidDocument,
+    didManager: verifierDidManager,
+    clientOptions: const AffinidiClientOptions(),
+    authorizationProvider: await AffinidiAuthorizationProvider.init(
+      mediatorDidDocument: mediatorDidDocument,
+      didManager: verifierDidManager,
+    ),
+  );
+}
+
+Future<void> _configureAcl({
+  required DidDocument mediatorDidDocument,
+  required DidManager didManager,
+  required List<String> theirDids,
+  DateTime? expiresTime,
+}) async {
+  final ownDidDocument = await didManager.getDidDocument();
+
+  final mediatorClient = await DidcommMediatorClient.init(
+    mediatorDidDocument: mediatorDidDocument,
+    didManager: didManager,
+    authorizationProvider: await AffinidiAuthorizationProvider.init(
+      mediatorDidDocument: mediatorDidDocument,
+      didManager: didManager,
+    ),
+    clientOptions: const AffinidiClientOptions(),
+  );
+
+  final accessListAddMessage = AccessListAddMessage(
+    id: const Uuid().v4(),
+    from: ownDidDocument.id,
+    to: [mediatorClient.mediatorDidDocument.id],
+    theirDids: theirDids,
+    expiresTime: expiresTime,
+  );
+
+  await mediatorClient.sendAclManagementMessage(accessListAddMessage);
 }
