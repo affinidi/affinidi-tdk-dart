@@ -1,182 +1,59 @@
-# Change Log
+# Changelog
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
-
-## 2026-02-19
-
-Packages with breaking changes:
-
- - [`affinidi_tdk_auth_provider` - `v2.0.0`](#affinidi_tdk_auth_provider---v200)
- - [`affinidi_tdk_claim_verifiable_credential` - `v2.0.0`](#affinidi_tdk_claim_verifiable_credential---v200)
- - [`affinidi_tdk_common` - `v2.0.0`](#affinidi_tdk_common---v200)
- - [`affinidi_tdk_consumer_auth_provider` - `v5.0.0`](#affinidi_tdk_consumer_auth_provider---v500)
- - [`affinidi_tdk_cryptography` - `v3.0.0`](#affinidi_tdk_cryptography---v300)
- - [`affinidi_tdk_iota_core` - `v2.0.0`](#affinidi_tdk_iota_core---v200)
- - [`affinidi_tdk_test_utilities` - `v2.0.0`](#affinidi_tdk_test_utilities---v200)
- - [`affinidi_tdk_vault` - `v2.0.0`](#affinidi_tdk_vault---v200)
- - [`affinidi_tdk_vault_data_manager` - `v2.0.0`](#affinidi_tdk_vault_data_manager---v200)
- - [`affinidi_tdk_vault_flutter_utils` - `v2.0.0`](#affinidi_tdk_vault_flutter_utils---v200)
- - [`affinidi_tdk_vault_edge_provider` - `v2.0.0`](#affinidi_tdk_vault_edge_provider---v200)
- - [`affinidi_tdk_vault_edge_drift_provider` - `v2.0.0`](#affinidi_tdk_vault_edge_drift_provider---v200)
- - [`affinidi_tdk_vdsp` - `v2.0.0`](#affinidi_tdk_vdsp---v200)
- - [`affinidi_tdk_vdip` - `v2.0.0`](#affinidi_tdk_vdip---v200)
- - [`affinidi_tdk_didcomm_mediator_client` - `v2.0.0`](#affinidi_tdk_didcomm_mediator_client---v200)
+All notable changes to this project are documented in this file.
 
 ---
 
-#### `affinidi_tdk_auth_provider` - `v2.0.0`
+## 2026‑02‑19
 
- - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
+### Breaking Changes
 
-#### `affinidi_tdk_claim_verifiable_credential` - `v2.0.0`
+- Upgraded **Dart SSI** dependency to **version 3.0**.
+  
+  This introduces strict W3C specification compliance and security improvements for **Verifiable Credentials (VCs)** and **Decentralised Identifiers (DIDs)**.  
+  For detailed changes and migration instructions, refer to the official [Dart SSI Changelog](https://github.com/affinidi/affinidi-ssi-dart/blob/main/CHANGELOG.md#300).
 
- - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
- - **BREAKING CHANGE**: TDK depends on Dart SSI, which has been upgraded to a new major version.
+- Updated packages to support the Dart SSI 3.0 upgrade:
 
-#### `affinidi_tdk_common` - `v2.0.0`
+  - `affinidi_tdk_claim_verifiable_credential` – **v2.0.0**
+  - `affinidi_tdk_consumer_auth_provider` – **v5.0.0**
+  - `affinidi_tdk_vault` – **v2.0.0**
+  - `affinidi_tdk_vault_data_manager` – **v2.0.0**
+  - `affinidi_tdk_vault_edge_provider` – **v2.0.0**
+  - `affinidi_tdk_vdsp` – **v2.0.0**
+  - `affinidi_tdk_vdip` – **v2.0.0**
+  - `affinidi_tdk_didcomm_mediator_client` – **v2.0.0**
 
- - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
-
-#### `affinidi_tdk_consumer_auth_provider` - `v5.0.0`
-
- - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
- - **BREAKING CHANGE**: TDK depends on Dart SSI, which has been upgraded to a new major version.
-
-#### `affinidi_tdk_cryptography` - `v3.0.0`
-
- - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
-
-#### `affinidi_tdk_iota_core` - `v2.0.0`
-
- - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
-
-#### `affinidi_tdk_test_utilities` - `v2.0.0`
-
- - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
-
-#### `affinidi_tdk_vault` - `v2.0.0`
-
- - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
- - **BREAKING CHANGE**: TDK depends on Dart SSI, which has been upgraded to a new major version.
-
-#### `affinidi_tdk_vault_data_manager` - `v2.0.0`
-
- - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
- - **BREAKING CHANGE**: TDK depends on Dart SSI, which has been upgraded to a new major version.
-
-#### `affinidi_tdk_vault_flutter_utils` - `v2.0.0`
-
- - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
-
-#### `affinidi_tdk_vault_edge_provider` - `v2.0.0`
-
- - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
- - **BREAKING CHANGE**: TDK depends on Dart SSI, which has been upgraded to a new major version.
-
-#### `affinidi_tdk_vault_edge_drift_provider` - `v2.0.0`
-
- - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
-
-#### `affinidi_tdk_vdsp` - `v2.0.0`
-
- - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
- - **BREAKING CHANGE**: TDK depends on Dart SSI, which has been upgraded to a new major version.
-
-#### `affinidi_tdk_vdip` - `v2.0.0`
-
- - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
- - **BREAKING CHANGE**: TDK depends on Dart SSI, which has been upgraded to a new major version.
-
-#### `affinidi_tdk_didcomm_mediator_client` - `v2.0.0`
-
- - **BREAKING CHANGE**: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
- - **BREAKING CHANGE**: TDK depends on Dart SSI, which has been upgraded to a new major version.
+- Updated the **minimum Dart SDK version** from **3.6.0** to **3.8.0** across all packages.
 
 ---
 
-## 2025-06-05
+## 2025‑06‑05
 
-### Changes
+### Breaking Changes
 
----
+- Renamed  
+  `oid4vci_claim_verifiable_credential` → `affinidi_tdk_claim_verifiable_credential`.
 
-Packages with breaking changes:
+### Changed
 
- - There are no breaking changes in this release.
-
-Packages with other changes:
-
- - [`affinidi_tdk_auth_provider` - `v1.6.0`](#affinidi_tdk_auth_provider---v160)
- - [`affinidi_tdk_claim_verifiable_credential` - `v1.1.0-dev.5`](#affinidi_tdk_claim_verifiable_credential---v110-dev5)
- - [`affinidi_tdk_common` - `v1.7.0`](#affinidi_tdk_common---v170)
- - [`affinidi_tdk_consumer_auth_provider` - `v4.5.0`](#affinidi_tdk_consumer_auth_provider---v450)
- - [`affinidi_tdk_cryptography` - `v2.4.0`](#affinidi_tdk_cryptography---v240)
- - [`affinidi_tdk_iota_core` - `v1.1.0`](#affinidi_tdk_iota_core---v110)
- - [`affinidi_tdk_test_utilities` - `v1.0.0-dev.3`](#affinidi_tdk_test_utilities---v100-dev3)
- - [`affinidi_tdk_vault` - `v1.1.0-dev.11`](#affinidi_tdk_vault---v110-dev11)
- - [`affinidi_tdk_vault_data_manager` - `v1.1.0-dev.10`](#affinidi_tdk_vault_data_manager---v110-dev10)
- - [`affinidi_tdk_vault_flutter_utils` - `v1.1.0-dev.10`](#affinidi_tdk_vault_flutter_utils---v110-dev10)
- - [`affinidi_tdk_vault_storages` - `v1.1.0-dev.14`](#affinidi_tdk_vault_storages---v110-dev14)
+- Repository migration updates:
+  - Added **Melos** configuration.
+  - Added **workspace pub** configuration.
+  - Introduced enhanced **PR checks** for improved package management.
 
 ---
 
-#### `affinidi_tdk_auth_provider` - `v1.6.0`
+## Migration Note
 
- - **FEAT**: add melos config, workspace pub config, PR checks, update code (#2).
- - **FEAT**: add initial directory structure (#1).
+This project was migrated from the original [Affinidi TDK](https://github.com/affinidi/affinidi-tdk) repository to a dedicated repository **Affinidi TDK for Dart**, as part of ongoing improvements to Affinidi’s open‑source ecosystem and development workflow.
 
-#### `affinidi_tdk_claim_verifiable_credential` - `v1.1.0-dev.5`
+If you need to access the previous versions of the source code, refer to the following locations:
 
- - **FIX**: rename lib according to checks (#4).
- - **FEAT**: add melos config, workspace pub config, PR checks, update code (#2).
- - **FEAT**: add initial directory structure (#1).
+- [Client](https://github.com/affinidi/affinidi-tdk/tree/main/clients/dart)
+- [Libraries](https://github.com/affinidi/affinidi-tdk/tree/main/libs/dart)
+- [Packages](https://github.com/affinidi/affinidi-tdk/tree/main/packages/dart)
 
-#### `affinidi_tdk_common` - `v1.7.0`
+The `libraries` from the previous structure have now been consolidated into the `packages` folder in this repository.
 
- - **FEAT**: add melos config, workspace pub config, PR checks, update code (#2).
- - **FEAT**: add initial directory structure (#1).
-
-#### `affinidi_tdk_consumer_auth_provider` - `v4.5.0`
-
- - **FEAT**: add melos config, workspace pub config, PR checks, update code (#2).
- - **FEAT**: add initial directory structure (#1).
-
-#### `affinidi_tdk_cryptography` - `v2.4.0`
-
- - **FEAT**: add melos config, workspace pub config, PR checks, update code (#2).
- - **FEAT**: add initial directory structure (#1).
-
-#### `affinidi_tdk_iota_core` - `v1.1.0`
-
- - **FEAT**: add melos config, workspace pub config, PR checks, update code (#2).
- - **FEAT**: add initial directory structure (#1).
-
-#### `affinidi_tdk_test_utilities` - `v1.0.0-dev.3`
-
- - **FIX**: add homepage to pubspec (#5).
- - **FEAT**: add melos config, workspace pub config, PR checks, update code (#2).
- - **FEAT**: add initial directory structure (#1).
-
-#### `affinidi_tdk_vault` - `v1.1.0-dev.11`
-
- - **FEAT**: add melos config, workspace pub config, PR checks, update code (#2).
- - **FEAT**: add initial directory structure (#1).
-
-#### `affinidi_tdk_vault_data_manager` - `v1.1.0-dev.10`
-
- - **FEAT**: add melos config, workspace pub config, PR checks, update code (#2).
- - **FEAT**: add initial directory structure (#1).
-
-#### `affinidi_tdk_vault_flutter_utils` - `v1.1.0-dev.10`
-
- - **FIX**: rename lib according to checks (#4).
- - **FEAT**: add melos config, workspace pub config, PR checks, update code (#2).
- - **FEAT**: add initial directory structure (#1).
-
-#### `affinidi_tdk_vault_storages` - `v1.1.0-dev.14`
-
- - **FIX**: allow more than one version of dependency (#6).
- - **FEAT**: add melos config, workspace pub config, PR checks, update code (#2).
- - **FEAT**: add initial directory structure (#1).
-
+---
