@@ -1,6 +1,6 @@
 name: affinidi_tdk_test_utilities
 description: The Affinidi TDK - Utilities package provides the libraries to mock requests for testing.
-version: 1.1.0
+version: 2.0.0
 repository: https://github.com/affinidi/affinidi-tdk-dart
 environment:
   sdk: ^3.8.0

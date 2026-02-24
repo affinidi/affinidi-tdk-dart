@@ -14,11 +14,11 @@ It provides various packages to implement a secure vault to manage Decentralised
 - [Available Packages and Clients](#available-packages-and-clients)
   - [Packages](#packages)
   - [Clients](#clients)
-  - [Status Legend](#status-legend)
 - [Documentation](#documentation)
 - [Support \& Feedback](#support--feedback)
   - [Reporting Technical Issues](#reporting-technical-issues)
 - [Contributing](#contributing)
+- [Changelog](#changelog)
 
 ## Requirements
 
@@ -201,13 +201,15 @@ Clients provide type-safe API wrappers for integrating with Affinidi Elements se
 | Manage vault data and operations via API. | [affinidi_tdk_vault_data_manager_client](https://pub.dev/packages/affinidi_tdk_vault_data_manager_client) | [Source](./clients/vault_data_manager_client/) | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
 | Wallet management and DID operations. | [affinidi_tdk_wallets_client](https://pub.dev/packages/affinidi_tdk_wallets_client) | [Source](./clients/wallets_client/) | ![◯](https://img.shields.io/badge/%E2%97%AF-52a447?style=flat) |
 
-### Status Legend
+**Status Legend:**
 
 Each package and client has a status indicator:
 
-- ![◯](https://img.shields.io/badge/%E2%97%AF-Supported-2ecc71?labelColor=52a447&style=flat) **Supported** - Stable and production-ready.
-- ![◯](https://img.shields.io/badge/%E2%97%AF-Experimental-f9e79f?labelColor=FFEA00&style=flat) **Experimental** - Under active development, API may change.
-- ![◯](https://img.shields.io/badge/%E2%97%AF-Unsupported-ec7063?labelColor=e74c3c&style=flat) **Unsupported** - Deprecated or no longer maintained.
+![◯](https://img.shields.io/badge/%E2%97%AF-Supported-2ecc71?labelColor=52a447&style=flat) - Stable and production-ready.
+
+![◯](https://img.shields.io/badge/%E2%97%AF-Experimental-f9e79f?labelColor=FFEA00&style=flat) - Under active development, API may change.
+
+![◯](https://img.shields.io/badge/%E2%97%AF-Unsupported-ec7063?labelColor=e74c3c&style=flat) - Deprecated or no longer maintained.
 
 ## Documentation
 
@@ -228,3 +230,20 @@ If you have a technical issue with the Affinidi TDK for Dart's codebase, you can
 ## Contributing
 
 We welcome contributions! Please read our [CONTRIBUTING](https://github.com/affinidi/affinidi-tdk-dart/blob/main/CONTRIBUTING.md) guidelines to get started.
+
+## Changelog
+
+See [CHANGELOG](https://github.com/affinidi/affinidi-tdk-dart/blob/main/CHANGELOG.md) for release notes.
+
+**Migration Note:**
+This project was migrated from the original [Affinidi TDK](https://github.com/affinidi/affinidi-tdk) repository to a dedicated repository **Affinidi Trust Development Kit (TDK) for Dart**, as part of ongoing improvements to Affinidi’s open‑source ecosystem and development workflow.
+
+If you need to access the previous versions of the source code, refer to the following locations:
+
+- [Client](https://github.com/affinidi/affinidi-tdk/tree/main/clients/dart)
+- [Libraries](https://github.com/affinidi/affinidi-tdk/tree/main/libs/dart)
+- [Packages](https://github.com/affinidi/affinidi-tdk/tree/main/packages/dart)
+
+The `libraries` from the previous structure have now been consolidated into the `packages` folder in this repository.
+
+---

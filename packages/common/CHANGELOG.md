@@ -1,3 +1,11 @@
+# Change Log
+
+## 2.0.0
+
+- BREAKING CHANGE: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).
+If your application targets a Dart SDK version below 3.8.0, it will no longer be compatible with TDK and you may encounter dependency resolution or installation errors.
+To continue using TDK, please upgrade your application's Dart SDK to 3.8.0 or higher.
+
 # [1.1.0](https://github.com/affinidi/affinidi-tdk/compare/affinidi_tdk_common_dart-v1.0.13...affinidi_tdk_common_dart-v1.1.0) (2025-04-25)
 
 
