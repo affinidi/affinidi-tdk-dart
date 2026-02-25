@@ -35,3 +35,4 @@ dependencies:
   path: ^1.9.1
 repository: https://github.com/affinidi/affinidi-tdk-dart
 resolution: workspace
+publish_to: "none"
