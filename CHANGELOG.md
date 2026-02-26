@@ -1,6 +1,8 @@
 # Changelog
 
-All notable changes to this project are documented in this file.
+This root-level changelog lists the major or notable changes for this repository.
+
+For detailed change histories and complete release notes for a specific client or package, see the changelog file inside the [`clients/`](https://github.com/affinidi/affinidi-tdk-dart/tree/main/clients) or [`packages/`](https://github.com/affinidi/affinidi-tdk-dart/tree/main/packages) directories.
 
 ---
 
@@ -50,9 +52,9 @@ This project was migrated from the original [Affinidi TDK](https://github.com/af
 
 If you need to access the previous versions of the source code, refer to the following locations:
 
-- [Client](https://github.com/affinidi/affinidi-tdk/tree/main/clients/dart)
-- [Libraries](https://github.com/affinidi/affinidi-tdk/tree/main/libs/dart)
-- [Packages](https://github.com/affinidi/affinidi-tdk/tree/main/packages/dart)
+- [Client](https://github.com/affinidi/affinidi-tdk/tree/3a6f0f531cca4d569fb66a0120235ff786e44623/clients/dart)
+- [Libraries](https://github.com/affinidi/affinidi-tdk/tree/89669e3188b6ac2589f9fe20bca8515dba4755f2/libs/dart)
+- [Packages](https://github.com/affinidi/affinidi-tdk/tree/799fb65d01df1cd9cb19a23288007fef5b8bf04c/packages/dart)
 
 The `libraries` from the previous structure have now been consolidated into the `packages` folder in this repository.
 
