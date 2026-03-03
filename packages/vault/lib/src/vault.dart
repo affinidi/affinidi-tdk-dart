@@ -845,14 +845,16 @@ class Vault {
       keyId: _getDerivationPath(profile.accountIndex.toString()),
     );
 
+    final didDocument = DidKey.generateDocument(keyPair.publicKey);
+
     return await _vdspHolder.shareData(
       requestMessage: requestMessage,
       dataQueryLanguage: dataQueryLanguage,
       verifiablePresentationDataModel: verifiablePresentationDataModel,
       verifiableCredentials: verifiableCredentials,
       verifiablePresentationSigner: DidSigner(
-        did: profile.did,
-        didKeyId: profile.did,
+        did: didDocument.id,
+        didKeyId: didDocument.authentication.first.id,
         keyPair: keyPair,
         signatureScheme: SignatureScheme.ecdsa_secp256k1_sha256,
       ),
