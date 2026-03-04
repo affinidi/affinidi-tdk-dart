@@ -278,6 +278,21 @@ Future<VerifiableCredential> _createEmailCredential({
 Future<VdspVerifier> _initializeVerifier({
   required String bridgeIotaDid,
 }) async {
+  // TODO: list
+  // 1. Add a script to get an access token with the personal access token and use it to call IOTA and Wallet API
+  // 2. Make a call to Wallet API to create a new wallet that will appear on Dev Portal\
+  // 3. Make a call to IOTA API to create configuration
+  //    a. use VDSP mode
+  //    b. use wallet we created in the previous step
+  //    c. set DCQL query with email claim as the query criteria
+  // 4. Make a call to IOTA to trigger VDSP sharing request
+  // 5. Make a call to IOTA to fetch VDSP response and print it in the console
+
+  // Configure Personal Access Token on DEV:
+  // npm i @affinidi/cli
+  // AFFINIDI_CLI_ENVIRONMENT=dev affinidi start
+  // AFFINIDI_CLI_ENVIRONMENT=dev affinidi token create-token
+
   final verifierKeyStore = InMemoryKeyStore();
   final verifierWallet = PersistentWallet(verifierKeyStore);
 
