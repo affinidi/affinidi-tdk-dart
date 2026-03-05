@@ -34,20 +34,26 @@ class VdipSwitchContextMessage extends PlainTextMessage {
   }
 }
 
-@JsonSerializable(includeIfNull: false, explicitToJson: true)
 /// Body payload for the switch context message.
 ///
-///
+/// This payload is sent inside [VdipSwitchContextMessage.body]. It contains the
+/// issuer base URL to switch to and a nonce for replay protection.
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class VdipSwitchContextBody {
+  /// Creates a [VdipSwitchContextBody].
   VdipSwitchContextBody({required this.baseIssuerUrl, required this.nonce});
 
+  /// Base issuer URL the agent should switch its context to.
   @JsonKey(name: 'base_issuer_url')
   final String baseIssuerUrl;
 
+  /// Random nonce used to correlate the request and mitigate replay.
   final String nonce;
 
+  /// Creates a [VdipSwitchContextBody] from JSON.
   factory VdipSwitchContextBody.fromJson(Map<String, dynamic> json) =>
       _$VdipSwitchContextBodyFromJson(json);
 
+  /// Converts this payload to JSON.
   Map<String, dynamic> toJson() => _$VdipSwitchContextBodyToJson(this);
 }

@@ -165,8 +165,8 @@ void main() {
   group('Wallets Client V2 Integration Tests', () {
     late WalletApi walletApi;
     late RevocationApi revocationApi;
-    String walletId = '';
-    String walletDid = '';
+    var walletId = '';
+    var walletDid = '';
     Map<String, dynamic>? signedCredentialLdp;
 
     setUpAll(() async {

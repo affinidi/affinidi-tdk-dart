@@ -1,5 +1,15 @@
 # Change Log
 
+## 2.1.0
+
+### Changes
+
+---
+
+Chore: Dependencies Update 
+
+---
+
 ## 2.0.0
 
 - BREAKING CHANGE: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).

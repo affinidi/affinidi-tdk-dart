@@ -1,8 +1,8 @@
 name: affinidi_tdk_vdip
 description: A Dart package for implementing the Verifiable Data Issuance Protocol (VDIP) using DIDComm v2.1 to facilitate secure credential issuance.
 version: 2.0.0
-homepage: https://github.com/affinidi/affinidi-tdk/tree/main/libs/dart/didcomm/vdip
-repository: https://github.com/affinidi/affinidi-tdk
+homepage: https://github.com/affinidi/affinidi-tdk-dart/tree/main/packages/didcomm/vdip
+repository: https://github.com/affinidi/affinidi-tdk-dart
 environment:
   sdk: ^3.8.0
 resolution: workspace

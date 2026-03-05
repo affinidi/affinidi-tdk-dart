@@ -5,30 +5,30 @@ dev_dependencies:
   affinidi_tdk_auth_provider: ^2.0.0
   affinidi_tdk_common: ^2.0.0
   affinidi_tdk_consumer_auth_provider: ^5.0.0
-  affinidi_tdk_cryptography: ^3.0.0
-  ssi: ^3.3.0
-  affinidi_tdk_iam_client: ^2.0.0
-  affinidi_tdk_wallets_client: ^2.0.0
   affinidi_tdk_credential_issuance_client: ^2.0.0
-  affinidi_tdk_vault_data_manager_client: ^2.0.0
   affinidi_tdk_credential_verification_client: ^2.0.0
+  affinidi_tdk_cryptography: ^3.0.0
+  affinidi_tdk_didcomm_mediator_client: ^2.0.0
+  affinidi_tdk_iam_client: ^2.0.0
   affinidi_tdk_iota_client: ^2.0.0
   affinidi_tdk_login_configuration_client: ^2.0.0
-  affinidi_tdk_didcomm_mediator_client: ^2.0.0
-  affinidi_tdk_vdsp: ^2.0.0
+  affinidi_tdk_vault_data_manager_client: ^2.0.0
   affinidi_tdk_vdip: ^2.0.0
-  dotenv: ^4.2.0
-  lints: ^5.0.0
-  test: ^1.24.0
-  pointycastle: ^4.0.0
-  dart_jsonwebtoken: ^3.2.0
+  affinidi_tdk_vdsp: ^2.1.0
+  affinidi_tdk_wallets_client: ^2.0.0
   built_collection: ^5.1.1
   built_value: ^8.9.3
-  dio: ^5.2.0
-  one_of: ^1.5.0
   convert: ^3.1.2
-  uuid: ^4.5.1
+  dart_jsonwebtoken: ^3.2.0
+  dio: ^5.2.0
+  dotenv: ^4.2.0
   jwt_decode: ^0.3.1
+  lints: ^5.0.0
+  one_of: ^1.5.0
+  pointycastle: ^4.0.0
+  ssi: ^3.3.0
+  test: ^1.24.0
+  uuid: ^4.5.1
 dependencies:
   collection: ^1.19.1
   dcql: ^1.0.0

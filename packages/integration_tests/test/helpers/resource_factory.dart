@@ -158,7 +158,7 @@ class ResourceFactory {
       print('❗️Number of wallets reaching the limit (10). Deleting wallets.');
 
       for (final wallet in result.wallets!) {
-        deleteWallet(wallet.id as String);
+        await deleteWallet(wallet.id as String);
       }
     }
   }
