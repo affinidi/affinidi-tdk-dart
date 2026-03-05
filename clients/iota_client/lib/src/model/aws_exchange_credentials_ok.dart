@@ -3,7 +3,7 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:affinidi_tdk_iota_client/src/model/aws_exchange_credentials_project_token_ok_credentials.dart';
+import 'package:affinidi_tdk_iota_client/src/model/aws_exchange_credentials_ok_credentials.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -22,13 +22,13 @@ abstract class AwsExchangeCredentialsOK
   String get connectionClientId;
 
   @BuiltValueField(wireName: r'credentials')
-  AwsExchangeCredentialsProjectTokenOKCredentials get credentials;
+  AwsExchangeCredentialsOKCredentials get credentials;
 
   AwsExchangeCredentialsOK._();
 
-  factory AwsExchangeCredentialsOK(
-          [void updates(AwsExchangeCredentialsOKBuilder b)]) =
-      _$AwsExchangeCredentialsOK;
+  factory AwsExchangeCredentialsOK([
+    void updates(AwsExchangeCredentialsOKBuilder b),
+  ]) = _$AwsExchangeCredentialsOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AwsExchangeCredentialsOKBuilder b) => b;
@@ -43,7 +43,7 @@ class _$AwsExchangeCredentialsOKSerializer
   @override
   final Iterable<Type> types = const [
     AwsExchangeCredentialsOK,
-    _$AwsExchangeCredentialsOK
+    _$AwsExchangeCredentialsOK,
   ];
 
   @override
@@ -62,8 +62,7 @@ class _$AwsExchangeCredentialsOKSerializer
     yield r'credentials';
     yield serializers.serialize(
       object.credentials,
-      specifiedType:
-          const FullType(AwsExchangeCredentialsProjectTokenOKCredentials),
+      specifiedType: const FullType(AwsExchangeCredentialsOKCredentials),
     );
   }
 
@@ -73,9 +72,11 @@ class _$AwsExchangeCredentialsOKSerializer
     AwsExchangeCredentialsOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -91,18 +92,23 @@ class _$AwsExchangeCredentialsOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'connectionClientId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.connectionClientId = valueDes;
           break;
         case r'credentials':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(AwsExchangeCredentialsProjectTokenOKCredentials),
-          ) as AwsExchangeCredentialsProjectTokenOKCredentials;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      AwsExchangeCredentialsOKCredentials,
+                    ),
+                  )
+                  as AwsExchangeCredentialsOKCredentials;
           result.credentials.replace(valueDes);
           break;
         default:

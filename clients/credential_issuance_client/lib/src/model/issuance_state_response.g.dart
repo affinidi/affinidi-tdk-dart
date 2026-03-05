@@ -9,17 +9,18 @@ part of 'issuance_state_response.dart';
 const IssuanceStateResponseStatusEnum _$issuanceStateResponseStatusEnum_INIT =
     const IssuanceStateResponseStatusEnum._('INIT');
 const IssuanceStateResponseStatusEnum
-    _$issuanceStateResponseStatusEnum_OFFER_DELIVERED =
+_$issuanceStateResponseStatusEnum_OFFER_DELIVERED =
     const IssuanceStateResponseStatusEnum._('OFFER_DELIVERED');
 const IssuanceStateResponseStatusEnum
-    _$issuanceStateResponseStatusEnum_VC_CLAIMED =
+_$issuanceStateResponseStatusEnum_VC_CLAIMED =
     const IssuanceStateResponseStatusEnum._('VC_CLAIMED');
 const IssuanceStateResponseStatusEnum
-    _$issuanceStateResponseStatusEnum_TIMEOUT =
+_$issuanceStateResponseStatusEnum_TIMEOUT =
     const IssuanceStateResponseStatusEnum._('TIMEOUT');
 
 IssuanceStateResponseStatusEnum _$issuanceStateResponseStatusEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'INIT':
       return _$issuanceStateResponseStatusEnum_INIT;
@@ -35,16 +36,18 @@ IssuanceStateResponseStatusEnum _$issuanceStateResponseStatusEnumValueOf(
 }
 
 final BuiltSet<IssuanceStateResponseStatusEnum>
-    _$issuanceStateResponseStatusEnumValues = BuiltSet<
-        IssuanceStateResponseStatusEnum>(const <IssuanceStateResponseStatusEnum>[
-  _$issuanceStateResponseStatusEnum_INIT,
-  _$issuanceStateResponseStatusEnum_OFFER_DELIVERED,
-  _$issuanceStateResponseStatusEnum_VC_CLAIMED,
-  _$issuanceStateResponseStatusEnum_TIMEOUT,
-]);
+_$issuanceStateResponseStatusEnumValues =
+    BuiltSet<IssuanceStateResponseStatusEnum>(
+      const <IssuanceStateResponseStatusEnum>[
+        _$issuanceStateResponseStatusEnum_INIT,
+        _$issuanceStateResponseStatusEnum_OFFER_DELIVERED,
+        _$issuanceStateResponseStatusEnum_VC_CLAIMED,
+        _$issuanceStateResponseStatusEnum_TIMEOUT,
+      ],
+    );
 
 Serializer<IssuanceStateResponseStatusEnum>
-    _$issuanceStateResponseStatusEnumSerializer =
+_$issuanceStateResponseStatusEnumSerializer =
     _$IssuanceStateResponseStatusEnumSerializer();
 
 class _$IssuanceStateResponseStatusEnumSerializer
@@ -69,16 +72,19 @@ class _$IssuanceStateResponseStatusEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, IssuanceStateResponseStatusEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    IssuanceStateResponseStatusEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   IssuanceStateResponseStatusEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      IssuanceStateResponseStatusEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => IssuanceStateResponseStatusEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$IssuanceStateResponse extends IssuanceStateResponse {
@@ -87,16 +93,16 @@ class _$IssuanceStateResponse extends IssuanceStateResponse {
   @override
   final IssuanceStateResponseStatusEnum status;
 
-  factory _$IssuanceStateResponse(
-          [void Function(IssuanceStateResponseBuilder)? updates]) =>
-      (IssuanceStateResponseBuilder()..update(updates))._build();
+  factory _$IssuanceStateResponse([
+    void Function(IssuanceStateResponseBuilder)? updates,
+  ]) => (IssuanceStateResponseBuilder()..update(updates))._build();
 
   _$IssuanceStateResponse._({required this.issuanceId, required this.status})
-      : super._();
+    : super._();
   @override
   IssuanceStateResponse rebuild(
-          void Function(IssuanceStateResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(IssuanceStateResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   IssuanceStateResponseBuilder toBuilder() =>
@@ -169,12 +175,19 @@ class IssuanceStateResponseBuilder
   IssuanceStateResponse build() => _build();
 
   _$IssuanceStateResponse _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$IssuanceStateResponse._(
           issuanceId: BuiltValueNullFieldError.checkNotNull(
-              issuanceId, r'IssuanceStateResponse', 'issuanceId'),
+            issuanceId,
+            r'IssuanceStateResponse',
+            'issuanceId',
+          ),
           status: BuiltValueNullFieldError.checkNotNull(
-              status, r'IssuanceStateResponse', 'status'),
+            status,
+            r'IssuanceStateResponse',
+            'status',
+          ),
         );
     replace(_$result);
     return _$result;

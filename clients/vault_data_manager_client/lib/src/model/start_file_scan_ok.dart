@@ -68,9 +68,11 @@ class _$StartFileScanOKSerializer
     StartFileScanOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -86,17 +88,21 @@ class _$StartFileScanOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'jobId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.jobId = valueDes;
           break;
         case r'status':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(StartFileScanOKStatusEnum),
-          ) as StartFileScanOKStatusEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(StartFileScanOKStatusEnum),
+                  )
+                  as StartFileScanOKStatusEnum;
           result.status = valueDes;
           break;
         default:

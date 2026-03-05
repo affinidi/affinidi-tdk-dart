@@ -44,24 +44,29 @@ class OfferApi {
   }) async {
     final _path = r'/v1/{projectId}/offers/{issuanceId}'
         .replaceAll(
-            '{' r'projectId' '}',
-            encodeQueryParameter(
-                    _serializers, projectId, const FullType(String))
-                .toString())
+          '{'
+          r'projectId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            projectId,
+            const FullType(String),
+          ).toString(),
+        )
         .replaceAll(
-            '{' r'issuanceId' '}',
-            encodeQueryParameter(
-                    _serializers, issuanceId, const FullType(String))
-                .toString());
+          '{'
+          r'issuanceId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            issuanceId,
+            const FullType(String),
+          ).toString(),
+        );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -80,9 +85,10 @@ class OfferApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(CredentialOfferResponse),
-            ) as CredentialOfferResponse;
+                  rawResponse,
+                  specifiedType: const FullType(CredentialOfferResponse),
+                )
+                as CredentialOfferResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

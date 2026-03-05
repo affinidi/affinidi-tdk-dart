@@ -9,14 +9,15 @@ part of 'issuance_config_mini_dto.dart';
 const IssuanceConfigMiniDtoFormatEnum _$issuanceConfigMiniDtoFormatEnum_ldpVc =
     const IssuanceConfigMiniDtoFormatEnum._('ldpVc');
 const IssuanceConfigMiniDtoFormatEnum
-    _$issuanceConfigMiniDtoFormatEnum_jwtVcJsonLd =
+_$issuanceConfigMiniDtoFormatEnum_jwtVcJsonLd =
     const IssuanceConfigMiniDtoFormatEnum._('jwtVcJsonLd');
 const IssuanceConfigMiniDtoFormatEnum
-    _$issuanceConfigMiniDtoFormatEnum_sdJwtVcJsonLd =
+_$issuanceConfigMiniDtoFormatEnum_sdJwtVcJsonLd =
     const IssuanceConfigMiniDtoFormatEnum._('sdJwtVcJsonLd');
 
 IssuanceConfigMiniDtoFormatEnum _$issuanceConfigMiniDtoFormatEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'ldpVc':
       return _$issuanceConfigMiniDtoFormatEnum_ldpVc;
@@ -30,15 +31,17 @@ IssuanceConfigMiniDtoFormatEnum _$issuanceConfigMiniDtoFormatEnumValueOf(
 }
 
 final BuiltSet<IssuanceConfigMiniDtoFormatEnum>
-    _$issuanceConfigMiniDtoFormatEnumValues = BuiltSet<
-        IssuanceConfigMiniDtoFormatEnum>(const <IssuanceConfigMiniDtoFormatEnum>[
-  _$issuanceConfigMiniDtoFormatEnum_ldpVc,
-  _$issuanceConfigMiniDtoFormatEnum_jwtVcJsonLd,
-  _$issuanceConfigMiniDtoFormatEnum_sdJwtVcJsonLd,
-]);
+_$issuanceConfigMiniDtoFormatEnumValues =
+    BuiltSet<IssuanceConfigMiniDtoFormatEnum>(
+      const <IssuanceConfigMiniDtoFormatEnum>[
+        _$issuanceConfigMiniDtoFormatEnum_ldpVc,
+        _$issuanceConfigMiniDtoFormatEnum_jwtVcJsonLd,
+        _$issuanceConfigMiniDtoFormatEnum_sdJwtVcJsonLd,
+      ],
+    );
 
 Serializer<IssuanceConfigMiniDtoFormatEnum>
-    _$issuanceConfigMiniDtoFormatEnumSerializer =
+_$issuanceConfigMiniDtoFormatEnumSerializer =
     _$IssuanceConfigMiniDtoFormatEnumSerializer();
 
 class _$IssuanceConfigMiniDtoFormatEnumSerializer
@@ -61,16 +64,19 @@ class _$IssuanceConfigMiniDtoFormatEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, IssuanceConfigMiniDtoFormatEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    IssuanceConfigMiniDtoFormatEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   IssuanceConfigMiniDtoFormatEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      IssuanceConfigMiniDtoFormatEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => IssuanceConfigMiniDtoFormatEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$IssuanceConfigMiniDto extends IssuanceConfigMiniDto {
@@ -95,26 +101,26 @@ class _$IssuanceConfigMiniDto extends IssuanceConfigMiniDto {
   @override
   final int? version;
 
-  factory _$IssuanceConfigMiniDto(
-          [void Function(IssuanceConfigMiniDtoBuilder)? updates]) =>
-      (IssuanceConfigMiniDtoBuilder()..update(updates))._build();
+  factory _$IssuanceConfigMiniDto([
+    void Function(IssuanceConfigMiniDtoBuilder)? updates,
+  ]) => (IssuanceConfigMiniDtoBuilder()..update(updates))._build();
 
-  _$IssuanceConfigMiniDto._(
-      {required this.id,
-      this.name,
-      this.issuerDid,
-      this.issuerWalletId,
-      this.credentialOfferDuration,
-      this.cNonceDuration,
-      this.format,
-      this.issuerUri,
-      this.issuerMetadata,
-      this.version})
-      : super._();
+  _$IssuanceConfigMiniDto._({
+    required this.id,
+    this.name,
+    this.issuerDid,
+    this.issuerWalletId,
+    this.credentialOfferDuration,
+    this.cNonceDuration,
+    this.format,
+    this.issuerUri,
+    this.issuerMetadata,
+    this.version,
+  }) : super._();
   @override
   IssuanceConfigMiniDto rebuild(
-          void Function(IssuanceConfigMiniDtoBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(IssuanceConfigMiniDtoBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   IssuanceConfigMiniDtoBuilder toBuilder() =>
@@ -258,10 +264,14 @@ class IssuanceConfigMiniDtoBuilder
   _$IssuanceConfigMiniDto _build() {
     _$IssuanceConfigMiniDto _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$IssuanceConfigMiniDto._(
             id: BuiltValueNullFieldError.checkNotNull(
-                id, r'IssuanceConfigMiniDto', 'id'),
+              id,
+              r'IssuanceConfigMiniDto',
+              'id',
+            ),
             name: name,
             issuerDid: issuerDid,
             issuerWalletId: issuerWalletId,
@@ -279,7 +289,10 @@ class IssuanceConfigMiniDtoBuilder
         _issuerMetadata?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'IssuanceConfigMiniDto', _$failedField, e.toString());
+          r'IssuanceConfigMiniDto',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

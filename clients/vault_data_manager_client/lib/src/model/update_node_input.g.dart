@@ -99,7 +99,8 @@ class UpdateNodeInputBuilder
   UpdateNodeInput build() => _build();
 
   _$UpdateNodeInput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$UpdateNodeInput._(
           name: name,
           description: description,

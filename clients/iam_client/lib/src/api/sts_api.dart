@@ -44,9 +44,7 @@ class StsApi {
     final _path = r'/v1/sts/create-project-scoped-token';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -66,14 +64,13 @@ class StsApi {
 
     try {
       const _type = FullType(CreateProjectScopedTokenInput);
-      _bodyData = _serializers.serialize(createProjectScopedTokenInput,
-          specifiedType: _type);
+      _bodyData = _serializers.serialize(
+        createProjectScopedTokenInput,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -96,9 +93,10 @@ class StsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(CreateProjectScopedTokenOutput),
-            ) as CreateProjectScopedTokenOutput;
+                  rawResponse,
+                  specifiedType: const FullType(CreateProjectScopedTokenOutput),
+                )
+                as CreateProjectScopedTokenOutput;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -145,9 +143,7 @@ class StsApi {
     final _path = r'/v1/sts/whoami';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -177,9 +173,10 @@ class StsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(WhoamiDto),
-            ) as WhoamiDto;
+                  rawResponse,
+                  specifiedType: const FullType(WhoamiDto),
+                )
+                as WhoamiDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

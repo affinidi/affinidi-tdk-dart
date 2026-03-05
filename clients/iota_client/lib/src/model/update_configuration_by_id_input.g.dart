@@ -7,17 +7,17 @@ part of 'update_configuration_by_id_input.dart';
 // **************************************************************************
 
 const UpdateConfigurationByIdInputModeEnum
-    _$updateConfigurationByIdInputModeEnum_redirect =
+_$updateConfigurationByIdInputModeEnum_redirect =
     const UpdateConfigurationByIdInputModeEnum._('redirect');
 const UpdateConfigurationByIdInputModeEnum
-    _$updateConfigurationByIdInputModeEnum_websocket =
+_$updateConfigurationByIdInputModeEnum_websocket =
     const UpdateConfigurationByIdInputModeEnum._('websocket');
 const UpdateConfigurationByIdInputModeEnum
-    _$updateConfigurationByIdInputModeEnum_didcomm =
+_$updateConfigurationByIdInputModeEnum_didcomm =
     const UpdateConfigurationByIdInputModeEnum._('didcomm');
 
 UpdateConfigurationByIdInputModeEnum
-    _$updateConfigurationByIdInputModeEnumValueOf(String name) {
+_$updateConfigurationByIdInputModeEnumValueOf(String name) {
   switch (name) {
     case 'redirect':
       return _$updateConfigurationByIdInputModeEnum_redirect;
@@ -31,15 +31,17 @@ UpdateConfigurationByIdInputModeEnum
 }
 
 final BuiltSet<UpdateConfigurationByIdInputModeEnum>
-    _$updateConfigurationByIdInputModeEnumValues = BuiltSet<
-        UpdateConfigurationByIdInputModeEnum>(const <UpdateConfigurationByIdInputModeEnum>[
-  _$updateConfigurationByIdInputModeEnum_redirect,
-  _$updateConfigurationByIdInputModeEnum_websocket,
-  _$updateConfigurationByIdInputModeEnum_didcomm,
-]);
+_$updateConfigurationByIdInputModeEnumValues =
+    BuiltSet<UpdateConfigurationByIdInputModeEnum>(
+      const <UpdateConfigurationByIdInputModeEnum>[
+        _$updateConfigurationByIdInputModeEnum_redirect,
+        _$updateConfigurationByIdInputModeEnum_websocket,
+        _$updateConfigurationByIdInputModeEnum_didcomm,
+      ],
+    );
 
 Serializer<UpdateConfigurationByIdInputModeEnum>
-    _$updateConfigurationByIdInputModeEnumSerializer =
+_$updateConfigurationByIdInputModeEnumSerializer =
     _$UpdateConfigurationByIdInputModeEnumSerializer();
 
 class _$UpdateConfigurationByIdInputModeEnumSerializer
@@ -57,23 +59,26 @@ class _$UpdateConfigurationByIdInputModeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    UpdateConfigurationByIdInputModeEnum
+    UpdateConfigurationByIdInputModeEnum,
   ];
   @override
   final String wireName = 'UpdateConfigurationByIdInputModeEnum';
 
   @override
   Object serialize(
-          Serializers serializers, UpdateConfigurationByIdInputModeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    UpdateConfigurationByIdInputModeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   UpdateConfigurationByIdInputModeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      UpdateConfigurationByIdInputModeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => UpdateConfigurationByIdInputModeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$UpdateConfigurationByIdInput extends UpdateConfigurationByIdInput {
@@ -100,27 +105,27 @@ class _$UpdateConfigurationByIdInput extends UpdateConfigurationByIdInput {
   @override
   final bool? enableIdvProviders;
 
-  factory _$UpdateConfigurationByIdInput(
-          [void Function(UpdateConfigurationByIdInputBuilder)? updates]) =>
-      (UpdateConfigurationByIdInputBuilder()..update(updates))._build();
+  factory _$UpdateConfigurationByIdInput([
+    void Function(UpdateConfigurationByIdInputBuilder)? updates,
+  ]) => (UpdateConfigurationByIdInputBuilder()..update(updates))._build();
 
-  _$UpdateConfigurationByIdInput._(
-      {this.name,
-      this.walletAri,
-      this.iotaResponseWebhookURL,
-      this.enableVerification,
-      this.enableConsentAuditLog,
-      this.tokenMaxAge,
-      this.description,
-      this.clientMetadata,
-      this.mode,
-      this.redirectUris,
-      this.enableIdvProviders})
-      : super._();
+  _$UpdateConfigurationByIdInput._({
+    this.name,
+    this.walletAri,
+    this.iotaResponseWebhookURL,
+    this.enableVerification,
+    this.enableConsentAuditLog,
+    this.tokenMaxAge,
+    this.description,
+    this.clientMetadata,
+    this.mode,
+    this.redirectUris,
+    this.enableIdvProviders,
+  }) : super._();
   @override
   UpdateConfigurationByIdInput rebuild(
-          void Function(UpdateConfigurationByIdInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateConfigurationByIdInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateConfigurationByIdInputBuilder toBuilder() =>
@@ -181,8 +186,10 @@ class _$UpdateConfigurationByIdInput extends UpdateConfigurationByIdInput {
 
 class UpdateConfigurationByIdInputBuilder
     implements
-        Builder<UpdateConfigurationByIdInput,
-            UpdateConfigurationByIdInputBuilder> {
+        Builder<
+          UpdateConfigurationByIdInput,
+          UpdateConfigurationByIdInputBuilder
+        > {
   _$UpdateConfigurationByIdInput? _$v;
 
   String? _name;
@@ -220,8 +227,8 @@ class UpdateConfigurationByIdInputBuilder
   IotaConfigurationDtoClientMetadataBuilder get clientMetadata =>
       _$this._clientMetadata ??= IotaConfigurationDtoClientMetadataBuilder();
   set clientMetadata(
-          IotaConfigurationDtoClientMetadataBuilder? clientMetadata) =>
-      _$this._clientMetadata = clientMetadata;
+    IotaConfigurationDtoClientMetadataBuilder? clientMetadata,
+  ) => _$this._clientMetadata = clientMetadata;
 
   UpdateConfigurationByIdInputModeEnum? _mode;
   UpdateConfigurationByIdInputModeEnum? get mode => _$this._mode;
@@ -277,7 +284,8 @@ class UpdateConfigurationByIdInputBuilder
   _$UpdateConfigurationByIdInput _build() {
     _$UpdateConfigurationByIdInput _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$UpdateConfigurationByIdInput._(
             name: name,
             walletAri: walletAri,
@@ -301,7 +309,10 @@ class UpdateConfigurationByIdInputBuilder
         _redirectUris?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'UpdateConfigurationByIdInput', _$failedField, e.toString());
+          r'UpdateConfigurationByIdInput',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

@@ -14,17 +14,19 @@ class _$GetIotaConfigurationMetaDataOK extends GetIotaConfigurationMetaDataOK {
   @override
   final String logo;
 
-  factory _$GetIotaConfigurationMetaDataOK(
-          [void Function(GetIotaConfigurationMetaDataOKBuilder)? updates]) =>
-      (GetIotaConfigurationMetaDataOKBuilder()..update(updates))._build();
+  factory _$GetIotaConfigurationMetaDataOK([
+    void Function(GetIotaConfigurationMetaDataOKBuilder)? updates,
+  ]) => (GetIotaConfigurationMetaDataOKBuilder()..update(updates))._build();
 
-  _$GetIotaConfigurationMetaDataOK._(
-      {required this.name, required this.origin, required this.logo})
-      : super._();
+  _$GetIotaConfigurationMetaDataOK._({
+    required this.name,
+    required this.origin,
+    required this.logo,
+  }) : super._();
   @override
   GetIotaConfigurationMetaDataOK rebuild(
-          void Function(GetIotaConfigurationMetaDataOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(GetIotaConfigurationMetaDataOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   GetIotaConfigurationMetaDataOKBuilder toBuilder() =>
@@ -61,8 +63,10 @@ class _$GetIotaConfigurationMetaDataOK extends GetIotaConfigurationMetaDataOK {
 
 class GetIotaConfigurationMetaDataOKBuilder
     implements
-        Builder<GetIotaConfigurationMetaDataOK,
-            GetIotaConfigurationMetaDataOKBuilder> {
+        Builder<
+          GetIotaConfigurationMetaDataOK,
+          GetIotaConfigurationMetaDataOKBuilder
+        > {
   _$GetIotaConfigurationMetaDataOK? _$v;
 
   String? _name;
@@ -106,14 +110,24 @@ class GetIotaConfigurationMetaDataOKBuilder
   GetIotaConfigurationMetaDataOK build() => _build();
 
   _$GetIotaConfigurationMetaDataOK _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$GetIotaConfigurationMetaDataOK._(
           name: BuiltValueNullFieldError.checkNotNull(
-              name, r'GetIotaConfigurationMetaDataOK', 'name'),
+            name,
+            r'GetIotaConfigurationMetaDataOK',
+            'name',
+          ),
           origin: BuiltValueNullFieldError.checkNotNull(
-              origin, r'GetIotaConfigurationMetaDataOK', 'origin'),
+            origin,
+            r'GetIotaConfigurationMetaDataOK',
+            'origin',
+          ),
           logo: BuiltValueNullFieldError.checkNotNull(
-              logo, r'GetIotaConfigurationMetaDataOK', 'logo'),
+            logo,
+            r'GetIotaConfigurationMetaDataOK',
+            'logo',
+          ),
         );
     replace(_$result);
     return _$result;

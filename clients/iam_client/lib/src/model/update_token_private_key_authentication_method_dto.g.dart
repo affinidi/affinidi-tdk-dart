@@ -7,11 +7,11 @@ part of 'update_token_private_key_authentication_method_dto.dart';
 // **************************************************************************
 
 const UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum
-    _$updateTokenPrivateKeyAuthenticationMethodDtoTypeEnum_PRIVATE_KEY =
+_$updateTokenPrivateKeyAuthenticationMethodDtoTypeEnum_PRIVATE_KEY =
     const UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum._('PRIVATE_KEY');
 
 UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum
-    _$updateTokenPrivateKeyAuthenticationMethodDtoTypeEnumValueOf(String name) {
+_$updateTokenPrivateKeyAuthenticationMethodDtoTypeEnumValueOf(String name) {
   switch (name) {
     case 'PRIVATE_KEY':
       return _$updateTokenPrivateKeyAuthenticationMethodDtoTypeEnum_PRIVATE_KEY;
@@ -21,31 +21,38 @@ UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum
 }
 
 final BuiltSet<UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum>
-    _$updateTokenPrivateKeyAuthenticationMethodDtoTypeEnumValues = BuiltSet<
-        UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum>(const <UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum>[
-  _$updateTokenPrivateKeyAuthenticationMethodDtoTypeEnum_PRIVATE_KEY,
-]);
+_$updateTokenPrivateKeyAuthenticationMethodDtoTypeEnumValues =
+    BuiltSet<UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum>(
+      const <UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum>[
+        _$updateTokenPrivateKeyAuthenticationMethodDtoTypeEnum_PRIVATE_KEY,
+      ],
+    );
 
 const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-    _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS256 =
+_$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS256 =
     const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum._(
-        'rS256');
+      'rS256',
+    );
 const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-    _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS512 =
+_$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS512 =
     const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum._(
-        'rS512');
+      'rS512',
+    );
 const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-    _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS256 =
+_$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS256 =
     const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum._(
-        'eS256');
+      'eS256',
+    );
 const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-    _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS512 =
+_$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS512 =
     const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum._(
-        'eS512');
+      'eS512',
+    );
 
 UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-    _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumValueOf(
-        String name) {
+_$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumValueOf(
+  String name,
+) {
   switch (name) {
     case 'rS256':
       return _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS256;
@@ -61,26 +68,28 @@ UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
 }
 
 final BuiltSet<UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum>
-    _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumValues =
+_$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumValues =
     BuiltSet<
-        UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum>(const <UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum>[
-  _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS256,
-  _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS512,
-  _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS256,
-  _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS512,
-]);
+      UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
+    >(const <UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum>[
+      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS256,
+      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS512,
+      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS256,
+      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS512,
+    ]);
 
 Serializer<UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum>
-    _$updateTokenPrivateKeyAuthenticationMethodDtoTypeEnumSerializer =
+_$updateTokenPrivateKeyAuthenticationMethodDtoTypeEnumSerializer =
     _$UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnumSerializer();
 Serializer<UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum>
-    _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumSerializer =
+_$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumSerializer =
     _$UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumSerializer();
 
 class _$UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnumSerializer
     implements
         PrimitiveSerializer<
-            UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum> {
+          UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum
+        > {
   static const Map<String, Object> _toWire = const <String, Object>{
     'PRIVATE_KEY': 'PRIVATE_KEY',
   };
@@ -90,30 +99,34 @@ class _$UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum
+    UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum,
   ];
   @override
   final String wireName =
       'UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumSerializer
     implements
         PrimitiveSerializer<
-            UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum> {
+          UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
+        > {
   static const Map<String, Object> _toWire = const <String, Object>{
     'rS256': 'RS256',
     'rS512': 'RS512',
@@ -129,7 +142,7 @@ class _$UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumSerializ
 
   @override
   final Iterable<Type> types = const <Type>[
-    UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
+    UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum,
   ];
   @override
   final String wireName =
@@ -137,18 +150,20 @@ class _$UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumSerializ
 
   @override
   Object serialize(
-          Serializers serializers,
-          UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-              object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) =>
       UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+        _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+      );
 }
 
 class _$UpdateTokenPrivateKeyAuthenticationMethodDto
@@ -157,24 +172,24 @@ class _$UpdateTokenPrivateKeyAuthenticationMethodDto
   final UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum? type;
   @override
   final UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum?
-      signingAlgorithm;
+  signingAlgorithm;
   @override
   final TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo? publicKeyInfo;
 
-  factory _$UpdateTokenPrivateKeyAuthenticationMethodDto(
-          [void Function(UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder)?
-              updates]) =>
-      (UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder()..update(updates))
-          ._build();
+  factory _$UpdateTokenPrivateKeyAuthenticationMethodDto([
+    void Function(UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder)? updates,
+  ]) => (UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder()..update(updates))
+      ._build();
 
-  _$UpdateTokenPrivateKeyAuthenticationMethodDto._(
-      {this.type, this.signingAlgorithm, this.publicKeyInfo})
-      : super._();
+  _$UpdateTokenPrivateKeyAuthenticationMethodDto._({
+    this.type,
+    this.signingAlgorithm,
+    this.publicKeyInfo,
+  }) : super._();
   @override
   UpdateTokenPrivateKeyAuthenticationMethodDto rebuild(
-          void Function(UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder toBuilder() =>
@@ -202,7 +217,8 @@ class _$UpdateTokenPrivateKeyAuthenticationMethodDto
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'UpdateTokenPrivateKeyAuthenticationMethodDto')
+            r'UpdateTokenPrivateKeyAuthenticationMethodDto',
+          )
           ..add('type', type)
           ..add('signingAlgorithm', signingAlgorithm)
           ..add('publicKeyInfo', publicKeyInfo))
@@ -212,8 +228,10 @@ class _$UpdateTokenPrivateKeyAuthenticationMethodDto
 
 class UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder
     implements
-        Builder<UpdateTokenPrivateKeyAuthenticationMethodDto,
-            UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder> {
+        Builder<
+          UpdateTokenPrivateKeyAuthenticationMethodDto,
+          UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder
+        > {
   _$UpdateTokenPrivateKeyAuthenticationMethodDto? _$v;
 
   UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum? _type;
@@ -223,22 +241,21 @@ class UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder
       _$this._type = type;
 
   UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum?
-      _signingAlgorithm;
+  _signingAlgorithm;
   UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum?
-      get signingAlgorithm => _$this._signingAlgorithm;
+  get signingAlgorithm => _$this._signingAlgorithm;
   set signingAlgorithm(
-          UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum?
-              signingAlgorithm) =>
-      _$this._signingAlgorithm = signingAlgorithm;
+    UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum?
+    signingAlgorithm,
+  ) => _$this._signingAlgorithm = signingAlgorithm;
 
   TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder? _publicKeyInfo;
   TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder
-      get publicKeyInfo => _$this._publicKeyInfo ??=
-          TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder();
+  get publicKeyInfo => _$this._publicKeyInfo ??=
+      TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder();
   set publicKeyInfo(
-          TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder?
-              publicKeyInfo) =>
-      _$this._publicKeyInfo = publicKeyInfo;
+    TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder? publicKeyInfo,
+  ) => _$this._publicKeyInfo = publicKeyInfo;
 
   UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder() {
     UpdateTokenPrivateKeyAuthenticationMethodDto._defaults(this);
@@ -262,8 +279,8 @@ class UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder
 
   @override
   void update(
-      void Function(UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder)?
-          updates) {
+    void Function(UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -273,7 +290,8 @@ class UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder
   _$UpdateTokenPrivateKeyAuthenticationMethodDto _build() {
     _$UpdateTokenPrivateKeyAuthenticationMethodDto _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$UpdateTokenPrivateKeyAuthenticationMethodDto._(
             type: type,
             signingAlgorithm: signingAlgorithm,
@@ -286,9 +304,10 @@ class UpdateTokenPrivateKeyAuthenticationMethodDtoBuilder
         _publicKeyInfo?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'UpdateTokenPrivateKeyAuthenticationMethodDto',
-            _$failedField,
-            e.toString());
+          r'UpdateTokenPrivateKeyAuthenticationMethodDto',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

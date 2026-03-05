@@ -16,17 +16,19 @@ part 'sign_presentation_ldp_result_dto.g.dart';
 @BuiltValue()
 abstract class SignPresentationLdpResultDto
     implements
-        Built<SignPresentationLdpResultDto,
-            SignPresentationLdpResultDtoBuilder> {
+        Built<
+          SignPresentationLdpResultDto,
+          SignPresentationLdpResultDtoBuilder
+        > {
   /// Signed presentation in Dm1Ld format
   @BuiltValueField(wireName: r'presentation')
   JsonObject get presentation;
 
   SignPresentationLdpResultDto._();
 
-  factory SignPresentationLdpResultDto(
-          [void updates(SignPresentationLdpResultDtoBuilder b)]) =
-      _$SignPresentationLdpResultDto;
+  factory SignPresentationLdpResultDto([
+    void updates(SignPresentationLdpResultDtoBuilder b),
+  ]) = _$SignPresentationLdpResultDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SignPresentationLdpResultDtoBuilder b) => b;
@@ -41,7 +43,7 @@ class _$SignPresentationLdpResultDtoSerializer
   @override
   final Iterable<Type> types = const [
     SignPresentationLdpResultDto,
-    _$SignPresentationLdpResultDto
+    _$SignPresentationLdpResultDto,
   ];
 
   @override
@@ -65,9 +67,11 @@ class _$SignPresentationLdpResultDtoSerializer
     SignPresentationLdpResultDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -83,10 +87,12 @@ class _$SignPresentationLdpResultDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'presentation':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JsonObject),
+                  )
+                  as JsonObject;
           result.presentation = valueDes;
           break;
         default:

@@ -14,7 +14,8 @@ const IotaConfigurationDtoModeEnum _$iotaConfigurationDtoModeEnum_didcomm =
     const IotaConfigurationDtoModeEnum._('didcomm');
 
 IotaConfigurationDtoModeEnum _$iotaConfigurationDtoModeEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'redirect':
       return _$iotaConfigurationDtoModeEnum_redirect;
@@ -28,15 +29,15 @@ IotaConfigurationDtoModeEnum _$iotaConfigurationDtoModeEnumValueOf(
 }
 
 final BuiltSet<IotaConfigurationDtoModeEnum>
-    _$iotaConfigurationDtoModeEnumValues =
+_$iotaConfigurationDtoModeEnumValues =
     BuiltSet<IotaConfigurationDtoModeEnum>(const <IotaConfigurationDtoModeEnum>[
-  _$iotaConfigurationDtoModeEnum_redirect,
-  _$iotaConfigurationDtoModeEnum_websocket,
-  _$iotaConfigurationDtoModeEnum_didcomm,
-]);
+      _$iotaConfigurationDtoModeEnum_redirect,
+      _$iotaConfigurationDtoModeEnum_websocket,
+      _$iotaConfigurationDtoModeEnum_didcomm,
+    ]);
 
 Serializer<IotaConfigurationDtoModeEnum>
-    _$iotaConfigurationDtoModeEnumSerializer =
+_$iotaConfigurationDtoModeEnumSerializer =
     _$IotaConfigurationDtoModeEnumSerializer();
 
 class _$IotaConfigurationDtoModeEnumSerializer
@@ -58,16 +59,20 @@ class _$IotaConfigurationDtoModeEnumSerializer
   final String wireName = 'IotaConfigurationDtoModeEnum';
 
   @override
-  Object serialize(Serializers serializers, IotaConfigurationDtoModeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    IotaConfigurationDtoModeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   IotaConfigurationDtoModeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      IotaConfigurationDtoModeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => IotaConfigurationDtoModeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$IotaConfigurationDto extends IotaConfigurationDto {
@@ -97,30 +102,33 @@ class _$IotaConfigurationDto extends IotaConfigurationDto {
   final BuiltList<String>? redirectUris;
   @override
   final bool? enableIdvProviders;
+  @override
+  final String? mediatorDid;
 
-  factory _$IotaConfigurationDto(
-          [void Function(IotaConfigurationDtoBuilder)? updates]) =>
-      (IotaConfigurationDtoBuilder()..update(updates))._build();
+  factory _$IotaConfigurationDto([
+    void Function(IotaConfigurationDtoBuilder)? updates,
+  ]) => (IotaConfigurationDtoBuilder()..update(updates))._build();
 
-  _$IotaConfigurationDto._(
-      {required this.ari,
-      required this.configurationId,
-      required this.name,
-      required this.projectId,
-      required this.walletAri,
-      required this.tokenMaxAge,
-      this.iotaResponseWebhookURL,
-      required this.enableVerification,
-      required this.enableConsentAuditLog,
-      required this.clientMetadata,
-      this.mode,
-      this.redirectUris,
-      this.enableIdvProviders})
-      : super._();
+  _$IotaConfigurationDto._({
+    required this.ari,
+    required this.configurationId,
+    required this.name,
+    required this.projectId,
+    required this.walletAri,
+    required this.tokenMaxAge,
+    this.iotaResponseWebhookURL,
+    required this.enableVerification,
+    required this.enableConsentAuditLog,
+    required this.clientMetadata,
+    this.mode,
+    this.redirectUris,
+    this.enableIdvProviders,
+    this.mediatorDid,
+  }) : super._();
   @override
   IotaConfigurationDto rebuild(
-          void Function(IotaConfigurationDtoBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(IotaConfigurationDtoBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   IotaConfigurationDtoBuilder toBuilder() =>
@@ -142,7 +150,8 @@ class _$IotaConfigurationDto extends IotaConfigurationDto {
         clientMetadata == other.clientMetadata &&
         mode == other.mode &&
         redirectUris == other.redirectUris &&
-        enableIdvProviders == other.enableIdvProviders;
+        enableIdvProviders == other.enableIdvProviders &&
+        mediatorDid == other.mediatorDid;
   }
 
   @override
@@ -161,6 +170,7 @@ class _$IotaConfigurationDto extends IotaConfigurationDto {
     _$hash = $jc(_$hash, mode.hashCode);
     _$hash = $jc(_$hash, redirectUris.hashCode);
     _$hash = $jc(_$hash, enableIdvProviders.hashCode);
+    _$hash = $jc(_$hash, mediatorDid.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -180,7 +190,8 @@ class _$IotaConfigurationDto extends IotaConfigurationDto {
           ..add('clientMetadata', clientMetadata)
           ..add('mode', mode)
           ..add('redirectUris', redirectUris)
-          ..add('enableIdvProviders', enableIdvProviders))
+          ..add('enableIdvProviders', enableIdvProviders)
+          ..add('mediatorDid', mediatorDid))
         .toString();
   }
 }
@@ -233,8 +244,8 @@ class IotaConfigurationDtoBuilder
   IotaConfigurationDtoClientMetadataBuilder get clientMetadata =>
       _$this._clientMetadata ??= IotaConfigurationDtoClientMetadataBuilder();
   set clientMetadata(
-          IotaConfigurationDtoClientMetadataBuilder? clientMetadata) =>
-      _$this._clientMetadata = clientMetadata;
+    IotaConfigurationDtoClientMetadataBuilder? clientMetadata,
+  ) => _$this._clientMetadata = clientMetadata;
 
   IotaConfigurationDtoModeEnum? _mode;
   IotaConfigurationDtoModeEnum? get mode => _$this._mode;
@@ -250,6 +261,10 @@ class IotaConfigurationDtoBuilder
   bool? get enableIdvProviders => _$this._enableIdvProviders;
   set enableIdvProviders(bool? enableIdvProviders) =>
       _$this._enableIdvProviders = enableIdvProviders;
+
+  String? _mediatorDid;
+  String? get mediatorDid => _$this._mediatorDid;
+  set mediatorDid(String? mediatorDid) => _$this._mediatorDid = mediatorDid;
 
   IotaConfigurationDtoBuilder() {
     IotaConfigurationDto._defaults(this);
@@ -271,6 +286,7 @@ class IotaConfigurationDtoBuilder
       _mode = $v.mode;
       _redirectUris = $v.redirectUris?.toBuilder();
       _enableIdvProviders = $v.enableIdvProviders;
+      _mediatorDid = $v.mediatorDid;
       _$v = null;
     }
     return this;
@@ -292,33 +308,55 @@ class IotaConfigurationDtoBuilder
   _$IotaConfigurationDto _build() {
     _$IotaConfigurationDto _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$IotaConfigurationDto._(
             ari: BuiltValueNullFieldError.checkNotNull(
-                ari, r'IotaConfigurationDto', 'ari'),
+              ari,
+              r'IotaConfigurationDto',
+              'ari',
+            ),
             configurationId: BuiltValueNullFieldError.checkNotNull(
-                configurationId, r'IotaConfigurationDto', 'configurationId'),
+              configurationId,
+              r'IotaConfigurationDto',
+              'configurationId',
+            ),
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'IotaConfigurationDto', 'name'),
+              name,
+              r'IotaConfigurationDto',
+              'name',
+            ),
             projectId: BuiltValueNullFieldError.checkNotNull(
-                projectId, r'IotaConfigurationDto', 'projectId'),
+              projectId,
+              r'IotaConfigurationDto',
+              'projectId',
+            ),
             walletAri: BuiltValueNullFieldError.checkNotNull(
-                walletAri, r'IotaConfigurationDto', 'walletAri'),
+              walletAri,
+              r'IotaConfigurationDto',
+              'walletAri',
+            ),
             tokenMaxAge: BuiltValueNullFieldError.checkNotNull(
-                tokenMaxAge, r'IotaConfigurationDto', 'tokenMaxAge'),
+              tokenMaxAge,
+              r'IotaConfigurationDto',
+              'tokenMaxAge',
+            ),
             iotaResponseWebhookURL: iotaResponseWebhookURL,
             enableVerification: BuiltValueNullFieldError.checkNotNull(
-                enableVerification,
-                r'IotaConfigurationDto',
-                'enableVerification'),
+              enableVerification,
+              r'IotaConfigurationDto',
+              'enableVerification',
+            ),
             enableConsentAuditLog: BuiltValueNullFieldError.checkNotNull(
-                enableConsentAuditLog,
-                r'IotaConfigurationDto',
-                'enableConsentAuditLog'),
+              enableConsentAuditLog,
+              r'IotaConfigurationDto',
+              'enableConsentAuditLog',
+            ),
             clientMetadata: clientMetadata.build(),
             mode: mode,
             redirectUris: _redirectUris?.build(),
             enableIdvProviders: enableIdvProviders,
+            mediatorDid: mediatorDid,
           );
     } catch (_) {
       late String _$failedField;
@@ -330,7 +368,10 @@ class IotaConfigurationDtoBuilder
         _redirectUris?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'IotaConfigurationDto', _$failedField, e.toString());
+          r'IotaConfigurationDto',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

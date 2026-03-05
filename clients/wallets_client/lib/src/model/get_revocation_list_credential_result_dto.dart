@@ -16,16 +16,18 @@ part 'get_revocation_list_credential_result_dto.g.dart';
 @BuiltValue()
 abstract class GetRevocationListCredentialResultDto
     implements
-        Built<GetRevocationListCredentialResultDto,
-            GetRevocationListCredentialResultDtoBuilder> {
+        Built<
+          GetRevocationListCredentialResultDto,
+          GetRevocationListCredentialResultDtoBuilder
+        > {
   @BuiltValueField(wireName: r'revocationListCredential')
   JsonObject get revocationListCredential;
 
   GetRevocationListCredentialResultDto._();
 
-  factory GetRevocationListCredentialResultDto(
-          [void updates(GetRevocationListCredentialResultDtoBuilder b)]) =
-      _$GetRevocationListCredentialResultDto;
+  factory GetRevocationListCredentialResultDto([
+    void updates(GetRevocationListCredentialResultDtoBuilder b),
+  ]) = _$GetRevocationListCredentialResultDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetRevocationListCredentialResultDtoBuilder b) => b;
@@ -40,7 +42,7 @@ class _$GetRevocationListCredentialResultDtoSerializer
   @override
   final Iterable<Type> types = const [
     GetRevocationListCredentialResultDto,
-    _$GetRevocationListCredentialResultDto
+    _$GetRevocationListCredentialResultDto,
   ];
 
   @override
@@ -64,9 +66,11 @@ class _$GetRevocationListCredentialResultDtoSerializer
     GetRevocationListCredentialResultDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -82,10 +86,12 @@ class _$GetRevocationListCredentialResultDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'revocationListCredential':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JsonObject),
+                  )
+                  as JsonObject;
           result.revocationListCredential = valueDes;
           break;
         default:

@@ -14,7 +14,7 @@ Affinidi TDK dart client for Affinidi CREDENTIAL ISSUANCE
 To use the package from [pub.dev](https://pub.dev), please include the following in pubspec.yaml
 ```yaml
 dependencies:
-  affinidi_tdk_credential_issuance_client: ^1.16.0
+  affinidi_tdk_credential_issuance_client: ^2.0.0
 ```
 
 ### Github
@@ -102,12 +102,6 @@ Class | Method | HTTP request | Description
  - [CisConfigurationWebhookSettingEndpoint](doc/CisConfigurationWebhookSettingEndpoint.md)
  - [ClaimedCredentialListResponse](doc/ClaimedCredentialListResponse.md)
  - [ClaimedCredentialResponse](doc/ClaimedCredentialResponse.md)
- - [CorsBatchCredentialOK](doc/CorsBatchCredentialOK.md)
- - [CorsGenerateCredentialsOK](doc/CorsGenerateCredentialsOK.md)
- - [CorsGetClaimedCredentialsOK](doc/CorsGetClaimedCredentialsOK.md)
- - [CorsGetCredentialOfferOK](doc/CorsGetCredentialOfferOK.md)
- - [CorsGetIssuanceIdClaimedCredentialOK](doc/CorsGetIssuanceIdClaimedCredentialOK.md)
- - [CorsGetWellKnownOpenIdCredentialIssuerOK](doc/CorsGetWellKnownOpenIdCredentialIssuerOK.md)
  - [CreateCredentialInput](doc/CreateCredentialInput.md)
  - [CreateIssuanceConfig400Response](doc/CreateIssuanceConfig400Response.md)
  - [CreateIssuanceConfigInput](doc/CreateIssuanceConfigInput.md)
@@ -126,7 +120,6 @@ Class | Method | HTTP request | Description
  - [CredentialResponseImmediateCredential](doc/CredentialResponseImmediateCredential.md)
  - [CredentialSubjectNotValidError](doc/CredentialSubjectNotValidError.md)
  - [CredentialSupportedObject](doc/CredentialSupportedObject.md)
- - [DeferredCredentialInput](doc/DeferredCredentialInput.md)
  - [FlowData](doc/FlowData.md)
  - [FlowDataStatusListsDetailsInner](doc/FlowDataStatusListsDetailsInner.md)
  - [GenerateCredentials400Response](doc/GenerateCredentials400Response.md)
@@ -148,7 +141,6 @@ Class | Method | HTTP request | Description
  - [NotFoundError](doc/NotFoundError.md)
  - [ProjectCredentialConfigExistError](doc/ProjectCredentialConfigExistError.md)
  - [ProjectCredentialConfigNotExistError](doc/ProjectCredentialConfigNotExistError.md)
- - [RevocationForbiddenError](doc/RevocationForbiddenError.md)
  - [StartIssuance400Response](doc/StartIssuance400Response.md)
  - [StartIssuanceInput](doc/StartIssuanceInput.md)
  - [StartIssuanceInputDataInner](doc/StartIssuanceInputDataInner.md)

@@ -7,17 +7,17 @@ part of 'sign_credential_input_dto.dart';
 // **************************************************************************
 
 const SignCredentialInputDtoCredentialFormatEnum
-    _$signCredentialInputDtoCredentialFormatEnum_ldpVc =
+_$signCredentialInputDtoCredentialFormatEnum_ldpVc =
     const SignCredentialInputDtoCredentialFormatEnum._('ldpVc');
 const SignCredentialInputDtoCredentialFormatEnum
-    _$signCredentialInputDtoCredentialFormatEnum_jwtVcJsonLd =
+_$signCredentialInputDtoCredentialFormatEnum_jwtVcJsonLd =
     const SignCredentialInputDtoCredentialFormatEnum._('jwtVcJsonLd');
 const SignCredentialInputDtoCredentialFormatEnum
-    _$signCredentialInputDtoCredentialFormatEnum_sdJwtVcJsonLd =
+_$signCredentialInputDtoCredentialFormatEnum_sdJwtVcJsonLd =
     const SignCredentialInputDtoCredentialFormatEnum._('sdJwtVcJsonLd');
 
 SignCredentialInputDtoCredentialFormatEnum
-    _$signCredentialInputDtoCredentialFormatEnumValueOf(String name) {
+_$signCredentialInputDtoCredentialFormatEnumValueOf(String name) {
   switch (name) {
     case 'ldpVc':
       return _$signCredentialInputDtoCredentialFormatEnum_ldpVc;
@@ -31,15 +31,17 @@ SignCredentialInputDtoCredentialFormatEnum
 }
 
 final BuiltSet<SignCredentialInputDtoCredentialFormatEnum>
-    _$signCredentialInputDtoCredentialFormatEnumValues = BuiltSet<
-        SignCredentialInputDtoCredentialFormatEnum>(const <SignCredentialInputDtoCredentialFormatEnum>[
-  _$signCredentialInputDtoCredentialFormatEnum_ldpVc,
-  _$signCredentialInputDtoCredentialFormatEnum_jwtVcJsonLd,
-  _$signCredentialInputDtoCredentialFormatEnum_sdJwtVcJsonLd,
-]);
+_$signCredentialInputDtoCredentialFormatEnumValues =
+    BuiltSet<SignCredentialInputDtoCredentialFormatEnum>(
+      const <SignCredentialInputDtoCredentialFormatEnum>[
+        _$signCredentialInputDtoCredentialFormatEnum_ldpVc,
+        _$signCredentialInputDtoCredentialFormatEnum_jwtVcJsonLd,
+        _$signCredentialInputDtoCredentialFormatEnum_sdJwtVcJsonLd,
+      ],
+    );
 
 Serializer<SignCredentialInputDtoCredentialFormatEnum>
-    _$signCredentialInputDtoCredentialFormatEnumSerializer =
+_$signCredentialInputDtoCredentialFormatEnumSerializer =
     _$SignCredentialInputDtoCredentialFormatEnumSerializer();
 
 class _$SignCredentialInputDtoCredentialFormatEnumSerializer
@@ -57,23 +59,26 @@ class _$SignCredentialInputDtoCredentialFormatEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    SignCredentialInputDtoCredentialFormatEnum
+    SignCredentialInputDtoCredentialFormatEnum,
   ];
   @override
   final String wireName = 'SignCredentialInputDtoCredentialFormatEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          SignCredentialInputDtoCredentialFormatEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    SignCredentialInputDtoCredentialFormatEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   SignCredentialInputDtoCredentialFormatEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      SignCredentialInputDtoCredentialFormatEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => SignCredentialInputDtoCredentialFormatEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$SignCredentialInputDto extends SignCredentialInputDto {
@@ -85,22 +90,22 @@ class _$SignCredentialInputDto extends SignCredentialInputDto {
   final SignCredentialInputDtoCredentialFormatEnum? credentialFormat;
   @override
   final SignCredentialInputDtoUnsignedCredentialParams?
-      unsignedCredentialParams;
+  unsignedCredentialParams;
 
-  factory _$SignCredentialInputDto(
-          [void Function(SignCredentialInputDtoBuilder)? updates]) =>
-      (SignCredentialInputDtoBuilder()..update(updates))._build();
+  factory _$SignCredentialInputDto([
+    void Function(SignCredentialInputDtoBuilder)? updates,
+  ]) => (SignCredentialInputDtoBuilder()..update(updates))._build();
 
-  _$SignCredentialInputDto._(
-      {this.unsignedCredential,
-      this.revocable,
-      this.credentialFormat,
-      this.unsignedCredentialParams})
-      : super._();
+  _$SignCredentialInputDto._({
+    this.unsignedCredential,
+    this.revocable,
+    this.credentialFormat,
+    this.unsignedCredentialParams,
+  }) : super._();
   @override
   SignCredentialInputDto rebuild(
-          void Function(SignCredentialInputDtoBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(SignCredentialInputDtoBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   SignCredentialInputDtoBuilder toBuilder() =>
@@ -155,18 +160,18 @@ class SignCredentialInputDtoBuilder
   SignCredentialInputDtoCredentialFormatEnum? get credentialFormat =>
       _$this._credentialFormat;
   set credentialFormat(
-          SignCredentialInputDtoCredentialFormatEnum? credentialFormat) =>
-      _$this._credentialFormat = credentialFormat;
+    SignCredentialInputDtoCredentialFormatEnum? credentialFormat,
+  ) => _$this._credentialFormat = credentialFormat;
 
   SignCredentialInputDtoUnsignedCredentialParamsBuilder?
-      _unsignedCredentialParams;
+  _unsignedCredentialParams;
   SignCredentialInputDtoUnsignedCredentialParamsBuilder
-      get unsignedCredentialParams => _$this._unsignedCredentialParams ??=
-          SignCredentialInputDtoUnsignedCredentialParamsBuilder();
+  get unsignedCredentialParams => _$this._unsignedCredentialParams ??=
+      SignCredentialInputDtoUnsignedCredentialParamsBuilder();
   set unsignedCredentialParams(
-          SignCredentialInputDtoUnsignedCredentialParamsBuilder?
-              unsignedCredentialParams) =>
-      _$this._unsignedCredentialParams = unsignedCredentialParams;
+    SignCredentialInputDtoUnsignedCredentialParamsBuilder?
+    unsignedCredentialParams,
+  ) => _$this._unsignedCredentialParams = unsignedCredentialParams;
 
   SignCredentialInputDtoBuilder() {
     SignCredentialInputDto._defaults(this);
@@ -200,7 +205,8 @@ class SignCredentialInputDtoBuilder
   _$SignCredentialInputDto _build() {
     _$SignCredentialInputDto _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$SignCredentialInputDto._(
             unsignedCredential: unsignedCredential,
             revocable: revocable,
@@ -214,7 +220,10 @@ class SignCredentialInputDtoBuilder
         _unsignedCredentialParams?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'SignCredentialInputDto', _$failedField, e.toString());
+          r'SignCredentialInputDto',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

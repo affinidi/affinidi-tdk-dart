@@ -18,7 +18,7 @@ class _$Permission extends Permission {
       (PermissionBuilder()..update(updates))._build();
 
   _$Permission._({required this.rights, required this.nodeIds, this.expiresAt})
-      : super._();
+    : super._();
   @override
   Permission rebuild(void Function(PermissionBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -102,7 +102,8 @@ class PermissionBuilder implements Builder<Permission, PermissionBuilder> {
   _$Permission _build() {
     _$Permission _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$Permission._(
             rights: rights.build(),
             nodeIds: nodeIds.build(),
@@ -117,7 +118,10 @@ class PermissionBuilder implements Builder<Permission, PermissionBuilder> {
         nodeIds.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'Permission', _$failedField, e.toString());
+          r'Permission',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

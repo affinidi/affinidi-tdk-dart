@@ -77,15 +77,20 @@ class _$NodeStatusSerializer implements PrimitiveSerializer<NodeStatus> {
   final String wireName = 'NodeStatus';
 
   @override
-  Object serialize(Serializers serializers, NodeStatus object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    NodeStatus object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
-  NodeStatus deserialize(Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      NodeStatus.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+  NodeStatus deserialize(
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => NodeStatus.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 // ignore_for_file: deprecated_member_use_from_same_package,type=lint

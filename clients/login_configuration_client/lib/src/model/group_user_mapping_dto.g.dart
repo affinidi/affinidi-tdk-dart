@@ -12,16 +12,16 @@ class _$GroupUserMappingDto extends GroupUserMappingDto {
   @override
   final String addedAt;
 
-  factory _$GroupUserMappingDto(
-          [void Function(GroupUserMappingDtoBuilder)? updates]) =>
-      (GroupUserMappingDtoBuilder()..update(updates))._build();
+  factory _$GroupUserMappingDto([
+    void Function(GroupUserMappingDtoBuilder)? updates,
+  ]) => (GroupUserMappingDtoBuilder()..update(updates))._build();
 
   _$GroupUserMappingDto._({required this.userId, required this.addedAt})
-      : super._();
+    : super._();
   @override
   GroupUserMappingDto rebuild(
-          void Function(GroupUserMappingDtoBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(GroupUserMappingDtoBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   GroupUserMappingDtoBuilder toBuilder() =>
@@ -93,12 +93,19 @@ class GroupUserMappingDtoBuilder
   GroupUserMappingDto build() => _build();
 
   _$GroupUserMappingDto _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$GroupUserMappingDto._(
           userId: BuiltValueNullFieldError.checkNotNull(
-              userId, r'GroupUserMappingDto', 'userId'),
+            userId,
+            r'GroupUserMappingDto',
+            'userId',
+          ),
           addedAt: BuiltValueNullFieldError.checkNotNull(
-              addedAt, r'GroupUserMappingDto', 'addedAt'),
+            addedAt,
+            r'GroupUserMappingDto',
+            'addedAt',
+          ),
         );
     replace(_$result);
     return _$result;

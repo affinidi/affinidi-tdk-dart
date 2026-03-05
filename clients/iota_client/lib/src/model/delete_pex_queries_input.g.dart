@@ -10,15 +10,15 @@ class _$DeletePexQueriesInput extends DeletePexQueriesInput {
   @override
   final BuiltList<String> queryIds;
 
-  factory _$DeletePexQueriesInput(
-          [void Function(DeletePexQueriesInputBuilder)? updates]) =>
-      (DeletePexQueriesInputBuilder()..update(updates))._build();
+  factory _$DeletePexQueriesInput([
+    void Function(DeletePexQueriesInputBuilder)? updates,
+  ]) => (DeletePexQueriesInputBuilder()..update(updates))._build();
 
   _$DeletePexQueriesInput._({required this.queryIds}) : super._();
   @override
   DeletePexQueriesInput rebuild(
-          void Function(DeletePexQueriesInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(DeletePexQueriesInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   DeletePexQueriesInputBuilder toBuilder() =>
@@ -40,9 +40,9 @@ class _$DeletePexQueriesInput extends DeletePexQueriesInput {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'DeletePexQueriesInput')
-          ..add('queryIds', queryIds))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'DeletePexQueriesInput',
+    )..add('queryIds', queryIds)).toString();
   }
 }
 
@@ -84,10 +84,7 @@ class DeletePexQueriesInputBuilder
   _$DeletePexQueriesInput _build() {
     _$DeletePexQueriesInput _$result;
     try {
-      _$result = _$v ??
-          _$DeletePexQueriesInput._(
-            queryIds: queryIds.build(),
-          );
+      _$result = _$v ?? _$DeletePexQueriesInput._(queryIds: queryIds.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -95,7 +92,10 @@ class DeletePexQueriesInputBuilder
         queryIds.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'DeletePexQueriesInput', _$failedField, e.toString());
+          r'DeletePexQueriesInput',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

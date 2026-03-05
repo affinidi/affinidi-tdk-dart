@@ -17,8 +17,10 @@ part 'iota_configuration_dto_client_metadata.g.dart';
 @BuiltValue()
 abstract class IotaConfigurationDtoClientMetadata
     implements
-        Built<IotaConfigurationDtoClientMetadata,
-            IotaConfigurationDtoClientMetadataBuilder> {
+        Built<
+          IotaConfigurationDtoClientMetadata,
+          IotaConfigurationDtoClientMetadataBuilder
+        > {
   /// The name displayed on the consent page indicates who is requesting data from the user. It can be the application or website's name.
   @BuiltValueField(wireName: r'name')
   String get name;
@@ -33,9 +35,9 @@ abstract class IotaConfigurationDtoClientMetadata
 
   IotaConfigurationDtoClientMetadata._();
 
-  factory IotaConfigurationDtoClientMetadata(
-          [void updates(IotaConfigurationDtoClientMetadataBuilder b)]) =
-      _$IotaConfigurationDtoClientMetadata;
+  factory IotaConfigurationDtoClientMetadata([
+    void updates(IotaConfigurationDtoClientMetadataBuilder b),
+  ]) = _$IotaConfigurationDtoClientMetadata;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(IotaConfigurationDtoClientMetadataBuilder b) => b;
@@ -50,7 +52,7 @@ class _$IotaConfigurationDtoClientMetadataSerializer
   @override
   final Iterable<Type> types = const [
     IotaConfigurationDtoClientMetadata,
-    _$IotaConfigurationDtoClientMetadata
+    _$IotaConfigurationDtoClientMetadata,
   ];
 
   @override
@@ -84,9 +86,11 @@ class _$IotaConfigurationDtoClientMetadataSerializer
     IotaConfigurationDtoClientMetadata object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -102,24 +106,30 @@ class _$IotaConfigurationDtoClientMetadataSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'origin':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.origin = valueDes;
           break;
         case r'logo':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.logo = valueDes;
           break;
         default:

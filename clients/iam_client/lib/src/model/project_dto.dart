@@ -15,6 +15,7 @@ part 'project_dto.g.dart';
 /// * [name]
 /// * [ownerId]
 /// * [description]
+/// * [identityVerificationEnabled] - flag indicates if identity verification is enabled for project
 /// * [createdAt] - creation date and time in ISO-8601 format, e.g. 2023-09-20T07:12:13
 /// * [updatedAt] - last update date and time in ISO-8601 format, e.g. 2023-09-20T07:12:13
 @BuiltValue()
@@ -31,6 +32,10 @@ abstract class ProjectDto implements Built<ProjectDto, ProjectDtoBuilder> {
   @BuiltValueField(wireName: r'description')
   String? get description;
 
+  /// flag indicates if identity verification is enabled for project
+  @BuiltValueField(wireName: r'identityVerificationEnabled')
+  bool? get identityVerificationEnabled;
+
   /// creation date and time in ISO-8601 format, e.g. 2023-09-20T07:12:13
   @BuiltValueField(wireName: r'createdAt')
   String? get createdAt;
@@ -44,7 +49,8 @@ abstract class ProjectDto implements Built<ProjectDto, ProjectDtoBuilder> {
   factory ProjectDto([void updates(ProjectDtoBuilder b)]) = _$ProjectDto;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(ProjectDtoBuilder b) => b;
+  static void _defaults(ProjectDtoBuilder b) =>
+      b..identityVerificationEnabled = false;
 
   @BuiltValueSerializer(custom: true)
   static Serializer<ProjectDto> get serializer => _$ProjectDtoSerializer();
@@ -86,6 +92,13 @@ class _$ProjectDtoSerializer implements PrimitiveSerializer<ProjectDto> {
         specifiedType: const FullType(String),
       );
     }
+    if (object.identityVerificationEnabled != null) {
+      yield r'identityVerificationEnabled';
+      yield serializers.serialize(
+        object.identityVerificationEnabled,
+        specifiedType: const FullType(bool),
+      );
+    }
     if (object.createdAt != null) {
       yield r'createdAt';
       yield serializers.serialize(
@@ -108,9 +121,11 @@ class _$ProjectDtoSerializer implements PrimitiveSerializer<ProjectDto> {
     ProjectDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -126,45 +141,66 @@ class _$ProjectDtoSerializer implements PrimitiveSerializer<ProjectDto> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'ownerId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.ownerId = valueDes;
           break;
         case r'description':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.description = valueDes;
           break;
+        case r'identityVerificationEnabled':
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
+          result.identityVerificationEnabled = valueDes;
+          break;
         case r'createdAt':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.createdAt = valueDes;
           break;
         case r'updatedAt':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.updatedAt = valueDes;
           break;
         default:

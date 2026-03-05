@@ -16,8 +16,10 @@ part 'supported_credential_metadata_item_logo.g.dart';
 @BuiltValue()
 abstract class SupportedCredentialMetadataItemLogo
     implements
-        Built<SupportedCredentialMetadataItemLogo,
-            SupportedCredentialMetadataItemLogoBuilder> {
+        Built<
+          SupportedCredentialMetadataItemLogo,
+          SupportedCredentialMetadataItemLogoBuilder
+        > {
   @BuiltValueField(wireName: r'url')
   String get url;
 
@@ -26,9 +28,9 @@ abstract class SupportedCredentialMetadataItemLogo
 
   SupportedCredentialMetadataItemLogo._();
 
-  factory SupportedCredentialMetadataItemLogo(
-          [void updates(SupportedCredentialMetadataItemLogoBuilder b)]) =
-      _$SupportedCredentialMetadataItemLogo;
+  factory SupportedCredentialMetadataItemLogo([
+    void updates(SupportedCredentialMetadataItemLogoBuilder b),
+  ]) = _$SupportedCredentialMetadataItemLogo;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SupportedCredentialMetadataItemLogoBuilder b) => b;
@@ -43,7 +45,7 @@ class _$SupportedCredentialMetadataItemLogoSerializer
   @override
   final Iterable<Type> types = const [
     SupportedCredentialMetadataItemLogo,
-    _$SupportedCredentialMetadataItemLogo
+    _$SupportedCredentialMetadataItemLogo,
   ];
 
   @override
@@ -74,9 +76,11 @@ class _$SupportedCredentialMetadataItemLogoSerializer
     SupportedCredentialMetadataItemLogo object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -92,17 +96,21 @@ class _$SupportedCredentialMetadataItemLogoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'url':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.url = valueDes;
           break;
         case r'altText':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.altText = valueDes;
           break;
         default:

@@ -27,10 +27,10 @@ TokenEndpointAuthMethod _$valueOf(String name) {
 
 final BuiltSet<TokenEndpointAuthMethod> _$values =
     BuiltSet<TokenEndpointAuthMethod>(const <TokenEndpointAuthMethod>[
-  _$clientSecretBasic,
-  _$clientSecretPost,
-  _$none,
-]);
+      _$clientSecretBasic,
+      _$clientSecretPost,
+      _$none,
+    ]);
 
 class _$TokenEndpointAuthMethodMeta {
   const _$TokenEndpointAuthMethodMeta();
@@ -69,16 +69,20 @@ class _$TokenEndpointAuthMethodSerializer
   final String wireName = 'TokenEndpointAuthMethod';
 
   @override
-  Object serialize(Serializers serializers, TokenEndpointAuthMethod object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    TokenEndpointAuthMethod object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   TokenEndpointAuthMethod deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      TokenEndpointAuthMethod.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => TokenEndpointAuthMethod.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 // ignore_for_file: deprecated_member_use_from_same_package,type=lint

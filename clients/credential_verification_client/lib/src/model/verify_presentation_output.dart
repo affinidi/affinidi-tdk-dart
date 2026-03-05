@@ -28,9 +28,9 @@ abstract class VerifyPresentationOutput
 
   VerifyPresentationOutput._();
 
-  factory VerifyPresentationOutput(
-          [void updates(VerifyPresentationOutputBuilder b)]) =
-      _$VerifyPresentationOutput;
+  factory VerifyPresentationOutput([
+    void updates(VerifyPresentationOutputBuilder b),
+  ]) = _$VerifyPresentationOutput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(VerifyPresentationOutputBuilder b) => b;
@@ -45,7 +45,7 @@ class _$VerifyPresentationOutputSerializer
   @override
   final Iterable<Type> types = const [
     VerifyPresentationOutput,
-    _$VerifyPresentationOutput
+    _$VerifyPresentationOutput,
   ];
 
   @override
@@ -74,9 +74,11 @@ class _$VerifyPresentationOutputSerializer
     VerifyPresentationOutput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -92,17 +94,23 @@ class _$VerifyPresentationOutputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'errors':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.errors.replace(valueDes);
           break;
         case r'isValid':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.isValid = valueDes;
           break;
         default:

@@ -7,7 +7,7 @@ part of 'already_exists_error.dart';
 // **************************************************************************
 
 const AlreadyExistsErrorNameEnum
-    _$alreadyExistsErrorNameEnum_alreadyExistsError =
+_$alreadyExistsErrorNameEnum_alreadyExistsError =
     const AlreadyExistsErrorNameEnum._('alreadyExistsError');
 
 AlreadyExistsErrorNameEnum _$alreadyExistsErrorNameEnumValueOf(String name) {
@@ -21,16 +21,18 @@ AlreadyExistsErrorNameEnum _$alreadyExistsErrorNameEnumValueOf(String name) {
 
 final BuiltSet<AlreadyExistsErrorNameEnum> _$alreadyExistsErrorNameEnumValues =
     BuiltSet<AlreadyExistsErrorNameEnum>(const <AlreadyExistsErrorNameEnum>[
-  _$alreadyExistsErrorNameEnum_alreadyExistsError,
-]);
+      _$alreadyExistsErrorNameEnum_alreadyExistsError,
+    ]);
 
 const AlreadyExistsErrorMessageEnum
-    _$alreadyExistsErrorMessageEnum_alreadyExistsColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod =
+_$alreadyExistsErrorMessageEnum_alreadyExistsColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod =
     const AlreadyExistsErrorMessageEnum._(
-        'alreadyExistsColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod');
+      'alreadyExistsColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod',
+    );
 
 AlreadyExistsErrorMessageEnum _$alreadyExistsErrorMessageEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'alreadyExistsColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod':
       return _$alreadyExistsErrorMessageEnum_alreadyExistsColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod;
@@ -40,17 +42,18 @@ AlreadyExistsErrorMessageEnum _$alreadyExistsErrorMessageEnumValueOf(
 }
 
 final BuiltSet<AlreadyExistsErrorMessageEnum>
-    _$alreadyExistsErrorMessageEnumValues = BuiltSet<
-        AlreadyExistsErrorMessageEnum>(const <AlreadyExistsErrorMessageEnum>[
-  _$alreadyExistsErrorMessageEnum_alreadyExistsColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod,
-]);
+_$alreadyExistsErrorMessageEnumValues = BuiltSet<AlreadyExistsErrorMessageEnum>(
+  const <AlreadyExistsErrorMessageEnum>[
+    _$alreadyExistsErrorMessageEnum_alreadyExistsColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod,
+  ],
+);
 
 const AlreadyExistsErrorHttpStatusCodeEnum
-    _$alreadyExistsErrorHttpStatusCodeEnum_number409 =
+_$alreadyExistsErrorHttpStatusCodeEnum_number409 =
     const AlreadyExistsErrorHttpStatusCodeEnum._('number409');
 
 AlreadyExistsErrorHttpStatusCodeEnum
-    _$alreadyExistsErrorHttpStatusCodeEnumValueOf(String name) {
+_$alreadyExistsErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number409':
       return _$alreadyExistsErrorHttpStatusCodeEnum_number409;
@@ -60,18 +63,20 @@ AlreadyExistsErrorHttpStatusCodeEnum
 }
 
 final BuiltSet<AlreadyExistsErrorHttpStatusCodeEnum>
-    _$alreadyExistsErrorHttpStatusCodeEnumValues = BuiltSet<
-        AlreadyExistsErrorHttpStatusCodeEnum>(const <AlreadyExistsErrorHttpStatusCodeEnum>[
-  _$alreadyExistsErrorHttpStatusCodeEnum_number409,
-]);
+_$alreadyExistsErrorHttpStatusCodeEnumValues =
+    BuiltSet<AlreadyExistsErrorHttpStatusCodeEnum>(
+      const <AlreadyExistsErrorHttpStatusCodeEnum>[
+        _$alreadyExistsErrorHttpStatusCodeEnum_number409,
+      ],
+    );
 
 Serializer<AlreadyExistsErrorNameEnum> _$alreadyExistsErrorNameEnumSerializer =
     _$AlreadyExistsErrorNameEnumSerializer();
 Serializer<AlreadyExistsErrorMessageEnum>
-    _$alreadyExistsErrorMessageEnumSerializer =
+_$alreadyExistsErrorMessageEnumSerializer =
     _$AlreadyExistsErrorMessageEnumSerializer();
 Serializer<AlreadyExistsErrorHttpStatusCodeEnum>
-    _$alreadyExistsErrorHttpStatusCodeEnumSerializer =
+_$alreadyExistsErrorHttpStatusCodeEnumSerializer =
     _$AlreadyExistsErrorHttpStatusCodeEnumSerializer();
 
 class _$AlreadyExistsErrorNameEnumSerializer
@@ -89,16 +94,20 @@ class _$AlreadyExistsErrorNameEnumSerializer
   final String wireName = 'AlreadyExistsErrorNameEnum';
 
   @override
-  Object serialize(Serializers serializers, AlreadyExistsErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    AlreadyExistsErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   AlreadyExistsErrorNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      AlreadyExistsErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => AlreadyExistsErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$AlreadyExistsErrorMessageEnumSerializer
@@ -119,16 +128,19 @@ class _$AlreadyExistsErrorMessageEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, AlreadyExistsErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    AlreadyExistsErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   AlreadyExistsErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      AlreadyExistsErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => AlreadyExistsErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$AlreadyExistsErrorHttpStatusCodeEnumSerializer
@@ -142,23 +154,26 @@ class _$AlreadyExistsErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    AlreadyExistsErrorHttpStatusCodeEnum
+    AlreadyExistsErrorHttpStatusCodeEnum,
   ];
   @override
   final String wireName = 'AlreadyExistsErrorHttpStatusCodeEnum';
 
   @override
   Object serialize(
-          Serializers serializers, AlreadyExistsErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    AlreadyExistsErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   AlreadyExistsErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      AlreadyExistsErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => AlreadyExistsErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$AlreadyExistsError extends AlreadyExistsError {
@@ -173,21 +188,21 @@ class _$AlreadyExistsError extends AlreadyExistsError {
   @override
   final BuiltList<InvalidParameterErrorDetailsInner>? details;
 
-  factory _$AlreadyExistsError(
-          [void Function(AlreadyExistsErrorBuilder)? updates]) =>
-      (AlreadyExistsErrorBuilder()..update(updates))._build();
+  factory _$AlreadyExistsError([
+    void Function(AlreadyExistsErrorBuilder)? updates,
+  ]) => (AlreadyExistsErrorBuilder()..update(updates))._build();
 
-  _$AlreadyExistsError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$AlreadyExistsError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   AlreadyExistsError rebuild(
-          void Function(AlreadyExistsErrorBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(AlreadyExistsErrorBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   AlreadyExistsErrorBuilder toBuilder() =>
@@ -290,16 +305,29 @@ class AlreadyExistsErrorBuilder
   _$AlreadyExistsError _build() {
     _$AlreadyExistsError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$AlreadyExistsError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'AlreadyExistsError', 'name'),
+              name,
+              r'AlreadyExistsError',
+              'name',
+            ),
             message: BuiltValueNullFieldError.checkNotNull(
-                message, r'AlreadyExistsError', 'message'),
+              message,
+              r'AlreadyExistsError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode, r'AlreadyExistsError', 'httpStatusCode'),
+              httpStatusCode,
+              r'AlreadyExistsError',
+              'httpStatusCode',
+            ),
             traceId: BuiltValueNullFieldError.checkNotNull(
-                traceId, r'AlreadyExistsError', 'traceId'),
+              traceId,
+              r'AlreadyExistsError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -309,7 +337,10 @@ class AlreadyExistsErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'AlreadyExistsError', _$failedField, e.toString());
+          r'AlreadyExistsError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

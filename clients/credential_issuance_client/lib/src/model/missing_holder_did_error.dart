@@ -41,8 +41,9 @@ abstract class MissingHolderDidError
 
   MissingHolderDidError._();
 
-  factory MissingHolderDidError(
-      [void updates(MissingHolderDidErrorBuilder b)]) = _$MissingHolderDidError;
+  factory MissingHolderDidError([
+    void updates(MissingHolderDidErrorBuilder b),
+  ]) = _$MissingHolderDidError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(MissingHolderDidErrorBuilder b) => b;
@@ -57,7 +58,7 @@ class _$MissingHolderDidErrorSerializer
   @override
   final Iterable<Type> types = const [
     MissingHolderDidError,
-    _$MissingHolderDidError
+    _$MissingHolderDidError,
   ];
 
   @override
@@ -92,8 +93,9 @@ class _$MissingHolderDidErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(
-            BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(ActionForbiddenErrorDetailsInner),
+        ]),
       );
     }
   }
@@ -104,9 +106,11 @@ class _$MissingHolderDidErrorSerializer
     MissingHolderDidError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -122,40 +126,56 @@ class _$MissingHolderDidErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(MissingHolderDidErrorNameEnum),
-          ) as MissingHolderDidErrorNameEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      MissingHolderDidErrorNameEnum,
+                    ),
+                  )
+                  as MissingHolderDidErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(MissingHolderDidErrorMessageEnum),
-          ) as MissingHolderDidErrorMessageEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      MissingHolderDidErrorMessageEnum,
+                    ),
+                  )
+                  as MissingHolderDidErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(MissingHolderDidErrorHttpStatusCodeEnum),
-          ) as MissingHolderDidErrorHttpStatusCodeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      MissingHolderDidErrorHttpStatusCodeEnum,
+                    ),
+                  )
+                  as MissingHolderDidErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
-          ) as BuiltList<ActionForbiddenErrorDetailsInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(ActionForbiddenErrorDetailsInner),
+                    ]),
+                  )
+                  as BuiltList<ActionForbiddenErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -206,7 +226,7 @@ class MissingHolderDidErrorNameEnum extends EnumClass {
 class MissingHolderDidErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'holderDID is required in this claimMode')
   static const MissingHolderDidErrorMessageEnum
-      holderDIDIsRequiredInThisClaimMode =
+  holderDIDIsRequiredInThisClaimMode =
       _$missingHolderDidErrorMessageEnum_holderDIDIsRequiredInThisClaimMode;
 
   static Serializer<MissingHolderDidErrorMessageEnum> get serializer =>

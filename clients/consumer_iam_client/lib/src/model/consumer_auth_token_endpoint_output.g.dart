@@ -17,17 +17,20 @@ class _$ConsumerAuthTokenEndpointOutput
   @override
   final String? tokenType;
 
-  factory _$ConsumerAuthTokenEndpointOutput(
-          [void Function(ConsumerAuthTokenEndpointOutputBuilder)? updates]) =>
-      (ConsumerAuthTokenEndpointOutputBuilder()..update(updates))._build();
+  factory _$ConsumerAuthTokenEndpointOutput([
+    void Function(ConsumerAuthTokenEndpointOutputBuilder)? updates,
+  ]) => (ConsumerAuthTokenEndpointOutputBuilder()..update(updates))._build();
 
-  _$ConsumerAuthTokenEndpointOutput._(
-      {this.accessToken, this.expiresIn, this.scope, this.tokenType})
-      : super._();
+  _$ConsumerAuthTokenEndpointOutput._({
+    this.accessToken,
+    this.expiresIn,
+    this.scope,
+    this.tokenType,
+  }) : super._();
   @override
   ConsumerAuthTokenEndpointOutput rebuild(
-          void Function(ConsumerAuthTokenEndpointOutputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ConsumerAuthTokenEndpointOutputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ConsumerAuthTokenEndpointOutputBuilder toBuilder() =>
@@ -67,8 +70,10 @@ class _$ConsumerAuthTokenEndpointOutput
 
 class ConsumerAuthTokenEndpointOutputBuilder
     implements
-        Builder<ConsumerAuthTokenEndpointOutput,
-            ConsumerAuthTokenEndpointOutputBuilder> {
+        Builder<
+          ConsumerAuthTokenEndpointOutput,
+          ConsumerAuthTokenEndpointOutputBuilder
+        > {
   _$ConsumerAuthTokenEndpointOutput? _$v;
 
   String? _accessToken;
@@ -117,7 +122,8 @@ class ConsumerAuthTokenEndpointOutputBuilder
   ConsumerAuthTokenEndpointOutput build() => _build();
 
   _$ConsumerAuthTokenEndpointOutput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$ConsumerAuthTokenEndpointOutput._(
           accessToken: accessToken,
           expiresIn: expiresIn,

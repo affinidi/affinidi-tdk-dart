@@ -7,11 +7,11 @@ part of 'credential_offer_claimed_error.dart';
 // **************************************************************************
 
 const CredentialOfferClaimedErrorNameEnum
-    _$credentialOfferClaimedErrorNameEnum_credentialOfferClaimedError =
+_$credentialOfferClaimedErrorNameEnum_credentialOfferClaimedError =
     const CredentialOfferClaimedErrorNameEnum._('credentialOfferClaimedError');
 
 CredentialOfferClaimedErrorNameEnum
-    _$credentialOfferClaimedErrorNameEnumValueOf(String name) {
+_$credentialOfferClaimedErrorNameEnumValueOf(String name) {
   switch (name) {
     case 'credentialOfferClaimedError':
       return _$credentialOfferClaimedErrorNameEnum_credentialOfferClaimedError;
@@ -21,18 +21,21 @@ CredentialOfferClaimedErrorNameEnum
 }
 
 final BuiltSet<CredentialOfferClaimedErrorNameEnum>
-    _$credentialOfferClaimedErrorNameEnumValues = BuiltSet<
-        CredentialOfferClaimedErrorNameEnum>(const <CredentialOfferClaimedErrorNameEnum>[
-  _$credentialOfferClaimedErrorNameEnum_credentialOfferClaimedError,
-]);
+_$credentialOfferClaimedErrorNameEnumValues =
+    BuiltSet<CredentialOfferClaimedErrorNameEnum>(
+      const <CredentialOfferClaimedErrorNameEnum>[
+        _$credentialOfferClaimedErrorNameEnum_credentialOfferClaimedError,
+      ],
+    );
 
 const CredentialOfferClaimedErrorMessageEnum
-    _$credentialOfferClaimedErrorMessageEnum_credentialOfferIsAlreadyClaimed =
+_$credentialOfferClaimedErrorMessageEnum_credentialOfferIsAlreadyClaimed =
     const CredentialOfferClaimedErrorMessageEnum._(
-        'credentialOfferIsAlreadyClaimed');
+      'credentialOfferIsAlreadyClaimed',
+    );
 
 CredentialOfferClaimedErrorMessageEnum
-    _$credentialOfferClaimedErrorMessageEnumValueOf(String name) {
+_$credentialOfferClaimedErrorMessageEnumValueOf(String name) {
   switch (name) {
     case 'credentialOfferIsAlreadyClaimed':
       return _$credentialOfferClaimedErrorMessageEnum_credentialOfferIsAlreadyClaimed;
@@ -42,17 +45,19 @@ CredentialOfferClaimedErrorMessageEnum
 }
 
 final BuiltSet<CredentialOfferClaimedErrorMessageEnum>
-    _$credentialOfferClaimedErrorMessageEnumValues = BuiltSet<
-        CredentialOfferClaimedErrorMessageEnum>(const <CredentialOfferClaimedErrorMessageEnum>[
-  _$credentialOfferClaimedErrorMessageEnum_credentialOfferIsAlreadyClaimed,
-]);
+_$credentialOfferClaimedErrorMessageEnumValues =
+    BuiltSet<CredentialOfferClaimedErrorMessageEnum>(const <
+      CredentialOfferClaimedErrorMessageEnum
+    >[
+      _$credentialOfferClaimedErrorMessageEnum_credentialOfferIsAlreadyClaimed,
+    ]);
 
 const CredentialOfferClaimedErrorHttpStatusCodeEnum
-    _$credentialOfferClaimedErrorHttpStatusCodeEnum_number400 =
+_$credentialOfferClaimedErrorHttpStatusCodeEnum_number400 =
     const CredentialOfferClaimedErrorHttpStatusCodeEnum._('number400');
 
 CredentialOfferClaimedErrorHttpStatusCodeEnum
-    _$credentialOfferClaimedErrorHttpStatusCodeEnumValueOf(String name) {
+_$credentialOfferClaimedErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$credentialOfferClaimedErrorHttpStatusCodeEnum_number400;
@@ -62,19 +67,21 @@ CredentialOfferClaimedErrorHttpStatusCodeEnum
 }
 
 final BuiltSet<CredentialOfferClaimedErrorHttpStatusCodeEnum>
-    _$credentialOfferClaimedErrorHttpStatusCodeEnumValues = BuiltSet<
-        CredentialOfferClaimedErrorHttpStatusCodeEnum>(const <CredentialOfferClaimedErrorHttpStatusCodeEnum>[
-  _$credentialOfferClaimedErrorHttpStatusCodeEnum_number400,
-]);
+_$credentialOfferClaimedErrorHttpStatusCodeEnumValues =
+    BuiltSet<CredentialOfferClaimedErrorHttpStatusCodeEnum>(
+      const <CredentialOfferClaimedErrorHttpStatusCodeEnum>[
+        _$credentialOfferClaimedErrorHttpStatusCodeEnum_number400,
+      ],
+    );
 
 Serializer<CredentialOfferClaimedErrorNameEnum>
-    _$credentialOfferClaimedErrorNameEnumSerializer =
+_$credentialOfferClaimedErrorNameEnumSerializer =
     _$CredentialOfferClaimedErrorNameEnumSerializer();
 Serializer<CredentialOfferClaimedErrorMessageEnum>
-    _$credentialOfferClaimedErrorMessageEnumSerializer =
+_$credentialOfferClaimedErrorMessageEnumSerializer =
     _$CredentialOfferClaimedErrorMessageEnumSerializer();
 Serializer<CredentialOfferClaimedErrorHttpStatusCodeEnum>
-    _$credentialOfferClaimedErrorHttpStatusCodeEnumSerializer =
+_$credentialOfferClaimedErrorHttpStatusCodeEnumSerializer =
     _$CredentialOfferClaimedErrorHttpStatusCodeEnumSerializer();
 
 class _$CredentialOfferClaimedErrorNameEnumSerializer
@@ -88,23 +95,26 @@ class _$CredentialOfferClaimedErrorNameEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CredentialOfferClaimedErrorNameEnum
+    CredentialOfferClaimedErrorNameEnum,
   ];
   @override
   final String wireName = 'CredentialOfferClaimedErrorNameEnum';
 
   @override
   Object serialize(
-          Serializers serializers, CredentialOfferClaimedErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    CredentialOfferClaimedErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   CredentialOfferClaimedErrorNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      CredentialOfferClaimedErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => CredentialOfferClaimedErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$CredentialOfferClaimedErrorMessageEnumSerializer
@@ -118,23 +128,26 @@ class _$CredentialOfferClaimedErrorMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CredentialOfferClaimedErrorMessageEnum
+    CredentialOfferClaimedErrorMessageEnum,
   ];
   @override
   final String wireName = 'CredentialOfferClaimedErrorMessageEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          CredentialOfferClaimedErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    CredentialOfferClaimedErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   CredentialOfferClaimedErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      CredentialOfferClaimedErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => CredentialOfferClaimedErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$CredentialOfferClaimedErrorHttpStatusCodeEnumSerializer
@@ -149,23 +162,26 @@ class _$CredentialOfferClaimedErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CredentialOfferClaimedErrorHttpStatusCodeEnum
+    CredentialOfferClaimedErrorHttpStatusCodeEnum,
   ];
   @override
   final String wireName = 'CredentialOfferClaimedErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          CredentialOfferClaimedErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    CredentialOfferClaimedErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   CredentialOfferClaimedErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      CredentialOfferClaimedErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => CredentialOfferClaimedErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$CredentialOfferClaimedError extends CredentialOfferClaimedError {
@@ -180,21 +196,21 @@ class _$CredentialOfferClaimedError extends CredentialOfferClaimedError {
   @override
   final BuiltList<ActionForbiddenErrorDetailsInner>? details;
 
-  factory _$CredentialOfferClaimedError(
-          [void Function(CredentialOfferClaimedErrorBuilder)? updates]) =>
-      (CredentialOfferClaimedErrorBuilder()..update(updates))._build();
+  factory _$CredentialOfferClaimedError([
+    void Function(CredentialOfferClaimedErrorBuilder)? updates,
+  ]) => (CredentialOfferClaimedErrorBuilder()..update(updates))._build();
 
-  _$CredentialOfferClaimedError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$CredentialOfferClaimedError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   CredentialOfferClaimedError rebuild(
-          void Function(CredentialOfferClaimedErrorBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CredentialOfferClaimedErrorBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CredentialOfferClaimedErrorBuilder toBuilder() =>
@@ -237,8 +253,10 @@ class _$CredentialOfferClaimedError extends CredentialOfferClaimedError {
 
 class CredentialOfferClaimedErrorBuilder
     implements
-        Builder<CredentialOfferClaimedError,
-            CredentialOfferClaimedErrorBuilder> {
+        Builder<
+          CredentialOfferClaimedError,
+          CredentialOfferClaimedErrorBuilder
+        > {
   _$CredentialOfferClaimedError? _$v;
 
   CredentialOfferClaimedErrorNameEnum? _name;
@@ -254,8 +272,8 @@ class CredentialOfferClaimedErrorBuilder
   CredentialOfferClaimedErrorHttpStatusCodeEnum? get httpStatusCode =>
       _$this._httpStatusCode;
   set httpStatusCode(
-          CredentialOfferClaimedErrorHttpStatusCodeEnum? httpStatusCode) =>
-      _$this._httpStatusCode = httpStatusCode;
+    CredentialOfferClaimedErrorHttpStatusCodeEnum? httpStatusCode,
+  ) => _$this._httpStatusCode = httpStatusCode;
 
   String? _traceId;
   String? get traceId => _$this._traceId;
@@ -300,18 +318,29 @@ class CredentialOfferClaimedErrorBuilder
   _$CredentialOfferClaimedError _build() {
     _$CredentialOfferClaimedError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$CredentialOfferClaimedError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'CredentialOfferClaimedError', 'name'),
+              name,
+              r'CredentialOfferClaimedError',
+              'name',
+            ),
             message: BuiltValueNullFieldError.checkNotNull(
-                message, r'CredentialOfferClaimedError', 'message'),
+              message,
+              r'CredentialOfferClaimedError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode,
-                r'CredentialOfferClaimedError',
-                'httpStatusCode'),
+              httpStatusCode,
+              r'CredentialOfferClaimedError',
+              'httpStatusCode',
+            ),
             traceId: BuiltValueNullFieldError.checkNotNull(
-                traceId, r'CredentialOfferClaimedError', 'traceId'),
+              traceId,
+              r'CredentialOfferClaimedError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -321,7 +350,10 @@ class CredentialOfferClaimedErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'CredentialOfferClaimedError', _$failedField, e.toString());
+          r'CredentialOfferClaimedError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

@@ -15,17 +15,19 @@ part 'start_issuance_input_data_inner_meta_data.g.dart';
 @BuiltValue()
 abstract class StartIssuanceInputDataInnerMetaData
     implements
-        Built<StartIssuanceInputDataInnerMetaData,
-            StartIssuanceInputDataInnerMetaDataBuilder> {
+        Built<
+          StartIssuanceInputDataInnerMetaData,
+          StartIssuanceInputDataInnerMetaDataBuilder
+        > {
   /// Date and time when the credential will expire
   @BuiltValueField(wireName: r'expirationDate')
   DateTime get expirationDate;
 
   StartIssuanceInputDataInnerMetaData._();
 
-  factory StartIssuanceInputDataInnerMetaData(
-          [void updates(StartIssuanceInputDataInnerMetaDataBuilder b)]) =
-      _$StartIssuanceInputDataInnerMetaData;
+  factory StartIssuanceInputDataInnerMetaData([
+    void updates(StartIssuanceInputDataInnerMetaDataBuilder b),
+  ]) = _$StartIssuanceInputDataInnerMetaData;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(StartIssuanceInputDataInnerMetaDataBuilder b) => b;
@@ -40,7 +42,7 @@ class _$StartIssuanceInputDataInnerMetaDataSerializer
   @override
   final Iterable<Type> types = const [
     StartIssuanceInputDataInnerMetaData,
-    _$StartIssuanceInputDataInnerMetaData
+    _$StartIssuanceInputDataInnerMetaData,
   ];
 
   @override
@@ -64,9 +66,11 @@ class _$StartIssuanceInputDataInnerMetaDataSerializer
     StartIssuanceInputDataInnerMetaData object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -82,10 +86,12 @@ class _$StartIssuanceInputDataInnerMetaDataSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'expirationDate':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(DateTime),
-          ) as DateTime;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(DateTime),
+                  )
+                  as DateTime;
           result.expirationDate = valueDes;
           break;
         default:

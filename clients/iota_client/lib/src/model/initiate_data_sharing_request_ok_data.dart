@@ -17,8 +17,10 @@ part 'initiate_data_sharing_request_ok_data.g.dart';
 @BuiltValue()
 abstract class InitiateDataSharingRequestOKData
     implements
-        Built<InitiateDataSharingRequestOKData,
-            InitiateDataSharingRequestOKDataBuilder> {
+        Built<
+          InitiateDataSharingRequestOKData,
+          InitiateDataSharingRequestOKDataBuilder
+        > {
   @BuiltValueField(wireName: r'jwt')
   String get jwt;
 
@@ -30,9 +32,9 @@ abstract class InitiateDataSharingRequestOKData
 
   InitiateDataSharingRequestOKData._();
 
-  factory InitiateDataSharingRequestOKData(
-          [void updates(InitiateDataSharingRequestOKDataBuilder b)]) =
-      _$InitiateDataSharingRequestOKData;
+  factory InitiateDataSharingRequestOKData([
+    void updates(InitiateDataSharingRequestOKDataBuilder b),
+  ]) = _$InitiateDataSharingRequestOKData;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(InitiateDataSharingRequestOKDataBuilder b) => b;
@@ -47,7 +49,7 @@ class _$InitiateDataSharingRequestOKDataSerializer
   @override
   final Iterable<Type> types = const [
     InitiateDataSharingRequestOKData,
-    _$InitiateDataSharingRequestOKData
+    _$InitiateDataSharingRequestOKData,
   ];
 
   @override
@@ -81,9 +83,11 @@ class _$InitiateDataSharingRequestOKDataSerializer
     InitiateDataSharingRequestOKData object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -99,24 +103,30 @@ class _$InitiateDataSharingRequestOKDataSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'jwt':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.jwt = valueDes;
           break;
         case r'correlationId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.correlationId = valueDes;
           break;
         case r'transactionId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.transactionId = valueDes;
           break;
         default:

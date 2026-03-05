@@ -41,13 +41,8 @@ class WellKnownApi {
     final _path = r'/.well-known/did.json';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -66,9 +61,10 @@ class WellKnownApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(JsonObject),
-            ) as JsonObject;
+                  rawResponse,
+                  specifiedType: const FullType(JsonObject),
+                )
+                as JsonObject;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -115,13 +111,8 @@ class WellKnownApi {
     final _path = r'/.well-known/jwks.json';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -140,9 +131,10 @@ class WellKnownApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(JsonWebKeySetDto),
-            ) as JsonWebKeySetDto;
+                  rawResponse,
+                  specifiedType: const FullType(JsonWebKeySetDto),
+                )
+                as JsonWebKeySetDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

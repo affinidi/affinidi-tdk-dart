@@ -18,8 +18,9 @@ part 'credential_offer_response_grants_urn_ietf_params_oauth_grant_type_pre_auth
 abstract class CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode
     implements
         Built<
-            CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode,
-            CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder> {
+          CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode,
+          CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder
+        > {
   /// Integer specifying the length of the Transaction Code
   @BuiltValueField(wireName: r'length')
   num? get length;
@@ -34,33 +35,37 @@ abstract class CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthor
 
   CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode._();
 
-  factory CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode(
-          [void updates(
-              CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder
-                  b)]) =
+  factory CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode([
+    void updates(
+      CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder
+      b,
+    ),
+  ]) =
       _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(
-          CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder
-              b) =>
-      b;
+    CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder
+    b,
+  ) => b;
 
   @BuiltValueSerializer(custom: true)
   static Serializer<
-          CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode>
-      get serializer =>
-          _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeSerializer();
+    CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode
+  >
+  get serializer =>
+      _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeSerializer();
 }
 
 class _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeSerializer
     implements
         PrimitiveSerializer<
-            CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode> {
+          CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode
+        > {
   @override
   final Iterable<Type> types = const [
     CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode,
-    _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode
+    _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode,
   ];
 
   @override
@@ -70,7 +75,7 @@ class _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCod
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
     CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode
-        object, {
+    object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
     if (object.length != null) {
@@ -100,12 +105,14 @@ class _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCod
   Object serialize(
     Serializers serializers,
     CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode
-        object, {
+    object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -114,7 +121,7 @@ class _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCod
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
     required CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCodeBuilder
-        result,
+    result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
@@ -122,24 +129,27 @@ class _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCod
       final value = serializedList[i + 1];
       switch (key) {
         case r'length':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(num),
-          ) as num;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(num))
+                  as num;
           result.length = valueDes;
           break;
         case r'input_mode':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.inputMode = valueDes;
           break;
         case r'description':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.description = valueDes;
           break;
         default:
@@ -152,7 +162,7 @@ class _$CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCod
 
   @override
   CredentialOfferResponseGrantsUrnIetfParamsOauthGrantTypePreAuthorizedCodeTxCode
-      deserialize(
+  deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,

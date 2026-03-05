@@ -22,9 +22,9 @@ abstract class RemoveUserFromGroupInput
 
   RemoveUserFromGroupInput._();
 
-  factory RemoveUserFromGroupInput(
-          [void updates(RemoveUserFromGroupInputBuilder b)]) =
-      _$RemoveUserFromGroupInput;
+  factory RemoveUserFromGroupInput([
+    void updates(RemoveUserFromGroupInputBuilder b),
+  ]) = _$RemoveUserFromGroupInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(RemoveUserFromGroupInputBuilder b) => b;
@@ -39,7 +39,7 @@ class _$RemoveUserFromGroupInputSerializer
   @override
   final Iterable<Type> types = const [
     RemoveUserFromGroupInput,
-    _$RemoveUserFromGroupInput
+    _$RemoveUserFromGroupInput,
   ];
 
   @override
@@ -63,9 +63,11 @@ class _$RemoveUserFromGroupInputSerializer
     RemoveUserFromGroupInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -81,10 +83,12 @@ class _$RemoveUserFromGroupInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'userId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.userId = valueDes;
           break;
         default:

@@ -22,9 +22,9 @@ abstract class SignCredentialResultDto
 
   SignCredentialResultDto._();
 
-  factory SignCredentialResultDto(
-          [void updates(SignCredentialResultDtoBuilder b)]) =
-      _$SignCredentialResultDto;
+  factory SignCredentialResultDto([
+    void updates(SignCredentialResultDtoBuilder b),
+  ]) = _$SignCredentialResultDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SignCredentialResultDtoBuilder b) => b;
@@ -39,7 +39,7 @@ class _$SignCredentialResultDtoSerializer
   @override
   final Iterable<Type> types = const [
     SignCredentialResultDto,
-    _$SignCredentialResultDto
+    _$SignCredentialResultDto,
   ];
 
   @override
@@ -53,8 +53,10 @@ class _$SignCredentialResultDtoSerializer
     yield r'signedCredential';
     yield serializers.serialize(
       object.signedCredential,
-      specifiedType: const FullType(
-          BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
+      specifiedType: const FullType(BuiltMap, [
+        FullType(String),
+        FullType.nullable(JsonObject),
+      ]),
     );
   }
 
@@ -64,9 +66,11 @@ class _$SignCredentialResultDtoSerializer
     SignCredentialResultDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -82,11 +86,15 @@ class _$SignCredentialResultDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'signedCredential':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
-          ) as BuiltMap<String, JsonObject?>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltMap, [
+                      FullType(String),
+                      FullType.nullable(JsonObject),
+                    ]),
+                  )
+                  as BuiltMap<String, JsonObject?>;
           result.signedCredential.replace(valueDes);
           break;
         default:

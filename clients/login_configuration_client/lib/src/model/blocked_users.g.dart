@@ -91,11 +91,9 @@ class BlockedUsersBuilder
   _$BlockedUsers _build() {
     _$BlockedUsers _$result;
     try {
-      _$result = _$v ??
-          _$BlockedUsers._(
-            userIds: userIds.build(),
-            pageToken: pageToken,
-          );
+      _$result =
+          _$v ??
+          _$BlockedUsers._(userIds: userIds.build(), pageToken: pageToken);
     } catch (_) {
       late String _$failedField;
       try {
@@ -103,7 +101,10 @@ class BlockedUsersBuilder
         userIds.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'BlockedUsers', _$failedField, e.toString());
+          r'BlockedUsers',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

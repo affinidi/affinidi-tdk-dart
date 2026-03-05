@@ -18,8 +18,10 @@ part 'o_auth2_token_authorization_details_inner.g.dart';
 @BuiltValue()
 abstract class OAuth2TokenAuthorizationDetailsInner
     implements
-        Built<OAuth2TokenAuthorizationDetailsInner,
-            OAuth2TokenAuthorizationDetailsInnerBuilder> {
+        Built<
+          OAuth2TokenAuthorizationDetailsInner,
+          OAuth2TokenAuthorizationDetailsInnerBuilder
+        > {
   /// String that determines the authorization details type.
   @BuiltValueField(wireName: r'type')
   OAuth2TokenAuthorizationDetailsInnerTypeEnum get type;
@@ -33,14 +35,15 @@ abstract class OAuth2TokenAuthorizationDetailsInner
 
   OAuth2TokenAuthorizationDetailsInner._();
 
-  factory OAuth2TokenAuthorizationDetailsInner(
-          [void updates(OAuth2TokenAuthorizationDetailsInnerBuilder b)]) =
-      _$OAuth2TokenAuthorizationDetailsInner;
+  factory OAuth2TokenAuthorizationDetailsInner([
+    void updates(OAuth2TokenAuthorizationDetailsInnerBuilder b),
+  ]) = _$OAuth2TokenAuthorizationDetailsInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(OAuth2TokenAuthorizationDetailsInnerBuilder b) => b
     ..type = const OAuth2TokenAuthorizationDetailsInnerTypeEnum._(
-        'openid_credential');
+      'openid_credential',
+    );
 
   @BuiltValueSerializer(custom: true)
   static Serializer<OAuth2TokenAuthorizationDetailsInner> get serializer =>
@@ -52,7 +55,7 @@ class _$OAuth2TokenAuthorizationDetailsInnerSerializer
   @override
   final Iterable<Type> types = const [
     OAuth2TokenAuthorizationDetailsInner,
-    _$OAuth2TokenAuthorizationDetailsInner
+    _$OAuth2TokenAuthorizationDetailsInner,
   ];
 
   @override
@@ -66,8 +69,9 @@ class _$OAuth2TokenAuthorizationDetailsInnerSerializer
     yield r'type';
     yield serializers.serialize(
       object.type,
-      specifiedType:
-          const FullType(OAuth2TokenAuthorizationDetailsInnerTypeEnum),
+      specifiedType: const FullType(
+        OAuth2TokenAuthorizationDetailsInnerTypeEnum,
+      ),
     );
     yield r'credential_configuration_id';
     yield serializers.serialize(
@@ -89,9 +93,11 @@ class _$OAuth2TokenAuthorizationDetailsInnerSerializer
     OAuth2TokenAuthorizationDetailsInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -107,25 +113,34 @@ class _$OAuth2TokenAuthorizationDetailsInnerSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(OAuth2TokenAuthorizationDetailsInnerTypeEnum),
-          ) as OAuth2TokenAuthorizationDetailsInnerTypeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      OAuth2TokenAuthorizationDetailsInnerTypeEnum,
+                    ),
+                  )
+                  as OAuth2TokenAuthorizationDetailsInnerTypeEnum;
           result.type = valueDes;
           break;
         case r'credential_configuration_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.credentialConfigurationId = valueDes;
           break;
         case r'credential_identifiers':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.credentialIdentifiers.replace(valueDes);
           break;
         default:
@@ -164,11 +179,10 @@ class OAuth2TokenAuthorizationDetailsInnerTypeEnum extends EnumClass {
       _$oAuth2TokenAuthorizationDetailsInnerTypeEnum_openidCredential;
 
   static Serializer<OAuth2TokenAuthorizationDetailsInnerTypeEnum>
-      get serializer =>
-          _$oAuth2TokenAuthorizationDetailsInnerTypeEnumSerializer;
+  get serializer => _$oAuth2TokenAuthorizationDetailsInnerTypeEnumSerializer;
 
   const OAuth2TokenAuthorizationDetailsInnerTypeEnum._(String name)
-      : super(name);
+    : super(name);
 
   static BuiltSet<OAuth2TokenAuthorizationDetailsInnerTypeEnum> get values =>
       _$oAuth2TokenAuthorizationDetailsInnerTypeEnumValues;

@@ -27,9 +27,9 @@ abstract class ListIssuanceRecordResponse
 
   ListIssuanceRecordResponse._();
 
-  factory ListIssuanceRecordResponse(
-          [void updates(ListIssuanceRecordResponseBuilder b)]) =
-      _$ListIssuanceRecordResponse;
+  factory ListIssuanceRecordResponse([
+    void updates(ListIssuanceRecordResponseBuilder b),
+  ]) = _$ListIssuanceRecordResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ListIssuanceRecordResponseBuilder b) => b;
@@ -44,7 +44,7 @@ class _$ListIssuanceRecordResponseSerializer
   @override
   final Iterable<Type> types = const [
     ListIssuanceRecordResponse,
-    _$ListIssuanceRecordResponse
+    _$ListIssuanceRecordResponse,
   ];
 
   @override
@@ -77,9 +77,11 @@ class _$ListIssuanceRecordResponseSerializer
     ListIssuanceRecordResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -95,17 +97,23 @@ class _$ListIssuanceRecordResponseSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'flowData':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(FlowData)]),
-          ) as BuiltList<FlowData>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(FlowData),
+                    ]),
+                  )
+                  as BuiltList<FlowData>;
           result.flowData.replace(valueDes);
           break;
         case r'lastEvaluatedKey':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.lastEvaluatedKey = valueDes;
           break;
         default:

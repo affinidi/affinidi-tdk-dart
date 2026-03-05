@@ -14,17 +14,19 @@ class _$CreatePexQueryInput extends CreatePexQueryInput {
   @override
   final String? description;
 
-  factory _$CreatePexQueryInput(
-          [void Function(CreatePexQueryInputBuilder)? updates]) =>
-      (CreatePexQueryInputBuilder()..update(updates))._build();
+  factory _$CreatePexQueryInput([
+    void Function(CreatePexQueryInputBuilder)? updates,
+  ]) => (CreatePexQueryInputBuilder()..update(updates))._build();
 
-  _$CreatePexQueryInput._(
-      {required this.name, required this.vpDefinition, this.description})
-      : super._();
+  _$CreatePexQueryInput._({
+    required this.name,
+    required this.vpDefinition,
+    this.description,
+  }) : super._();
   @override
   CreatePexQueryInput rebuild(
-          void Function(CreatePexQueryInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreatePexQueryInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreatePexQueryInputBuilder toBuilder() =>
@@ -104,12 +106,19 @@ class CreatePexQueryInputBuilder
   CreatePexQueryInput build() => _build();
 
   _$CreatePexQueryInput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CreatePexQueryInput._(
           name: BuiltValueNullFieldError.checkNotNull(
-              name, r'CreatePexQueryInput', 'name'),
+            name,
+            r'CreatePexQueryInput',
+            'name',
+          ),
           vpDefinition: BuiltValueNullFieldError.checkNotNull(
-              vpDefinition, r'CreatePexQueryInput', 'vpDefinition'),
+            vpDefinition,
+            r'CreatePexQueryInput',
+            'vpDefinition',
+          ),
           description: description,
         );
     replace(_$result);

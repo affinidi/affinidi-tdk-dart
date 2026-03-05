@@ -16,20 +16,20 @@ class _$StartIssuanceResponse extends StartIssuanceResponse {
   @override
   final int expiresIn;
 
-  factory _$StartIssuanceResponse(
-          [void Function(StartIssuanceResponseBuilder)? updates]) =>
-      (StartIssuanceResponseBuilder()..update(updates))._build();
+  factory _$StartIssuanceResponse([
+    void Function(StartIssuanceResponseBuilder)? updates,
+  ]) => (StartIssuanceResponseBuilder()..update(updates))._build();
 
-  _$StartIssuanceResponse._(
-      {required this.credentialOfferUri,
-      this.txCode,
-      required this.issuanceId,
-      required this.expiresIn})
-      : super._();
+  _$StartIssuanceResponse._({
+    required this.credentialOfferUri,
+    this.txCode,
+    required this.issuanceId,
+    required this.expiresIn,
+  }) : super._();
   @override
   StartIssuanceResponse rebuild(
-          void Function(StartIssuanceResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(StartIssuanceResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   StartIssuanceResponseBuilder toBuilder() =>
@@ -118,17 +118,25 @@ class StartIssuanceResponseBuilder
   StartIssuanceResponse build() => _build();
 
   _$StartIssuanceResponse _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$StartIssuanceResponse._(
           credentialOfferUri: BuiltValueNullFieldError.checkNotNull(
-              credentialOfferUri,
-              r'StartIssuanceResponse',
-              'credentialOfferUri'),
+            credentialOfferUri,
+            r'StartIssuanceResponse',
+            'credentialOfferUri',
+          ),
           txCode: txCode,
           issuanceId: BuiltValueNullFieldError.checkNotNull(
-              issuanceId, r'StartIssuanceResponse', 'issuanceId'),
+            issuanceId,
+            r'StartIssuanceResponse',
+            'issuanceId',
+          ),
           expiresIn: BuiltValueNullFieldError.checkNotNull(
-              expiresIn, r'StartIssuanceResponse', 'expiresIn'),
+            expiresIn,
+            r'StartIssuanceResponse',
+            'expiresIn',
+          ),
         );
     replace(_$result);
     return _$result;

@@ -19,8 +19,10 @@ part 'consumer_auth_token_endpoint_input.g.dart';
 @BuiltValue()
 abstract class ConsumerAuthTokenEndpointInput
     implements
-        Built<ConsumerAuthTokenEndpointInput,
-            ConsumerAuthTokenEndpointInputBuilder> {
+        Built<
+          ConsumerAuthTokenEndpointInput,
+          ConsumerAuthTokenEndpointInputBuilder
+        > {
   @BuiltValueField(wireName: r'grant_type')
   ConsumerAuthTokenEndpointInputGrantTypeEnum get grantType;
   // enum grantTypeEnum {  client_credentials,  affinidi_delegation,  };
@@ -37,9 +39,9 @@ abstract class ConsumerAuthTokenEndpointInput
 
   ConsumerAuthTokenEndpointInput._();
 
-  factory ConsumerAuthTokenEndpointInput(
-          [void updates(ConsumerAuthTokenEndpointInputBuilder b)]) =
-      _$ConsumerAuthTokenEndpointInput;
+  factory ConsumerAuthTokenEndpointInput([
+    void updates(ConsumerAuthTokenEndpointInputBuilder b),
+  ]) = _$ConsumerAuthTokenEndpointInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ConsumerAuthTokenEndpointInputBuilder b) => b;
@@ -54,7 +56,7 @@ class _$ConsumerAuthTokenEndpointInputSerializer
   @override
   final Iterable<Type> types = const [
     ConsumerAuthTokenEndpointInput,
-    _$ConsumerAuthTokenEndpointInput
+    _$ConsumerAuthTokenEndpointInput,
   ];
 
   @override
@@ -68,14 +70,16 @@ class _$ConsumerAuthTokenEndpointInputSerializer
     yield r'grant_type';
     yield serializers.serialize(
       object.grantType,
-      specifiedType:
-          const FullType(ConsumerAuthTokenEndpointInputGrantTypeEnum),
+      specifiedType: const FullType(
+        ConsumerAuthTokenEndpointInputGrantTypeEnum,
+      ),
     );
     yield r'client_assertion_type';
     yield serializers.serialize(
       object.clientAssertionType,
-      specifiedType:
-          const FullType(ConsumerAuthTokenEndpointInputClientAssertionTypeEnum),
+      specifiedType: const FullType(
+        ConsumerAuthTokenEndpointInputClientAssertionTypeEnum,
+      ),
     );
     yield r'client_assertion';
     yield serializers.serialize(
@@ -95,9 +99,11 @@ class _$ConsumerAuthTokenEndpointInputSerializer
     ConsumerAuthTokenEndpointInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -113,33 +119,43 @@ class _$ConsumerAuthTokenEndpointInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'grant_type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(ConsumerAuthTokenEndpointInputGrantTypeEnum),
-          ) as ConsumerAuthTokenEndpointInputGrantTypeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      ConsumerAuthTokenEndpointInputGrantTypeEnum,
+                    ),
+                  )
+                  as ConsumerAuthTokenEndpointInputGrantTypeEnum;
           result.grantType = valueDes;
           break;
         case r'client_assertion_type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                ConsumerAuthTokenEndpointInputClientAssertionTypeEnum),
-          ) as ConsumerAuthTokenEndpointInputClientAssertionTypeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      ConsumerAuthTokenEndpointInputClientAssertionTypeEnum,
+                    ),
+                  )
+                  as ConsumerAuthTokenEndpointInputClientAssertionTypeEnum;
           result.clientAssertionType = valueDes;
           break;
         case r'client_assertion':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.clientAssertion = valueDes;
           break;
         case r'client_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.clientId = valueDes;
           break;
         default:
@@ -180,10 +196,10 @@ class ConsumerAuthTokenEndpointInputGrantTypeEnum extends EnumClass {
       _$consumerAuthTokenEndpointInputGrantTypeEnum_affinidiDelegation;
 
   static Serializer<ConsumerAuthTokenEndpointInputGrantTypeEnum>
-      get serializer => _$consumerAuthTokenEndpointInputGrantTypeEnumSerializer;
+  get serializer => _$consumerAuthTokenEndpointInputGrantTypeEnumSerializer;
 
   const ConsumerAuthTokenEndpointInputGrantTypeEnum._(String name)
-      : super(name);
+    : super(name);
 
   static BuiltSet<ConsumerAuthTokenEndpointInputGrantTypeEnum> get values =>
       _$consumerAuthTokenEndpointInputGrantTypeEnumValues;
@@ -193,27 +209,28 @@ class ConsumerAuthTokenEndpointInputGrantTypeEnum extends EnumClass {
 
 class ConsumerAuthTokenEndpointInputClientAssertionTypeEnum extends EnumClass {
   @BuiltValueEnumConst(
-      wireName: r'urn:ietf:params:oauth:client-assertion-type:jwt-bearer')
+    wireName: r'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
+  )
   static const ConsumerAuthTokenEndpointInputClientAssertionTypeEnum
-      urnColonIetfColonParamsColonOauthColonClientAssertionTypeColonJwtBearer =
+  urnColonIetfColonParamsColonOauthColonClientAssertionTypeColonJwtBearer =
       _$consumerAuthTokenEndpointInputClientAssertionTypeEnum_urnColonIetfColonParamsColonOauthColonClientAssertionTypeColonJwtBearer;
   @BuiltValueEnumConst(
-      wireName: r'urn:ietf:params:oauth:delegation-assertion-type:jwt-bearer')
+    wireName: r'urn:ietf:params:oauth:delegation-assertion-type:jwt-bearer',
+  )
   static const ConsumerAuthTokenEndpointInputClientAssertionTypeEnum
-      urnColonIetfColonParamsColonOauthColonDelegationAssertionTypeColonJwtBearer =
+  urnColonIetfColonParamsColonOauthColonDelegationAssertionTypeColonJwtBearer =
       _$consumerAuthTokenEndpointInputClientAssertionTypeEnum_urnColonIetfColonParamsColonOauthColonDelegationAssertionTypeColonJwtBearer;
 
   static Serializer<ConsumerAuthTokenEndpointInputClientAssertionTypeEnum>
-      get serializer =>
-          _$consumerAuthTokenEndpointInputClientAssertionTypeEnumSerializer;
+  get serializer =>
+      _$consumerAuthTokenEndpointInputClientAssertionTypeEnumSerializer;
 
   const ConsumerAuthTokenEndpointInputClientAssertionTypeEnum._(String name)
-      : super(name);
+    : super(name);
 
   static BuiltSet<ConsumerAuthTokenEndpointInputClientAssertionTypeEnum>
-      get values =>
-          _$consumerAuthTokenEndpointInputClientAssertionTypeEnumValues;
+  get values => _$consumerAuthTokenEndpointInputClientAssertionTypeEnumValues;
   static ConsumerAuthTokenEndpointInputClientAssertionTypeEnum valueOf(
-          String name) =>
-      _$consumerAuthTokenEndpointInputClientAssertionTypeEnumValueOf(name);
+    String name,
+  ) => _$consumerAuthTokenEndpointInputClientAssertionTypeEnumValueOf(name);
 }

@@ -21,7 +21,7 @@ abstract class BatchCredentialResponse
     implements Built<BatchCredentialResponse, BatchCredentialResponseBuilder> {
   @BuiltValueField(wireName: r'credential_responses')
   BuiltList<BatchCredentialResponseCredentialResponsesInner>
-      get credentialResponses;
+  get credentialResponses;
 
   @BuiltValueField(wireName: r'c_nonce')
   String? get cNonce;
@@ -32,9 +32,9 @@ abstract class BatchCredentialResponse
 
   BatchCredentialResponse._();
 
-  factory BatchCredentialResponse(
-          [void updates(BatchCredentialResponseBuilder b)]) =
-      _$BatchCredentialResponse;
+  factory BatchCredentialResponse([
+    void updates(BatchCredentialResponseBuilder b),
+  ]) = _$BatchCredentialResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(BatchCredentialResponseBuilder b) => b;
@@ -49,7 +49,7 @@ class _$BatchCredentialResponseSerializer
   @override
   final Iterable<Type> types = const [
     BatchCredentialResponse,
-    _$BatchCredentialResponse
+    _$BatchCredentialResponse,
   ];
 
   @override
@@ -63,8 +63,9 @@ class _$BatchCredentialResponseSerializer
     yield r'credential_responses';
     yield serializers.serialize(
       object.credentialResponses,
-      specifiedType: const FullType(BuiltList,
-          [FullType(BatchCredentialResponseCredentialResponsesInner)]),
+      specifiedType: const FullType(BuiltList, [
+        FullType(BatchCredentialResponseCredentialResponsesInner),
+      ]),
     );
     if (object.cNonce != null) {
       yield r'c_nonce';
@@ -88,9 +89,11 @@ class _$BatchCredentialResponseSerializer
     BatchCredentialResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -106,25 +109,29 @@ class _$BatchCredentialResponseSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'credential_responses':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList,
-                [FullType(BatchCredentialResponseCredentialResponsesInner)]),
-          ) as BuiltList<BatchCredentialResponseCredentialResponsesInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(BatchCredentialResponseCredentialResponsesInner),
+                    ]),
+                  )
+                  as BuiltList<BatchCredentialResponseCredentialResponsesInner>;
           result.credentialResponses.replace(valueDes);
           break;
         case r'c_nonce':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.cNonce = valueDes;
           break;
         case r'c_nonce_expires_in':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.cNonceExpiresIn = valueDes;
           break;
         default:

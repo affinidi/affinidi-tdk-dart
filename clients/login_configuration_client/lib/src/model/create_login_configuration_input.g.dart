@@ -7,14 +7,14 @@ part of 'create_login_configuration_input.dart';
 // **************************************************************************
 
 const CreateLoginConfigurationInputClaimFormatEnum
-    _$createLoginConfigurationInputClaimFormatEnum_array =
+_$createLoginConfigurationInputClaimFormatEnum_array =
     const CreateLoginConfigurationInputClaimFormatEnum._('array');
 const CreateLoginConfigurationInputClaimFormatEnum
-    _$createLoginConfigurationInputClaimFormatEnum_map =
+_$createLoginConfigurationInputClaimFormatEnum_map =
     const CreateLoginConfigurationInputClaimFormatEnum._('map');
 
 CreateLoginConfigurationInputClaimFormatEnum
-    _$createLoginConfigurationInputClaimFormatEnumValueOf(String name) {
+_$createLoginConfigurationInputClaimFormatEnumValueOf(String name) {
   switch (name) {
     case 'array':
       return _$createLoginConfigurationInputClaimFormatEnum_array;
@@ -26,14 +26,16 @@ CreateLoginConfigurationInputClaimFormatEnum
 }
 
 final BuiltSet<CreateLoginConfigurationInputClaimFormatEnum>
-    _$createLoginConfigurationInputClaimFormatEnumValues = BuiltSet<
-        CreateLoginConfigurationInputClaimFormatEnum>(const <CreateLoginConfigurationInputClaimFormatEnum>[
-  _$createLoginConfigurationInputClaimFormatEnum_array,
-  _$createLoginConfigurationInputClaimFormatEnum_map,
-]);
+_$createLoginConfigurationInputClaimFormatEnumValues =
+    BuiltSet<CreateLoginConfigurationInputClaimFormatEnum>(
+      const <CreateLoginConfigurationInputClaimFormatEnum>[
+        _$createLoginConfigurationInputClaimFormatEnum_array,
+        _$createLoginConfigurationInputClaimFormatEnum_map,
+      ],
+    );
 
 Serializer<CreateLoginConfigurationInputClaimFormatEnum>
-    _$createLoginConfigurationInputClaimFormatEnumSerializer =
+_$createLoginConfigurationInputClaimFormatEnumSerializer =
     _$CreateLoginConfigurationInputClaimFormatEnumSerializer();
 
 class _$CreateLoginConfigurationInputClaimFormatEnumSerializer
@@ -50,23 +52,26 @@ class _$CreateLoginConfigurationInputClaimFormatEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CreateLoginConfigurationInputClaimFormatEnum
+    CreateLoginConfigurationInputClaimFormatEnum,
   ];
   @override
   final String wireName = 'CreateLoginConfigurationInputClaimFormatEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          CreateLoginConfigurationInputClaimFormatEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    CreateLoginConfigurationInputClaimFormatEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   CreateLoginConfigurationInputClaimFormatEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      CreateLoginConfigurationInputClaimFormatEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => CreateLoginConfigurationInputClaimFormatEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$CreateLoginConfigurationInput extends CreateLoginConfigurationInput {
@@ -97,29 +102,29 @@ class _$CreateLoginConfigurationInput extends CreateLoginConfigurationInput {
   @override
   final TokenEndpointAuthMethod? tokenEndpointAuthMethod;
 
-  factory _$CreateLoginConfigurationInput(
-          [void Function(CreateLoginConfigurationInputBuilder)? updates]) =>
-      (CreateLoginConfigurationInputBuilder()..update(updates))._build();
+  factory _$CreateLoginConfigurationInput([
+    void Function(CreateLoginConfigurationInputBuilder)? updates,
+  ]) => (CreateLoginConfigurationInputBuilder()..update(updates))._build();
 
-  _$CreateLoginConfigurationInput._(
-      {required this.name,
-      this.description,
-      required this.redirectUris,
-      this.postLogoutRedirectUris,
-      this.vpDefinition,
-      this.presentationDefinition,
-      this.dcqlQuery,
-      this.idTokenMapping,
-      this.clientMetadata,
-      this.claimFormat,
-      this.failOnMappingConflict,
-      this.scope,
-      this.tokenEndpointAuthMethod})
-      : super._();
+  _$CreateLoginConfigurationInput._({
+    required this.name,
+    this.description,
+    required this.redirectUris,
+    this.postLogoutRedirectUris,
+    this.vpDefinition,
+    this.presentationDefinition,
+    this.dcqlQuery,
+    this.idTokenMapping,
+    this.clientMetadata,
+    this.claimFormat,
+    this.failOnMappingConflict,
+    this.scope,
+    this.tokenEndpointAuthMethod,
+  }) : super._();
   @override
   CreateLoginConfigurationInput rebuild(
-          void Function(CreateLoginConfigurationInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateLoginConfigurationInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateLoginConfigurationInputBuilder toBuilder() =>
@@ -186,8 +191,10 @@ class _$CreateLoginConfigurationInput extends CreateLoginConfigurationInput {
 
 class CreateLoginConfigurationInputBuilder
     implements
-        Builder<CreateLoginConfigurationInput,
-            CreateLoginConfigurationInputBuilder> {
+        Builder<
+          CreateLoginConfigurationInput,
+          CreateLoginConfigurationInputBuilder
+        > {
   _$CreateLoginConfigurationInput? _$v;
 
   String? _name;
@@ -233,8 +240,8 @@ class CreateLoginConfigurationInputBuilder
   LoginConfigurationClientMetadataInputBuilder get clientMetadata =>
       _$this._clientMetadata ??= LoginConfigurationClientMetadataInputBuilder();
   set clientMetadata(
-          LoginConfigurationClientMetadataInputBuilder? clientMetadata) =>
-      _$this._clientMetadata = clientMetadata;
+    LoginConfigurationClientMetadataInputBuilder? clientMetadata,
+  ) => _$this._clientMetadata = clientMetadata;
 
   CreateLoginConfigurationInputClaimFormatEnum? _claimFormat;
   CreateLoginConfigurationInputClaimFormatEnum? get claimFormat =>
@@ -255,8 +262,8 @@ class CreateLoginConfigurationInputBuilder
   TokenEndpointAuthMethod? get tokenEndpointAuthMethod =>
       _$this._tokenEndpointAuthMethod;
   set tokenEndpointAuthMethod(
-          TokenEndpointAuthMethod? tokenEndpointAuthMethod) =>
-      _$this._tokenEndpointAuthMethod = tokenEndpointAuthMethod;
+    TokenEndpointAuthMethod? tokenEndpointAuthMethod,
+  ) => _$this._tokenEndpointAuthMethod = tokenEndpointAuthMethod;
 
   CreateLoginConfigurationInputBuilder() {
     CreateLoginConfigurationInput._defaults(this);
@@ -299,10 +306,14 @@ class CreateLoginConfigurationInputBuilder
   _$CreateLoginConfigurationInput _build() {
     _$CreateLoginConfigurationInput _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$CreateLoginConfigurationInput._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'CreateLoginConfigurationInput', 'name'),
+              name,
+              r'CreateLoginConfigurationInput',
+              'name',
+            ),
             description: description,
             redirectUris: redirectUris.build(),
             postLogoutRedirectUris: _postLogoutRedirectUris?.build(),
@@ -330,7 +341,10 @@ class CreateLoginConfigurationInputBuilder
         _clientMetadata?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'CreateLoginConfigurationInput', _$failedField, e.toString());
+          r'CreateLoginConfigurationInput',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

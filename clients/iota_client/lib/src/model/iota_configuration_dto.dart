@@ -26,6 +26,7 @@ part 'iota_configuration_dto.g.dart';
 /// * [mode] - Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
 /// * [redirectUris] - List of allowed URLs to redirect users, including the response from the request. This is required if the selected data-sharing mode is Redirect.
 /// * [enableIdvProviders] - Enables identity verification from user with a 3rd-party provider when a verified identity document is not found.
+/// * [mediatorDid]
 @BuiltValue()
 abstract class IotaConfigurationDto
     implements Built<IotaConfigurationDto, IotaConfigurationDtoBuilder> {
@@ -81,6 +82,9 @@ abstract class IotaConfigurationDto
   @BuiltValueField(wireName: r'enableIdvProviders')
   bool? get enableIdvProviders;
 
+  @BuiltValueField(wireName: r'mediatorDid')
+  String? get mediatorDid;
+
   IotaConfigurationDto._();
 
   factory IotaConfigurationDto([void updates(IotaConfigurationDtoBuilder b)]) =
@@ -100,7 +104,7 @@ class _$IotaConfigurationDtoSerializer
   @override
   final Iterable<Type> types = const [
     IotaConfigurationDto,
-    _$IotaConfigurationDto
+    _$IotaConfigurationDto,
   ];
 
   @override
@@ -184,6 +188,13 @@ class _$IotaConfigurationDtoSerializer
         specifiedType: const FullType(bool),
       );
     }
+    if (object.mediatorDid != null) {
+      yield r'mediatorDid';
+      yield serializers.serialize(
+        object.mediatorDid,
+        specifiedType: const FullType(String),
+      );
+    }
   }
 
   @override
@@ -192,9 +203,11 @@ class _$IotaConfigurationDtoSerializer
     IotaConfigurationDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -210,95 +223,131 @@ class _$IotaConfigurationDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'ari':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.ari = valueDes;
           break;
         case r'configurationId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.configurationId = valueDes;
           break;
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'projectId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.projectId = valueDes;
           break;
         case r'walletAri':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.walletAri = valueDes;
           break;
         case r'tokenMaxAge':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.tokenMaxAge = valueDes;
           break;
         case r'iotaResponseWebhookURL':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.iotaResponseWebhookURL = valueDes;
           break;
         case r'enableVerification':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.enableVerification = valueDes;
           break;
         case r'enableConsentAuditLog':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.enableConsentAuditLog = valueDes;
           break;
         case r'clientMetadata':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(IotaConfigurationDtoClientMetadata),
-          ) as IotaConfigurationDtoClientMetadata;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      IotaConfigurationDtoClientMetadata,
+                    ),
+                  )
+                  as IotaConfigurationDtoClientMetadata;
           result.clientMetadata.replace(valueDes);
           break;
         case r'mode':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(IotaConfigurationDtoModeEnum),
-          ) as IotaConfigurationDtoModeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(IotaConfigurationDtoModeEnum),
+                  )
+                  as IotaConfigurationDtoModeEnum;
           result.mode = valueDes;
           break;
         case r'redirectUris':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.redirectUris.replace(valueDes);
           break;
         case r'enableIdvProviders':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.enableIdvProviders = valueDes;
+          break;
+        case r'mediatorDid':
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
+          result.mediatorDid = valueDes;
           break;
         default:
           unhandled.add(key);

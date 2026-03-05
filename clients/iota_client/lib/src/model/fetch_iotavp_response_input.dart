@@ -37,9 +37,9 @@ abstract class FetchIOTAVPResponseInput
 
   FetchIOTAVPResponseInput._();
 
-  factory FetchIOTAVPResponseInput(
-          [void updates(FetchIOTAVPResponseInputBuilder b)]) =
-      _$FetchIOTAVPResponseInput;
+  factory FetchIOTAVPResponseInput([
+    void updates(FetchIOTAVPResponseInputBuilder b),
+  ]) = _$FetchIOTAVPResponseInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(FetchIOTAVPResponseInputBuilder b) => b;
@@ -54,7 +54,7 @@ class _$FetchIOTAVPResponseInputSerializer
   @override
   final Iterable<Type> types = const [
     FetchIOTAVPResponseInput,
-    _$FetchIOTAVPResponseInput
+    _$FetchIOTAVPResponseInput,
   ];
 
   @override
@@ -93,9 +93,11 @@ class _$FetchIOTAVPResponseInputSerializer
     FetchIOTAVPResponseInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -111,31 +113,39 @@ class _$FetchIOTAVPResponseInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'correlationId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.correlationId = valueDes;
           break;
         case r'transactionId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.transactionId = valueDes;
           break;
         case r'responseCode':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.responseCode = valueDes;
           break;
         case r'configurationId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.configurationId = valueDes;
           break;
         default:

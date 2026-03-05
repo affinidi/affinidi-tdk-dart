@@ -47,8 +47,9 @@ class _$JsonWebKeySerializer implements PrimitiveSerializer<JsonWebKey> {
       yield r'keys';
       yield serializers.serialize(
         object.keys,
-        specifiedType:
-            const FullType(BuiltList, [FullType(JsonWebKeyKeysInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(JsonWebKeyKeysInner),
+        ]),
       );
     }
   }
@@ -59,9 +60,11 @@ class _$JsonWebKeySerializer implements PrimitiveSerializer<JsonWebKey> {
     JsonWebKey object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -77,11 +80,14 @@ class _$JsonWebKeySerializer implements PrimitiveSerializer<JsonWebKey> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'keys':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(BuiltList, [FullType(JsonWebKeyKeysInner)]),
-          ) as BuiltList<JsonWebKeyKeysInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(JsonWebKeyKeysInner),
+                    ]),
+                  )
+                  as BuiltList<JsonWebKeyKeysInner>;
           result.keys.replace(valueDes);
           break;
         default:

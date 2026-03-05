@@ -7,12 +7,13 @@ part of 'principal_does_not_belong_to_project_error.dart';
 // **************************************************************************
 
 const PrincipalDoesNotBelongToProjectErrorNameEnum
-    _$principalDoesNotBelongToProjectErrorNameEnum_principalDoesNotBelongToProjectError =
+_$principalDoesNotBelongToProjectErrorNameEnum_principalDoesNotBelongToProjectError =
     const PrincipalDoesNotBelongToProjectErrorNameEnum._(
-        'principalDoesNotBelongToProjectError');
+      'principalDoesNotBelongToProjectError',
+    );
 
 PrincipalDoesNotBelongToProjectErrorNameEnum
-    _$principalDoesNotBelongToProjectErrorNameEnumValueOf(String name) {
+_$principalDoesNotBelongToProjectErrorNameEnumValueOf(String name) {
   switch (name) {
     case 'principalDoesNotBelongToProjectError':
       return _$principalDoesNotBelongToProjectErrorNameEnum_principalDoesNotBelongToProjectError;
@@ -22,18 +23,21 @@ PrincipalDoesNotBelongToProjectErrorNameEnum
 }
 
 final BuiltSet<PrincipalDoesNotBelongToProjectErrorNameEnum>
-    _$principalDoesNotBelongToProjectErrorNameEnumValues = BuiltSet<
-        PrincipalDoesNotBelongToProjectErrorNameEnum>(const <PrincipalDoesNotBelongToProjectErrorNameEnum>[
-  _$principalDoesNotBelongToProjectErrorNameEnum_principalDoesNotBelongToProjectError,
-]);
+_$principalDoesNotBelongToProjectErrorNameEnumValues =
+    BuiltSet<PrincipalDoesNotBelongToProjectErrorNameEnum>(const <
+      PrincipalDoesNotBelongToProjectErrorNameEnum
+    >[
+      _$principalDoesNotBelongToProjectErrorNameEnum_principalDoesNotBelongToProjectError,
+    ]);
 
 const PrincipalDoesNotBelongToProjectErrorMessageEnum
-    _$principalDoesNotBelongToProjectErrorMessageEnum_principalDoesNotBelongToTheGivenProject =
+_$principalDoesNotBelongToProjectErrorMessageEnum_principalDoesNotBelongToTheGivenProject =
     const PrincipalDoesNotBelongToProjectErrorMessageEnum._(
-        'principalDoesNotBelongToTheGivenProject');
+      'principalDoesNotBelongToTheGivenProject',
+    );
 
 PrincipalDoesNotBelongToProjectErrorMessageEnum
-    _$principalDoesNotBelongToProjectErrorMessageEnumValueOf(String name) {
+_$principalDoesNotBelongToProjectErrorMessageEnumValueOf(String name) {
   switch (name) {
     case 'principalDoesNotBelongToTheGivenProject':
       return _$principalDoesNotBelongToProjectErrorMessageEnum_principalDoesNotBelongToTheGivenProject;
@@ -43,18 +47,19 @@ PrincipalDoesNotBelongToProjectErrorMessageEnum
 }
 
 final BuiltSet<PrincipalDoesNotBelongToProjectErrorMessageEnum>
-    _$principalDoesNotBelongToProjectErrorMessageEnumValues = BuiltSet<
-        PrincipalDoesNotBelongToProjectErrorMessageEnum>(const <PrincipalDoesNotBelongToProjectErrorMessageEnum>[
-  _$principalDoesNotBelongToProjectErrorMessageEnum_principalDoesNotBelongToTheGivenProject,
-]);
+_$principalDoesNotBelongToProjectErrorMessageEnumValues =
+    BuiltSet<PrincipalDoesNotBelongToProjectErrorMessageEnum>(const <
+      PrincipalDoesNotBelongToProjectErrorMessageEnum
+    >[
+      _$principalDoesNotBelongToProjectErrorMessageEnum_principalDoesNotBelongToTheGivenProject,
+    ]);
 
 const PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum
-    _$principalDoesNotBelongToProjectErrorHttpStatusCodeEnum_number403 =
+_$principalDoesNotBelongToProjectErrorHttpStatusCodeEnum_number403 =
     const PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum._('number403');
 
 PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum
-    _$principalDoesNotBelongToProjectErrorHttpStatusCodeEnumValueOf(
-        String name) {
+_$principalDoesNotBelongToProjectErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number403':
       return _$principalDoesNotBelongToProjectErrorHttpStatusCodeEnum_number403;
@@ -64,19 +69,21 @@ PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum
 }
 
 final BuiltSet<PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum>
-    _$principalDoesNotBelongToProjectErrorHttpStatusCodeEnumValues = BuiltSet<
-        PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum>(const <PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum>[
-  _$principalDoesNotBelongToProjectErrorHttpStatusCodeEnum_number403,
-]);
+_$principalDoesNotBelongToProjectErrorHttpStatusCodeEnumValues =
+    BuiltSet<PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum>(
+      const <PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum>[
+        _$principalDoesNotBelongToProjectErrorHttpStatusCodeEnum_number403,
+      ],
+    );
 
 Serializer<PrincipalDoesNotBelongToProjectErrorNameEnum>
-    _$principalDoesNotBelongToProjectErrorNameEnumSerializer =
+_$principalDoesNotBelongToProjectErrorNameEnumSerializer =
     _$PrincipalDoesNotBelongToProjectErrorNameEnumSerializer();
 Serializer<PrincipalDoesNotBelongToProjectErrorMessageEnum>
-    _$principalDoesNotBelongToProjectErrorMessageEnumSerializer =
+_$principalDoesNotBelongToProjectErrorMessageEnumSerializer =
     _$PrincipalDoesNotBelongToProjectErrorMessageEnumSerializer();
 Serializer<PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum>
-    _$principalDoesNotBelongToProjectErrorHttpStatusCodeEnumSerializer =
+_$principalDoesNotBelongToProjectErrorHttpStatusCodeEnumSerializer =
     _$PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnumSerializer();
 
 class _$PrincipalDoesNotBelongToProjectErrorNameEnumSerializer
@@ -93,23 +100,26 @@ class _$PrincipalDoesNotBelongToProjectErrorNameEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    PrincipalDoesNotBelongToProjectErrorNameEnum
+    PrincipalDoesNotBelongToProjectErrorNameEnum,
   ];
   @override
   final String wireName = 'PrincipalDoesNotBelongToProjectErrorNameEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          PrincipalDoesNotBelongToProjectErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    PrincipalDoesNotBelongToProjectErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   PrincipalDoesNotBelongToProjectErrorNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      PrincipalDoesNotBelongToProjectErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => PrincipalDoesNotBelongToProjectErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$PrincipalDoesNotBelongToProjectErrorMessageEnumSerializer
@@ -126,29 +136,33 @@ class _$PrincipalDoesNotBelongToProjectErrorMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    PrincipalDoesNotBelongToProjectErrorMessageEnum
+    PrincipalDoesNotBelongToProjectErrorMessageEnum,
   ];
   @override
   final String wireName = 'PrincipalDoesNotBelongToProjectErrorMessageEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          PrincipalDoesNotBelongToProjectErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    PrincipalDoesNotBelongToProjectErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   PrincipalDoesNotBelongToProjectErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      PrincipalDoesNotBelongToProjectErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => PrincipalDoesNotBelongToProjectErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnumSerializer
     implements
         PrimitiveSerializer<
-            PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum> {
+          PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum
+        > {
   static const Map<String, Object> _toWire = const <String, Object>{
     'number403': 403,
   };
@@ -158,24 +172,27 @@ class _$PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum
+    PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum,
   ];
   @override
   final String wireName =
       'PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$PrincipalDoesNotBelongToProjectError
@@ -189,24 +206,24 @@ class _$PrincipalDoesNotBelongToProjectError
   @override
   final String traceId;
   @override
-  final BuiltList<ServiceErrorResponseDetailsInner>? details;
+  final BuiltList<UnexpectedErrorDetailsInner>? details;
 
-  factory _$PrincipalDoesNotBelongToProjectError(
-          [void Function(PrincipalDoesNotBelongToProjectErrorBuilder)?
-              updates]) =>
+  factory _$PrincipalDoesNotBelongToProjectError([
+    void Function(PrincipalDoesNotBelongToProjectErrorBuilder)? updates,
+  ]) =>
       (PrincipalDoesNotBelongToProjectErrorBuilder()..update(updates))._build();
 
-  _$PrincipalDoesNotBelongToProjectError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$PrincipalDoesNotBelongToProjectError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   PrincipalDoesNotBelongToProjectError rebuild(
-          void Function(PrincipalDoesNotBelongToProjectErrorBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(PrincipalDoesNotBelongToProjectErrorBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   PrincipalDoesNotBelongToProjectErrorBuilder toBuilder() =>
@@ -249,8 +266,10 @@ class _$PrincipalDoesNotBelongToProjectError
 
 class PrincipalDoesNotBelongToProjectErrorBuilder
     implements
-        Builder<PrincipalDoesNotBelongToProjectError,
-            PrincipalDoesNotBelongToProjectErrorBuilder> {
+        Builder<
+          PrincipalDoesNotBelongToProjectError,
+          PrincipalDoesNotBelongToProjectErrorBuilder
+        > {
   _$PrincipalDoesNotBelongToProjectError? _$v;
 
   PrincipalDoesNotBelongToProjectErrorNameEnum? _name;
@@ -268,18 +287,17 @@ class PrincipalDoesNotBelongToProjectErrorBuilder
   PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum? get httpStatusCode =>
       _$this._httpStatusCode;
   set httpStatusCode(
-          PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum?
-              httpStatusCode) =>
-      _$this._httpStatusCode = httpStatusCode;
+    PrincipalDoesNotBelongToProjectErrorHttpStatusCodeEnum? httpStatusCode,
+  ) => _$this._httpStatusCode = httpStatusCode;
 
   String? _traceId;
   String? get traceId => _$this._traceId;
   set traceId(String? traceId) => _$this._traceId = traceId;
 
-  ListBuilder<ServiceErrorResponseDetailsInner>? _details;
-  ListBuilder<ServiceErrorResponseDetailsInner> get details =>
-      _$this._details ??= ListBuilder<ServiceErrorResponseDetailsInner>();
-  set details(ListBuilder<ServiceErrorResponseDetailsInner>? details) =>
+  ListBuilder<UnexpectedErrorDetailsInner>? _details;
+  ListBuilder<UnexpectedErrorDetailsInner> get details =>
+      _$this._details ??= ListBuilder<UnexpectedErrorDetailsInner>();
+  set details(ListBuilder<UnexpectedErrorDetailsInner>? details) =>
       _$this._details = details;
 
   PrincipalDoesNotBelongToProjectErrorBuilder() {
@@ -306,7 +324,8 @@ class PrincipalDoesNotBelongToProjectErrorBuilder
 
   @override
   void update(
-      void Function(PrincipalDoesNotBelongToProjectErrorBuilder)? updates) {
+    void Function(PrincipalDoesNotBelongToProjectErrorBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -316,18 +335,29 @@ class PrincipalDoesNotBelongToProjectErrorBuilder
   _$PrincipalDoesNotBelongToProjectError _build() {
     _$PrincipalDoesNotBelongToProjectError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$PrincipalDoesNotBelongToProjectError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'PrincipalDoesNotBelongToProjectError', 'name'),
+              name,
+              r'PrincipalDoesNotBelongToProjectError',
+              'name',
+            ),
             message: BuiltValueNullFieldError.checkNotNull(
-                message, r'PrincipalDoesNotBelongToProjectError', 'message'),
+              message,
+              r'PrincipalDoesNotBelongToProjectError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode,
-                r'PrincipalDoesNotBelongToProjectError',
-                'httpStatusCode'),
+              httpStatusCode,
+              r'PrincipalDoesNotBelongToProjectError',
+              'httpStatusCode',
+            ),
             traceId: BuiltValueNullFieldError.checkNotNull(
-                traceId, r'PrincipalDoesNotBelongToProjectError', 'traceId'),
+              traceId,
+              r'PrincipalDoesNotBelongToProjectError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -337,9 +367,10 @@ class PrincipalDoesNotBelongToProjectErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'PrincipalDoesNotBelongToProjectError',
-            _$failedField,
-            e.toString());
+          r'PrincipalDoesNotBelongToProjectError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

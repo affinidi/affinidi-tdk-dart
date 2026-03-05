@@ -16,20 +16,20 @@ class _$FetchIOTAVPResponseInput extends FetchIOTAVPResponseInput {
   @override
   final String configurationId;
 
-  factory _$FetchIOTAVPResponseInput(
-          [void Function(FetchIOTAVPResponseInputBuilder)? updates]) =>
-      (FetchIOTAVPResponseInputBuilder()..update(updates))._build();
+  factory _$FetchIOTAVPResponseInput([
+    void Function(FetchIOTAVPResponseInputBuilder)? updates,
+  ]) => (FetchIOTAVPResponseInputBuilder()..update(updates))._build();
 
-  _$FetchIOTAVPResponseInput._(
-      {required this.correlationId,
-      required this.transactionId,
-      required this.responseCode,
-      required this.configurationId})
-      : super._();
+  _$FetchIOTAVPResponseInput._({
+    required this.correlationId,
+    required this.transactionId,
+    required this.responseCode,
+    required this.configurationId,
+  }) : super._();
   @override
   FetchIOTAVPResponseInput rebuild(
-          void Function(FetchIOTAVPResponseInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(FetchIOTAVPResponseInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   FetchIOTAVPResponseInputBuilder toBuilder() =>
@@ -121,16 +121,29 @@ class FetchIOTAVPResponseInputBuilder
   FetchIOTAVPResponseInput build() => _build();
 
   _$FetchIOTAVPResponseInput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$FetchIOTAVPResponseInput._(
           correlationId: BuiltValueNullFieldError.checkNotNull(
-              correlationId, r'FetchIOTAVPResponseInput', 'correlationId'),
+            correlationId,
+            r'FetchIOTAVPResponseInput',
+            'correlationId',
+          ),
           transactionId: BuiltValueNullFieldError.checkNotNull(
-              transactionId, r'FetchIOTAVPResponseInput', 'transactionId'),
+            transactionId,
+            r'FetchIOTAVPResponseInput',
+            'transactionId',
+          ),
           responseCode: BuiltValueNullFieldError.checkNotNull(
-              responseCode, r'FetchIOTAVPResponseInput', 'responseCode'),
+            responseCode,
+            r'FetchIOTAVPResponseInput',
+            'responseCode',
+          ),
           configurationId: BuiltValueNullFieldError.checkNotNull(
-              configurationId, r'FetchIOTAVPResponseInput', 'configurationId'),
+            configurationId,
+            r'FetchIOTAVPResponseInput',
+            'configurationId',
+          ),
         );
     replace(_$result);
     return _$result;

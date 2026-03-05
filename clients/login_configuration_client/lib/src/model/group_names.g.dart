@@ -92,11 +92,9 @@ class GroupNamesBuilder implements Builder<GroupNames, GroupNamesBuilder> {
   _$GroupNames _build() {
     _$GroupNames _$result;
     try {
-      _$result = _$v ??
-          _$GroupNames._(
-            groupNames: groupNames.build(),
-            pageToken: pageToken,
-          );
+      _$result =
+          _$v ??
+          _$GroupNames._(groupNames: groupNames.build(), pageToken: pageToken);
     } catch (_) {
       late String _$failedField;
       try {
@@ -104,7 +102,10 @@ class GroupNamesBuilder implements Builder<GroupNames, GroupNamesBuilder> {
         groupNames.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'GroupNames', _$failedField, e.toString());
+          r'GroupNames',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

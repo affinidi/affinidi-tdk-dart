@@ -37,9 +37,9 @@ class _$WalletsListDto extends WalletsListDto {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'WalletsListDto')
-          ..add('wallets', wallets))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'WalletsListDto',
+    )..add('wallets', wallets)).toString();
   }
 }
 
@@ -81,10 +81,7 @@ class WalletsListDtoBuilder
   _$WalletsListDto _build() {
     _$WalletsListDto _$result;
     try {
-      _$result = _$v ??
-          _$WalletsListDto._(
-            wallets: _wallets?.build(),
-          );
+      _$result = _$v ?? _$WalletsListDto._(wallets: _wallets?.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -92,7 +89,10 @@ class WalletsListDtoBuilder
         _wallets?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'WalletsListDto', _$failedField, e.toString());
+          r'WalletsListDto',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

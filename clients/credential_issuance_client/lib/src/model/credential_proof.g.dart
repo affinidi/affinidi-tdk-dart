@@ -10,7 +10,8 @@ const CredentialProofProofTypeEnum _$credentialProofProofTypeEnum_jwt =
     const CredentialProofProofTypeEnum._('jwt');
 
 CredentialProofProofTypeEnum _$credentialProofProofTypeEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'jwt':
       return _$credentialProofProofTypeEnum_jwt;
@@ -20,13 +21,12 @@ CredentialProofProofTypeEnum _$credentialProofProofTypeEnumValueOf(
 }
 
 final BuiltSet<CredentialProofProofTypeEnum>
-    _$credentialProofProofTypeEnumValues =
-    BuiltSet<CredentialProofProofTypeEnum>(const <CredentialProofProofTypeEnum>[
-  _$credentialProofProofTypeEnum_jwt,
-]);
+_$credentialProofProofTypeEnumValues = BuiltSet<CredentialProofProofTypeEnum>(
+  const <CredentialProofProofTypeEnum>[_$credentialProofProofTypeEnum_jwt],
+);
 
 Serializer<CredentialProofProofTypeEnum>
-    _$credentialProofProofTypeEnumSerializer =
+_$credentialProofProofTypeEnumSerializer =
     _$CredentialProofProofTypeEnumSerializer();
 
 class _$CredentialProofProofTypeEnumSerializer
@@ -44,16 +44,20 @@ class _$CredentialProofProofTypeEnumSerializer
   final String wireName = 'CredentialProofProofTypeEnum';
 
   @override
-  Object serialize(Serializers serializers, CredentialProofProofTypeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    CredentialProofProofTypeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   CredentialProofProofTypeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      CredentialProofProofTypeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => CredentialProofProofTypeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$CredentialProof extends CredentialProof {
@@ -140,12 +144,19 @@ class CredentialProofBuilder
   CredentialProof build() => _build();
 
   _$CredentialProof _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CredentialProof._(
           proofType: BuiltValueNullFieldError.checkNotNull(
-              proofType, r'CredentialProof', 'proofType'),
+            proofType,
+            r'CredentialProof',
+            'proofType',
+          ),
           jwt: BuiltValueNullFieldError.checkNotNull(
-              jwt, r'CredentialProof', 'jwt'),
+            jwt,
+            r'CredentialProof',
+            'jwt',
+          ),
         );
     replace(_$result);
     return _$result;

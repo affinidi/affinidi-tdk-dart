@@ -14,12 +14,12 @@ class _$BlockedUsersInput extends BlockedUsersInput {
   @override
   final BuiltList<String> userIds;
 
-  factory _$BlockedUsersInput(
-          [void Function(BlockedUsersInputBuilder)? updates]) =>
-      (BlockedUsersInputBuilder()..update(updates))._build();
+  factory _$BlockedUsersInput([
+    void Function(BlockedUsersInputBuilder)? updates,
+  ]) => (BlockedUsersInputBuilder()..update(updates))._build();
 
   _$BlockedUsersInput._({this.name, this.description, required this.userIds})
-      : super._();
+    : super._();
   @override
   BlockedUsersInput rebuild(void Function(BlockedUsersInputBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -104,7 +104,8 @@ class BlockedUsersInputBuilder
   _$BlockedUsersInput _build() {
     _$BlockedUsersInput _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$BlockedUsersInput._(
             name: name,
             description: description,
@@ -117,7 +118,10 @@ class BlockedUsersInputBuilder
         userIds.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'BlockedUsersInput', _$failedField, e.toString());
+          r'BlockedUsersInput',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

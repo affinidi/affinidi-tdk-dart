@@ -39,7 +39,7 @@ class _$ListIssuanceResponseSerializer
   @override
   final Iterable<Type> types = const [
     ListIssuanceResponse,
-    _$ListIssuanceResponse
+    _$ListIssuanceResponse,
   ];
 
   @override
@@ -53,8 +53,9 @@ class _$ListIssuanceResponseSerializer
     yield r'issuances';
     yield serializers.serialize(
       object.issuances,
-      specifiedType: const FullType(
-          BuiltList, [FullType(ListIssuanceResponseIssuancesInner)]),
+      specifiedType: const FullType(BuiltList, [
+        FullType(ListIssuanceResponseIssuancesInner),
+      ]),
     );
   }
 
@@ -64,9 +65,11 @@ class _$ListIssuanceResponseSerializer
     ListIssuanceResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -82,11 +85,14 @@ class _$ListIssuanceResponseSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'issuances':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltList, [FullType(ListIssuanceResponseIssuancesInner)]),
-          ) as BuiltList<ListIssuanceResponseIssuancesInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(ListIssuanceResponseIssuancesInner),
+                    ]),
+                  )
+                  as BuiltList<ListIssuanceResponseIssuancesInner>;
           result.issuances.replace(valueDes);
           break;
         default:

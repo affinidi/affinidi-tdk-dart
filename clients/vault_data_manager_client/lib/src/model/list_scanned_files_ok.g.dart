@@ -10,15 +10,15 @@ class _$ListScannedFilesOK extends ListScannedFilesOK {
   @override
   final BuiltList<ListScannedFilesOKScannedFilesInner> scannedFiles;
 
-  factory _$ListScannedFilesOK(
-          [void Function(ListScannedFilesOKBuilder)? updates]) =>
-      (ListScannedFilesOKBuilder()..update(updates))._build();
+  factory _$ListScannedFilesOK([
+    void Function(ListScannedFilesOKBuilder)? updates,
+  ]) => (ListScannedFilesOKBuilder()..update(updates))._build();
 
   _$ListScannedFilesOK._({required this.scannedFiles}) : super._();
   @override
   ListScannedFilesOK rebuild(
-          void Function(ListScannedFilesOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ListScannedFilesOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ListScannedFilesOKBuilder toBuilder() =>
@@ -40,9 +40,9 @@ class _$ListScannedFilesOK extends ListScannedFilesOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'ListScannedFilesOK')
-          ..add('scannedFiles', scannedFiles))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'ListScannedFilesOK',
+    )..add('scannedFiles', scannedFiles)).toString();
   }
 }
 
@@ -55,8 +55,8 @@ class ListScannedFilesOKBuilder
       _$this._scannedFiles ??=
           ListBuilder<ListScannedFilesOKScannedFilesInner>();
   set scannedFiles(
-          ListBuilder<ListScannedFilesOKScannedFilesInner>? scannedFiles) =>
-      _$this._scannedFiles = scannedFiles;
+    ListBuilder<ListScannedFilesOKScannedFilesInner>? scannedFiles,
+  ) => _$this._scannedFiles = scannedFiles;
 
   ListScannedFilesOKBuilder() {
     ListScannedFilesOK._defaults(this);
@@ -87,10 +87,8 @@ class ListScannedFilesOKBuilder
   _$ListScannedFilesOK _build() {
     _$ListScannedFilesOK _$result;
     try {
-      _$result = _$v ??
-          _$ListScannedFilesOK._(
-            scannedFiles: scannedFiles.build(),
-          );
+      _$result =
+          _$v ?? _$ListScannedFilesOK._(scannedFiles: scannedFiles.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -98,7 +96,10 @@ class ListScannedFilesOKBuilder
         scannedFiles.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'ListScannedFilesOK', _$failedField, e.toString());
+          r'ListScannedFilesOK',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

@@ -20,22 +20,22 @@ class _$CreateChildNodeInput extends CreateChildNodeInput {
   @override
   final String? metadata;
 
-  factory _$CreateChildNodeInput(
-          [void Function(CreateChildNodeInputBuilder)? updates]) =>
-      (CreateChildNodeInputBuilder()..update(updates))._build();
+  factory _$CreateChildNodeInput([
+    void Function(CreateChildNodeInputBuilder)? updates,
+  ]) => (CreateChildNodeInputBuilder()..update(updates))._build();
 
-  _$CreateChildNodeInput._(
-      {required this.name,
-      required this.type,
-      this.description,
-      this.edekInfo,
-      this.dek,
-      this.metadata})
-      : super._();
+  _$CreateChildNodeInput._({
+    required this.name,
+    required this.type,
+    this.description,
+    this.edekInfo,
+    this.dek,
+    this.metadata,
+  }) : super._();
   @override
   CreateChildNodeInput rebuild(
-          void Function(CreateChildNodeInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateChildNodeInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateChildNodeInputBuilder toBuilder() =>
@@ -141,12 +141,19 @@ class CreateChildNodeInputBuilder
   _$CreateChildNodeInput _build() {
     _$CreateChildNodeInput _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$CreateChildNodeInput._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'CreateChildNodeInput', 'name'),
+              name,
+              r'CreateChildNodeInput',
+              'name',
+            ),
             type: BuiltValueNullFieldError.checkNotNull(
-                type, r'CreateChildNodeInput', 'type'),
+              type,
+              r'CreateChildNodeInput',
+              'type',
+            ),
             description: description,
             edekInfo: _edekInfo?.build(),
             dek: dek,
@@ -159,7 +166,10 @@ class CreateChildNodeInputBuilder
         _edekInfo?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'CreateChildNodeInput', _$failedField, e.toString());
+          r'CreateChildNodeInput',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

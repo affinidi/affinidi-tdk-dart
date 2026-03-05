@@ -43,13 +43,8 @@ class ConsumerAuthApi {
     final _path = r'/v1/consumer/oauth2/token';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       contentType: 'application/json',
       validateStatus: validateStatus,
     );
@@ -58,14 +53,13 @@ class ConsumerAuthApi {
 
     try {
       const _type = FullType(ConsumerAuthTokenEndpointInput);
-      _bodyData = _serializers.serialize(consumerAuthTokenEndpointInput,
-          specifiedType: _type);
+      _bodyData = _serializers.serialize(
+        consumerAuthTokenEndpointInput,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -88,9 +82,12 @@ class ConsumerAuthApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(ConsumerAuthTokenEndpointOutput),
-            ) as ConsumerAuthTokenEndpointOutput;
+                  rawResponse,
+                  specifiedType: const FullType(
+                    ConsumerAuthTokenEndpointOutput,
+                  ),
+                )
+                as ConsumerAuthTokenEndpointOutput;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

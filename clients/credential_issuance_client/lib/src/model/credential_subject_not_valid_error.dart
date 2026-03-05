@@ -21,8 +21,10 @@ part 'credential_subject_not_valid_error.g.dart';
 @BuiltValue()
 abstract class CredentialSubjectNotValidError
     implements
-        Built<CredentialSubjectNotValidError,
-            CredentialSubjectNotValidErrorBuilder> {
+        Built<
+          CredentialSubjectNotValidError,
+          CredentialSubjectNotValidErrorBuilder
+        > {
   @BuiltValueField(wireName: r'name')
   CredentialSubjectNotValidErrorNameEnum get name;
   // enum nameEnum {  CredentialSubjectNotValidError,  };
@@ -43,9 +45,9 @@ abstract class CredentialSubjectNotValidError
 
   CredentialSubjectNotValidError._();
 
-  factory CredentialSubjectNotValidError(
-          [void updates(CredentialSubjectNotValidErrorBuilder b)]) =
-      _$CredentialSubjectNotValidError;
+  factory CredentialSubjectNotValidError([
+    void updates(CredentialSubjectNotValidErrorBuilder b),
+  ]) = _$CredentialSubjectNotValidError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CredentialSubjectNotValidErrorBuilder b) => b;
@@ -60,7 +62,7 @@ class _$CredentialSubjectNotValidErrorSerializer
   @override
   final Iterable<Type> types = const [
     CredentialSubjectNotValidError,
-    _$CredentialSubjectNotValidError
+    _$CredentialSubjectNotValidError,
   ];
 
   @override
@@ -84,8 +86,9 @@ class _$CredentialSubjectNotValidErrorSerializer
     yield r'httpStatusCode';
     yield serializers.serialize(
       object.httpStatusCode,
-      specifiedType:
-          const FullType(CredentialSubjectNotValidErrorHttpStatusCodeEnum),
+      specifiedType: const FullType(
+        CredentialSubjectNotValidErrorHttpStatusCodeEnum,
+      ),
     );
     yield r'traceId';
     yield serializers.serialize(
@@ -96,8 +99,9 @@ class _$CredentialSubjectNotValidErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(
-            BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(ActionForbiddenErrorDetailsInner),
+        ]),
       );
     }
   }
@@ -108,9 +112,11 @@ class _$CredentialSubjectNotValidErrorSerializer
     CredentialSubjectNotValidError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -126,42 +132,56 @@ class _$CredentialSubjectNotValidErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(CredentialSubjectNotValidErrorNameEnum),
-          ) as CredentialSubjectNotValidErrorNameEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      CredentialSubjectNotValidErrorNameEnum,
+                    ),
+                  )
+                  as CredentialSubjectNotValidErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(CredentialSubjectNotValidErrorMessageEnum),
-          ) as CredentialSubjectNotValidErrorMessageEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      CredentialSubjectNotValidErrorMessageEnum,
+                    ),
+                  )
+                  as CredentialSubjectNotValidErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                CredentialSubjectNotValidErrorHttpStatusCodeEnum),
-          ) as CredentialSubjectNotValidErrorHttpStatusCodeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      CredentialSubjectNotValidErrorHttpStatusCodeEnum,
+                    ),
+                  )
+                  as CredentialSubjectNotValidErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
-          ) as BuiltList<ActionForbiddenErrorDetailsInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(ActionForbiddenErrorDetailsInner),
+                    ]),
+                  )
+                  as BuiltList<ActionForbiddenErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -196,7 +216,7 @@ class _$CredentialSubjectNotValidErrorSerializer
 class CredentialSubjectNotValidErrorNameEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'CredentialSubjectNotValidError')
   static const CredentialSubjectNotValidErrorNameEnum
-      credentialSubjectNotValidError =
+  credentialSubjectNotValidError =
       _$credentialSubjectNotValidErrorNameEnum_credentialSubjectNotValidError;
 
   static Serializer<CredentialSubjectNotValidErrorNameEnum> get serializer =>
@@ -212,9 +232,10 @@ class CredentialSubjectNotValidErrorNameEnum extends EnumClass {
 
 class CredentialSubjectNotValidErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(
-      wireName: r'Credential subject is not according to the vc schema')
+    wireName: r'Credential subject is not according to the vc schema',
+  )
   static const CredentialSubjectNotValidErrorMessageEnum
-      credentialSubjectIsNotAccordingToTheVcSchema =
+  credentialSubjectIsNotAccordingToTheVcSchema =
       _$credentialSubjectNotValidErrorMessageEnum_credentialSubjectIsNotAccordingToTheVcSchema;
 
   static Serializer<CredentialSubjectNotValidErrorMessageEnum> get serializer =>
@@ -234,15 +255,15 @@ class CredentialSubjectNotValidErrorHttpStatusCodeEnum extends EnumClass {
       _$credentialSubjectNotValidErrorHttpStatusCodeEnum_number400;
 
   static Serializer<CredentialSubjectNotValidErrorHttpStatusCodeEnum>
-      get serializer =>
-          _$credentialSubjectNotValidErrorHttpStatusCodeEnumSerializer;
+  get serializer =>
+      _$credentialSubjectNotValidErrorHttpStatusCodeEnumSerializer;
 
   const CredentialSubjectNotValidErrorHttpStatusCodeEnum._(String name)
-      : super(name);
+    : super(name);
 
   static BuiltSet<CredentialSubjectNotValidErrorHttpStatusCodeEnum>
-      get values => _$credentialSubjectNotValidErrorHttpStatusCodeEnumValues;
+  get values => _$credentialSubjectNotValidErrorHttpStatusCodeEnumValues;
   static CredentialSubjectNotValidErrorHttpStatusCodeEnum valueOf(
-          String name) =>
-      _$credentialSubjectNotValidErrorHttpStatusCodeEnumValueOf(name);
+    String name,
+  ) => _$credentialSubjectNotValidErrorHttpStatusCodeEnumValueOf(name);
 }

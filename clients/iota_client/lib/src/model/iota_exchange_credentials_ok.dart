@@ -26,9 +26,9 @@ abstract class IotaExchangeCredentialsOK
 
   IotaExchangeCredentialsOK._();
 
-  factory IotaExchangeCredentialsOK(
-          [void updates(IotaExchangeCredentialsOKBuilder b)]) =
-      _$IotaExchangeCredentialsOK;
+  factory IotaExchangeCredentialsOK([
+    void updates(IotaExchangeCredentialsOKBuilder b),
+  ]) = _$IotaExchangeCredentialsOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(IotaExchangeCredentialsOKBuilder b) => b;
@@ -43,7 +43,7 @@ class _$IotaExchangeCredentialsOKSerializer
   @override
   final Iterable<Type> types = const [
     IotaExchangeCredentialsOK,
-    _$IotaExchangeCredentialsOK
+    _$IotaExchangeCredentialsOK,
   ];
 
   @override
@@ -72,9 +72,11 @@ class _$IotaExchangeCredentialsOKSerializer
     IotaExchangeCredentialsOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -90,17 +92,23 @@ class _$IotaExchangeCredentialsOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'connectionClientId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.connectionClientId = valueDes;
           break;
         case r'credentials':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(IotaExchangeCredentialsOKCredentials),
-          ) as IotaExchangeCredentialsOKCredentials;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      IotaExchangeCredentialsOKCredentials,
+                    ),
+                  )
+                  as IotaExchangeCredentialsOKCredentials;
           result.credentials.replace(valueDes);
           break;
         default:

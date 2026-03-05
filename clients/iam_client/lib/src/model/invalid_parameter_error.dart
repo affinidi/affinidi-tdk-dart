@@ -4,7 +4,7 @@
 
 // ignore_for_file: unused_element
 import 'package:built_collection/built_collection.dart';
-import 'package:affinidi_tdk_iam_client/src/model/service_error_response_details_inner.dart';
+import 'package:affinidi_tdk_iam_client/src/model/unexpected_error_details_inner.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -37,12 +37,13 @@ abstract class InvalidParameterError
   String get traceId;
 
   @BuiltValueField(wireName: r'details')
-  BuiltList<ServiceErrorResponseDetailsInner>? get details;
+  BuiltList<UnexpectedErrorDetailsInner>? get details;
 
   InvalidParameterError._();
 
-  factory InvalidParameterError(
-      [void updates(InvalidParameterErrorBuilder b)]) = _$InvalidParameterError;
+  factory InvalidParameterError([
+    void updates(InvalidParameterErrorBuilder b),
+  ]) = _$InvalidParameterError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(InvalidParameterErrorBuilder b) => b;
@@ -57,7 +58,7 @@ class _$InvalidParameterErrorSerializer
   @override
   final Iterable<Type> types = const [
     InvalidParameterError,
-    _$InvalidParameterError
+    _$InvalidParameterError,
   ];
 
   @override
@@ -92,8 +93,9 @@ class _$InvalidParameterErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(
-            BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(UnexpectedErrorDetailsInner),
+        ]),
       );
     }
   }
@@ -104,9 +106,11 @@ class _$InvalidParameterErrorSerializer
     InvalidParameterError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -122,40 +126,56 @@ class _$InvalidParameterErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(InvalidParameterErrorNameEnum),
-          ) as InvalidParameterErrorNameEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      InvalidParameterErrorNameEnum,
+                    ),
+                  )
+                  as InvalidParameterErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(InvalidParameterErrorMessageEnum),
-          ) as InvalidParameterErrorMessageEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      InvalidParameterErrorMessageEnum,
+                    ),
+                  )
+                  as InvalidParameterErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(InvalidParameterErrorHttpStatusCodeEnum),
-          ) as InvalidParameterErrorHttpStatusCodeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      InvalidParameterErrorHttpStatusCodeEnum,
+                    ),
+                  )
+                  as InvalidParameterErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
-          ) as BuiltList<ServiceErrorResponseDetailsInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(UnexpectedErrorDetailsInner),
+                    ]),
+                  )
+                  as BuiltList<UnexpectedErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -206,7 +226,7 @@ class InvalidParameterErrorNameEnum extends EnumClass {
 class InvalidParameterErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'Invalid parameter: ${param}.')
   static const InvalidParameterErrorMessageEnum
-      invalidParameterColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod =
+  invalidParameterColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod =
       _$invalidParameterErrorMessageEnum_invalidParameterColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod;
 
   static Serializer<InvalidParameterErrorMessageEnum> get serializer =>

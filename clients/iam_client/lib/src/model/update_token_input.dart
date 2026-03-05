@@ -60,8 +60,9 @@ class _$UpdateTokenInputSerializer
       yield r'authenticationMethod';
       yield serializers.serialize(
         object.authenticationMethod,
-        specifiedType:
-            const FullType(UpdateTokenPrivateKeyAuthenticationMethodDto),
+        specifiedType: const FullType(
+          UpdateTokenPrivateKeyAuthenticationMethodDto,
+        ),
       );
     }
   }
@@ -72,9 +73,11 @@ class _$UpdateTokenInputSerializer
     UpdateTokenInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -90,18 +93,23 @@ class _$UpdateTokenInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'authenticationMethod':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(UpdateTokenPrivateKeyAuthenticationMethodDto),
-          ) as UpdateTokenPrivateKeyAuthenticationMethodDto;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      UpdateTokenPrivateKeyAuthenticationMethodDto,
+                    ),
+                  )
+                  as UpdateTokenPrivateKeyAuthenticationMethodDto;
           result.authenticationMethod.replace(valueDes);
           break;
         default:

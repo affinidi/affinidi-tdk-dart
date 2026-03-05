@@ -28,8 +28,9 @@ abstract class VerifyCredentialInput
 
   VerifyCredentialInput._();
 
-  factory VerifyCredentialInput(
-      [void updates(VerifyCredentialInputBuilder b)]) = _$VerifyCredentialInput;
+  factory VerifyCredentialInput([
+    void updates(VerifyCredentialInputBuilder b),
+  ]) = _$VerifyCredentialInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(VerifyCredentialInputBuilder b) => b;
@@ -44,7 +45,7 @@ class _$VerifyCredentialInputSerializer
   @override
   final Iterable<Type> types = const [
     VerifyCredentialInput,
-    _$VerifyCredentialInput
+    _$VerifyCredentialInput,
   ];
 
   @override
@@ -64,8 +65,10 @@ class _$VerifyCredentialInputSerializer
       yield r'issuerDidDocument';
       yield serializers.serialize(
         object.issuerDidDocument,
-        specifiedType: const FullType(
-            BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
+        specifiedType: const FullType(BuiltMap, [
+          FullType(String),
+          FullType.nullable(JsonObject),
+        ]),
       );
     }
   }
@@ -76,9 +79,11 @@ class _$VerifyCredentialInputSerializer
     VerifyCredentialInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -94,18 +99,26 @@ class _$VerifyCredentialInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'verifiableCredentials':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(JsonObject)]),
-          ) as BuiltList<JsonObject>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(JsonObject),
+                    ]),
+                  )
+                  as BuiltList<JsonObject>;
           result.verifiableCredentials.replace(valueDes);
           break;
         case r'issuerDidDocument':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
-          ) as BuiltMap<String, JsonObject?>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltMap, [
+                      FullType(String),
+                      FullType.nullable(JsonObject),
+                    ]),
+                  )
+                  as BuiltMap<String, JsonObject?>;
           result.issuerDidDocument.replace(valueDes);
           break;
         default:

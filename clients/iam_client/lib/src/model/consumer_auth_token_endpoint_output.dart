@@ -20,8 +20,10 @@ part 'consumer_auth_token_endpoint_output.g.dart';
 @BuiltValue()
 abstract class ConsumerAuthTokenEndpointOutput
     implements
-        Built<ConsumerAuthTokenEndpointOutput,
-            ConsumerAuthTokenEndpointOutputBuilder> {
+        Built<
+          ConsumerAuthTokenEndpointOutput,
+          ConsumerAuthTokenEndpointOutputBuilder
+        > {
   /// The access token issued by the authorization server.
   @BuiltValueField(wireName: r'access_token')
   String? get accessToken;
@@ -48,9 +50,9 @@ abstract class ConsumerAuthTokenEndpointOutput
 
   ConsumerAuthTokenEndpointOutput._();
 
-  factory ConsumerAuthTokenEndpointOutput(
-          [void updates(ConsumerAuthTokenEndpointOutputBuilder b)]) =
-      _$ConsumerAuthTokenEndpointOutput;
+  factory ConsumerAuthTokenEndpointOutput([
+    void updates(ConsumerAuthTokenEndpointOutputBuilder b),
+  ]) = _$ConsumerAuthTokenEndpointOutput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ConsumerAuthTokenEndpointOutputBuilder b) => b;
@@ -65,7 +67,7 @@ class _$ConsumerAuthTokenEndpointOutputSerializer
   @override
   final Iterable<Type> types = const [
     ConsumerAuthTokenEndpointOutput,
-    _$ConsumerAuthTokenEndpointOutput
+    _$ConsumerAuthTokenEndpointOutput,
   ];
 
   @override
@@ -126,9 +128,11 @@ class _$ConsumerAuthTokenEndpointOutputSerializer
     ConsumerAuthTokenEndpointOutput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -144,45 +148,51 @@ class _$ConsumerAuthTokenEndpointOutputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'access_token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.accessToken = valueDes;
           break;
         case r'expires_in':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.expiresIn = valueDes;
           break;
         case r'id_token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.idToken = valueDes;
           break;
         case r'refresh_token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.refreshToken = valueDes;
           break;
         case r'scope':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.scope = valueDes;
           break;
         case r'token_type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.tokenType = valueDes;
           break;
         default:

@@ -19,12 +19,12 @@ class _$GroupDto extends GroupDto {
   factory _$GroupDto([void Function(GroupDtoBuilder)? updates]) =>
       (GroupDtoBuilder()..update(updates))._build();
 
-  _$GroupDto._(
-      {required this.ari,
-      required this.projectId,
-      required this.groupName,
-      required this.creationDate})
-      : super._();
+  _$GroupDto._({
+    required this.ari,
+    required this.projectId,
+    required this.groupName,
+    required this.creationDate,
+  }) : super._();
   @override
   GroupDto rebuild(void Function(GroupDtoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -113,15 +113,25 @@ class GroupDtoBuilder implements Builder<GroupDto, GroupDtoBuilder> {
   GroupDto build() => _build();
 
   _$GroupDto _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$GroupDto._(
           ari: BuiltValueNullFieldError.checkNotNull(ari, r'GroupDto', 'ari'),
           projectId: BuiltValueNullFieldError.checkNotNull(
-              projectId, r'GroupDto', 'projectId'),
+            projectId,
+            r'GroupDto',
+            'projectId',
+          ),
           groupName: BuiltValueNullFieldError.checkNotNull(
-              groupName, r'GroupDto', 'groupName'),
+            groupName,
+            r'GroupDto',
+            'groupName',
+          ),
           creationDate: BuiltValueNullFieldError.checkNotNull(
-              creationDate, r'GroupDto', 'creationDate'),
+            creationDate,
+            r'GroupDto',
+            'creationDate',
+          ),
         );
     replace(_$result);
     return _$result;

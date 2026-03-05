@@ -41,9 +41,9 @@ abstract class CreateHydraNetworkError
 
   CreateHydraNetworkError._();
 
-  factory CreateHydraNetworkError(
-          [void updates(CreateHydraNetworkErrorBuilder b)]) =
-      _$CreateHydraNetworkError;
+  factory CreateHydraNetworkError([
+    void updates(CreateHydraNetworkErrorBuilder b),
+  ]) = _$CreateHydraNetworkError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateHydraNetworkErrorBuilder b) => b;
@@ -58,7 +58,7 @@ class _$CreateHydraNetworkErrorSerializer
   @override
   final Iterable<Type> types = const [
     CreateHydraNetworkError,
-    _$CreateHydraNetworkError
+    _$CreateHydraNetworkError,
   ];
 
   @override
@@ -93,8 +93,9 @@ class _$CreateHydraNetworkErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(
-            BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(InvalidParameterErrorDetailsInner),
+        ]),
       );
     }
   }
@@ -105,9 +106,11 @@ class _$CreateHydraNetworkErrorSerializer
     CreateHydraNetworkError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -123,40 +126,56 @@ class _$CreateHydraNetworkErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(CreateHydraNetworkErrorNameEnum),
-          ) as CreateHydraNetworkErrorNameEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      CreateHydraNetworkErrorNameEnum,
+                    ),
+                  )
+                  as CreateHydraNetworkErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(CreateHydraNetworkErrorMessageEnum),
-          ) as CreateHydraNetworkErrorMessageEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      CreateHydraNetworkErrorMessageEnum,
+                    ),
+                  )
+                  as CreateHydraNetworkErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(CreateHydraNetworkErrorHttpStatusCodeEnum),
-          ) as CreateHydraNetworkErrorHttpStatusCodeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      CreateHydraNetworkErrorHttpStatusCodeEnum,
+                    ),
+                  )
+                  as CreateHydraNetworkErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
-          ) as BuiltList<InvalidParameterErrorDetailsInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(InvalidParameterErrorDetailsInner),
+                    ]),
+                  )
+                  as BuiltList<InvalidParameterErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
