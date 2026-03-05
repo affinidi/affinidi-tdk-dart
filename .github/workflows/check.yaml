@@ -5,3 +5,5 @@ jobs:
   dart-pipeline:
     uses: affinidi/pipeline-dart/.github/workflows/check.yaml@main
     secrets: inherit
+    with:
+      flutter-version: "3.41.2"

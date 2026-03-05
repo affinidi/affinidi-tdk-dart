@@ -8,5 +8,5 @@ jobs:
     uses: affinidi/pipeline-dart/.github/workflows/integration-tests.yaml@main
     secrets: inherit
     with:
-      flutter-version: "3.32.4"
+      flutter-version: "3.41.2"
       working-directory: "./"
