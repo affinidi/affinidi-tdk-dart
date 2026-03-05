@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **message** | **String** |  | 
 **httpStatusCode** | **int** |  | 
 **traceId** | **String** |  | 
-**details** | [**BuiltList&lt;ServiceErrorResponseDetailsInner&gt;**](ServiceErrorResponseDetailsInner.md) |  | [optional] 
+**details** | [**BuiltList&lt;NotFoundErrorDetailsInner&gt;**](NotFoundErrorDetailsInner.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -22,8 +22,8 @@ import 'package:affinidi_tdk_wallets_client/src/model/sign_credentials_ldp_input
 import 'package:affinidi_tdk_wallets_client/src/model/sign_credentials_ldp_result_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/sign_jwt_token.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/sign_jwt_token_ok.dart';
-import 'package:affinidi_tdk_wallets_client/src/model/sign_jwt_v2.dart';
-import 'package:affinidi_tdk_wallets_client/src/model/sign_jwt_v2_ok.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/sign_jwt_v2_input_dto.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/sign_jwt_v2_result_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/sign_presentation_ldp_input_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/sign_presentation_ldp_result_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/update_wallet_input.dart';
@@ -1022,7 +1022,7 @@ class WalletApi {
   ///
   /// Parameters:
   /// * [walletId] - id of the wallet
-  /// * [signJwtV2] - SignJwtV2
+  /// * [signJwtV2InputDto] - SignJwtV2
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1030,11 +1030,11 @@ class WalletApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [SignJwtV2OK] as data
+  /// Returns a [Future] containing a [Response] with a [SignJwtV2ResultDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SignJwtV2OK>> signJwtV2({
+  Future<Response<SignJwtV2ResultDto>> signJwtV2({
     required String walletId,
-    required SignJwtV2 signJwtV2,
+    required SignJwtV2InputDto signJwtV2InputDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -1069,8 +1069,9 @@ class WalletApi {
     dynamic _bodyData;
 
     try {
-      const _type = FullType(SignJwtV2);
-      _bodyData = _serializers.serialize(signJwtV2, specifiedType: _type);
+      const _type = FullType(SignJwtV2InputDto);
+      _bodyData =
+          _serializers.serialize(signJwtV2InputDto, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _options.compose(
@@ -1092,7 +1093,7 @@ class WalletApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    SignJwtV2OK? _responseData;
+    SignJwtV2ResultDto? _responseData;
 
     try {
       final rawResponse = _response.data;
@@ -1100,8 +1101,8 @@ class WalletApi {
           ? null
           : _serializers.deserialize(
               rawResponse,
-              specifiedType: const FullType(SignJwtV2OK),
-            ) as SignJwtV2OK;
+              specifiedType: const FullType(SignJwtV2ResultDto),
+            ) as SignJwtV2ResultDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1112,7 +1113,7 @@ class WalletApi {
       );
     }
 
-    return Response<SignJwtV2OK>(
+    return Response<SignJwtV2ResultDto>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,

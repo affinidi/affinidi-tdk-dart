@@ -504,7 +504,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **signJwtV2**
-> SignJwtV2OK signJwtV2(walletId, signJwtV2)
+> SignJwtV2ResultDto signJwtV2(walletId, signJwtV2InputDto)
 
 Sign JWT.
 
@@ -520,10 +520,10 @@ import 'package:affinidi_tdk_wallets_client/api.dart';
 
 final api = AffinidiTdkWalletsClient().getWalletApi();
 final String walletId = walletId_example; // String | id of the wallet
-final SignJwtV2 signJwtV2 = ; // SignJwtV2 | SignJwtV2
+final SignJwtV2InputDto signJwtV2InputDto = ; // SignJwtV2InputDto | SignJwtV2
 
 try {
-    final response = api.signJwtV2(walletId, signJwtV2);
+    final response = api.signJwtV2(walletId, signJwtV2InputDto);
     print(response);
 } catch on DioException (e) {
     print('Exception when calling WalletApi->signJwtV2: $e\n');
@@ -535,11 +535,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **walletId** | **String**| id of the wallet | 
- **signJwtV2** | [**SignJwtV2**](SignJwtV2.md)| SignJwtV2 | 
+ **signJwtV2InputDto** | [**SignJwtV2InputDto**](SignJwtV2InputDto.md)| SignJwtV2 | 
 
 ### Return type
 
-[**SignJwtV2OK**](SignJwtV2OK.md)
+[**SignJwtV2ResultDto**](SignJwtV2ResultDto.md)
 
 ### Authorization
 

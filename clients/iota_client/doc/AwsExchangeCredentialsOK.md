@@ -9,7 +9,7 @@ import 'package:affinidi_tdk_iota_client/api.dart';
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **connectionClientId** | **String** |  | 
-**credentials** | [**AwsExchangeCredentialsProjectTokenOKCredentials**](AwsExchangeCredentialsProjectTokenOKCredentials.md) |  | 
+**credentials** | [**AwsExchangeCredentialsOKCredentials**](AwsExchangeCredentialsOKCredentials.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

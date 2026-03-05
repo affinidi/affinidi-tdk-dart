@@ -5,7 +5,7 @@ Affinidi TDK dart client for Affinidi WALLETS
 
 ## Requirements
 
-* Dart 3.8.0+
+* Dart 3.6.0+
 * Dio 5.0.0+ (https://pub.dev/packages/dio)
 
 ## Installation & Usage
@@ -14,7 +14,7 @@ Affinidi TDK dart client for Affinidi WALLETS
 To use the package from [pub.dev](https://pub.dev), please include the following in pubspec.yaml
 ```yaml
 dependencies:
-  affinidi_tdk_wallets_client: ^1.15.0
+  affinidi_tdk_wallets_client: ^2.0.0
 ```
 
 ### Github
@@ -91,30 +91,23 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
- - [AuthcryptMessageInput](doc/AuthcryptMessageInput.md)
- - [AuthcryptMessageResultDto](doc/AuthcryptMessageResultDto.md)
  - [CreateWalletInput](doc/CreateWalletInput.md)
  - [CreateWalletResponse](doc/CreateWalletResponse.md)
  - [CreateWalletV2Input](doc/CreateWalletV2Input.md)
  - [CreateWalletV2Response](doc/CreateWalletV2Response.md)
  - [EntityNotFoundError](doc/EntityNotFoundError.md)
- - [GetRevocationCredentialStatusOK](doc/GetRevocationCredentialStatusOK.md)
  - [GetRevocationListCredentialResultDto](doc/GetRevocationListCredentialResultDto.md)
- - [InvalidDidParameterError](doc/InvalidDidParameterError.md)
  - [InvalidParameterError](doc/InvalidParameterError.md)
- - [KeyNotFoundError](doc/KeyNotFoundError.md)
  - [NotFoundError](doc/NotFoundError.md)
+ - [NotFoundErrorDetailsInner](doc/NotFoundErrorDetailsInner.md)
  - [OperationForbiddenError](doc/OperationForbiddenError.md)
  - [RevokeCredentialInput](doc/RevokeCredentialInput.md)
  - [RevokeCredentialsInput](doc/RevokeCredentialsInput.md)
- - [ServiceErrorResponse](doc/ServiceErrorResponse.md)
- - [ServiceErrorResponseDetailsInner](doc/ServiceErrorResponseDetailsInner.md)
+ - [ServiceEndpointInput](doc/ServiceEndpointInput.md)
  - [SignCredential400Response](doc/SignCredential400Response.md)
  - [SignCredentialInputDto](doc/SignCredentialInputDto.md)
  - [SignCredentialInputDtoUnsignedCredentialParams](doc/SignCredentialInputDtoUnsignedCredentialParams.md)
  - [SignCredentialResultDto](doc/SignCredentialResultDto.md)
- - [SignCredentialsDm1LdInputDto](doc/SignCredentialsDm1LdInputDto.md)
- - [SignCredentialsDm1LdResultDto](doc/SignCredentialsDm1LdResultDto.md)
  - [SignCredentialsDm2SdJwtInputDto](doc/SignCredentialsDm2SdJwtInputDto.md)
  - [SignCredentialsDm2SdJwtResultDto](doc/SignCredentialsDm2SdJwtResultDto.md)
  - [SignCredentialsJwtInputDto](doc/SignCredentialsJwtInputDto.md)
@@ -123,16 +116,12 @@ Class | Method | HTTP request | Description
  - [SignCredentialsLdpResultDto](doc/SignCredentialsLdpResultDto.md)
  - [SignJwtToken](doc/SignJwtToken.md)
  - [SignJwtTokenOK](doc/SignJwtTokenOK.md)
- - [SignJwtV2](doc/SignJwtV2.md)
- - [SignJwtV2OK](doc/SignJwtV2OK.md)
- - [SignMessageInput](doc/SignMessageInput.md)
- - [SignMessageResultDto](doc/SignMessageResultDto.md)
+ - [SignJwtV2InputDto](doc/SignJwtV2InputDto.md)
+ - [SignJwtV2ResultDto](doc/SignJwtV2ResultDto.md)
  - [SignPresentationLdpInputDto](doc/SignPresentationLdpInputDto.md)
  - [SignPresentationLdpResultDto](doc/SignPresentationLdpResultDto.md)
  - [SigningFailedError](doc/SigningFailedError.md)
  - [TooManyRequestsError](doc/TooManyRequestsError.md)
- - [UnpackMessageInput](doc/UnpackMessageInput.md)
- - [UnpackMessageResultDto](doc/UnpackMessageResultDto.md)
  - [UpdateWalletInput](doc/UpdateWalletInput.md)
  - [WalletDto](doc/WalletDto.md)
  - [WalletDtoKeysInner](doc/WalletDtoKeysInner.md)

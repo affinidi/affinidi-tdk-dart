@@ -5,7 +5,7 @@ Affinidi TDK dart client for Affinidi IOTA
 
 ## Requirements
 
-* Dart 3.8.0+
+* Dart 3.6.0+
 * Dio 5.0.0+ (https://pub.dev/packages/dio)
 
 ## Installation & Usage
@@ -14,7 +14,7 @@ Affinidi TDK dart client for Affinidi IOTA
 To use the package from [pub.dev](https://pub.dev), please include the following in pubspec.yaml
 ```yaml
 dependencies:
-  affinidi_tdk_iota_client: ^1.12.0
+  affinidi_tdk_iota_client: ^2.0.0
 ```
 
 ### Github
@@ -100,18 +100,11 @@ Class | Method | HTTP request | Description
  - [AlreadyExistsError](doc/AlreadyExistsError.md)
  - [AwsExchangeCredentials](doc/AwsExchangeCredentials.md)
  - [AwsExchangeCredentialsOK](doc/AwsExchangeCredentialsOK.md)
+ - [AwsExchangeCredentialsOKCredentials](doc/AwsExchangeCredentialsOKCredentials.md)
  - [AwsExchangeCredentialsProjectToken](doc/AwsExchangeCredentialsProjectToken.md)
- - [AwsExchangeCredentialsProjectTokenOK](doc/AwsExchangeCredentialsProjectTokenOK.md)
- - [AwsExchangeCredentialsProjectTokenOKCredentials](doc/AwsExchangeCredentialsProjectTokenOKCredentials.md)
  - [CallbackInput](doc/CallbackInput.md)
  - [CallbackResponseOK](doc/CallbackResponseOK.md)
  - [ConsentDto](doc/ConsentDto.md)
- - [CorsAwsExchangeCredentialsOK](doc/CorsAwsExchangeCredentialsOK.md)
- - [CorsAwsExchangeCredentialsProjectTokenOK](doc/CorsAwsExchangeCredentialsProjectTokenOK.md)
- - [CorsFetchIotaVpResponseOK](doc/CorsFetchIotaVpResponseOK.md)
- - [CorsInitiateDataSharingRequestOK](doc/CorsInitiateDataSharingRequestOK.md)
- - [CorsIotOidc4vpcallbackOK](doc/CorsIotOidc4vpcallbackOK.md)
- - [CorsIotaExchangeCredentialsOK](doc/CorsIotaExchangeCredentialsOK.md)
  - [CreateDcqlQueryInput](doc/CreateDcqlQueryInput.md)
  - [CreateIotaConfigurationInput](doc/CreateIotaConfigurationInput.md)
  - [CreatePexQueryInput](doc/CreatePexQueryInput.md)
@@ -134,21 +127,15 @@ Class | Method | HTTP request | Description
  - [ListDcqlQueriesOK](doc/ListDcqlQueriesOK.md)
  - [ListLoggedConsentsOK](doc/ListLoggedConsentsOK.md)
  - [ListPexQueriesOK](doc/ListPexQueriesOK.md)
- - [MessagePublishingError](doc/MessagePublishingError.md)
  - [NotFoundError](doc/NotFoundError.md)
  - [OperationForbiddenError](doc/OperationForbiddenError.md)
  - [PexQueryDto](doc/PexQueryDto.md)
- - [PrepareRequest](doc/PrepareRequest.md)
- - [PrepareRequestCreated](doc/PrepareRequestCreated.md)
- - [PrepareRequestCreatedData](doc/PrepareRequestCreatedData.md)
  - [ResourceLimitExceededError](doc/ResourceLimitExceededError.md)
  - [SavePexQueriesUpdateInput](doc/SavePexQueriesUpdateInput.md)
  - [SavePexQueriesUpdateInputQueriesInner](doc/SavePexQueriesUpdateInputQueriesInner.md)
  - [UpdateConfigurationByIdInput](doc/UpdateConfigurationByIdInput.md)
- - [UpdateConfigurationByIdOK](doc/UpdateConfigurationByIdOK.md)
  - [UpdateDcqlQueryInput](doc/UpdateDcqlQueryInput.md)
  - [UpdatePexQueryInput](doc/UpdatePexQueryInput.md)
- - [VPTokenValidationError](doc/VPTokenValidationError.md)
 
 
 ## Documentation For Authorization
