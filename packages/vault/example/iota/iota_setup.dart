@@ -2,14 +2,15 @@ import 'dart:io';
 
 import 'package:affinidi_tdk_auth_provider/affinidi_tdk_auth_provider.dart';
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:affinidi_tdk_iota_client/affinidi_tdk_iota_client.dart';
 import 'package:affinidi_tdk_wallets_client/affinidi_tdk_wallets_client.dart';
-
 import 'package:dotenv/dotenv.dart';
 import 'package:path/path.dart' as path;
 
-import '../../../integration_tests/test/helpers/helpers.dart';
+import '../../../integration_tests/test/helpers/strings_helper.dart';
 
 const _walletName = 'VDSP Verifier Wallet';
+const _configName = 'VDSP Verifier Config';
 
 String get _envPath =>
     path.join(File(Platform.script.toFilePath()).parent.path, '.env');
@@ -63,4 +64,62 @@ Future<String> ensureWalletCreated() async {
   final response = await api.createWallet(createWalletInput: createInput);
   final newAri = response.data!.wallet!.ari!;
   return newAri;
+}
+
+Future<String> ensureIotaConfigurationCreated({
+  required String walletAri,
+}) async {
+  final authProvider = _loadEnv();
+  final envConfig = Environment.getEnvironmentConfig(EnvironmentType.dev);
+  final iotaClient = AffinidiTdkIotaClient(
+    authTokenHook: authProvider.fetchProjectScopedToken,
+    basePathOverride: replaceBaseDomain(
+      AffinidiTdkIotaClient.basePath,
+      envConfig.apiGwUrl,
+    ),
+  );
+
+  final configs = iotaClient.getConfigurationsApi();
+  final dcql = iotaClient.getDcqlQueryApi();
+
+  final configsList = (await configs.listIotaConfigurations()).data;
+  final existing =
+      (configsList?.configurations.toList() ?? <IotaConfigurationDto>[])
+          .where(
+            (IotaConfigurationDto c) =>
+                c.name == _configName && c.walletAri == walletAri,
+          )
+          .firstOrNull;
+  if (existing != null) return existing.configurationId;
+
+  final config = (await configs.createIotaConfiguration(
+    createIotaConfigurationInput:
+        (CreateIotaConfigurationInputBuilder()
+              ..name = _configName
+              ..walletAri = walletAri
+              ..mode = CreateIotaConfigurationInputModeEnum.didcomm
+              ..enableVerification = true
+              ..enableConsentAuditLog = true
+              ..clientMetadata = (IotaConfigurationDtoClientMetadataBuilder()
+                ..name = 'VDSP Verifier Example'
+                ..logo = 'https://example.com/logo.png'
+                ..origin = 'https://example.com'))
+            .build(),
+  )).data;
+  if (config == null) throw Exception('Failed to create IOTA configuration');
+
+  const dcqlJson =
+      '{"credentials":[{"id":"email-claim","format":"ldp_vc","meta":{"type_values":[["Email"]]},"claims":[{"path":["credentialSubject","email"]}]}]}';
+
+  await dcql.createDcqlQuery(
+    configurationId: config.configurationId,
+    createDcqlQueryInput:
+        (CreateDcqlQueryInputBuilder()
+              ..name = 'Email claim query'
+              ..dcqlQuery = dcqlJson
+              ..description = 'Query for email credential claim')
+            .build(),
+  );
+
+  return config.configurationId;
 }
