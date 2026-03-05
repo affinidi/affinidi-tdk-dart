@@ -14,7 +14,7 @@ Affinidi TDK dart client for Affinidi VAULT DATA MANAGER
 To use the package from [pub.dev](https://pub.dev), please include the following in pubspec.yaml
 ```yaml
 dependencies:
-  affinidi_tdk_vault_data_manager_client: ^1.15.0
+  affinidi_tdk_vault_data_manager_client: ^2.0.0
 ```
 
 ### Github
@@ -95,25 +95,7 @@ Class | Method | HTTP request | Description
 ## Documentation For Models
 
  - [AccountDto](doc/AccountDto.md)
- - [AwsCredentialExchangeOperationOK](doc/AwsCredentialExchangeOperationOK.md)
  - [ConsumerMetadataDto](doc/ConsumerMetadataDto.md)
- - [CorsAwsCredentialExchangeOK](doc/CorsAwsCredentialExchangeOK.md)
- - [CorsDeleteAccountOK](doc/CorsDeleteAccountOK.md)
- - [CorsDeleteNodeOK](doc/CorsDeleteNodeOK.md)
- - [CorsGetConfigOK](doc/CorsGetConfigOK.md)
- - [CorsGetConfigurationOK](doc/CorsGetConfigurationOK.md)
- - [CorsGetScannedFileInfoOK](doc/CorsGetScannedFileInfoOK.md)
- - [CorsGetWellKnownJwksOK](doc/CorsGetWellKnownJwksOK.md)
- - [CorsInitNodesOK](doc/CorsInitNodesOK.md)
- - [CorsListAccountsOK](doc/CorsListAccountsOK.md)
- - [CorsListNodeChildrenOK](doc/CorsListNodeChildrenOK.md)
- - [CorsListRootNodeChildrenOK](doc/CorsListRootNodeChildrenOK.md)
- - [CorsListScannedFilesOK](doc/CorsListScannedFilesOK.md)
- - [CorsMoveNodeOK](doc/CorsMoveNodeOK.md)
- - [CorsPermanentlyDeleteNodeOK](doc/CorsPermanentlyDeleteNodeOK.md)
- - [CorsRestoreNodeFromTrashbinOK](doc/CorsRestoreNodeFromTrashbinOK.md)
- - [CorsStartFileScanOK](doc/CorsStartFileScanOK.md)
- - [CorsUpdateProfileDataOK](doc/CorsUpdateProfileDataOK.md)
  - [CreateAccountInput](doc/CreateAccountInput.md)
  - [CreateAccountOK](doc/CreateAccountOK.md)
  - [CreateChildNodeInput](doc/CreateChildNodeInput.md)
@@ -140,7 +122,6 @@ Class | Method | HTTP request | Description
  - [NodeDto](doc/NodeDto.md)
  - [NodeStatus](doc/NodeStatus.md)
  - [NodeType](doc/NodeType.md)
- - [NotFoundError](doc/NotFoundError.md)
  - [QueryProfileDataOK](doc/QueryProfileDataOK.md)
  - [RestoreNodeFromTrashbin](doc/RestoreNodeFromTrashbin.md)
  - [StartFileScanInput](doc/StartFileScanInput.md)

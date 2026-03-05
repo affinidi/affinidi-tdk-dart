@@ -60,9 +60,11 @@ class _$QueryProfileDataOKSerializer
     QueryProfileDataOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -78,10 +80,12 @@ class _$QueryProfileDataOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'data':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JsonObject),
+                  )
+                  as JsonObject;
           result.data = valueDes;
           break;
         default:

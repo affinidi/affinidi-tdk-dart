@@ -7,14 +7,14 @@ part of 'consumer_auth_token_endpoint_input.dart';
 // **************************************************************************
 
 const ConsumerAuthTokenEndpointInputGrantTypeEnum
-    _$consumerAuthTokenEndpointInputGrantTypeEnum_clientCredentials =
+_$consumerAuthTokenEndpointInputGrantTypeEnum_clientCredentials =
     const ConsumerAuthTokenEndpointInputGrantTypeEnum._('clientCredentials');
 const ConsumerAuthTokenEndpointInputGrantTypeEnum
-    _$consumerAuthTokenEndpointInputGrantTypeEnum_affinidiDelegation =
+_$consumerAuthTokenEndpointInputGrantTypeEnum_affinidiDelegation =
     const ConsumerAuthTokenEndpointInputGrantTypeEnum._('affinidiDelegation');
 
 ConsumerAuthTokenEndpointInputGrantTypeEnum
-    _$consumerAuthTokenEndpointInputGrantTypeEnumValueOf(String name) {
+_$consumerAuthTokenEndpointInputGrantTypeEnumValueOf(String name) {
   switch (name) {
     case 'clientCredentials':
       return _$consumerAuthTokenEndpointInputGrantTypeEnum_clientCredentials;
@@ -26,24 +26,27 @@ ConsumerAuthTokenEndpointInputGrantTypeEnum
 }
 
 final BuiltSet<ConsumerAuthTokenEndpointInputGrantTypeEnum>
-    _$consumerAuthTokenEndpointInputGrantTypeEnumValues = BuiltSet<
-        ConsumerAuthTokenEndpointInputGrantTypeEnum>(const <ConsumerAuthTokenEndpointInputGrantTypeEnum>[
-  _$consumerAuthTokenEndpointInputGrantTypeEnum_clientCredentials,
-  _$consumerAuthTokenEndpointInputGrantTypeEnum_affinidiDelegation,
-]);
+_$consumerAuthTokenEndpointInputGrantTypeEnumValues =
+    BuiltSet<ConsumerAuthTokenEndpointInputGrantTypeEnum>(
+      const <ConsumerAuthTokenEndpointInputGrantTypeEnum>[
+        _$consumerAuthTokenEndpointInputGrantTypeEnum_clientCredentials,
+        _$consumerAuthTokenEndpointInputGrantTypeEnum_affinidiDelegation,
+      ],
+    );
 
 const ConsumerAuthTokenEndpointInputClientAssertionTypeEnum
-    _$consumerAuthTokenEndpointInputClientAssertionTypeEnum_urnColonIetfColonParamsColonOauthColonClientAssertionTypeColonJwtBearer =
+_$consumerAuthTokenEndpointInputClientAssertionTypeEnum_urnColonIetfColonParamsColonOauthColonClientAssertionTypeColonJwtBearer =
     const ConsumerAuthTokenEndpointInputClientAssertionTypeEnum._(
-        'urnColonIetfColonParamsColonOauthColonClientAssertionTypeColonJwtBearer');
+      'urnColonIetfColonParamsColonOauthColonClientAssertionTypeColonJwtBearer',
+    );
 const ConsumerAuthTokenEndpointInputClientAssertionTypeEnum
-    _$consumerAuthTokenEndpointInputClientAssertionTypeEnum_urnColonIetfColonParamsColonOauthColonDelegationAssertionTypeColonJwtBearer =
+_$consumerAuthTokenEndpointInputClientAssertionTypeEnum_urnColonIetfColonParamsColonOauthColonDelegationAssertionTypeColonJwtBearer =
     const ConsumerAuthTokenEndpointInputClientAssertionTypeEnum._(
-        'urnColonIetfColonParamsColonOauthColonDelegationAssertionTypeColonJwtBearer');
+      'urnColonIetfColonParamsColonOauthColonDelegationAssertionTypeColonJwtBearer',
+    );
 
 ConsumerAuthTokenEndpointInputClientAssertionTypeEnum
-    _$consumerAuthTokenEndpointInputClientAssertionTypeEnumValueOf(
-        String name) {
+_$consumerAuthTokenEndpointInputClientAssertionTypeEnumValueOf(String name) {
   switch (name) {
     case 'urnColonIetfColonParamsColonOauthColonClientAssertionTypeColonJwtBearer':
       return _$consumerAuthTokenEndpointInputClientAssertionTypeEnum_urnColonIetfColonParamsColonOauthColonClientAssertionTypeColonJwtBearer;
@@ -55,17 +58,19 @@ ConsumerAuthTokenEndpointInputClientAssertionTypeEnum
 }
 
 final BuiltSet<ConsumerAuthTokenEndpointInputClientAssertionTypeEnum>
-    _$consumerAuthTokenEndpointInputClientAssertionTypeEnumValues = BuiltSet<
-        ConsumerAuthTokenEndpointInputClientAssertionTypeEnum>(const <ConsumerAuthTokenEndpointInputClientAssertionTypeEnum>[
-  _$consumerAuthTokenEndpointInputClientAssertionTypeEnum_urnColonIetfColonParamsColonOauthColonClientAssertionTypeColonJwtBearer,
-  _$consumerAuthTokenEndpointInputClientAssertionTypeEnum_urnColonIetfColonParamsColonOauthColonDelegationAssertionTypeColonJwtBearer,
-]);
+_$consumerAuthTokenEndpointInputClientAssertionTypeEnumValues =
+    BuiltSet<ConsumerAuthTokenEndpointInputClientAssertionTypeEnum>(const <
+      ConsumerAuthTokenEndpointInputClientAssertionTypeEnum
+    >[
+      _$consumerAuthTokenEndpointInputClientAssertionTypeEnum_urnColonIetfColonParamsColonOauthColonClientAssertionTypeColonJwtBearer,
+      _$consumerAuthTokenEndpointInputClientAssertionTypeEnum_urnColonIetfColonParamsColonOauthColonDelegationAssertionTypeColonJwtBearer,
+    ]);
 
 Serializer<ConsumerAuthTokenEndpointInputGrantTypeEnum>
-    _$consumerAuthTokenEndpointInputGrantTypeEnumSerializer =
+_$consumerAuthTokenEndpointInputGrantTypeEnumSerializer =
     _$ConsumerAuthTokenEndpointInputGrantTypeEnumSerializer();
 Serializer<ConsumerAuthTokenEndpointInputClientAssertionTypeEnum>
-    _$consumerAuthTokenEndpointInputClientAssertionTypeEnumSerializer =
+_$consumerAuthTokenEndpointInputClientAssertionTypeEnumSerializer =
     _$ConsumerAuthTokenEndpointInputClientAssertionTypeEnumSerializer();
 
 class _$ConsumerAuthTokenEndpointInputGrantTypeEnumSerializer
@@ -82,29 +87,33 @@ class _$ConsumerAuthTokenEndpointInputGrantTypeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    ConsumerAuthTokenEndpointInputGrantTypeEnum
+    ConsumerAuthTokenEndpointInputGrantTypeEnum,
   ];
   @override
   final String wireName = 'ConsumerAuthTokenEndpointInputGrantTypeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          ConsumerAuthTokenEndpointInputGrantTypeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    ConsumerAuthTokenEndpointInputGrantTypeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   ConsumerAuthTokenEndpointInputGrantTypeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      ConsumerAuthTokenEndpointInputGrantTypeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => ConsumerAuthTokenEndpointInputGrantTypeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$ConsumerAuthTokenEndpointInputClientAssertionTypeEnumSerializer
     implements
         PrimitiveSerializer<
-            ConsumerAuthTokenEndpointInputClientAssertionTypeEnum> {
+          ConsumerAuthTokenEndpointInputClientAssertionTypeEnum
+        > {
   static const Map<String, Object> _toWire = const <String, Object>{
     'urnColonIetfColonParamsColonOauthColonClientAssertionTypeColonJwtBearer':
         'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
@@ -120,24 +129,27 @@ class _$ConsumerAuthTokenEndpointInputClientAssertionTypeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    ConsumerAuthTokenEndpointInputClientAssertionTypeEnum
+    ConsumerAuthTokenEndpointInputClientAssertionTypeEnum,
   ];
   @override
   final String wireName =
       'ConsumerAuthTokenEndpointInputClientAssertionTypeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          ConsumerAuthTokenEndpointInputClientAssertionTypeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    ConsumerAuthTokenEndpointInputClientAssertionTypeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   ConsumerAuthTokenEndpointInputClientAssertionTypeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      ConsumerAuthTokenEndpointInputClientAssertionTypeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => ConsumerAuthTokenEndpointInputClientAssertionTypeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$ConsumerAuthTokenEndpointInput extends ConsumerAuthTokenEndpointInput {
@@ -145,26 +157,26 @@ class _$ConsumerAuthTokenEndpointInput extends ConsumerAuthTokenEndpointInput {
   final ConsumerAuthTokenEndpointInputGrantTypeEnum grantType;
   @override
   final ConsumerAuthTokenEndpointInputClientAssertionTypeEnum
-      clientAssertionType;
+  clientAssertionType;
   @override
   final String clientAssertion;
   @override
   final String clientId;
 
-  factory _$ConsumerAuthTokenEndpointInput(
-          [void Function(ConsumerAuthTokenEndpointInputBuilder)? updates]) =>
-      (ConsumerAuthTokenEndpointInputBuilder()..update(updates))._build();
+  factory _$ConsumerAuthTokenEndpointInput([
+    void Function(ConsumerAuthTokenEndpointInputBuilder)? updates,
+  ]) => (ConsumerAuthTokenEndpointInputBuilder()..update(updates))._build();
 
-  _$ConsumerAuthTokenEndpointInput._(
-      {required this.grantType,
-      required this.clientAssertionType,
-      required this.clientAssertion,
-      required this.clientId})
-      : super._();
+  _$ConsumerAuthTokenEndpointInput._({
+    required this.grantType,
+    required this.clientAssertionType,
+    required this.clientAssertion,
+    required this.clientId,
+  }) : super._();
   @override
   ConsumerAuthTokenEndpointInput rebuild(
-          void Function(ConsumerAuthTokenEndpointInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ConsumerAuthTokenEndpointInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ConsumerAuthTokenEndpointInputBuilder toBuilder() =>
@@ -204,8 +216,10 @@ class _$ConsumerAuthTokenEndpointInput extends ConsumerAuthTokenEndpointInput {
 
 class ConsumerAuthTokenEndpointInputBuilder
     implements
-        Builder<ConsumerAuthTokenEndpointInput,
-            ConsumerAuthTokenEndpointInputBuilder> {
+        Builder<
+          ConsumerAuthTokenEndpointInput,
+          ConsumerAuthTokenEndpointInputBuilder
+        > {
   _$ConsumerAuthTokenEndpointInput? _$v;
 
   ConsumerAuthTokenEndpointInputGrantTypeEnum? _grantType;
@@ -216,11 +230,10 @@ class ConsumerAuthTokenEndpointInputBuilder
 
   ConsumerAuthTokenEndpointInputClientAssertionTypeEnum? _clientAssertionType;
   ConsumerAuthTokenEndpointInputClientAssertionTypeEnum?
-      get clientAssertionType => _$this._clientAssertionType;
+  get clientAssertionType => _$this._clientAssertionType;
   set clientAssertionType(
-          ConsumerAuthTokenEndpointInputClientAssertionTypeEnum?
-              clientAssertionType) =>
-      _$this._clientAssertionType = clientAssertionType;
+    ConsumerAuthTokenEndpointInputClientAssertionTypeEnum? clientAssertionType,
+  ) => _$this._clientAssertionType = clientAssertionType;
 
   String? _clientAssertion;
   String? get clientAssertion => _$this._clientAssertion;
@@ -261,20 +274,29 @@ class ConsumerAuthTokenEndpointInputBuilder
   ConsumerAuthTokenEndpointInput build() => _build();
 
   _$ConsumerAuthTokenEndpointInput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$ConsumerAuthTokenEndpointInput._(
           grantType: BuiltValueNullFieldError.checkNotNull(
-              grantType, r'ConsumerAuthTokenEndpointInput', 'grantType'),
+            grantType,
+            r'ConsumerAuthTokenEndpointInput',
+            'grantType',
+          ),
           clientAssertionType: BuiltValueNullFieldError.checkNotNull(
-              clientAssertionType,
-              r'ConsumerAuthTokenEndpointInput',
-              'clientAssertionType'),
+            clientAssertionType,
+            r'ConsumerAuthTokenEndpointInput',
+            'clientAssertionType',
+          ),
           clientAssertion: BuiltValueNullFieldError.checkNotNull(
-              clientAssertion,
-              r'ConsumerAuthTokenEndpointInput',
-              'clientAssertion'),
+            clientAssertion,
+            r'ConsumerAuthTokenEndpointInput',
+            'clientAssertion',
+          ),
           clientId: BuiltValueNullFieldError.checkNotNull(
-              clientId, r'ConsumerAuthTokenEndpointInput', 'clientId'),
+            clientId,
+            r'ConsumerAuthTokenEndpointInput',
+            'clientId',
+          ),
         );
     replace(_$result);
     return _$result;

@@ -7,12 +7,13 @@ part of 'change_credential_status400_response.dart';
 // **************************************************************************
 
 const ChangeCredentialStatus400ResponseNameEnum
-    _$changeCredentialStatus400ResponseNameEnum_changeStatusForbiddenError =
+_$changeCredentialStatus400ResponseNameEnum_changeStatusForbiddenError =
     const ChangeCredentialStatus400ResponseNameEnum._(
-        'changeStatusForbiddenError');
+      'changeStatusForbiddenError',
+    );
 
 ChangeCredentialStatus400ResponseNameEnum
-    _$changeCredentialStatus400ResponseNameEnumValueOf(String name) {
+_$changeCredentialStatus400ResponseNameEnumValueOf(String name) {
   switch (name) {
     case 'changeStatusForbiddenError':
       return _$changeCredentialStatus400ResponseNameEnum_changeStatusForbiddenError;
@@ -22,18 +23,21 @@ ChangeCredentialStatus400ResponseNameEnum
 }
 
 final BuiltSet<ChangeCredentialStatus400ResponseNameEnum>
-    _$changeCredentialStatus400ResponseNameEnumValues = BuiltSet<
-        ChangeCredentialStatus400ResponseNameEnum>(const <ChangeCredentialStatus400ResponseNameEnum>[
-  _$changeCredentialStatus400ResponseNameEnum_changeStatusForbiddenError,
-]);
+_$changeCredentialStatus400ResponseNameEnumValues =
+    BuiltSet<ChangeCredentialStatus400ResponseNameEnum>(
+      const <ChangeCredentialStatus400ResponseNameEnum>[
+        _$changeCredentialStatus400ResponseNameEnum_changeStatusForbiddenError,
+      ],
+    );
 
 const ChangeCredentialStatus400ResponseMessageEnum
-    _$changeCredentialStatus400ResponseMessageEnum_relatedVCStatusCannotBeChanged =
+_$changeCredentialStatus400ResponseMessageEnum_relatedVCStatusCannotBeChanged =
     const ChangeCredentialStatus400ResponseMessageEnum._(
-        'relatedVCStatusCannotBeChanged');
+      'relatedVCStatusCannotBeChanged',
+    );
 
 ChangeCredentialStatus400ResponseMessageEnum
-    _$changeCredentialStatus400ResponseMessageEnumValueOf(String name) {
+_$changeCredentialStatus400ResponseMessageEnumValueOf(String name) {
   switch (name) {
     case 'relatedVCStatusCannotBeChanged':
       return _$changeCredentialStatus400ResponseMessageEnum_relatedVCStatusCannotBeChanged;
@@ -43,17 +47,19 @@ ChangeCredentialStatus400ResponseMessageEnum
 }
 
 final BuiltSet<ChangeCredentialStatus400ResponseMessageEnum>
-    _$changeCredentialStatus400ResponseMessageEnumValues = BuiltSet<
-        ChangeCredentialStatus400ResponseMessageEnum>(const <ChangeCredentialStatus400ResponseMessageEnum>[
-  _$changeCredentialStatus400ResponseMessageEnum_relatedVCStatusCannotBeChanged,
-]);
+_$changeCredentialStatus400ResponseMessageEnumValues =
+    BuiltSet<ChangeCredentialStatus400ResponseMessageEnum>(const <
+      ChangeCredentialStatus400ResponseMessageEnum
+    >[
+      _$changeCredentialStatus400ResponseMessageEnum_relatedVCStatusCannotBeChanged,
+    ]);
 
 const ChangeCredentialStatus400ResponseHttpStatusCodeEnum
-    _$changeCredentialStatus400ResponseHttpStatusCodeEnum_number400 =
+_$changeCredentialStatus400ResponseHttpStatusCodeEnum_number400 =
     const ChangeCredentialStatus400ResponseHttpStatusCodeEnum._('number400');
 
 ChangeCredentialStatus400ResponseHttpStatusCodeEnum
-    _$changeCredentialStatus400ResponseHttpStatusCodeEnumValueOf(String name) {
+_$changeCredentialStatus400ResponseHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$changeCredentialStatus400ResponseHttpStatusCodeEnum_number400;
@@ -63,19 +69,21 @@ ChangeCredentialStatus400ResponseHttpStatusCodeEnum
 }
 
 final BuiltSet<ChangeCredentialStatus400ResponseHttpStatusCodeEnum>
-    _$changeCredentialStatus400ResponseHttpStatusCodeEnumValues = BuiltSet<
-        ChangeCredentialStatus400ResponseHttpStatusCodeEnum>(const <ChangeCredentialStatus400ResponseHttpStatusCodeEnum>[
-  _$changeCredentialStatus400ResponseHttpStatusCodeEnum_number400,
-]);
+_$changeCredentialStatus400ResponseHttpStatusCodeEnumValues =
+    BuiltSet<ChangeCredentialStatus400ResponseHttpStatusCodeEnum>(
+      const <ChangeCredentialStatus400ResponseHttpStatusCodeEnum>[
+        _$changeCredentialStatus400ResponseHttpStatusCodeEnum_number400,
+      ],
+    );
 
 Serializer<ChangeCredentialStatus400ResponseNameEnum>
-    _$changeCredentialStatus400ResponseNameEnumSerializer =
+_$changeCredentialStatus400ResponseNameEnumSerializer =
     _$ChangeCredentialStatus400ResponseNameEnumSerializer();
 Serializer<ChangeCredentialStatus400ResponseMessageEnum>
-    _$changeCredentialStatus400ResponseMessageEnumSerializer =
+_$changeCredentialStatus400ResponseMessageEnumSerializer =
     _$ChangeCredentialStatus400ResponseMessageEnumSerializer();
 Serializer<ChangeCredentialStatus400ResponseHttpStatusCodeEnum>
-    _$changeCredentialStatus400ResponseHttpStatusCodeEnumSerializer =
+_$changeCredentialStatus400ResponseHttpStatusCodeEnumSerializer =
     _$ChangeCredentialStatus400ResponseHttpStatusCodeEnumSerializer();
 
 class _$ChangeCredentialStatus400ResponseNameEnumSerializer
@@ -89,23 +97,26 @@ class _$ChangeCredentialStatus400ResponseNameEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    ChangeCredentialStatus400ResponseNameEnum
+    ChangeCredentialStatus400ResponseNameEnum,
   ];
   @override
   final String wireName = 'ChangeCredentialStatus400ResponseNameEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          ChangeCredentialStatus400ResponseNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    ChangeCredentialStatus400ResponseNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   ChangeCredentialStatus400ResponseNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      ChangeCredentialStatus400ResponseNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => ChangeCredentialStatus400ResponseNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$ChangeCredentialStatus400ResponseMessageEnumSerializer
@@ -120,29 +131,33 @@ class _$ChangeCredentialStatus400ResponseMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    ChangeCredentialStatus400ResponseMessageEnum
+    ChangeCredentialStatus400ResponseMessageEnum,
   ];
   @override
   final String wireName = 'ChangeCredentialStatus400ResponseMessageEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          ChangeCredentialStatus400ResponseMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    ChangeCredentialStatus400ResponseMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   ChangeCredentialStatus400ResponseMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      ChangeCredentialStatus400ResponseMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => ChangeCredentialStatus400ResponseMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$ChangeCredentialStatus400ResponseHttpStatusCodeEnumSerializer
     implements
         PrimitiveSerializer<
-            ChangeCredentialStatus400ResponseHttpStatusCodeEnum> {
+          ChangeCredentialStatus400ResponseHttpStatusCodeEnum
+        > {
   static const Map<String, Object> _toWire = const <String, Object>{
     'number400': 400,
   };
@@ -152,23 +167,26 @@ class _$ChangeCredentialStatus400ResponseHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    ChangeCredentialStatus400ResponseHttpStatusCodeEnum
+    ChangeCredentialStatus400ResponseHttpStatusCodeEnum,
   ];
   @override
   final String wireName = 'ChangeCredentialStatus400ResponseHttpStatusCodeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          ChangeCredentialStatus400ResponseHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    ChangeCredentialStatus400ResponseHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   ChangeCredentialStatus400ResponseHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      ChangeCredentialStatus400ResponseHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => ChangeCredentialStatus400ResponseHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$ChangeCredentialStatus400Response
@@ -176,15 +194,15 @@ class _$ChangeCredentialStatus400Response
   @override
   final OneOf oneOf;
 
-  factory _$ChangeCredentialStatus400Response(
-          [void Function(ChangeCredentialStatus400ResponseBuilder)? updates]) =>
-      (ChangeCredentialStatus400ResponseBuilder()..update(updates))._build();
+  factory _$ChangeCredentialStatus400Response([
+    void Function(ChangeCredentialStatus400ResponseBuilder)? updates,
+  ]) => (ChangeCredentialStatus400ResponseBuilder()..update(updates))._build();
 
   _$ChangeCredentialStatus400Response._({required this.oneOf}) : super._();
   @override
   ChangeCredentialStatus400Response rebuild(
-          void Function(ChangeCredentialStatus400ResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ChangeCredentialStatus400ResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ChangeCredentialStatus400ResponseBuilder toBuilder() =>
@@ -206,16 +224,18 @@ class _$ChangeCredentialStatus400Response
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'ChangeCredentialStatus400Response')
-          ..add('oneOf', oneOf))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'ChangeCredentialStatus400Response',
+    )..add('oneOf', oneOf)).toString();
   }
 }
 
 class ChangeCredentialStatus400ResponseBuilder
     implements
-        Builder<ChangeCredentialStatus400Response,
-            ChangeCredentialStatus400ResponseBuilder> {
+        Builder<
+          ChangeCredentialStatus400Response,
+          ChangeCredentialStatus400ResponseBuilder
+        > {
   _$ChangeCredentialStatus400Response? _$v;
 
   OneOf? _oneOf;
@@ -242,7 +262,8 @@ class ChangeCredentialStatus400ResponseBuilder
 
   @override
   void update(
-      void Function(ChangeCredentialStatus400ResponseBuilder)? updates) {
+    void Function(ChangeCredentialStatus400ResponseBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -250,10 +271,14 @@ class ChangeCredentialStatus400ResponseBuilder
   ChangeCredentialStatus400Response build() => _build();
 
   _$ChangeCredentialStatus400Response _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$ChangeCredentialStatus400Response._(
           oneOf: BuiltValueNullFieldError.checkNotNull(
-              oneOf, r'ChangeCredentialStatus400Response', 'oneOf'),
+            oneOf,
+            r'ChangeCredentialStatus400Response',
+            'oneOf',
+          ),
         );
     replace(_$result);
     return _$result;

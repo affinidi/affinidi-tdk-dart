@@ -88,8 +88,9 @@ class _$NotFoundErrorSerializer implements PrimitiveSerializer<NotFoundError> {
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(
-            BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(InvalidParameterErrorDetailsInner),
+        ]),
       );
     }
   }
@@ -100,9 +101,11 @@ class _$NotFoundErrorSerializer implements PrimitiveSerializer<NotFoundError> {
     NotFoundError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -118,39 +121,52 @@ class _$NotFoundErrorSerializer implements PrimitiveSerializer<NotFoundError> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(NotFoundErrorNameEnum),
-          ) as NotFoundErrorNameEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(NotFoundErrorNameEnum),
+                  )
+                  as NotFoundErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(NotFoundErrorMessageEnum),
-          ) as NotFoundErrorMessageEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(NotFoundErrorMessageEnum),
+                  )
+                  as NotFoundErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(NotFoundErrorHttpStatusCodeEnum),
-          ) as NotFoundErrorHttpStatusCodeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      NotFoundErrorHttpStatusCodeEnum,
+                    ),
+                  )
+                  as NotFoundErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
-          ) as BuiltList<InvalidParameterErrorDetailsInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(InvalidParameterErrorDetailsInner),
+                    ]),
+                  )
+                  as BuiltList<InvalidParameterErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -201,7 +217,7 @@ class NotFoundErrorNameEnum extends EnumClass {
 class NotFoundErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'Not found: ${param}.')
   static const NotFoundErrorMessageEnum
-      notFoundColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod =
+  notFoundColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod =
       _$notFoundErrorMessageEnum_notFoundColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod;
 
   static Serializer<NotFoundErrorMessageEnum> get serializer =>

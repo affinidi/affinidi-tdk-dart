@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **revocable** | **bool** |  | [optional] 
 **disclosureFrame** | [**JsonObject**](.md) |  | 
 **signatureScheme** | **String** |  | [optional] 
+**keyId** | **String** | wallet key ID to use for signing (defaults to wallet's default key) | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -30,27 +30,27 @@ class _$UpdateLoginConfigurationInput extends UpdateLoginConfigurationInput {
   @override
   final bool? failOnMappingConflict;
 
-  factory _$UpdateLoginConfigurationInput(
-          [void Function(UpdateLoginConfigurationInputBuilder)? updates]) =>
-      (UpdateLoginConfigurationInputBuilder()..update(updates))._build();
+  factory _$UpdateLoginConfigurationInput([
+    void Function(UpdateLoginConfigurationInputBuilder)? updates,
+  ]) => (UpdateLoginConfigurationInputBuilder()..update(updates))._build();
 
-  _$UpdateLoginConfigurationInput._(
-      {this.name,
-      this.redirectUris,
-      this.postLogoutRedirectUris,
-      this.clientSecret,
-      this.vpDefinition,
-      this.presentationDefinition,
-      this.dcqlQuery,
-      this.idTokenMapping,
-      this.clientMetadata,
-      this.tokenEndpointAuthMethod,
-      this.failOnMappingConflict})
-      : super._();
+  _$UpdateLoginConfigurationInput._({
+    this.name,
+    this.redirectUris,
+    this.postLogoutRedirectUris,
+    this.clientSecret,
+    this.vpDefinition,
+    this.presentationDefinition,
+    this.dcqlQuery,
+    this.idTokenMapping,
+    this.clientMetadata,
+    this.tokenEndpointAuthMethod,
+    this.failOnMappingConflict,
+  }) : super._();
   @override
   UpdateLoginConfigurationInput rebuild(
-          void Function(UpdateLoginConfigurationInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateLoginConfigurationInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateLoginConfigurationInputBuilder toBuilder() =>
@@ -111,8 +111,10 @@ class _$UpdateLoginConfigurationInput extends UpdateLoginConfigurationInput {
 
 class UpdateLoginConfigurationInputBuilder
     implements
-        Builder<UpdateLoginConfigurationInput,
-            UpdateLoginConfigurationInputBuilder> {
+        Builder<
+          UpdateLoginConfigurationInput,
+          UpdateLoginConfigurationInputBuilder
+        > {
   _$UpdateLoginConfigurationInput? _$v;
 
   String? _name;
@@ -158,15 +160,15 @@ class UpdateLoginConfigurationInputBuilder
   LoginConfigurationClientMetadataInputBuilder get clientMetadata =>
       _$this._clientMetadata ??= LoginConfigurationClientMetadataInputBuilder();
   set clientMetadata(
-          LoginConfigurationClientMetadataInputBuilder? clientMetadata) =>
-      _$this._clientMetadata = clientMetadata;
+    LoginConfigurationClientMetadataInputBuilder? clientMetadata,
+  ) => _$this._clientMetadata = clientMetadata;
 
   TokenEndpointAuthMethod? _tokenEndpointAuthMethod;
   TokenEndpointAuthMethod? get tokenEndpointAuthMethod =>
       _$this._tokenEndpointAuthMethod;
   set tokenEndpointAuthMethod(
-          TokenEndpointAuthMethod? tokenEndpointAuthMethod) =>
-      _$this._tokenEndpointAuthMethod = tokenEndpointAuthMethod;
+    TokenEndpointAuthMethod? tokenEndpointAuthMethod,
+  ) => _$this._tokenEndpointAuthMethod = tokenEndpointAuthMethod;
 
   bool? _failOnMappingConflict;
   bool? get failOnMappingConflict => _$this._failOnMappingConflict;
@@ -212,7 +214,8 @@ class UpdateLoginConfigurationInputBuilder
   _$UpdateLoginConfigurationInput _build() {
     _$UpdateLoginConfigurationInput _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$UpdateLoginConfigurationInput._(
             name: name,
             redirectUris: _redirectUris?.build(),
@@ -240,7 +243,10 @@ class UpdateLoginConfigurationInputBuilder
         _clientMetadata?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'UpdateLoginConfigurationInput', _$failedField, e.toString());
+          r'UpdateLoginConfigurationInput',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

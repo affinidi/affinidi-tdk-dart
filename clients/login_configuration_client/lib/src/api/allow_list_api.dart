@@ -44,9 +44,7 @@ class AllowListApi {
     final _path = r'/v1/allow-list/groups/add';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -71,10 +69,7 @@ class AllowListApi {
           : _serializers.serialize(groupNamesInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -119,9 +114,7 @@ class AllowListApi {
     final _path = r'/v1/allow-list/groups/remove';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -146,10 +139,7 @@ class AllowListApi {
           : _serializers.serialize(groupNamesInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -194,9 +184,7 @@ class AllowListApi {
     final _path = r'/v1/allow-list/groups';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -214,7 +202,10 @@ class AllowListApi {
     final _queryParameters = <String, dynamic>{
       if (pageToken != null)
         r'pageToken': encodeQueryParameter(
-            _serializers, pageToken, const FullType(String)),
+          _serializers,
+          pageToken,
+          const FullType(String),
+        ),
     };
 
     final _response = await _dio.request<Object>(
@@ -233,9 +224,10 @@ class AllowListApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(GroupNames),
-            ) as GroupNames;
+                  rawResponse,
+                  specifiedType: const FullType(GroupNames),
+                )
+                as GroupNames;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

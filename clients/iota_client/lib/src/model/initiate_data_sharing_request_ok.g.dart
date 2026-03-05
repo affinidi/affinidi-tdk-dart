@@ -10,15 +10,15 @@ class _$InitiateDataSharingRequestOK extends InitiateDataSharingRequestOK {
   @override
   final InitiateDataSharingRequestOKData? data;
 
-  factory _$InitiateDataSharingRequestOK(
-          [void Function(InitiateDataSharingRequestOKBuilder)? updates]) =>
-      (InitiateDataSharingRequestOKBuilder()..update(updates))._build();
+  factory _$InitiateDataSharingRequestOK([
+    void Function(InitiateDataSharingRequestOKBuilder)? updates,
+  ]) => (InitiateDataSharingRequestOKBuilder()..update(updates))._build();
 
   _$InitiateDataSharingRequestOK._({this.data}) : super._();
   @override
   InitiateDataSharingRequestOK rebuild(
-          void Function(InitiateDataSharingRequestOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(InitiateDataSharingRequestOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   InitiateDataSharingRequestOKBuilder toBuilder() =>
@@ -40,16 +40,18 @@ class _$InitiateDataSharingRequestOK extends InitiateDataSharingRequestOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'InitiateDataSharingRequestOK')
-          ..add('data', data))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'InitiateDataSharingRequestOK',
+    )..add('data', data)).toString();
   }
 }
 
 class InitiateDataSharingRequestOKBuilder
     implements
-        Builder<InitiateDataSharingRequestOK,
-            InitiateDataSharingRequestOKBuilder> {
+        Builder<
+          InitiateDataSharingRequestOK,
+          InitiateDataSharingRequestOKBuilder
+        > {
   _$InitiateDataSharingRequestOK? _$v;
 
   InitiateDataSharingRequestOKDataBuilder? _data;
@@ -87,10 +89,7 @@ class InitiateDataSharingRequestOKBuilder
   _$InitiateDataSharingRequestOK _build() {
     _$InitiateDataSharingRequestOK _$result;
     try {
-      _$result = _$v ??
-          _$InitiateDataSharingRequestOK._(
-            data: _data?.build(),
-          );
+      _$result = _$v ?? _$InitiateDataSharingRequestOK._(data: _data?.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -98,7 +97,10 @@ class InitiateDataSharingRequestOKBuilder
         _data?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'InitiateDataSharingRequestOK', _$failedField, e.toString());
+          r'InitiateDataSharingRequestOK',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

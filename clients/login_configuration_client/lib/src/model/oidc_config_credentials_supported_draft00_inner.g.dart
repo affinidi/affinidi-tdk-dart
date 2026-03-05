@@ -17,23 +17,21 @@ class _$OIDCConfigCredentialsSupportedDraft00Inner
   @override
   final BuiltList<String>? types;
 
-  factory _$OIDCConfigCredentialsSupportedDraft00Inner(
-          [void Function(OIDCConfigCredentialsSupportedDraft00InnerBuilder)?
-              updates]) =>
-      (OIDCConfigCredentialsSupportedDraft00InnerBuilder()..update(updates))
-          ._build();
+  factory _$OIDCConfigCredentialsSupportedDraft00Inner([
+    void Function(OIDCConfigCredentialsSupportedDraft00InnerBuilder)? updates,
+  ]) => (OIDCConfigCredentialsSupportedDraft00InnerBuilder()..update(updates))
+      ._build();
 
-  _$OIDCConfigCredentialsSupportedDraft00Inner._(
-      {this.cryptographicBindingMethodsSupported,
-      this.cryptographicSuitesSupported,
-      this.format,
-      this.types})
-      : super._();
+  _$OIDCConfigCredentialsSupportedDraft00Inner._({
+    this.cryptographicBindingMethodsSupported,
+    this.cryptographicSuitesSupported,
+    this.format,
+    this.types,
+  }) : super._();
   @override
   OIDCConfigCredentialsSupportedDraft00Inner rebuild(
-          void Function(OIDCConfigCredentialsSupportedDraft00InnerBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(OIDCConfigCredentialsSupportedDraft00InnerBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   OIDCConfigCredentialsSupportedDraft00InnerBuilder toBuilder() =>
@@ -64,9 +62,12 @@ class _$OIDCConfigCredentialsSupportedDraft00Inner
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'OIDCConfigCredentialsSupportedDraft00Inner')
-          ..add('cryptographicBindingMethodsSupported',
-              cryptographicBindingMethodsSupported)
+            r'OIDCConfigCredentialsSupportedDraft00Inner',
+          )
+          ..add(
+            'cryptographicBindingMethodsSupported',
+            cryptographicBindingMethodsSupported,
+          )
           ..add('cryptographicSuitesSupported', cryptographicSuitesSupported)
           ..add('format', format)
           ..add('types', types))
@@ -76,24 +77,26 @@ class _$OIDCConfigCredentialsSupportedDraft00Inner
 
 class OIDCConfigCredentialsSupportedDraft00InnerBuilder
     implements
-        Builder<OIDCConfigCredentialsSupportedDraft00Inner,
-            OIDCConfigCredentialsSupportedDraft00InnerBuilder> {
+        Builder<
+          OIDCConfigCredentialsSupportedDraft00Inner,
+          OIDCConfigCredentialsSupportedDraft00InnerBuilder
+        > {
   _$OIDCConfigCredentialsSupportedDraft00Inner? _$v;
 
   ListBuilder<String>? _cryptographicBindingMethodsSupported;
   ListBuilder<String> get cryptographicBindingMethodsSupported =>
       _$this._cryptographicBindingMethodsSupported ??= ListBuilder<String>();
   set cryptographicBindingMethodsSupported(
-          ListBuilder<String>? cryptographicBindingMethodsSupported) =>
-      _$this._cryptographicBindingMethodsSupported =
-          cryptographicBindingMethodsSupported;
+    ListBuilder<String>? cryptographicBindingMethodsSupported,
+  ) => _$this._cryptographicBindingMethodsSupported =
+      cryptographicBindingMethodsSupported;
 
   ListBuilder<String>? _cryptographicSuitesSupported;
   ListBuilder<String> get cryptographicSuitesSupported =>
       _$this._cryptographicSuitesSupported ??= ListBuilder<String>();
   set cryptographicSuitesSupported(
-          ListBuilder<String>? cryptographicSuitesSupported) =>
-      _$this._cryptographicSuitesSupported = cryptographicSuitesSupported;
+    ListBuilder<String>? cryptographicSuitesSupported,
+  ) => _$this._cryptographicSuitesSupported = cryptographicSuitesSupported;
 
   String? _format;
   String? get format => _$this._format;
@@ -110,10 +113,11 @@ class OIDCConfigCredentialsSupportedDraft00InnerBuilder
   OIDCConfigCredentialsSupportedDraft00InnerBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _cryptographicBindingMethodsSupported =
-          $v.cryptographicBindingMethodsSupported?.toBuilder();
-      _cryptographicSuitesSupported =
-          $v.cryptographicSuitesSupported?.toBuilder();
+      _cryptographicBindingMethodsSupported = $v
+          .cryptographicBindingMethodsSupported
+          ?.toBuilder();
+      _cryptographicSuitesSupported = $v.cryptographicSuitesSupported
+          ?.toBuilder();
       _format = $v.format;
       _types = $v.types?.toBuilder();
       _$v = null;
@@ -128,8 +132,8 @@ class OIDCConfigCredentialsSupportedDraft00InnerBuilder
 
   @override
   void update(
-      void Function(OIDCConfigCredentialsSupportedDraft00InnerBuilder)?
-          updates) {
+    void Function(OIDCConfigCredentialsSupportedDraft00InnerBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -139,12 +143,13 @@ class OIDCConfigCredentialsSupportedDraft00InnerBuilder
   _$OIDCConfigCredentialsSupportedDraft00Inner _build() {
     _$OIDCConfigCredentialsSupportedDraft00Inner _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$OIDCConfigCredentialsSupportedDraft00Inner._(
             cryptographicBindingMethodsSupported:
                 _cryptographicBindingMethodsSupported?.build(),
-            cryptographicSuitesSupported:
-                _cryptographicSuitesSupported?.build(),
+            cryptographicSuitesSupported: _cryptographicSuitesSupported
+                ?.build(),
             format: format,
             types: _types?.build(),
           );
@@ -160,9 +165,10 @@ class OIDCConfigCredentialsSupportedDraft00InnerBuilder
         _types?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'OIDCConfigCredentialsSupportedDraft00Inner',
-            _$failedField,
-            e.toString());
+          r'OIDCConfigCredentialsSupportedDraft00Inner',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

@@ -13,6 +13,7 @@ Name | Type | Description | Notes
 **didMethod** | **String** | Define how DID of your wallet is created and resolved | [optional] [default to 'key']
 **didWebUrl** | **String** | URL of the DID. Required if the did method is web | [optional] 
 **algorithm** | **String** | algorithm to generate key for the wallet | [optional] [default to 'secp256k1']
+**services** | [**BuiltList&lt;ServiceEndpointInput&gt;**](ServiceEndpointInput.md) | Service endpoints to include in DID document | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

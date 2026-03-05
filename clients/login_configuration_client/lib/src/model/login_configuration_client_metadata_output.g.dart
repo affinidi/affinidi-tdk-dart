@@ -17,23 +17,21 @@ class _$LoginConfigurationClientMetadataOutput
   @override
   final bool? domainVerified;
 
-  factory _$LoginConfigurationClientMetadataOutput(
-          [void Function(LoginConfigurationClientMetadataOutputBuilder)?
-              updates]) =>
-      (LoginConfigurationClientMetadataOutputBuilder()..update(updates))
-          ._build();
+  factory _$LoginConfigurationClientMetadataOutput([
+    void Function(LoginConfigurationClientMetadataOutputBuilder)? updates,
+  ]) => (LoginConfigurationClientMetadataOutputBuilder()..update(updates))
+      ._build();
 
-  _$LoginConfigurationClientMetadataOutput._(
-      {required this.name,
-      required this.origin,
-      required this.logo,
-      this.domainVerified})
-      : super._();
+  _$LoginConfigurationClientMetadataOutput._({
+    required this.name,
+    required this.origin,
+    required this.logo,
+    this.domainVerified,
+  }) : super._();
   @override
   LoginConfigurationClientMetadataOutput rebuild(
-          void Function(LoginConfigurationClientMetadataOutputBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(LoginConfigurationClientMetadataOutputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   LoginConfigurationClientMetadataOutputBuilder toBuilder() =>
@@ -63,7 +61,8 @@ class _$LoginConfigurationClientMetadataOutput
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'LoginConfigurationClientMetadataOutput')
+            r'LoginConfigurationClientMetadataOutput',
+          )
           ..add('name', name)
           ..add('origin', origin)
           ..add('logo', logo)
@@ -74,8 +73,10 @@ class _$LoginConfigurationClientMetadataOutput
 
 class LoginConfigurationClientMetadataOutputBuilder
     implements
-        Builder<LoginConfigurationClientMetadataOutput,
-            LoginConfigurationClientMetadataOutputBuilder> {
+        Builder<
+          LoginConfigurationClientMetadataOutput,
+          LoginConfigurationClientMetadataOutputBuilder
+        > {
   _$LoginConfigurationClientMetadataOutput? _$v;
 
   String? _name;
@@ -118,7 +119,8 @@ class LoginConfigurationClientMetadataOutputBuilder
 
   @override
   void update(
-      void Function(LoginConfigurationClientMetadataOutputBuilder)? updates) {
+    void Function(LoginConfigurationClientMetadataOutputBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -126,14 +128,24 @@ class LoginConfigurationClientMetadataOutputBuilder
   LoginConfigurationClientMetadataOutput build() => _build();
 
   _$LoginConfigurationClientMetadataOutput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$LoginConfigurationClientMetadataOutput._(
           name: BuiltValueNullFieldError.checkNotNull(
-              name, r'LoginConfigurationClientMetadataOutput', 'name'),
+            name,
+            r'LoginConfigurationClientMetadataOutput',
+            'name',
+          ),
           origin: BuiltValueNullFieldError.checkNotNull(
-              origin, r'LoginConfigurationClientMetadataOutput', 'origin'),
+            origin,
+            r'LoginConfigurationClientMetadataOutput',
+            'origin',
+          ),
           logo: BuiltValueNullFieldError.checkNotNull(
-              logo, r'LoginConfigurationClientMetadataOutput', 'logo'),
+            logo,
+            r'LoginConfigurationClientMetadataOutput',
+            'logo',
+          ),
           domainVerified: domainVerified,
         );
     replace(_$result);

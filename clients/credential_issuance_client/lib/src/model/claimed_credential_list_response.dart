@@ -18,8 +18,10 @@ part 'claimed_credential_list_response.g.dart';
 @BuiltValue()
 abstract class ClaimedCredentialListResponse
     implements
-        Built<ClaimedCredentialListResponse,
-            ClaimedCredentialListResponseBuilder> {
+        Built<
+          ClaimedCredentialListResponse,
+          ClaimedCredentialListResponseBuilder
+        > {
   /// list of credentials
   @BuiltValueField(wireName: r'credentials')
   BuiltList<BuiltMap<String, JsonObject?>>? get credentials;
@@ -30,9 +32,9 @@ abstract class ClaimedCredentialListResponse
 
   ClaimedCredentialListResponse._();
 
-  factory ClaimedCredentialListResponse(
-          [void updates(ClaimedCredentialListResponseBuilder b)]) =
-      _$ClaimedCredentialListResponse;
+  factory ClaimedCredentialListResponse([
+    void updates(ClaimedCredentialListResponseBuilder b),
+  ]) = _$ClaimedCredentialListResponse;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ClaimedCredentialListResponseBuilder b) => b;
@@ -47,7 +49,7 @@ class _$ClaimedCredentialListResponseSerializer
   @override
   final Iterable<Type> types = const [
     ClaimedCredentialListResponse,
-    _$ClaimedCredentialListResponse
+    _$ClaimedCredentialListResponse,
   ];
 
   @override
@@ -63,7 +65,7 @@ class _$ClaimedCredentialListResponseSerializer
       yield serializers.serialize(
         object.credentials,
         specifiedType: const FullType(BuiltList, [
-          FullType(BuiltMap, [FullType(String), FullType.nullable(JsonObject)])
+          FullType(BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
         ]),
       );
     }
@@ -82,9 +84,11 @@ class _$ClaimedCredentialListResponseSerializer
     ClaimedCredentialListResponse object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -100,20 +104,26 @@ class _$ClaimedCredentialListResponseSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'credentials':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [
-              FullType(
-                  BuiltMap, [FullType(String), FullType.nullable(JsonObject)])
-            ]),
-          ) as BuiltList<BuiltMap<String, JsonObject?>>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(BuiltMap, [
+                        FullType(String),
+                        FullType.nullable(JsonObject),
+                      ]),
+                    ]),
+                  )
+                  as BuiltList<BuiltMap<String, JsonObject?>>;
           result.credentials.replace(valueDes);
           break;
         case r'lastEvaluatedKey':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.lastEvaluatedKey = valueDes;
           break;
         default:

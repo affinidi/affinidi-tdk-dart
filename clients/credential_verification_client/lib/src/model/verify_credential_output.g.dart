@@ -12,16 +12,16 @@ class _$VerifyCredentialOutput extends VerifyCredentialOutput {
   @override
   final bool isValid;
 
-  factory _$VerifyCredentialOutput(
-          [void Function(VerifyCredentialOutputBuilder)? updates]) =>
-      (VerifyCredentialOutputBuilder()..update(updates))._build();
+  factory _$VerifyCredentialOutput([
+    void Function(VerifyCredentialOutputBuilder)? updates,
+  ]) => (VerifyCredentialOutputBuilder()..update(updates))._build();
 
   _$VerifyCredentialOutput._({required this.errors, required this.isValid})
-      : super._();
+    : super._();
   @override
   VerifyCredentialOutput rebuild(
-          void Function(VerifyCredentialOutputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(VerifyCredentialOutputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   VerifyCredentialOutputBuilder toBuilder() =>
@@ -95,11 +95,15 @@ class VerifyCredentialOutputBuilder
   _$VerifyCredentialOutput _build() {
     _$VerifyCredentialOutput _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$VerifyCredentialOutput._(
             errors: errors.build(),
             isValid: BuiltValueNullFieldError.checkNotNull(
-                isValid, r'VerifyCredentialOutput', 'isValid'),
+              isValid,
+              r'VerifyCredentialOutput',
+              'isValid',
+            ),
           );
     } catch (_) {
       late String _$failedField;
@@ -108,7 +112,10 @@ class VerifyCredentialOutputBuilder
         errors.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'VerifyCredentialOutput', _$failedField, e.toString());
+          r'VerifyCredentialOutput',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

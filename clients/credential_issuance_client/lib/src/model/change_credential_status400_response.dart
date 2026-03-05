@@ -23,16 +23,18 @@ part 'change_credential_status400_response.g.dart';
 @BuiltValue()
 abstract class ChangeCredentialStatus400Response
     implements
-        Built<ChangeCredentialStatus400Response,
-            ChangeCredentialStatus400ResponseBuilder> {
+        Built<
+          ChangeCredentialStatus400Response,
+          ChangeCredentialStatus400ResponseBuilder
+        > {
   /// One Of [ChangeStatusForbiddenError], [InvalidParameterError]
   OneOf get oneOf;
 
   ChangeCredentialStatus400Response._();
 
-  factory ChangeCredentialStatus400Response(
-          [void updates(ChangeCredentialStatus400ResponseBuilder b)]) =
-      _$ChangeCredentialStatus400Response;
+  factory ChangeCredentialStatus400Response([
+    void updates(ChangeCredentialStatus400ResponseBuilder b),
+  ]) = _$ChangeCredentialStatus400Response;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ChangeCredentialStatus400ResponseBuilder b) => b;
@@ -47,14 +49,16 @@ class _$ChangeCredentialStatus400ResponseSerializer
   @override
   final Iterable<Type> types = const [
     ChangeCredentialStatus400Response,
-    _$ChangeCredentialStatus400Response
+    _$ChangeCredentialStatus400Response,
   ];
 
   @override
   final String wireName = r'ChangeCredentialStatus400Response';
 
-  Iterable<Object?> _serializeProperties(Serializers serializers,
-      ChangeCredentialStatus400Response object) sync* {}
+  Iterable<Object?> _serializeProperties(
+    Serializers serializers,
+    ChangeCredentialStatus400Response object,
+  ) sync* {}
 
   @override
   Object serialize(
@@ -63,8 +67,10 @@ class _$ChangeCredentialStatus400ResponseSerializer
     FullType specifiedType = FullType.unspecified,
   }) {
     final oneOf = object.oneOf;
-    return serializers.serialize(oneOf.value,
-        specifiedType: FullType(oneOf.valueType))!;
+    return serializers.serialize(
+      oneOf.value,
+      specifiedType: FullType(oneOf.valueType),
+    )!;
   }
 
   @override
@@ -80,8 +86,9 @@ class _$ChangeCredentialStatus400ResponseSerializer
       FullType(ChangeStatusForbiddenError),
     ]);
     oneOfDataSrc = serialized;
-    result.oneOf = serializers.deserialize(oneOfDataSrc,
-        specifiedType: targetType) as OneOf;
+    result.oneOf =
+        serializers.deserialize(oneOfDataSrc, specifiedType: targetType)
+            as OneOf;
     return result.build();
   }
 }
@@ -89,7 +96,7 @@ class _$ChangeCredentialStatus400ResponseSerializer
 class ChangeCredentialStatus400ResponseNameEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'ChangeStatusForbiddenError')
   static const ChangeCredentialStatus400ResponseNameEnum
-      changeStatusForbiddenError =
+  changeStatusForbiddenError =
       _$changeCredentialStatus400ResponseNameEnum_changeStatusForbiddenError;
 
   static Serializer<ChangeCredentialStatus400ResponseNameEnum> get serializer =>
@@ -106,15 +113,14 @@ class ChangeCredentialStatus400ResponseNameEnum extends EnumClass {
 class ChangeCredentialStatus400ResponseMessageEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'Related VC status cannot be changed')
   static const ChangeCredentialStatus400ResponseMessageEnum
-      relatedVCStatusCannotBeChanged =
+  relatedVCStatusCannotBeChanged =
       _$changeCredentialStatus400ResponseMessageEnum_relatedVCStatusCannotBeChanged;
 
   static Serializer<ChangeCredentialStatus400ResponseMessageEnum>
-      get serializer =>
-          _$changeCredentialStatus400ResponseMessageEnumSerializer;
+  get serializer => _$changeCredentialStatus400ResponseMessageEnumSerializer;
 
   const ChangeCredentialStatus400ResponseMessageEnum._(String name)
-      : super(name);
+    : super(name);
 
   static BuiltSet<ChangeCredentialStatus400ResponseMessageEnum> get values =>
       _$changeCredentialStatus400ResponseMessageEnumValues;
@@ -128,15 +134,15 @@ class ChangeCredentialStatus400ResponseHttpStatusCodeEnum extends EnumClass {
       _$changeCredentialStatus400ResponseHttpStatusCodeEnum_number400;
 
   static Serializer<ChangeCredentialStatus400ResponseHttpStatusCodeEnum>
-      get serializer =>
-          _$changeCredentialStatus400ResponseHttpStatusCodeEnumSerializer;
+  get serializer =>
+      _$changeCredentialStatus400ResponseHttpStatusCodeEnumSerializer;
 
   const ChangeCredentialStatus400ResponseHttpStatusCodeEnum._(String name)
-      : super(name);
+    : super(name);
 
   static BuiltSet<ChangeCredentialStatus400ResponseHttpStatusCodeEnum>
-      get values => _$changeCredentialStatus400ResponseHttpStatusCodeEnumValues;
+  get values => _$changeCredentialStatus400ResponseHttpStatusCodeEnumValues;
   static ChangeCredentialStatus400ResponseHttpStatusCodeEnum valueOf(
-          String name) =>
-      _$changeCredentialStatus400ResponseHttpStatusCodeEnumValueOf(name);
+    String name,
+  ) => _$changeCredentialStatus400ResponseHttpStatusCodeEnumValueOf(name);
 }

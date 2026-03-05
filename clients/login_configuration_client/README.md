@@ -14,7 +14,7 @@ Affinidi TDK dart client for Affinidi LOGIN CONFIGURATION
 To use the package from [pub.dev](https://pub.dev), please include the following in pubspec.yaml
 ```yaml
 dependencies:
-  affinidi_tdk_login_configuration_client: ^1.15.0
+  affinidi_tdk_login_configuration_client: ^2.0.0
 ```
 
 ### Github
@@ -102,13 +102,8 @@ Class | Method | HTTP request | Description
 
  - [ActionForbiddenError](doc/ActionForbiddenError.md)
  - [AddUserToGroupInput](doc/AddUserToGroupInput.md)
- - [AuthorizationRequestDcql](doc/AuthorizationRequestDcql.md)
- - [AuthorizationRequestPex](doc/AuthorizationRequestPex.md)
  - [BlockedUsers](doc/BlockedUsers.md)
  - [BlockedUsersInput](doc/BlockedUsersInput.md)
- - [CorsLoginSessionAcceptResponseOK](doc/CorsLoginSessionAcceptResponseOK.md)
- - [CorsLoginSessionForIdpOK](doc/CorsLoginSessionForIdpOK.md)
- - [CorsLoginSessionRejectResponseOK](doc/CorsLoginSessionRejectResponseOK.md)
  - [CreateGroupInput](doc/CreateGroupInput.md)
  - [CreateHydraNetworkError](doc/CreateHydraNetworkError.md)
  - [CreateLoginConfigurationInput](doc/CreateLoginConfigurationInput.md)
@@ -116,7 +111,6 @@ Class | Method | HTTP request | Description
  - [CreateLoginConfigurationOutputAuth](doc/CreateLoginConfigurationOutputAuth.md)
  - [CreateLoginConfigurations400Response](doc/CreateLoginConfigurations400Response.md)
  - [CreateProjectNetworkError](doc/CreateProjectNetworkError.md)
- - [ErrorOAuth2](doc/ErrorOAuth2.md)
  - [GetUserInfo](doc/GetUserInfo.md)
  - [GroupDto](doc/GroupDto.md)
  - [GroupNames](doc/GroupNames.md)
@@ -126,36 +120,24 @@ Class | Method | HTTP request | Description
  - [GroupsList](doc/GroupsList.md)
  - [GroupsPerUserLimitExceededError](doc/GroupsPerUserLimitExceededError.md)
  - [IdTokenMappingItem](doc/IdTokenMappingItem.md)
- - [InlineObject](doc/InlineObject.md)
- - [InvalidClaimContextError](doc/InvalidClaimContextError.md)
  - [InvalidGroupsError](doc/InvalidGroupsError.md)
  - [InvalidParameterError](doc/InvalidParameterError.md)
  - [InvalidParameterErrorDetailsInner](doc/InvalidParameterErrorDetailsInner.md)
- - [InvalidVPTokenCreationTimeError](doc/InvalidVPTokenCreationTimeError.md)
  - [JsonWebKey](doc/JsonWebKey.md)
  - [JsonWebKeyKeysInner](doc/JsonWebKeyKeysInner.md)
  - [ListLoginConfigurationOutput](doc/ListLoginConfigurationOutput.md)
  - [LoginConfigurationClientMetadataInput](doc/LoginConfigurationClientMetadataInput.md)
  - [LoginConfigurationClientMetadataOutput](doc/LoginConfigurationClientMetadataOutput.md)
  - [LoginConfigurationObject](doc/LoginConfigurationObject.md)
- - [LoginConfigurationReadInvalidClientIdError](doc/LoginConfigurationReadInvalidClientIdError.md)
- - [LoginSessionDto](doc/LoginSessionDto.md)
- - [LoginSessionDtoAuthorizationRequest](doc/LoginSessionDtoAuthorizationRequest.md)
- - [LoginSessionForIDPInput](doc/LoginSessionForIDPInput.md)
  - [NotFoundError](doc/NotFoundError.md)
  - [OAuth2Token](doc/OAuth2Token.md)
  - [OAuth2TokenAuthorizationDetailsInner](doc/OAuth2TokenAuthorizationDetailsInner.md)
  - [OIDCConfig](doc/OIDCConfig.md)
  - [OIDCConfigCredentialsSupportedDraft00Inner](doc/OIDCConfigCredentialsSupportedDraft00Inner.md)
- - [RedirectResponse](doc/RedirectResponse.md)
  - [RemoveUserFromGroupInput](doc/RemoveUserFromGroupInput.md)
  - [ResourceCreationError](doc/ResourceCreationError.md)
- - [ServiceErrorResponse](doc/ServiceErrorResponse.md)
- - [ServiceErrorResponseDetailsInner](doc/ServiceErrorResponseDetailsInner.md)
  - [TokenEndpointAuthMethod](doc/TokenEndpointAuthMethod.md)
- - [UnauthorizedError](doc/UnauthorizedError.md)
  - [UpdateLoginConfigurationInput](doc/UpdateLoginConfigurationInput.md)
- - [VPTokenValidationError](doc/VPTokenValidationError.md)
 
 
 ## Documentation For Authorization

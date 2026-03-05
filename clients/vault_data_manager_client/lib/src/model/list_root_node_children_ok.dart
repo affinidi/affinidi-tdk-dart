@@ -22,9 +22,9 @@ abstract class ListRootNodeChildrenOK
 
   ListRootNodeChildrenOK._();
 
-  factory ListRootNodeChildrenOK(
-          [void updates(ListRootNodeChildrenOKBuilder b)]) =
-      _$ListRootNodeChildrenOK;
+  factory ListRootNodeChildrenOK([
+    void updates(ListRootNodeChildrenOKBuilder b),
+  ]) = _$ListRootNodeChildrenOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ListRootNodeChildrenOKBuilder b) => b;
@@ -39,7 +39,7 @@ class _$ListRootNodeChildrenOKSerializer
   @override
   final Iterable<Type> types = const [
     ListRootNodeChildrenOK,
-    _$ListRootNodeChildrenOK
+    _$ListRootNodeChildrenOK,
   ];
 
   @override
@@ -65,9 +65,11 @@ class _$ListRootNodeChildrenOKSerializer
     ListRootNodeChildrenOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -83,10 +85,14 @@ class _$ListRootNodeChildrenOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'nodes':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(NodeDto)]),
-          ) as BuiltList<NodeDto>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(NodeDto),
+                    ]),
+                  )
+                  as BuiltList<NodeDto>;
           result.nodes.replace(valueDes);
           break;
         default:

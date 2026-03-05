@@ -119,8 +119,9 @@ class _$OAuth2TokenSerializer implements PrimitiveSerializer<OAuth2Token> {
       yield r'authorization_details';
       yield serializers.serialize(
         object.authorizationDetails,
-        specifiedType: const FullType(
-            BuiltList, [FullType(OAuth2TokenAuthorizationDetailsInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(OAuth2TokenAuthorizationDetailsInner),
+        ]),
       );
     }
   }
@@ -131,9 +132,11 @@ class _$OAuth2TokenSerializer implements PrimitiveSerializer<OAuth2Token> {
     OAuth2Token object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -149,53 +152,62 @@ class _$OAuth2TokenSerializer implements PrimitiveSerializer<OAuth2Token> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'access_token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.accessToken = valueDes;
           break;
         case r'expires_in':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.expiresIn = valueDes;
           break;
         case r'id_token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.idToken = valueDes;
           break;
         case r'refresh_token':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.refreshToken = valueDes;
           break;
         case r'scope':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.scope = valueDes;
           break;
         case r'token_type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.tokenType = valueDes;
           break;
         case r'authorization_details':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltList, [FullType(OAuth2TokenAuthorizationDetailsInner)]),
-          ) as BuiltList<OAuth2TokenAuthorizationDetailsInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(OAuth2TokenAuthorizationDetailsInner),
+                    ]),
+                  )
+                  as BuiltList<OAuth2TokenAuthorizationDetailsInner>;
           result.authorizationDetails.replace(valueDes);
           break;
         default:

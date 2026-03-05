@@ -49,8 +49,9 @@ class _$ListScannedFilesOKSerializer
     yield r'scannedFiles';
     yield serializers.serialize(
       object.scannedFiles,
-      specifiedType: const FullType(
-          BuiltList, [FullType(ListScannedFilesOKScannedFilesInner)]),
+      specifiedType: const FullType(BuiltList, [
+        FullType(ListScannedFilesOKScannedFilesInner),
+      ]),
     );
   }
 
@@ -60,9 +61,11 @@ class _$ListScannedFilesOKSerializer
     ListScannedFilesOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -78,11 +81,14 @@ class _$ListScannedFilesOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'scannedFiles':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltList, [FullType(ListScannedFilesOKScannedFilesInner)]),
-          ) as BuiltList<ListScannedFilesOKScannedFilesInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(ListScannedFilesOKScannedFilesInner),
+                    ]),
+                  )
+                  as BuiltList<ListScannedFilesOKScannedFilesInner>;
           result.scannedFiles.replace(valueDes);
           break;
         default:

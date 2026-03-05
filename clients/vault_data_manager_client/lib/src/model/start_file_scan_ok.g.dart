@@ -28,10 +28,10 @@ StartFileScanOKStatusEnum _$startFileScanOKStatusEnumValueOf(String name) {
 
 final BuiltSet<StartFileScanOKStatusEnum> _$startFileScanOKStatusEnumValues =
     BuiltSet<StartFileScanOKStatusEnum>(const <StartFileScanOKStatusEnum>[
-  _$startFileScanOKStatusEnum_STARTED,
-  _$startFileScanOKStatusEnum_FAILED,
-  _$startFileScanOKStatusEnum_COMPLETED,
-]);
+      _$startFileScanOKStatusEnum_STARTED,
+      _$startFileScanOKStatusEnum_FAILED,
+      _$startFileScanOKStatusEnum_COMPLETED,
+    ]);
 
 Serializer<StartFileScanOKStatusEnum> _$startFileScanOKStatusEnumSerializer =
     _$StartFileScanOKStatusEnumSerializer();
@@ -55,16 +55,20 @@ class _$StartFileScanOKStatusEnumSerializer
   final String wireName = 'StartFileScanOKStatusEnum';
 
   @override
-  Object serialize(Serializers serializers, StartFileScanOKStatusEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    StartFileScanOKStatusEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   StartFileScanOKStatusEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      StartFileScanOKStatusEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => StartFileScanOKStatusEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$StartFileScanOK extends StartFileScanOK {
@@ -150,12 +154,19 @@ class StartFileScanOKBuilder
   StartFileScanOK build() => _build();
 
   _$StartFileScanOK _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$StartFileScanOK._(
           jobId: BuiltValueNullFieldError.checkNotNull(
-              jobId, r'StartFileScanOK', 'jobId'),
+            jobId,
+            r'StartFileScanOK',
+            'jobId',
+          ),
           status: BuiltValueNullFieldError.checkNotNull(
-              status, r'StartFileScanOK', 'status'),
+            status,
+            r'StartFileScanOK',
+            'status',
+          ),
         );
     replace(_$result);
     return _$result;

@@ -41,23 +41,23 @@ class _$FlowData extends FlowData {
   factory _$FlowData([void Function(FlowDataBuilder)? updates]) =>
       (FlowDataBuilder()..update(updates))._build();
 
-  _$FlowData._(
-      {required this.createdAt,
-      required this.modifiedAt,
-      required this.id,
-      this.projectId,
-      required this.flowId,
-      required this.credentialTypeId,
-      required this.jsonLdContextUrl,
-      required this.jsonSchemaUrl,
-      this.configurationId,
-      this.issuedAt,
-      this.walletId,
-      this.projectIdConfigurationId,
-      this.projectIdConfigurationIdWalletId,
-      this.projectIdConfigurationIdCredentialType,
-      this.statusListsDetails})
-      : super._();
+  _$FlowData._({
+    required this.createdAt,
+    required this.modifiedAt,
+    required this.id,
+    this.projectId,
+    required this.flowId,
+    required this.credentialTypeId,
+    required this.jsonLdContextUrl,
+    required this.jsonSchemaUrl,
+    this.configurationId,
+    this.issuedAt,
+    this.walletId,
+    this.projectIdConfigurationId,
+    this.projectIdConfigurationIdWalletId,
+    this.projectIdConfigurationIdCredentialType,
+    this.statusListsDetails,
+  }) : super._();
   @override
   FlowData rebuild(void Function(FlowDataBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -125,10 +125,14 @@ class _$FlowData extends FlowData {
           ..add('issuedAt', issuedAt)
           ..add('walletId', walletId)
           ..add('projectIdConfigurationId', projectIdConfigurationId)
-          ..add('projectIdConfigurationIdWalletId',
-              projectIdConfigurationIdWalletId)
-          ..add('projectIdConfigurationIdCredentialType',
-              projectIdConfigurationIdCredentialType)
+          ..add(
+            'projectIdConfigurationIdWalletId',
+            projectIdConfigurationIdWalletId,
+          )
+          ..add(
+            'projectIdConfigurationIdCredentialType',
+            projectIdConfigurationIdCredentialType,
+          )
           ..add('statusListsDetails', statusListsDetails))
         .toString();
   }
@@ -194,25 +198,25 @@ class FlowDataBuilder implements Builder<FlowData, FlowDataBuilder> {
   String? get projectIdConfigurationIdWalletId =>
       _$this._projectIdConfigurationIdWalletId;
   set projectIdConfigurationIdWalletId(
-          String? projectIdConfigurationIdWalletId) =>
-      _$this._projectIdConfigurationIdWalletId =
-          projectIdConfigurationIdWalletId;
+    String? projectIdConfigurationIdWalletId,
+  ) => _$this._projectIdConfigurationIdWalletId =
+      projectIdConfigurationIdWalletId;
 
   String? _projectIdConfigurationIdCredentialType;
   String? get projectIdConfigurationIdCredentialType =>
       _$this._projectIdConfigurationIdCredentialType;
   set projectIdConfigurationIdCredentialType(
-          String? projectIdConfigurationIdCredentialType) =>
-      _$this._projectIdConfigurationIdCredentialType =
-          projectIdConfigurationIdCredentialType;
+    String? projectIdConfigurationIdCredentialType,
+  ) => _$this._projectIdConfigurationIdCredentialType =
+      projectIdConfigurationIdCredentialType;
 
   ListBuilder<FlowDataStatusListsDetailsInner>? _statusListsDetails;
   ListBuilder<FlowDataStatusListsDetailsInner> get statusListsDetails =>
       _$this._statusListsDetails ??=
           ListBuilder<FlowDataStatusListsDetailsInner>();
   set statusListsDetails(
-          ListBuilder<FlowDataStatusListsDetailsInner>? statusListsDetails) =>
-      _$this._statusListsDetails = statusListsDetails;
+    ListBuilder<FlowDataStatusListsDetailsInner>? statusListsDetails,
+  ) => _$this._statusListsDetails = statusListsDetails;
 
   FlowDataBuilder() {
     FlowData._defaults(this);
@@ -258,22 +262,41 @@ class FlowDataBuilder implements Builder<FlowData, FlowDataBuilder> {
   _$FlowData _build() {
     _$FlowData _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$FlowData._(
             createdAt: BuiltValueNullFieldError.checkNotNull(
-                createdAt, r'FlowData', 'createdAt'),
+              createdAt,
+              r'FlowData',
+              'createdAt',
+            ),
             modifiedAt: BuiltValueNullFieldError.checkNotNull(
-                modifiedAt, r'FlowData', 'modifiedAt'),
+              modifiedAt,
+              r'FlowData',
+              'modifiedAt',
+            ),
             id: BuiltValueNullFieldError.checkNotNull(id, r'FlowData', 'id'),
             projectId: projectId,
             flowId: BuiltValueNullFieldError.checkNotNull(
-                flowId, r'FlowData', 'flowId'),
+              flowId,
+              r'FlowData',
+              'flowId',
+            ),
             credentialTypeId: BuiltValueNullFieldError.checkNotNull(
-                credentialTypeId, r'FlowData', 'credentialTypeId'),
+              credentialTypeId,
+              r'FlowData',
+              'credentialTypeId',
+            ),
             jsonLdContextUrl: BuiltValueNullFieldError.checkNotNull(
-                jsonLdContextUrl, r'FlowData', 'jsonLdContextUrl'),
+              jsonLdContextUrl,
+              r'FlowData',
+              'jsonLdContextUrl',
+            ),
             jsonSchemaUrl: BuiltValueNullFieldError.checkNotNull(
-                jsonSchemaUrl, r'FlowData', 'jsonSchemaUrl'),
+              jsonSchemaUrl,
+              r'FlowData',
+              'jsonSchemaUrl',
+            ),
             configurationId: configurationId,
             issuedAt: issuedAt,
             walletId: walletId,
@@ -290,7 +313,10 @@ class FlowDataBuilder implements Builder<FlowData, FlowDataBuilder> {
         _statusListsDetails?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'FlowData', _$failedField, e.toString());
+          r'FlowData',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

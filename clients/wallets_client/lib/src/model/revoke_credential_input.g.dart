@@ -12,16 +12,16 @@ class _$RevokeCredentialInput extends RevokeCredentialInput {
   @override
   final String? credentialId;
 
-  factory _$RevokeCredentialInput(
-          [void Function(RevokeCredentialInputBuilder)? updates]) =>
-      (RevokeCredentialInputBuilder()..update(updates))._build();
+  factory _$RevokeCredentialInput([
+    void Function(RevokeCredentialInputBuilder)? updates,
+  ]) => (RevokeCredentialInputBuilder()..update(updates))._build();
 
   _$RevokeCredentialInput._({this.revocationReason, this.credentialId})
-      : super._();
+    : super._();
   @override
   RevokeCredentialInput rebuild(
-          void Function(RevokeCredentialInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(RevokeCredentialInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   RevokeCredentialInputBuilder toBuilder() =>
@@ -94,7 +94,8 @@ class RevokeCredentialInputBuilder
   RevokeCredentialInput build() => _build();
 
   _$RevokeCredentialInput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$RevokeCredentialInput._(
           revocationReason: revocationReason,
           credentialId: credentialId,

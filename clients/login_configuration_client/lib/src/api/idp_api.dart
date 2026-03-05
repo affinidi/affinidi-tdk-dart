@@ -44,18 +44,19 @@ class IdpApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/login/project/{projectId}/oauth2/auth'.replaceAll(
-        '{' r'projectId' '}',
-        encodeQueryParameter(_serializers, projectId, const FullType(String))
-            .toString());
+      '{'
+      r'projectId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        projectId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -94,18 +95,19 @@ class IdpApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/login/project/{projectId}/oauth2/revoke'.replaceAll(
-        '{' r'projectId' '}',
-        encodeQueryParameter(_serializers, projectId, const FullType(String))
-            .toString());
+      '{'
+      r'projectId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        projectId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -145,19 +147,19 @@ class IdpApi {
   }) async {
     final _path = r'/v1/login/project/{projectId}/oauth2/sessions/logout'
         .replaceAll(
-            '{' r'projectId' '}',
-            encodeQueryParameter(
-                    _serializers, projectId, const FullType(String))
-                .toString());
+          '{'
+          r'projectId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            projectId,
+            const FullType(String),
+          ).toString(),
+        );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -196,18 +198,19 @@ class IdpApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/login/project/{projectId}/oauth2/token'.replaceAll(
-        '{' r'projectId' '}',
-        encodeQueryParameter(_serializers, projectId, const FullType(String))
-            .toString());
+      '{'
+      r'projectId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        projectId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -226,9 +229,10 @@ class IdpApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(OAuth2Token),
-            ) as OAuth2Token;
+                  rawResponse,
+                  specifiedType: const FullType(OAuth2Token),
+                )
+                as OAuth2Token;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -275,18 +279,19 @@ class IdpApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/login/project/{projectId}/userinfo'.replaceAll(
-        '{' r'projectId' '}',
-        encodeQueryParameter(_serializers, projectId, const FullType(String))
-            .toString());
+      '{'
+      r'projectId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        projectId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -305,9 +310,10 @@ class IdpApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(GetUserInfo),
-            ) as GetUserInfo;
+                  rawResponse,
+                  specifiedType: const FullType(GetUserInfo),
+                )
+                as GetUserInfo;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -355,19 +361,19 @@ class IdpApi {
   }) async {
     final _path = r'/v1/login/project/{projectId}/.well-known/jwks.json'
         .replaceAll(
-            '{' r'projectId' '}',
-            encodeQueryParameter(
-                    _serializers, projectId, const FullType(String))
-                .toString());
+          '{'
+          r'projectId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            projectId,
+            const FullType(String),
+          ).toString(),
+        );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -386,9 +392,10 @@ class IdpApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(JsonWebKey),
-            ) as JsonWebKey;
+                  rawResponse,
+                  specifiedType: const FullType(JsonWebKey),
+                )
+                as JsonWebKey;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -426,7 +433,7 @@ class IdpApi {
   /// Returns a [Future] containing a [Response] with a [OIDCConfig] as data
   /// Throws [DioException] if API call or serialization fails
   Future<Response<OIDCConfig>>
-      v1LoginProjectProjectIdWellKnownOpenidConfigurationGet({
+  v1LoginProjectProjectIdWellKnownOpenidConfigurationGet({
     required String projectId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -438,19 +445,19 @@ class IdpApi {
     final _path =
         r'/v1/login/project/{projectId}/.well-known/openid-configuration'
             .replaceAll(
-                '{' r'projectId' '}',
-                encodeQueryParameter(
-                        _serializers, projectId, const FullType(String))
-                    .toString());
+              '{'
+              r'projectId'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                projectId,
+                const FullType(String),
+              ).toString(),
+            );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -469,9 +476,10 @@ class IdpApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(OIDCConfig),
-            ) as OIDCConfig;
+                  rawResponse,
+                  specifiedType: const FullType(OIDCConfig),
+                )
+                as OIDCConfig;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

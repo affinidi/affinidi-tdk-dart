@@ -7,11 +7,12 @@ part of 'invalid_issuer_wallet_error.dart';
 // **************************************************************************
 
 const InvalidIssuerWalletErrorNameEnum
-    _$invalidIssuerWalletErrorNameEnum_invalidIssuerWalletError =
+_$invalidIssuerWalletErrorNameEnum_invalidIssuerWalletError =
     const InvalidIssuerWalletErrorNameEnum._('invalidIssuerWalletError');
 
 InvalidIssuerWalletErrorNameEnum _$invalidIssuerWalletErrorNameEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'invalidIssuerWalletError':
       return _$invalidIssuerWalletErrorNameEnum_invalidIssuerWalletError;
@@ -21,17 +22,19 @@ InvalidIssuerWalletErrorNameEnum _$invalidIssuerWalletErrorNameEnumValueOf(
 }
 
 final BuiltSet<InvalidIssuerWalletErrorNameEnum>
-    _$invalidIssuerWalletErrorNameEnumValues = BuiltSet<
-        InvalidIssuerWalletErrorNameEnum>(const <InvalidIssuerWalletErrorNameEnum>[
-  _$invalidIssuerWalletErrorNameEnum_invalidIssuerWalletError,
-]);
+_$invalidIssuerWalletErrorNameEnumValues =
+    BuiltSet<InvalidIssuerWalletErrorNameEnum>(
+      const <InvalidIssuerWalletErrorNameEnum>[
+        _$invalidIssuerWalletErrorNameEnum_invalidIssuerWalletError,
+      ],
+    );
 
 const InvalidIssuerWalletErrorMessageEnum
-    _$invalidIssuerWalletErrorMessageEnum_issuerWalletIdIsInvalid =
+_$invalidIssuerWalletErrorMessageEnum_issuerWalletIdIsInvalid =
     const InvalidIssuerWalletErrorMessageEnum._('issuerWalletIdIsInvalid');
 
 InvalidIssuerWalletErrorMessageEnum
-    _$invalidIssuerWalletErrorMessageEnumValueOf(String name) {
+_$invalidIssuerWalletErrorMessageEnumValueOf(String name) {
   switch (name) {
     case 'issuerWalletIdIsInvalid':
       return _$invalidIssuerWalletErrorMessageEnum_issuerWalletIdIsInvalid;
@@ -41,17 +44,19 @@ InvalidIssuerWalletErrorMessageEnum
 }
 
 final BuiltSet<InvalidIssuerWalletErrorMessageEnum>
-    _$invalidIssuerWalletErrorMessageEnumValues = BuiltSet<
-        InvalidIssuerWalletErrorMessageEnum>(const <InvalidIssuerWalletErrorMessageEnum>[
-  _$invalidIssuerWalletErrorMessageEnum_issuerWalletIdIsInvalid,
-]);
+_$invalidIssuerWalletErrorMessageEnumValues =
+    BuiltSet<InvalidIssuerWalletErrorMessageEnum>(
+      const <InvalidIssuerWalletErrorMessageEnum>[
+        _$invalidIssuerWalletErrorMessageEnum_issuerWalletIdIsInvalid,
+      ],
+    );
 
 const InvalidIssuerWalletErrorHttpStatusCodeEnum
-    _$invalidIssuerWalletErrorHttpStatusCodeEnum_number400 =
+_$invalidIssuerWalletErrorHttpStatusCodeEnum_number400 =
     const InvalidIssuerWalletErrorHttpStatusCodeEnum._('number400');
 
 InvalidIssuerWalletErrorHttpStatusCodeEnum
-    _$invalidIssuerWalletErrorHttpStatusCodeEnumValueOf(String name) {
+_$invalidIssuerWalletErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$invalidIssuerWalletErrorHttpStatusCodeEnum_number400;
@@ -61,19 +66,21 @@ InvalidIssuerWalletErrorHttpStatusCodeEnum
 }
 
 final BuiltSet<InvalidIssuerWalletErrorHttpStatusCodeEnum>
-    _$invalidIssuerWalletErrorHttpStatusCodeEnumValues = BuiltSet<
-        InvalidIssuerWalletErrorHttpStatusCodeEnum>(const <InvalidIssuerWalletErrorHttpStatusCodeEnum>[
-  _$invalidIssuerWalletErrorHttpStatusCodeEnum_number400,
-]);
+_$invalidIssuerWalletErrorHttpStatusCodeEnumValues =
+    BuiltSet<InvalidIssuerWalletErrorHttpStatusCodeEnum>(
+      const <InvalidIssuerWalletErrorHttpStatusCodeEnum>[
+        _$invalidIssuerWalletErrorHttpStatusCodeEnum_number400,
+      ],
+    );
 
 Serializer<InvalidIssuerWalletErrorNameEnum>
-    _$invalidIssuerWalletErrorNameEnumSerializer =
+_$invalidIssuerWalletErrorNameEnumSerializer =
     _$InvalidIssuerWalletErrorNameEnumSerializer();
 Serializer<InvalidIssuerWalletErrorMessageEnum>
-    _$invalidIssuerWalletErrorMessageEnumSerializer =
+_$invalidIssuerWalletErrorMessageEnumSerializer =
     _$InvalidIssuerWalletErrorMessageEnumSerializer();
 Serializer<InvalidIssuerWalletErrorHttpStatusCodeEnum>
-    _$invalidIssuerWalletErrorHttpStatusCodeEnumSerializer =
+_$invalidIssuerWalletErrorHttpStatusCodeEnumSerializer =
     _$InvalidIssuerWalletErrorHttpStatusCodeEnumSerializer();
 
 class _$InvalidIssuerWalletErrorNameEnumSerializer
@@ -92,16 +99,19 @@ class _$InvalidIssuerWalletErrorNameEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, InvalidIssuerWalletErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    InvalidIssuerWalletErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   InvalidIssuerWalletErrorNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      InvalidIssuerWalletErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => InvalidIssuerWalletErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$InvalidIssuerWalletErrorMessageEnumSerializer
@@ -115,23 +125,26 @@ class _$InvalidIssuerWalletErrorMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    InvalidIssuerWalletErrorMessageEnum
+    InvalidIssuerWalletErrorMessageEnum,
   ];
   @override
   final String wireName = 'InvalidIssuerWalletErrorMessageEnum';
 
   @override
   Object serialize(
-          Serializers serializers, InvalidIssuerWalletErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    InvalidIssuerWalletErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   InvalidIssuerWalletErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      InvalidIssuerWalletErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => InvalidIssuerWalletErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$InvalidIssuerWalletErrorHttpStatusCodeEnumSerializer
@@ -145,23 +158,26 @@ class _$InvalidIssuerWalletErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    InvalidIssuerWalletErrorHttpStatusCodeEnum
+    InvalidIssuerWalletErrorHttpStatusCodeEnum,
   ];
   @override
   final String wireName = 'InvalidIssuerWalletErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          InvalidIssuerWalletErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    InvalidIssuerWalletErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   InvalidIssuerWalletErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      InvalidIssuerWalletErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => InvalidIssuerWalletErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$InvalidIssuerWalletError extends InvalidIssuerWalletError {
@@ -176,21 +192,21 @@ class _$InvalidIssuerWalletError extends InvalidIssuerWalletError {
   @override
   final BuiltList<ActionForbiddenErrorDetailsInner>? details;
 
-  factory _$InvalidIssuerWalletError(
-          [void Function(InvalidIssuerWalletErrorBuilder)? updates]) =>
-      (InvalidIssuerWalletErrorBuilder()..update(updates))._build();
+  factory _$InvalidIssuerWalletError([
+    void Function(InvalidIssuerWalletErrorBuilder)? updates,
+  ]) => (InvalidIssuerWalletErrorBuilder()..update(updates))._build();
 
-  _$InvalidIssuerWalletError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$InvalidIssuerWalletError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   InvalidIssuerWalletError rebuild(
-          void Function(InvalidIssuerWalletErrorBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(InvalidIssuerWalletErrorBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   InvalidIssuerWalletErrorBuilder toBuilder() =>
@@ -249,8 +265,8 @@ class InvalidIssuerWalletErrorBuilder
   InvalidIssuerWalletErrorHttpStatusCodeEnum? get httpStatusCode =>
       _$this._httpStatusCode;
   set httpStatusCode(
-          InvalidIssuerWalletErrorHttpStatusCodeEnum? httpStatusCode) =>
-      _$this._httpStatusCode = httpStatusCode;
+    InvalidIssuerWalletErrorHttpStatusCodeEnum? httpStatusCode,
+  ) => _$this._httpStatusCode = httpStatusCode;
 
   String? _traceId;
   String? get traceId => _$this._traceId;
@@ -295,16 +311,29 @@ class InvalidIssuerWalletErrorBuilder
   _$InvalidIssuerWalletError _build() {
     _$InvalidIssuerWalletError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$InvalidIssuerWalletError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'InvalidIssuerWalletError', 'name'),
+              name,
+              r'InvalidIssuerWalletError',
+              'name',
+            ),
             message: BuiltValueNullFieldError.checkNotNull(
-                message, r'InvalidIssuerWalletError', 'message'),
+              message,
+              r'InvalidIssuerWalletError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode, r'InvalidIssuerWalletError', 'httpStatusCode'),
+              httpStatusCode,
+              r'InvalidIssuerWalletError',
+              'httpStatusCode',
+            ),
             traceId: BuiltValueNullFieldError.checkNotNull(
-                traceId, r'InvalidIssuerWalletError', 'traceId'),
+              traceId,
+              r'InvalidIssuerWalletError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -314,7 +343,10 @@ class InvalidIssuerWalletErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'InvalidIssuerWalletError', _$failedField, e.toString());
+          r'InvalidIssuerWalletError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

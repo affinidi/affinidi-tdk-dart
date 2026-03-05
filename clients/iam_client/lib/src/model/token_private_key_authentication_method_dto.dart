@@ -19,15 +19,17 @@ part 'token_private_key_authentication_method_dto.g.dart';
 @BuiltValue()
 abstract class TokenPrivateKeyAuthenticationMethodDto
     implements
-        Built<TokenPrivateKeyAuthenticationMethodDto,
-            TokenPrivateKeyAuthenticationMethodDtoBuilder> {
+        Built<
+          TokenPrivateKeyAuthenticationMethodDto,
+          TokenPrivateKeyAuthenticationMethodDtoBuilder
+        > {
   @BuiltValueField(wireName: r'type')
   TokenPrivateKeyAuthenticationMethodDtoTypeEnum get type;
   // enum typeEnum {  PRIVATE_KEY,  };
 
   @BuiltValueField(wireName: r'signingAlgorithm')
   TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-      get signingAlgorithm;
+  get signingAlgorithm;
   // enum signingAlgorithmEnum {  RS256,  RS512,  ES256,  ES512,  };
 
   @BuiltValueField(wireName: r'publicKeyInfo')
@@ -35,9 +37,9 @@ abstract class TokenPrivateKeyAuthenticationMethodDto
 
   TokenPrivateKeyAuthenticationMethodDto._();
 
-  factory TokenPrivateKeyAuthenticationMethodDto(
-          [void updates(TokenPrivateKeyAuthenticationMethodDtoBuilder b)]) =
-      _$TokenPrivateKeyAuthenticationMethodDto;
+  factory TokenPrivateKeyAuthenticationMethodDto([
+    void updates(TokenPrivateKeyAuthenticationMethodDtoBuilder b),
+  ]) = _$TokenPrivateKeyAuthenticationMethodDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(TokenPrivateKeyAuthenticationMethodDtoBuilder b) => b;
@@ -52,7 +54,7 @@ class _$TokenPrivateKeyAuthenticationMethodDtoSerializer
   @override
   final Iterable<Type> types = const [
     TokenPrivateKeyAuthenticationMethodDto,
-    _$TokenPrivateKeyAuthenticationMethodDto
+    _$TokenPrivateKeyAuthenticationMethodDto,
   ];
 
   @override
@@ -66,20 +68,23 @@ class _$TokenPrivateKeyAuthenticationMethodDtoSerializer
     yield r'type';
     yield serializers.serialize(
       object.type,
-      specifiedType:
-          const FullType(TokenPrivateKeyAuthenticationMethodDtoTypeEnum),
+      specifiedType: const FullType(
+        TokenPrivateKeyAuthenticationMethodDtoTypeEnum,
+      ),
     );
     yield r'signingAlgorithm';
     yield serializers.serialize(
       object.signingAlgorithm,
       specifiedType: const FullType(
-          TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum),
+        TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum,
+      ),
     );
     yield r'publicKeyInfo';
     yield serializers.serialize(
       object.publicKeyInfo,
-      specifiedType:
-          const FullType(TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo),
+      specifiedType: const FullType(
+        TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo,
+      ),
     );
   }
 
@@ -89,9 +94,11 @@ class _$TokenPrivateKeyAuthenticationMethodDtoSerializer
     TokenPrivateKeyAuthenticationMethodDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -107,27 +114,36 @@ class _$TokenPrivateKeyAuthenticationMethodDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(TokenPrivateKeyAuthenticationMethodDtoTypeEnum),
-          ) as TokenPrivateKeyAuthenticationMethodDtoTypeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      TokenPrivateKeyAuthenticationMethodDtoTypeEnum,
+                    ),
+                  )
+                  as TokenPrivateKeyAuthenticationMethodDtoTypeEnum;
           result.type = valueDes;
           break;
         case r'signingAlgorithm':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum),
-          ) as TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum,
+                    ),
+                  )
+                  as TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum;
           result.signingAlgorithm = valueDes;
           break;
         case r'publicKeyInfo':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo),
-          ) as TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo,
+                    ),
+                  )
+                  as TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo;
           result.publicKeyInfo.replace(valueDes);
           break;
         default:
@@ -165,11 +181,10 @@ class TokenPrivateKeyAuthenticationMethodDtoTypeEnum extends EnumClass {
       _$tokenPrivateKeyAuthenticationMethodDtoTypeEnum_PRIVATE_KEY;
 
   static Serializer<TokenPrivateKeyAuthenticationMethodDtoTypeEnum>
-      get serializer =>
-          _$tokenPrivateKeyAuthenticationMethodDtoTypeEnumSerializer;
+  get serializer => _$tokenPrivateKeyAuthenticationMethodDtoTypeEnumSerializer;
 
   const TokenPrivateKeyAuthenticationMethodDtoTypeEnum._(String name)
-      : super(name);
+    : super(name);
 
   static BuiltSet<TokenPrivateKeyAuthenticationMethodDtoTypeEnum> get values =>
       _$tokenPrivateKeyAuthenticationMethodDtoTypeEnumValues;
@@ -181,33 +196,30 @@ class TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
     extends EnumClass {
   @BuiltValueEnumConst(wireName: r'RS256')
   static const TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-      rS256 =
-      _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS256;
+  rS256 = _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS256;
   @BuiltValueEnumConst(wireName: r'RS512')
   static const TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-      rS512 =
-      _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS512;
+  rS512 = _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS512;
   @BuiltValueEnumConst(wireName: r'ES256')
   static const TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-      eS256 =
-      _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS256;
+  eS256 = _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS256;
   @BuiltValueEnumConst(wireName: r'ES512')
   static const TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-      eS512 =
-      _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS512;
+  eS512 = _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS512;
 
   static Serializer<TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum>
-      get serializer =>
-          _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumSerializer;
+  get serializer =>
+      _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumSerializer;
 
   const TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum._(
-      String name)
-      : super(name);
+    String name,
+  ) : super(name);
 
   static BuiltSet<TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum>
-      get values =>
-          _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumValues;
+  get values =>
+      _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumValues;
   static TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum valueOf(
-          String name) =>
+    String name,
+  ) =>
       _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumValueOf(name);
 }

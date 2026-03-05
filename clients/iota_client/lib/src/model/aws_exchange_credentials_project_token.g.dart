@@ -15,20 +15,19 @@ class _$AwsExchangeCredentialsProjectToken
   @override
   final String did;
 
-  factory _$AwsExchangeCredentialsProjectToken(
-          [void Function(AwsExchangeCredentialsProjectTokenBuilder)?
-              updates]) =>
-      (AwsExchangeCredentialsProjectTokenBuilder()..update(updates))._build();
+  factory _$AwsExchangeCredentialsProjectToken([
+    void Function(AwsExchangeCredentialsProjectTokenBuilder)? updates,
+  ]) => (AwsExchangeCredentialsProjectTokenBuilder()..update(updates))._build();
 
-  _$AwsExchangeCredentialsProjectToken._(
-      {required this.sessionId,
-      required this.configurationId,
-      required this.did})
-      : super._();
+  _$AwsExchangeCredentialsProjectToken._({
+    required this.sessionId,
+    required this.configurationId,
+    required this.did,
+  }) : super._();
   @override
   AwsExchangeCredentialsProjectToken rebuild(
-          void Function(AwsExchangeCredentialsProjectTokenBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(AwsExchangeCredentialsProjectTokenBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   AwsExchangeCredentialsProjectTokenBuilder toBuilder() =>
@@ -65,8 +64,10 @@ class _$AwsExchangeCredentialsProjectToken
 
 class AwsExchangeCredentialsProjectTokenBuilder
     implements
-        Builder<AwsExchangeCredentialsProjectToken,
-            AwsExchangeCredentialsProjectTokenBuilder> {
+        Builder<
+          AwsExchangeCredentialsProjectToken,
+          AwsExchangeCredentialsProjectTokenBuilder
+        > {
   _$AwsExchangeCredentialsProjectToken? _$v;
 
   String? _sessionId;
@@ -104,7 +105,8 @@ class AwsExchangeCredentialsProjectTokenBuilder
 
   @override
   void update(
-      void Function(AwsExchangeCredentialsProjectTokenBuilder)? updates) {
+    void Function(AwsExchangeCredentialsProjectTokenBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -112,16 +114,24 @@ class AwsExchangeCredentialsProjectTokenBuilder
   AwsExchangeCredentialsProjectToken build() => _build();
 
   _$AwsExchangeCredentialsProjectToken _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$AwsExchangeCredentialsProjectToken._(
           sessionId: BuiltValueNullFieldError.checkNotNull(
-              sessionId, r'AwsExchangeCredentialsProjectToken', 'sessionId'),
+            sessionId,
+            r'AwsExchangeCredentialsProjectToken',
+            'sessionId',
+          ),
           configurationId: BuiltValueNullFieldError.checkNotNull(
-              configurationId,
-              r'AwsExchangeCredentialsProjectToken',
-              'configurationId'),
+            configurationId,
+            r'AwsExchangeCredentialsProjectToken',
+            'configurationId',
+          ),
           did: BuiltValueNullFieldError.checkNotNull(
-              did, r'AwsExchangeCredentialsProjectToken', 'did'),
+            did,
+            r'AwsExchangeCredentialsProjectToken',
+            'did',
+          ),
         );
     replace(_$result);
     return _$result;

@@ -37,9 +37,9 @@ class _$SignJwtTokenOK extends SignJwtTokenOK {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'SignJwtTokenOK')
-          ..add('signedJwt', signedJwt))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'SignJwtTokenOK',
+    )..add('signedJwt', signedJwt)).toString();
   }
 }
 
@@ -78,10 +78,7 @@ class SignJwtTokenOKBuilder
   SignJwtTokenOK build() => _build();
 
   _$SignJwtTokenOK _build() {
-    final _$result = _$v ??
-        _$SignJwtTokenOK._(
-          signedJwt: signedJwt,
-        );
+    final _$result = _$v ?? _$SignJwtTokenOK._(signedJwt: signedJwt);
     replace(_$result);
     return _$result;
   }

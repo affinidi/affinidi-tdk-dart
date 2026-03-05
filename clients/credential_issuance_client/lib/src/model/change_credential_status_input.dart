@@ -28,9 +28,9 @@ abstract class ChangeCredentialStatusInput
 
   ChangeCredentialStatusInput._();
 
-  factory ChangeCredentialStatusInput(
-          [void updates(ChangeCredentialStatusInputBuilder b)]) =
-      _$ChangeCredentialStatusInput;
+  factory ChangeCredentialStatusInput([
+    void updates(ChangeCredentialStatusInputBuilder b),
+  ]) = _$ChangeCredentialStatusInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ChangeCredentialStatusInputBuilder b) => b;
@@ -45,7 +45,7 @@ class _$ChangeCredentialStatusInputSerializer
   @override
   final Iterable<Type> types = const [
     ChangeCredentialStatusInput,
-    _$ChangeCredentialStatusInput
+    _$ChangeCredentialStatusInput,
   ];
 
   @override
@@ -60,8 +60,9 @@ class _$ChangeCredentialStatusInputSerializer
       yield r'changeReason';
       yield serializers.serialize(
         object.changeReason,
-        specifiedType:
-            const FullType(ChangeCredentialStatusInputChangeReasonEnum),
+        specifiedType: const FullType(
+          ChangeCredentialStatusInputChangeReasonEnum,
+        ),
       );
     }
     if (object.issuanceRecordId != null) {
@@ -79,9 +80,11 @@ class _$ChangeCredentialStatusInputSerializer
     ChangeCredentialStatusInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -97,18 +100,23 @@ class _$ChangeCredentialStatusInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'changeReason':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(ChangeCredentialStatusInputChangeReasonEnum),
-          ) as ChangeCredentialStatusInputChangeReasonEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      ChangeCredentialStatusInputChangeReasonEnum,
+                    ),
+                  )
+                  as ChangeCredentialStatusInputChangeReasonEnum;
           result.changeReason = valueDes;
           break;
         case r'issuanceRecordId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.issuanceRecordId = valueDes;
           break;
         default:
@@ -152,10 +160,10 @@ class ChangeCredentialStatusInputChangeReasonEnum extends EnumClass {
       _$changeCredentialStatusInputChangeReasonEnum_COMPROMISED_ISSUER;
 
   static Serializer<ChangeCredentialStatusInputChangeReasonEnum>
-      get serializer => _$changeCredentialStatusInputChangeReasonEnumSerializer;
+  get serializer => _$changeCredentialStatusInputChangeReasonEnumSerializer;
 
   const ChangeCredentialStatusInputChangeReasonEnum._(String name)
-      : super(name);
+    : super(name);
 
   static BuiltSet<ChangeCredentialStatusInputChangeReasonEnum> get values =>
       _$changeCredentialStatusInputChangeReasonEnumValues;

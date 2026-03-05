@@ -25,15 +25,15 @@ class _$OAuth2Token extends OAuth2Token {
   factory _$OAuth2Token([void Function(OAuth2TokenBuilder)? updates]) =>
       (OAuth2TokenBuilder()..update(updates))._build();
 
-  _$OAuth2Token._(
-      {this.accessToken,
-      this.expiresIn,
-      this.idToken,
-      this.refreshToken,
-      this.scope,
-      this.tokenType,
-      this.authorizationDetails})
-      : super._();
+  _$OAuth2Token._({
+    this.accessToken,
+    this.expiresIn,
+    this.idToken,
+    this.refreshToken,
+    this.scope,
+    this.tokenType,
+    this.authorizationDetails,
+  }) : super._();
   @override
   OAuth2Token rebuild(void Function(OAuth2TokenBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -114,9 +114,8 @@ class OAuth2TokenBuilder implements Builder<OAuth2Token, OAuth2TokenBuilder> {
       _$this._authorizationDetails ??=
           ListBuilder<OAuth2TokenAuthorizationDetailsInner>();
   set authorizationDetails(
-          ListBuilder<OAuth2TokenAuthorizationDetailsInner>?
-              authorizationDetails) =>
-      _$this._authorizationDetails = authorizationDetails;
+    ListBuilder<OAuth2TokenAuthorizationDetailsInner>? authorizationDetails,
+  ) => _$this._authorizationDetails = authorizationDetails;
 
   OAuth2TokenBuilder() {
     OAuth2Token._defaults(this);
@@ -153,7 +152,8 @@ class OAuth2TokenBuilder implements Builder<OAuth2Token, OAuth2TokenBuilder> {
   _$OAuth2Token _build() {
     _$OAuth2Token _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$OAuth2Token._(
             accessToken: accessToken,
             expiresIn: expiresIn,
@@ -170,7 +170,10 @@ class OAuth2TokenBuilder implements Builder<OAuth2Token, OAuth2TokenBuilder> {
         _authorizationDetails?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'OAuth2Token', _$failedField, e.toString());
+          r'OAuth2Token',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

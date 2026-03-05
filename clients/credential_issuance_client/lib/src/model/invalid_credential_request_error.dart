@@ -21,8 +21,10 @@ part 'invalid_credential_request_error.g.dart';
 @BuiltValue()
 abstract class InvalidCredentialRequestError
     implements
-        Built<InvalidCredentialRequestError,
-            InvalidCredentialRequestErrorBuilder> {
+        Built<
+          InvalidCredentialRequestError,
+          InvalidCredentialRequestErrorBuilder
+        > {
   @BuiltValueField(wireName: r'name')
   InvalidCredentialRequestErrorNameEnum get name;
   // enum nameEnum {  InvalidCredentialRequestError,  };
@@ -43,9 +45,9 @@ abstract class InvalidCredentialRequestError
 
   InvalidCredentialRequestError._();
 
-  factory InvalidCredentialRequestError(
-          [void updates(InvalidCredentialRequestErrorBuilder b)]) =
-      _$InvalidCredentialRequestError;
+  factory InvalidCredentialRequestError([
+    void updates(InvalidCredentialRequestErrorBuilder b),
+  ]) = _$InvalidCredentialRequestError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(InvalidCredentialRequestErrorBuilder b) => b;
@@ -60,7 +62,7 @@ class _$InvalidCredentialRequestErrorSerializer
   @override
   final Iterable<Type> types = const [
     InvalidCredentialRequestError,
-    _$InvalidCredentialRequestError
+    _$InvalidCredentialRequestError,
   ];
 
   @override
@@ -84,8 +86,9 @@ class _$InvalidCredentialRequestErrorSerializer
     yield r'httpStatusCode';
     yield serializers.serialize(
       object.httpStatusCode,
-      specifiedType:
-          const FullType(InvalidCredentialRequestErrorHttpStatusCodeEnum),
+      specifiedType: const FullType(
+        InvalidCredentialRequestErrorHttpStatusCodeEnum,
+      ),
     );
     yield r'traceId';
     yield serializers.serialize(
@@ -96,8 +99,9 @@ class _$InvalidCredentialRequestErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(
-            BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(ActionForbiddenErrorDetailsInner),
+        ]),
       );
     }
   }
@@ -108,9 +112,11 @@ class _$InvalidCredentialRequestErrorSerializer
     InvalidCredentialRequestError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -126,42 +132,56 @@ class _$InvalidCredentialRequestErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(InvalidCredentialRequestErrorNameEnum),
-          ) as InvalidCredentialRequestErrorNameEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      InvalidCredentialRequestErrorNameEnum,
+                    ),
+                  )
+                  as InvalidCredentialRequestErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(InvalidCredentialRequestErrorMessageEnum),
-          ) as InvalidCredentialRequestErrorMessageEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      InvalidCredentialRequestErrorMessageEnum,
+                    ),
+                  )
+                  as InvalidCredentialRequestErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(InvalidCredentialRequestErrorHttpStatusCodeEnum),
-          ) as InvalidCredentialRequestErrorHttpStatusCodeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      InvalidCredentialRequestErrorHttpStatusCodeEnum,
+                    ),
+                  )
+                  as InvalidCredentialRequestErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltList, [FullType(ActionForbiddenErrorDetailsInner)]),
-          ) as BuiltList<ActionForbiddenErrorDetailsInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(ActionForbiddenErrorDetailsInner),
+                    ]),
+                  )
+                  as BuiltList<ActionForbiddenErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -196,7 +216,7 @@ class _$InvalidCredentialRequestErrorSerializer
 class InvalidCredentialRequestErrorNameEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'InvalidCredentialRequestError')
   static const InvalidCredentialRequestErrorNameEnum
-      invalidCredentialRequestError =
+  invalidCredentialRequestError =
       _$invalidCredentialRequestErrorNameEnum_invalidCredentialRequestError;
 
   static Serializer<InvalidCredentialRequestErrorNameEnum> get serializer =>
@@ -213,7 +233,7 @@ class InvalidCredentialRequestErrorNameEnum extends EnumClass {
 class InvalidCredentialRequestErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'Credential Request is invalid')
   static const InvalidCredentialRequestErrorMessageEnum
-      credentialRequestIsInvalid =
+  credentialRequestIsInvalid =
       _$invalidCredentialRequestErrorMessageEnum_credentialRequestIsInvalid;
 
   static Serializer<InvalidCredentialRequestErrorMessageEnum> get serializer =>
@@ -233,11 +253,10 @@ class InvalidCredentialRequestErrorHttpStatusCodeEnum extends EnumClass {
       _$invalidCredentialRequestErrorHttpStatusCodeEnum_number400;
 
   static Serializer<InvalidCredentialRequestErrorHttpStatusCodeEnum>
-      get serializer =>
-          _$invalidCredentialRequestErrorHttpStatusCodeEnumSerializer;
+  get serializer => _$invalidCredentialRequestErrorHttpStatusCodeEnumSerializer;
 
   const InvalidCredentialRequestErrorHttpStatusCodeEnum._(String name)
-      : super(name);
+    : super(name);
 
   static BuiltSet<InvalidCredentialRequestErrorHttpStatusCodeEnum> get values =>
       _$invalidCredentialRequestErrorHttpStatusCodeEnumValues;

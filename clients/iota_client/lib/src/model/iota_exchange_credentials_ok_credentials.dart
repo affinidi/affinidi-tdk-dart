@@ -18,8 +18,10 @@ part 'iota_exchange_credentials_ok_credentials.g.dart';
 @BuiltValue()
 abstract class IotaExchangeCredentialsOKCredentials
     implements
-        Built<IotaExchangeCredentialsOKCredentials,
-            IotaExchangeCredentialsOKCredentialsBuilder> {
+        Built<
+          IotaExchangeCredentialsOKCredentials,
+          IotaExchangeCredentialsOKCredentialsBuilder
+        > {
   @BuiltValueField(wireName: r'accessKeyId')
   String get accessKeyId;
 
@@ -34,9 +36,9 @@ abstract class IotaExchangeCredentialsOKCredentials
 
   IotaExchangeCredentialsOKCredentials._();
 
-  factory IotaExchangeCredentialsOKCredentials(
-          [void updates(IotaExchangeCredentialsOKCredentialsBuilder b)]) =
-      _$IotaExchangeCredentialsOKCredentials;
+  factory IotaExchangeCredentialsOKCredentials([
+    void updates(IotaExchangeCredentialsOKCredentialsBuilder b),
+  ]) = _$IotaExchangeCredentialsOKCredentials;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(IotaExchangeCredentialsOKCredentialsBuilder b) => b;
@@ -51,7 +53,7 @@ class _$IotaExchangeCredentialsOKCredentialsSerializer
   @override
   final Iterable<Type> types = const [
     IotaExchangeCredentialsOKCredentials,
-    _$IotaExchangeCredentialsOKCredentials
+    _$IotaExchangeCredentialsOKCredentials,
   ];
 
   @override
@@ -90,9 +92,11 @@ class _$IotaExchangeCredentialsOKCredentialsSerializer
     IotaExchangeCredentialsOKCredentials object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -108,31 +112,39 @@ class _$IotaExchangeCredentialsOKCredentialsSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'accessKeyId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.accessKeyId = valueDes;
           break;
         case r'secretKey':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.secretKey = valueDes;
           break;
         case r'sessionToken':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.sessionToken = valueDes;
           break;
         case r'expiration':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.expiration = valueDes;
           break;
         default:

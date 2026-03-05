@@ -11,18 +11,16 @@ class _$CredentialResponseImmediateCredential
   @override
   final OneOf oneOf;
 
-  factory _$CredentialResponseImmediateCredential(
-          [void Function(CredentialResponseImmediateCredentialBuilder)?
-              updates]) =>
-      (CredentialResponseImmediateCredentialBuilder()..update(updates))
-          ._build();
+  factory _$CredentialResponseImmediateCredential([
+    void Function(CredentialResponseImmediateCredentialBuilder)? updates,
+  ]) => (CredentialResponseImmediateCredentialBuilder()..update(updates))
+      ._build();
 
   _$CredentialResponseImmediateCredential._({required this.oneOf}) : super._();
   @override
   CredentialResponseImmediateCredential rebuild(
-          void Function(CredentialResponseImmediateCredentialBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CredentialResponseImmediateCredentialBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CredentialResponseImmediateCredentialBuilder toBuilder() =>
@@ -46,16 +44,17 @@ class _$CredentialResponseImmediateCredential
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'CredentialResponseImmediateCredential')
-          ..add('oneOf', oneOf))
-        .toString();
+      r'CredentialResponseImmediateCredential',
+    )..add('oneOf', oneOf)).toString();
   }
 }
 
 class CredentialResponseImmediateCredentialBuilder
     implements
-        Builder<CredentialResponseImmediateCredential,
-            CredentialResponseImmediateCredentialBuilder> {
+        Builder<
+          CredentialResponseImmediateCredential,
+          CredentialResponseImmediateCredentialBuilder
+        > {
   _$CredentialResponseImmediateCredential? _$v;
 
   OneOf? _oneOf;
@@ -82,7 +81,8 @@ class CredentialResponseImmediateCredentialBuilder
 
   @override
   void update(
-      void Function(CredentialResponseImmediateCredentialBuilder)? updates) {
+    void Function(CredentialResponseImmediateCredentialBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -90,10 +90,14 @@ class CredentialResponseImmediateCredentialBuilder
   CredentialResponseImmediateCredential build() => _build();
 
   _$CredentialResponseImmediateCredential _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CredentialResponseImmediateCredential._(
           oneOf: BuiltValueNullFieldError.checkNotNull(
-              oneOf, r'CredentialResponseImmediateCredential', 'oneOf'),
+            oneOf,
+            r'CredentialResponseImmediateCredential',
+            'oneOf',
+          ),
         );
     replace(_$result);
     return _$result;

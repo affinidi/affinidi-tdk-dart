@@ -20,8 +20,10 @@ part 'supported_credential_metadata_display_inner.g.dart';
 @BuiltValue()
 abstract class SupportedCredentialMetadataDisplayInner
     implements
-        Built<SupportedCredentialMetadataDisplayInner,
-            SupportedCredentialMetadataDisplayInnerBuilder> {
+        Built<
+          SupportedCredentialMetadataDisplayInner,
+          SupportedCredentialMetadataDisplayInnerBuilder
+        > {
   @BuiltValueField(wireName: r'name')
   String get name;
 
@@ -39,9 +41,9 @@ abstract class SupportedCredentialMetadataDisplayInner
 
   SupportedCredentialMetadataDisplayInner._();
 
-  factory SupportedCredentialMetadataDisplayInner(
-          [void updates(SupportedCredentialMetadataDisplayInnerBuilder b)]) =
-      _$SupportedCredentialMetadataDisplayInner;
+  factory SupportedCredentialMetadataDisplayInner([
+    void updates(SupportedCredentialMetadataDisplayInnerBuilder b),
+  ]) = _$SupportedCredentialMetadataDisplayInner;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SupportedCredentialMetadataDisplayInnerBuilder b) => b;
@@ -56,7 +58,7 @@ class _$SupportedCredentialMetadataDisplayInnerSerializer
   @override
   final Iterable<Type> types = const [
     SupportedCredentialMetadataDisplayInner,
-    _$SupportedCredentialMetadataDisplayInner
+    _$SupportedCredentialMetadataDisplayInner,
   ];
 
   @override
@@ -108,9 +110,11 @@ class _$SupportedCredentialMetadataDisplayInnerSerializer
     SupportedCredentialMetadataDisplayInner object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -126,38 +130,50 @@ class _$SupportedCredentialMetadataDisplayInnerSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'locale':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.locale = valueDes;
           break;
         case r'logo':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(SupportedCredentialMetadataItemLogo),
-          ) as SupportedCredentialMetadataItemLogo;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      SupportedCredentialMetadataItemLogo,
+                    ),
+                  )
+                  as SupportedCredentialMetadataItemLogo;
           result.logo.replace(valueDes);
           break;
         case r'backgroundColor':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.backgroundColor = valueDes;
           break;
         case r'textColor':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.textColor = valueDes;
           break;
         default:

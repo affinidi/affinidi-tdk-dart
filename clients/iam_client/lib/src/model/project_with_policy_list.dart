@@ -26,8 +26,9 @@ abstract class ProjectWithPolicyList
 
   ProjectWithPolicyList._();
 
-  factory ProjectWithPolicyList(
-      [void updates(ProjectWithPolicyListBuilder b)]) = _$ProjectWithPolicyList;
+  factory ProjectWithPolicyList([
+    void updates(ProjectWithPolicyListBuilder b),
+  ]) = _$ProjectWithPolicyList;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(ProjectWithPolicyListBuilder b) => b;
@@ -42,7 +43,7 @@ class _$ProjectWithPolicyListSerializer
   @override
   final Iterable<Type> types = const [
     ProjectWithPolicyList,
-    _$ProjectWithPolicyList
+    _$ProjectWithPolicyList,
   ];
 
   @override
@@ -56,8 +57,9 @@ class _$ProjectWithPolicyListSerializer
     yield r'projects';
     yield serializers.serialize(
       object.projects,
-      specifiedType:
-          const FullType(BuiltList, [FullType(ProjectWithPolicyDto)]),
+      specifiedType: const FullType(BuiltList, [
+        FullType(ProjectWithPolicyDto),
+      ]),
     );
     if (object.lastEvaluatedKey != null) {
       yield r'lastEvaluatedKey';
@@ -74,9 +76,11 @@ class _$ProjectWithPolicyListSerializer
     ProjectWithPolicyList object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -92,18 +96,23 @@ class _$ProjectWithPolicyListSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'projects':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(BuiltList, [FullType(ProjectWithPolicyDto)]),
-          ) as BuiltList<ProjectWithPolicyDto>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(ProjectWithPolicyDto),
+                    ]),
+                  )
+                  as BuiltList<ProjectWithPolicyDto>;
           result.projects.replace(valueDes);
           break;
         case r'lastEvaluatedKey':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.lastEvaluatedKey = valueDes;
           break;
         default:

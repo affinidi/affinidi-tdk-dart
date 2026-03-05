@@ -11,21 +11,21 @@ class _$BatchCredentialResponseCredentialResponsesInner
   @override
   final JsonObject? credential;
 
-  factory _$BatchCredentialResponseCredentialResponsesInner(
-          [void Function(
-                  BatchCredentialResponseCredentialResponsesInnerBuilder)?
-              updates]) =>
+  factory _$BatchCredentialResponseCredentialResponsesInner([
+    void Function(BatchCredentialResponseCredentialResponsesInnerBuilder)?
+    updates,
+  ]) =>
       (BatchCredentialResponseCredentialResponsesInnerBuilder()
             ..update(updates))
           ._build();
 
   _$BatchCredentialResponseCredentialResponsesInner._({this.credential})
-      : super._();
+    : super._();
   @override
   BatchCredentialResponseCredentialResponsesInner rebuild(
-          void Function(BatchCredentialResponseCredentialResponsesInnerBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(BatchCredentialResponseCredentialResponsesInnerBuilder)
+    updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   BatchCredentialResponseCredentialResponsesInnerBuilder toBuilder() =>
@@ -49,16 +49,17 @@ class _$BatchCredentialResponseCredentialResponsesInner
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'BatchCredentialResponseCredentialResponsesInner')
-          ..add('credential', credential))
-        .toString();
+      r'BatchCredentialResponseCredentialResponsesInner',
+    )..add('credential', credential)).toString();
   }
 }
 
 class BatchCredentialResponseCredentialResponsesInnerBuilder
     implements
-        Builder<BatchCredentialResponseCredentialResponsesInner,
-            BatchCredentialResponseCredentialResponsesInnerBuilder> {
+        Builder<
+          BatchCredentialResponseCredentialResponsesInner,
+          BatchCredentialResponseCredentialResponsesInnerBuilder
+        > {
   _$BatchCredentialResponseCredentialResponsesInner? _$v;
 
   JsonObject? _credential;
@@ -85,8 +86,9 @@ class BatchCredentialResponseCredentialResponsesInnerBuilder
 
   @override
   void update(
-      void Function(BatchCredentialResponseCredentialResponsesInnerBuilder)?
-          updates) {
+    void Function(BatchCredentialResponseCredentialResponsesInnerBuilder)?
+    updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -94,7 +96,8 @@ class BatchCredentialResponseCredentialResponsesInnerBuilder
   BatchCredentialResponseCredentialResponsesInner build() => _build();
 
   _$BatchCredentialResponseCredentialResponsesInner _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$BatchCredentialResponseCredentialResponsesInner._(
           credential: credential,
         );

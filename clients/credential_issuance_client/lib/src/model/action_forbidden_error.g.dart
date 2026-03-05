@@ -7,11 +7,12 @@ part of 'action_forbidden_error.dart';
 // **************************************************************************
 
 const ActionForbiddenErrorNameEnum
-    _$actionForbiddenErrorNameEnum_actionForbiddenError =
+_$actionForbiddenErrorNameEnum_actionForbiddenError =
     const ActionForbiddenErrorNameEnum._('actionForbiddenError');
 
 ActionForbiddenErrorNameEnum _$actionForbiddenErrorNameEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'actionForbiddenError':
       return _$actionForbiddenErrorNameEnum_actionForbiddenError;
@@ -21,18 +22,21 @@ ActionForbiddenErrorNameEnum _$actionForbiddenErrorNameEnumValueOf(
 }
 
 final BuiltSet<ActionForbiddenErrorNameEnum>
-    _$actionForbiddenErrorNameEnumValues =
-    BuiltSet<ActionForbiddenErrorNameEnum>(const <ActionForbiddenErrorNameEnum>[
-  _$actionForbiddenErrorNameEnum_actionForbiddenError,
-]);
+_$actionForbiddenErrorNameEnumValues = BuiltSet<ActionForbiddenErrorNameEnum>(
+  const <ActionForbiddenErrorNameEnum>[
+    _$actionForbiddenErrorNameEnum_actionForbiddenError,
+  ],
+);
 
 const ActionForbiddenErrorMessageEnum
-    _$actionForbiddenErrorMessageEnum_principalCanNotExecuteActionOnGivenResource =
+_$actionForbiddenErrorMessageEnum_principalCanNotExecuteActionOnGivenResource =
     const ActionForbiddenErrorMessageEnum._(
-        'principalCanNotExecuteActionOnGivenResource');
+      'principalCanNotExecuteActionOnGivenResource',
+    );
 
 ActionForbiddenErrorMessageEnum _$actionForbiddenErrorMessageEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'principalCanNotExecuteActionOnGivenResource':
       return _$actionForbiddenErrorMessageEnum_principalCanNotExecuteActionOnGivenResource;
@@ -42,17 +46,19 @@ ActionForbiddenErrorMessageEnum _$actionForbiddenErrorMessageEnumValueOf(
 }
 
 final BuiltSet<ActionForbiddenErrorMessageEnum>
-    _$actionForbiddenErrorMessageEnumValues = BuiltSet<
-        ActionForbiddenErrorMessageEnum>(const <ActionForbiddenErrorMessageEnum>[
-  _$actionForbiddenErrorMessageEnum_principalCanNotExecuteActionOnGivenResource,
-]);
+_$actionForbiddenErrorMessageEnumValues =
+    BuiltSet<ActionForbiddenErrorMessageEnum>(const <
+      ActionForbiddenErrorMessageEnum
+    >[
+      _$actionForbiddenErrorMessageEnum_principalCanNotExecuteActionOnGivenResource,
+    ]);
 
 const ActionForbiddenErrorHttpStatusCodeEnum
-    _$actionForbiddenErrorHttpStatusCodeEnum_number403 =
+_$actionForbiddenErrorHttpStatusCodeEnum_number403 =
     const ActionForbiddenErrorHttpStatusCodeEnum._('number403');
 
 ActionForbiddenErrorHttpStatusCodeEnum
-    _$actionForbiddenErrorHttpStatusCodeEnumValueOf(String name) {
+_$actionForbiddenErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number403':
       return _$actionForbiddenErrorHttpStatusCodeEnum_number403;
@@ -62,19 +68,21 @@ ActionForbiddenErrorHttpStatusCodeEnum
 }
 
 final BuiltSet<ActionForbiddenErrorHttpStatusCodeEnum>
-    _$actionForbiddenErrorHttpStatusCodeEnumValues = BuiltSet<
-        ActionForbiddenErrorHttpStatusCodeEnum>(const <ActionForbiddenErrorHttpStatusCodeEnum>[
-  _$actionForbiddenErrorHttpStatusCodeEnum_number403,
-]);
+_$actionForbiddenErrorHttpStatusCodeEnumValues =
+    BuiltSet<ActionForbiddenErrorHttpStatusCodeEnum>(
+      const <ActionForbiddenErrorHttpStatusCodeEnum>[
+        _$actionForbiddenErrorHttpStatusCodeEnum_number403,
+      ],
+    );
 
 Serializer<ActionForbiddenErrorNameEnum>
-    _$actionForbiddenErrorNameEnumSerializer =
+_$actionForbiddenErrorNameEnumSerializer =
     _$ActionForbiddenErrorNameEnumSerializer();
 Serializer<ActionForbiddenErrorMessageEnum>
-    _$actionForbiddenErrorMessageEnumSerializer =
+_$actionForbiddenErrorMessageEnumSerializer =
     _$ActionForbiddenErrorMessageEnumSerializer();
 Serializer<ActionForbiddenErrorHttpStatusCodeEnum>
-    _$actionForbiddenErrorHttpStatusCodeEnumSerializer =
+_$actionForbiddenErrorHttpStatusCodeEnumSerializer =
     _$ActionForbiddenErrorHttpStatusCodeEnumSerializer();
 
 class _$ActionForbiddenErrorNameEnumSerializer
@@ -92,16 +100,20 @@ class _$ActionForbiddenErrorNameEnumSerializer
   final String wireName = 'ActionForbiddenErrorNameEnum';
 
   @override
-  Object serialize(Serializers serializers, ActionForbiddenErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    ActionForbiddenErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   ActionForbiddenErrorNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      ActionForbiddenErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => ActionForbiddenErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$ActionForbiddenErrorMessageEnumSerializer
@@ -122,16 +134,19 @@ class _$ActionForbiddenErrorMessageEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, ActionForbiddenErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    ActionForbiddenErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   ActionForbiddenErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      ActionForbiddenErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => ActionForbiddenErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$ActionForbiddenErrorHttpStatusCodeEnumSerializer
@@ -145,23 +160,26 @@ class _$ActionForbiddenErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    ActionForbiddenErrorHttpStatusCodeEnum
+    ActionForbiddenErrorHttpStatusCodeEnum,
   ];
   @override
   final String wireName = 'ActionForbiddenErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          ActionForbiddenErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    ActionForbiddenErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   ActionForbiddenErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      ActionForbiddenErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => ActionForbiddenErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$ActionForbiddenError extends ActionForbiddenError {
@@ -176,21 +194,21 @@ class _$ActionForbiddenError extends ActionForbiddenError {
   @override
   final BuiltList<ActionForbiddenErrorDetailsInner>? details;
 
-  factory _$ActionForbiddenError(
-          [void Function(ActionForbiddenErrorBuilder)? updates]) =>
-      (ActionForbiddenErrorBuilder()..update(updates))._build();
+  factory _$ActionForbiddenError([
+    void Function(ActionForbiddenErrorBuilder)? updates,
+  ]) => (ActionForbiddenErrorBuilder()..update(updates))._build();
 
-  _$ActionForbiddenError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$ActionForbiddenError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   ActionForbiddenError rebuild(
-          void Function(ActionForbiddenErrorBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ActionForbiddenErrorBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ActionForbiddenErrorBuilder toBuilder() =>
@@ -293,16 +311,29 @@ class ActionForbiddenErrorBuilder
   _$ActionForbiddenError _build() {
     _$ActionForbiddenError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$ActionForbiddenError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'ActionForbiddenError', 'name'),
+              name,
+              r'ActionForbiddenError',
+              'name',
+            ),
             message: BuiltValueNullFieldError.checkNotNull(
-                message, r'ActionForbiddenError', 'message'),
+              message,
+              r'ActionForbiddenError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode, r'ActionForbiddenError', 'httpStatusCode'),
+              httpStatusCode,
+              r'ActionForbiddenError',
+              'httpStatusCode',
+            ),
             traceId: BuiltValueNullFieldError.checkNotNull(
-                traceId, r'ActionForbiddenError', 'traceId'),
+              traceId,
+              r'ActionForbiddenError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -312,7 +343,10 @@ class ActionForbiddenErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'ActionForbiddenError', _$failedField, e.toString());
+          r'ActionForbiddenError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

@@ -14,7 +14,7 @@ Affinidi TDK dart client for Affinidi CONSUMER IAM
 To use the package from [pub.dev](https://pub.dev), please include the following in pubspec.yaml
 ```yaml
 dependencies:
-  affinidi_tdk_consumer_iam_client: ^1.2.0
+  affinidi_tdk_consumer_iam_client: ^2.0.0
 ```
 
 ### Github
@@ -79,14 +79,12 @@ Class | Method | HTTP request | Description
 
  - [ConsumerAuthTokenEndpointInput](doc/ConsumerAuthTokenEndpointInput.md)
  - [ConsumerAuthTokenEndpointOutput](doc/ConsumerAuthTokenEndpointOutput.md)
- - [CorsConsumerAuthTokenEndpointOK](doc/CorsConsumerAuthTokenEndpointOK.md)
  - [GetAccessOutput](doc/GetAccessOutput.md)
  - [GrantAccessInput](doc/GrantAccessInput.md)
  - [GrantAccessOutput](doc/GrantAccessOutput.md)
  - [InvalidDIDError](doc/InvalidDIDError.md)
  - [InvalidJwtTokenError](doc/InvalidJwtTokenError.md)
  - [InvalidJwtTokenErrorDetailsInner](doc/InvalidJwtTokenErrorDetailsInner.md)
- - [InvalidParameterError](doc/InvalidParameterError.md)
  - [JsonWebKeyDto](doc/JsonWebKeyDto.md)
  - [JsonWebKeySetDto](doc/JsonWebKeySetDto.md)
  - [Permission](doc/Permission.md)

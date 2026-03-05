@@ -17,6 +17,7 @@ part 'sign_credentials_ldp_input_dto.g.dart';
 /// * [revocable]
 /// * [signatureScheme]
 /// * [signatureSuite] - W3C signature suite for canonicalization. Defaults to rdfc variants for each algorithm (ecdsa-rdfc-2019 for P256, eddsa-rdfc-2022 for Ed25519, EcdsaSecp256k1Signature2019 for secp256k1).
+/// * [keyId] - wallet key ID to use for signing (defaults to wallet's default key)
 @BuiltValue()
 abstract class SignCredentialsLdpInputDto
     implements
@@ -37,11 +38,15 @@ abstract class SignCredentialsLdpInputDto
   SignCredentialsLdpInputDtoSignatureSuiteEnum? get signatureSuite;
   // enum signatureSuiteEnum {  ecdsa-jcs-2019,  ecdsa-rdfc-2019,  eddsa-jcs-2022,  eddsa-rdfc-2022,  EcdsaSecp256k1Signature2019,  };
 
+  /// wallet key ID to use for signing (defaults to wallet's default key)
+  @BuiltValueField(wireName: r'keyId')
+  String? get keyId;
+
   SignCredentialsLdpInputDto._();
 
-  factory SignCredentialsLdpInputDto(
-          [void updates(SignCredentialsLdpInputDtoBuilder b)]) =
-      _$SignCredentialsLdpInputDto;
+  factory SignCredentialsLdpInputDto([
+    void updates(SignCredentialsLdpInputDtoBuilder b),
+  ]) = _$SignCredentialsLdpInputDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SignCredentialsLdpInputDtoBuilder b) => b;
@@ -56,7 +61,7 @@ class _$SignCredentialsLdpInputDtoSerializer
   @override
   final Iterable<Type> types = const [
     SignCredentialsLdpInputDto,
-    _$SignCredentialsLdpInputDto
+    _$SignCredentialsLdpInputDto,
   ];
 
   @override
@@ -83,16 +88,25 @@ class _$SignCredentialsLdpInputDtoSerializer
       yield r'signatureScheme';
       yield serializers.serialize(
         object.signatureScheme,
-        specifiedType:
-            const FullType(SignCredentialsLdpInputDtoSignatureSchemeEnum),
+        specifiedType: const FullType(
+          SignCredentialsLdpInputDtoSignatureSchemeEnum,
+        ),
       );
     }
     if (object.signatureSuite != null) {
       yield r'signatureSuite';
       yield serializers.serialize(
         object.signatureSuite,
-        specifiedType:
-            const FullType(SignCredentialsLdpInputDtoSignatureSuiteEnum),
+        specifiedType: const FullType(
+          SignCredentialsLdpInputDtoSignatureSuiteEnum,
+        ),
+      );
+    }
+    if (object.keyId != null) {
+      yield r'keyId';
+      yield serializers.serialize(
+        object.keyId,
+        specifiedType: const FullType(String),
       );
     }
   }
@@ -103,9 +117,11 @@ class _$SignCredentialsLdpInputDtoSerializer
     SignCredentialsLdpInputDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -121,34 +137,53 @@ class _$SignCredentialsLdpInputDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'unsignedCredential':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JsonObject),
+                  )
+                  as JsonObject;
           result.unsignedCredential = valueDes;
           break;
         case r'revocable':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.revocable = valueDes;
           break;
         case r'signatureScheme':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(SignCredentialsLdpInputDtoSignatureSchemeEnum),
-          ) as SignCredentialsLdpInputDtoSignatureSchemeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      SignCredentialsLdpInputDtoSignatureSchemeEnum,
+                    ),
+                  )
+                  as SignCredentialsLdpInputDtoSignatureSchemeEnum;
           result.signatureScheme = valueDes;
           break;
         case r'signatureSuite':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(SignCredentialsLdpInputDtoSignatureSuiteEnum),
-          ) as SignCredentialsLdpInputDtoSignatureSuiteEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      SignCredentialsLdpInputDtoSignatureSuiteEnum,
+                    ),
+                  )
+                  as SignCredentialsLdpInputDtoSignatureSuiteEnum;
           result.signatureSuite = valueDes;
+          break;
+        case r'keyId':
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
+          result.keyId = valueDes;
           break;
         default:
           unhandled.add(key);
@@ -182,7 +217,7 @@ class _$SignCredentialsLdpInputDtoSerializer
 class SignCredentialsLdpInputDtoSignatureSchemeEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'ecdsa_secp256k1_sha256')
   static const SignCredentialsLdpInputDtoSignatureSchemeEnum
-      ecdsaSecp256k1Sha256 =
+  ecdsaSecp256k1Sha256 =
       _$signCredentialsLdpInputDtoSignatureSchemeEnum_ecdsaSecp256k1Sha256;
   @BuiltValueEnumConst(wireName: r'ecdsa_p256_sha256')
   static const SignCredentialsLdpInputDtoSignatureSchemeEnum ecdsaP256Sha256 =
@@ -192,11 +227,10 @@ class SignCredentialsLdpInputDtoSignatureSchemeEnum extends EnumClass {
       _$signCredentialsLdpInputDtoSignatureSchemeEnum_ed25519;
 
   static Serializer<SignCredentialsLdpInputDtoSignatureSchemeEnum>
-      get serializer =>
-          _$signCredentialsLdpInputDtoSignatureSchemeEnumSerializer;
+  get serializer => _$signCredentialsLdpInputDtoSignatureSchemeEnumSerializer;
 
   const SignCredentialsLdpInputDtoSignatureSchemeEnum._(String name)
-      : super(name);
+    : super(name);
 
   static BuiltSet<SignCredentialsLdpInputDtoSignatureSchemeEnum> get values =>
       _$signCredentialsLdpInputDtoSignatureSchemeEnumValues;
@@ -228,15 +262,14 @@ class SignCredentialsLdpInputDtoSignatureSuiteEnum extends EnumClass {
   /// W3C signature suite for canonicalization. Defaults to rdfc variants for each algorithm (ecdsa-rdfc-2019 for P256, eddsa-rdfc-2022 for Ed25519, EcdsaSecp256k1Signature2019 for secp256k1).
   @BuiltValueEnumConst(wireName: r'EcdsaSecp256k1Signature2019')
   static const SignCredentialsLdpInputDtoSignatureSuiteEnum
-      ecdsaSecp256k1Signature2019 =
+  ecdsaSecp256k1Signature2019 =
       _$signCredentialsLdpInputDtoSignatureSuiteEnum_ecdsaSecp256k1Signature2019;
 
   static Serializer<SignCredentialsLdpInputDtoSignatureSuiteEnum>
-      get serializer =>
-          _$signCredentialsLdpInputDtoSignatureSuiteEnumSerializer;
+  get serializer => _$signCredentialsLdpInputDtoSignatureSuiteEnumSerializer;
 
   const SignCredentialsLdpInputDtoSignatureSuiteEnum._(String name)
-      : super(name);
+    : super(name);
 
   static BuiltSet<SignCredentialsLdpInputDtoSignatureSuiteEnum> get values =>
       _$signCredentialsLdpInputDtoSignatureSuiteEnumValues;

@@ -12,15 +12,15 @@ class _$WalletDtoKeysInner extends WalletDtoKeysInner {
   @override
   final String? ari;
 
-  factory _$WalletDtoKeysInner(
-          [void Function(WalletDtoKeysInnerBuilder)? updates]) =>
-      (WalletDtoKeysInnerBuilder()..update(updates))._build();
+  factory _$WalletDtoKeysInner([
+    void Function(WalletDtoKeysInnerBuilder)? updates,
+  ]) => (WalletDtoKeysInnerBuilder()..update(updates))._build();
 
   _$WalletDtoKeysInner._({this.id, this.ari}) : super._();
   @override
   WalletDtoKeysInner rebuild(
-          void Function(WalletDtoKeysInnerBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(WalletDtoKeysInnerBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   WalletDtoKeysInnerBuilder toBuilder() =>
@@ -90,11 +90,7 @@ class WalletDtoKeysInnerBuilder
   WalletDtoKeysInner build() => _build();
 
   _$WalletDtoKeysInner _build() {
-    final _$result = _$v ??
-        _$WalletDtoKeysInner._(
-          id: id,
-          ari: ari,
-        );
+    final _$result = _$v ?? _$WalletDtoKeysInner._(id: id, ari: ari);
     replace(_$result);
     return _$result;
   }

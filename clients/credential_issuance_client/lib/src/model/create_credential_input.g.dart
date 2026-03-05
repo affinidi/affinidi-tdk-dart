@@ -12,16 +12,16 @@ class _$CreateCredentialInput extends CreateCredentialInput {
   @override
   final CredentialProof proof;
 
-  factory _$CreateCredentialInput(
-          [void Function(CreateCredentialInputBuilder)? updates]) =>
-      (CreateCredentialInputBuilder()..update(updates))._build();
+  factory _$CreateCredentialInput([
+    void Function(CreateCredentialInputBuilder)? updates,
+  ]) => (CreateCredentialInputBuilder()..update(updates))._build();
 
   _$CreateCredentialInput._({this.credentialIdentifier, required this.proof})
-      : super._();
+    : super._();
   @override
   CreateCredentialInput rebuild(
-          void Function(CreateCredentialInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateCredentialInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateCredentialInputBuilder toBuilder() =>
@@ -97,7 +97,8 @@ class CreateCredentialInputBuilder
   _$CreateCredentialInput _build() {
     _$CreateCredentialInput _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$CreateCredentialInput._(
             credentialIdentifier: credentialIdentifier,
             proof: proof.build(),
@@ -109,7 +110,10 @@ class CreateCredentialInputBuilder
         proof.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'CreateCredentialInput', _$failedField, e.toString());
+          r'CreateCredentialInput',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

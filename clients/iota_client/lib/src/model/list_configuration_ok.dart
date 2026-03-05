@@ -38,7 +38,7 @@ class _$ListConfigurationOKSerializer
   @override
   final Iterable<Type> types = const [
     ListConfigurationOK,
-    _$ListConfigurationOK
+    _$ListConfigurationOK,
   ];
 
   @override
@@ -52,8 +52,9 @@ class _$ListConfigurationOKSerializer
     yield r'configurations';
     yield serializers.serialize(
       object.configurations,
-      specifiedType:
-          const FullType(BuiltList, [FullType(IotaConfigurationDto)]),
+      specifiedType: const FullType(BuiltList, [
+        FullType(IotaConfigurationDto),
+      ]),
     );
   }
 
@@ -63,9 +64,11 @@ class _$ListConfigurationOKSerializer
     ListConfigurationOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -81,11 +84,14 @@ class _$ListConfigurationOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'configurations':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(BuiltList, [FullType(IotaConfigurationDto)]),
-          ) as BuiltList<IotaConfigurationDto>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(IotaConfigurationDto),
+                    ]),
+                  )
+                  as BuiltList<IotaConfigurationDto>;
           result.configurations.replace(valueDes);
           break;
         default:

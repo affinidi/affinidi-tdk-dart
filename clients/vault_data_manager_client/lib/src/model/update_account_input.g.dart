@@ -20,22 +20,22 @@ class _$UpdateAccountInput extends UpdateAccountInput {
   @override
   final String accountDid;
 
-  factory _$UpdateAccountInput(
-          [void Function(UpdateAccountInputBuilder)? updates]) =>
-      (UpdateAccountInputBuilder()..update(updates))._build();
+  factory _$UpdateAccountInput([
+    void Function(UpdateAccountInputBuilder)? updates,
+  ]) => (UpdateAccountInputBuilder()..update(updates))._build();
 
-  _$UpdateAccountInput._(
-      {this.name,
-      this.description,
-      this.alias,
-      required this.didProof,
-      this.metadata,
-      required this.accountDid})
-      : super._();
+  _$UpdateAccountInput._({
+    this.name,
+    this.description,
+    this.alias,
+    required this.didProof,
+    this.metadata,
+    required this.accountDid,
+  }) : super._();
   @override
   UpdateAccountInput rebuild(
-          void Function(UpdateAccountInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(UpdateAccountInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   UpdateAccountInputBuilder toBuilder() =>
@@ -139,16 +139,23 @@ class UpdateAccountInputBuilder
   UpdateAccountInput build() => _build();
 
   _$UpdateAccountInput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$UpdateAccountInput._(
           name: name,
           description: description,
           alias: alias,
           didProof: BuiltValueNullFieldError.checkNotNull(
-              didProof, r'UpdateAccountInput', 'didProof'),
+            didProof,
+            r'UpdateAccountInput',
+            'didProof',
+          ),
           metadata: metadata,
           accountDid: BuiltValueNullFieldError.checkNotNull(
-              accountDid, r'UpdateAccountInput', 'accountDid'),
+            accountDid,
+            r'UpdateAccountInput',
+            'accountDid',
+          ),
         );
     replace(_$result);
     return _$result;

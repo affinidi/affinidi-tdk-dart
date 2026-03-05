@@ -22,9 +22,9 @@ abstract class SignCredentialsJwtResultDto
 
   SignCredentialsJwtResultDto._();
 
-  factory SignCredentialsJwtResultDto(
-          [void updates(SignCredentialsJwtResultDtoBuilder b)]) =
-      _$SignCredentialsJwtResultDto;
+  factory SignCredentialsJwtResultDto([
+    void updates(SignCredentialsJwtResultDtoBuilder b),
+  ]) = _$SignCredentialsJwtResultDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SignCredentialsJwtResultDtoBuilder b) => b;
@@ -39,7 +39,7 @@ class _$SignCredentialsJwtResultDtoSerializer
   @override
   final Iterable<Type> types = const [
     SignCredentialsJwtResultDto,
-    _$SignCredentialsJwtResultDto
+    _$SignCredentialsJwtResultDto,
   ];
 
   @override
@@ -63,9 +63,11 @@ class _$SignCredentialsJwtResultDtoSerializer
     SignCredentialsJwtResultDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -81,10 +83,12 @@ class _$SignCredentialsJwtResultDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'credential':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.credential = valueDes;
           break;
         default:

@@ -10,9 +10,9 @@ class _$UpdateAccessInput extends UpdateAccessInput {
   @override
   final BuiltList<Permission> permissions;
 
-  factory _$UpdateAccessInput(
-          [void Function(UpdateAccessInputBuilder)? updates]) =>
-      (UpdateAccessInputBuilder()..update(updates))._build();
+  factory _$UpdateAccessInput([
+    void Function(UpdateAccessInputBuilder)? updates,
+  ]) => (UpdateAccessInputBuilder()..update(updates))._build();
 
   _$UpdateAccessInput._({required this.permissions}) : super._();
   @override
@@ -39,9 +39,9 @@ class _$UpdateAccessInput extends UpdateAccessInput {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'UpdateAccessInput')
-          ..add('permissions', permissions))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'UpdateAccessInput',
+    )..add('permissions', permissions)).toString();
   }
 }
 
@@ -84,10 +84,7 @@ class UpdateAccessInputBuilder
   _$UpdateAccessInput _build() {
     _$UpdateAccessInput _$result;
     try {
-      _$result = _$v ??
-          _$UpdateAccessInput._(
-            permissions: permissions.build(),
-          );
+      _$result = _$v ?? _$UpdateAccessInput._(permissions: permissions.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -95,7 +92,10 @@ class UpdateAccessInputBuilder
         permissions.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'UpdateAccessInput', _$failedField, e.toString());
+          r'UpdateAccessInput',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

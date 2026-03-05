@@ -46,9 +46,7 @@ class DenyListApi {
     final _path = r'/v1/deny-list/groups/add';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -73,10 +71,7 @@ class DenyListApi {
           : _serializers.serialize(groupNamesInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -121,9 +116,7 @@ class DenyListApi {
     final _path = r'/v1/deny-list/users/add';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -148,10 +141,7 @@ class DenyListApi {
           : _serializers.serialize(blockedUsersInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -196,9 +186,7 @@ class DenyListApi {
     final _path = r'/v1/deny-list/groups';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -216,7 +204,10 @@ class DenyListApi {
     final _queryParameters = <String, dynamic>{
       if (pageToken != null)
         r'pageToken': encodeQueryParameter(
-            _serializers, pageToken, const FullType(String)),
+          _serializers,
+          pageToken,
+          const FullType(String),
+        ),
     };
 
     final _response = await _dio.request<Object>(
@@ -235,9 +226,10 @@ class DenyListApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(GroupNames),
-            ) as GroupNames;
+                  rawResponse,
+                  specifiedType: const FullType(GroupNames),
+                )
+                as GroupNames;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -286,9 +278,7 @@ class DenyListApi {
     final _path = r'/v1/deny-list/users';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -306,7 +296,10 @@ class DenyListApi {
     final _queryParameters = <String, dynamic>{
       if (pageToken != null)
         r'pageToken': encodeQueryParameter(
-            _serializers, pageToken, const FullType(String)),
+          _serializers,
+          pageToken,
+          const FullType(String),
+        ),
     };
 
     final _response = await _dio.request<Object>(
@@ -325,9 +318,10 @@ class DenyListApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(BlockedUsers),
-            ) as BlockedUsers;
+                  rawResponse,
+                  specifiedType: const FullType(BlockedUsers),
+                )
+                as BlockedUsers;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -376,9 +370,7 @@ class DenyListApi {
     final _path = r'/v1/deny-list/groups/remove';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -403,10 +395,7 @@ class DenyListApi {
           : _serializers.serialize(groupNamesInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -451,9 +440,7 @@ class DenyListApi {
     final _path = r'/v1/deny-list/users/remove';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -478,10 +465,7 @@ class DenyListApi {
           : _serializers.serialize(blockedUsersInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,

@@ -7,11 +7,12 @@ part of 'start_issuance400_response.dart';
 // **************************************************************************
 
 const StartIssuance400ResponseNameEnum
-    _$startIssuance400ResponseNameEnum_missingHolderDidError =
+_$startIssuance400ResponseNameEnum_missingHolderDidError =
     const StartIssuance400ResponseNameEnum._('missingHolderDidError');
 
 StartIssuance400ResponseNameEnum _$startIssuance400ResponseNameEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'missingHolderDidError':
       return _$startIssuance400ResponseNameEnum_missingHolderDidError;
@@ -21,18 +22,21 @@ StartIssuance400ResponseNameEnum _$startIssuance400ResponseNameEnumValueOf(
 }
 
 final BuiltSet<StartIssuance400ResponseNameEnum>
-    _$startIssuance400ResponseNameEnumValues = BuiltSet<
-        StartIssuance400ResponseNameEnum>(const <StartIssuance400ResponseNameEnum>[
-  _$startIssuance400ResponseNameEnum_missingHolderDidError,
-]);
+_$startIssuance400ResponseNameEnumValues =
+    BuiltSet<StartIssuance400ResponseNameEnum>(
+      const <StartIssuance400ResponseNameEnum>[
+        _$startIssuance400ResponseNameEnum_missingHolderDidError,
+      ],
+    );
 
 const StartIssuance400ResponseMessageEnum
-    _$startIssuance400ResponseMessageEnum_holderDIDIsRequiredInThisClaimMode =
+_$startIssuance400ResponseMessageEnum_holderDIDIsRequiredInThisClaimMode =
     const StartIssuance400ResponseMessageEnum._(
-        'holderDIDIsRequiredInThisClaimMode');
+      'holderDIDIsRequiredInThisClaimMode',
+    );
 
 StartIssuance400ResponseMessageEnum
-    _$startIssuance400ResponseMessageEnumValueOf(String name) {
+_$startIssuance400ResponseMessageEnumValueOf(String name) {
   switch (name) {
     case 'holderDIDIsRequiredInThisClaimMode':
       return _$startIssuance400ResponseMessageEnum_holderDIDIsRequiredInThisClaimMode;
@@ -42,17 +46,19 @@ StartIssuance400ResponseMessageEnum
 }
 
 final BuiltSet<StartIssuance400ResponseMessageEnum>
-    _$startIssuance400ResponseMessageEnumValues = BuiltSet<
-        StartIssuance400ResponseMessageEnum>(const <StartIssuance400ResponseMessageEnum>[
-  _$startIssuance400ResponseMessageEnum_holderDIDIsRequiredInThisClaimMode,
-]);
+_$startIssuance400ResponseMessageEnumValues =
+    BuiltSet<StartIssuance400ResponseMessageEnum>(const <
+      StartIssuance400ResponseMessageEnum
+    >[
+      _$startIssuance400ResponseMessageEnum_holderDIDIsRequiredInThisClaimMode,
+    ]);
 
 const StartIssuance400ResponseHttpStatusCodeEnum
-    _$startIssuance400ResponseHttpStatusCodeEnum_number400 =
+_$startIssuance400ResponseHttpStatusCodeEnum_number400 =
     const StartIssuance400ResponseHttpStatusCodeEnum._('number400');
 
 StartIssuance400ResponseHttpStatusCodeEnum
-    _$startIssuance400ResponseHttpStatusCodeEnumValueOf(String name) {
+_$startIssuance400ResponseHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$startIssuance400ResponseHttpStatusCodeEnum_number400;
@@ -62,19 +68,21 @@ StartIssuance400ResponseHttpStatusCodeEnum
 }
 
 final BuiltSet<StartIssuance400ResponseHttpStatusCodeEnum>
-    _$startIssuance400ResponseHttpStatusCodeEnumValues = BuiltSet<
-        StartIssuance400ResponseHttpStatusCodeEnum>(const <StartIssuance400ResponseHttpStatusCodeEnum>[
-  _$startIssuance400ResponseHttpStatusCodeEnum_number400,
-]);
+_$startIssuance400ResponseHttpStatusCodeEnumValues =
+    BuiltSet<StartIssuance400ResponseHttpStatusCodeEnum>(
+      const <StartIssuance400ResponseHttpStatusCodeEnum>[
+        _$startIssuance400ResponseHttpStatusCodeEnum_number400,
+      ],
+    );
 
 Serializer<StartIssuance400ResponseNameEnum>
-    _$startIssuance400ResponseNameEnumSerializer =
+_$startIssuance400ResponseNameEnumSerializer =
     _$StartIssuance400ResponseNameEnumSerializer();
 Serializer<StartIssuance400ResponseMessageEnum>
-    _$startIssuance400ResponseMessageEnumSerializer =
+_$startIssuance400ResponseMessageEnumSerializer =
     _$StartIssuance400ResponseMessageEnumSerializer();
 Serializer<StartIssuance400ResponseHttpStatusCodeEnum>
-    _$startIssuance400ResponseHttpStatusCodeEnumSerializer =
+_$startIssuance400ResponseHttpStatusCodeEnumSerializer =
     _$StartIssuance400ResponseHttpStatusCodeEnumSerializer();
 
 class _$StartIssuance400ResponseNameEnumSerializer
@@ -93,16 +101,19 @@ class _$StartIssuance400ResponseNameEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, StartIssuance400ResponseNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    StartIssuance400ResponseNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   StartIssuance400ResponseNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      StartIssuance400ResponseNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => StartIssuance400ResponseNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$StartIssuance400ResponseMessageEnumSerializer
@@ -118,23 +129,26 @@ class _$StartIssuance400ResponseMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    StartIssuance400ResponseMessageEnum
+    StartIssuance400ResponseMessageEnum,
   ];
   @override
   final String wireName = 'StartIssuance400ResponseMessageEnum';
 
   @override
   Object serialize(
-          Serializers serializers, StartIssuance400ResponseMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    StartIssuance400ResponseMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   StartIssuance400ResponseMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      StartIssuance400ResponseMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => StartIssuance400ResponseMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$StartIssuance400ResponseHttpStatusCodeEnumSerializer
@@ -148,38 +162,41 @@ class _$StartIssuance400ResponseHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    StartIssuance400ResponseHttpStatusCodeEnum
+    StartIssuance400ResponseHttpStatusCodeEnum,
   ];
   @override
   final String wireName = 'StartIssuance400ResponseHttpStatusCodeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          StartIssuance400ResponseHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    StartIssuance400ResponseHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   StartIssuance400ResponseHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      StartIssuance400ResponseHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => StartIssuance400ResponseHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$StartIssuance400Response extends StartIssuance400Response {
   @override
   final OneOf oneOf;
 
-  factory _$StartIssuance400Response(
-          [void Function(StartIssuance400ResponseBuilder)? updates]) =>
-      (StartIssuance400ResponseBuilder()..update(updates))._build();
+  factory _$StartIssuance400Response([
+    void Function(StartIssuance400ResponseBuilder)? updates,
+  ]) => (StartIssuance400ResponseBuilder()..update(updates))._build();
 
   _$StartIssuance400Response._({required this.oneOf}) : super._();
   @override
   StartIssuance400Response rebuild(
-          void Function(StartIssuance400ResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(StartIssuance400ResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   StartIssuance400ResponseBuilder toBuilder() =>
@@ -201,9 +218,9 @@ class _$StartIssuance400Response extends StartIssuance400Response {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'StartIssuance400Response')
-          ..add('oneOf', oneOf))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'StartIssuance400Response',
+    )..add('oneOf', oneOf)).toString();
   }
 }
 
@@ -243,10 +260,14 @@ class StartIssuance400ResponseBuilder
   StartIssuance400Response build() => _build();
 
   _$StartIssuance400Response _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$StartIssuance400Response._(
           oneOf: BuiltValueNullFieldError.checkNotNull(
-              oneOf, r'StartIssuance400Response', 'oneOf'),
+            oneOf,
+            r'StartIssuance400Response',
+            'oneOf',
+          ),
         );
     replace(_$result);
     return _$result;

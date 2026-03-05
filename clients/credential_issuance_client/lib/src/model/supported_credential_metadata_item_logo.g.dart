@@ -13,17 +13,17 @@ class _$SupportedCredentialMetadataItemLogo
   @override
   final String? altText;
 
-  factory _$SupportedCredentialMetadataItemLogo(
-          [void Function(SupportedCredentialMetadataItemLogoBuilder)?
-              updates]) =>
+  factory _$SupportedCredentialMetadataItemLogo([
+    void Function(SupportedCredentialMetadataItemLogoBuilder)? updates,
+  ]) =>
       (SupportedCredentialMetadataItemLogoBuilder()..update(updates))._build();
 
   _$SupportedCredentialMetadataItemLogo._({required this.url, this.altText})
-      : super._();
+    : super._();
   @override
   SupportedCredentialMetadataItemLogo rebuild(
-          void Function(SupportedCredentialMetadataItemLogoBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(SupportedCredentialMetadataItemLogoBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   SupportedCredentialMetadataItemLogoBuilder toBuilder() =>
@@ -57,8 +57,10 @@ class _$SupportedCredentialMetadataItemLogo
 
 class SupportedCredentialMetadataItemLogoBuilder
     implements
-        Builder<SupportedCredentialMetadataItemLogo,
-            SupportedCredentialMetadataItemLogoBuilder> {
+        Builder<
+          SupportedCredentialMetadataItemLogo,
+          SupportedCredentialMetadataItemLogoBuilder
+        > {
   _$SupportedCredentialMetadataItemLogo? _$v;
 
   String? _url;
@@ -90,7 +92,8 @@ class SupportedCredentialMetadataItemLogoBuilder
 
   @override
   void update(
-      void Function(SupportedCredentialMetadataItemLogoBuilder)? updates) {
+    void Function(SupportedCredentialMetadataItemLogoBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -98,10 +101,14 @@ class SupportedCredentialMetadataItemLogoBuilder
   SupportedCredentialMetadataItemLogo build() => _build();
 
   _$SupportedCredentialMetadataItemLogo _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$SupportedCredentialMetadataItemLogo._(
           url: BuiltValueNullFieldError.checkNotNull(
-              url, r'SupportedCredentialMetadataItemLogo', 'url'),
+            url,
+            r'SupportedCredentialMetadataItemLogo',
+            'url',
+          ),
           altText: altText,
         );
     replace(_$result);

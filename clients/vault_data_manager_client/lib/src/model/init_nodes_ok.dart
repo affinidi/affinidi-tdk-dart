@@ -68,9 +68,11 @@ class _$InitNodesOKSerializer implements PrimitiveSerializer<InitNodesOK> {
     InitNodesOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -86,17 +88,21 @@ class _$InitNodesOKSerializer implements PrimitiveSerializer<InitNodesOK> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'consumerMetadata':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(ConsumerMetadataDto),
-          ) as ConsumerMetadataDto;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(ConsumerMetadataDto),
+                  )
+                  as ConsumerMetadataDto;
           result.consumerMetadata.replace(valueDes);
           break;
         case r'defaultProfile':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(NodeDto),
-          ) as NodeDto;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(NodeDto),
+                  )
+                  as NodeDto;
           result.defaultProfile = valueDes;
           break;
         default:

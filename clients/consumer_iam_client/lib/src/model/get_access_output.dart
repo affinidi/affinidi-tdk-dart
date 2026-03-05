@@ -60,9 +60,11 @@ class _$GetAccessOutputSerializer
     GetAccessOutput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -78,10 +80,14 @@ class _$GetAccessOutputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'permissions':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(Permission)]),
-          ) as BuiltList<Permission>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(Permission),
+                    ]),
+                  )
+                  as BuiltList<Permission>;
           result.permissions.replace(valueDes);
           break;
         default:

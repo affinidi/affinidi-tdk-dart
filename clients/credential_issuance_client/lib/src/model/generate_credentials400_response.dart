@@ -23,16 +23,18 @@ part 'generate_credentials400_response.g.dart';
 @BuiltValue()
 abstract class GenerateCredentials400Response
     implements
-        Built<GenerateCredentials400Response,
-            GenerateCredentials400ResponseBuilder> {
+        Built<
+          GenerateCredentials400Response,
+          GenerateCredentials400ResponseBuilder
+        > {
   /// One Of [InvalidCredentialRequestError], [InvalidProofError]
   OneOf get oneOf;
 
   GenerateCredentials400Response._();
 
-  factory GenerateCredentials400Response(
-          [void updates(GenerateCredentials400ResponseBuilder b)]) =
-      _$GenerateCredentials400Response;
+  factory GenerateCredentials400Response([
+    void updates(GenerateCredentials400ResponseBuilder b),
+  ]) = _$GenerateCredentials400Response;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GenerateCredentials400ResponseBuilder b) => b;
@@ -47,14 +49,16 @@ class _$GenerateCredentials400ResponseSerializer
   @override
   final Iterable<Type> types = const [
     GenerateCredentials400Response,
-    _$GenerateCredentials400Response
+    _$GenerateCredentials400Response,
   ];
 
   @override
   final String wireName = r'GenerateCredentials400Response';
 
   Iterable<Object?> _serializeProperties(
-      Serializers serializers, GenerateCredentials400Response object) sync* {}
+    Serializers serializers,
+    GenerateCredentials400Response object,
+  ) sync* {}
 
   @override
   Object serialize(
@@ -63,8 +67,10 @@ class _$GenerateCredentials400ResponseSerializer
     FullType specifiedType = FullType.unspecified,
   }) {
     final oneOf = object.oneOf;
-    return serializers.serialize(oneOf.value,
-        specifiedType: FullType(oneOf.valueType))!;
+    return serializers.serialize(
+      oneOf.value,
+      specifiedType: FullType(oneOf.valueType),
+    )!;
   }
 
   @override
@@ -80,8 +86,9 @@ class _$GenerateCredentials400ResponseSerializer
       FullType(InvalidProofError),
     ]);
     oneOfDataSrc = serialized;
-    result.oneOf = serializers.deserialize(oneOfDataSrc,
-        specifiedType: targetType) as OneOf;
+    result.oneOf =
+        serializers.deserialize(oneOfDataSrc, specifiedType: targetType)
+            as OneOf;
     return result.build();
   }
 }
@@ -104,9 +111,10 @@ class GenerateCredentials400ResponseNameEnum extends EnumClass {
 
 class GenerateCredentials400ResponseMessageEnum extends EnumClass {
   @BuiltValueEnumConst(
-      wireName: r'The proof in the Credential Request is invalid')
+    wireName: r'The proof in the Credential Request is invalid',
+  )
   static const GenerateCredentials400ResponseMessageEnum
-      theProofInTheCredentialRequestIsInvalid =
+  theProofInTheCredentialRequestIsInvalid =
       _$generateCredentials400ResponseMessageEnum_theProofInTheCredentialRequestIsInvalid;
 
   static Serializer<GenerateCredentials400ResponseMessageEnum> get serializer =>
@@ -126,15 +134,15 @@ class GenerateCredentials400ResponseHttpStatusCodeEnum extends EnumClass {
       _$generateCredentials400ResponseHttpStatusCodeEnum_number400;
 
   static Serializer<GenerateCredentials400ResponseHttpStatusCodeEnum>
-      get serializer =>
-          _$generateCredentials400ResponseHttpStatusCodeEnumSerializer;
+  get serializer =>
+      _$generateCredentials400ResponseHttpStatusCodeEnumSerializer;
 
   const GenerateCredentials400ResponseHttpStatusCodeEnum._(String name)
-      : super(name);
+    : super(name);
 
   static BuiltSet<GenerateCredentials400ResponseHttpStatusCodeEnum>
-      get values => _$generateCredentials400ResponseHttpStatusCodeEnumValues;
+  get values => _$generateCredentials400ResponseHttpStatusCodeEnumValues;
   static GenerateCredentials400ResponseHttpStatusCodeEnum valueOf(
-          String name) =>
-      _$generateCredentials400ResponseHttpStatusCodeEnumValueOf(name);
+    String name,
+  ) => _$generateCredentials400ResponseHttpStatusCodeEnumValueOf(name);
 }

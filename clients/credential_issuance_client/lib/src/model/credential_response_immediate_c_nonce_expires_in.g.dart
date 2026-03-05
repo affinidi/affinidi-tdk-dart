@@ -11,19 +11,17 @@ class _$CredentialResponseImmediateCNonceExpiresIn
   @override
   final OneOf oneOf;
 
-  factory _$CredentialResponseImmediateCNonceExpiresIn(
-          [void Function(CredentialResponseImmediateCNonceExpiresInBuilder)?
-              updates]) =>
-      (CredentialResponseImmediateCNonceExpiresInBuilder()..update(updates))
-          ._build();
+  factory _$CredentialResponseImmediateCNonceExpiresIn([
+    void Function(CredentialResponseImmediateCNonceExpiresInBuilder)? updates,
+  ]) => (CredentialResponseImmediateCNonceExpiresInBuilder()..update(updates))
+      ._build();
 
   _$CredentialResponseImmediateCNonceExpiresIn._({required this.oneOf})
-      : super._();
+    : super._();
   @override
   CredentialResponseImmediateCNonceExpiresIn rebuild(
-          void Function(CredentialResponseImmediateCNonceExpiresInBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CredentialResponseImmediateCNonceExpiresInBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CredentialResponseImmediateCNonceExpiresInBuilder toBuilder() =>
@@ -47,16 +45,17 @@ class _$CredentialResponseImmediateCNonceExpiresIn
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'CredentialResponseImmediateCNonceExpiresIn')
-          ..add('oneOf', oneOf))
-        .toString();
+      r'CredentialResponseImmediateCNonceExpiresIn',
+    )..add('oneOf', oneOf)).toString();
   }
 }
 
 class CredentialResponseImmediateCNonceExpiresInBuilder
     implements
-        Builder<CredentialResponseImmediateCNonceExpiresIn,
-            CredentialResponseImmediateCNonceExpiresInBuilder> {
+        Builder<
+          CredentialResponseImmediateCNonceExpiresIn,
+          CredentialResponseImmediateCNonceExpiresInBuilder
+        > {
   _$CredentialResponseImmediateCNonceExpiresIn? _$v;
 
   OneOf? _oneOf;
@@ -83,8 +82,8 @@ class CredentialResponseImmediateCNonceExpiresInBuilder
 
   @override
   void update(
-      void Function(CredentialResponseImmediateCNonceExpiresInBuilder)?
-          updates) {
+    void Function(CredentialResponseImmediateCNonceExpiresInBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -92,10 +91,14 @@ class CredentialResponseImmediateCNonceExpiresInBuilder
   CredentialResponseImmediateCNonceExpiresIn build() => _build();
 
   _$CredentialResponseImmediateCNonceExpiresIn _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CredentialResponseImmediateCNonceExpiresIn._(
           oneOf: BuiltValueNullFieldError.checkNotNull(
-              oneOf, r'CredentialResponseImmediateCNonceExpiresIn', 'oneOf'),
+            oneOf,
+            r'CredentialResponseImmediateCNonceExpiresIn',
+            'oneOf',
+          ),
         );
     replace(_$result);
     return _$result;

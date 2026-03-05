@@ -21,9 +21,9 @@ abstract class CreateWalletV2Response
 
   CreateWalletV2Response._();
 
-  factory CreateWalletV2Response(
-          [void updates(CreateWalletV2ResponseBuilder b)]) =
-      _$CreateWalletV2Response;
+  factory CreateWalletV2Response([
+    void updates(CreateWalletV2ResponseBuilder b),
+  ]) = _$CreateWalletV2Response;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateWalletV2ResponseBuilder b) => b;
@@ -38,7 +38,7 @@ class _$CreateWalletV2ResponseSerializer
   @override
   final Iterable<Type> types = const [
     CreateWalletV2Response,
-    _$CreateWalletV2Response
+    _$CreateWalletV2Response,
   ];
 
   @override
@@ -64,9 +64,11 @@ class _$CreateWalletV2ResponseSerializer
     CreateWalletV2Response object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -82,10 +84,12 @@ class _$CreateWalletV2ResponseSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'wallet':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(WalletV2Dto),
-          ) as WalletV2Dto;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(WalletV2Dto),
+                  )
+                  as WalletV2Dto;
           result.wallet.replace(valueDes);
           break;
         default:

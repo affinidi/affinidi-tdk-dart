@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **name** | **String** |  | 
 **ownerId** | **String** |  | [optional] 
 **description** | **String** |  | [optional] 
+**identityVerificationEnabled** | **bool** | flag indicates if identity verification is enabled for project | [optional] [default to false]
 **createdAt** | **String** | creation date and time in ISO-8601 format, e.g. 2023-09-20T07:12:13 | [optional] 
 **updatedAt** | **String** | last update date and time in ISO-8601 format, e.g. 2023-09-20T07:12:13 | [optional] 
 

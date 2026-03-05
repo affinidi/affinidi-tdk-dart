@@ -15,18 +15,19 @@ class _$IotaConfigurationDtoClientMetadata
   @override
   final String logo;
 
-  factory _$IotaConfigurationDtoClientMetadata(
-          [void Function(IotaConfigurationDtoClientMetadataBuilder)?
-              updates]) =>
-      (IotaConfigurationDtoClientMetadataBuilder()..update(updates))._build();
+  factory _$IotaConfigurationDtoClientMetadata([
+    void Function(IotaConfigurationDtoClientMetadataBuilder)? updates,
+  ]) => (IotaConfigurationDtoClientMetadataBuilder()..update(updates))._build();
 
-  _$IotaConfigurationDtoClientMetadata._(
-      {required this.name, required this.origin, required this.logo})
-      : super._();
+  _$IotaConfigurationDtoClientMetadata._({
+    required this.name,
+    required this.origin,
+    required this.logo,
+  }) : super._();
   @override
   IotaConfigurationDtoClientMetadata rebuild(
-          void Function(IotaConfigurationDtoClientMetadataBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(IotaConfigurationDtoClientMetadataBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   IotaConfigurationDtoClientMetadataBuilder toBuilder() =>
@@ -63,8 +64,10 @@ class _$IotaConfigurationDtoClientMetadata
 
 class IotaConfigurationDtoClientMetadataBuilder
     implements
-        Builder<IotaConfigurationDtoClientMetadata,
-            IotaConfigurationDtoClientMetadataBuilder> {
+        Builder<
+          IotaConfigurationDtoClientMetadata,
+          IotaConfigurationDtoClientMetadataBuilder
+        > {
   _$IotaConfigurationDtoClientMetadata? _$v;
 
   String? _name;
@@ -101,7 +104,8 @@ class IotaConfigurationDtoClientMetadataBuilder
 
   @override
   void update(
-      void Function(IotaConfigurationDtoClientMetadataBuilder)? updates) {
+    void Function(IotaConfigurationDtoClientMetadataBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -109,14 +113,24 @@ class IotaConfigurationDtoClientMetadataBuilder
   IotaConfigurationDtoClientMetadata build() => _build();
 
   _$IotaConfigurationDtoClientMetadata _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$IotaConfigurationDtoClientMetadata._(
           name: BuiltValueNullFieldError.checkNotNull(
-              name, r'IotaConfigurationDtoClientMetadata', 'name'),
+            name,
+            r'IotaConfigurationDtoClientMetadata',
+            'name',
+          ),
           origin: BuiltValueNullFieldError.checkNotNull(
-              origin, r'IotaConfigurationDtoClientMetadata', 'origin'),
+            origin,
+            r'IotaConfigurationDtoClientMetadata',
+            'origin',
+          ),
           logo: BuiltValueNullFieldError.checkNotNull(
-              logo, r'IotaConfigurationDtoClientMetadata', 'logo'),
+            logo,
+            r'IotaConfigurationDtoClientMetadata',
+            'logo',
+          ),
         );
     replace(_$result);
     return _$result;

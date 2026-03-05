@@ -36,7 +36,7 @@ class RevocationApi {
   /// Returns a [Future] containing a [Response] with a [GetRevocationListCredentialResultDto] as data
   /// Throws [DioException] if API call or serialization fails
   Future<Response<GetRevocationListCredentialResultDto>>
-      getRevocationCredentialStatus({
+  getRevocationCredentialStatus({
     required String projectId,
     required String walletId,
     required String statusId,
@@ -50,25 +50,38 @@ class RevocationApi {
     final _path =
         r'/v1/projects/{projectId}/wallets/{walletId}/revocation-statuses/{statusId}'
             .replaceAll(
-                '{' r'projectId' '}',
-                encodeQueryParameter(
-                        _serializers, projectId, const FullType(String))
-                    .toString())
+              '{'
+              r'projectId'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                projectId,
+                const FullType(String),
+              ).toString(),
+            )
             .replaceAll(
-                '{' r'walletId' '}',
-                encodeQueryParameter(
-                        _serializers, walletId, const FullType(String))
-                    .toString())
+              '{'
+              r'walletId'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                walletId,
+                const FullType(String),
+              ).toString(),
+            )
             .replaceAll(
-                '{' r'statusId' '}',
-                encodeQueryParameter(
-                        _serializers, statusId, const FullType(String))
-                    .toString());
+              '{'
+              r'statusId'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                statusId,
+                const FullType(String),
+              ).toString(),
+            );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -98,10 +111,12 @@ class RevocationApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType:
-                  const FullType(GetRevocationListCredentialResultDto),
-            ) as GetRevocationListCredentialResultDto;
+                  rawResponse,
+                  specifiedType: const FullType(
+                    GetRevocationListCredentialResultDto,
+                  ),
+                )
+                as GetRevocationListCredentialResultDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -141,7 +156,7 @@ class RevocationApi {
   /// Throws [DioException] if API call or serialization fails
   @Deprecated('This operation has been deprecated')
   Future<Response<GetRevocationListCredentialResultDto>>
-      getRevocationListCredential({
+  getRevocationListCredential({
     required String listId,
     required String walletId,
     CancelToken? cancelToken,
@@ -153,18 +168,28 @@ class RevocationApi {
   }) async {
     final _path = r'/v1/wallets/{walletId}/revocation-list/{listId}'
         .replaceAll(
-            '{' r'listId' '}',
-            encodeQueryParameter(_serializers, listId, const FullType(String))
-                .toString())
+          '{'
+          r'listId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            listId,
+            const FullType(String),
+          ).toString(),
+        )
         .replaceAll(
-            '{' r'walletId' '}',
-            encodeQueryParameter(_serializers, walletId, const FullType(String))
-                .toString());
+          '{'
+          r'walletId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            walletId,
+            const FullType(String),
+          ).toString(),
+        );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -194,10 +219,12 @@ class RevocationApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType:
-                  const FullType(GetRevocationListCredentialResultDto),
-            ) as GetRevocationListCredentialResultDto;
+                  rawResponse,
+                  specifiedType: const FullType(
+                    GetRevocationListCredentialResultDto,
+                  ),
+                )
+                as GetRevocationListCredentialResultDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -246,14 +273,18 @@ class RevocationApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/wallets/{walletId}/revoke'.replaceAll(
-        '{' r'walletId' '}',
-        encodeQueryParameter(_serializers, walletId, const FullType(String))
-            .toString());
+      '{'
+      r'walletId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        walletId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -273,14 +304,13 @@ class RevocationApi {
 
     try {
       const _type = FullType(RevokeCredentialInput);
-      _bodyData =
-          _serializers.serialize(revokeCredentialInput, specifiedType: _type);
+      _bodyData = _serializers.serialize(
+        revokeCredentialInput,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -325,14 +355,18 @@ class RevocationApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v2/wallets/{walletId}/credentials/revoke'.replaceAll(
-        '{' r'walletId' '}',
-        encodeQueryParameter(_serializers, walletId, const FullType(String))
-            .toString());
+      '{'
+      r'walletId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        walletId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -352,14 +386,13 @@ class RevocationApi {
 
     try {
       const _type = FullType(RevokeCredentialsInput);
-      _bodyData =
-          _serializers.serialize(revokeCredentialsInput, specifiedType: _type);
+      _bodyData = _serializers.serialize(
+        revokeCredentialsInput,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,

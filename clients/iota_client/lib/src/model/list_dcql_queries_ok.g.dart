@@ -12,12 +12,12 @@ class _$ListDcqlQueriesOK extends ListDcqlQueriesOK {
   @override
   final String? lastEvaluatedKey;
 
-  factory _$ListDcqlQueriesOK(
-          [void Function(ListDcqlQueriesOKBuilder)? updates]) =>
-      (ListDcqlQueriesOKBuilder()..update(updates))._build();
+  factory _$ListDcqlQueriesOK([
+    void Function(ListDcqlQueriesOKBuilder)? updates,
+  ]) => (ListDcqlQueriesOKBuilder()..update(updates))._build();
 
   _$ListDcqlQueriesOK._({required this.dcqlQueries, this.lastEvaluatedKey})
-      : super._();
+    : super._();
   @override
   ListDcqlQueriesOK rebuild(void Function(ListDcqlQueriesOKBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -97,7 +97,8 @@ class ListDcqlQueriesOKBuilder
   _$ListDcqlQueriesOK _build() {
     _$ListDcqlQueriesOK _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$ListDcqlQueriesOK._(
             dcqlQueries: dcqlQueries.build(),
             lastEvaluatedKey: lastEvaluatedKey,
@@ -109,7 +110,10 @@ class ListDcqlQueriesOKBuilder
         dcqlQueries.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'ListDcqlQueriesOK', _$failedField, e.toString());
+          r'ListDcqlQueriesOK',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

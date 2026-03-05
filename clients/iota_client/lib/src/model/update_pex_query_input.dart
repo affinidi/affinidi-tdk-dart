@@ -42,7 +42,7 @@ class _$UpdatePexQueryInputSerializer
   @override
   final Iterable<Type> types = const [
     UpdatePexQueryInput,
-    _$UpdatePexQueryInput
+    _$UpdatePexQueryInput,
   ];
 
   @override
@@ -75,9 +75,11 @@ class _$UpdatePexQueryInputSerializer
     UpdatePexQueryInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -93,17 +95,21 @@ class _$UpdatePexQueryInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'vpDefinition':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.vpDefinition = valueDes;
           break;
         case r'description':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.description = valueDes;
           break;
         default:
