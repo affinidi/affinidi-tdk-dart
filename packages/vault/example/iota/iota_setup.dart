@@ -11,17 +11,11 @@ import '../../../integration_tests/test/helpers/helpers.dart';
 
 const _walletName = 'VDSP Verifier Wallet';
 
-Future<String> ensureWalletCreated() async {
-  final envPath = path.join(
-    File(Platform.script.toFilePath()).parent.path,
-    '.env',
-  );
-  final env = DotEnv()..load([envPath]);
-  final cached = env['WALLET_ARI'];
-  if (cached != null && cached.isNotEmpty) {
-    return cached;
-  }
+String get _envPath =>
+    path.join(File(Platform.script.toFilePath()).parent.path, '.env');
 
+AuthProvider _loadEnv() {
+  final env = DotEnv()..load([_envPath]);
   final projectId = env['DEV_PROJECT_ID'];
   final tokenId = env['DEV_TOKEN_ID'];
   final privateKey = env['DEV_PRIVATE_KEY'];
@@ -32,22 +26,24 @@ Future<String> ensureWalletCreated() async {
       privateKey == null ||
       privateKey.isEmpty) {
     throw Exception(
-      'Missing DEV_PROJECT_ID, DEV_TOKEN_ID or DEV_PRIVATE_KEY in $envPath',
+      'Missing DEV_PROJECT_ID, DEV_TOKEN_ID or DEV_PRIVATE_KEY in $_envPath',
     );
   }
-
-  final normalizedKey = privateKey.replaceAll(r'\n', '\n');
   final envConfig = Environment.getEnvironmentConfig(EnvironmentType.dev);
-  final authProvider = AuthProvider.withEnv(
+  return AuthProvider.withEnv(
     projectId: projectId,
     tokenId: tokenId,
-    privateKey: normalizedKey,
+    privateKey: privateKey.replaceAll(r'\n', '\n'),
     passphrase: env['DEV_PASSPHRASE']?.isNotEmpty == true
         ? env['DEV_PASSPHRASE']!
         : null,
     apiGatewayUrl: envConfig.apiGwUrl,
     tokenEndpoint: envConfig.elementsAuthTokenUrl,
   );
+}
+
+Future<String> ensureWalletCreated() async {
+  final authProvider = _loadEnv();
 
   final api = AffinidiTdkWalletsClient(
     authTokenHook: authProvider.fetchProjectScopedToken,
@@ -57,15 +53,6 @@ Future<String> ensureWalletCreated() async {
     ),
   ).getWalletApi();
 
-  final wallets =
-      (await api.listWallets()).data?.wallets?.toList() ?? <WalletDto>[];
-  final existingAri = _findWalletAri(wallets);
-
-  if (existingAri != null) {
-    _writeWalletAri(envPath, existingAri);
-    return existingAri;
-  }
-
   final createInput = CreateWalletInput(
     (b) => b
       ..name = _walletName
@@ -74,24 +61,5 @@ Future<String> ensureWalletCreated() async {
 
   final response = await api.createWallet(createWalletInput: createInput);
   final newAri = response.data!.wallet!.ari!;
-  _writeWalletAri(envPath, newAri);
   return newAri;
-}
-
-String? _findWalletAri(List<WalletDto> wallets) {
-  for (final w in wallets) {
-    if (w.name == _walletName && w.ari != null) return w.ari;
-  }
-  return null;
-}
-
-void _writeWalletAri(String envPath, String ari) {
-  final file = File(envPath);
-  final content = file.existsSync() ? file.readAsStringSync() : '';
-  final lines = content.split('\n');
-  final idx = lines.indexWhere((l) => l.startsWith('WALLET_ARI='));
-  final updated = idx >= 0
-      ? (lines..[idx] = 'WALLET_ARI=$ari').join('\n')
-      : '$content${content.endsWith('\n') ? '' : '\n'}WALLET_ARI=$ari';
-  file.writeAsStringSync(updated);
 }

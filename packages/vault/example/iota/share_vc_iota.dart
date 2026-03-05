@@ -8,7 +8,7 @@ import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../integration_tests/test/helpers/environment.dart';
-import 'iota_wallet_setup.dart';
+import 'iota_setup.dart';
 
 const _emailCredentialType = 'Email';
 const _defaultProfileName = 'Default Profile';
