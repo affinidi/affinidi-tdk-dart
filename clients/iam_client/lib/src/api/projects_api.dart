@@ -48,9 +48,7 @@ class ProjectsApi {
     final _path = r'/v1/projects/principals';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -70,14 +68,13 @@ class ProjectsApi {
 
     try {
       const _type = FullType(AddUserToProjectInput);
-      _bodyData =
-          _serializers.serialize(addUserToProjectInput, specifiedType: _type);
+      _bodyData = _serializers.serialize(
+        addUserToProjectInput,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -122,9 +119,7 @@ class ProjectsApi {
     final _path = r'/v1/projects';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -144,14 +139,13 @@ class ProjectsApi {
 
     try {
       const _type = FullType(CreateProjectInput);
-      _bodyData =
-          _serializers.serialize(createProjectInput, specifiedType: _type);
+      _bodyData = _serializers.serialize(
+        createProjectInput,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -174,9 +168,10 @@ class ProjectsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(ProjectDto),
-            ) as ProjectDto;
+                  rawResponse,
+                  specifiedType: const FullType(ProjectDto),
+                )
+                as ProjectDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -225,14 +220,18 @@ class ProjectsApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/projects/principals/{principalId}'.replaceAll(
-        '{' r'principalId' '}',
-        encodeQueryParameter(_serializers, principalId, const FullType(String))
-            .toString());
+      '{'
+      r'principalId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        principalId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -249,7 +248,10 @@ class ProjectsApi {
 
     final _queryParameters = <String, dynamic>{
       r'principalType': encodeQueryParameter(
-          _serializers, principalType, const FullType(String)),
+        _serializers,
+        principalType,
+        const FullType(String),
+      ),
     };
 
     final _response = await _dio.request<Object>(
@@ -262,6 +264,97 @@ class ProjectsApi {
     );
 
     return _response;
+  }
+
+  /// getProject
+  ///
+  ///
+  /// Parameters:
+  /// * [projectId] - projectId
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future] containing a [Response] with a [ProjectDto] as data
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<ProjectDto>> getProject({
+    required String projectId,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final _path = r'/v1/projects/{projectId}'.replaceAll(
+      '{'
+      r'projectId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        projectId,
+        const FullType(String),
+      ).toString(),
+    );
+    final _options = Options(
+      method: r'GET',
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'UserTokenAuth',
+            'keyName': 'authorization',
+            'where': 'header',
+          },
+        ],
+        ...?extra,
+      },
+      validateStatus: validateStatus,
+    );
+
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    ProjectDto? _responseData;
+
+    try {
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(ProjectDto),
+                )
+                as ProjectDto;
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    return Response<ProjectDto>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
   }
 
   /// listPrincipalsOfProject
@@ -292,9 +385,7 @@ class ProjectsApi {
     final _path = r'/v1/projects/principals';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -311,11 +402,17 @@ class ProjectsApi {
 
     final _queryParameters = <String, dynamic>{
       if (limit != null)
-        r'limit':
-            encodeQueryParameter(_serializers, limit, const FullType(int)),
+        r'limit': encodeQueryParameter(
+          _serializers,
+          limit,
+          const FullType(int),
+        ),
       if (exclusiveStartKey != null)
         r'exclusiveStartKey': encodeQueryParameter(
-            _serializers, exclusiveStartKey, const FullType(String)),
+          _serializers,
+          exclusiveStartKey,
+          const FullType(String),
+        ),
     };
 
     final _response = await _dio.request<Object>(
@@ -334,9 +431,10 @@ class ProjectsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(UserList),
-            ) as UserList;
+                  rawResponse,
+                  specifiedType: const FullType(UserList),
+                )
+                as UserList;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -387,9 +485,7 @@ class ProjectsApi {
     final _path = r'/v1/projects';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -406,11 +502,17 @@ class ProjectsApi {
 
     final _queryParameters = <String, dynamic>{
       if (limit != null)
-        r'limit':
-            encodeQueryParameter(_serializers, limit, const FullType(int)),
+        r'limit': encodeQueryParameter(
+          _serializers,
+          limit,
+          const FullType(int),
+        ),
       if (exclusiveStartKey != null)
         r'exclusiveStartKey': encodeQueryParameter(
-            _serializers, exclusiveStartKey, const FullType(String)),
+          _serializers,
+          exclusiveStartKey,
+          const FullType(String),
+        ),
     };
 
     final _response = await _dio.request<Object>(
@@ -429,9 +531,10 @@ class ProjectsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(ProjectList),
-            ) as ProjectList;
+                  rawResponse,
+                  specifiedType: const FullType(ProjectList),
+                )
+                as ProjectList;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -480,14 +583,18 @@ class ProjectsApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/projects/{projectId}'.replaceAll(
-        '{' r'projectId' '}',
-        encodeQueryParameter(_serializers, projectId, const FullType(String))
-            .toString());
+      '{'
+      r'projectId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        projectId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -507,14 +614,13 @@ class ProjectsApi {
 
     try {
       const _type = FullType(UpdateProjectInput);
-      _bodyData =
-          _serializers.serialize(updateProjectInput, specifiedType: _type);
+      _bodyData = _serializers.serialize(
+        updateProjectInput,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -537,9 +643,10 @@ class ProjectsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(ProjectDto),
-            ) as ProjectDto;
+                  rawResponse,
+                  specifiedType: const FullType(ProjectDto),
+                )
+                as ProjectDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

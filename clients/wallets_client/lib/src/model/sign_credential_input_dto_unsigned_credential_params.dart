@@ -22,8 +22,10 @@ part 'sign_credential_input_dto_unsigned_credential_params.g.dart';
 @BuiltValue()
 abstract class SignCredentialInputDtoUnsignedCredentialParams
     implements
-        Built<SignCredentialInputDtoUnsignedCredentialParams,
-            SignCredentialInputDtoUnsignedCredentialParamsBuilder> {
+        Built<
+          SignCredentialInputDtoUnsignedCredentialParams,
+          SignCredentialInputDtoUnsignedCredentialParamsBuilder
+        > {
   @BuiltValueField(wireName: r'jsonLdContextUrl')
   String get jsonLdContextUrl;
 
@@ -44,20 +46,19 @@ abstract class SignCredentialInputDtoUnsignedCredentialParams
 
   SignCredentialInputDtoUnsignedCredentialParams._();
 
-  factory SignCredentialInputDtoUnsignedCredentialParams(
-          [void updates(
-              SignCredentialInputDtoUnsignedCredentialParamsBuilder b)]) =
-      _$SignCredentialInputDtoUnsignedCredentialParams;
+  factory SignCredentialInputDtoUnsignedCredentialParams([
+    void updates(SignCredentialInputDtoUnsignedCredentialParamsBuilder b),
+  ]) = _$SignCredentialInputDtoUnsignedCredentialParams;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(
-          SignCredentialInputDtoUnsignedCredentialParamsBuilder b) =>
-      b;
+    SignCredentialInputDtoUnsignedCredentialParamsBuilder b,
+  ) => b;
 
   @BuiltValueSerializer(custom: true)
   static Serializer<SignCredentialInputDtoUnsignedCredentialParams>
-      get serializer =>
-          _$SignCredentialInputDtoUnsignedCredentialParamsSerializer();
+  get serializer =>
+      _$SignCredentialInputDtoUnsignedCredentialParamsSerializer();
 }
 
 class _$SignCredentialInputDtoUnsignedCredentialParamsSerializer
@@ -66,7 +67,7 @@ class _$SignCredentialInputDtoUnsignedCredentialParamsSerializer
   @override
   final Iterable<Type> types = const [
     SignCredentialInputDtoUnsignedCredentialParams,
-    _$SignCredentialInputDtoUnsignedCredentialParams
+    _$SignCredentialInputDtoUnsignedCredentialParams,
   ];
 
   @override
@@ -95,8 +96,10 @@ class _$SignCredentialInputDtoUnsignedCredentialParamsSerializer
     yield r'credentialSubject';
     yield serializers.serialize(
       object.credentialSubject,
-      specifiedType: const FullType(
-          BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
+      specifiedType: const FullType(BuiltMap, [
+        FullType(String),
+        FullType.nullable(JsonObject),
+      ]),
     );
     yield r'holderDid';
     yield serializers.serialize(
@@ -116,9 +119,11 @@ class _$SignCredentialInputDtoUnsignedCredentialParamsSerializer
     SignCredentialInputDtoUnsignedCredentialParams object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -134,46 +139,60 @@ class _$SignCredentialInputDtoUnsignedCredentialParamsSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'jsonLdContextUrl':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.jsonLdContextUrl = valueDes;
           break;
         case r'jsonSchemaUrl':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.jsonSchemaUrl = valueDes;
           break;
         case r'typeName':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.typeName = valueDes;
           break;
         case r'credentialSubject':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
-          ) as BuiltMap<String, JsonObject?>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltMap, [
+                      FullType(String),
+                      FullType.nullable(JsonObject),
+                    ]),
+                  )
+                  as BuiltMap<String, JsonObject?>;
           result.credentialSubject.replace(valueDes);
           break;
         case r'holderDid':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.holderDid = valueDes;
           break;
         case r'expiresAt':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.expiresAt = valueDes;
           break;
         default:

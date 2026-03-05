@@ -70,9 +70,11 @@ class _$MoveNodeInputSerializer implements PrimitiveSerializer<MoveNodeInput> {
     MoveNodeInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -88,17 +90,21 @@ class _$MoveNodeInputSerializer implements PrimitiveSerializer<MoveNodeInput> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'destinationNodeId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.destinationNodeId = valueDes;
           break;
         case r'resolveNameConflictsAutomatically':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.resolveNameConflictsAutomatically = valueDes;
           break;
         default:

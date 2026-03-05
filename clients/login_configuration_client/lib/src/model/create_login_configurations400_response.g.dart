@@ -7,12 +7,13 @@ part of 'create_login_configurations400_response.dart';
 // **************************************************************************
 
 const CreateLoginConfigurations400ResponseNameEnum
-    _$createLoginConfigurations400ResponseNameEnum_createProjectNetworkError =
+_$createLoginConfigurations400ResponseNameEnum_createProjectNetworkError =
     const CreateLoginConfigurations400ResponseNameEnum._(
-        'createProjectNetworkError');
+      'createProjectNetworkError',
+    );
 
 CreateLoginConfigurations400ResponseNameEnum
-    _$createLoginConfigurations400ResponseNameEnumValueOf(String name) {
+_$createLoginConfigurations400ResponseNameEnumValueOf(String name) {
   switch (name) {
     case 'createProjectNetworkError':
       return _$createLoginConfigurations400ResponseNameEnum_createProjectNetworkError;
@@ -22,18 +23,21 @@ CreateLoginConfigurations400ResponseNameEnum
 }
 
 final BuiltSet<CreateLoginConfigurations400ResponseNameEnum>
-    _$createLoginConfigurations400ResponseNameEnumValues = BuiltSet<
-        CreateLoginConfigurations400ResponseNameEnum>(const <CreateLoginConfigurations400ResponseNameEnum>[
-  _$createLoginConfigurations400ResponseNameEnum_createProjectNetworkError,
-]);
+_$createLoginConfigurations400ResponseNameEnumValues =
+    BuiltSet<CreateLoginConfigurations400ResponseNameEnum>(const <
+      CreateLoginConfigurations400ResponseNameEnum
+    >[
+      _$createLoginConfigurations400ResponseNameEnum_createProjectNetworkError,
+    ]);
 
 const CreateLoginConfigurations400ResponseMessageEnum
-    _$createLoginConfigurations400ResponseMessageEnum_createProjectNetworkError =
+_$createLoginConfigurations400ResponseMessageEnum_createProjectNetworkError =
     const CreateLoginConfigurations400ResponseMessageEnum._(
-        'createProjectNetworkError');
+      'createProjectNetworkError',
+    );
 
 CreateLoginConfigurations400ResponseMessageEnum
-    _$createLoginConfigurations400ResponseMessageEnumValueOf(String name) {
+_$createLoginConfigurations400ResponseMessageEnumValueOf(String name) {
   switch (name) {
     case 'createProjectNetworkError':
       return _$createLoginConfigurations400ResponseMessageEnum_createProjectNetworkError;
@@ -43,18 +47,19 @@ CreateLoginConfigurations400ResponseMessageEnum
 }
 
 final BuiltSet<CreateLoginConfigurations400ResponseMessageEnum>
-    _$createLoginConfigurations400ResponseMessageEnumValues = BuiltSet<
-        CreateLoginConfigurations400ResponseMessageEnum>(const <CreateLoginConfigurations400ResponseMessageEnum>[
-  _$createLoginConfigurations400ResponseMessageEnum_createProjectNetworkError,
-]);
+_$createLoginConfigurations400ResponseMessageEnumValues =
+    BuiltSet<CreateLoginConfigurations400ResponseMessageEnum>(const <
+      CreateLoginConfigurations400ResponseMessageEnum
+    >[
+      _$createLoginConfigurations400ResponseMessageEnum_createProjectNetworkError,
+    ]);
 
 const CreateLoginConfigurations400ResponseHttpStatusCodeEnum
-    _$createLoginConfigurations400ResponseHttpStatusCodeEnum_number400 =
+_$createLoginConfigurations400ResponseHttpStatusCodeEnum_number400 =
     const CreateLoginConfigurations400ResponseHttpStatusCodeEnum._('number400');
 
 CreateLoginConfigurations400ResponseHttpStatusCodeEnum
-    _$createLoginConfigurations400ResponseHttpStatusCodeEnumValueOf(
-        String name) {
+_$createLoginConfigurations400ResponseHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$createLoginConfigurations400ResponseHttpStatusCodeEnum_number400;
@@ -64,19 +69,21 @@ CreateLoginConfigurations400ResponseHttpStatusCodeEnum
 }
 
 final BuiltSet<CreateLoginConfigurations400ResponseHttpStatusCodeEnum>
-    _$createLoginConfigurations400ResponseHttpStatusCodeEnumValues = BuiltSet<
-        CreateLoginConfigurations400ResponseHttpStatusCodeEnum>(const <CreateLoginConfigurations400ResponseHttpStatusCodeEnum>[
-  _$createLoginConfigurations400ResponseHttpStatusCodeEnum_number400,
-]);
+_$createLoginConfigurations400ResponseHttpStatusCodeEnumValues =
+    BuiltSet<CreateLoginConfigurations400ResponseHttpStatusCodeEnum>(
+      const <CreateLoginConfigurations400ResponseHttpStatusCodeEnum>[
+        _$createLoginConfigurations400ResponseHttpStatusCodeEnum_number400,
+      ],
+    );
 
 Serializer<CreateLoginConfigurations400ResponseNameEnum>
-    _$createLoginConfigurations400ResponseNameEnumSerializer =
+_$createLoginConfigurations400ResponseNameEnumSerializer =
     _$CreateLoginConfigurations400ResponseNameEnumSerializer();
 Serializer<CreateLoginConfigurations400ResponseMessageEnum>
-    _$createLoginConfigurations400ResponseMessageEnumSerializer =
+_$createLoginConfigurations400ResponseMessageEnumSerializer =
     _$CreateLoginConfigurations400ResponseMessageEnumSerializer();
 Serializer<CreateLoginConfigurations400ResponseHttpStatusCodeEnum>
-    _$createLoginConfigurations400ResponseHttpStatusCodeEnumSerializer =
+_$createLoginConfigurations400ResponseHttpStatusCodeEnumSerializer =
     _$CreateLoginConfigurations400ResponseHttpStatusCodeEnumSerializer();
 
 class _$CreateLoginConfigurations400ResponseNameEnumSerializer
@@ -91,23 +98,26 @@ class _$CreateLoginConfigurations400ResponseNameEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CreateLoginConfigurations400ResponseNameEnum
+    CreateLoginConfigurations400ResponseNameEnum,
   ];
   @override
   final String wireName = 'CreateLoginConfigurations400ResponseNameEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          CreateLoginConfigurations400ResponseNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    CreateLoginConfigurations400ResponseNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   CreateLoginConfigurations400ResponseNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      CreateLoginConfigurations400ResponseNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => CreateLoginConfigurations400ResponseNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$CreateLoginConfigurations400ResponseMessageEnumSerializer
@@ -122,29 +132,33 @@ class _$CreateLoginConfigurations400ResponseMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CreateLoginConfigurations400ResponseMessageEnum
+    CreateLoginConfigurations400ResponseMessageEnum,
   ];
   @override
   final String wireName = 'CreateLoginConfigurations400ResponseMessageEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          CreateLoginConfigurations400ResponseMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    CreateLoginConfigurations400ResponseMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   CreateLoginConfigurations400ResponseMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      CreateLoginConfigurations400ResponseMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => CreateLoginConfigurations400ResponseMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$CreateLoginConfigurations400ResponseHttpStatusCodeEnumSerializer
     implements
         PrimitiveSerializer<
-            CreateLoginConfigurations400ResponseHttpStatusCodeEnum> {
+          CreateLoginConfigurations400ResponseHttpStatusCodeEnum
+        > {
   static const Map<String, Object> _toWire = const <String, Object>{
     'number400': 400,
   };
@@ -154,24 +168,27 @@ class _$CreateLoginConfigurations400ResponseHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CreateLoginConfigurations400ResponseHttpStatusCodeEnum
+    CreateLoginConfigurations400ResponseHttpStatusCodeEnum,
   ];
   @override
   final String wireName =
       'CreateLoginConfigurations400ResponseHttpStatusCodeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          CreateLoginConfigurations400ResponseHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    CreateLoginConfigurations400ResponseHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   CreateLoginConfigurations400ResponseHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      CreateLoginConfigurations400ResponseHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => CreateLoginConfigurations400ResponseHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$CreateLoginConfigurations400Response
@@ -179,16 +196,16 @@ class _$CreateLoginConfigurations400Response
   @override
   final OneOf oneOf;
 
-  factory _$CreateLoginConfigurations400Response(
-          [void Function(CreateLoginConfigurations400ResponseBuilder)?
-              updates]) =>
+  factory _$CreateLoginConfigurations400Response([
+    void Function(CreateLoginConfigurations400ResponseBuilder)? updates,
+  ]) =>
       (CreateLoginConfigurations400ResponseBuilder()..update(updates))._build();
 
   _$CreateLoginConfigurations400Response._({required this.oneOf}) : super._();
   @override
   CreateLoginConfigurations400Response rebuild(
-          void Function(CreateLoginConfigurations400ResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateLoginConfigurations400ResponseBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateLoginConfigurations400ResponseBuilder toBuilder() =>
@@ -211,16 +228,18 @@ class _$CreateLoginConfigurations400Response
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'CreateLoginConfigurations400Response')
-          ..add('oneOf', oneOf))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'CreateLoginConfigurations400Response',
+    )..add('oneOf', oneOf)).toString();
   }
 }
 
 class CreateLoginConfigurations400ResponseBuilder
     implements
-        Builder<CreateLoginConfigurations400Response,
-            CreateLoginConfigurations400ResponseBuilder> {
+        Builder<
+          CreateLoginConfigurations400Response,
+          CreateLoginConfigurations400ResponseBuilder
+        > {
   _$CreateLoginConfigurations400Response? _$v;
 
   OneOf? _oneOf;
@@ -247,7 +266,8 @@ class CreateLoginConfigurations400ResponseBuilder
 
   @override
   void update(
-      void Function(CreateLoginConfigurations400ResponseBuilder)? updates) {
+    void Function(CreateLoginConfigurations400ResponseBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -255,10 +275,14 @@ class CreateLoginConfigurations400ResponseBuilder
   CreateLoginConfigurations400Response build() => _build();
 
   _$CreateLoginConfigurations400Response _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CreateLoginConfigurations400Response._(
           oneOf: BuiltValueNullFieldError.checkNotNull(
-              oneOf, r'CreateLoginConfigurations400Response', 'oneOf'),
+            oneOf,
+            r'CreateLoginConfigurations400Response',
+            'oneOf',
+          ),
         );
     replace(_$result);
     return _$result;

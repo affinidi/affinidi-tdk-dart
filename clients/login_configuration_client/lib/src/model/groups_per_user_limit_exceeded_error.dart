@@ -21,8 +21,10 @@ part 'groups_per_user_limit_exceeded_error.g.dart';
 @BuiltValue()
 abstract class GroupsPerUserLimitExceededError
     implements
-        Built<GroupsPerUserLimitExceededError,
-            GroupsPerUserLimitExceededErrorBuilder> {
+        Built<
+          GroupsPerUserLimitExceededError,
+          GroupsPerUserLimitExceededErrorBuilder
+        > {
   @BuiltValueField(wireName: r'name')
   GroupsPerUserLimitExceededErrorNameEnum get name;
   // enum nameEnum {  GroupsPerUserLimitExceededError,  };
@@ -43,9 +45,9 @@ abstract class GroupsPerUserLimitExceededError
 
   GroupsPerUserLimitExceededError._();
 
-  factory GroupsPerUserLimitExceededError(
-          [void updates(GroupsPerUserLimitExceededErrorBuilder b)]) =
-      _$GroupsPerUserLimitExceededError;
+  factory GroupsPerUserLimitExceededError([
+    void updates(GroupsPerUserLimitExceededErrorBuilder b),
+  ]) = _$GroupsPerUserLimitExceededError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GroupsPerUserLimitExceededErrorBuilder b) => b;
@@ -60,7 +62,7 @@ class _$GroupsPerUserLimitExceededErrorSerializer
   @override
   final Iterable<Type> types = const [
     GroupsPerUserLimitExceededError,
-    _$GroupsPerUserLimitExceededError
+    _$GroupsPerUserLimitExceededError,
   ];
 
   @override
@@ -84,8 +86,9 @@ class _$GroupsPerUserLimitExceededErrorSerializer
     yield r'httpStatusCode';
     yield serializers.serialize(
       object.httpStatusCode,
-      specifiedType:
-          const FullType(GroupsPerUserLimitExceededErrorHttpStatusCodeEnum),
+      specifiedType: const FullType(
+        GroupsPerUserLimitExceededErrorHttpStatusCodeEnum,
+      ),
     );
     yield r'traceId';
     yield serializers.serialize(
@@ -96,8 +99,9 @@ class _$GroupsPerUserLimitExceededErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(
-            BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(InvalidParameterErrorDetailsInner),
+        ]),
       );
     }
   }
@@ -108,9 +112,11 @@ class _$GroupsPerUserLimitExceededErrorSerializer
     GroupsPerUserLimitExceededError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -126,42 +132,56 @@ class _$GroupsPerUserLimitExceededErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(GroupsPerUserLimitExceededErrorNameEnum),
-          ) as GroupsPerUserLimitExceededErrorNameEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      GroupsPerUserLimitExceededErrorNameEnum,
+                    ),
+                  )
+                  as GroupsPerUserLimitExceededErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(GroupsPerUserLimitExceededErrorMessageEnum),
-          ) as GroupsPerUserLimitExceededErrorMessageEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      GroupsPerUserLimitExceededErrorMessageEnum,
+                    ),
+                  )
+                  as GroupsPerUserLimitExceededErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                GroupsPerUserLimitExceededErrorHttpStatusCodeEnum),
-          ) as GroupsPerUserLimitExceededErrorHttpStatusCodeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      GroupsPerUserLimitExceededErrorHttpStatusCodeEnum,
+                    ),
+                  )
+                  as GroupsPerUserLimitExceededErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltList, [FullType(InvalidParameterErrorDetailsInner)]),
-          ) as BuiltList<InvalidParameterErrorDetailsInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(InvalidParameterErrorDetailsInner),
+                    ]),
+                  )
+                  as BuiltList<InvalidParameterErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -196,7 +216,7 @@ class _$GroupsPerUserLimitExceededErrorSerializer
 class GroupsPerUserLimitExceededErrorNameEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'GroupsPerUserLimitExceededError')
   static const GroupsPerUserLimitExceededErrorNameEnum
-      groupsPerUserLimitExceededError =
+  groupsPerUserLimitExceededError =
       _$groupsPerUserLimitExceededErrorNameEnum_groupsPerUserLimitExceededError;
 
   static Serializer<GroupsPerUserLimitExceededErrorNameEnum> get serializer =>
@@ -213,11 +233,11 @@ class GroupsPerUserLimitExceededErrorNameEnum extends EnumClass {
 class GroupsPerUserLimitExceededErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'Amount of groups per user is limited.')
   static const GroupsPerUserLimitExceededErrorMessageEnum
-      amountOfGroupsPerUserIsLimitedPeriod =
+  amountOfGroupsPerUserIsLimitedPeriod =
       _$groupsPerUserLimitExceededErrorMessageEnum_amountOfGroupsPerUserIsLimitedPeriod;
 
   static Serializer<GroupsPerUserLimitExceededErrorMessageEnum>
-      get serializer => _$groupsPerUserLimitExceededErrorMessageEnumSerializer;
+  get serializer => _$groupsPerUserLimitExceededErrorMessageEnumSerializer;
 
   const GroupsPerUserLimitExceededErrorMessageEnum._(String name) : super(name);
 
@@ -233,15 +253,15 @@ class GroupsPerUserLimitExceededErrorHttpStatusCodeEnum extends EnumClass {
       _$groupsPerUserLimitExceededErrorHttpStatusCodeEnum_number409;
 
   static Serializer<GroupsPerUserLimitExceededErrorHttpStatusCodeEnum>
-      get serializer =>
-          _$groupsPerUserLimitExceededErrorHttpStatusCodeEnumSerializer;
+  get serializer =>
+      _$groupsPerUserLimitExceededErrorHttpStatusCodeEnumSerializer;
 
   const GroupsPerUserLimitExceededErrorHttpStatusCodeEnum._(String name)
-      : super(name);
+    : super(name);
 
   static BuiltSet<GroupsPerUserLimitExceededErrorHttpStatusCodeEnum>
-      get values => _$groupsPerUserLimitExceededErrorHttpStatusCodeEnumValues;
+  get values => _$groupsPerUserLimitExceededErrorHttpStatusCodeEnumValues;
   static GroupsPerUserLimitExceededErrorHttpStatusCodeEnum valueOf(
-          String name) =>
-      _$groupsPerUserLimitExceededErrorHttpStatusCodeEnumValueOf(name);
+    String name,
+  ) => _$groupsPerUserLimitExceededErrorHttpStatusCodeEnumValueOf(name);
 }

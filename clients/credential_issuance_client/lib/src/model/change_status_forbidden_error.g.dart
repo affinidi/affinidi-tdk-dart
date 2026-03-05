@@ -7,11 +7,12 @@ part of 'change_status_forbidden_error.dart';
 // **************************************************************************
 
 const ChangeStatusForbiddenErrorNameEnum
-    _$changeStatusForbiddenErrorNameEnum_changeStatusForbiddenError =
+_$changeStatusForbiddenErrorNameEnum_changeStatusForbiddenError =
     const ChangeStatusForbiddenErrorNameEnum._('changeStatusForbiddenError');
 
 ChangeStatusForbiddenErrorNameEnum _$changeStatusForbiddenErrorNameEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'changeStatusForbiddenError':
       return _$changeStatusForbiddenErrorNameEnum_changeStatusForbiddenError;
@@ -21,18 +22,21 @@ ChangeStatusForbiddenErrorNameEnum _$changeStatusForbiddenErrorNameEnumValueOf(
 }
 
 final BuiltSet<ChangeStatusForbiddenErrorNameEnum>
-    _$changeStatusForbiddenErrorNameEnumValues = BuiltSet<
-        ChangeStatusForbiddenErrorNameEnum>(const <ChangeStatusForbiddenErrorNameEnum>[
-  _$changeStatusForbiddenErrorNameEnum_changeStatusForbiddenError,
-]);
+_$changeStatusForbiddenErrorNameEnumValues =
+    BuiltSet<ChangeStatusForbiddenErrorNameEnum>(
+      const <ChangeStatusForbiddenErrorNameEnum>[
+        _$changeStatusForbiddenErrorNameEnum_changeStatusForbiddenError,
+      ],
+    );
 
 const ChangeStatusForbiddenErrorMessageEnum
-    _$changeStatusForbiddenErrorMessageEnum_relatedVCStatusCannotBeChanged =
+_$changeStatusForbiddenErrorMessageEnum_relatedVCStatusCannotBeChanged =
     const ChangeStatusForbiddenErrorMessageEnum._(
-        'relatedVCStatusCannotBeChanged');
+      'relatedVCStatusCannotBeChanged',
+    );
 
 ChangeStatusForbiddenErrorMessageEnum
-    _$changeStatusForbiddenErrorMessageEnumValueOf(String name) {
+_$changeStatusForbiddenErrorMessageEnumValueOf(String name) {
   switch (name) {
     case 'relatedVCStatusCannotBeChanged':
       return _$changeStatusForbiddenErrorMessageEnum_relatedVCStatusCannotBeChanged;
@@ -42,17 +46,19 @@ ChangeStatusForbiddenErrorMessageEnum
 }
 
 final BuiltSet<ChangeStatusForbiddenErrorMessageEnum>
-    _$changeStatusForbiddenErrorMessageEnumValues = BuiltSet<
-        ChangeStatusForbiddenErrorMessageEnum>(const <ChangeStatusForbiddenErrorMessageEnum>[
-  _$changeStatusForbiddenErrorMessageEnum_relatedVCStatusCannotBeChanged,
-]);
+_$changeStatusForbiddenErrorMessageEnumValues =
+    BuiltSet<ChangeStatusForbiddenErrorMessageEnum>(
+      const <ChangeStatusForbiddenErrorMessageEnum>[
+        _$changeStatusForbiddenErrorMessageEnum_relatedVCStatusCannotBeChanged,
+      ],
+    );
 
 const ChangeStatusForbiddenErrorHttpStatusCodeEnum
-    _$changeStatusForbiddenErrorHttpStatusCodeEnum_number400 =
+_$changeStatusForbiddenErrorHttpStatusCodeEnum_number400 =
     const ChangeStatusForbiddenErrorHttpStatusCodeEnum._('number400');
 
 ChangeStatusForbiddenErrorHttpStatusCodeEnum
-    _$changeStatusForbiddenErrorHttpStatusCodeEnumValueOf(String name) {
+_$changeStatusForbiddenErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$changeStatusForbiddenErrorHttpStatusCodeEnum_number400;
@@ -62,19 +68,21 @@ ChangeStatusForbiddenErrorHttpStatusCodeEnum
 }
 
 final BuiltSet<ChangeStatusForbiddenErrorHttpStatusCodeEnum>
-    _$changeStatusForbiddenErrorHttpStatusCodeEnumValues = BuiltSet<
-        ChangeStatusForbiddenErrorHttpStatusCodeEnum>(const <ChangeStatusForbiddenErrorHttpStatusCodeEnum>[
-  _$changeStatusForbiddenErrorHttpStatusCodeEnum_number400,
-]);
+_$changeStatusForbiddenErrorHttpStatusCodeEnumValues =
+    BuiltSet<ChangeStatusForbiddenErrorHttpStatusCodeEnum>(
+      const <ChangeStatusForbiddenErrorHttpStatusCodeEnum>[
+        _$changeStatusForbiddenErrorHttpStatusCodeEnum_number400,
+      ],
+    );
 
 Serializer<ChangeStatusForbiddenErrorNameEnum>
-    _$changeStatusForbiddenErrorNameEnumSerializer =
+_$changeStatusForbiddenErrorNameEnumSerializer =
     _$ChangeStatusForbiddenErrorNameEnumSerializer();
 Serializer<ChangeStatusForbiddenErrorMessageEnum>
-    _$changeStatusForbiddenErrorMessageEnumSerializer =
+_$changeStatusForbiddenErrorMessageEnumSerializer =
     _$ChangeStatusForbiddenErrorMessageEnumSerializer();
 Serializer<ChangeStatusForbiddenErrorHttpStatusCodeEnum>
-    _$changeStatusForbiddenErrorHttpStatusCodeEnumSerializer =
+_$changeStatusForbiddenErrorHttpStatusCodeEnumSerializer =
     _$ChangeStatusForbiddenErrorHttpStatusCodeEnumSerializer();
 
 class _$ChangeStatusForbiddenErrorNameEnumSerializer
@@ -93,16 +101,19 @@ class _$ChangeStatusForbiddenErrorNameEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, ChangeStatusForbiddenErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    ChangeStatusForbiddenErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   ChangeStatusForbiddenErrorNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      ChangeStatusForbiddenErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => ChangeStatusForbiddenErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$ChangeStatusForbiddenErrorMessageEnumSerializer
@@ -116,23 +127,26 @@ class _$ChangeStatusForbiddenErrorMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    ChangeStatusForbiddenErrorMessageEnum
+    ChangeStatusForbiddenErrorMessageEnum,
   ];
   @override
   final String wireName = 'ChangeStatusForbiddenErrorMessageEnum';
 
   @override
   Object serialize(
-          Serializers serializers, ChangeStatusForbiddenErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    ChangeStatusForbiddenErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   ChangeStatusForbiddenErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      ChangeStatusForbiddenErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => ChangeStatusForbiddenErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$ChangeStatusForbiddenErrorHttpStatusCodeEnumSerializer
@@ -147,23 +161,26 @@ class _$ChangeStatusForbiddenErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    ChangeStatusForbiddenErrorHttpStatusCodeEnum
+    ChangeStatusForbiddenErrorHttpStatusCodeEnum,
   ];
   @override
   final String wireName = 'ChangeStatusForbiddenErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          ChangeStatusForbiddenErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    ChangeStatusForbiddenErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   ChangeStatusForbiddenErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      ChangeStatusForbiddenErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => ChangeStatusForbiddenErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$ChangeStatusForbiddenError extends ChangeStatusForbiddenError {
@@ -178,21 +195,21 @@ class _$ChangeStatusForbiddenError extends ChangeStatusForbiddenError {
   @override
   final BuiltList<ActionForbiddenErrorDetailsInner>? details;
 
-  factory _$ChangeStatusForbiddenError(
-          [void Function(ChangeStatusForbiddenErrorBuilder)? updates]) =>
-      (ChangeStatusForbiddenErrorBuilder()..update(updates))._build();
+  factory _$ChangeStatusForbiddenError([
+    void Function(ChangeStatusForbiddenErrorBuilder)? updates,
+  ]) => (ChangeStatusForbiddenErrorBuilder()..update(updates))._build();
 
-  _$ChangeStatusForbiddenError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$ChangeStatusForbiddenError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   ChangeStatusForbiddenError rebuild(
-          void Function(ChangeStatusForbiddenErrorBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ChangeStatusForbiddenErrorBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ChangeStatusForbiddenErrorBuilder toBuilder() =>
@@ -251,8 +268,8 @@ class ChangeStatusForbiddenErrorBuilder
   ChangeStatusForbiddenErrorHttpStatusCodeEnum? get httpStatusCode =>
       _$this._httpStatusCode;
   set httpStatusCode(
-          ChangeStatusForbiddenErrorHttpStatusCodeEnum? httpStatusCode) =>
-      _$this._httpStatusCode = httpStatusCode;
+    ChangeStatusForbiddenErrorHttpStatusCodeEnum? httpStatusCode,
+  ) => _$this._httpStatusCode = httpStatusCode;
 
   String? _traceId;
   String? get traceId => _$this._traceId;
@@ -297,18 +314,29 @@ class ChangeStatusForbiddenErrorBuilder
   _$ChangeStatusForbiddenError _build() {
     _$ChangeStatusForbiddenError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$ChangeStatusForbiddenError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'ChangeStatusForbiddenError', 'name'),
+              name,
+              r'ChangeStatusForbiddenError',
+              'name',
+            ),
             message: BuiltValueNullFieldError.checkNotNull(
-                message, r'ChangeStatusForbiddenError', 'message'),
+              message,
+              r'ChangeStatusForbiddenError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode,
-                r'ChangeStatusForbiddenError',
-                'httpStatusCode'),
+              httpStatusCode,
+              r'ChangeStatusForbiddenError',
+              'httpStatusCode',
+            ),
             traceId: BuiltValueNullFieldError.checkNotNull(
-                traceId, r'ChangeStatusForbiddenError', 'traceId'),
+              traceId,
+              r'ChangeStatusForbiddenError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -318,7 +346,10 @@ class ChangeStatusForbiddenErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'ChangeStatusForbiddenError', _$failedField, e.toString());
+          r'ChangeStatusForbiddenError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

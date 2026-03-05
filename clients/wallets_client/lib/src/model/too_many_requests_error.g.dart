@@ -7,11 +7,12 @@ part of 'too_many_requests_error.dart';
 // **************************************************************************
 
 const TooManyRequestsErrorNameEnum
-    _$tooManyRequestsErrorNameEnum_tooManyRequestsError =
+_$tooManyRequestsErrorNameEnum_tooManyRequestsError =
     const TooManyRequestsErrorNameEnum._('tooManyRequestsError');
 
 TooManyRequestsErrorNameEnum _$tooManyRequestsErrorNameEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'tooManyRequestsError':
       return _$tooManyRequestsErrorNameEnum_tooManyRequestsError;
@@ -21,18 +22,21 @@ TooManyRequestsErrorNameEnum _$tooManyRequestsErrorNameEnumValueOf(
 }
 
 final BuiltSet<TooManyRequestsErrorNameEnum>
-    _$tooManyRequestsErrorNameEnumValues =
-    BuiltSet<TooManyRequestsErrorNameEnum>(const <TooManyRequestsErrorNameEnum>[
-  _$tooManyRequestsErrorNameEnum_tooManyRequestsError,
-]);
+_$tooManyRequestsErrorNameEnumValues = BuiltSet<TooManyRequestsErrorNameEnum>(
+  const <TooManyRequestsErrorNameEnum>[
+    _$tooManyRequestsErrorNameEnum_tooManyRequestsError,
+  ],
+);
 
 const TooManyRequestsErrorMessageEnum
-    _$tooManyRequestsErrorMessageEnum_tooManyConcurrentRequestsToTheSameWalletPeriodTheOperationFailedAfterMultipleRetryAttemptsDueToConcurrentUpdatesPeriodPleaseRetryYourRequestAfterAShortDelayPeriod =
+_$tooManyRequestsErrorMessageEnum_tooManyConcurrentRequestsToTheSameWalletPeriodTheOperationFailedAfterMultipleRetryAttemptsDueToConcurrentUpdatesPeriodPleaseRetryYourRequestAfterAShortDelayPeriod =
     const TooManyRequestsErrorMessageEnum._(
-        'tooManyConcurrentRequestsToTheSameWalletPeriodTheOperationFailedAfterMultipleRetryAttemptsDueToConcurrentUpdatesPeriodPleaseRetryYourRequestAfterAShortDelayPeriod');
+      'tooManyConcurrentRequestsToTheSameWalletPeriodTheOperationFailedAfterMultipleRetryAttemptsDueToConcurrentUpdatesPeriodPleaseRetryYourRequestAfterAShortDelayPeriod',
+    );
 
 TooManyRequestsErrorMessageEnum _$tooManyRequestsErrorMessageEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'tooManyConcurrentRequestsToTheSameWalletPeriodTheOperationFailedAfterMultipleRetryAttemptsDueToConcurrentUpdatesPeriodPleaseRetryYourRequestAfterAShortDelayPeriod':
       return _$tooManyRequestsErrorMessageEnum_tooManyConcurrentRequestsToTheSameWalletPeriodTheOperationFailedAfterMultipleRetryAttemptsDueToConcurrentUpdatesPeriodPleaseRetryYourRequestAfterAShortDelayPeriod;
@@ -42,17 +46,19 @@ TooManyRequestsErrorMessageEnum _$tooManyRequestsErrorMessageEnumValueOf(
 }
 
 final BuiltSet<TooManyRequestsErrorMessageEnum>
-    _$tooManyRequestsErrorMessageEnumValues = BuiltSet<
-        TooManyRequestsErrorMessageEnum>(const <TooManyRequestsErrorMessageEnum>[
-  _$tooManyRequestsErrorMessageEnum_tooManyConcurrentRequestsToTheSameWalletPeriodTheOperationFailedAfterMultipleRetryAttemptsDueToConcurrentUpdatesPeriodPleaseRetryYourRequestAfterAShortDelayPeriod,
-]);
+_$tooManyRequestsErrorMessageEnumValues =
+    BuiltSet<TooManyRequestsErrorMessageEnum>(const <
+      TooManyRequestsErrorMessageEnum
+    >[
+      _$tooManyRequestsErrorMessageEnum_tooManyConcurrentRequestsToTheSameWalletPeriodTheOperationFailedAfterMultipleRetryAttemptsDueToConcurrentUpdatesPeriodPleaseRetryYourRequestAfterAShortDelayPeriod,
+    ]);
 
 const TooManyRequestsErrorHttpStatusCodeEnum
-    _$tooManyRequestsErrorHttpStatusCodeEnum_number429 =
+_$tooManyRequestsErrorHttpStatusCodeEnum_number429 =
     const TooManyRequestsErrorHttpStatusCodeEnum._('number429');
 
 TooManyRequestsErrorHttpStatusCodeEnum
-    _$tooManyRequestsErrorHttpStatusCodeEnumValueOf(String name) {
+_$tooManyRequestsErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number429':
       return _$tooManyRequestsErrorHttpStatusCodeEnum_number429;
@@ -62,19 +68,21 @@ TooManyRequestsErrorHttpStatusCodeEnum
 }
 
 final BuiltSet<TooManyRequestsErrorHttpStatusCodeEnum>
-    _$tooManyRequestsErrorHttpStatusCodeEnumValues = BuiltSet<
-        TooManyRequestsErrorHttpStatusCodeEnum>(const <TooManyRequestsErrorHttpStatusCodeEnum>[
-  _$tooManyRequestsErrorHttpStatusCodeEnum_number429,
-]);
+_$tooManyRequestsErrorHttpStatusCodeEnumValues =
+    BuiltSet<TooManyRequestsErrorHttpStatusCodeEnum>(
+      const <TooManyRequestsErrorHttpStatusCodeEnum>[
+        _$tooManyRequestsErrorHttpStatusCodeEnum_number429,
+      ],
+    );
 
 Serializer<TooManyRequestsErrorNameEnum>
-    _$tooManyRequestsErrorNameEnumSerializer =
+_$tooManyRequestsErrorNameEnumSerializer =
     _$TooManyRequestsErrorNameEnumSerializer();
 Serializer<TooManyRequestsErrorMessageEnum>
-    _$tooManyRequestsErrorMessageEnumSerializer =
+_$tooManyRequestsErrorMessageEnumSerializer =
     _$TooManyRequestsErrorMessageEnumSerializer();
 Serializer<TooManyRequestsErrorHttpStatusCodeEnum>
-    _$tooManyRequestsErrorHttpStatusCodeEnumSerializer =
+_$tooManyRequestsErrorHttpStatusCodeEnumSerializer =
     _$TooManyRequestsErrorHttpStatusCodeEnumSerializer();
 
 class _$TooManyRequestsErrorNameEnumSerializer
@@ -92,16 +100,20 @@ class _$TooManyRequestsErrorNameEnumSerializer
   final String wireName = 'TooManyRequestsErrorNameEnum';
 
   @override
-  Object serialize(Serializers serializers, TooManyRequestsErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    TooManyRequestsErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   TooManyRequestsErrorNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      TooManyRequestsErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => TooManyRequestsErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$TooManyRequestsErrorMessageEnumSerializer
@@ -122,16 +134,19 @@ class _$TooManyRequestsErrorMessageEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, TooManyRequestsErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    TooManyRequestsErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   TooManyRequestsErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      TooManyRequestsErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => TooManyRequestsErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$TooManyRequestsErrorHttpStatusCodeEnumSerializer
@@ -145,23 +160,26 @@ class _$TooManyRequestsErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    TooManyRequestsErrorHttpStatusCodeEnum
+    TooManyRequestsErrorHttpStatusCodeEnum,
   ];
   @override
   final String wireName = 'TooManyRequestsErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          TooManyRequestsErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    TooManyRequestsErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   TooManyRequestsErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      TooManyRequestsErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => TooManyRequestsErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$TooManyRequestsError extends TooManyRequestsError {
@@ -174,23 +192,23 @@ class _$TooManyRequestsError extends TooManyRequestsError {
   @override
   final String traceId;
   @override
-  final BuiltList<ServiceErrorResponseDetailsInner>? details;
+  final BuiltList<NotFoundErrorDetailsInner>? details;
 
-  factory _$TooManyRequestsError(
-          [void Function(TooManyRequestsErrorBuilder)? updates]) =>
-      (TooManyRequestsErrorBuilder()..update(updates))._build();
+  factory _$TooManyRequestsError([
+    void Function(TooManyRequestsErrorBuilder)? updates,
+  ]) => (TooManyRequestsErrorBuilder()..update(updates))._build();
 
-  _$TooManyRequestsError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$TooManyRequestsError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   TooManyRequestsError rebuild(
-          void Function(TooManyRequestsErrorBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(TooManyRequestsErrorBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   TooManyRequestsErrorBuilder toBuilder() =>
@@ -254,10 +272,10 @@ class TooManyRequestsErrorBuilder
   String? get traceId => _$this._traceId;
   set traceId(String? traceId) => _$this._traceId = traceId;
 
-  ListBuilder<ServiceErrorResponseDetailsInner>? _details;
-  ListBuilder<ServiceErrorResponseDetailsInner> get details =>
-      _$this._details ??= ListBuilder<ServiceErrorResponseDetailsInner>();
-  set details(ListBuilder<ServiceErrorResponseDetailsInner>? details) =>
+  ListBuilder<NotFoundErrorDetailsInner>? _details;
+  ListBuilder<NotFoundErrorDetailsInner> get details =>
+      _$this._details ??= ListBuilder<NotFoundErrorDetailsInner>();
+  set details(ListBuilder<NotFoundErrorDetailsInner>? details) =>
       _$this._details = details;
 
   TooManyRequestsErrorBuilder() {
@@ -293,16 +311,29 @@ class TooManyRequestsErrorBuilder
   _$TooManyRequestsError _build() {
     _$TooManyRequestsError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$TooManyRequestsError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'TooManyRequestsError', 'name'),
+              name,
+              r'TooManyRequestsError',
+              'name',
+            ),
             message: BuiltValueNullFieldError.checkNotNull(
-                message, r'TooManyRequestsError', 'message'),
+              message,
+              r'TooManyRequestsError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode, r'TooManyRequestsError', 'httpStatusCode'),
+              httpStatusCode,
+              r'TooManyRequestsError',
+              'httpStatusCode',
+            ),
             traceId: BuiltValueNullFieldError.checkNotNull(
-                traceId, r'TooManyRequestsError', 'traceId'),
+              traceId,
+              r'TooManyRequestsError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -312,7 +343,10 @@ class TooManyRequestsErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'TooManyRequestsError', _$failedField, e.toString());
+          r'TooManyRequestsError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

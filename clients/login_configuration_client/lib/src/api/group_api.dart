@@ -49,14 +49,18 @@ class GroupApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/groups/{groupName}/users'.replaceAll(
-        '{' r'groupName' '}',
-        encodeQueryParameter(_serializers, groupName, const FullType(String))
-            .toString());
+      '{'
+      r'groupName'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        groupName,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -76,14 +80,13 @@ class GroupApi {
 
     try {
       const _type = FullType(AddUserToGroupInput);
-      _bodyData =
-          _serializers.serialize(addUserToGroupInput, specifiedType: _type);
+      _bodyData = _serializers.serialize(
+        addUserToGroupInput,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -106,9 +109,10 @@ class GroupApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(GroupUserMappingDto),
-            ) as GroupUserMappingDto;
+                  rawResponse,
+                  specifiedType: const FullType(GroupUserMappingDto),
+                )
+                as GroupUserMappingDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -157,9 +161,7 @@ class GroupApi {
     final _path = r'/v1/groups';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -179,14 +181,13 @@ class GroupApi {
 
     try {
       const _type = FullType(CreateGroupInput);
-      _bodyData =
-          _serializers.serialize(createGroupInput, specifiedType: _type);
+      _bodyData = _serializers.serialize(
+        createGroupInput,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -209,9 +210,10 @@ class GroupApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(GroupDto),
-            ) as GroupDto;
+                  rawResponse,
+                  specifiedType: const FullType(GroupDto),
+                )
+                as GroupDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -258,14 +260,18 @@ class GroupApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/groups/{groupName}'.replaceAll(
-        '{' r'groupName' '}',
-        encodeQueryParameter(_serializers, groupName, const FullType(String))
-            .toString());
+      '{'
+      r'groupName'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        groupName,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -315,14 +321,18 @@ class GroupApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/groups/{groupName}'.replaceAll(
-        '{' r'groupName' '}',
-        encodeQueryParameter(_serializers, groupName, const FullType(String))
-            .toString());
+      '{'
+      r'groupName'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        groupName,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -352,9 +362,10 @@ class GroupApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(GroupDto),
-            ) as GroupDto;
+                  rawResponse,
+                  specifiedType: const FullType(GroupDto),
+                )
+                as GroupDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -407,14 +418,18 @@ class GroupApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/groups/{groupName}/users'.replaceAll(
-        '{' r'groupName' '}',
-        encodeQueryParameter(_serializers, groupName, const FullType(String))
-            .toString());
+      '{'
+      r'groupName'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        groupName,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -431,14 +446,23 @@ class GroupApi {
 
     final _queryParameters = <String, dynamic>{
       if (limit != null)
-        r'limit':
-            encodeQueryParameter(_serializers, limit, const FullType(int)),
+        r'limit': encodeQueryParameter(
+          _serializers,
+          limit,
+          const FullType(int),
+        ),
       if (exclusiveStartKey != null)
         r'exclusiveStartKey': encodeQueryParameter(
-            _serializers, exclusiveStartKey, const FullType(String)),
+          _serializers,
+          exclusiveStartKey,
+          const FullType(String),
+        ),
       if (sortOrder != null)
         r'sortOrder': encodeQueryParameter(
-            _serializers, sortOrder, const FullType(String)),
+          _serializers,
+          sortOrder,
+          const FullType(String),
+        ),
     };
 
     final _response = await _dio.request<Object>(
@@ -457,9 +481,10 @@ class GroupApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(GroupUserMappingsList),
-            ) as GroupUserMappingsList;
+                  rawResponse,
+                  specifiedType: const FullType(GroupUserMappingsList),
+                )
+                as GroupUserMappingsList;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -506,9 +531,7 @@ class GroupApi {
     final _path = r'/v1/groups';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -538,9 +561,10 @@ class GroupApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(GroupsList),
-            ) as GroupsList;
+                  rawResponse,
+                  specifiedType: const FullType(GroupsList),
+                )
+                as GroupsList;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -589,14 +613,18 @@ class GroupApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/groups/{groupName}/users'.replaceAll(
-        '{' r'groupName' '}',
-        encodeQueryParameter(_serializers, groupName, const FullType(String))
-            .toString());
+      '{'
+      r'groupName'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        groupName,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -616,14 +644,13 @@ class GroupApi {
 
     try {
       const _type = FullType(RemoveUserFromGroupInput);
-      _bodyData = _serializers.serialize(removeUserFromGroupInput,
-          specifiedType: _type);
+      _bodyData = _serializers.serialize(
+        removeUserFromGroupInput,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,

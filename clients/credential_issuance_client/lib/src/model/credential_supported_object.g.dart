@@ -16,20 +16,20 @@ class _$CredentialSupportedObject extends CredentialSupportedObject {
   @override
   final SupportedCredentialMetadata? metadata;
 
-  factory _$CredentialSupportedObject(
-          [void Function(CredentialSupportedObjectBuilder)? updates]) =>
-      (CredentialSupportedObjectBuilder()..update(updates))._build();
+  factory _$CredentialSupportedObject([
+    void Function(CredentialSupportedObjectBuilder)? updates,
+  ]) => (CredentialSupportedObjectBuilder()..update(updates))._build();
 
-  _$CredentialSupportedObject._(
-      {required this.credentialTypeId,
-      required this.jsonSchemaUrl,
-      required this.jsonLdContextUrl,
-      this.metadata})
-      : super._();
+  _$CredentialSupportedObject._({
+    required this.credentialTypeId,
+    required this.jsonSchemaUrl,
+    required this.jsonLdContextUrl,
+    this.metadata,
+  }) : super._();
   @override
   CredentialSupportedObject rebuild(
-          void Function(CredentialSupportedObjectBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CredentialSupportedObjectBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CredentialSupportedObjectBuilder toBuilder() =>
@@ -125,18 +125,24 @@ class CredentialSupportedObjectBuilder
   _$CredentialSupportedObject _build() {
     _$CredentialSupportedObject _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$CredentialSupportedObject._(
             credentialTypeId: BuiltValueNullFieldError.checkNotNull(
-                credentialTypeId,
-                r'CredentialSupportedObject',
-                'credentialTypeId'),
+              credentialTypeId,
+              r'CredentialSupportedObject',
+              'credentialTypeId',
+            ),
             jsonSchemaUrl: BuiltValueNullFieldError.checkNotNull(
-                jsonSchemaUrl, r'CredentialSupportedObject', 'jsonSchemaUrl'),
+              jsonSchemaUrl,
+              r'CredentialSupportedObject',
+              'jsonSchemaUrl',
+            ),
             jsonLdContextUrl: BuiltValueNullFieldError.checkNotNull(
-                jsonLdContextUrl,
-                r'CredentialSupportedObject',
-                'jsonLdContextUrl'),
+              jsonLdContextUrl,
+              r'CredentialSupportedObject',
+              'jsonLdContextUrl',
+            ),
             metadata: _metadata?.build(),
           );
     } catch (_) {
@@ -146,7 +152,10 @@ class CredentialSupportedObjectBuilder
         _metadata?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'CredentialSupportedObject', _$failedField, e.toString());
+          r'CredentialSupportedObject',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

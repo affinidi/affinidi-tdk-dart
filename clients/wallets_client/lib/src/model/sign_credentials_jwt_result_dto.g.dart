@@ -10,15 +10,15 @@ class _$SignCredentialsJwtResultDto extends SignCredentialsJwtResultDto {
   @override
   final String credential;
 
-  factory _$SignCredentialsJwtResultDto(
-          [void Function(SignCredentialsJwtResultDtoBuilder)? updates]) =>
-      (SignCredentialsJwtResultDtoBuilder()..update(updates))._build();
+  factory _$SignCredentialsJwtResultDto([
+    void Function(SignCredentialsJwtResultDtoBuilder)? updates,
+  ]) => (SignCredentialsJwtResultDtoBuilder()..update(updates))._build();
 
   _$SignCredentialsJwtResultDto._({required this.credential}) : super._();
   @override
   SignCredentialsJwtResultDto rebuild(
-          void Function(SignCredentialsJwtResultDtoBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(SignCredentialsJwtResultDtoBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   SignCredentialsJwtResultDtoBuilder toBuilder() =>
@@ -41,16 +41,18 @@ class _$SignCredentialsJwtResultDto extends SignCredentialsJwtResultDto {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'SignCredentialsJwtResultDto')
-          ..add('credential', credential))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'SignCredentialsJwtResultDto',
+    )..add('credential', credential)).toString();
   }
 }
 
 class SignCredentialsJwtResultDtoBuilder
     implements
-        Builder<SignCredentialsJwtResultDto,
-            SignCredentialsJwtResultDtoBuilder> {
+        Builder<
+          SignCredentialsJwtResultDto,
+          SignCredentialsJwtResultDtoBuilder
+        > {
   _$SignCredentialsJwtResultDto? _$v;
 
   String? _credential;
@@ -84,10 +86,14 @@ class SignCredentialsJwtResultDtoBuilder
   SignCredentialsJwtResultDto build() => _build();
 
   _$SignCredentialsJwtResultDto _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$SignCredentialsJwtResultDto._(
           credential: BuiltValueNullFieldError.checkNotNull(
-              credential, r'SignCredentialsJwtResultDto', 'credential'),
+            credential,
+            r'SignCredentialsJwtResultDto',
+            'credential',
+          ),
         );
     replace(_$result);
     return _$result;

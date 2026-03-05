@@ -37,9 +37,9 @@ class _$MoveNodeDto extends MoveNodeDto {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'MoveNodeDto')
-          ..add('newNodeId', newNodeId))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'MoveNodeDto',
+    )..add('newNodeId', newNodeId)).toString();
   }
 }
 
@@ -77,10 +77,7 @@ class MoveNodeDtoBuilder implements Builder<MoveNodeDto, MoveNodeDtoBuilder> {
   MoveNodeDto build() => _build();
 
   _$MoveNodeDto _build() {
-    final _$result = _$v ??
-        _$MoveNodeDto._(
-          newNodeId: newNodeId,
-        );
+    final _$result = _$v ?? _$MoveNodeDto._(newNodeId: newNodeId);
     replace(_$result);
     return _$result;
   }

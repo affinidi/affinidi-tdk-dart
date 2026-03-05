@@ -12,15 +12,15 @@ class _$CreateProjectInput extends CreateProjectInput {
   @override
   final String? description;
 
-  factory _$CreateProjectInput(
-          [void Function(CreateProjectInputBuilder)? updates]) =>
-      (CreateProjectInputBuilder()..update(updates))._build();
+  factory _$CreateProjectInput([
+    void Function(CreateProjectInputBuilder)? updates,
+  ]) => (CreateProjectInputBuilder()..update(updates))._build();
 
   _$CreateProjectInput._({required this.name, this.description}) : super._();
   @override
   CreateProjectInput rebuild(
-          void Function(CreateProjectInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateProjectInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateProjectInputBuilder toBuilder() =>
@@ -92,10 +92,14 @@ class CreateProjectInputBuilder
   CreateProjectInput build() => _build();
 
   _$CreateProjectInput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CreateProjectInput._(
           name: BuiltValueNullFieldError.checkNotNull(
-              name, r'CreateProjectInput', 'name'),
+            name,
+            r'CreateProjectInput',
+            'name',
+          ),
           description: description,
         );
     replace(_$result);

@@ -86,12 +86,19 @@ class EdekInfoBuilder implements Builder<EdekInfo, EdekInfoBuilder> {
   EdekInfo build() => _build();
 
   _$EdekInfo _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$EdekInfo._(
-          edek:
-              BuiltValueNullFieldError.checkNotNull(edek, r'EdekInfo', 'edek'),
+          edek: BuiltValueNullFieldError.checkNotNull(
+            edek,
+            r'EdekInfo',
+            'edek',
+          ),
           dekekId: BuiltValueNullFieldError.checkNotNull(
-              dekekId, r'EdekInfo', 'dekekId'),
+            dekekId,
+            r'EdekInfo',
+            'dekekId',
+          ),
         );
     replace(_$result);
     return _$result;

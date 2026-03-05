@@ -13,17 +13,18 @@ class _$VerifyPresentationV2InputPexQuery
   @override
   final JsonObject? presentationSubmission;
 
-  factory _$VerifyPresentationV2InputPexQuery(
-          [void Function(VerifyPresentationV2InputPexQueryBuilder)? updates]) =>
-      (VerifyPresentationV2InputPexQueryBuilder()..update(updates))._build();
+  factory _$VerifyPresentationV2InputPexQuery([
+    void Function(VerifyPresentationV2InputPexQueryBuilder)? updates,
+  ]) => (VerifyPresentationV2InputPexQueryBuilder()..update(updates))._build();
 
-  _$VerifyPresentationV2InputPexQuery._(
-      {this.presentationDefinition, this.presentationSubmission})
-      : super._();
+  _$VerifyPresentationV2InputPexQuery._({
+    this.presentationDefinition,
+    this.presentationSubmission,
+  }) : super._();
   @override
   VerifyPresentationV2InputPexQuery rebuild(
-          void Function(VerifyPresentationV2InputPexQueryBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(VerifyPresentationV2InputPexQueryBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   VerifyPresentationV2InputPexQueryBuilder toBuilder() =>
@@ -57,8 +58,10 @@ class _$VerifyPresentationV2InputPexQuery
 
 class VerifyPresentationV2InputPexQueryBuilder
     implements
-        Builder<VerifyPresentationV2InputPexQuery,
-            VerifyPresentationV2InputPexQueryBuilder> {
+        Builder<
+          VerifyPresentationV2InputPexQuery,
+          VerifyPresentationV2InputPexQueryBuilder
+        > {
   _$VerifyPresentationV2InputPexQuery? _$v;
 
   JsonObject? _presentationDefinition;
@@ -92,7 +95,8 @@ class VerifyPresentationV2InputPexQueryBuilder
 
   @override
   void update(
-      void Function(VerifyPresentationV2InputPexQueryBuilder)? updates) {
+    void Function(VerifyPresentationV2InputPexQueryBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -100,7 +104,8 @@ class VerifyPresentationV2InputPexQueryBuilder
   VerifyPresentationV2InputPexQuery build() => _build();
 
   _$VerifyPresentationV2InputPexQuery _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$VerifyPresentationV2InputPexQuery._(
           presentationDefinition: presentationDefinition,
           presentationSubmission: presentationSubmission,

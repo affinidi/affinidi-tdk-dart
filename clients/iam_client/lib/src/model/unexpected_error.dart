@@ -4,7 +4,7 @@
 
 // ignore_for_file: unused_element
 import 'package:built_collection/built_collection.dart';
-import 'package:affinidi_tdk_iam_client/src/model/service_error_response_details_inner.dart';
+import 'package:affinidi_tdk_iam_client/src/model/unexpected_error_details_inner.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -37,7 +37,7 @@ abstract class UnexpectedError
   String get traceId;
 
   @BuiltValueField(wireName: r'details')
-  BuiltList<ServiceErrorResponseDetailsInner>? get details;
+  BuiltList<UnexpectedErrorDetailsInner>? get details;
 
   UnexpectedError._();
 
@@ -89,8 +89,9 @@ class _$UnexpectedErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(
-            BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(UnexpectedErrorDetailsInner),
+        ]),
       );
     }
   }
@@ -101,9 +102,11 @@ class _$UnexpectedErrorSerializer
     UnexpectedError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -119,39 +122,52 @@ class _$UnexpectedErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(UnexpectedErrorNameEnum),
-          ) as UnexpectedErrorNameEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(UnexpectedErrorNameEnum),
+                  )
+                  as UnexpectedErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(UnexpectedErrorMessageEnum),
-          ) as UnexpectedErrorMessageEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(UnexpectedErrorMessageEnum),
+                  )
+                  as UnexpectedErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(UnexpectedErrorHttpStatusCodeEnum),
-          ) as UnexpectedErrorHttpStatusCodeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      UnexpectedErrorHttpStatusCodeEnum,
+                    ),
+                  )
+                  as UnexpectedErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
-          ) as BuiltList<ServiceErrorResponseDetailsInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(UnexpectedErrorDetailsInner),
+                    ]),
+                  )
+                  as BuiltList<UnexpectedErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:

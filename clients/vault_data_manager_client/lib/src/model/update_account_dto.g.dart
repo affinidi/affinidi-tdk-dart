@@ -14,13 +14,15 @@ class _$UpdateAccountDto extends UpdateAccountDto {
   @override
   final JsonObject? metadata;
 
-  factory _$UpdateAccountDto(
-          [void Function(UpdateAccountDtoBuilder)? updates]) =>
-      (UpdateAccountDtoBuilder()..update(updates))._build();
+  factory _$UpdateAccountDto([
+    void Function(UpdateAccountDtoBuilder)? updates,
+  ]) => (UpdateAccountDtoBuilder()..update(updates))._build();
 
-  _$UpdateAccountDto._(
-      {required this.accountIndex, required this.accountDid, this.metadata})
-      : super._();
+  _$UpdateAccountDto._({
+    required this.accountIndex,
+    required this.accountDid,
+    this.metadata,
+  }) : super._();
   @override
   UpdateAccountDto rebuild(void Function(UpdateAccountDtoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -103,12 +105,19 @@ class UpdateAccountDtoBuilder
   UpdateAccountDto build() => _build();
 
   _$UpdateAccountDto _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$UpdateAccountDto._(
           accountIndex: BuiltValueNullFieldError.checkNotNull(
-              accountIndex, r'UpdateAccountDto', 'accountIndex'),
+            accountIndex,
+            r'UpdateAccountDto',
+            'accountIndex',
+          ),
           accountDid: BuiltValueNullFieldError.checkNotNull(
-              accountDid, r'UpdateAccountDto', 'accountDid'),
+            accountDid,
+            r'UpdateAccountDto',
+            'accountDid',
+          ),
           metadata: metadata,
         );
     replace(_$result);

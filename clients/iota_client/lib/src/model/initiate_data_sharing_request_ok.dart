@@ -16,16 +16,18 @@ part 'initiate_data_sharing_request_ok.g.dart';
 @BuiltValue()
 abstract class InitiateDataSharingRequestOK
     implements
-        Built<InitiateDataSharingRequestOK,
-            InitiateDataSharingRequestOKBuilder> {
+        Built<
+          InitiateDataSharingRequestOK,
+          InitiateDataSharingRequestOKBuilder
+        > {
   @BuiltValueField(wireName: r'data')
   InitiateDataSharingRequestOKData? get data;
 
   InitiateDataSharingRequestOK._();
 
-  factory InitiateDataSharingRequestOK(
-          [void updates(InitiateDataSharingRequestOKBuilder b)]) =
-      _$InitiateDataSharingRequestOK;
+  factory InitiateDataSharingRequestOK([
+    void updates(InitiateDataSharingRequestOKBuilder b),
+  ]) = _$InitiateDataSharingRequestOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(InitiateDataSharingRequestOKBuilder b) => b;
@@ -40,7 +42,7 @@ class _$InitiateDataSharingRequestOKSerializer
   @override
   final Iterable<Type> types = const [
     InitiateDataSharingRequestOK,
-    _$InitiateDataSharingRequestOK
+    _$InitiateDataSharingRequestOK,
   ];
 
   @override
@@ -66,9 +68,11 @@ class _$InitiateDataSharingRequestOKSerializer
     InitiateDataSharingRequestOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -84,10 +88,14 @@ class _$InitiateDataSharingRequestOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'data':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(InitiateDataSharingRequestOKData),
-          ) as InitiateDataSharingRequestOKData;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      InitiateDataSharingRequestOKData,
+                    ),
+                  )
+                  as InitiateDataSharingRequestOKData;
           result.data.replace(valueDes);
           break;
         default:

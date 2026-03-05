@@ -21,13 +21,13 @@ class _$AccountDto extends AccountDto {
   factory _$AccountDto([void Function(AccountDtoBuilder)? updates]) =>
       (AccountDtoBuilder()..update(updates))._build();
 
-  _$AccountDto._(
-      {required this.accountIndex,
-      required this.accountDid,
-      this.alias,
-      this.metadata,
-      this.description})
-      : super._();
+  _$AccountDto._({
+    required this.accountIndex,
+    required this.accountDid,
+    this.alias,
+    this.metadata,
+    this.description,
+  }) : super._();
   @override
   AccountDto rebuild(void Function(AccountDtoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -124,12 +124,19 @@ class AccountDtoBuilder implements Builder<AccountDto, AccountDtoBuilder> {
   AccountDto build() => _build();
 
   _$AccountDto _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$AccountDto._(
           accountIndex: BuiltValueNullFieldError.checkNotNull(
-              accountIndex, r'AccountDto', 'accountIndex'),
+            accountIndex,
+            r'AccountDto',
+            'accountIndex',
+          ),
           accountDid: BuiltValueNullFieldError.checkNotNull(
-              accountDid, r'AccountDto', 'accountDid'),
+            accountDid,
+            r'AccountDto',
+            'accountDid',
+          ),
           alias: alias,
           metadata: metadata,
           description: description,

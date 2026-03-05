@@ -20,7 +20,7 @@ class _$CreateNodeOK extends CreateNodeOK {
       (CreateNodeOKBuilder()..update(updates))._build();
 
   _$CreateNodeOK._({required this.nodeId, this.url, this.link, this.fields})
-      : super._();
+    : super._();
   @override
   CreateNodeOK rebuild(void Function(CreateNodeOKBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -114,10 +114,14 @@ class CreateNodeOKBuilder
   _$CreateNodeOK _build() {
     _$CreateNodeOK _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$CreateNodeOK._(
             nodeId: BuiltValueNullFieldError.checkNotNull(
-                nodeId, r'CreateNodeOK', 'nodeId'),
+              nodeId,
+              r'CreateNodeOK',
+              'nodeId',
+            ),
             url: url,
             link: link,
             fields: _fields?.build(),
@@ -129,7 +133,10 @@ class CreateNodeOKBuilder
         _fields?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'CreateNodeOK', _$failedField, e.toString());
+          r'CreateNodeOK',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

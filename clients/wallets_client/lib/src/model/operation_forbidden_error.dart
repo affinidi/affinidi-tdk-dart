@@ -4,7 +4,7 @@
 
 // ignore_for_file: unused_element
 import 'package:built_collection/built_collection.dart';
-import 'package:affinidi_tdk_wallets_client/src/model/service_error_response_details_inner.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/not_found_error_details_inner.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -37,13 +37,13 @@ abstract class OperationForbiddenError
   String get traceId;
 
   @BuiltValueField(wireName: r'details')
-  BuiltList<ServiceErrorResponseDetailsInner>? get details;
+  BuiltList<NotFoundErrorDetailsInner>? get details;
 
   OperationForbiddenError._();
 
-  factory OperationForbiddenError(
-          [void updates(OperationForbiddenErrorBuilder b)]) =
-      _$OperationForbiddenError;
+  factory OperationForbiddenError([
+    void updates(OperationForbiddenErrorBuilder b),
+  ]) = _$OperationForbiddenError;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(OperationForbiddenErrorBuilder b) => b;
@@ -58,7 +58,7 @@ class _$OperationForbiddenErrorSerializer
   @override
   final Iterable<Type> types = const [
     OperationForbiddenError,
-    _$OperationForbiddenError
+    _$OperationForbiddenError,
   ];
 
   @override
@@ -93,8 +93,9 @@ class _$OperationForbiddenErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(
-            BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(NotFoundErrorDetailsInner),
+        ]),
       );
     }
   }
@@ -105,9 +106,11 @@ class _$OperationForbiddenErrorSerializer
     OperationForbiddenError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -123,40 +126,56 @@ class _$OperationForbiddenErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(OperationForbiddenErrorNameEnum),
-          ) as OperationForbiddenErrorNameEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      OperationForbiddenErrorNameEnum,
+                    ),
+                  )
+                  as OperationForbiddenErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(OperationForbiddenErrorMessageEnum),
-          ) as OperationForbiddenErrorMessageEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      OperationForbiddenErrorMessageEnum,
+                    ),
+                  )
+                  as OperationForbiddenErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(OperationForbiddenErrorHttpStatusCodeEnum),
-          ) as OperationForbiddenErrorHttpStatusCodeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      OperationForbiddenErrorHttpStatusCodeEnum,
+                    ),
+                  )
+                  as OperationForbiddenErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltList, [FullType(ServiceErrorResponseDetailsInner)]),
-          ) as BuiltList<ServiceErrorResponseDetailsInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(NotFoundErrorDetailsInner),
+                    ]),
+                  )
+                  as BuiltList<NotFoundErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:
@@ -207,7 +226,7 @@ class OperationForbiddenErrorNameEnum extends EnumClass {
 class OperationForbiddenErrorMessageEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'Operation forbidden: ${param}.')
   static const OperationForbiddenErrorMessageEnum
-      operationForbiddenColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod =
+  operationForbiddenColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod =
       _$operationForbiddenErrorMessageEnum_operationForbiddenColonDollarLeftCurlyBracketParamRightCurlyBracketPeriod;
 
   static Serializer<OperationForbiddenErrorMessageEnum> get serializer =>

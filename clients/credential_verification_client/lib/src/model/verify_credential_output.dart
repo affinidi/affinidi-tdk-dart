@@ -27,9 +27,9 @@ abstract class VerifyCredentialOutput
 
   VerifyCredentialOutput._();
 
-  factory VerifyCredentialOutput(
-          [void updates(VerifyCredentialOutputBuilder b)]) =
-      _$VerifyCredentialOutput;
+  factory VerifyCredentialOutput([
+    void updates(VerifyCredentialOutputBuilder b),
+  ]) = _$VerifyCredentialOutput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(VerifyCredentialOutputBuilder b) => b;
@@ -44,7 +44,7 @@ class _$VerifyCredentialOutputSerializer
   @override
   final Iterable<Type> types = const [
     VerifyCredentialOutput,
-    _$VerifyCredentialOutput
+    _$VerifyCredentialOutput,
   ];
 
   @override
@@ -73,9 +73,11 @@ class _$VerifyCredentialOutputSerializer
     VerifyCredentialOutput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -91,17 +93,23 @@ class _$VerifyCredentialOutputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'errors':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.errors.replace(valueDes);
           break;
         case r'isValid':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.isValid = valueDes;
           break;
         default:

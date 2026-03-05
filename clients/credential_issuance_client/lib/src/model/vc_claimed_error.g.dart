@@ -20,13 +20,14 @@ VcClaimedErrorNameEnum _$vcClaimedErrorNameEnumValueOf(String name) {
 
 final BuiltSet<VcClaimedErrorNameEnum> _$vcClaimedErrorNameEnumValues =
     BuiltSet<VcClaimedErrorNameEnum>(const <VcClaimedErrorNameEnum>[
-  _$vcClaimedErrorNameEnum_vcClaimedError,
-]);
+      _$vcClaimedErrorNameEnum_vcClaimedError,
+    ]);
 
 const VcClaimedErrorMessageEnum
-    _$vcClaimedErrorMessageEnum_theRequestedVCHasAlreadyBeenClaimedByTheUser =
+_$vcClaimedErrorMessageEnum_theRequestedVCHasAlreadyBeenClaimedByTheUser =
     const VcClaimedErrorMessageEnum._(
-        'theRequestedVCHasAlreadyBeenClaimedByTheUser');
+      'theRequestedVCHasAlreadyBeenClaimedByTheUser',
+    );
 
 VcClaimedErrorMessageEnum _$vcClaimedErrorMessageEnumValueOf(String name) {
   switch (name) {
@@ -39,15 +40,16 @@ VcClaimedErrorMessageEnum _$vcClaimedErrorMessageEnumValueOf(String name) {
 
 final BuiltSet<VcClaimedErrorMessageEnum> _$vcClaimedErrorMessageEnumValues =
     BuiltSet<VcClaimedErrorMessageEnum>(const <VcClaimedErrorMessageEnum>[
-  _$vcClaimedErrorMessageEnum_theRequestedVCHasAlreadyBeenClaimedByTheUser,
-]);
+      _$vcClaimedErrorMessageEnum_theRequestedVCHasAlreadyBeenClaimedByTheUser,
+    ]);
 
 const VcClaimedErrorHttpStatusCodeEnum
-    _$vcClaimedErrorHttpStatusCodeEnum_number400 =
+_$vcClaimedErrorHttpStatusCodeEnum_number400 =
     const VcClaimedErrorHttpStatusCodeEnum._('number400');
 
 VcClaimedErrorHttpStatusCodeEnum _$vcClaimedErrorHttpStatusCodeEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'number400':
       return _$vcClaimedErrorHttpStatusCodeEnum_number400;
@@ -57,17 +59,19 @@ VcClaimedErrorHttpStatusCodeEnum _$vcClaimedErrorHttpStatusCodeEnumValueOf(
 }
 
 final BuiltSet<VcClaimedErrorHttpStatusCodeEnum>
-    _$vcClaimedErrorHttpStatusCodeEnumValues = BuiltSet<
-        VcClaimedErrorHttpStatusCodeEnum>(const <VcClaimedErrorHttpStatusCodeEnum>[
-  _$vcClaimedErrorHttpStatusCodeEnum_number400,
-]);
+_$vcClaimedErrorHttpStatusCodeEnumValues =
+    BuiltSet<VcClaimedErrorHttpStatusCodeEnum>(
+      const <VcClaimedErrorHttpStatusCodeEnum>[
+        _$vcClaimedErrorHttpStatusCodeEnum_number400,
+      ],
+    );
 
 Serializer<VcClaimedErrorNameEnum> _$vcClaimedErrorNameEnumSerializer =
     _$VcClaimedErrorNameEnumSerializer();
 Serializer<VcClaimedErrorMessageEnum> _$vcClaimedErrorMessageEnumSerializer =
     _$VcClaimedErrorMessageEnumSerializer();
 Serializer<VcClaimedErrorHttpStatusCodeEnum>
-    _$vcClaimedErrorHttpStatusCodeEnumSerializer =
+_$vcClaimedErrorHttpStatusCodeEnumSerializer =
     _$VcClaimedErrorHttpStatusCodeEnumSerializer();
 
 class _$VcClaimedErrorNameEnumSerializer
@@ -85,15 +89,20 @@ class _$VcClaimedErrorNameEnumSerializer
   final String wireName = 'VcClaimedErrorNameEnum';
 
   @override
-  Object serialize(Serializers serializers, VcClaimedErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    VcClaimedErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
-  VcClaimedErrorNameEnum deserialize(Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      VcClaimedErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+  VcClaimedErrorNameEnum deserialize(
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => VcClaimedErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$VcClaimedErrorMessageEnumSerializer
@@ -113,16 +122,20 @@ class _$VcClaimedErrorMessageEnumSerializer
   final String wireName = 'VcClaimedErrorMessageEnum';
 
   @override
-  Object serialize(Serializers serializers, VcClaimedErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    VcClaimedErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   VcClaimedErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      VcClaimedErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => VcClaimedErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$VcClaimedErrorHttpStatusCodeEnumSerializer
@@ -141,16 +154,19 @@ class _$VcClaimedErrorHttpStatusCodeEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, VcClaimedErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    VcClaimedErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   VcClaimedErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      VcClaimedErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => VcClaimedErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$VcClaimedError extends VcClaimedError {
@@ -168,13 +184,13 @@ class _$VcClaimedError extends VcClaimedError {
   factory _$VcClaimedError([void Function(VcClaimedErrorBuilder)? updates]) =>
       (VcClaimedErrorBuilder()..update(updates))._build();
 
-  _$VcClaimedError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$VcClaimedError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   VcClaimedError rebuild(void Function(VcClaimedErrorBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -278,16 +294,29 @@ class VcClaimedErrorBuilder
   _$VcClaimedError _build() {
     _$VcClaimedError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$VcClaimedError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'VcClaimedError', 'name'),
+              name,
+              r'VcClaimedError',
+              'name',
+            ),
             message: BuiltValueNullFieldError.checkNotNull(
-                message, r'VcClaimedError', 'message'),
+              message,
+              r'VcClaimedError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode, r'VcClaimedError', 'httpStatusCode'),
+              httpStatusCode,
+              r'VcClaimedError',
+              'httpStatusCode',
+            ),
             traceId: BuiltValueNullFieldError.checkNotNull(
-                traceId, r'VcClaimedError', 'traceId'),
+              traceId,
+              r'VcClaimedError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -297,7 +326,10 @@ class VcClaimedErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'VcClaimedError', _$failedField, e.toString());
+          r'VcClaimedError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

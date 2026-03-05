@@ -7,11 +7,11 @@ part of 'credential_offer_expired_error.dart';
 // **************************************************************************
 
 const CredentialOfferExpiredErrorNameEnum
-    _$credentialOfferExpiredErrorNameEnum_credentialOfferExpiredError =
+_$credentialOfferExpiredErrorNameEnum_credentialOfferExpiredError =
     const CredentialOfferExpiredErrorNameEnum._('credentialOfferExpiredError');
 
 CredentialOfferExpiredErrorNameEnum
-    _$credentialOfferExpiredErrorNameEnumValueOf(String name) {
+_$credentialOfferExpiredErrorNameEnumValueOf(String name) {
   switch (name) {
     case 'credentialOfferExpiredError':
       return _$credentialOfferExpiredErrorNameEnum_credentialOfferExpiredError;
@@ -21,17 +21,19 @@ CredentialOfferExpiredErrorNameEnum
 }
 
 final BuiltSet<CredentialOfferExpiredErrorNameEnum>
-    _$credentialOfferExpiredErrorNameEnumValues = BuiltSet<
-        CredentialOfferExpiredErrorNameEnum>(const <CredentialOfferExpiredErrorNameEnum>[
-  _$credentialOfferExpiredErrorNameEnum_credentialOfferExpiredError,
-]);
+_$credentialOfferExpiredErrorNameEnumValues =
+    BuiltSet<CredentialOfferExpiredErrorNameEnum>(
+      const <CredentialOfferExpiredErrorNameEnum>[
+        _$credentialOfferExpiredErrorNameEnum_credentialOfferExpiredError,
+      ],
+    );
 
 const CredentialOfferExpiredErrorMessageEnum
-    _$credentialOfferExpiredErrorMessageEnum_credentialOfferIsExpired =
+_$credentialOfferExpiredErrorMessageEnum_credentialOfferIsExpired =
     const CredentialOfferExpiredErrorMessageEnum._('credentialOfferIsExpired');
 
 CredentialOfferExpiredErrorMessageEnum
-    _$credentialOfferExpiredErrorMessageEnumValueOf(String name) {
+_$credentialOfferExpiredErrorMessageEnumValueOf(String name) {
   switch (name) {
     case 'credentialOfferIsExpired':
       return _$credentialOfferExpiredErrorMessageEnum_credentialOfferIsExpired;
@@ -41,17 +43,19 @@ CredentialOfferExpiredErrorMessageEnum
 }
 
 final BuiltSet<CredentialOfferExpiredErrorMessageEnum>
-    _$credentialOfferExpiredErrorMessageEnumValues = BuiltSet<
-        CredentialOfferExpiredErrorMessageEnum>(const <CredentialOfferExpiredErrorMessageEnum>[
-  _$credentialOfferExpiredErrorMessageEnum_credentialOfferIsExpired,
-]);
+_$credentialOfferExpiredErrorMessageEnumValues =
+    BuiltSet<CredentialOfferExpiredErrorMessageEnum>(
+      const <CredentialOfferExpiredErrorMessageEnum>[
+        _$credentialOfferExpiredErrorMessageEnum_credentialOfferIsExpired,
+      ],
+    );
 
 const CredentialOfferExpiredErrorHttpStatusCodeEnum
-    _$credentialOfferExpiredErrorHttpStatusCodeEnum_number400 =
+_$credentialOfferExpiredErrorHttpStatusCodeEnum_number400 =
     const CredentialOfferExpiredErrorHttpStatusCodeEnum._('number400');
 
 CredentialOfferExpiredErrorHttpStatusCodeEnum
-    _$credentialOfferExpiredErrorHttpStatusCodeEnumValueOf(String name) {
+_$credentialOfferExpiredErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number400':
       return _$credentialOfferExpiredErrorHttpStatusCodeEnum_number400;
@@ -61,19 +65,21 @@ CredentialOfferExpiredErrorHttpStatusCodeEnum
 }
 
 final BuiltSet<CredentialOfferExpiredErrorHttpStatusCodeEnum>
-    _$credentialOfferExpiredErrorHttpStatusCodeEnumValues = BuiltSet<
-        CredentialOfferExpiredErrorHttpStatusCodeEnum>(const <CredentialOfferExpiredErrorHttpStatusCodeEnum>[
-  _$credentialOfferExpiredErrorHttpStatusCodeEnum_number400,
-]);
+_$credentialOfferExpiredErrorHttpStatusCodeEnumValues =
+    BuiltSet<CredentialOfferExpiredErrorHttpStatusCodeEnum>(
+      const <CredentialOfferExpiredErrorHttpStatusCodeEnum>[
+        _$credentialOfferExpiredErrorHttpStatusCodeEnum_number400,
+      ],
+    );
 
 Serializer<CredentialOfferExpiredErrorNameEnum>
-    _$credentialOfferExpiredErrorNameEnumSerializer =
+_$credentialOfferExpiredErrorNameEnumSerializer =
     _$CredentialOfferExpiredErrorNameEnumSerializer();
 Serializer<CredentialOfferExpiredErrorMessageEnum>
-    _$credentialOfferExpiredErrorMessageEnumSerializer =
+_$credentialOfferExpiredErrorMessageEnumSerializer =
     _$CredentialOfferExpiredErrorMessageEnumSerializer();
 Serializer<CredentialOfferExpiredErrorHttpStatusCodeEnum>
-    _$credentialOfferExpiredErrorHttpStatusCodeEnumSerializer =
+_$credentialOfferExpiredErrorHttpStatusCodeEnumSerializer =
     _$CredentialOfferExpiredErrorHttpStatusCodeEnumSerializer();
 
 class _$CredentialOfferExpiredErrorNameEnumSerializer
@@ -87,23 +93,26 @@ class _$CredentialOfferExpiredErrorNameEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CredentialOfferExpiredErrorNameEnum
+    CredentialOfferExpiredErrorNameEnum,
   ];
   @override
   final String wireName = 'CredentialOfferExpiredErrorNameEnum';
 
   @override
   Object serialize(
-          Serializers serializers, CredentialOfferExpiredErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    CredentialOfferExpiredErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   CredentialOfferExpiredErrorNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      CredentialOfferExpiredErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => CredentialOfferExpiredErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$CredentialOfferExpiredErrorMessageEnumSerializer
@@ -117,23 +126,26 @@ class _$CredentialOfferExpiredErrorMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CredentialOfferExpiredErrorMessageEnum
+    CredentialOfferExpiredErrorMessageEnum,
   ];
   @override
   final String wireName = 'CredentialOfferExpiredErrorMessageEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          CredentialOfferExpiredErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    CredentialOfferExpiredErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   CredentialOfferExpiredErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      CredentialOfferExpiredErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => CredentialOfferExpiredErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$CredentialOfferExpiredErrorHttpStatusCodeEnumSerializer
@@ -148,23 +160,26 @@ class _$CredentialOfferExpiredErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    CredentialOfferExpiredErrorHttpStatusCodeEnum
+    CredentialOfferExpiredErrorHttpStatusCodeEnum,
   ];
   @override
   final String wireName = 'CredentialOfferExpiredErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          CredentialOfferExpiredErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    CredentialOfferExpiredErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   CredentialOfferExpiredErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      CredentialOfferExpiredErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => CredentialOfferExpiredErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$CredentialOfferExpiredError extends CredentialOfferExpiredError {
@@ -179,21 +194,21 @@ class _$CredentialOfferExpiredError extends CredentialOfferExpiredError {
   @override
   final BuiltList<ActionForbiddenErrorDetailsInner>? details;
 
-  factory _$CredentialOfferExpiredError(
-          [void Function(CredentialOfferExpiredErrorBuilder)? updates]) =>
-      (CredentialOfferExpiredErrorBuilder()..update(updates))._build();
+  factory _$CredentialOfferExpiredError([
+    void Function(CredentialOfferExpiredErrorBuilder)? updates,
+  ]) => (CredentialOfferExpiredErrorBuilder()..update(updates))._build();
 
-  _$CredentialOfferExpiredError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$CredentialOfferExpiredError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   CredentialOfferExpiredError rebuild(
-          void Function(CredentialOfferExpiredErrorBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CredentialOfferExpiredErrorBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CredentialOfferExpiredErrorBuilder toBuilder() =>
@@ -236,8 +251,10 @@ class _$CredentialOfferExpiredError extends CredentialOfferExpiredError {
 
 class CredentialOfferExpiredErrorBuilder
     implements
-        Builder<CredentialOfferExpiredError,
-            CredentialOfferExpiredErrorBuilder> {
+        Builder<
+          CredentialOfferExpiredError,
+          CredentialOfferExpiredErrorBuilder
+        > {
   _$CredentialOfferExpiredError? _$v;
 
   CredentialOfferExpiredErrorNameEnum? _name;
@@ -253,8 +270,8 @@ class CredentialOfferExpiredErrorBuilder
   CredentialOfferExpiredErrorHttpStatusCodeEnum? get httpStatusCode =>
       _$this._httpStatusCode;
   set httpStatusCode(
-          CredentialOfferExpiredErrorHttpStatusCodeEnum? httpStatusCode) =>
-      _$this._httpStatusCode = httpStatusCode;
+    CredentialOfferExpiredErrorHttpStatusCodeEnum? httpStatusCode,
+  ) => _$this._httpStatusCode = httpStatusCode;
 
   String? _traceId;
   String? get traceId => _$this._traceId;
@@ -299,18 +316,29 @@ class CredentialOfferExpiredErrorBuilder
   _$CredentialOfferExpiredError _build() {
     _$CredentialOfferExpiredError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$CredentialOfferExpiredError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'CredentialOfferExpiredError', 'name'),
+              name,
+              r'CredentialOfferExpiredError',
+              'name',
+            ),
             message: BuiltValueNullFieldError.checkNotNull(
-                message, r'CredentialOfferExpiredError', 'message'),
+              message,
+              r'CredentialOfferExpiredError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode,
-                r'CredentialOfferExpiredError',
-                'httpStatusCode'),
+              httpStatusCode,
+              r'CredentialOfferExpiredError',
+              'httpStatusCode',
+            ),
             traceId: BuiltValueNullFieldError.checkNotNull(
-                traceId, r'CredentialOfferExpiredError', 'traceId'),
+              traceId,
+              r'CredentialOfferExpiredError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -320,7 +348,10 @@ class CredentialOfferExpiredErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'CredentialOfferExpiredError', _$failedField, e.toString());
+          r'CredentialOfferExpiredError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

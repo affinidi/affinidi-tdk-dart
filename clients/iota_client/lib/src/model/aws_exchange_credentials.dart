@@ -21,9 +21,9 @@ abstract class AwsExchangeCredentials
 
   AwsExchangeCredentials._();
 
-  factory AwsExchangeCredentials(
-          [void updates(AwsExchangeCredentialsBuilder b)]) =
-      _$AwsExchangeCredentials;
+  factory AwsExchangeCredentials([
+    void updates(AwsExchangeCredentialsBuilder b),
+  ]) = _$AwsExchangeCredentials;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AwsExchangeCredentialsBuilder b) => b;
@@ -38,7 +38,7 @@ class _$AwsExchangeCredentialsSerializer
   @override
   final Iterable<Type> types = const [
     AwsExchangeCredentials,
-    _$AwsExchangeCredentials
+    _$AwsExchangeCredentials,
   ];
 
   @override
@@ -62,9 +62,11 @@ class _$AwsExchangeCredentialsSerializer
     AwsExchangeCredentials object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -80,10 +82,12 @@ class _$AwsExchangeCredentialsSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'assertion':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.assertion = valueDes;
           break;
         default:

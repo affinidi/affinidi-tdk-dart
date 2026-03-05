@@ -17,8 +17,10 @@ part 'create_project_scoped_token_output.g.dart';
 @BuiltValue()
 abstract class CreateProjectScopedTokenOutput
     implements
-        Built<CreateProjectScopedTokenOutput,
-            CreateProjectScopedTokenOutputBuilder> {
+        Built<
+          CreateProjectScopedTokenOutput,
+          CreateProjectScopedTokenOutputBuilder
+        > {
   @BuiltValueField(wireName: r'accessToken')
   String get accessToken;
 
@@ -30,9 +32,9 @@ abstract class CreateProjectScopedTokenOutput
 
   CreateProjectScopedTokenOutput._();
 
-  factory CreateProjectScopedTokenOutput(
-          [void updates(CreateProjectScopedTokenOutputBuilder b)]) =
-      _$CreateProjectScopedTokenOutput;
+  factory CreateProjectScopedTokenOutput([
+    void updates(CreateProjectScopedTokenOutputBuilder b),
+  ]) = _$CreateProjectScopedTokenOutput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateProjectScopedTokenOutputBuilder b) => b;
@@ -47,7 +49,7 @@ class _$CreateProjectScopedTokenOutputSerializer
   @override
   final Iterable<Type> types = const [
     CreateProjectScopedTokenOutput,
-    _$CreateProjectScopedTokenOutput
+    _$CreateProjectScopedTokenOutput,
   ];
 
   @override
@@ -81,9 +83,11 @@ class _$CreateProjectScopedTokenOutputSerializer
     CreateProjectScopedTokenOutput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -99,24 +103,27 @@ class _$CreateProjectScopedTokenOutputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'accessToken':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.accessToken = valueDes;
           break;
         case r'expiresIn':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.expiresIn = valueDes;
           break;
         case r'scope':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.scope = valueDes;
           break;
         default:

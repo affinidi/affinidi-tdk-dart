@@ -24,9 +24,9 @@ abstract class RevokeCredentialsInput
 
   RevokeCredentialsInput._();
 
-  factory RevokeCredentialsInput(
-          [void updates(RevokeCredentialsInputBuilder b)]) =
-      _$RevokeCredentialsInput;
+  factory RevokeCredentialsInput([
+    void updates(RevokeCredentialsInputBuilder b),
+  ]) = _$RevokeCredentialsInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(RevokeCredentialsInputBuilder b) => b;
@@ -41,7 +41,7 @@ class _$RevokeCredentialsInputSerializer
   @override
   final Iterable<Type> types = const [
     RevokeCredentialsInput,
-    _$RevokeCredentialsInput
+    _$RevokeCredentialsInput,
   ];
 
   @override
@@ -72,9 +72,11 @@ class _$RevokeCredentialsInputSerializer
     RevokeCredentialsInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -90,17 +92,21 @@ class _$RevokeCredentialsInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'revocationReason':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.revocationReason = valueDes;
           break;
         case r'credentialId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.credentialId = valueDes;
           break;
         default:

@@ -25,15 +25,15 @@ class _$CreateNodeInput extends CreateNodeInput {
   factory _$CreateNodeInput([void Function(CreateNodeInputBuilder)? updates]) =>
       (CreateNodeInputBuilder()..update(updates))._build();
 
-  _$CreateNodeInput._(
-      {required this.name,
-      required this.type,
-      this.description,
-      this.parentNodeId,
-      this.edekInfo,
-      this.dek,
-      this.metadata})
-      : super._();
+  _$CreateNodeInput._({
+    required this.name,
+    required this.type,
+    this.description,
+    this.parentNodeId,
+    this.edekInfo,
+    this.dek,
+    this.metadata,
+  }) : super._();
   @override
   CreateNodeInput rebuild(void Function(CreateNodeInputBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -149,12 +149,19 @@ class CreateNodeInputBuilder
   _$CreateNodeInput _build() {
     _$CreateNodeInput _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$CreateNodeInput._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'CreateNodeInput', 'name'),
+              name,
+              r'CreateNodeInput',
+              'name',
+            ),
             type: BuiltValueNullFieldError.checkNotNull(
-                type, r'CreateNodeInput', 'type'),
+              type,
+              r'CreateNodeInput',
+              'type',
+            ),
             description: description,
             parentNodeId: parentNodeId,
             edekInfo: _edekInfo?.build(),
@@ -168,7 +175,10 @@ class CreateNodeInputBuilder
         _edekInfo?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'CreateNodeInput', _$failedField, e.toString());
+          r'CreateNodeInput',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

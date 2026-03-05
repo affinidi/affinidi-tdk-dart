@@ -14,17 +14,19 @@ class _$CreateProjectScopedTokenOutput extends CreateProjectScopedTokenOutput {
   @override
   final String scope;
 
-  factory _$CreateProjectScopedTokenOutput(
-          [void Function(CreateProjectScopedTokenOutputBuilder)? updates]) =>
-      (CreateProjectScopedTokenOutputBuilder()..update(updates))._build();
+  factory _$CreateProjectScopedTokenOutput([
+    void Function(CreateProjectScopedTokenOutputBuilder)? updates,
+  ]) => (CreateProjectScopedTokenOutputBuilder()..update(updates))._build();
 
-  _$CreateProjectScopedTokenOutput._(
-      {required this.accessToken, required this.expiresIn, required this.scope})
-      : super._();
+  _$CreateProjectScopedTokenOutput._({
+    required this.accessToken,
+    required this.expiresIn,
+    required this.scope,
+  }) : super._();
   @override
   CreateProjectScopedTokenOutput rebuild(
-          void Function(CreateProjectScopedTokenOutputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateProjectScopedTokenOutputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateProjectScopedTokenOutputBuilder toBuilder() =>
@@ -61,8 +63,10 @@ class _$CreateProjectScopedTokenOutput extends CreateProjectScopedTokenOutput {
 
 class CreateProjectScopedTokenOutputBuilder
     implements
-        Builder<CreateProjectScopedTokenOutput,
-            CreateProjectScopedTokenOutputBuilder> {
+        Builder<
+          CreateProjectScopedTokenOutput,
+          CreateProjectScopedTokenOutputBuilder
+        > {
   _$CreateProjectScopedTokenOutput? _$v;
 
   String? _accessToken;
@@ -106,14 +110,24 @@ class CreateProjectScopedTokenOutputBuilder
   CreateProjectScopedTokenOutput build() => _build();
 
   _$CreateProjectScopedTokenOutput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CreateProjectScopedTokenOutput._(
           accessToken: BuiltValueNullFieldError.checkNotNull(
-              accessToken, r'CreateProjectScopedTokenOutput', 'accessToken'),
+            accessToken,
+            r'CreateProjectScopedTokenOutput',
+            'accessToken',
+          ),
           expiresIn: BuiltValueNullFieldError.checkNotNull(
-              expiresIn, r'CreateProjectScopedTokenOutput', 'expiresIn'),
+            expiresIn,
+            r'CreateProjectScopedTokenOutput',
+            'expiresIn',
+          ),
           scope: BuiltValueNullFieldError.checkNotNull(
-              scope, r'CreateProjectScopedTokenOutput', 'scope'),
+            scope,
+            r'CreateProjectScopedTokenOutput',
+            'scope',
+          ),
         );
     replace(_$result);
     return _$result;

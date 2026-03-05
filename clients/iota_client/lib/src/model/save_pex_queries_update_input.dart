@@ -23,9 +23,9 @@ abstract class SavePexQueriesUpdateInput
 
   SavePexQueriesUpdateInput._();
 
-  factory SavePexQueriesUpdateInput(
-          [void updates(SavePexQueriesUpdateInputBuilder b)]) =
-      _$SavePexQueriesUpdateInput;
+  factory SavePexQueriesUpdateInput([
+    void updates(SavePexQueriesUpdateInputBuilder b),
+  ]) = _$SavePexQueriesUpdateInput;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SavePexQueriesUpdateInputBuilder b) => b;
@@ -40,7 +40,7 @@ class _$SavePexQueriesUpdateInputSerializer
   @override
   final Iterable<Type> types = const [
     SavePexQueriesUpdateInput,
-    _$SavePexQueriesUpdateInput
+    _$SavePexQueriesUpdateInput,
   ];
 
   @override
@@ -55,8 +55,9 @@ class _$SavePexQueriesUpdateInputSerializer
       yield r'queries';
       yield serializers.serialize(
         object.queries,
-        specifiedType: const FullType(
-            BuiltList, [FullType(SavePexQueriesUpdateInputQueriesInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(SavePexQueriesUpdateInputQueriesInner),
+        ]),
       );
     }
   }
@@ -67,9 +68,11 @@ class _$SavePexQueriesUpdateInputSerializer
     SavePexQueriesUpdateInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -85,11 +88,14 @@ class _$SavePexQueriesUpdateInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'queries':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltList, [FullType(SavePexQueriesUpdateInputQueriesInner)]),
-          ) as BuiltList<SavePexQueriesUpdateInputQueriesInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(SavePexQueriesUpdateInputQueriesInner),
+                    ]),
+                  )
+                  as BuiltList<SavePexQueriesUpdateInputQueriesInner>;
           result.queries.replace(valueDes);
           break;
         default:

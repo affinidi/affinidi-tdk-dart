@@ -11,22 +11,21 @@ class _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo
   @override
   final OneOf oneOf;
 
-  factory _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo(
-          [void Function(
-                  TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder)?
-              updates]) =>
+  factory _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo([
+    void Function(TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder)?
+    updates,
+  ]) =>
       (TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder()
             ..update(updates))
           ._build();
 
   _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo._({required this.oneOf})
-      : super._();
+    : super._();
   @override
   TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo rebuild(
-          void Function(
-                  TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder)
+    updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder toBuilder() =>
@@ -51,16 +50,17 @@ class _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo')
-          ..add('oneOf', oneOf))
-        .toString();
+      r'TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo',
+    )..add('oneOf', oneOf)).toString();
   }
 }
 
 class TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder
     implements
-        Builder<TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo,
-            TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder> {
+        Builder<
+          TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo,
+          TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder
+        > {
   _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo? _$v;
 
   OneOf? _oneOf;
@@ -87,8 +87,9 @@ class TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder
 
   @override
   void update(
-      void Function(TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder)?
-          updates) {
+    void Function(TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder)?
+    updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -96,10 +97,14 @@ class TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder
   TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo build() => _build();
 
   _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo._(
-          oneOf: BuiltValueNullFieldError.checkNotNull(oneOf,
-              r'TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo', 'oneOf'),
+          oneOf: BuiltValueNullFieldError.checkNotNull(
+            oneOf,
+            r'TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo',
+            'oneOf',
+          ),
         );
     replace(_$result);
     return _$result;

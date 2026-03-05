@@ -60,9 +60,11 @@ class _$UpdateAccessInputSerializer
     UpdateAccessInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -78,10 +80,14 @@ class _$UpdateAccessInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'rights':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(RightsEnum)]),
-          ) as BuiltList<RightsEnum>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(RightsEnum),
+                    ]),
+                  )
+                  as BuiltList<RightsEnum>;
           result.rights.replace(valueDes);
           break;
         default:

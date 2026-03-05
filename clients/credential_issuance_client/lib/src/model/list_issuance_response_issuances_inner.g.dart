@@ -11,16 +11,15 @@ class _$ListIssuanceResponseIssuancesInner
   @override
   final String id;
 
-  factory _$ListIssuanceResponseIssuancesInner(
-          [void Function(ListIssuanceResponseIssuancesInnerBuilder)?
-              updates]) =>
-      (ListIssuanceResponseIssuancesInnerBuilder()..update(updates))._build();
+  factory _$ListIssuanceResponseIssuancesInner([
+    void Function(ListIssuanceResponseIssuancesInnerBuilder)? updates,
+  ]) => (ListIssuanceResponseIssuancesInnerBuilder()..update(updates))._build();
 
   _$ListIssuanceResponseIssuancesInner._({required this.id}) : super._();
   @override
   ListIssuanceResponseIssuancesInner rebuild(
-          void Function(ListIssuanceResponseIssuancesInnerBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ListIssuanceResponseIssuancesInnerBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ListIssuanceResponseIssuancesInnerBuilder toBuilder() =>
@@ -42,16 +41,18 @@ class _$ListIssuanceResponseIssuancesInner
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'ListIssuanceResponseIssuancesInner')
-          ..add('id', id))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'ListIssuanceResponseIssuancesInner',
+    )..add('id', id)).toString();
   }
 }
 
 class ListIssuanceResponseIssuancesInnerBuilder
     implements
-        Builder<ListIssuanceResponseIssuancesInner,
-            ListIssuanceResponseIssuancesInnerBuilder> {
+        Builder<
+          ListIssuanceResponseIssuancesInner,
+          ListIssuanceResponseIssuancesInnerBuilder
+        > {
   _$ListIssuanceResponseIssuancesInner? _$v;
 
   String? _id;
@@ -78,7 +79,8 @@ class ListIssuanceResponseIssuancesInnerBuilder
 
   @override
   void update(
-      void Function(ListIssuanceResponseIssuancesInnerBuilder)? updates) {
+    void Function(ListIssuanceResponseIssuancesInnerBuilder)? updates,
+  ) {
     if (updates != null) updates(this);
   }
 
@@ -86,10 +88,14 @@ class ListIssuanceResponseIssuancesInnerBuilder
   ListIssuanceResponseIssuancesInner build() => _build();
 
   _$ListIssuanceResponseIssuancesInner _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$ListIssuanceResponseIssuancesInner._(
           id: BuiltValueNullFieldError.checkNotNull(
-              id, r'ListIssuanceResponseIssuancesInner', 'id'),
+            id,
+            r'ListIssuanceResponseIssuancesInner',
+            'id',
+          ),
         );
     replace(_$result);
     return _$result;

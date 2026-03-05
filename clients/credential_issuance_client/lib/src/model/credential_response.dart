@@ -46,7 +46,9 @@ class _$CredentialResponseSerializer
   final String wireName = r'CredentialResponse';
 
   Iterable<Object?> _serializeProperties(
-      Serializers serializers, CredentialResponse object) sync* {}
+    Serializers serializers,
+    CredentialResponse object,
+  ) sync* {}
 
   @override
   Object serialize(
@@ -55,8 +57,10 @@ class _$CredentialResponseSerializer
     FullType specifiedType = FullType.unspecified,
   }) {
     final oneOf = object.oneOf;
-    return serializers.serialize(oneOf.value,
-        specifiedType: FullType(oneOf.valueType))!;
+    return serializers.serialize(
+      oneOf.value,
+      specifiedType: FullType(oneOf.valueType),
+    )!;
   }
 
   @override
@@ -72,8 +76,9 @@ class _$CredentialResponseSerializer
       FullType(CredentialResponseDeferred),
     ]);
     oneOfDataSrc = serialized;
-    result.oneOf = serializers.deserialize(oneOfDataSrc,
-        specifiedType: targetType) as OneOf;
+    result.oneOf =
+        serializers.deserialize(oneOfDataSrc, specifiedType: targetType)
+            as OneOf;
     return result.build();
   }
 }

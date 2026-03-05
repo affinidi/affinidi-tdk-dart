@@ -96,9 +96,9 @@ abstract class LoginConfigurationObject
 
   LoginConfigurationObject._();
 
-  factory LoginConfigurationObject(
-          [void updates(LoginConfigurationObjectBuilder b)]) =
-      _$LoginConfigurationObject;
+  factory LoginConfigurationObject([
+    void updates(LoginConfigurationObjectBuilder b),
+  ]) = _$LoginConfigurationObject;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(LoginConfigurationObjectBuilder b) => b;
@@ -113,7 +113,7 @@ class _$LoginConfigurationObjectSerializer
   @override
   final Iterable<Type> types = const [
     LoginConfigurationObject,
-    _$LoginConfigurationObject
+    _$LoginConfigurationObject,
   ];
 
   @override
@@ -223,9 +223,11 @@ class _$LoginConfigurationObjectSerializer
     LoginConfigurationObject object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -241,110 +243,146 @@ class _$LoginConfigurationObjectSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'ari':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.ari = valueDes;
           break;
         case r'configurationId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.configurationId = valueDes;
           break;
         case r'projectId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.projectId = valueDes;
           break;
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'redirectUris':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.redirectUris.replace(valueDes);
           break;
         case r'postLogoutRedirectUris':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.postLogoutRedirectUris.replace(valueDes);
           break;
         case r'scope':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.scope = valueDes;
           break;
         case r'clientId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.clientId = valueDes;
           break;
         case r'creationDate':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.creationDate = valueDes;
           break;
         case r'vpDefinition':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.vpDefinition = valueDes;
           break;
         case r'presentationDefinition':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JsonObject),
+                  )
+                  as JsonObject;
           result.presentationDefinition = valueDes;
           break;
         case r'dcqlQuery':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JsonObject),
+                  )
+                  as JsonObject;
           result.dcqlQuery = valueDes;
           break;
         case r'idTokenMapping':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(BuiltList, [FullType(IdTokenMappingItem)]),
-          ) as BuiltList<IdTokenMappingItem>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(IdTokenMappingItem),
+                    ]),
+                  )
+                  as BuiltList<IdTokenMappingItem>;
           result.idTokenMapping.replace(valueDes);
           break;
         case r'clientMetadata':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType:
-                const FullType(LoginConfigurationClientMetadataOutput),
-          ) as LoginConfigurationClientMetadataOutput;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      LoginConfigurationClientMetadataOutput,
+                    ),
+                  )
+                  as LoginConfigurationClientMetadataOutput;
           result.clientMetadata.replace(valueDes);
           break;
         case r'tokenEndpointAuthMethod':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(TokenEndpointAuthMethod),
-          ) as TokenEndpointAuthMethod;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(TokenEndpointAuthMethod),
+                  )
+                  as TokenEndpointAuthMethod;
           result.tokenEndpointAuthMethod = valueDes;
           break;
         default:

@@ -10,19 +10,20 @@ class _$AwsExchangeCredentialsOK extends AwsExchangeCredentialsOK {
   @override
   final String connectionClientId;
   @override
-  final AwsExchangeCredentialsProjectTokenOKCredentials credentials;
+  final AwsExchangeCredentialsOKCredentials credentials;
 
-  factory _$AwsExchangeCredentialsOK(
-          [void Function(AwsExchangeCredentialsOKBuilder)? updates]) =>
-      (AwsExchangeCredentialsOKBuilder()..update(updates))._build();
+  factory _$AwsExchangeCredentialsOK([
+    void Function(AwsExchangeCredentialsOKBuilder)? updates,
+  ]) => (AwsExchangeCredentialsOKBuilder()..update(updates))._build();
 
-  _$AwsExchangeCredentialsOK._(
-      {required this.connectionClientId, required this.credentials})
-      : super._();
+  _$AwsExchangeCredentialsOK._({
+    required this.connectionClientId,
+    required this.credentials,
+  }) : super._();
   @override
   AwsExchangeCredentialsOK rebuild(
-          void Function(AwsExchangeCredentialsOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(AwsExchangeCredentialsOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   AwsExchangeCredentialsOKBuilder toBuilder() =>
@@ -64,13 +65,10 @@ class AwsExchangeCredentialsOKBuilder
   set connectionClientId(String? connectionClientId) =>
       _$this._connectionClientId = connectionClientId;
 
-  AwsExchangeCredentialsProjectTokenOKCredentialsBuilder? _credentials;
-  AwsExchangeCredentialsProjectTokenOKCredentialsBuilder get credentials =>
-      _$this._credentials ??=
-          AwsExchangeCredentialsProjectTokenOKCredentialsBuilder();
-  set credentials(
-          AwsExchangeCredentialsProjectTokenOKCredentialsBuilder?
-              credentials) =>
+  AwsExchangeCredentialsOKCredentialsBuilder? _credentials;
+  AwsExchangeCredentialsOKCredentialsBuilder get credentials =>
+      _$this._credentials ??= AwsExchangeCredentialsOKCredentialsBuilder();
+  set credentials(AwsExchangeCredentialsOKCredentialsBuilder? credentials) =>
       _$this._credentials = credentials;
 
   AwsExchangeCredentialsOKBuilder() {
@@ -103,12 +101,14 @@ class AwsExchangeCredentialsOKBuilder
   _$AwsExchangeCredentialsOK _build() {
     _$AwsExchangeCredentialsOK _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$AwsExchangeCredentialsOK._(
             connectionClientId: BuiltValueNullFieldError.checkNotNull(
-                connectionClientId,
-                r'AwsExchangeCredentialsOK',
-                'connectionClientId'),
+              connectionClientId,
+              r'AwsExchangeCredentialsOK',
+              'connectionClientId',
+            ),
             credentials: credentials.build(),
           );
     } catch (_) {
@@ -118,7 +118,10 @@ class AwsExchangeCredentialsOKBuilder
         credentials.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'AwsExchangeCredentialsOK', _$failedField, e.toString());
+          r'AwsExchangeCredentialsOK',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

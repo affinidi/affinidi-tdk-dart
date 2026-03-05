@@ -39,7 +39,7 @@ class _$BatchCredentialInputSerializer
   @override
   final Iterable<Type> types = const [
     BatchCredentialInput,
-    _$BatchCredentialInput
+    _$BatchCredentialInput,
   ];
 
   @override
@@ -53,8 +53,9 @@ class _$BatchCredentialInputSerializer
     yield r'credential_requests';
     yield serializers.serialize(
       object.credentialRequests,
-      specifiedType: const FullType(
-          BuiltList, [FullType(BatchCredentialInputCredentialRequestsInner)]),
+      specifiedType: const FullType(BuiltList, [
+        FullType(BatchCredentialInputCredentialRequestsInner),
+      ]),
     );
   }
 
@@ -64,9 +65,11 @@ class _$BatchCredentialInputSerializer
     BatchCredentialInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -82,11 +85,14 @@ class _$BatchCredentialInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'credential_requests':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList,
-                [FullType(BatchCredentialInputCredentialRequestsInner)]),
-          ) as BuiltList<BatchCredentialInputCredentialRequestsInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(BatchCredentialInputCredentialRequestsInner),
+                    ]),
+                  )
+                  as BuiltList<BatchCredentialInputCredentialRequestsInner>;
           result.credentialRequests.replace(valueDes);
           break;
         default:

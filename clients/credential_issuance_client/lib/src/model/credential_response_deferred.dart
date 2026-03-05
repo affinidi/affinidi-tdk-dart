@@ -32,9 +32,9 @@ abstract class CredentialResponseDeferred
 
   CredentialResponseDeferred._();
 
-  factory CredentialResponseDeferred(
-          [void updates(CredentialResponseDeferredBuilder b)]) =
-      _$CredentialResponseDeferred;
+  factory CredentialResponseDeferred([
+    void updates(CredentialResponseDeferredBuilder b),
+  ]) = _$CredentialResponseDeferred;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CredentialResponseDeferredBuilder b) => b;
@@ -49,7 +49,7 @@ class _$CredentialResponseDeferredSerializer
   @override
   final Iterable<Type> types = const [
     CredentialResponseDeferred,
-    _$CredentialResponseDeferred
+    _$CredentialResponseDeferred,
   ];
 
   @override
@@ -83,9 +83,11 @@ class _$CredentialResponseDeferredSerializer
     CredentialResponseDeferred object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -101,24 +103,27 @@ class _$CredentialResponseDeferredSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'transaction_id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.transactionId = valueDes;
           break;
         case r'c_nonce':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.cNonce = valueDes;
           break;
         case r'c_nonce_expires_in':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.cNonceExpiresIn = valueDes;
           break;
         default:

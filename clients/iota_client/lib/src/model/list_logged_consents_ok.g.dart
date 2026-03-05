@@ -12,16 +12,16 @@ class _$ListLoggedConsentsOK extends ListLoggedConsentsOK {
   @override
   final String? lastEvaluatedKey;
 
-  factory _$ListLoggedConsentsOK(
-          [void Function(ListLoggedConsentsOKBuilder)? updates]) =>
-      (ListLoggedConsentsOKBuilder()..update(updates))._build();
+  factory _$ListLoggedConsentsOK([
+    void Function(ListLoggedConsentsOKBuilder)? updates,
+  ]) => (ListLoggedConsentsOKBuilder()..update(updates))._build();
 
   _$ListLoggedConsentsOK._({required this.consents, this.lastEvaluatedKey})
-      : super._();
+    : super._();
   @override
   ListLoggedConsentsOK rebuild(
-          void Function(ListLoggedConsentsOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ListLoggedConsentsOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ListLoggedConsentsOKBuilder toBuilder() =>
@@ -98,7 +98,8 @@ class ListLoggedConsentsOKBuilder
   _$ListLoggedConsentsOK _build() {
     _$ListLoggedConsentsOK _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$ListLoggedConsentsOK._(
             consents: consents.build(),
             lastEvaluatedKey: lastEvaluatedKey,
@@ -110,7 +111,10 @@ class ListLoggedConsentsOKBuilder
         consents.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'ListLoggedConsentsOK', _$failedField, e.toString());
+          r'ListLoggedConsentsOK',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

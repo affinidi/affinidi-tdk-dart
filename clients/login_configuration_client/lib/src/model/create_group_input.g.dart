@@ -14,12 +14,12 @@ class _$CreateGroupInput extends CreateGroupInput {
   @override
   final String? description;
 
-  factory _$CreateGroupInput(
-          [void Function(CreateGroupInputBuilder)? updates]) =>
-      (CreateGroupInputBuilder()..update(updates))._build();
+  factory _$CreateGroupInput([
+    void Function(CreateGroupInputBuilder)? updates,
+  ]) => (CreateGroupInputBuilder()..update(updates))._build();
 
   _$CreateGroupInput._({required this.groupName, this.name, this.description})
-      : super._();
+    : super._();
   @override
   CreateGroupInput rebuild(void Function(CreateGroupInputBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -102,10 +102,14 @@ class CreateGroupInputBuilder
   CreateGroupInput build() => _build();
 
   _$CreateGroupInput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CreateGroupInput._(
           groupName: BuiltValueNullFieldError.checkNotNull(
-              groupName, r'CreateGroupInput', 'groupName'),
+            groupName,
+            r'CreateGroupInput',
+            'groupName',
+          ),
           name: name,
           description: description,
         );

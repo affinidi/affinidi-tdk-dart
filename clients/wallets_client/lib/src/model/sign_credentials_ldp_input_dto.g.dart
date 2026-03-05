@@ -7,18 +7,19 @@ part of 'sign_credentials_ldp_input_dto.dart';
 // **************************************************************************
 
 const SignCredentialsLdpInputDtoSignatureSchemeEnum
-    _$signCredentialsLdpInputDtoSignatureSchemeEnum_ecdsaSecp256k1Sha256 =
+_$signCredentialsLdpInputDtoSignatureSchemeEnum_ecdsaSecp256k1Sha256 =
     const SignCredentialsLdpInputDtoSignatureSchemeEnum._(
-        'ecdsaSecp256k1Sha256');
+      'ecdsaSecp256k1Sha256',
+    );
 const SignCredentialsLdpInputDtoSignatureSchemeEnum
-    _$signCredentialsLdpInputDtoSignatureSchemeEnum_ecdsaP256Sha256 =
+_$signCredentialsLdpInputDtoSignatureSchemeEnum_ecdsaP256Sha256 =
     const SignCredentialsLdpInputDtoSignatureSchemeEnum._('ecdsaP256Sha256');
 const SignCredentialsLdpInputDtoSignatureSchemeEnum
-    _$signCredentialsLdpInputDtoSignatureSchemeEnum_ed25519 =
+_$signCredentialsLdpInputDtoSignatureSchemeEnum_ed25519 =
     const SignCredentialsLdpInputDtoSignatureSchemeEnum._('ed25519');
 
 SignCredentialsLdpInputDtoSignatureSchemeEnum
-    _$signCredentialsLdpInputDtoSignatureSchemeEnumValueOf(String name) {
+_$signCredentialsLdpInputDtoSignatureSchemeEnumValueOf(String name) {
   switch (name) {
     case 'ecdsaSecp256k1Sha256':
       return _$signCredentialsLdpInputDtoSignatureSchemeEnum_ecdsaSecp256k1Sha256;
@@ -32,32 +33,35 @@ SignCredentialsLdpInputDtoSignatureSchemeEnum
 }
 
 final BuiltSet<SignCredentialsLdpInputDtoSignatureSchemeEnum>
-    _$signCredentialsLdpInputDtoSignatureSchemeEnumValues = BuiltSet<
-        SignCredentialsLdpInputDtoSignatureSchemeEnum>(const <SignCredentialsLdpInputDtoSignatureSchemeEnum>[
-  _$signCredentialsLdpInputDtoSignatureSchemeEnum_ecdsaSecp256k1Sha256,
-  _$signCredentialsLdpInputDtoSignatureSchemeEnum_ecdsaP256Sha256,
-  _$signCredentialsLdpInputDtoSignatureSchemeEnum_ed25519,
-]);
+_$signCredentialsLdpInputDtoSignatureSchemeEnumValues =
+    BuiltSet<SignCredentialsLdpInputDtoSignatureSchemeEnum>(
+      const <SignCredentialsLdpInputDtoSignatureSchemeEnum>[
+        _$signCredentialsLdpInputDtoSignatureSchemeEnum_ecdsaSecp256k1Sha256,
+        _$signCredentialsLdpInputDtoSignatureSchemeEnum_ecdsaP256Sha256,
+        _$signCredentialsLdpInputDtoSignatureSchemeEnum_ed25519,
+      ],
+    );
 
 const SignCredentialsLdpInputDtoSignatureSuiteEnum
-    _$signCredentialsLdpInputDtoSignatureSuiteEnum_ecdsaJcs2019 =
+_$signCredentialsLdpInputDtoSignatureSuiteEnum_ecdsaJcs2019 =
     const SignCredentialsLdpInputDtoSignatureSuiteEnum._('ecdsaJcs2019');
 const SignCredentialsLdpInputDtoSignatureSuiteEnum
-    _$signCredentialsLdpInputDtoSignatureSuiteEnum_ecdsaRdfc2019 =
+_$signCredentialsLdpInputDtoSignatureSuiteEnum_ecdsaRdfc2019 =
     const SignCredentialsLdpInputDtoSignatureSuiteEnum._('ecdsaRdfc2019');
 const SignCredentialsLdpInputDtoSignatureSuiteEnum
-    _$signCredentialsLdpInputDtoSignatureSuiteEnum_eddsaJcs2022 =
+_$signCredentialsLdpInputDtoSignatureSuiteEnum_eddsaJcs2022 =
     const SignCredentialsLdpInputDtoSignatureSuiteEnum._('eddsaJcs2022');
 const SignCredentialsLdpInputDtoSignatureSuiteEnum
-    _$signCredentialsLdpInputDtoSignatureSuiteEnum_eddsaRdfc2022 =
+_$signCredentialsLdpInputDtoSignatureSuiteEnum_eddsaRdfc2022 =
     const SignCredentialsLdpInputDtoSignatureSuiteEnum._('eddsaRdfc2022');
 const SignCredentialsLdpInputDtoSignatureSuiteEnum
-    _$signCredentialsLdpInputDtoSignatureSuiteEnum_ecdsaSecp256k1Signature2019 =
+_$signCredentialsLdpInputDtoSignatureSuiteEnum_ecdsaSecp256k1Signature2019 =
     const SignCredentialsLdpInputDtoSignatureSuiteEnum._(
-        'ecdsaSecp256k1Signature2019');
+      'ecdsaSecp256k1Signature2019',
+    );
 
 SignCredentialsLdpInputDtoSignatureSuiteEnum
-    _$signCredentialsLdpInputDtoSignatureSuiteEnumValueOf(String name) {
+_$signCredentialsLdpInputDtoSignatureSuiteEnumValueOf(String name) {
   switch (name) {
     case 'ecdsaJcs2019':
       return _$signCredentialsLdpInputDtoSignatureSuiteEnum_ecdsaJcs2019;
@@ -75,20 +79,22 @@ SignCredentialsLdpInputDtoSignatureSuiteEnum
 }
 
 final BuiltSet<SignCredentialsLdpInputDtoSignatureSuiteEnum>
-    _$signCredentialsLdpInputDtoSignatureSuiteEnumValues = BuiltSet<
-        SignCredentialsLdpInputDtoSignatureSuiteEnum>(const <SignCredentialsLdpInputDtoSignatureSuiteEnum>[
-  _$signCredentialsLdpInputDtoSignatureSuiteEnum_ecdsaJcs2019,
-  _$signCredentialsLdpInputDtoSignatureSuiteEnum_ecdsaRdfc2019,
-  _$signCredentialsLdpInputDtoSignatureSuiteEnum_eddsaJcs2022,
-  _$signCredentialsLdpInputDtoSignatureSuiteEnum_eddsaRdfc2022,
-  _$signCredentialsLdpInputDtoSignatureSuiteEnum_ecdsaSecp256k1Signature2019,
-]);
+_$signCredentialsLdpInputDtoSignatureSuiteEnumValues =
+    BuiltSet<SignCredentialsLdpInputDtoSignatureSuiteEnum>(const <
+      SignCredentialsLdpInputDtoSignatureSuiteEnum
+    >[
+      _$signCredentialsLdpInputDtoSignatureSuiteEnum_ecdsaJcs2019,
+      _$signCredentialsLdpInputDtoSignatureSuiteEnum_ecdsaRdfc2019,
+      _$signCredentialsLdpInputDtoSignatureSuiteEnum_eddsaJcs2022,
+      _$signCredentialsLdpInputDtoSignatureSuiteEnum_eddsaRdfc2022,
+      _$signCredentialsLdpInputDtoSignatureSuiteEnum_ecdsaSecp256k1Signature2019,
+    ]);
 
 Serializer<SignCredentialsLdpInputDtoSignatureSchemeEnum>
-    _$signCredentialsLdpInputDtoSignatureSchemeEnumSerializer =
+_$signCredentialsLdpInputDtoSignatureSchemeEnumSerializer =
     _$SignCredentialsLdpInputDtoSignatureSchemeEnumSerializer();
 Serializer<SignCredentialsLdpInputDtoSignatureSuiteEnum>
-    _$signCredentialsLdpInputDtoSignatureSuiteEnumSerializer =
+_$signCredentialsLdpInputDtoSignatureSuiteEnumSerializer =
     _$SignCredentialsLdpInputDtoSignatureSuiteEnumSerializer();
 
 class _$SignCredentialsLdpInputDtoSignatureSchemeEnumSerializer
@@ -107,23 +113,26 @@ class _$SignCredentialsLdpInputDtoSignatureSchemeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    SignCredentialsLdpInputDtoSignatureSchemeEnum
+    SignCredentialsLdpInputDtoSignatureSchemeEnum,
   ];
   @override
   final String wireName = 'SignCredentialsLdpInputDtoSignatureSchemeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          SignCredentialsLdpInputDtoSignatureSchemeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    SignCredentialsLdpInputDtoSignatureSchemeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   SignCredentialsLdpInputDtoSignatureSchemeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      SignCredentialsLdpInputDtoSignatureSchemeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => SignCredentialsLdpInputDtoSignatureSchemeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$SignCredentialsLdpInputDtoSignatureSuiteEnumSerializer
@@ -146,23 +155,26 @@ class _$SignCredentialsLdpInputDtoSignatureSuiteEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    SignCredentialsLdpInputDtoSignatureSuiteEnum
+    SignCredentialsLdpInputDtoSignatureSuiteEnum,
   ];
   @override
   final String wireName = 'SignCredentialsLdpInputDtoSignatureSuiteEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          SignCredentialsLdpInputDtoSignatureSuiteEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    SignCredentialsLdpInputDtoSignatureSuiteEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   SignCredentialsLdpInputDtoSignatureSuiteEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      SignCredentialsLdpInputDtoSignatureSuiteEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => SignCredentialsLdpInputDtoSignatureSuiteEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$SignCredentialsLdpInputDto extends SignCredentialsLdpInputDto {
@@ -174,21 +186,24 @@ class _$SignCredentialsLdpInputDto extends SignCredentialsLdpInputDto {
   final SignCredentialsLdpInputDtoSignatureSchemeEnum? signatureScheme;
   @override
   final SignCredentialsLdpInputDtoSignatureSuiteEnum? signatureSuite;
+  @override
+  final String? keyId;
 
-  factory _$SignCredentialsLdpInputDto(
-          [void Function(SignCredentialsLdpInputDtoBuilder)? updates]) =>
-      (SignCredentialsLdpInputDtoBuilder()..update(updates))._build();
+  factory _$SignCredentialsLdpInputDto([
+    void Function(SignCredentialsLdpInputDtoBuilder)? updates,
+  ]) => (SignCredentialsLdpInputDtoBuilder()..update(updates))._build();
 
-  _$SignCredentialsLdpInputDto._(
-      {required this.unsignedCredential,
-      this.revocable,
-      this.signatureScheme,
-      this.signatureSuite})
-      : super._();
+  _$SignCredentialsLdpInputDto._({
+    required this.unsignedCredential,
+    this.revocable,
+    this.signatureScheme,
+    this.signatureSuite,
+    this.keyId,
+  }) : super._();
   @override
   SignCredentialsLdpInputDto rebuild(
-          void Function(SignCredentialsLdpInputDtoBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(SignCredentialsLdpInputDtoBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   SignCredentialsLdpInputDtoBuilder toBuilder() =>
@@ -201,7 +216,8 @@ class _$SignCredentialsLdpInputDto extends SignCredentialsLdpInputDto {
         unsignedCredential == other.unsignedCredential &&
         revocable == other.revocable &&
         signatureScheme == other.signatureScheme &&
-        signatureSuite == other.signatureSuite;
+        signatureSuite == other.signatureSuite &&
+        keyId == other.keyId;
   }
 
   @override
@@ -211,6 +227,7 @@ class _$SignCredentialsLdpInputDto extends SignCredentialsLdpInputDto {
     _$hash = $jc(_$hash, revocable.hashCode);
     _$hash = $jc(_$hash, signatureScheme.hashCode);
     _$hash = $jc(_$hash, signatureSuite.hashCode);
+    _$hash = $jc(_$hash, keyId.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -221,7 +238,8 @@ class _$SignCredentialsLdpInputDto extends SignCredentialsLdpInputDto {
           ..add('unsignedCredential', unsignedCredential)
           ..add('revocable', revocable)
           ..add('signatureScheme', signatureScheme)
-          ..add('signatureSuite', signatureSuite))
+          ..add('signatureSuite', signatureSuite)
+          ..add('keyId', keyId))
         .toString();
   }
 }
@@ -244,15 +262,19 @@ class SignCredentialsLdpInputDtoBuilder
   SignCredentialsLdpInputDtoSignatureSchemeEnum? get signatureScheme =>
       _$this._signatureScheme;
   set signatureScheme(
-          SignCredentialsLdpInputDtoSignatureSchemeEnum? signatureScheme) =>
-      _$this._signatureScheme = signatureScheme;
+    SignCredentialsLdpInputDtoSignatureSchemeEnum? signatureScheme,
+  ) => _$this._signatureScheme = signatureScheme;
 
   SignCredentialsLdpInputDtoSignatureSuiteEnum? _signatureSuite;
   SignCredentialsLdpInputDtoSignatureSuiteEnum? get signatureSuite =>
       _$this._signatureSuite;
   set signatureSuite(
-          SignCredentialsLdpInputDtoSignatureSuiteEnum? signatureSuite) =>
-      _$this._signatureSuite = signatureSuite;
+    SignCredentialsLdpInputDtoSignatureSuiteEnum? signatureSuite,
+  ) => _$this._signatureSuite = signatureSuite;
+
+  String? _keyId;
+  String? get keyId => _$this._keyId;
+  set keyId(String? keyId) => _$this._keyId = keyId;
 
   SignCredentialsLdpInputDtoBuilder() {
     SignCredentialsLdpInputDto._defaults(this);
@@ -265,6 +287,7 @@ class SignCredentialsLdpInputDtoBuilder
       _revocable = $v.revocable;
       _signatureScheme = $v.signatureScheme;
       _signatureSuite = $v.signatureSuite;
+      _keyId = $v.keyId;
       _$v = null;
     }
     return this;
@@ -284,15 +307,18 @@ class SignCredentialsLdpInputDtoBuilder
   SignCredentialsLdpInputDto build() => _build();
 
   _$SignCredentialsLdpInputDto _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$SignCredentialsLdpInputDto._(
           unsignedCredential: BuiltValueNullFieldError.checkNotNull(
-              unsignedCredential,
-              r'SignCredentialsLdpInputDto',
-              'unsignedCredential'),
+            unsignedCredential,
+            r'SignCredentialsLdpInputDto',
+            'unsignedCredential',
+          ),
           revocable: revocable,
           signatureScheme: signatureScheme,
           signatureSuite: signatureSuite,
+          keyId: keyId,
         );
     replace(_$result);
     return _$result;

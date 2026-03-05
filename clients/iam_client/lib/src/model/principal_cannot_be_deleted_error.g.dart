@@ -7,12 +7,13 @@ part of 'principal_cannot_be_deleted_error.dart';
 // **************************************************************************
 
 const PrincipalCannotBeDeletedErrorNameEnum
-    _$principalCannotBeDeletedErrorNameEnum_principalCannotBeDeletedError =
+_$principalCannotBeDeletedErrorNameEnum_principalCannotBeDeletedError =
     const PrincipalCannotBeDeletedErrorNameEnum._(
-        'principalCannotBeDeletedError');
+      'principalCannotBeDeletedError',
+    );
 
 PrincipalCannotBeDeletedErrorNameEnum
-    _$principalCannotBeDeletedErrorNameEnumValueOf(String name) {
+_$principalCannotBeDeletedErrorNameEnumValueOf(String name) {
   switch (name) {
     case 'principalCannotBeDeletedError':
       return _$principalCannotBeDeletedErrorNameEnum_principalCannotBeDeletedError;
@@ -22,18 +23,21 @@ PrincipalCannotBeDeletedErrorNameEnum
 }
 
 final BuiltSet<PrincipalCannotBeDeletedErrorNameEnum>
-    _$principalCannotBeDeletedErrorNameEnumValues = BuiltSet<
-        PrincipalCannotBeDeletedErrorNameEnum>(const <PrincipalCannotBeDeletedErrorNameEnum>[
-  _$principalCannotBeDeletedErrorNameEnum_principalCannotBeDeletedError,
-]);
+_$principalCannotBeDeletedErrorNameEnumValues =
+    BuiltSet<PrincipalCannotBeDeletedErrorNameEnum>(
+      const <PrincipalCannotBeDeletedErrorNameEnum>[
+        _$principalCannotBeDeletedErrorNameEnum_principalCannotBeDeletedError,
+      ],
+    );
 
 const PrincipalCannotBeDeletedErrorMessageEnum
-    _$principalCannotBeDeletedErrorMessageEnum_cannotDeleteOwnRecordFromTheProjectWithTheSamePrincipalId =
+_$principalCannotBeDeletedErrorMessageEnum_cannotDeleteOwnRecordFromTheProjectWithTheSamePrincipalId =
     const PrincipalCannotBeDeletedErrorMessageEnum._(
-        'cannotDeleteOwnRecordFromTheProjectWithTheSamePrincipalId');
+      'cannotDeleteOwnRecordFromTheProjectWithTheSamePrincipalId',
+    );
 
 PrincipalCannotBeDeletedErrorMessageEnum
-    _$principalCannotBeDeletedErrorMessageEnumValueOf(String name) {
+_$principalCannotBeDeletedErrorMessageEnumValueOf(String name) {
   switch (name) {
     case 'cannotDeleteOwnRecordFromTheProjectWithTheSamePrincipalId':
       return _$principalCannotBeDeletedErrorMessageEnum_cannotDeleteOwnRecordFromTheProjectWithTheSamePrincipalId;
@@ -43,17 +47,19 @@ PrincipalCannotBeDeletedErrorMessageEnum
 }
 
 final BuiltSet<PrincipalCannotBeDeletedErrorMessageEnum>
-    _$principalCannotBeDeletedErrorMessageEnumValues = BuiltSet<
-        PrincipalCannotBeDeletedErrorMessageEnum>(const <PrincipalCannotBeDeletedErrorMessageEnum>[
-  _$principalCannotBeDeletedErrorMessageEnum_cannotDeleteOwnRecordFromTheProjectWithTheSamePrincipalId,
-]);
+_$principalCannotBeDeletedErrorMessageEnumValues =
+    BuiltSet<PrincipalCannotBeDeletedErrorMessageEnum>(const <
+      PrincipalCannotBeDeletedErrorMessageEnum
+    >[
+      _$principalCannotBeDeletedErrorMessageEnum_cannotDeleteOwnRecordFromTheProjectWithTheSamePrincipalId,
+    ]);
 
 const PrincipalCannotBeDeletedErrorHttpStatusCodeEnum
-    _$principalCannotBeDeletedErrorHttpStatusCodeEnum_number409 =
+_$principalCannotBeDeletedErrorHttpStatusCodeEnum_number409 =
     const PrincipalCannotBeDeletedErrorHttpStatusCodeEnum._('number409');
 
 PrincipalCannotBeDeletedErrorHttpStatusCodeEnum
-    _$principalCannotBeDeletedErrorHttpStatusCodeEnumValueOf(String name) {
+_$principalCannotBeDeletedErrorHttpStatusCodeEnumValueOf(String name) {
   switch (name) {
     case 'number409':
       return _$principalCannotBeDeletedErrorHttpStatusCodeEnum_number409;
@@ -63,19 +69,21 @@ PrincipalCannotBeDeletedErrorHttpStatusCodeEnum
 }
 
 final BuiltSet<PrincipalCannotBeDeletedErrorHttpStatusCodeEnum>
-    _$principalCannotBeDeletedErrorHttpStatusCodeEnumValues = BuiltSet<
-        PrincipalCannotBeDeletedErrorHttpStatusCodeEnum>(const <PrincipalCannotBeDeletedErrorHttpStatusCodeEnum>[
-  _$principalCannotBeDeletedErrorHttpStatusCodeEnum_number409,
-]);
+_$principalCannotBeDeletedErrorHttpStatusCodeEnumValues =
+    BuiltSet<PrincipalCannotBeDeletedErrorHttpStatusCodeEnum>(
+      const <PrincipalCannotBeDeletedErrorHttpStatusCodeEnum>[
+        _$principalCannotBeDeletedErrorHttpStatusCodeEnum_number409,
+      ],
+    );
 
 Serializer<PrincipalCannotBeDeletedErrorNameEnum>
-    _$principalCannotBeDeletedErrorNameEnumSerializer =
+_$principalCannotBeDeletedErrorNameEnumSerializer =
     _$PrincipalCannotBeDeletedErrorNameEnumSerializer();
 Serializer<PrincipalCannotBeDeletedErrorMessageEnum>
-    _$principalCannotBeDeletedErrorMessageEnumSerializer =
+_$principalCannotBeDeletedErrorMessageEnumSerializer =
     _$PrincipalCannotBeDeletedErrorMessageEnumSerializer();
 Serializer<PrincipalCannotBeDeletedErrorHttpStatusCodeEnum>
-    _$principalCannotBeDeletedErrorHttpStatusCodeEnumSerializer =
+_$principalCannotBeDeletedErrorHttpStatusCodeEnumSerializer =
     _$PrincipalCannotBeDeletedErrorHttpStatusCodeEnumSerializer();
 
 class _$PrincipalCannotBeDeletedErrorNameEnumSerializer
@@ -89,23 +97,26 @@ class _$PrincipalCannotBeDeletedErrorNameEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    PrincipalCannotBeDeletedErrorNameEnum
+    PrincipalCannotBeDeletedErrorNameEnum,
   ];
   @override
   final String wireName = 'PrincipalCannotBeDeletedErrorNameEnum';
 
   @override
   Object serialize(
-          Serializers serializers, PrincipalCannotBeDeletedErrorNameEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    PrincipalCannotBeDeletedErrorNameEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   PrincipalCannotBeDeletedErrorNameEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      PrincipalCannotBeDeletedErrorNameEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => PrincipalCannotBeDeletedErrorNameEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$PrincipalCannotBeDeletedErrorMessageEnumSerializer
@@ -121,23 +132,26 @@ class _$PrincipalCannotBeDeletedErrorMessageEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    PrincipalCannotBeDeletedErrorMessageEnum
+    PrincipalCannotBeDeletedErrorMessageEnum,
   ];
   @override
   final String wireName = 'PrincipalCannotBeDeletedErrorMessageEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          PrincipalCannotBeDeletedErrorMessageEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    PrincipalCannotBeDeletedErrorMessageEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   PrincipalCannotBeDeletedErrorMessageEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      PrincipalCannotBeDeletedErrorMessageEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => PrincipalCannotBeDeletedErrorMessageEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$PrincipalCannotBeDeletedErrorHttpStatusCodeEnumSerializer
@@ -152,23 +166,26 @@ class _$PrincipalCannotBeDeletedErrorHttpStatusCodeEnumSerializer
 
   @override
   final Iterable<Type> types = const <Type>[
-    PrincipalCannotBeDeletedErrorHttpStatusCodeEnum
+    PrincipalCannotBeDeletedErrorHttpStatusCodeEnum,
   ];
   @override
   final String wireName = 'PrincipalCannotBeDeletedErrorHttpStatusCodeEnum';
 
   @override
-  Object serialize(Serializers serializers,
-          PrincipalCannotBeDeletedErrorHttpStatusCodeEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    PrincipalCannotBeDeletedErrorHttpStatusCodeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   PrincipalCannotBeDeletedErrorHttpStatusCodeEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      PrincipalCannotBeDeletedErrorHttpStatusCodeEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => PrincipalCannotBeDeletedErrorHttpStatusCodeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$PrincipalCannotBeDeletedError extends PrincipalCannotBeDeletedError {
@@ -181,23 +198,23 @@ class _$PrincipalCannotBeDeletedError extends PrincipalCannotBeDeletedError {
   @override
   final String traceId;
   @override
-  final BuiltList<ServiceErrorResponseDetailsInner>? details;
+  final BuiltList<UnexpectedErrorDetailsInner>? details;
 
-  factory _$PrincipalCannotBeDeletedError(
-          [void Function(PrincipalCannotBeDeletedErrorBuilder)? updates]) =>
-      (PrincipalCannotBeDeletedErrorBuilder()..update(updates))._build();
+  factory _$PrincipalCannotBeDeletedError([
+    void Function(PrincipalCannotBeDeletedErrorBuilder)? updates,
+  ]) => (PrincipalCannotBeDeletedErrorBuilder()..update(updates))._build();
 
-  _$PrincipalCannotBeDeletedError._(
-      {required this.name,
-      required this.message,
-      required this.httpStatusCode,
-      required this.traceId,
-      this.details})
-      : super._();
+  _$PrincipalCannotBeDeletedError._({
+    required this.name,
+    required this.message,
+    required this.httpStatusCode,
+    required this.traceId,
+    this.details,
+  }) : super._();
   @override
   PrincipalCannotBeDeletedError rebuild(
-          void Function(PrincipalCannotBeDeletedErrorBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(PrincipalCannotBeDeletedErrorBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   PrincipalCannotBeDeletedErrorBuilder toBuilder() =>
@@ -240,8 +257,10 @@ class _$PrincipalCannotBeDeletedError extends PrincipalCannotBeDeletedError {
 
 class PrincipalCannotBeDeletedErrorBuilder
     implements
-        Builder<PrincipalCannotBeDeletedError,
-            PrincipalCannotBeDeletedErrorBuilder> {
+        Builder<
+          PrincipalCannotBeDeletedError,
+          PrincipalCannotBeDeletedErrorBuilder
+        > {
   _$PrincipalCannotBeDeletedError? _$v;
 
   PrincipalCannotBeDeletedErrorNameEnum? _name;
@@ -257,17 +276,17 @@ class PrincipalCannotBeDeletedErrorBuilder
   PrincipalCannotBeDeletedErrorHttpStatusCodeEnum? get httpStatusCode =>
       _$this._httpStatusCode;
   set httpStatusCode(
-          PrincipalCannotBeDeletedErrorHttpStatusCodeEnum? httpStatusCode) =>
-      _$this._httpStatusCode = httpStatusCode;
+    PrincipalCannotBeDeletedErrorHttpStatusCodeEnum? httpStatusCode,
+  ) => _$this._httpStatusCode = httpStatusCode;
 
   String? _traceId;
   String? get traceId => _$this._traceId;
   set traceId(String? traceId) => _$this._traceId = traceId;
 
-  ListBuilder<ServiceErrorResponseDetailsInner>? _details;
-  ListBuilder<ServiceErrorResponseDetailsInner> get details =>
-      _$this._details ??= ListBuilder<ServiceErrorResponseDetailsInner>();
-  set details(ListBuilder<ServiceErrorResponseDetailsInner>? details) =>
+  ListBuilder<UnexpectedErrorDetailsInner>? _details;
+  ListBuilder<UnexpectedErrorDetailsInner> get details =>
+      _$this._details ??= ListBuilder<UnexpectedErrorDetailsInner>();
+  set details(ListBuilder<UnexpectedErrorDetailsInner>? details) =>
       _$this._details = details;
 
   PrincipalCannotBeDeletedErrorBuilder() {
@@ -303,18 +322,29 @@ class PrincipalCannotBeDeletedErrorBuilder
   _$PrincipalCannotBeDeletedError _build() {
     _$PrincipalCannotBeDeletedError _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$PrincipalCannotBeDeletedError._(
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'PrincipalCannotBeDeletedError', 'name'),
+              name,
+              r'PrincipalCannotBeDeletedError',
+              'name',
+            ),
             message: BuiltValueNullFieldError.checkNotNull(
-                message, r'PrincipalCannotBeDeletedError', 'message'),
+              message,
+              r'PrincipalCannotBeDeletedError',
+              'message',
+            ),
             httpStatusCode: BuiltValueNullFieldError.checkNotNull(
-                httpStatusCode,
-                r'PrincipalCannotBeDeletedError',
-                'httpStatusCode'),
+              httpStatusCode,
+              r'PrincipalCannotBeDeletedError',
+              'httpStatusCode',
+            ),
             traceId: BuiltValueNullFieldError.checkNotNull(
-                traceId, r'PrincipalCannotBeDeletedError', 'traceId'),
+              traceId,
+              r'PrincipalCannotBeDeletedError',
+              'traceId',
+            ),
             details: _details?.build(),
           );
     } catch (_) {
@@ -324,7 +354,10 @@ class PrincipalCannotBeDeletedErrorBuilder
         _details?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'PrincipalCannotBeDeletedError', _$failedField, e.toString());
+          r'PrincipalCannotBeDeletedError',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

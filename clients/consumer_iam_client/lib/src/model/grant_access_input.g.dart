@@ -10,9 +10,9 @@ class _$GrantAccessInput extends GrantAccessInput {
   @override
   final BuiltList<Permission> permissions;
 
-  factory _$GrantAccessInput(
-          [void Function(GrantAccessInputBuilder)? updates]) =>
-      (GrantAccessInputBuilder()..update(updates))._build();
+  factory _$GrantAccessInput([
+    void Function(GrantAccessInputBuilder)? updates,
+  ]) => (GrantAccessInputBuilder()..update(updates))._build();
 
   _$GrantAccessInput._({required this.permissions}) : super._();
   @override
@@ -39,9 +39,9 @@ class _$GrantAccessInput extends GrantAccessInput {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'GrantAccessInput')
-          ..add('permissions', permissions))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'GrantAccessInput',
+    )..add('permissions', permissions)).toString();
   }
 }
 
@@ -84,10 +84,7 @@ class GrantAccessInputBuilder
   _$GrantAccessInput _build() {
     _$GrantAccessInput _$result;
     try {
-      _$result = _$v ??
-          _$GrantAccessInput._(
-            permissions: permissions.build(),
-          );
+      _$result = _$v ?? _$GrantAccessInput._(permissions: permissions.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -95,7 +92,10 @@ class GrantAccessInputBuilder
         permissions.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'GrantAccessInput', _$failedField, e.toString());
+          r'GrantAccessInput',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

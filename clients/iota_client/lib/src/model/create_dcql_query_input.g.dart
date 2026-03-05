@@ -14,17 +14,19 @@ class _$CreateDcqlQueryInput extends CreateDcqlQueryInput {
   @override
   final String? description;
 
-  factory _$CreateDcqlQueryInput(
-          [void Function(CreateDcqlQueryInputBuilder)? updates]) =>
-      (CreateDcqlQueryInputBuilder()..update(updates))._build();
+  factory _$CreateDcqlQueryInput([
+    void Function(CreateDcqlQueryInputBuilder)? updates,
+  ]) => (CreateDcqlQueryInputBuilder()..update(updates))._build();
 
-  _$CreateDcqlQueryInput._(
-      {required this.name, required this.dcqlQuery, this.description})
-      : super._();
+  _$CreateDcqlQueryInput._({
+    required this.name,
+    required this.dcqlQuery,
+    this.description,
+  }) : super._();
   @override
   CreateDcqlQueryInput rebuild(
-          void Function(CreateDcqlQueryInputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateDcqlQueryInputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateDcqlQueryInputBuilder toBuilder() =>
@@ -104,12 +106,19 @@ class CreateDcqlQueryInputBuilder
   CreateDcqlQueryInput build() => _build();
 
   _$CreateDcqlQueryInput _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CreateDcqlQueryInput._(
           name: BuiltValueNullFieldError.checkNotNull(
-              name, r'CreateDcqlQueryInput', 'name'),
+            name,
+            r'CreateDcqlQueryInput',
+            'name',
+          ),
           dcqlQuery: BuiltValueNullFieldError.checkNotNull(
-              dcqlQuery, r'CreateDcqlQueryInput', 'dcqlQuery'),
+            dcqlQuery,
+            r'CreateDcqlQueryInput',
+            'dcqlQuery',
+          ),
           description: description,
         );
     replace(_$result);

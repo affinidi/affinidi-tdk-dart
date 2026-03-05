@@ -47,9 +47,7 @@ class ConfigurationsApi {
     final _path = r'/v1/configurations';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -69,14 +67,13 @@ class ConfigurationsApi {
 
     try {
       const _type = FullType(CreateIotaConfigurationInput);
-      _bodyData = _serializers.serialize(createIotaConfigurationInput,
-          specifiedType: _type);
+      _bodyData = _serializers.serialize(
+        createIotaConfigurationInput,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -99,9 +96,10 @@ class ConfigurationsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(IotaConfigurationDto),
-            ) as IotaConfigurationDto;
+                  rawResponse,
+                  specifiedType: const FullType(IotaConfigurationDto),
+                )
+                as IotaConfigurationDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -148,15 +146,18 @@ class ConfigurationsApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/configurations/{configurationId}'.replaceAll(
-        '{' r'configurationId' '}',
-        encodeQueryParameter(
-                _serializers, configurationId, const FullType(String))
-            .toString());
+      '{'
+      r'configurationId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        configurationId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -206,15 +207,18 @@ class ConfigurationsApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/configurations/{configurationId}'.replaceAll(
-        '{' r'configurationId' '}',
-        encodeQueryParameter(
-                _serializers, configurationId, const FullType(String))
-            .toString());
+      '{'
+      r'configurationId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        configurationId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -244,9 +248,10 @@ class ConfigurationsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(IotaConfigurationDto),
-            ) as IotaConfigurationDto;
+                  rawResponse,
+                  specifiedType: const FullType(IotaConfigurationDto),
+                )
+                as IotaConfigurationDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -285,7 +290,7 @@ class ConfigurationsApi {
   /// Returns a [Future] containing a [Response] with a [GetIotaConfigurationMetaDataOK] as data
   /// Throws [DioException] if API call or serialization fails
   Future<Response<GetIotaConfigurationMetaDataOK>>
-      getIotaConfigurationMetaData({
+  getIotaConfigurationMetaData({
     required String projectId,
     required String configurationId,
     CancelToken? cancelToken,
@@ -298,24 +303,29 @@ class ConfigurationsApi {
     final _path =
         r'/v1/projects/{projectId}/configurations/{configurationId}/metadata'
             .replaceAll(
-                '{' r'projectId' '}',
-                encodeQueryParameter(
-                        _serializers, projectId, const FullType(String))
-                    .toString())
+              '{'
+              r'projectId'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                projectId,
+                const FullType(String),
+              ).toString(),
+            )
             .replaceAll(
-                '{' r'configurationId' '}',
-                encodeQueryParameter(
-                        _serializers, configurationId, const FullType(String))
-                    .toString());
+              '{'
+              r'configurationId'
+              '}',
+              encodeQueryParameter(
+                _serializers,
+                configurationId,
+                const FullType(String),
+              ).toString(),
+            );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
-        ...?extra,
-      },
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{'secure': <Map<String, String>>[], ...?extra},
       validateStatus: validateStatus,
     );
 
@@ -334,9 +344,10 @@ class ConfigurationsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(GetIotaConfigurationMetaDataOK),
-            ) as GetIotaConfigurationMetaDataOK;
+                  rawResponse,
+                  specifiedType: const FullType(GetIotaConfigurationMetaDataOK),
+                )
+                as GetIotaConfigurationMetaDataOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -383,9 +394,7 @@ class ConfigurationsApi {
     final _path = r'/v1/configurations';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -415,9 +424,10 @@ class ConfigurationsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(ListConfigurationOK),
-            ) as ListConfigurationOK;
+                  rawResponse,
+                  specifiedType: const FullType(ListConfigurationOK),
+                )
+                as ListConfigurationOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -466,15 +476,18 @@ class ConfigurationsApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/configurations/{configurationId}'.replaceAll(
-        '{' r'configurationId' '}',
-        encodeQueryParameter(
-                _serializers, configurationId, const FullType(String))
-            .toString());
+      '{'
+      r'configurationId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        configurationId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -494,14 +507,13 @@ class ConfigurationsApi {
 
     try {
       const _type = FullType(UpdateConfigurationByIdInput);
-      _bodyData = _serializers.serialize(updateConfigurationByIdInput,
-          specifiedType: _type);
+      _bodyData = _serializers.serialize(
+        updateConfigurationByIdInput,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -524,9 +536,10 @@ class ConfigurationsApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(IotaConfigurationDto),
-            ) as IotaConfigurationDto;
+                  rawResponse,
+                  specifiedType: const FullType(IotaConfigurationDto),
+                )
+                as IotaConfigurationDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

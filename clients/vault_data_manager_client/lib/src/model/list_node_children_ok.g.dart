@@ -12,15 +12,15 @@ class _$ListNodeChildrenOK extends ListNodeChildrenOK {
   @override
   final String? lastEvaluatedKey;
 
-  factory _$ListNodeChildrenOK(
-          [void Function(ListNodeChildrenOKBuilder)? updates]) =>
-      (ListNodeChildrenOKBuilder()..update(updates))._build();
+  factory _$ListNodeChildrenOK([
+    void Function(ListNodeChildrenOKBuilder)? updates,
+  ]) => (ListNodeChildrenOKBuilder()..update(updates))._build();
 
   _$ListNodeChildrenOK._({this.nodes, this.lastEvaluatedKey}) : super._();
   @override
   ListNodeChildrenOK rebuild(
-          void Function(ListNodeChildrenOKBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ListNodeChildrenOKBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ListNodeChildrenOKBuilder toBuilder() =>
@@ -95,7 +95,8 @@ class ListNodeChildrenOKBuilder
   _$ListNodeChildrenOK _build() {
     _$ListNodeChildrenOK _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$ListNodeChildrenOK._(
             nodes: _nodes?.build(),
             lastEvaluatedKey: lastEvaluatedKey,
@@ -107,7 +108,10 @@ class ListNodeChildrenOKBuilder
         _nodes?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'ListNodeChildrenOK', _$failedField, e.toString());
+          r'ListNodeChildrenOK',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

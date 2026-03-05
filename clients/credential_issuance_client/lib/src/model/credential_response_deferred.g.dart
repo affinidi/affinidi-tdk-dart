@@ -14,19 +14,19 @@ class _$CredentialResponseDeferred extends CredentialResponseDeferred {
   @override
   final int cNonceExpiresIn;
 
-  factory _$CredentialResponseDeferred(
-          [void Function(CredentialResponseDeferredBuilder)? updates]) =>
-      (CredentialResponseDeferredBuilder()..update(updates))._build();
+  factory _$CredentialResponseDeferred([
+    void Function(CredentialResponseDeferredBuilder)? updates,
+  ]) => (CredentialResponseDeferredBuilder()..update(updates))._build();
 
-  _$CredentialResponseDeferred._(
-      {required this.transactionId,
-      required this.cNonce,
-      required this.cNonceExpiresIn})
-      : super._();
+  _$CredentialResponseDeferred._({
+    required this.transactionId,
+    required this.cNonce,
+    required this.cNonceExpiresIn,
+  }) : super._();
   @override
   CredentialResponseDeferred rebuild(
-          void Function(CredentialResponseDeferredBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CredentialResponseDeferredBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CredentialResponseDeferredBuilder toBuilder() =>
@@ -109,16 +109,24 @@ class CredentialResponseDeferredBuilder
   CredentialResponseDeferred build() => _build();
 
   _$CredentialResponseDeferred _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CredentialResponseDeferred._(
           transactionId: BuiltValueNullFieldError.checkNotNull(
-              transactionId, r'CredentialResponseDeferred', 'transactionId'),
+            transactionId,
+            r'CredentialResponseDeferred',
+            'transactionId',
+          ),
           cNonce: BuiltValueNullFieldError.checkNotNull(
-              cNonce, r'CredentialResponseDeferred', 'cNonce'),
+            cNonce,
+            r'CredentialResponseDeferred',
+            'cNonce',
+          ),
           cNonceExpiresIn: BuiltValueNullFieldError.checkNotNull(
-              cNonceExpiresIn,
-              r'CredentialResponseDeferred',
-              'cNonceExpiresIn'),
+            cNonceExpiresIn,
+            r'CredentialResponseDeferred',
+            'cNonceExpiresIn',
+          ),
         );
     replace(_$result);
     return _$result;

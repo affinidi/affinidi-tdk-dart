@@ -26,25 +26,25 @@ class _$CreateLoginConfigurationOutput extends CreateLoginConfigurationOutput {
   @override
   final BuiltList<String>? postLogoutRedirectUris;
 
-  factory _$CreateLoginConfigurationOutput(
-          [void Function(CreateLoginConfigurationOutputBuilder)? updates]) =>
-      (CreateLoginConfigurationOutputBuilder()..update(updates))._build();
+  factory _$CreateLoginConfigurationOutput([
+    void Function(CreateLoginConfigurationOutputBuilder)? updates,
+  ]) => (CreateLoginConfigurationOutputBuilder()..update(updates))._build();
 
-  _$CreateLoginConfigurationOutput._(
-      {required this.ari,
-      required this.projectId,
-      this.configurationId,
-      required this.name,
-      required this.auth,
-      required this.redirectUris,
-      required this.clientMetadata,
-      required this.creationDate,
-      this.postLogoutRedirectUris})
-      : super._();
+  _$CreateLoginConfigurationOutput._({
+    required this.ari,
+    required this.projectId,
+    this.configurationId,
+    required this.name,
+    required this.auth,
+    required this.redirectUris,
+    required this.clientMetadata,
+    required this.creationDate,
+    this.postLogoutRedirectUris,
+  }) : super._();
   @override
   CreateLoginConfigurationOutput rebuild(
-          void Function(CreateLoginConfigurationOutputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateLoginConfigurationOutputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateLoginConfigurationOutputBuilder toBuilder() =>
@@ -99,8 +99,10 @@ class _$CreateLoginConfigurationOutput extends CreateLoginConfigurationOutput {
 
 class CreateLoginConfigurationOutputBuilder
     implements
-        Builder<CreateLoginConfigurationOutput,
-            CreateLoginConfigurationOutputBuilder> {
+        Builder<
+          CreateLoginConfigurationOutput,
+          CreateLoginConfigurationOutputBuilder
+        > {
   _$CreateLoginConfigurationOutput? _$v;
 
   String? _ari;
@@ -137,8 +139,8 @@ class CreateLoginConfigurationOutputBuilder
       _$this._clientMetadata ??=
           LoginConfigurationClientMetadataOutputBuilder();
   set clientMetadata(
-          LoginConfigurationClientMetadataOutputBuilder? clientMetadata) =>
-      _$this._clientMetadata = clientMetadata;
+    LoginConfigurationClientMetadataOutputBuilder? clientMetadata,
+  ) => _$this._clientMetadata = clientMetadata;
 
   String? _creationDate;
   String? get creationDate => _$this._creationDate;
@@ -187,20 +189,33 @@ class CreateLoginConfigurationOutputBuilder
   _$CreateLoginConfigurationOutput _build() {
     _$CreateLoginConfigurationOutput _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$CreateLoginConfigurationOutput._(
             ari: BuiltValueNullFieldError.checkNotNull(
-                ari, r'CreateLoginConfigurationOutput', 'ari'),
+              ari,
+              r'CreateLoginConfigurationOutput',
+              'ari',
+            ),
             projectId: BuiltValueNullFieldError.checkNotNull(
-                projectId, r'CreateLoginConfigurationOutput', 'projectId'),
+              projectId,
+              r'CreateLoginConfigurationOutput',
+              'projectId',
+            ),
             configurationId: configurationId,
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'CreateLoginConfigurationOutput', 'name'),
+              name,
+              r'CreateLoginConfigurationOutput',
+              'name',
+            ),
             auth: auth.build(),
             redirectUris: redirectUris.build(),
             clientMetadata: clientMetadata.build(),
-            creationDate: BuiltValueNullFieldError.checkNotNull(creationDate,
-                r'CreateLoginConfigurationOutput', 'creationDate'),
+            creationDate: BuiltValueNullFieldError.checkNotNull(
+              creationDate,
+              r'CreateLoginConfigurationOutput',
+              'creationDate',
+            ),
             postLogoutRedirectUris: _postLogoutRedirectUris?.build(),
           );
     } catch (_) {
@@ -217,7 +232,10 @@ class CreateLoginConfigurationOutputBuilder
         _postLogoutRedirectUris?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'CreateLoginConfigurationOutput', _$failedField, e.toString());
+          r'CreateLoginConfigurationOutput',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

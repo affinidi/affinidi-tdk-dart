@@ -14,17 +14,19 @@ class _$ProjectWithPolicyDto extends ProjectWithPolicyDto {
   @override
   final PolicyDto policy;
 
-  factory _$ProjectWithPolicyDto(
-          [void Function(ProjectWithPolicyDtoBuilder)? updates]) =>
-      (ProjectWithPolicyDtoBuilder()..update(updates))._build();
+  factory _$ProjectWithPolicyDto([
+    void Function(ProjectWithPolicyDtoBuilder)? updates,
+  ]) => (ProjectWithPolicyDtoBuilder()..update(updates))._build();
 
-  _$ProjectWithPolicyDto._(
-      {required this.id, required this.name, required this.policy})
-      : super._();
+  _$ProjectWithPolicyDto._({
+    required this.id,
+    required this.name,
+    required this.policy,
+  }) : super._();
   @override
   ProjectWithPolicyDto rebuild(
-          void Function(ProjectWithPolicyDtoBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(ProjectWithPolicyDtoBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   ProjectWithPolicyDtoBuilder toBuilder() =>
@@ -106,12 +108,19 @@ class ProjectWithPolicyDtoBuilder
   _$ProjectWithPolicyDto _build() {
     _$ProjectWithPolicyDto _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$ProjectWithPolicyDto._(
             id: BuiltValueNullFieldError.checkNotNull(
-                id, r'ProjectWithPolicyDto', 'id'),
+              id,
+              r'ProjectWithPolicyDto',
+              'id',
+            ),
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'ProjectWithPolicyDto', 'name'),
+              name,
+              r'ProjectWithPolicyDto',
+              'name',
+            ),
             policy: policy.build(),
           );
     } catch (_) {
@@ -121,7 +130,10 @@ class ProjectWithPolicyDtoBuilder
         policy.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'ProjectWithPolicyDto', _$failedField, e.toString());
+          r'ProjectWithPolicyDto',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

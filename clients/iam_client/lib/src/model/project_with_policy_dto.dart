@@ -45,7 +45,7 @@ class _$ProjectWithPolicyDtoSerializer
   @override
   final Iterable<Type> types = const [
     ProjectWithPolicyDto,
-    _$ProjectWithPolicyDto
+    _$ProjectWithPolicyDto,
   ];
 
   @override
@@ -79,9 +79,11 @@ class _$ProjectWithPolicyDtoSerializer
     ProjectWithPolicyDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -97,24 +99,30 @@ class _$ProjectWithPolicyDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.id = valueDes;
           break;
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'policy':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(PolicyDto),
-          ) as PolicyDto;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(PolicyDto),
+                  )
+                  as PolicyDto;
           result.policy.replace(valueDes);
           break;
         default:

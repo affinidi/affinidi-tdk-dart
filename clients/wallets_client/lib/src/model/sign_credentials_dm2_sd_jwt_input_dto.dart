@@ -17,11 +17,14 @@ part 'sign_credentials_dm2_sd_jwt_input_dto.g.dart';
 /// * [revocable]
 /// * [disclosureFrame]
 /// * [signatureScheme]
+/// * [keyId] - wallet key ID to use for signing (defaults to wallet's default key)
 @BuiltValue()
 abstract class SignCredentialsDm2SdJwtInputDto
     implements
-        Built<SignCredentialsDm2SdJwtInputDto,
-            SignCredentialsDm2SdJwtInputDtoBuilder> {
+        Built<
+          SignCredentialsDm2SdJwtInputDto,
+          SignCredentialsDm2SdJwtInputDtoBuilder
+        > {
   /// Unsigned Credential in Dm2 format
   @BuiltValueField(wireName: r'unsignedCredential')
   JsonObject get unsignedCredential;
@@ -36,11 +39,15 @@ abstract class SignCredentialsDm2SdJwtInputDto
   SignCredentialsDm2SdJwtInputDtoSignatureSchemeEnum? get signatureScheme;
   // enum signatureSchemeEnum {  ecdsa_secp256k1_sha256,  ecdsa_p256_sha256,  ed25519,  };
 
+  /// wallet key ID to use for signing (defaults to wallet's default key)
+  @BuiltValueField(wireName: r'keyId')
+  String? get keyId;
+
   SignCredentialsDm2SdJwtInputDto._();
 
-  factory SignCredentialsDm2SdJwtInputDto(
-          [void updates(SignCredentialsDm2SdJwtInputDtoBuilder b)]) =
-      _$SignCredentialsDm2SdJwtInputDto;
+  factory SignCredentialsDm2SdJwtInputDto([
+    void updates(SignCredentialsDm2SdJwtInputDtoBuilder b),
+  ]) = _$SignCredentialsDm2SdJwtInputDto;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(SignCredentialsDm2SdJwtInputDtoBuilder b) => b;
@@ -55,7 +62,7 @@ class _$SignCredentialsDm2SdJwtInputDtoSerializer
   @override
   final Iterable<Type> types = const [
     SignCredentialsDm2SdJwtInputDto,
-    _$SignCredentialsDm2SdJwtInputDto
+    _$SignCredentialsDm2SdJwtInputDto,
   ];
 
   @override
@@ -87,8 +94,16 @@ class _$SignCredentialsDm2SdJwtInputDtoSerializer
       yield r'signatureScheme';
       yield serializers.serialize(
         object.signatureScheme,
-        specifiedType:
-            const FullType(SignCredentialsDm2SdJwtInputDtoSignatureSchemeEnum),
+        specifiedType: const FullType(
+          SignCredentialsDm2SdJwtInputDtoSignatureSchemeEnum,
+        ),
+      );
+    }
+    if (object.keyId != null) {
+      yield r'keyId';
+      yield serializers.serialize(
+        object.keyId,
+        specifiedType: const FullType(String),
       );
     }
   }
@@ -99,9 +114,11 @@ class _$SignCredentialsDm2SdJwtInputDtoSerializer
     SignCredentialsDm2SdJwtInputDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -117,33 +134,51 @@ class _$SignCredentialsDm2SdJwtInputDtoSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'unsignedCredential':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JsonObject),
+                  )
+                  as JsonObject;
           result.unsignedCredential = valueDes;
           break;
         case r'revocable':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool;
           result.revocable = valueDes;
           break;
         case r'disclosureFrame':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JsonObject),
+                  )
+                  as JsonObject;
           result.disclosureFrame = valueDes;
           break;
         case r'signatureScheme':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                SignCredentialsDm2SdJwtInputDtoSignatureSchemeEnum),
-          ) as SignCredentialsDm2SdJwtInputDtoSignatureSchemeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      SignCredentialsDm2SdJwtInputDtoSignatureSchemeEnum,
+                    ),
+                  )
+                  as SignCredentialsDm2SdJwtInputDtoSignatureSchemeEnum;
           result.signatureScheme = valueDes;
+          break;
+        case r'keyId':
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
+          result.keyId = valueDes;
           break;
         default:
           unhandled.add(key);
@@ -177,26 +212,26 @@ class _$SignCredentialsDm2SdJwtInputDtoSerializer
 class SignCredentialsDm2SdJwtInputDtoSignatureSchemeEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'ecdsa_secp256k1_sha256')
   static const SignCredentialsDm2SdJwtInputDtoSignatureSchemeEnum
-      ecdsaSecp256k1Sha256 =
+  ecdsaSecp256k1Sha256 =
       _$signCredentialsDm2SdJwtInputDtoSignatureSchemeEnum_ecdsaSecp256k1Sha256;
   @BuiltValueEnumConst(wireName: r'ecdsa_p256_sha256')
   static const SignCredentialsDm2SdJwtInputDtoSignatureSchemeEnum
-      ecdsaP256Sha256 =
+  ecdsaP256Sha256 =
       _$signCredentialsDm2SdJwtInputDtoSignatureSchemeEnum_ecdsaP256Sha256;
   @BuiltValueEnumConst(wireName: r'ed25519')
   static const SignCredentialsDm2SdJwtInputDtoSignatureSchemeEnum ed25519 =
       _$signCredentialsDm2SdJwtInputDtoSignatureSchemeEnum_ed25519;
 
   static Serializer<SignCredentialsDm2SdJwtInputDtoSignatureSchemeEnum>
-      get serializer =>
-          _$signCredentialsDm2SdJwtInputDtoSignatureSchemeEnumSerializer;
+  get serializer =>
+      _$signCredentialsDm2SdJwtInputDtoSignatureSchemeEnumSerializer;
 
   const SignCredentialsDm2SdJwtInputDtoSignatureSchemeEnum._(String name)
-      : super(name);
+    : super(name);
 
   static BuiltSet<SignCredentialsDm2SdJwtInputDtoSignatureSchemeEnum>
-      get values => _$signCredentialsDm2SdJwtInputDtoSignatureSchemeEnumValues;
+  get values => _$signCredentialsDm2SdJwtInputDtoSignatureSchemeEnumValues;
   static SignCredentialsDm2SdJwtInputDtoSignatureSchemeEnum valueOf(
-          String name) =>
-      _$signCredentialsDm2SdJwtInputDtoSignatureSchemeEnumValueOf(name);
+    String name,
+  ) => _$signCredentialsDm2SdJwtInputDtoSignatureSchemeEnumValueOf(name);
 }

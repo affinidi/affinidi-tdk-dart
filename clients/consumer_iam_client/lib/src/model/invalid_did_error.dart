@@ -89,8 +89,9 @@ class _$InvalidDIDErrorSerializer
       yield r'details';
       yield serializers.serialize(
         object.details,
-        specifiedType: const FullType(
-            BuiltList, [FullType(InvalidJwtTokenErrorDetailsInner)]),
+        specifiedType: const FullType(BuiltList, [
+          FullType(InvalidJwtTokenErrorDetailsInner),
+        ]),
       );
     }
   }
@@ -101,9 +102,11 @@ class _$InvalidDIDErrorSerializer
     InvalidDIDError object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -119,39 +122,52 @@ class _$InvalidDIDErrorSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(InvalidDIDErrorNameEnum),
-          ) as InvalidDIDErrorNameEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(InvalidDIDErrorNameEnum),
+                  )
+                  as InvalidDIDErrorNameEnum;
           result.name = valueDes;
           break;
         case r'message':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(InvalidDIDErrorMessageEnum),
-          ) as InvalidDIDErrorMessageEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(InvalidDIDErrorMessageEnum),
+                  )
+                  as InvalidDIDErrorMessageEnum;
           result.message = valueDes;
           break;
         case r'httpStatusCode':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(InvalidDIDErrorHttpStatusCodeEnum),
-          ) as InvalidDIDErrorHttpStatusCodeEnum;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      InvalidDIDErrorHttpStatusCodeEnum,
+                    ),
+                  )
+                  as InvalidDIDErrorHttpStatusCodeEnum;
           result.httpStatusCode = valueDes;
           break;
         case r'traceId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.traceId = valueDes;
           break;
         case r'details':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltList, [FullType(InvalidJwtTokenErrorDetailsInner)]),
-          ) as BuiltList<InvalidJwtTokenErrorDetailsInner>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(InvalidJwtTokenErrorDetailsInner),
+                    ]),
+                  )
+                  as BuiltList<InvalidJwtTokenErrorDetailsInner>;
           result.details.replace(valueDes);
           break;
         default:

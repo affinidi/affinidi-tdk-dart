@@ -129,9 +129,11 @@ class _$CreateNodeInputSerializer
     CreateNodeInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -147,52 +149,66 @@ class _$CreateNodeInputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(NodeType),
-          ) as NodeType;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(NodeType),
+                  )
+                  as NodeType;
           result.type = valueDes;
           break;
         case r'description':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.description = valueDes;
           break;
         case r'parentNodeId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.parentNodeId = valueDes;
           break;
         case r'edekInfo':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(EdekInfo),
-          ) as EdekInfo;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(EdekInfo),
+                  )
+                  as EdekInfo;
           result.edekInfo.replace(valueDes);
           break;
         case r'dek':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.dek = valueDes;
           break;
         case r'metadata':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.metadata = valueDes;
           break;
         default:

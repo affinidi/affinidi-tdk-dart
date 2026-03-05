@@ -47,8 +47,9 @@ abstract class GetDetailedNodeInfoOK
 
   GetDetailedNodeInfoOK._();
 
-  factory GetDetailedNodeInfoOK(
-      [void updates(GetDetailedNodeInfoOKBuilder b)]) = _$GetDetailedNodeInfoOK;
+  factory GetDetailedNodeInfoOK([
+    void updates(GetDetailedNodeInfoOKBuilder b),
+  ]) = _$GetDetailedNodeInfoOK;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetDetailedNodeInfoOKBuilder b) => b;
@@ -63,7 +64,7 @@ class _$GetDetailedNodeInfoOKSerializer
   @override
   final Iterable<Type> types = const [
     GetDetailedNodeInfoOK,
-    _$GetDetailedNodeInfoOK
+    _$GetDetailedNodeInfoOK,
   ];
 
   @override
@@ -214,9 +215,11 @@ class _$GetDetailedNodeInfoOKSerializer
     GetDetailedNodeInfoOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -232,157 +235,186 @@ class _$GetDetailedNodeInfoOKSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'profileCount':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.profileCount = valueDes;
           break;
         case r'schema':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.schema = valueDes;
           break;
         case r'metadata':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.metadata = valueDes;
           break;
         case r'consumerId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.consumerId = valueDes;
           break;
         case r'modifiedAt':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.modifiedAt = valueDes;
           break;
         case r'link':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.link = valueDes;
           break;
         case r'description':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.description = valueDes;
           break;
         case r'parentNodeId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.parentNodeId = valueDes;
           break;
         case r'consumedFileStorage':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.consumedFileStorage = valueDes;
           break;
         case r'folderCount':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.folderCount = valueDes;
           break;
         case r'type':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(NodeType),
-          ) as NodeType;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(NodeType),
+                  )
+                  as NodeType;
           result.type = valueDes;
           break;
         case r'fileCount':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.fileCount = valueDes;
           break;
         case r'getUrl':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.getUrl = valueDes;
           break;
         case r'vcCount':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.vcCount = valueDes;
           break;
         case r'createdAt':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.createdAt = valueDes;
           break;
         case r'createdBy':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.createdBy = valueDes;
           break;
         case r'profileId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.profileId = valueDes;
           break;
         case r'edekInfo':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(EdekInfo),
-          ) as EdekInfo;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(EdekInfo),
+                  )
+                  as EdekInfo;
           result.edekInfo.replace(valueDes);
           break;
         case r'name':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.name = valueDes;
           break;
         case r'modifiedBy':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.modifiedBy = valueDes;
           break;
         case r'nodeId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.nodeId = valueDes;
           break;
         case r'status':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(NodeStatus),
-          ) as NodeStatus;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(NodeStatus),
+                  )
+                  as NodeStatus;
           result.status = valueDes;
           break;
         default:

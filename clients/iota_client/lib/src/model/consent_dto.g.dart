@@ -20,8 +20,8 @@ ConsentDtoStatusEnum _$consentDtoStatusEnumValueOf(String name) {
 
 final BuiltSet<ConsentDtoStatusEnum> _$consentDtoStatusEnumValues =
     BuiltSet<ConsentDtoStatusEnum>(const <ConsentDtoStatusEnum>[
-  _$consentDtoStatusEnum_GIVEN,
-]);
+      _$consentDtoStatusEnum_GIVEN,
+    ]);
 
 Serializer<ConsentDtoStatusEnum> _$consentDtoStatusEnumSerializer =
     _$ConsentDtoStatusEnumSerializer();
@@ -41,15 +41,20 @@ class _$ConsentDtoStatusEnumSerializer
   final String wireName = 'ConsentDtoStatusEnum';
 
   @override
-  Object serialize(Serializers serializers, ConsentDtoStatusEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+  Object serialize(
+    Serializers serializers,
+    ConsentDtoStatusEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
-  ConsentDtoStatusEnum deserialize(Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      ConsentDtoStatusEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+  ConsentDtoStatusEnum deserialize(
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => ConsentDtoStatusEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$ConsentDto extends ConsentDto {
@@ -75,17 +80,17 @@ class _$ConsentDto extends ConsentDto {
   factory _$ConsentDto([void Function(ConsentDtoBuilder)? updates]) =>
       (ConsentDtoBuilder()..update(updates))._build();
 
-  _$ConsentDto._(
-      {required this.projectId,
-      required this.id,
-      required this.userId,
-      required this.vcType,
-      required this.status,
-      required this.modifiedAt,
-      required this.modifiedBy,
-      required this.createdAt,
-      required this.createdBy})
-      : super._();
+  _$ConsentDto._({
+    required this.projectId,
+    required this.id,
+    required this.userId,
+    required this.vcType,
+    required this.status,
+    required this.modifiedAt,
+    required this.modifiedBy,
+    required this.createdAt,
+    required this.createdBy,
+  }) : super._();
   @override
   ConsentDto rebuild(void Function(ConsentDtoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -214,25 +219,50 @@ class ConsentDtoBuilder implements Builder<ConsentDto, ConsentDtoBuilder> {
   ConsentDto build() => _build();
 
   _$ConsentDto _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$ConsentDto._(
           projectId: BuiltValueNullFieldError.checkNotNull(
-              projectId, r'ConsentDto', 'projectId'),
+            projectId,
+            r'ConsentDto',
+            'projectId',
+          ),
           id: BuiltValueNullFieldError.checkNotNull(id, r'ConsentDto', 'id'),
           userId: BuiltValueNullFieldError.checkNotNull(
-              userId, r'ConsentDto', 'userId'),
+            userId,
+            r'ConsentDto',
+            'userId',
+          ),
           vcType: BuiltValueNullFieldError.checkNotNull(
-              vcType, r'ConsentDto', 'vcType'),
+            vcType,
+            r'ConsentDto',
+            'vcType',
+          ),
           status: BuiltValueNullFieldError.checkNotNull(
-              status, r'ConsentDto', 'status'),
+            status,
+            r'ConsentDto',
+            'status',
+          ),
           modifiedAt: BuiltValueNullFieldError.checkNotNull(
-              modifiedAt, r'ConsentDto', 'modifiedAt'),
+            modifiedAt,
+            r'ConsentDto',
+            'modifiedAt',
+          ),
           modifiedBy: BuiltValueNullFieldError.checkNotNull(
-              modifiedBy, r'ConsentDto', 'modifiedBy'),
+            modifiedBy,
+            r'ConsentDto',
+            'modifiedBy',
+          ),
           createdAt: BuiltValueNullFieldError.checkNotNull(
-              createdAt, r'ConsentDto', 'createdAt'),
+            createdAt,
+            r'ConsentDto',
+            'createdAt',
+          ),
           createdBy: BuiltValueNullFieldError.checkNotNull(
-              createdBy, r'ConsentDto', 'createdBy'),
+            createdBy,
+            r'ConsentDto',
+            'createdBy',
+          ),
         );
     replace(_$result);
     return _$result;

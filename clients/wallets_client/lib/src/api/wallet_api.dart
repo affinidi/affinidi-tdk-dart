@@ -22,8 +22,8 @@ import 'package:affinidi_tdk_wallets_client/src/model/sign_credentials_ldp_input
 import 'package:affinidi_tdk_wallets_client/src/model/sign_credentials_ldp_result_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/sign_jwt_token.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/sign_jwt_token_ok.dart';
-import 'package:affinidi_tdk_wallets_client/src/model/sign_jwt_v2.dart';
-import 'package:affinidi_tdk_wallets_client/src/model/sign_jwt_v2_ok.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/sign_jwt_v2_input_dto.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/sign_jwt_v2_result_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/sign_presentation_ldp_input_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/sign_presentation_ldp_result_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/update_wallet_input.dart';
@@ -63,9 +63,7 @@ class WalletApi {
     final _path = r'/v1/wallets';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -90,10 +88,7 @@ class WalletApi {
           : _serializers.serialize(createWalletInput, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -116,9 +111,10 @@ class WalletApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(CreateWalletResponse),
-            ) as CreateWalletResponse;
+                  rawResponse,
+                  specifiedType: const FullType(CreateWalletResponse),
+                )
+                as CreateWalletResponse;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -167,9 +163,7 @@ class WalletApi {
     final _path = r'/v2/wallets';
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -194,10 +188,7 @@ class WalletApi {
           : _serializers.serialize(createWalletV2Input, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -220,9 +211,10 @@ class WalletApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(CreateWalletV2Response),
-            ) as CreateWalletV2Response;
+                  rawResponse,
+                  specifiedType: const FullType(CreateWalletV2Response),
+                )
+                as CreateWalletV2Response;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -269,14 +261,18 @@ class WalletApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/wallets/{walletId}'.replaceAll(
-        '{' r'walletId' '}',
-        encodeQueryParameter(_serializers, walletId, const FullType(String))
-            .toString());
+      '{'
+      r'walletId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        walletId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -326,14 +322,18 @@ class WalletApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/wallets/{walletId}'.replaceAll(
-        '{' r'walletId' '}',
-        encodeQueryParameter(_serializers, walletId, const FullType(String))
-            .toString());
+      '{'
+      r'walletId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        walletId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -363,9 +363,10 @@ class WalletApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(WalletDto),
-            ) as WalletDto;
+                  rawResponse,
+                  specifiedType: const FullType(WalletDto),
+                )
+                as WalletDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -414,9 +415,7 @@ class WalletApi {
     final _path = r'/v1/wallets';
     final _options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -433,8 +432,11 @@ class WalletApi {
 
     final _queryParameters = <String, dynamic>{
       if (didType != null)
-        r'didType':
-            encodeQueryParameter(_serializers, didType, const FullType(String)),
+        r'didType': encodeQueryParameter(
+          _serializers,
+          didType,
+          const FullType(String),
+        ),
     };
 
     final _response = await _dio.request<Object>(
@@ -453,9 +455,10 @@ class WalletApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(WalletsListDto),
-            ) as WalletsListDto;
+                  rawResponse,
+                  specifiedType: const FullType(WalletsListDto),
+                )
+                as WalletsListDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -504,14 +507,18 @@ class WalletApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/wallets/{walletId}/sign-credential'.replaceAll(
-        '{' r'walletId' '}',
-        encodeQueryParameter(_serializers, walletId, const FullType(String))
-            .toString());
+      '{'
+      r'walletId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        walletId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -531,14 +538,13 @@ class WalletApi {
 
     try {
       const _type = FullType(SignCredentialInputDto);
-      _bodyData =
-          _serializers.serialize(signCredentialInputDto, specifiedType: _type);
+      _bodyData = _serializers.serialize(
+        signCredentialInputDto,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -561,9 +567,10 @@ class WalletApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(SignCredentialResultDto),
-            ) as SignCredentialResultDto;
+                  rawResponse,
+                  specifiedType: const FullType(SignCredentialResultDto),
+                )
+                as SignCredentialResultDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -612,14 +619,18 @@ class WalletApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v2/wallets/{walletId}/credentials/jwt/sign'.replaceAll(
-        '{' r'walletId' '}',
-        encodeQueryParameter(_serializers, walletId, const FullType(String))
-            .toString());
+      '{'
+      r'walletId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        walletId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -639,14 +650,13 @@ class WalletApi {
 
     try {
       const _type = FullType(SignCredentialsJwtInputDto);
-      _bodyData = _serializers.serialize(signCredentialsJwtInputDto,
-          specifiedType: _type);
+      _bodyData = _serializers.serialize(
+        signCredentialsJwtInputDto,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -669,9 +679,10 @@ class WalletApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(SignCredentialsJwtResultDto),
-            ) as SignCredentialsJwtResultDto;
+                  rawResponse,
+                  specifiedType: const FullType(SignCredentialsJwtResultDto),
+                )
+                as SignCredentialsJwtResultDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -720,14 +731,18 @@ class WalletApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v2/wallets/{walletId}/credentials/ldp/sign'.replaceAll(
-        '{' r'walletId' '}',
-        encodeQueryParameter(_serializers, walletId, const FullType(String))
-            .toString());
+      '{'
+      r'walletId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        walletId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -747,14 +762,13 @@ class WalletApi {
 
     try {
       const _type = FullType(SignCredentialsLdpInputDto);
-      _bodyData = _serializers.serialize(signCredentialsLdpInputDto,
-          specifiedType: _type);
+      _bodyData = _serializers.serialize(
+        signCredentialsLdpInputDto,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -777,9 +791,10 @@ class WalletApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(SignCredentialsLdpResultDto),
-            ) as SignCredentialsLdpResultDto;
+                  rawResponse,
+                  specifiedType: const FullType(SignCredentialsLdpResultDto),
+                )
+                as SignCredentialsLdpResultDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -828,14 +843,18 @@ class WalletApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v2/wallets/{walletId}/credentials/sd-jwt/sign'.replaceAll(
-        '{' r'walletId' '}',
-        encodeQueryParameter(_serializers, walletId, const FullType(String))
-            .toString());
+      '{'
+      r'walletId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        walletId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -855,14 +874,13 @@ class WalletApi {
 
     try {
       const _type = FullType(SignCredentialsDm2SdJwtInputDto);
-      _bodyData = _serializers.serialize(signCredentialsDm2SdJwtInputDto,
-          specifiedType: _type);
+      _bodyData = _serializers.serialize(
+        signCredentialsDm2SdJwtInputDto,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -885,9 +903,12 @@ class WalletApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(SignCredentialsDm2SdJwtResultDto),
-            ) as SignCredentialsDm2SdJwtResultDto;
+                  rawResponse,
+                  specifiedType: const FullType(
+                    SignCredentialsDm2SdJwtResultDto,
+                  ),
+                )
+                as SignCredentialsDm2SdJwtResultDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -936,14 +957,18 @@ class WalletApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/wallets/{walletId}/sign-jwt'.replaceAll(
-        '{' r'walletId' '}',
-        encodeQueryParameter(_serializers, walletId, const FullType(String))
-            .toString());
+      '{'
+      r'walletId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        walletId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -966,10 +991,7 @@ class WalletApi {
       _bodyData = _serializers.serialize(signJwtToken, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -992,9 +1014,10 @@ class WalletApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(SignJwtTokenOK),
-            ) as SignJwtTokenOK;
+                  rawResponse,
+                  specifiedType: const FullType(SignJwtTokenOK),
+                )
+                as SignJwtTokenOK;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1022,7 +1045,7 @@ class WalletApi {
   ///
   /// Parameters:
   /// * [walletId] - id of the wallet
-  /// * [signJwtV2] - SignJwtV2
+  /// * [signJwtV2InputDto] - SignJwtV2
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1030,11 +1053,11 @@ class WalletApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [SignJwtV2OK] as data
+  /// Returns a [Future] containing a [Response] with a [SignJwtV2ResultDto] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<SignJwtV2OK>> signJwtV2({
+  Future<Response<SignJwtV2ResultDto>> signJwtV2({
     required String walletId,
-    required SignJwtV2 signJwtV2,
+    required SignJwtV2InputDto signJwtV2InputDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -1043,14 +1066,18 @@ class WalletApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v2/wallets/{walletId}/jwt/sign'.replaceAll(
-        '{' r'walletId' '}',
-        encodeQueryParameter(_serializers, walletId, const FullType(String))
-            .toString());
+      '{'
+      r'walletId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        walletId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1069,14 +1096,14 @@ class WalletApi {
     dynamic _bodyData;
 
     try {
-      const _type = FullType(SignJwtV2);
-      _bodyData = _serializers.serialize(signJwtV2, specifiedType: _type);
+      const _type = FullType(SignJwtV2InputDto);
+      _bodyData = _serializers.serialize(
+        signJwtV2InputDto,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -1092,16 +1119,17 @@ class WalletApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    SignJwtV2OK? _responseData;
+    SignJwtV2ResultDto? _responseData;
 
     try {
       final rawResponse = _response.data;
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(SignJwtV2OK),
-            ) as SignJwtV2OK;
+                  rawResponse,
+                  specifiedType: const FullType(SignJwtV2ResultDto),
+                )
+                as SignJwtV2ResultDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1112,7 +1140,7 @@ class WalletApi {
       );
     }
 
-    return Response<SignJwtV2OK>(
+    return Response<SignJwtV2ResultDto>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,
@@ -1150,14 +1178,18 @@ class WalletApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v2/wallets/{walletId}/presentations/ldp/sign'.replaceAll(
-        '{' r'walletId' '}',
-        encodeQueryParameter(_serializers, walletId, const FullType(String))
-            .toString());
+      '{'
+      r'walletId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        walletId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1177,14 +1209,13 @@ class WalletApi {
 
     try {
       const _type = FullType(SignPresentationLdpInputDto);
-      _bodyData = _serializers.serialize(signPresentationLdpInputDto,
-          specifiedType: _type);
+      _bodyData = _serializers.serialize(
+        signPresentationLdpInputDto,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -1207,9 +1238,10 @@ class WalletApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(SignPresentationLdpResultDto),
-            ) as SignPresentationLdpResultDto;
+                  rawResponse,
+                  specifiedType: const FullType(SignPresentationLdpResultDto),
+                )
+                as SignPresentationLdpResultDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1258,14 +1290,18 @@ class WalletApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/v1/wallets/{walletId}'.replaceAll(
-        '{' r'walletId' '}',
-        encodeQueryParameter(_serializers, walletId, const FullType(String))
-            .toString());
+      '{'
+      r'walletId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        walletId,
+        const FullType(String),
+      ).toString(),
+    );
     final _options = Options(
       method: r'PATCH',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -1285,14 +1321,13 @@ class WalletApi {
 
     try {
       const _type = FullType(UpdateWalletInput);
-      _bodyData =
-          _serializers.serialize(updateWalletInput, specifiedType: _type);
+      _bodyData = _serializers.serialize(
+        updateWalletInput,
+        specifiedType: _type,
+      );
     } catch (error, stackTrace) {
       throw DioException(
-        requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
+        requestOptions: _options.compose(_dio.options, _path),
         type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
@@ -1315,9 +1350,10 @@ class WalletApi {
       _responseData = rawResponse == null
           ? null
           : _serializers.deserialize(
-              rawResponse,
-              specifiedType: const FullType(WalletDto),
-            ) as WalletDto;
+                  rawResponse,
+                  specifiedType: const FullType(WalletDto),
+                )
+                as WalletDto;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,

@@ -11,11 +11,15 @@ const CreateWalletV2InputDidMethodEnum _$createWalletV2InputDidMethodEnum_key =
 const CreateWalletV2InputDidMethodEnum _$createWalletV2InputDidMethodEnum_web =
     const CreateWalletV2InputDidMethodEnum._('web');
 const CreateWalletV2InputDidMethodEnum
-    _$createWalletV2InputDidMethodEnum_peer0 =
+_$createWalletV2InputDidMethodEnum_peer0 =
     const CreateWalletV2InputDidMethodEnum._('peer0');
+const CreateWalletV2InputDidMethodEnum
+_$createWalletV2InputDidMethodEnum_peer2 =
+    const CreateWalletV2InputDidMethodEnum._('peer2');
 
 CreateWalletV2InputDidMethodEnum _$createWalletV2InputDidMethodEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'key':
       return _$createWalletV2InputDidMethodEnum_key;
@@ -23,30 +27,36 @@ CreateWalletV2InputDidMethodEnum _$createWalletV2InputDidMethodEnumValueOf(
       return _$createWalletV2InputDidMethodEnum_web;
     case 'peer0':
       return _$createWalletV2InputDidMethodEnum_peer0;
+    case 'peer2':
+      return _$createWalletV2InputDidMethodEnum_peer2;
     default:
       throw ArgumentError(name);
   }
 }
 
 final BuiltSet<CreateWalletV2InputDidMethodEnum>
-    _$createWalletV2InputDidMethodEnumValues = BuiltSet<
-        CreateWalletV2InputDidMethodEnum>(const <CreateWalletV2InputDidMethodEnum>[
-  _$createWalletV2InputDidMethodEnum_key,
-  _$createWalletV2InputDidMethodEnum_web,
-  _$createWalletV2InputDidMethodEnum_peer0,
-]);
+_$createWalletV2InputDidMethodEnumValues =
+    BuiltSet<CreateWalletV2InputDidMethodEnum>(
+      const <CreateWalletV2InputDidMethodEnum>[
+        _$createWalletV2InputDidMethodEnum_key,
+        _$createWalletV2InputDidMethodEnum_web,
+        _$createWalletV2InputDidMethodEnum_peer0,
+        _$createWalletV2InputDidMethodEnum_peer2,
+      ],
+    );
 
 const CreateWalletV2InputAlgorithmEnum
-    _$createWalletV2InputAlgorithmEnum_secp256k1 =
+_$createWalletV2InputAlgorithmEnum_secp256k1 =
     const CreateWalletV2InputAlgorithmEnum._('secp256k1');
 const CreateWalletV2InputAlgorithmEnum
-    _$createWalletV2InputAlgorithmEnum_ed25519 =
+_$createWalletV2InputAlgorithmEnum_ed25519 =
     const CreateWalletV2InputAlgorithmEnum._('ed25519');
 const CreateWalletV2InputAlgorithmEnum _$createWalletV2InputAlgorithmEnum_p256 =
     const CreateWalletV2InputAlgorithmEnum._('p256');
 
 CreateWalletV2InputAlgorithmEnum _$createWalletV2InputAlgorithmEnumValueOf(
-    String name) {
+  String name,
+) {
   switch (name) {
     case 'secp256k1':
       return _$createWalletV2InputAlgorithmEnum_secp256k1;
@@ -60,18 +70,20 @@ CreateWalletV2InputAlgorithmEnum _$createWalletV2InputAlgorithmEnumValueOf(
 }
 
 final BuiltSet<CreateWalletV2InputAlgorithmEnum>
-    _$createWalletV2InputAlgorithmEnumValues = BuiltSet<
-        CreateWalletV2InputAlgorithmEnum>(const <CreateWalletV2InputAlgorithmEnum>[
-  _$createWalletV2InputAlgorithmEnum_secp256k1,
-  _$createWalletV2InputAlgorithmEnum_ed25519,
-  _$createWalletV2InputAlgorithmEnum_p256,
-]);
+_$createWalletV2InputAlgorithmEnumValues =
+    BuiltSet<CreateWalletV2InputAlgorithmEnum>(
+      const <CreateWalletV2InputAlgorithmEnum>[
+        _$createWalletV2InputAlgorithmEnum_secp256k1,
+        _$createWalletV2InputAlgorithmEnum_ed25519,
+        _$createWalletV2InputAlgorithmEnum_p256,
+      ],
+    );
 
 Serializer<CreateWalletV2InputDidMethodEnum>
-    _$createWalletV2InputDidMethodEnumSerializer =
+_$createWalletV2InputDidMethodEnumSerializer =
     _$CreateWalletV2InputDidMethodEnumSerializer();
 Serializer<CreateWalletV2InputAlgorithmEnum>
-    _$createWalletV2InputAlgorithmEnumSerializer =
+_$createWalletV2InputAlgorithmEnumSerializer =
     _$CreateWalletV2InputAlgorithmEnumSerializer();
 
 class _$CreateWalletV2InputDidMethodEnumSerializer
@@ -80,11 +92,13 @@ class _$CreateWalletV2InputDidMethodEnumSerializer
     'key': 'key',
     'web': 'web',
     'peer0': 'peer0',
+    'peer2': 'peer2',
   };
   static const Map<Object, String> _fromWire = const <Object, String>{
     'key': 'key',
     'web': 'web',
     'peer0': 'peer0',
+    'peer2': 'peer2',
   };
 
   @override
@@ -94,16 +108,19 @@ class _$CreateWalletV2InputDidMethodEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, CreateWalletV2InputDidMethodEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    CreateWalletV2InputDidMethodEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   CreateWalletV2InputDidMethodEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      CreateWalletV2InputDidMethodEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => CreateWalletV2InputDidMethodEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$CreateWalletV2InputAlgorithmEnumSerializer
@@ -126,16 +143,19 @@ class _$CreateWalletV2InputAlgorithmEnumSerializer
 
   @override
   Object serialize(
-          Serializers serializers, CreateWalletV2InputAlgorithmEnum object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      _toWire[object.name] ?? object.name;
+    Serializers serializers,
+    CreateWalletV2InputAlgorithmEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
 
   @override
   CreateWalletV2InputAlgorithmEnum deserialize(
-          Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      CreateWalletV2InputAlgorithmEnum.valueOf(
-          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => CreateWalletV2InputAlgorithmEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
 }
 
 class _$CreateWalletV2Input extends CreateWalletV2Input {
@@ -149,22 +169,25 @@ class _$CreateWalletV2Input extends CreateWalletV2Input {
   final String? didWebUrl;
   @override
   final CreateWalletV2InputAlgorithmEnum? algorithm;
+  @override
+  final BuiltList<ServiceEndpointInput>? services;
 
-  factory _$CreateWalletV2Input(
-          [void Function(CreateWalletV2InputBuilder)? updates]) =>
-      (CreateWalletV2InputBuilder()..update(updates))._build();
+  factory _$CreateWalletV2Input([
+    void Function(CreateWalletV2InputBuilder)? updates,
+  ]) => (CreateWalletV2InputBuilder()..update(updates))._build();
 
-  _$CreateWalletV2Input._(
-      {this.name,
-      this.description,
-      this.didMethod,
-      this.didWebUrl,
-      this.algorithm})
-      : super._();
+  _$CreateWalletV2Input._({
+    this.name,
+    this.description,
+    this.didMethod,
+    this.didWebUrl,
+    this.algorithm,
+    this.services,
+  }) : super._();
   @override
   CreateWalletV2Input rebuild(
-          void Function(CreateWalletV2InputBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateWalletV2InputBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateWalletV2InputBuilder toBuilder() =>
@@ -178,7 +201,8 @@ class _$CreateWalletV2Input extends CreateWalletV2Input {
         description == other.description &&
         didMethod == other.didMethod &&
         didWebUrl == other.didWebUrl &&
-        algorithm == other.algorithm;
+        algorithm == other.algorithm &&
+        services == other.services;
   }
 
   @override
@@ -189,6 +213,7 @@ class _$CreateWalletV2Input extends CreateWalletV2Input {
     _$hash = $jc(_$hash, didMethod.hashCode);
     _$hash = $jc(_$hash, didWebUrl.hashCode);
     _$hash = $jc(_$hash, algorithm.hashCode);
+    _$hash = $jc(_$hash, services.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -200,7 +225,8 @@ class _$CreateWalletV2Input extends CreateWalletV2Input {
           ..add('description', description)
           ..add('didMethod', didMethod)
           ..add('didWebUrl', didWebUrl)
-          ..add('algorithm', algorithm))
+          ..add('algorithm', algorithm)
+          ..add('services', services))
         .toString();
   }
 }
@@ -231,6 +257,12 @@ class CreateWalletV2InputBuilder
   set algorithm(CreateWalletV2InputAlgorithmEnum? algorithm) =>
       _$this._algorithm = algorithm;
 
+  ListBuilder<ServiceEndpointInput>? _services;
+  ListBuilder<ServiceEndpointInput> get services =>
+      _$this._services ??= ListBuilder<ServiceEndpointInput>();
+  set services(ListBuilder<ServiceEndpointInput>? services) =>
+      _$this._services = services;
+
   CreateWalletV2InputBuilder() {
     CreateWalletV2Input._defaults(this);
   }
@@ -243,6 +275,7 @@ class CreateWalletV2InputBuilder
       _didMethod = $v.didMethod;
       _didWebUrl = $v.didWebUrl;
       _algorithm = $v.algorithm;
+      _services = $v.services?.toBuilder();
       _$v = null;
     }
     return this;
@@ -262,14 +295,32 @@ class CreateWalletV2InputBuilder
   CreateWalletV2Input build() => _build();
 
   _$CreateWalletV2Input _build() {
-    final _$result = _$v ??
-        _$CreateWalletV2Input._(
-          name: name,
-          description: description,
-          didMethod: didMethod,
-          didWebUrl: didWebUrl,
-          algorithm: algorithm,
+    _$CreateWalletV2Input _$result;
+    try {
+      _$result =
+          _$v ??
+          _$CreateWalletV2Input._(
+            name: name,
+            description: description,
+            didMethod: didMethod,
+            didWebUrl: didWebUrl,
+            algorithm: algorithm,
+            services: _services?.build(),
+          );
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'services';
+        _services?.build();
+      } catch (e) {
+        throw BuiltValueNestedFieldError(
+          r'CreateWalletV2Input',
+          _$failedField,
+          e.toString(),
         );
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

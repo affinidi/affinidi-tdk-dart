@@ -43,9 +43,9 @@ abstract class VerifyPresentationV2Input
 
   VerifyPresentationV2Input._();
 
-  factory VerifyPresentationV2Input(
-          [void updates(VerifyPresentationV2InputBuilder b)]) =
-      _$VerifyPresentationV2Input;
+  factory VerifyPresentationV2Input([
+    void updates(VerifyPresentationV2InputBuilder b),
+  ]) = _$VerifyPresentationV2Input;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(VerifyPresentationV2InputBuilder b) => b;
@@ -60,7 +60,7 @@ class _$VerifyPresentationV2InputSerializer
   @override
   final Iterable<Type> types = const [
     VerifyPresentationV2Input,
-    _$VerifyPresentationV2Input
+    _$VerifyPresentationV2Input,
   ];
 
   @override
@@ -89,8 +89,10 @@ class _$VerifyPresentationV2InputSerializer
       yield r'dcqlQuery';
       yield serializers.serialize(
         object.dcqlQuery,
-        specifiedType: const FullType(
-            BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
+        specifiedType: const FullType(BuiltMap, [
+          FullType(String),
+          FullType.nullable(JsonObject),
+        ]),
       );
     }
     if (object.challenge != null) {
@@ -115,9 +117,11 @@ class _$VerifyPresentationV2InputSerializer
     VerifyPresentationV2Input object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -133,39 +137,55 @@ class _$VerifyPresentationV2InputSerializer
       final value = serializedList[i + 1];
       switch (key) {
         case r'verifiablePresentation':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(JsonObject),
+                  )
+                  as JsonObject;
           result.verifiablePresentation = valueDes;
           break;
         case r'pexQuery':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(VerifyPresentationV2InputPexQuery),
-          ) as VerifyPresentationV2InputPexQuery;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      VerifyPresentationV2InputPexQuery,
+                    ),
+                  )
+                  as VerifyPresentationV2InputPexQuery;
           result.pexQuery.replace(valueDes);
           break;
         case r'dcqlQuery':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltMap, [FullType(String), FullType.nullable(JsonObject)]),
-          ) as BuiltMap<String, JsonObject?>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltMap, [
+                      FullType(String),
+                      FullType.nullable(JsonObject),
+                    ]),
+                  )
+                  as BuiltMap<String, JsonObject?>;
           result.dcqlQuery.replace(valueDes);
           break;
         case r'challenge':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.challenge = valueDes;
           break;
         case r'domain':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(String)]),
-          ) as BuiltList<String>;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(BuiltList, [
+                      FullType(String),
+                    ]),
+                  )
+                  as BuiltList<String>;
           result.domain.replace(valueDes);
           break;
         default:

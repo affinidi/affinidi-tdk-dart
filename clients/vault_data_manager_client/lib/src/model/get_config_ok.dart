@@ -62,9 +62,11 @@ class _$GetConfigOKSerializer implements PrimitiveSerializer<GetConfigOK> {
     GetConfigOK object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(
+      serializers,
+      object,
+      specifiedType: specifiedType,
+    ).toList();
   }
 
   void _deserializeProperties(
@@ -80,17 +82,18 @@ class _$GetConfigOKSerializer implements PrimitiveSerializer<GetConfigOK> {
       final value = serializedList[i + 1];
       switch (key) {
         case r'profileName':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
           result.profileName = valueDes;
           break;
         case r'maximumProfiles':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
           result.maximumProfiles = valueDes;
           break;
         default:
