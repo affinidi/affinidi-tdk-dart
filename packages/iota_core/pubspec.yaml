@@ -6,7 +6,7 @@ environment:
   sdk: ^3.8.0
 resolution: workspace
 dependencies:
-  affinidi_tdk_auth_provider: ^2.0.0
+  affinidi_tdk_auth_provider: ^2.0.1
   affinidi_tdk_common: ^2.0.0
   http: ^1.1.0
 dev_dependencies:

@@ -1,3 +1,7 @@
+## 2.0.1
+
+ - **FIX**: update packages score (#41).
+
 # Change Log
 
 ## 2.0.0

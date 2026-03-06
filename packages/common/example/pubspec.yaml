@@ -13,4 +13,4 @@ dependencies:
   affinidi_tdk_credential_issuance_client: ^2.0.0
   affinidi_tdk_iota_client: ^2.0.0
 dev_dependencies:
-  affinidi_tdk_auth_provider: any
+  affinidi_tdk_auth_provider: ^2.0.1
