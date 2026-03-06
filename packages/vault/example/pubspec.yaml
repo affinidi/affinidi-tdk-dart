@@ -12,6 +12,7 @@ dependencies:
   affinidi_tdk_auth_provider: ^2.0.0
   affinidi_tdk_common: ^2.0.0
   affinidi_tdk_didcomm_mediator_client: ^2.0.0
+  affinidi_tdk_iota_client: ^2.0.0
   affinidi_tdk_vault: ^2.0.0
   affinidi_tdk_vault_data_manager: ^2.0.0
   affinidi_tdk_vdsp: ^2.0.0

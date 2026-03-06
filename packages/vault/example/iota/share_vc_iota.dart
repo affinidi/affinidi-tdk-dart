@@ -31,6 +31,11 @@ void main() async {
   final walletAri = await ensureWalletCreated();
   prettyPrint('Wallet ARI', object: walletAri);
 
+  final configurationId = await ensureIotaConfigurationCreated(
+    walletAri: walletAri,
+  );
+  prettyPrint('IOTA Configuration ID', object: configurationId);
+
   vault.listenForVdspRequests(
     onDataRequest: (message) async {
       if (defaultProfile.defaultCredentialStorage == null) {
