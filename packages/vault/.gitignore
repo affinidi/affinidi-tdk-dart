@@ -9,3 +9,5 @@ pubspec.lock
 
 # FVM Version Cache
 .fvm/
+
+example/iota/.env

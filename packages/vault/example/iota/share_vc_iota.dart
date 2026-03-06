@@ -7,7 +7,8 @@ import 'package:dcql/dcql.dart';
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../integration_tests/test/helpers/environment.dart';
+import '../../../integration_tests/test/helpers/environment.dart';
+import 'iota_setup.dart';
 
 const _emailCredentialType = 'Email';
 const _defaultProfileName = 'Default Profile';
@@ -26,6 +27,9 @@ void main() async {
   await _initializeCredentials(defaultProfile);
 
   prettyPrint('Messaging DID', object: vault.messagingDid);
+
+  final walletAri = await ensureWalletCreated();
+  prettyPrint('Wallet ARI', object: walletAri);
 
   vault.listenForVdspRequests(
     onDataRequest: (message) async {
