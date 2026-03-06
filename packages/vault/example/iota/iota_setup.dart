@@ -19,15 +19,16 @@ AuthProvider _loadEnv() {
   final projectId = env['DEV_PROJECT_ID'];
   final tokenId = env['DEV_TOKEN_ID'];
   final privateKey = env['DEV_PRIVATE_KEY'];
-  if (projectId == null ||
-      projectId.isEmpty ||
-      tokenId == null ||
-      tokenId.isEmpty ||
-      privateKey == null ||
-      privateKey.isEmpty) {
-    throw Exception(
-      'Missing DEV_PROJECT_ID, DEV_TOKEN_ID or DEV_PRIVATE_KEY in $_envPath',
-    );
+  if (projectId == null || projectId.isEmpty) {
+    throw Exception('Missing DEV_PROJECT_ID in $_envPath');
+  }
+
+  if (tokenId == null || tokenId.isEmpty) {
+    throw Exception('Missing DEV_TOKEN_ID in $_envPath');
+  }
+
+  if (privateKey == null || privateKey.isEmpty) {
+    throw Exception('Missing DEV_PRIVATE_KEY in $_envPath');
   }
   final envConfig = Environment.getEnvironmentConfig(EnvironmentType.dev);
   return AuthProvider.withEnv(
