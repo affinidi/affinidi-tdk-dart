@@ -35,8 +35,10 @@ class VdspRequestServiceMessageBody {
   /// Creates a new [VdspRequestServiceMessageBody].
   VdspRequestServiceMessageBody({required this.operation, this.comment});
 
+  /// Creates a [VdspRequestServiceMessageBody] from JSON.
   factory VdspRequestServiceMessageBody.fromJson(Map<String, dynamic> json) =>
       _$VdspRequestServiceMessageBodyFromJson(json);
 
+  /// Converts the [VdspRequestServiceMessageBody] to JSON.
   Map<String, dynamic> toJson() => _$VdspRequestServiceMessageBodyToJson(this);
 }

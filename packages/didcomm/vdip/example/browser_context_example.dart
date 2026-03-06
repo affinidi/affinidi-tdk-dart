@@ -386,7 +386,7 @@ Future<HttpServer> startIssuerServer({
       final validationResult = await vdipIssuer.validateHolderToken(
         token: token,
         holderDid: verificationRequest.holderDid,
-        expectedNonce: nonce,
+        expectedNonce: verificationRequest.nonce,
         expectedThreadId: verificationRequest.threadId,
       );
 
