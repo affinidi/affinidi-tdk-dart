@@ -10,7 +10,7 @@ resolution: workspace
 
 dependencies:
   affinidi_tdk_vault: ^2.0.0
-  affinidi_tdk_vault_edge_drift_provider: ^2.1.0
+  affinidi_tdk_vault_edge_drift_provider: ^2.0.0
   drift: ^2.26.1
   file_picker: ^8.0.0+1
   flutter:

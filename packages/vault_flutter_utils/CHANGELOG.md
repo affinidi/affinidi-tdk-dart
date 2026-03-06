@@ -1,15 +1,5 @@
 # Change Log
 
-## 2.1.0
-
-### Changes
-
----
-
-Chore: Dependencies Update 
-
----
-
 ## 2.0.0
 
 ### Changes

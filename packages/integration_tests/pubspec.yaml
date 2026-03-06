@@ -14,7 +14,7 @@ dev_dependencies:
   affinidi_tdk_login_configuration_client: ^2.0.0
   affinidi_tdk_vault_data_manager_client: ^2.0.0
   affinidi_tdk_vdip: ^2.0.0
-  affinidi_tdk_vdsp: ^2.1.0
+  affinidi_tdk_vdsp: ^2.0.0
   affinidi_tdk_wallets_client: ^2.0.0
   built_collection: ^5.1.1
   built_value: ^8.9.3
