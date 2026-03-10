@@ -17,7 +17,11 @@ void main() async {
   // Run commands below in your terminal to generate keys for Receiver:
   // openssl rand -hex 32 > example/keys/alice_seed.txt
 
-  final vault = await _initializeVault();
+  final walletSetup = await ensureWalletCreated();
+  prettyPrint('Wallet ARI', object: walletSetup.walletAri);
+  prettyPrint('Business DID', object: walletSetup.businessDid);
+
+  final vault = await _initializeVault(businessDids: [walletSetup.businessDid]);
   await _initializeProfiles(vault);
 
   final defaultProfile = (await vault.listProfiles()).firstWhere(
@@ -28,11 +32,8 @@ void main() async {
 
   prettyPrint('Messaging DID', object: vault.messagingDid);
 
-  final walletAri = await ensureWalletCreated();
-  prettyPrint('Wallet ARI', object: walletAri);
-
   final configurationId = await ensureIotaConfigurationCreated(
-    walletAri: walletAri,
+    walletAri: walletSetup.walletAri,
   );
   prettyPrint('IOTA Configuration ID', object: configurationId);
 
@@ -78,9 +79,7 @@ void main() async {
     },
   );
 
-  final verifier = await _initializeVerifier(
-    bridgeIotaDid: vault.bridgeIotaDid,
-  );
+  final verifier = await _initializeVerifier();
 
   final verifierChallenge = const Uuid().v4();
   final verifierDomain = 'test.verifier.com';
@@ -165,7 +164,7 @@ void main() async {
   );
 }
 
-Future<Vault> _initializeVault() async {
+Future<Vault> _initializeVault({required List<String> businessDids}) async {
   final seed = await extractSeed('keys/alice_seed.txt');
 
   final vaultStore = InMemoryVaultStore();
@@ -183,6 +182,7 @@ Future<Vault> _initializeVault() async {
     vaultStore,
     profileRepositories: profileRepositories,
     defaultProfileRepositoryId: vfsRepositoryId,
+    businessDids: businessDids,
   );
 
   await vault.ensureInitialized();
@@ -283,25 +283,7 @@ Future<VerifiableCredential> _createEmailCredential({
   return issuedCredential;
 }
 
-// TODO: should be IOTA configuration. We use a VDSP mock until the bridge is fixed.
-Future<VdspVerifier> _initializeVerifier({
-  required String bridgeIotaDid,
-}) async {
-  // TODO: list
-  // 1. Add a script to get an access token with the personal access token and use it to call IOTA and Wallet API
-  // 2. Make a call to Wallet API to create a new wallet that will appear on Dev Portal\
-  // 3. Make a call to IOTA API to create configuration
-  //    a. use VDSP mode
-  //    b. use wallet we created in the previous step
-  //    c. set DCQL query with email claim as the query criteria
-  // 4. Make a call to IOTA to trigger VDSP sharing request
-  // 5. Make a call to IOTA to fetch VDSP response and print it in the console
-
-  // Configure Personal Access Token on DEV:
-  // npm i @affinidi/cli
-  // AFFINIDI_CLI_ENVIRONMENT=dev affinidi start
-  // AFFINIDI_CLI_ENVIRONMENT=dev affinidi token create-token
-
+Future<VdspVerifier> _initializeVerifier() async {
   final verifierKeyStore = InMemoryKeyStore();
   final verifierWallet = PersistentWallet(verifierKeyStore);
 
@@ -318,16 +300,17 @@ Future<VdspVerifier> _initializeVerifier({
   );
   await verifierDidManager.addVerificationMethod(verifierKeyId);
 
-  final bridgeIotaDidDocument = await UniversalDIDResolver.defaultResolver
-      .resolveDid(bridgeIotaDid);
+  // Resolve mediator DID from IOTA DID (did:web:did.affinidi.io:amb)
+  final mediatorIotaDidDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(mediatorIotaDid);
 
-  final mediatorService = bridgeIotaDidDocument.service
+  final mediatorService = mediatorIotaDidDocument.service
       .where((service) => service.type.toString() == 'DIDCommMessaging')
       .firstOrNull;
 
   if (mediatorService == null) {
     throw Exception(
-      'No DIDCommMessaging service found in the bridge IOTA DID Document',
+      'No DIDCommMessaging service found when resolving $mediatorIotaDid',
     );
   }
 

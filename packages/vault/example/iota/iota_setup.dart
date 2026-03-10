@@ -44,7 +44,13 @@ AuthProvider _loadEnv() {
   );
 }
 
-Future<String> ensureWalletCreated() async {
+class WalletSetupResult {
+  const WalletSetupResult({required this.walletAri, required this.businessDid});
+  final String walletAri;
+  final String businessDid;
+}
+
+Future<WalletSetupResult> ensureWalletCreated() async {
   final authProvider = _loadEnv();
 
   final api = AffinidiTdkWalletsClient(
@@ -54,16 +60,38 @@ Future<String> ensureWalletCreated() async {
       Environment.fetchEnvironment().apiGwUrl,
     ),
   ).getWalletApi();
+  final listResponse = await api.listWallets();
+  final existing = listResponse.data?.wallets
+      ?.where((w) => w.name == _walletName)
+      .firstOrNull;
 
-  final createInput = CreateWalletInput(
-    (b) => b
-      ..name = _walletName
-      ..didMethod = CreateWalletInputDidMethodEnum.key,
-  );
+  final String walletId;
+  final String walletAri;
 
-  final response = await api.createWallet(createWalletInput: createInput);
-  final newAri = response.data!.wallet!.ari!;
-  return newAri;
+  if (existing != null) {
+    walletId = existing.id!;
+    walletAri = existing.ari!;
+  } else {
+    final createInput = CreateWalletInput(
+      (b) => b
+        ..name = _walletName
+        ..didMethod = CreateWalletInputDidMethodEnum.key,
+    );
+    final createResponse = await api.createWallet(
+      createWalletInput: createInput,
+    );
+    final wallet = createResponse.data!.wallet!;
+    walletId = wallet.id!;
+    walletAri = wallet.ari!;
+  }
+
+  final walletResponse = await api.getWallet(walletId: walletId);
+  final businessDid = walletResponse.data?.did ?? '';
+  if (businessDid.isEmpty) {
+    throw Exception('Wallet DID not available.');
+  }
+
+  return WalletSetupResult(walletAri: walletAri, businessDid: businessDid);
 }
 
 Future<String> ensureIotaConfigurationCreated({
