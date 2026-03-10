@@ -94,7 +94,7 @@ Future<WalletSetupResult> ensureWalletCreated() async {
   return WalletSetupResult(walletAri: walletAri, businessDid: businessDid);
 }
 
-Future<String> ensureIotaConfigurationCreated({
+Future<IotaConfigResult> ensureIotaConfigurationCreated({
   required String walletAri,
 }) async {
   final authProvider = _loadEnv();
@@ -118,7 +118,16 @@ Future<String> ensureIotaConfigurationCreated({
                 c.name == _configName && c.walletAri == walletAri,
           )
           .firstOrNull;
-  if (existing != null) return existing.configurationId;
+  if (existing != null) {
+    final dcqlQueries = (await dcql.listDcqlQueries(
+      configurationId: existing.configurationId,
+    )).data;
+    final queryId = dcqlQueries?.dcqlQueries.firstOrNull?.queryId ?? '';
+    return IotaConfigResult(
+      configurationId: existing.configurationId,
+      queryId: queryId,
+    );
+  }
 
   final config = (await configs.createIotaConfiguration(
     createIotaConfigurationInput:
@@ -139,7 +148,7 @@ Future<String> ensureIotaConfigurationCreated({
   const dcqlJson =
       '{"credentials":[{"id":"email-claim","format":"ldp_vc","meta":{"type_values":[["Email"]]},"claims":[{"path":["credentialSubject","email"]}]}]}';
 
-  await dcql.createDcqlQuery(
+  final dcqlResult = await dcql.createDcqlQuery(
     configurationId: config.configurationId,
     createDcqlQueryInput:
         (CreateDcqlQueryInputBuilder()
@@ -149,5 +158,30 @@ Future<String> ensureIotaConfigurationCreated({
             .build(),
   );
 
-  return config.configurationId;
+  return IotaConfigResult(
+    configurationId: config.configurationId,
+    queryId: dcqlResult.data!.queryId,
+  );
+}
+
+class IotaConfigResult {
+  const IotaConfigResult({
+    required this.configurationId,
+    required this.queryId,
+  });
+  final String configurationId;
+  final String queryId;
+}
+
+IotaApi getIotaApi() {
+  final authProvider = _loadEnv();
+  final envConfig = Environment.getEnvironmentConfig(EnvironmentType.dev);
+  final iotaClient = AffinidiTdkIotaClient(
+    authTokenHook: authProvider.fetchProjectScopedToken,
+    basePathOverride: replaceBaseDomain(
+      AffinidiTdkIotaClient.basePath,
+      envConfig.apiGwUrl,
+    ),
+  );
+  return iotaClient.getIotaApi();
 }

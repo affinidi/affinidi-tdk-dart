@@ -1,13 +1,14 @@
-import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediator_client.dart'
-    hide CredentialFormat;
+import 'dart:async';
+
+import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediator_client.dart';
+import 'package:affinidi_tdk_iota_client/affinidi_tdk_iota_client.dart';
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_data_manager/affinidi_tdk_vault_data_manager.dart';
-import 'package:affinidi_tdk_vdsp/affinidi_tdk_vdsp.dart';
-import 'package:dcql/dcql.dart';
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../integration_tests/test/helpers/environment.dart';
+
 import 'iota_setup.dart';
 
 const _emailCredentialType = 'Email';
@@ -32,10 +33,11 @@ void main() async {
 
   prettyPrint('Messaging DID', object: vault.messagingDid);
 
-  final configurationId = await ensureIotaConfigurationCreated(
+  final iotaConfig = await ensureIotaConfigurationCreated(
     walletAri: walletSetup.walletAri,
   );
-  prettyPrint('IOTA Configuration ID', object: configurationId);
+  prettyPrint('IOTA Configuration ID', object: iotaConfig.configurationId);
+  prettyPrint('IOTA Query ID', object: iotaConfig.queryId);
 
   vault.listenForVdspRequests(
     onDataRequest: (message) async {
@@ -45,8 +47,6 @@ void main() async {
         );
       }
 
-      // Here you can select a profile and storage if you have multiple ones.
-      // For simplicity, we use the default profile and its default credential storage.
       final queryResult = await vault.filterCredentialsForVdspQueryDataMessage(
         message,
         credentialStorage: defaultProfile.defaultCredentialStorage!,
@@ -60,7 +60,6 @@ void main() async {
         return;
       }
 
-      // Make sure a user reviews which credentials will be shared
       prettyPrint(
         'Credentials matching the query',
         object: queryResult.verifiableCredentials,
@@ -79,89 +78,42 @@ void main() async {
     },
   );
 
-  final verifier = await _initializeVerifier();
-
-  final verifierChallenge = const Uuid().v4();
-  final verifierDomain = 'test.verifier.com';
-
-  verifier.listenForIncomingMessages(
-    onDataResponse:
-        ({
-          required VdspDataResponseMessage message,
-          required bool presentationAndCredentialsAreValid,
-          VerifiablePresentation? verifiablePresentation,
-          required VerificationResult presentationVerificationResult,
-          required List<VerificationResult> credentialVerificationResults,
-        }) async {
-          prettyPrint(
-            'Verifier received Data Response Message',
-            object: message,
-          );
-
-          prettyPrint(
-            'VP and VCs are valid',
-            object: presentationAndCredentialsAreValid,
-          );
-
-          prettyPrint(
-            'Verifiable Presentation',
-            object: verifiablePresentation,
-          );
-
-          if (message.from != vault.messagingDid) {
-            throw Exception('Unexpected sender DID: ${message.from}');
-          }
-          // domain and challenge check to prevent replay attacks
-          final result =
-              presentationAndCredentialsAreValid &&
-              verifiablePresentation?.proof.first.challenge ==
-                  verifierChallenge &&
-              verifiablePresentation!.proof.first.domain?.first ==
-                  verifierDomain;
-
-          prettyPrint('Verification result', object: result);
-          await ConnectionPool.instance.stopConnections();
-        },
-    onProblemReport: (message) async {
-      prettyPrint('A problem has occurred', object: message);
-      await ConnectionPool.instance.stopConnections();
-    },
-  );
-
   await ConnectionPool.instance.startConnections();
 
-  await Future.wait([
-    _configureAcl(
-      mediatorDidDocument: verifier.mediatorClient.mediatorDidDocument,
-      didManager: verifier.didManager,
-      theirDids: [vault.messagingDid],
-    ),
-    _configureAcl(
-      mediatorDidDocument: verifier.mediatorClient.mediatorDidDocument,
-      didManager: vault.didManager,
-      theirDids: [(await verifier.didManager.getDidDocument()).id],
-    ),
-  ]);
-
-  await verifier.queryHolderData(
+  final initiateResult = await _triggerIotaVdspRequest(
+    configurationId: iotaConfig.configurationId,
+    queryId: iotaConfig.queryId,
     holderDid: vault.messagingDid,
-    dcqlQuery: DcqlCredentialQuery(
-      credentials: [
-        DcqlCredential(
-          id: const Uuid().v4(),
-          format: CredentialFormat.ldpVc,
-          claims: [
-            DcqlClaim(path: ['credentialSubject', 'email']),
-          ],
-        ),
-      ],
-    ),
-    operation: 'registerAgent',
-    proofContext: VdspQueryDataProofContext(
-      challenge: verifierChallenge,
-      domain: verifierDomain,
-    ),
   );
+
+  final vpResponse = await _fetchIotaVdspResponse(
+    configurationId: iotaConfig.configurationId,
+    correlationId: initiateResult.correlationId,
+    transactionId: initiateResult.transactionId,
+  );
+
+  prettyPrint('Verifier received Data Response Message', object: vpResponse);
+
+  final presentationAndCredentialsAreValid =
+      vpResponse != null &&
+      (vpResponse.vpToken != null && vpResponse.vpToken!.isNotEmpty);
+  prettyPrint(
+    'VP and VCs are valid',
+    object: presentationAndCredentialsAreValid,
+  );
+
+  prettyPrint('Verifiable Presentation', object: vpResponse?.vpToken);
+
+  prettyPrint(
+    'Presentation Submission',
+    object: vpResponse?.presentationSubmission,
+  );
+
+  prettyPrint(
+    'Verification result',
+    object: presentationAndCredentialsAreValid,
+  );
+  await ConnectionPool.instance.stopConnections();
 }
 
 Future<Vault> _initializeVault({required List<String> businessDids}) async {
@@ -283,78 +235,73 @@ Future<VerifiableCredential> _createEmailCredential({
   return issuedCredential;
 }
 
-Future<VdspVerifier> _initializeVerifier() async {
-  final verifierKeyStore = InMemoryKeyStore();
-  final verifierWallet = PersistentWallet(verifierKeyStore);
+class _InitiateResult {
+  _InitiateResult({required this.correlationId, required this.transactionId});
+  final String correlationId;
+  final String transactionId;
+}
 
-  final verifierDidManager = DidKeyManager(
-    wallet: verifierWallet,
-    store: InMemoryDidStore(),
+Future<_InitiateResult> _triggerIotaVdspRequest({
+  required String configurationId,
+  required String queryId,
+  required String holderDid,
+}) async {
+  final iotaApi = getIotaApi();
+
+  final correlationId = const Uuid().v4();
+  final nonce = correlationId.substring(0, 10);
+
+  final input =
+      (InitiateDataSharingRequestInputBuilder()
+            ..configurationId = configurationId
+            ..queryId = queryId
+            ..correlationId = correlationId
+            ..nonce = nonce
+            ..redirectUri = 'https://example.com'
+            ..mode = InitiateDataSharingRequestInputModeEnum.didcomm
+            ..userDid = holderDid)
+          .build();
+
+  final response = await iotaApi.initiateDataSharingRequest(
+    initiateDataSharingRequestInput: input,
   );
-
-  final verifierKeyId = 'verifier-key-1';
-
-  await verifierWallet.generateKey(
-    keyType: KeyType.secp256k1,
-    keyId: verifierKeyId,
-  );
-  await verifierDidManager.addVerificationMethod(verifierKeyId);
-
-  // Resolve mediator DID from IOTA DID (did:web:did.affinidi.io:amb)
-  final mediatorIotaDidDocument = await UniversalDIDResolver.defaultResolver
-      .resolveDid(mediatorIotaDid);
-
-  final mediatorService = mediatorIotaDidDocument.service
-      .where((service) => service.type.toString() == 'DIDCommMessaging')
-      .firstOrNull;
-
-  if (mediatorService == null) {
-    throw Exception(
-      'No DIDCommMessaging service found when resolving $mediatorIotaDid',
-    );
+  final data = response.data?.data;
+  if (data == null) {
+    throw Exception('Failed to initiate IOTA data sharing request');
   }
 
-  final mediatorDid = mediatorService.id.split('#').first;
-
-  final mediatorDidDocument = await UniversalDIDResolver.defaultResolver
-      .resolveDid(mediatorDid);
-
-  return await VdspVerifier.init(
-    mediatorDidDocument: mediatorDidDocument,
-    didManager: verifierDidManager,
-    clientOptions: const AffinidiClientOptions(),
-    authorizationProvider: await AffinidiAuthorizationProvider.init(
-      mediatorDidDocument: mediatorDidDocument,
-      didManager: verifierDidManager,
-    ),
+  return _InitiateResult(
+    correlationId: data.correlationId,
+    transactionId: data.transactionId,
   );
 }
 
-Future<void> _configureAcl({
-  required DidDocument mediatorDidDocument,
-  required DidManager didManager,
-  required List<String> theirDids,
-  DateTime? expiresTime,
+Future<FetchIOTAVPResponseOK?> _fetchIotaVdspResponse({
+  required String configurationId,
+  required String correlationId,
+  required String transactionId,
 }) async {
-  final ownDidDocument = await didManager.getDidDocument();
+  final iotaApi = getIotaApi();
 
-  final mediatorClient = await DidcommMediatorClient.init(
-    mediatorDidDocument: mediatorDidDocument,
-    didManager: didManager,
-    authorizationProvider: await AffinidiAuthorizationProvider.init(
-      mediatorDidDocument: mediatorDidDocument,
-      didManager: didManager,
-    ),
-    clientOptions: const AffinidiClientOptions(),
-  );
-
-  final accessListAddMessage = AccessListAddMessage(
-    id: const Uuid().v4(),
-    from: ownDidDocument.id,
-    to: [mediatorClient.mediatorDidDocument.id],
-    theirDids: theirDids,
-    expiresTime: expiresTime,
-  );
-
-  await mediatorClient.sendAclManagementMessage(accessListAddMessage);
+  try {
+    final input =
+        (FetchIOTAVPResponseInputBuilder()
+              ..configurationId = configurationId
+              ..correlationId = correlationId
+              ..transactionId = transactionId
+              ..responseCode = transactionId)
+            .build();
+    final response = await iotaApi.fetchIotaVpResponse(
+      fetchIOTAVPResponseInput: input,
+    );
+    final data = response.data;
+    if (data?.vpToken != null || data?.presentationSubmission != null) {
+      return data;
+    }
+  } catch (e, stackTrace) {
+    print('Error fetching IOTA VP response:');
+    print(e);
+    print(stackTrace);
+  }
+  return null;
 }
