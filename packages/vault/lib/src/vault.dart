@@ -9,10 +9,12 @@ import 'package:uuid/uuid.dart';
 import '../affinidi_tdk_vault.dart';
 import 'exceptions/tdk_exception_type.dart';
 
+const String mediatorIotaDid = 'did:web:did.affinidi.io:amb';
+
 /// Manages vault operations and profile repositories.
 class Vault {
   final String didcommDerivationPath;
-  final String bridgeIotaDid;
+  final List<String> businessDids;
 
   static const String _didCommServiceType = 'DIDCommMessaging';
 
@@ -98,7 +100,7 @@ class Vault {
     required Map<String, ProfileRepository> profileRepositories,
     String? defaultProfileRepositoryId,
     required this.didcommDerivationPath,
-    required this.bridgeIotaDid,
+    required this.businessDids,
   }) : _wallet = wallet,
        _vaultStore = vaultStore,
        _profileRepositories = Map.unmodifiable(profileRepositories) {
@@ -156,8 +158,8 @@ class Vault {
     required Map<String, ProfileRepository> profileRepositories,
     String? defaultProfileRepositoryId,
     String didCommDerivationPath =
-        "m/44'/60'/0'/0/65535", // max uint as a address index
-    String bridgeIotaDid = 'did:web:did.affinidi.io:amb',
+        "m/44'/60'/0'/0'/65535'", // max uint as address index
+    List<String> businessDids = const [],
   }) async {
     final seed = await vaultStore.getSeed();
     if (seed == null) {
@@ -179,7 +181,7 @@ class Vault {
       profileRepositories: profileRepositories,
       defaultProfileRepositoryId: defaultProfileRepositoryId,
       didcommDerivationPath: didCommDerivationPath,
-      bridgeIotaDid: bridgeIotaDid,
+      businessDids: businessDids,
     );
   }
 
@@ -227,10 +229,10 @@ class Vault {
   }
 
   Future<void> _configureMediatorDidDocument() async {
-    final bridgeIotaDidDocument = await UniversalDIDResolver.defaultResolver
-        .resolveDid(bridgeIotaDid);
+    final mediatorIotaDidDocument = await UniversalDIDResolver.defaultResolver
+        .resolveDid(mediatorIotaDid);
 
-    final mediatorService = bridgeIotaDidDocument.service
+    final mediatorService = mediatorIotaDidDocument.service
         .where((service) => service.type.toString() == _didCommServiceType)
         .firstOrNull;
 
@@ -238,7 +240,7 @@ class Vault {
       Error.throwWithStackTrace(
         TdkException(
           message:
-              'No $_didCommServiceType service found when resolved $bridgeIotaDid',
+              'No $_didCommServiceType service found when resolved $mediatorIotaDid',
           code: TdkExceptionType.invalidDidDocument.code,
         ),
         StackTrace.current,
@@ -868,7 +870,7 @@ class Vault {
       id: const Uuid().v4(),
       from: _messagingDidDocument.id,
       to: [_mediatorDidDocument.id],
-      theirDids: [bridgeIotaDid],
+      theirDids: businessDids,
       expiresTime: DateTime.now().add(
         _vdspHolder.mediatorClient.clientOptions.messageExpiration,
       ),

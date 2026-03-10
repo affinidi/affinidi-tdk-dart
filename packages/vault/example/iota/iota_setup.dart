@@ -44,7 +44,13 @@ AuthProvider _loadEnv() {
   );
 }
 
-Future<String> ensureWalletCreated() async {
+class WalletSetupResult {
+  const WalletSetupResult({required this.walletAri, required this.businessDid});
+  final String walletAri;
+  final String businessDid;
+}
+
+Future<WalletSetupResult> ensureWalletCreated() async {
   final authProvider = _loadEnv();
 
   final api = AffinidiTdkWalletsClient(
@@ -54,19 +60,42 @@ Future<String> ensureWalletCreated() async {
       Environment.fetchEnvironment().apiGwUrl,
     ),
   ).getWalletApi();
+  final listResponse = await api.listWallets();
+  final existing = listResponse.data?.wallets
+      ?.where((w) => w.name == _walletName)
+      .firstOrNull;
 
-  final createInput = CreateWalletInput(
-    (b) => b
-      ..name = _walletName
-      ..didMethod = CreateWalletInputDidMethodEnum.key,
-  );
+  final String walletId;
+  final String walletAri;
 
-  final response = await api.createWallet(createWalletInput: createInput);
-  final newAri = response.data!.wallet!.ari!;
-  return newAri;
+  if (existing != null) {
+    walletId = existing.id!;
+    walletAri = existing.ari!;
+  } else {
+    final createInput = CreateWalletV2Input(
+      (b) => b
+        ..name = _walletName
+        ..didMethod = CreateWalletV2InputDidMethodEnum.key
+        ..algorithm = CreateWalletV2InputAlgorithmEnum.secp256k1,
+    );
+    final createResponse = await api.createWalletV2(
+      createWalletV2Input: createInput,
+    );
+    final wallet = createResponse.data!.wallet!;
+    walletId = wallet.id!;
+    walletAri = wallet.ari!;
+  }
+
+  final walletResponse = await api.getWallet(walletId: walletId);
+  final businessDid = walletResponse.data?.did ?? '';
+  if (businessDid.isEmpty) {
+    throw Exception('Wallet DID not available.');
+  }
+
+  return WalletSetupResult(walletAri: walletAri, businessDid: businessDid);
 }
 
-Future<String> ensureIotaConfigurationCreated({
+Future<IotaConfigResult> ensureIotaConfigurationCreated({
   required String walletAri,
 }) async {
   final authProvider = _loadEnv();
@@ -90,7 +119,16 @@ Future<String> ensureIotaConfigurationCreated({
                 c.name == _configName && c.walletAri == walletAri,
           )
           .firstOrNull;
-  if (existing != null) return existing.configurationId;
+  if (existing != null) {
+    final dcqlQueries = (await dcql.listDcqlQueries(
+      configurationId: existing.configurationId,
+    )).data;
+    final queryId = dcqlQueries?.dcqlQueries.firstOrNull?.queryId ?? '';
+    return IotaConfigResult(
+      configurationId: existing.configurationId,
+      queryId: queryId,
+    );
+  }
 
   final config = (await configs.createIotaConfiguration(
     createIotaConfigurationInput:
@@ -111,7 +149,7 @@ Future<String> ensureIotaConfigurationCreated({
   const dcqlJson =
       '{"credentials":[{"id":"email-claim","format":"ldp_vc","meta":{"type_values":[["Email"]]},"claims":[{"path":["credentialSubject","email"]}]}]}';
 
-  await dcql.createDcqlQuery(
+  final dcqlResult = await dcql.createDcqlQuery(
     configurationId: config.configurationId,
     createDcqlQueryInput:
         (CreateDcqlQueryInputBuilder()
@@ -121,5 +159,30 @@ Future<String> ensureIotaConfigurationCreated({
             .build(),
   );
 
-  return config.configurationId;
+  return IotaConfigResult(
+    configurationId: config.configurationId,
+    queryId: dcqlResult.data!.queryId,
+  );
+}
+
+class IotaConfigResult {
+  const IotaConfigResult({
+    required this.configurationId,
+    required this.queryId,
+  });
+  final String configurationId;
+  final String queryId;
+}
+
+IotaApi getIotaApi() {
+  final authProvider = _loadEnv();
+  final envConfig = Environment.getEnvironmentConfig(EnvironmentType.dev);
+  final iotaClient = AffinidiTdkIotaClient(
+    authTokenHook: authProvider.fetchProjectScopedToken,
+    basePathOverride: replaceBaseDomain(
+      AffinidiTdkIotaClient.basePath,
+      envConfig.apiGwUrl,
+    ),
+  );
+  return iotaClient.getIotaApi();
 }
