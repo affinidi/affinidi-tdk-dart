@@ -72,13 +72,14 @@ Future<WalletSetupResult> ensureWalletCreated() async {
     walletId = existing.id!;
     walletAri = existing.ari!;
   } else {
-    final createInput = CreateWalletInput(
+    final createInput = CreateWalletV2Input(
       (b) => b
         ..name = _walletName
-        ..didMethod = CreateWalletInputDidMethodEnum.key,
+        ..didMethod = CreateWalletV2InputDidMethodEnum.key
+        ..algorithm = CreateWalletV2InputAlgorithmEnum.secp256k1,
     );
-    final createResponse = await api.createWallet(
-      createWalletInput: createInput,
+    final createResponse = await api.createWalletV2(
+      createWalletV2Input: createInput,
     );
     final wallet = createResponse.data!.wallet!;
     walletId = wallet.id!;
