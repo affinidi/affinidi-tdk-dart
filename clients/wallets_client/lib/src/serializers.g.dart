@@ -35,6 +35,7 @@ Serializers _$serializers =
           ..add(OperationForbiddenErrorNameEnum.serializer)
           ..add(RevokeCredentialInput.serializer)
           ..add(RevokeCredentialsInput.serializer)
+          ..add(ServiceEndpointDto.serializer)
           ..add(ServiceEndpointInput.serializer)
           ..add(SignCredential400Response.serializer)
           ..add(SignCredentialInputDto.serializer)
@@ -133,6 +134,12 @@ Serializers _$serializers =
               const FullType(WalletDtoKeysInner),
             ]),
             () => ListBuilder<WalletDtoKeysInner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, const [
+              const FullType(ServiceEndpointDto),
+            ]),
+            () => ListBuilder<ServiceEndpointDto>(),
           )
           ..addBuilderFactory(
             const FullType(BuiltMap, const [

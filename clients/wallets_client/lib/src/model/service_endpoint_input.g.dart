@@ -8,9 +8,9 @@ part of 'service_endpoint_input.dart';
 
 class _$ServiceEndpointInput extends ServiceEndpointInput {
   @override
-  final String name;
+  final String? name;
   @override
-  final String description;
+  final String? description;
   @override
   final String? url;
   @override
@@ -21,8 +21,8 @@ class _$ServiceEndpointInput extends ServiceEndpointInput {
   ]) => (ServiceEndpointInputBuilder()..update(updates))._build();
 
   _$ServiceEndpointInput._({
-    required this.name,
-    required this.description,
+    this.name,
+    this.description,
     this.url,
     this.serviceType,
   }) : super._();
@@ -120,16 +120,8 @@ class ServiceEndpointInputBuilder
     final _$result =
         _$v ??
         _$ServiceEndpointInput._(
-          name: BuiltValueNullFieldError.checkNotNull(
-            name,
-            r'ServiceEndpointInput',
-            'name',
-          ),
-          description: BuiltValueNullFieldError.checkNotNull(
-            description,
-            r'ServiceEndpointInput',
-            'description',
-          ),
+          name: name,
+          description: description,
           url: url,
           serviceType: serviceType,
         );
