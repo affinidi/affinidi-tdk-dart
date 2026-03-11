@@ -4,10 +4,11 @@ import 'package:affinidi_tdk_auth_provider/affinidi_tdk_auth_provider.dart';
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_iota_client/affinidi_tdk_iota_client.dart';
 import 'package:affinidi_tdk_wallets_client/affinidi_tdk_wallets_client.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:dotenv/dotenv.dart';
 import 'package:path/path.dart' as path;
 
-import '../../../integration_tests/test/helpers/strings_helper.dart';
+import '../../integration_tests/test/helpers/strings_helper.dart';
 
 const _walletName = 'VDSP Verifier Wallet';
 const _configName = 'VDSP Verifier Config';
@@ -87,9 +88,10 @@ Future<WalletSetupResult> ensureWalletCreated() async {
   }
 
   final walletResponse = await api.getWallet(walletId: walletId);
-  final businessDid = walletResponse.data?.did ?? '';
-  if (businessDid.isEmpty) {
-    throw Exception('Wallet DID not available.');
+  final businessDid = walletResponse.data?.did;
+
+  if (businessDid == null || businessDid.isEmpty) {
+    throw Exception('Failed to retrieve DID for wallet with id $walletId');
   }
 
   return WalletSetupResult(walletAri: walletAri, businessDid: businessDid);
@@ -98,6 +100,11 @@ Future<WalletSetupResult> ensureWalletCreated() async {
 Future<IotaConfigResult> ensureIotaConfigurationCreated({
   required String walletAri,
 }) async {
+  return const IotaConfigResult(
+    configurationId: 'e77ba030-23e0-4619-abee-745dd2e3cc48',
+    queryId: '1f4ec195-9af9-4e7b-8acd-28ab9dee4102',
+  );
+
   final authProvider = _loadEnv();
   final envConfig = Environment.getEnvironmentConfig(EnvironmentType.dev);
   final iotaClient = AffinidiTdkIotaClient(
@@ -136,12 +143,15 @@ Future<IotaConfigResult> ensureIotaConfigurationCreated({
               ..name = _configName
               ..walletAri = walletAri
               ..mode = CreateIotaConfigurationInputModeEnum.didcomm
-              ..enableVerification = true
-              ..enableConsentAuditLog = true
+              ..enableVerification = false
+              ..enableConsentAuditLog = false
+              ..redirectUris = ListBuilder<String>([
+                'https://cis-qc-1.vercel.app/iota-callback',
+              ])
               ..clientMetadata = (IotaConfigurationDtoClientMetadataBuilder()
                 ..name = 'VDSP Verifier Example'
                 ..logo = 'https://example.com/logo.png'
-                ..origin = 'https://example.com'))
+                ..origin = 'https://cis-qc-1.vercel.app/iota-callback'))
             .build(),
   )).data;
   if (config == null) throw Exception('Failed to create IOTA configuration');

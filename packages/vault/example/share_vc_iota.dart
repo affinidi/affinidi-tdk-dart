@@ -7,7 +7,7 @@ import 'package:affinidi_tdk_vault_data_manager/affinidi_tdk_vault_data_manager.
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../integration_tests/test/helpers/environment.dart';
+import '../../integration_tests/test/helpers/environment.dart';
 
 import 'iota_setup.dart';
 
@@ -38,6 +38,8 @@ void main() async {
   );
   prettyPrint('IOTA Configuration ID', object: iotaConfig.configurationId);
   prettyPrint('IOTA Query ID', object: iotaConfig.queryId);
+
+  final holderCompleted = Completer<void>();
 
   vault.listenForVdspRequests(
     onDataRequest: (message) async {
@@ -71,6 +73,8 @@ void main() async {
         profile: defaultProfile,
         verifiablePresentationDataModel: VerifiableCredentialsDataModel.v1,
       );
+
+      holderCompleted.complete();
     },
     onProblemReport: (message) async {
       prettyPrint('A problem has occurred', object: message);
@@ -85,6 +89,12 @@ void main() async {
     queryId: iotaConfig.queryId,
     holderDid: vault.messagingDid,
   );
+
+  await holderCompleted.future;
+
+  await Future<void>.delayed(
+    const Duration(seconds: 10),
+  ); // Wait for VP response to be ready
 
   final vpResponse = await _fetchIotaVdspResponse(
     configurationId: iotaConfig.configurationId,
@@ -257,7 +267,7 @@ Future<_InitiateResult> _triggerIotaVdspRequest({
             ..queryId = queryId
             ..correlationId = correlationId
             ..nonce = nonce
-            ..redirectUri = 'https://example.com'
+            ..redirectUri = 'https://cis-qc-1.vercel.app/iota-callback'
             ..mode = InitiateDataSharingRequestInputModeEnum.didcomm
             ..userDid = holderDid)
           .build();
@@ -265,7 +275,9 @@ Future<_InitiateResult> _triggerIotaVdspRequest({
   final response = await iotaApi.initiateDataSharingRequest(
     initiateDataSharingRequestInput: input,
   );
+
   final data = response.data?.data;
+
   if (data == null) {
     throw Exception('Failed to initiate IOTA data sharing request');
   }

@@ -18,6 +18,7 @@ dependencies:
   affinidi_tdk_vdsp: ^2.0.0
   affinidi_tdk_wallets_client: ^2.0.0
   base_codecs: ^1.0.1
+  built_collection: '>=5.1.1 <6.0.0'
   dcql: ^1.2.1
   didcomm: ^2.3.3
   dotenv: ^4.2.0

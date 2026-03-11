@@ -167,9 +167,9 @@ class Environment {
           e.value ==
           const String.fromEnvironment(
             enviromentVariableName,
-            defaultValue: 'prod',
+            defaultValue: 'dev',
           ),
-      orElse: () => EnvironmentType.prod,
+      orElse: () => EnvironmentType.dev,
     );
   }
 
