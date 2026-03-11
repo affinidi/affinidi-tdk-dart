@@ -20,11 +20,11 @@ abstract class ServiceEndpointInput
     implements Built<ServiceEndpointInput, ServiceEndpointInputBuilder> {
   /// Name of the service endpoint
   @BuiltValueField(wireName: r'name')
-  String get name;
+  String? get name;
 
   /// Description of the service endpoint
   @BuiltValueField(wireName: r'description')
-  String get description;
+  String? get description;
 
   /// service endpoint URL
   @BuiltValueField(wireName: r'url')
@@ -63,16 +63,20 @@ class _$ServiceEndpointInputSerializer
     ServiceEndpointInput object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    yield r'name';
-    yield serializers.serialize(
-      object.name,
-      specifiedType: const FullType(String),
-    );
-    yield r'description';
-    yield serializers.serialize(
-      object.description,
-      specifiedType: const FullType(String),
-    );
+    if (object.name != null) {
+      yield r'name';
+      yield serializers.serialize(
+        object.name,
+        specifiedType: const FullType(String),
+      );
+    }
+    if (object.description != null) {
+      yield r'description';
+      yield serializers.serialize(
+        object.description,
+        specifiedType: const FullType(String),
+      );
+    }
     if (object.url != null) {
       yield r'url';
       yield serializers.serialize(
