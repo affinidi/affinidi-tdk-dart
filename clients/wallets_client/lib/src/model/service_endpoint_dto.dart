@@ -3,106 +3,97 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:built_collection/built_collection.dart';
-import 'package:affinidi_tdk_wallets_client/src/model/wallet_dto_keys_inner.dart';
-import 'package:affinidi_tdk_wallets_client/src/model/service_endpoint_dto.dart';
-import 'package:built_value/json_object.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'wallet_v2_dto.g.dart';
+part 'service_endpoint_dto.g.dart';
 
-/// wallet v2 dto
+/// Service endpoint information
 ///
 /// Properties:
-/// * [id] - id of the wallet in uuidV4 format
-/// * [did] - did of the wallet
-/// * [name] - The name of the wallet
-/// * [description] - The description of the wallet
-/// * [didDocument] - did document of the wallet
-/// * [ari] - ARI of the wallet
-/// * [algorithm] - algorithm used to generate key for the wallet
-/// * [keys]
-/// * [services] - list of service endpoints associated with this wallet
-/// * [createdAt]
-/// * [modifiedAt]
+/// * [id] - service endpoint ID
+/// * [name] - name of the service endpoint
+/// * [description] - description of the service endpoint
+/// * [url] - service endpoint URL
+/// * [walletAri] - wallet ARI this endpoint belongs to
+/// * [projectId] - project ID
+/// * [createdAt] - when this endpoint was created
+/// * [modifiedAt] - when this endpoint was last modified
+/// * [createdBy] - identifier of the user who created the entity
+/// * [modifiedBy] - identifier of the user who last updated the entity
 @BuiltValue()
-abstract class WalletV2Dto implements Built<WalletV2Dto, WalletV2DtoBuilder> {
-  /// id of the wallet in uuidV4 format
+abstract class ServiceEndpointDto
+    implements Built<ServiceEndpointDto, ServiceEndpointDtoBuilder> {
+  /// service endpoint ID
   @BuiltValueField(wireName: r'id')
   String? get id;
 
-  /// did of the wallet
-  @BuiltValueField(wireName: r'did')
-  String? get did;
-
-  /// The name of the wallet
+  /// name of the service endpoint
   @BuiltValueField(wireName: r'name')
   String? get name;
 
-  /// The description of the wallet
+  /// description of the service endpoint
   @BuiltValueField(wireName: r'description')
   String? get description;
 
-  /// did document of the wallet
-  @BuiltValueField(wireName: r'didDocument')
-  JsonObject? get didDocument;
+  /// service endpoint URL
+  @BuiltValueField(wireName: r'url')
+  String? get url;
 
-  /// ARI of the wallet
-  @BuiltValueField(wireName: r'ari')
-  String? get ari;
+  /// wallet ARI this endpoint belongs to
+  @BuiltValueField(wireName: r'walletAri')
+  String? get walletAri;
 
-  /// algorithm used to generate key for the wallet
-  @BuiltValueField(wireName: r'algorithm')
-  String? get algorithm;
+  /// project ID
+  @BuiltValueField(wireName: r'projectId')
+  String? get projectId;
 
-  @BuiltValueField(wireName: r'keys')
-  BuiltList<WalletDtoKeysInner>? get keys;
-
-  /// list of service endpoints associated with this wallet
-  @BuiltValueField(wireName: r'services')
-  BuiltList<ServiceEndpointDto>? get services;
-
+  /// when this endpoint was created
   @BuiltValueField(wireName: r'createdAt')
   String? get createdAt;
 
+  /// when this endpoint was last modified
   @BuiltValueField(wireName: r'modifiedAt')
   String? get modifiedAt;
 
-  WalletV2Dto._();
+  /// identifier of the user who created the entity
+  @BuiltValueField(wireName: r'createdBy')
+  String? get createdBy;
 
-  factory WalletV2Dto([void updates(WalletV2DtoBuilder b)]) = _$WalletV2Dto;
+  /// identifier of the user who last updated the entity
+  @BuiltValueField(wireName: r'modifiedBy')
+  String? get modifiedBy;
+
+  ServiceEndpointDto._();
+
+  factory ServiceEndpointDto([void updates(ServiceEndpointDtoBuilder b)]) =
+      _$ServiceEndpointDto;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(WalletV2DtoBuilder b) => b;
+  static void _defaults(ServiceEndpointDtoBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<WalletV2Dto> get serializer => _$WalletV2DtoSerializer();
+  static Serializer<ServiceEndpointDto> get serializer =>
+      _$ServiceEndpointDtoSerializer();
 }
 
-class _$WalletV2DtoSerializer implements PrimitiveSerializer<WalletV2Dto> {
+class _$ServiceEndpointDtoSerializer
+    implements PrimitiveSerializer<ServiceEndpointDto> {
   @override
-  final Iterable<Type> types = const [WalletV2Dto, _$WalletV2Dto];
+  final Iterable<Type> types = const [ServiceEndpointDto, _$ServiceEndpointDto];
 
   @override
-  final String wireName = r'WalletV2Dto';
+  final String wireName = r'ServiceEndpointDto';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    WalletV2Dto object, {
+    ServiceEndpointDto object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
     if (object.id != null) {
       yield r'id';
       yield serializers.serialize(
         object.id,
-        specifiedType: const FullType(String),
-      );
-    }
-    if (object.did != null) {
-      yield r'did';
-      yield serializers.serialize(
-        object.did,
         specifiedType: const FullType(String),
       );
     }
@@ -120,43 +111,25 @@ class _$WalletV2DtoSerializer implements PrimitiveSerializer<WalletV2Dto> {
         specifiedType: const FullType(String),
       );
     }
-    if (object.didDocument != null) {
-      yield r'didDocument';
+    if (object.url != null) {
+      yield r'url';
       yield serializers.serialize(
-        object.didDocument,
-        specifiedType: const FullType(JsonObject),
-      );
-    }
-    if (object.ari != null) {
-      yield r'ari';
-      yield serializers.serialize(
-        object.ari,
+        object.url,
         specifiedType: const FullType(String),
       );
     }
-    if (object.algorithm != null) {
-      yield r'algorithm';
+    if (object.walletAri != null) {
+      yield r'walletAri';
       yield serializers.serialize(
-        object.algorithm,
+        object.walletAri,
         specifiedType: const FullType(String),
       );
     }
-    if (object.keys != null) {
-      yield r'keys';
+    if (object.projectId != null) {
+      yield r'projectId';
       yield serializers.serialize(
-        object.keys,
-        specifiedType: const FullType(BuiltList, [
-          FullType(WalletDtoKeysInner),
-        ]),
-      );
-    }
-    if (object.services != null) {
-      yield r'services';
-      yield serializers.serialize(
-        object.services,
-        specifiedType: const FullType(BuiltList, [
-          FullType(ServiceEndpointDto),
-        ]),
+        object.projectId,
+        specifiedType: const FullType(String),
       );
     }
     if (object.createdAt != null) {
@@ -173,12 +146,26 @@ class _$WalletV2DtoSerializer implements PrimitiveSerializer<WalletV2Dto> {
         specifiedType: const FullType(String),
       );
     }
+    if (object.createdBy != null) {
+      yield r'createdBy';
+      yield serializers.serialize(
+        object.createdBy,
+        specifiedType: const FullType(String),
+      );
+    }
+    if (object.modifiedBy != null) {
+      yield r'modifiedBy';
+      yield serializers.serialize(
+        object.modifiedBy,
+        specifiedType: const FullType(String),
+      );
+    }
   }
 
   @override
   Object serialize(
     Serializers serializers,
-    WalletV2Dto object, {
+    ServiceEndpointDto object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(
@@ -193,7 +180,7 @@ class _$WalletV2DtoSerializer implements PrimitiveSerializer<WalletV2Dto> {
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required WalletV2DtoBuilder result,
+    required ServiceEndpointDtoBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
@@ -208,15 +195,6 @@ class _$WalletV2DtoSerializer implements PrimitiveSerializer<WalletV2Dto> {
                   )
                   as String;
           result.id = valueDes;
-          break;
-        case r'did':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(String),
-                  )
-                  as String;
-          result.did = valueDes;
           break;
         case r'name':
           final valueDes =
@@ -236,54 +214,32 @@ class _$WalletV2DtoSerializer implements PrimitiveSerializer<WalletV2Dto> {
                   as String;
           result.description = valueDes;
           break;
-        case r'didDocument':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(JsonObject),
-                  )
-                  as JsonObject;
-          result.didDocument = valueDes;
-          break;
-        case r'ari':
+        case r'url':
           final valueDes =
               serializers.deserialize(
                     value,
                     specifiedType: const FullType(String),
                   )
                   as String;
-          result.ari = valueDes;
+          result.url = valueDes;
           break;
-        case r'algorithm':
+        case r'walletAri':
           final valueDes =
               serializers.deserialize(
                     value,
                     specifiedType: const FullType(String),
                   )
                   as String;
-          result.algorithm = valueDes;
+          result.walletAri = valueDes;
           break;
-        case r'keys':
+        case r'projectId':
           final valueDes =
               serializers.deserialize(
                     value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(WalletDtoKeysInner),
-                    ]),
+                    specifiedType: const FullType(String),
                   )
-                  as BuiltList<WalletDtoKeysInner>;
-          result.keys.replace(valueDes);
-          break;
-        case r'services':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(BuiltList, [
-                      FullType(ServiceEndpointDto),
-                    ]),
-                  )
-                  as BuiltList<ServiceEndpointDto>;
-          result.services.replace(valueDes);
+                  as String;
+          result.projectId = valueDes;
           break;
         case r'createdAt':
           final valueDes =
@@ -303,6 +259,24 @@ class _$WalletV2DtoSerializer implements PrimitiveSerializer<WalletV2Dto> {
                   as String;
           result.modifiedAt = valueDes;
           break;
+        case r'createdBy':
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
+          result.createdBy = valueDes;
+          break;
+        case r'modifiedBy':
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
+          result.modifiedBy = valueDes;
+          break;
         default:
           unhandled.add(key);
           unhandled.add(value);
@@ -312,12 +286,12 @@ class _$WalletV2DtoSerializer implements PrimitiveSerializer<WalletV2Dto> {
   }
 
   @override
-  WalletV2Dto deserialize(
+  ServiceEndpointDto deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = WalletV2DtoBuilder();
+    final result = ServiceEndpointDtoBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(
