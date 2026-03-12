@@ -6,24 +6,107 @@ part of 'service_endpoint_input.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+const ServiceEndpointInputServiceTypeEnum
+_$serviceEndpointInputServiceTypeEnum_dIDCommMessaging =
+    const ServiceEndpointInputServiceTypeEnum._('dIDCommMessaging');
+const ServiceEndpointInputServiceTypeEnum
+_$serviceEndpointInputServiceTypeEnum_linkedDomains =
+    const ServiceEndpointInputServiceTypeEnum._('linkedDomains');
+const ServiceEndpointInputServiceTypeEnum
+_$serviceEndpointInputServiceTypeEnum_identityHub =
+    const ServiceEndpointInputServiceTypeEnum._('identityHub');
+const ServiceEndpointInputServiceTypeEnum
+_$serviceEndpointInputServiceTypeEnum_credentialRegistry =
+    const ServiceEndpointInputServiceTypeEnum._('credentialRegistry');
+
+ServiceEndpointInputServiceTypeEnum
+_$serviceEndpointInputServiceTypeEnumValueOf(String name) {
+  switch (name) {
+    case 'dIDCommMessaging':
+      return _$serviceEndpointInputServiceTypeEnum_dIDCommMessaging;
+    case 'linkedDomains':
+      return _$serviceEndpointInputServiceTypeEnum_linkedDomains;
+    case 'identityHub':
+      return _$serviceEndpointInputServiceTypeEnum_identityHub;
+    case 'credentialRegistry':
+      return _$serviceEndpointInputServiceTypeEnum_credentialRegistry;
+    default:
+      throw ArgumentError(name);
+  }
+}
+
+final BuiltSet<ServiceEndpointInputServiceTypeEnum>
+_$serviceEndpointInputServiceTypeEnumValues =
+    BuiltSet<ServiceEndpointInputServiceTypeEnum>(
+      const <ServiceEndpointInputServiceTypeEnum>[
+        _$serviceEndpointInputServiceTypeEnum_dIDCommMessaging,
+        _$serviceEndpointInputServiceTypeEnum_linkedDomains,
+        _$serviceEndpointInputServiceTypeEnum_identityHub,
+        _$serviceEndpointInputServiceTypeEnum_credentialRegistry,
+      ],
+    );
+
+Serializer<ServiceEndpointInputServiceTypeEnum>
+_$serviceEndpointInputServiceTypeEnumSerializer =
+    _$ServiceEndpointInputServiceTypeEnumSerializer();
+
+class _$ServiceEndpointInputServiceTypeEnumSerializer
+    implements PrimitiveSerializer<ServiceEndpointInputServiceTypeEnum> {
+  static const Map<String, Object> _toWire = const <String, Object>{
+    'dIDCommMessaging': 'DIDCommMessaging',
+    'linkedDomains': 'LinkedDomains',
+    'identityHub': 'IdentityHub',
+    'credentialRegistry': 'CredentialRegistry',
+  };
+  static const Map<Object, String> _fromWire = const <Object, String>{
+    'DIDCommMessaging': 'dIDCommMessaging',
+    'LinkedDomains': 'linkedDomains',
+    'IdentityHub': 'identityHub',
+    'CredentialRegistry': 'credentialRegistry',
+  };
+
+  @override
+  final Iterable<Type> types = const <Type>[
+    ServiceEndpointInputServiceTypeEnum,
+  ];
+  @override
+  final String wireName = 'ServiceEndpointInputServiceTypeEnum';
+
+  @override
+  Object serialize(
+    Serializers serializers,
+    ServiceEndpointInputServiceTypeEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
+
+  @override
+  ServiceEndpointInputServiceTypeEnum deserialize(
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => ServiceEndpointInputServiceTypeEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
+}
+
 class _$ServiceEndpointInput extends ServiceEndpointInput {
   @override
-  final String name;
+  final String? name;
   @override
-  final String description;
+  final String? description;
   @override
-  final String? url;
+  final String url;
   @override
-  final String? serviceType;
+  final ServiceEndpointInputServiceTypeEnum? serviceType;
 
   factory _$ServiceEndpointInput([
     void Function(ServiceEndpointInputBuilder)? updates,
   ]) => (ServiceEndpointInputBuilder()..update(updates))._build();
 
   _$ServiceEndpointInput._({
-    required this.name,
-    required this.description,
-    this.url,
+    this.name,
+    this.description,
+    required this.url,
     this.serviceType,
   }) : super._();
   @override
@@ -83,9 +166,10 @@ class ServiceEndpointInputBuilder
   String? get url => _$this._url;
   set url(String? url) => _$this._url = url;
 
-  String? _serviceType;
-  String? get serviceType => _$this._serviceType;
-  set serviceType(String? serviceType) => _$this._serviceType = serviceType;
+  ServiceEndpointInputServiceTypeEnum? _serviceType;
+  ServiceEndpointInputServiceTypeEnum? get serviceType => _$this._serviceType;
+  set serviceType(ServiceEndpointInputServiceTypeEnum? serviceType) =>
+      _$this._serviceType = serviceType;
 
   ServiceEndpointInputBuilder() {
     ServiceEndpointInput._defaults(this);
@@ -120,17 +204,13 @@ class ServiceEndpointInputBuilder
     final _$result =
         _$v ??
         _$ServiceEndpointInput._(
-          name: BuiltValueNullFieldError.checkNotNull(
-            name,
+          name: name,
+          description: description,
+          url: BuiltValueNullFieldError.checkNotNull(
+            url,
             r'ServiceEndpointInput',
-            'name',
+            'url',
           ),
-          description: BuiltValueNullFieldError.checkNotNull(
-            description,
-            r'ServiceEndpointInput',
-            'description',
-          ),
-          url: url,
           serviceType: serviceType,
         );
     replace(_$result);
