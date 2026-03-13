@@ -174,8 +174,8 @@ void main() async {
 
   // Try revoking
   try {
-    await vaultAlice.revokeProfileAccess(
-      profileId: aliceProfile.id,
+    await vaultAlice.revokeProfileSharedAccess(
+      profile: aliceProfile,
       granteeDid: bobProfile.did,
     );
   } catch (error) {
@@ -185,8 +185,8 @@ void main() async {
   print(
     '[Demo] Alice is sharing her profile with Bob with time-bound access (expires in 1 minute)...',
   );
-  SharedProfileDto? sharedProfile = await vaultAlice.shareProfile(
-    profileId: aliceProfile.id,
+  SharedProfileDto? sharedProfile = await vaultAlice.shareProfileAccess(
+    profile: aliceProfile,
     toDid: bobProfile.did,
     permissions: Permissions.all,
     expiresAt: DateTime.now().add(const Duration(minutes: 1)),
@@ -194,8 +194,8 @@ void main() async {
 
   // Bob to accept shared profile
   print('[Demo] Bob is accepting a shared profile ...');
-  await vaultBob.addSharedProfile(
-    profileId: bobProfile.id,
+  await vaultBob.addSharedProfileAccess(
+    profile: bobProfile,
     sharedProfile: sharedProfile,
   );
 

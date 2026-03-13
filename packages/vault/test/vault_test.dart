@@ -277,8 +277,8 @@ void main() {
         ),
       ).thenAnswer((_) async => Uint8List.fromList([1, 2, 3]));
 
-      final sharedProfile = await vault.shareProfile(
-        profileId: 'test-id',
+      final sharedProfile = await vault.shareProfileAccess(
+        profile: testProfile,
         toDid: 'did:test:123',
         permissions: Permissions.all,
       );
@@ -294,8 +294,8 @@ void main() {
       ).thenAnswer((_) async => []);
 
       expect(
-        () => vault.shareProfile(
-          profileId: 'non-existent',
+        () => vault.shareProfileAccess(
+          profile: VaultFixtures.nonExistentProfile,
           toDid: 'did:test:123',
           permissions: Permissions.all,
         ),
@@ -324,8 +324,8 @@ void main() {
         ).thenAnswer((_) async => [testProfile]);
 
         expect(
-          () => vaultWithNonSharingRepo.shareProfile(
-            profileId: 'test-id',
+          () => vaultWithNonSharingRepo.shareProfileAccess(
+            profile: testProfile,
             toDid: 'did:test:123',
             permissions: Permissions.all,
           ),
@@ -348,8 +348,8 @@ void main() {
         ).thenAnswer((_) async => []);
 
         expect(
-          () => vault.addSharedProfile(
-            profileId: 'non-existent',
+          () => vault.addSharedProfileAccess(
+            profile: VaultFixtures.nonExistentProfile,
             sharedProfile: sharedProfile,
           ),
           throwsA(isA<Exception>()),
@@ -389,8 +389,8 @@ void main() {
         ),
       ).thenAnswer((_) async => expectedPermissionsMap);
 
-      final result = await vault.getItemAccess(
-        profileId: 'test-id',
+      final result = await vault.getProfileItemAccess(
+        profile: testProfile,
         granteeDid: 'did:test:123',
       );
 
@@ -462,8 +462,8 @@ void main() {
             ),
           ).thenAnswer((_) async => Uint8List.fromList([1, 2, 3, 4]));
 
-          final access = await vault.getItemAccess(
-            profileId: 'test-id',
+          final access = await vault.getProfileItemAccess(
+            profile: testProfile,
             granteeDid: 'did:test:123',
           );
 
@@ -534,8 +534,8 @@ void main() {
           ),
         ).thenAnswer((_) async => Uint8List.fromList([1, 2, 3, 4]));
 
-        final policy = await vault.getItemPermissionsPolicy(
-          profileId: 'test-id',
+        final policy = await vault.getProfileItemPermissionsPolicy(
+          profile: testProfile,
           granteeDid: 'did:test:123',
         );
 
@@ -545,8 +545,8 @@ void main() {
         policy.addPermission(['node-2'], [Permissions.write]);
         policy.removePermission(['node-1'], []);
 
-        await vault.setItemAccess(
-          profileId: 'test-id',
+        await vault.setProfileItemAccess(
+          profile: testProfile,
           granteeDid: 'did:test:123',
           policy: policy,
         );
@@ -610,8 +610,8 @@ void main() {
             ),
           ).thenAnswer((_) async => Uint8List.fromList([1, 2, 3, 4]));
 
-          final policy = await vault.getItemPermissionsPolicy(
-            profileId: 'test-id',
+          final policy = await vault.getProfileItemPermissionsPolicy(
+            profile: testProfile,
             granteeDid: 'did:test:123',
           );
 
@@ -624,8 +624,8 @@ void main() {
 
           policy.removePermission(['file-2'], []);
 
-          await vault.setItemAccess(
-            profileId: 'test-id',
+          await vault.setProfileItemAccess(
+            profile: testProfile,
             granteeDid: 'did:test:123',
             policy: policy,
           );
@@ -688,8 +688,8 @@ void main() {
           ),
         ).thenAnswer((_) async => Uint8List.fromList([1, 2, 3, 4]));
 
-        final policy = await vault.getItemPermissionsPolicy(
-          profileId: 'test-id',
+        final policy = await vault.getProfileItemPermissionsPolicy(
+          profile: testProfile,
           granteeDid: 'did:test:123',
         );
 
@@ -702,8 +702,8 @@ void main() {
 
         expect(policy.permissions, isEmpty);
 
-        await vault.setItemAccess(
-          profileId: 'test-id',
+        await vault.setProfileItemAccess(
+          profile: testProfile,
           granteeDid: 'did:test:123',
           policy: policy,
         );
@@ -734,8 +734,8 @@ void main() {
           ).thenAnswer((_) async => []);
 
           expect(
-            () => vault.getItemPermissionsPolicy(
-              profileId: 'non-existent',
+            () => vault.getProfileItemPermissionsPolicy(
+              profile: VaultFixtures.nonExistentProfile,
               granteeDid: 'did:test:123',
             ),
             throwsA(isA<TdkException>()),
@@ -758,8 +758,8 @@ void main() {
           ).thenAnswer((_) async => [testProfile]);
 
           expect(
-            () => vault.getItemPermissionsPolicy(
-              profileId: 'test-id',
+            () => vault.getProfileItemPermissionsPolicy(
+              profile: testProfile,
               granteeDid: 'did:test:123',
             ),
             throwsA(isA<TdkException>()),
@@ -777,8 +777,8 @@ void main() {
           ).thenAnswer((_) async => []);
 
           expect(
-            () => vault.setItemAccess(
-              profileId: 'non-existent',
+            () => vault.setProfileItemAccess(
+              profile: VaultFixtures.nonExistentProfile,
               granteeDid: 'did:test:123',
               policy: policy,
             ),
@@ -803,8 +803,8 @@ void main() {
           ).thenAnswer((_) async => [testProfile]);
 
           expect(
-            () => vault.setItemAccess(
-              profileId: 'test-id',
+            () => vault.setProfileItemAccess(
+              profile: testProfile,
               granteeDid: 'did:test:123',
               policy: policy,
             ),
@@ -841,8 +841,8 @@ void main() {
           ),
         ).thenAnswer((_) async {});
 
-        await vault.acceptSharedItems(
-          profileId: 'test-id',
+        await vault.acceptProfileSharedItems(
+          profile: testProfile,
           sharedItems: sharedItem,
         );
 
@@ -871,8 +871,8 @@ void main() {
           ).thenAnswer((_) async => []);
 
           expect(
-            () => vault.acceptSharedItems(
-              profileId: 'non-existent',
+            () => vault.acceptProfileSharedItems(
+              profile: VaultFixtures.nonExistentProfile,
               sharedItems: sharedItem,
             ),
             throwsA(isA<TdkException>()),
@@ -902,8 +902,8 @@ void main() {
           ).thenAnswer((_) async => [testProfile]);
 
           expect(
-            () => vault.acceptSharedItems(
-              profileId: 'test-id',
+            () => vault.acceptProfileSharedItems(
+              profile: testProfile,
               sharedItems: sharedItem,
             ),
             throwsA(isA<TdkException>()),
