@@ -28,4 +28,4 @@ set -a
 . ".env"
 set +a
 
-melos exec --scope="*integration_tests*" -- "dart test --chain-stack-traces"
+melos exec --scope="*integration_tests*" -- "dart test --concurrency=1 --chain-stack-traces"
