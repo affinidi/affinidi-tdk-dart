@@ -3,6 +3,11 @@ import 'dart:typed_data';
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 
 class VaultFixtures {
+  static Profile get nonExistentProfile => createTestProfile(
+    id: 'non-existent',
+    profileRepositoryId: 'non-existent',
+  );
+
   static Profile createTestProfile({
     String id = 'test-id',
     String name = 'Test Profile',

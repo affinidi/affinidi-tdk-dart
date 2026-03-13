@@ -109,16 +109,16 @@ void main() async {
 
   print('[Demo] Alice is sharing $fileName1 with Bob with READ access ...');
 
-  var policy = await vaultAlice.getItemPermissionsPolicy(
-    profileId: aliceProfile.id,
+  var policy = await vaultAlice.getProfileItemPermissionsPolicy(
+    profile: aliceProfile,
     granteeDid: bobProfile.did,
   );
 
   // Single permission type: [Permissions.read] creates one permission group with read-only access
   policy.addPermission([file1.id], [Permissions.read]);
 
-  final kek1 = await vaultAlice.setItemAccess(
-    profileId: aliceProfile.id,
+  final kek1 = await vaultAlice.setProfileItemAccess(
+    profile: aliceProfile,
     granteeDid: bobProfile.did,
     policy: policy,
   );
@@ -142,8 +142,8 @@ void main() async {
   }
 
   print('[Demo] Bob is accepting the shared items ...');
-  await vaultBob.acceptSharedItems(
-    profileId: bobProfile.id,
+  await vaultBob.acceptProfileSharedItems(
+    profile: bobProfile,
     sharedItems: sharedItems1,
   );
   // Refresh Bob's profile to ensure shared storage is attached after accept.
@@ -188,8 +188,8 @@ void main() async {
   print(
     '[Demo] Alice is sharing $fileName2 with Bob with READ and WRITE access ...',
   );
-  policy = await vaultAlice.getItemPermissionsPolicy(
-    profileId: aliceProfile.id,
+  policy = await vaultAlice.getProfileItemPermissionsPolicy(
+    profile: aliceProfile,
     granteeDid: bobProfile.did,
   );
 
@@ -197,8 +197,8 @@ void main() async {
   // into one permission group with "all" rights
   policy.addPermission([file2.id], [Permissions.read, Permissions.write]);
 
-  final kek2 = await vaultAlice.setItemAccess(
-    profileId: aliceProfile.id,
+  final kek2 = await vaultAlice.setProfileItemAccess(
+    profile: aliceProfile,
     granteeDid: bobProfile.did,
     policy: policy,
   );
@@ -222,8 +222,8 @@ void main() async {
   }
 
   print('[Demo] Bob is accepting the shared items (file1 and file2) ...');
-  await vaultBob.acceptSharedItems(
-    profileId: bobProfile.id,
+  await vaultBob.acceptProfileSharedItems(
+    profile: bobProfile,
     sharedItems: sharedItems2,
   );
   // Refresh Bob's profile again to pick up any new shared storage state.
@@ -274,8 +274,8 @@ void main() async {
     '[Demo] Alice is sharing $fileName3 and $fileName4 with Bob at the same time ...',
   );
 
-  policy = await vaultAlice.getItemPermissionsPolicy(
-    profileId: aliceProfile.id,
+  policy = await vaultAlice.getProfileItemPermissionsPolicy(
+    profile: aliceProfile,
     granteeDid: bobProfile.did,
   );
 
@@ -283,8 +283,8 @@ void main() async {
   policy.addPermission([file3.id], [Permissions.read]);
   policy.addPermission([file4.id], [Permissions.read, Permissions.write]);
 
-  final kek3 = await vaultAlice.setItemAccess(
-    profileId: aliceProfile.id,
+  final kek3 = await vaultAlice.setProfileItemAccess(
+    profile: aliceProfile,
     granteeDid: bobProfile.did,
     policy: policy,
   );
@@ -312,8 +312,8 @@ void main() async {
   print(
     '[Demo] Bob is accepting the shared items (file1, file2, file3, and file4) ...',
   );
-  await vaultBob.acceptSharedItems(
-    profileId: bobProfile.id,
+  await vaultBob.acceptProfileSharedItems(
+    profile: bobProfile,
     sharedItems: sharedItems3,
   );
 
@@ -354,8 +354,8 @@ void main() async {
   }
 
   print('[Demo] Alice is revoking Bob\'s access to all files ...');
-  policy = await vaultAlice.getItemPermissionsPolicy(
-    profileId: aliceProfile.id,
+  policy = await vaultAlice.getProfileItemPermissionsPolicy(
+    profile: aliceProfile,
     granteeDid: bobProfile.did,
   );
 
@@ -364,8 +364,8 @@ void main() async {
   policy.removePermission([file3.id], []);
   policy.removePermission([file4.id], []);
 
-  await vaultAlice.setItemAccess(
-    profileId: aliceProfile.id,
+  await vaultAlice.setProfileItemAccess(
+    profile: aliceProfile,
     granteeDid: bobProfile.did,
     policy: policy,
   );

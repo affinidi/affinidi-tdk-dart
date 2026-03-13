@@ -218,34 +218,21 @@ class Vault {
 
   /// Shares a profile with another user.
   ///
-  /// [profileId] - ID of the profile to share.
+  /// [profile] - The profile to share.
   /// [toDid] - DID of the user to share with.
   /// [permissions] - Permissions to grant.
   /// [cancelToken] - Optional cancel token for the operation.
   ///
   /// Throws [TdkException] if:
-  /// - The profile is not found
   /// - The profile repository is not found
   /// - Expiration time frame is invalid
-  Future<SharedProfileDto> shareProfile({
-    required String profileId,
+  Future<SharedProfileDto> shareProfileAccess({
+    required Profile profile,
     required String toDid,
     required Permissions permissions,
     DateTime? expiresAt,
     VaultCancelToken? cancelToken,
   }) async {
-    final profile = await _getProfileById(profileId);
-
-    if (profile == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Can not find profile with id $profileId',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
     final profileRepository = _profileRepositories[profile.profileRepositoryId];
 
     if (profileRepository == null) {
@@ -279,7 +266,7 @@ class Vault {
       granteeDid: toDid,
       permissionGroups: [
         (
-          itemIds: [profileId], // Profile ID is the nodeId
+          itemIds: [profile.id], // Profile ID is the nodeId
           permissions: permissions,
           expiresAt: expiresAt,
         ),
@@ -288,34 +275,61 @@ class Vault {
 
     return SharedProfileDto(
       kek: kek,
-      profileId: profileId,
+      profileId: profile.id,
       profileDID: profile.did,
     );
   }
 
-  /// [profileId] - Identifier of the profile to which add a shared storage
-  /// [sharedProfile] - Shared profile info including kek and id
+  @Deprecated(
+    'Use shareProfileAccess instead which accepts profile object and does not require profileId',
+  )
+  /// Shares a profile with another user.
+  ///
+  /// [profileId] - ID of the profile to share.
+  /// [toDid] - DID of the user to share with.
+  /// [permissions] - Permissions to grant.
   /// [cancelToken] - Optional cancel token for the operation.
-  Future<void> addSharedProfile({
+  ///
+  /// Throws [TdkException] if:
+  /// - The profile is not found
+  /// - The profile repository is not found
+  /// - Expiration time frame is invalid
+  Future<SharedProfileDto> shareProfile({
     required String profileId,
-    required SharedProfileDto sharedProfile,
+    required String toDid,
+    required Permissions permissions,
+    DateTime? expiresAt,
     VaultCancelToken? cancelToken,
   }) async {
-    final profiles = await listProfiles();
-    final profile = profiles
-        .where((profile) => profile.id == profileId)
-        .firstOrNull;
+    final profile = await _getProfileById(profileId);
 
     if (profile == null) {
       Error.throwWithStackTrace(
         TdkException(
-          message: 'Can not find profile $profileId',
+          message: 'Can not find profile with id $profileId',
           code: TdkExceptionType.invalidProfileIdentifier.code,
         ),
         StackTrace.current,
       );
     }
 
+    return shareProfileAccess(
+      profile: profile,
+      toDid: toDid,
+      permissions: permissions,
+      expiresAt: expiresAt,
+      cancelToken: cancelToken,
+    );
+  }
+
+  /// [profile] - The profile to which add a shared storage
+  /// [sharedProfile] - Shared profile info including kek and id
+  /// [cancelToken] - Optional cancel token for the operation.
+  Future<void> addSharedProfileAccess({
+    required Profile profile,
+    required SharedProfileDto sharedProfile,
+    VaultCancelToken? cancelToken,
+  }) async {
     final profileRepository = _profileRepositories[profile.profileRepositoryId];
 
     if (profileRepository == null) {
@@ -352,20 +366,18 @@ class Vault {
     );
   }
 
-  /// Accepts a shared item (file/folder) that was granted by another user.
-  ///
-  /// [profileId] - Identifier of the profile to which add the shared item
-  /// [sharedItems] - Shared item info including KEK, owner profile id, and item ids.
+  @Deprecated(
+    'Use addSharedProfileAccess instead which accepts profile object and does not require profileId',
+  )
+  /// [profileId] - Identifier of the profile to which add a shared storage
+  /// [sharedProfile] - Shared profile info including kek and id
   /// [cancelToken] - Optional cancel token for the operation.
-  Future<void> acceptSharedItems({
+  Future<void> addSharedProfile({
     required String profileId,
-    required SharedItemsDto sharedItems,
+    required SharedProfileDto sharedProfile,
     VaultCancelToken? cancelToken,
   }) async {
-    final profiles = await listProfiles();
-    final profile = profiles
-        .where((profile) => profile.id == profileId)
-        .firstOrNull;
+    final profile = await _getProfileById(profileId);
 
     if (profile == null) {
       Error.throwWithStackTrace(
@@ -377,6 +389,22 @@ class Vault {
       );
     }
 
+    await addSharedProfileAccess(
+      profile: profile,
+      sharedProfile: sharedProfile,
+    );
+  }
+
+  /// Accepts a shared item (file/folder) that was granted by another user.
+  ///
+  /// [profile] - The profile to which add the shared item
+  /// [sharedItems] - Shared item info including KEK, owner profile id, and item ids.
+  /// [cancelToken] - Optional cancel token for the operation.
+  Future<void> acceptProfileSharedItems({
+    required Profile profile,
+    required SharedItemsDto sharedItems,
+    VaultCancelToken? cancelToken,
+  }) async {
     final profileRepository = _profileRepositories[profile.profileRepositoryId];
 
     if (profileRepository == null) {
@@ -413,18 +441,17 @@ class Vault {
     );
   }
 
-  /// Revokes access to a profile for a specific user.
+  @Deprecated(
+    'Use acceptProfileSharedItems instead which accepts profile object and does not require profileId',
+  )
+  /// Accepts a shared item (file/folder) that was granted by another user.
   ///
-  /// [profileId] - ID of the profile to revoke access from.
-  /// [granteeDid] - DID of the user to revoke access from.
+  /// [profileId] - Identifier of the profile to which add the shared item
+  /// [sharedItems] - Shared item info including KEK, owner profile id, and item ids.
   /// [cancelToken] - Optional cancel token for the operation.
-  ///
-  /// Throws [TdkException] if:
-  /// - The profile is not found
-  /// - The profile repository is not found
-  Future<void> revokeProfileAccess({
+  Future<void> acceptSharedItems({
     required String profileId,
-    required String granteeDid,
+    required SharedItemsDto sharedItems,
     VaultCancelToken? cancelToken,
   }) async {
     final profile = await _getProfileById(profileId);
@@ -439,6 +466,22 @@ class Vault {
       );
     }
 
+    await acceptProfileSharedItems(profile: profile, sharedItems: sharedItems);
+  }
+
+  /// Revokes access to a profile for a specific user.
+  ///
+  /// [profile] - The profile to revoke access from.
+  /// [granteeDid] - DID of the user to revoke access from.
+  /// [cancelToken] - Optional cancel token for the operation.
+  ///
+  /// Throws [TdkException] if:
+  /// - The profile repository is not found
+  Future<void> revokeProfileSharedAccess({
+    required Profile profile,
+    required String granteeDid,
+    VaultCancelToken? cancelToken,
+  }) async {
     final profileRepository = _profileRepositories[profile.profileRepositoryId];
 
     if (profileRepository == null) {
@@ -470,22 +513,23 @@ class Vault {
     await profileSharedAccessRepository.revokeItemAccess(
       accountIndex: profile.accountIndex,
       granteeDid: granteeDid,
-      itemIds: [profileId], // Profile ID is the nodeId
+      itemIds: [profile.id], // Profile ID is the nodeId
     );
   }
 
-  /// Gets access permissions for items for a user.
+  @Deprecated(
+    'Use revokeProfileSharedAccess instead which accepts profile object and does not require profileId',
+  )
+  /// Revokes access to a profile for a specific user.
   ///
-  /// [profileId] - ID of the profile that owns the items.
-  /// [granteeDid] - DID of the user to get permissions for.
+  /// [profileId] - ID of the profile to revoke access from.
+  /// [granteeDid] - DID of the user to revoke access from.
   /// [cancelToken] - Optional cancel token for the operation.
-  ///
-  /// Returns a list of [ItemPermission] objects representing the access permissions.
   ///
   /// Throws [TdkException] if:
   /// - The profile is not found
   /// - The profile repository is not found
-  Future<List<ItemPermission>> getItemAccess({
+  Future<void> revokeProfileAccess({
     required String profileId,
     required String granteeDid,
     VaultCancelToken? cancelToken,
@@ -495,13 +539,35 @@ class Vault {
     if (profile == null) {
       Error.throwWithStackTrace(
         TdkException(
-          message: 'Can not find profile with id $profileId',
+          message: 'Can not find profile $profileId',
           code: TdkExceptionType.invalidProfileIdentifier.code,
         ),
         StackTrace.current,
       );
     }
 
+    await revokeProfileSharedAccess(
+      profile: profile,
+      granteeDid: granteeDid,
+      cancelToken: cancelToken,
+    );
+  }
+
+  /// Gets access permissions for items for a user.
+  ///
+  /// [profile] - The profile that owns the items.
+  /// [granteeDid] - DID of the user to get permissions for.
+  /// [cancelToken] - Optional cancel token for the operation.
+  ///
+  /// Returns a list of [ItemPermission] objects representing the access permissions.
+  ///
+  /// Throws [TdkException] if:
+  /// - The profile repository is not found
+  Future<List<ItemPermission>> getProfileItemAccess({
+    required Profile profile,
+    required String granteeDid,
+    VaultCancelToken? cancelToken,
+  }) async {
     final profileRepository = _profileRepositories[profile.profileRepositoryId];
 
     if (profileRepository == null) {
@@ -543,6 +609,44 @@ class Vault {
     return permissionsList
         .map((perm) => ItemPermission.fromMap(perm as Map<String, dynamic>))
         .toList();
+  }
+
+  @Deprecated(
+    'Use getProfileItemAccess instead which does not require profileId and is more efficient if profile is already available',
+  )
+  /// Gets access permissions for items for a user.
+  ///
+  /// [profileId] - ID of the profile that owns the items.
+  /// [granteeDid] - DID of the user to get permissions for.
+  /// [cancelToken] - Optional cancel token for the operation.
+  ///
+  /// Returns a list of [ItemPermission] objects representing the access permissions.
+  ///
+  /// Throws [TdkException] if:
+  /// - The profile is not found
+  /// - The profile repository is not found
+  Future<List<ItemPermission>> getItemAccess({
+    required String profileId,
+    required String granteeDid,
+    VaultCancelToken? cancelToken,
+  }) async {
+    final profile = await _getProfileById(profileId);
+
+    if (profile == null) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Can not find profile with id $profileId',
+          code: TdkExceptionType.invalidProfileIdentifier.code,
+        ),
+        StackTrace.current,
+      );
+    }
+
+    return getProfileItemAccess(
+      profile: profile,
+      granteeDid: granteeDid,
+      cancelToken: cancelToken,
+    );
   }
 
   Future<Profile?> _getProfileById(String id) async {
@@ -603,28 +707,16 @@ class Vault {
 
   /// Gets an [ItemPermissionsPolicy] for editing of permissions.
   ///
-  /// [profileId] - ID of the profile that owns the items.
+  /// [profile] - The profile that owns the items.
   /// [granteeDid] - DID of the user to get permissions for.
   /// [cancelToken] - Optional cancel token for the operation.
   ///
   /// Returns an [ItemPermissionsPolicy] with current permissions loaded.
-  Future<ItemPermissionsPolicy> getItemPermissionsPolicy({
-    required String profileId,
+  Future<ItemPermissionsPolicy> getProfileItemPermissionsPolicy({
+    required Profile profile,
     required String granteeDid,
     VaultCancelToken? cancelToken,
   }) async {
-    final profile = await _getProfileById(profileId);
-
-    if (profile == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Can not find profile with id $profileId',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
     final profileRepository = _profileRepositories[profile.profileRepositoryId];
 
     if (profileRepository == null) {
@@ -661,22 +753,19 @@ class Vault {
     return ItemPermissionsPolicy.fromAccessMap(access);
   }
 
-  /// Sets the item access permissions policy for a grantee.
+  @Deprecated(
+    'Use getProfileItemPermissionsPolicy instead which does not require profileId and is more efficient if profile is already available',
+  )
+  /// Gets an [ItemPermissionsPolicy] for editing of permissions.
   ///
   /// [profileId] - ID of the profile that owns the items.
-  /// [granteeDid] - DID of the user to set permissions for.
-  /// [policy] - The complete permissions policy to set.
+  /// [granteeDid] - DID of the user to get permissions for.
   /// [cancelToken] - Optional cancel token for the operation.
   ///
-  /// Returns the KEK for accessing the shared items.
-  ///
-  /// Throws [TdkException] if:
-  /// - The profile is not found
-  /// - The profile repository is not found
-  Future<Uint8List> setItemAccess({
+  /// Returns an [ItemPermissionsPolicy] with current permissions loaded.
+  Future<ItemPermissionsPolicy> getItemPermissionsPolicy({
     required String profileId,
     required String granteeDid,
-    required ItemPermissionsPolicy policy,
     VaultCancelToken? cancelToken,
   }) async {
     final profile = await _getProfileById(profileId);
@@ -691,6 +780,32 @@ class Vault {
       );
     }
 
+    final itemPermissionPolicy = await getProfileItemPermissionsPolicy(
+      profile: profile,
+      granteeDid: granteeDid,
+      cancelToken: cancelToken,
+    );
+
+    return itemPermissionPolicy;
+  }
+
+  /// Sets the item access permissions policy for a grantee.
+  ///
+  /// [profile] - The profile that owns the items.
+  /// [granteeDid] - DID of the user to set permissions for.
+  /// [policy] - The complete permissions policy to set.
+  /// [cancelToken] - Optional cancel token for the operation.
+  ///
+  /// Returns the KEK for accessing the shared items.
+  ///
+  /// Throws [TdkException] if:
+  /// - The profile repository is not found
+  Future<Uint8List> setProfileItemAccess({
+    required Profile profile,
+    required String granteeDid,
+    required ItemPermissionsPolicy policy,
+    VaultCancelToken? cancelToken,
+  }) async {
     final profileRepository = _profileRepositories[profile.profileRepositoryId];
 
     if (profileRepository == null) {
@@ -724,6 +839,47 @@ class Vault {
       accountIndex: profile.accountIndex,
       granteeDid: granteeDid,
       permissionGroups: permissionGroups,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @Deprecated(
+    'Use setProfileItemAccess instead which does not require profileId and is more efficient if profile is already available',
+  )
+  /// Sets the item access permissions policy for a grantee.
+  ///
+  /// [profileId] - ID of the profile that owns the items.
+  /// [granteeDid] - DID of the user to set permissions for.
+  /// [policy] - The complete permissions policy to set.
+  /// [cancelToken] - Optional cancel token for the operation.
+  ///
+  /// Returns the KEK for accessing the shared items.
+  ///
+  /// Throws [TdkException] if:
+  /// - The profile is not found
+  /// - The profile repository is not found
+  Future<Uint8List> setItemAccess({
+    required String profileId,
+    required String granteeDid,
+    required ItemPermissionsPolicy policy,
+    VaultCancelToken? cancelToken,
+  }) async {
+    final profile = await _getProfileById(profileId);
+
+    if (profile == null) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Can not find profile with id $profileId',
+          code: TdkExceptionType.invalidProfileIdentifier.code,
+        ),
+        StackTrace.current,
+      );
+    }
+
+    return setProfileItemAccess(
+      profile: profile,
+      granteeDid: granteeDid,
+      policy: policy,
       cancelToken: cancelToken,
     );
   }

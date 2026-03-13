@@ -132,8 +132,8 @@ void main() async {
   print(
     '[Demo] Alice is sharing $fileName with Bob with READ access for 1 minute...',
   );
-  var policy = await vaultAlice.getItemPermissionsPolicy(
-    profileId: aliceProfile.id,
+  var policy = await vaultAlice.getProfileItemPermissionsPolicy(
+    profile: aliceProfile,
     granteeDid: bobProfile.did,
   );
 
@@ -143,8 +143,8 @@ void main() async {
     expiresAt: DateTime.now().add(const Duration(minutes: 1)),
   );
 
-  final kek = await vaultAlice.setItemAccess(
-    profileId: aliceProfile.id,
+  final kek = await vaultAlice.setProfileItemAccess(
+    profile: aliceProfile,
     granteeDid: bobProfile.did,
     policy: policy,
   );
@@ -158,8 +158,8 @@ void main() async {
 
   // Bob accepts the shared item
   print('[Demo] Bob is accepting the shared item...');
-  await vaultBob.acceptSharedItems(
-    profileId: bobProfile.id,
+  await vaultBob.acceptProfileSharedItems(
+    profile: bobProfile,
     sharedItems: sharedItems,
   );
 
