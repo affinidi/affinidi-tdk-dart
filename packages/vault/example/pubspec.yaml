@@ -10,7 +10,7 @@ resolution: workspace
 
 dependencies:
   affinidi_tdk_vault: ^2.0.0
-  affinidi_tdk_vault_data_manager: ^2.0.0
+  affinidi_tdk_vault_data_manager: ^2.0.1
   base_codecs: ^1.0.1
   ssi: ^3.3.0
 

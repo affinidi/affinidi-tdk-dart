@@ -1,3 +1,7 @@
+## 2.0.1
+
+ - **FIX**: remove call to list profiles while creating a new profile (#59).
+
 # Change Log
 
 ## 2.0.0
