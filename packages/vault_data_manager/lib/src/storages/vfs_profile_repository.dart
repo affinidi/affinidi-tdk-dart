@@ -221,7 +221,6 @@ class VfsProfileRepository implements ProfileRepository, ProfileAccessSharing {
       walletKeyId: nextAccountIndex.toString(),
       encryptedDekek: encryptedDekek,
     );
-    await profileDataManager.getProfiles();
 
     await profileDataManager.createProfile(
       name: name,
