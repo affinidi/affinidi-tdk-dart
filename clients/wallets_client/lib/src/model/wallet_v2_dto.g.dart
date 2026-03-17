@@ -24,6 +24,8 @@ class _$WalletV2Dto extends WalletV2Dto {
   @override
   final BuiltList<WalletDtoKeysInner>? keys;
   @override
+  final BuiltList<ServiceEndpointDto>? services;
+  @override
   final String? createdAt;
   @override
   final String? modifiedAt;
@@ -40,6 +42,7 @@ class _$WalletV2Dto extends WalletV2Dto {
     this.ari,
     this.algorithm,
     this.keys,
+    this.services,
     this.createdAt,
     this.modifiedAt,
   }) : super._();
@@ -62,6 +65,7 @@ class _$WalletV2Dto extends WalletV2Dto {
         ari == other.ari &&
         algorithm == other.algorithm &&
         keys == other.keys &&
+        services == other.services &&
         createdAt == other.createdAt &&
         modifiedAt == other.modifiedAt;
   }
@@ -77,6 +81,7 @@ class _$WalletV2Dto extends WalletV2Dto {
     _$hash = $jc(_$hash, ari.hashCode);
     _$hash = $jc(_$hash, algorithm.hashCode);
     _$hash = $jc(_$hash, keys.hashCode);
+    _$hash = $jc(_$hash, services.hashCode);
     _$hash = $jc(_$hash, createdAt.hashCode);
     _$hash = $jc(_$hash, modifiedAt.hashCode);
     _$hash = $jf(_$hash);
@@ -94,6 +99,7 @@ class _$WalletV2Dto extends WalletV2Dto {
           ..add('ari', ari)
           ..add('algorithm', algorithm)
           ..add('keys', keys)
+          ..add('services', services)
           ..add('createdAt', createdAt)
           ..add('modifiedAt', modifiedAt))
         .toString();
@@ -136,6 +142,12 @@ class WalletV2DtoBuilder implements Builder<WalletV2Dto, WalletV2DtoBuilder> {
       _$this._keys ??= ListBuilder<WalletDtoKeysInner>();
   set keys(ListBuilder<WalletDtoKeysInner>? keys) => _$this._keys = keys;
 
+  ListBuilder<ServiceEndpointDto>? _services;
+  ListBuilder<ServiceEndpointDto> get services =>
+      _$this._services ??= ListBuilder<ServiceEndpointDto>();
+  set services(ListBuilder<ServiceEndpointDto>? services) =>
+      _$this._services = services;
+
   String? _createdAt;
   String? get createdAt => _$this._createdAt;
   set createdAt(String? createdAt) => _$this._createdAt = createdAt;
@@ -159,6 +171,7 @@ class WalletV2DtoBuilder implements Builder<WalletV2Dto, WalletV2DtoBuilder> {
       _ari = $v.ari;
       _algorithm = $v.algorithm;
       _keys = $v.keys?.toBuilder();
+      _services = $v.services?.toBuilder();
       _createdAt = $v.createdAt;
       _modifiedAt = $v.modifiedAt;
       _$v = null;
@@ -193,6 +206,7 @@ class WalletV2DtoBuilder implements Builder<WalletV2Dto, WalletV2DtoBuilder> {
             ari: ari,
             algorithm: algorithm,
             keys: _keys?.build(),
+            services: _services?.build(),
             createdAt: createdAt,
             modifiedAt: modifiedAt,
           );
@@ -201,6 +215,8 @@ class WalletV2DtoBuilder implements Builder<WalletV2Dto, WalletV2DtoBuilder> {
       try {
         _$failedField = 'keys';
         _keys?.build();
+        _$failedField = 'services';
+        _services?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
           r'WalletV2Dto',
