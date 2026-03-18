@@ -286,6 +286,7 @@ void main() {
       expect(sharedProfile, isNotNull);
       expect(sharedProfile.profileId, 'test-id');
       expect(sharedProfile.profileDID, 'did:test:123');
+      verify(() => mockProfileRepository.listProfiles()).called(1);
     });
 
     test('should throw when sharing non-existent profile', () async {
@@ -403,6 +404,7 @@ void main() {
           granteeDid: 'did:test:123',
         ),
       ).called(1);
+      verify(() => mockProfileRepository.listProfiles()).called(1);
     });
 
     group('Multiple Permission Scenarios', () {
@@ -487,6 +489,7 @@ void main() {
 
           expect(writeOnlyGroup.rights, contains('vfsWrite'));
           expect(readWriteGroup.rights, containsAll(['vfsRead', 'vfsWrite']));
+          verify(() => mockProfileRepository.listProfiles()).called(1);
         },
       );
     });
@@ -573,6 +576,7 @@ void main() {
                 >(named: 'permissionGroups'),
           ),
         ).called(1);
+        verify(() => mockProfileRepository.listProfiles()).called(1);
       });
 
       test(
@@ -652,6 +656,7 @@ void main() {
                   >(named: 'permissionGroups'),
             ),
           ).called(1);
+          verify(() => mockProfileRepository.listProfiles()).called(1);
         },
       );
 
@@ -724,6 +729,7 @@ void main() {
                 >(named: 'permissionGroups'),
           ),
         ).called(1);
+        verify(() => mockProfileRepository.listProfiles()).called(1);
       });
 
       test(
@@ -854,6 +860,7 @@ void main() {
             ownerProfileDid: 'did:key:owner-did',
           ),
         ).called(1);
+        verify(() => mockProfileRepository.listProfiles()).called(1);
       });
 
       test(
