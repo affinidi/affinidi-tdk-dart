@@ -16,6 +16,7 @@ Name | Type | Description | Notes
 **ari** | **String** | ARI of the wallet | [optional] 
 **algorithm** | **String** | algorithm used to generate key for the wallet | [optional] 
 **keys** | [**BuiltList&lt;WalletDtoKeysInner&gt;**](WalletDtoKeysInner.md) |  | [optional] 
+**services** | [**BuiltList&lt;ServiceEndpointDto&gt;**](ServiceEndpointDto.md) | list of service endpoints associated with this wallet | [optional] 
 **createdAt** | **String** |  | [optional] 
 **modifiedAt** | **String** |  | [optional] 
 
