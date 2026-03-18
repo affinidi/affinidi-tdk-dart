@@ -1,3 +1,7 @@
+## 2.1.0
+
+ - **FEAT**: cache and reuse profile details in share flow (#61).
+
 # Change Log
 
 ## 2.0.0
