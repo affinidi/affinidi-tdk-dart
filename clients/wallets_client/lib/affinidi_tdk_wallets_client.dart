@@ -25,6 +25,7 @@ export 'package:affinidi_tdk_wallets_client/src/model/not_found_error_details_in
 export 'package:affinidi_tdk_wallets_client/src/model/operation_forbidden_error.dart';
 export 'package:affinidi_tdk_wallets_client/src/model/revoke_credential_input.dart';
 export 'package:affinidi_tdk_wallets_client/src/model/revoke_credentials_input.dart';
+export 'package:affinidi_tdk_wallets_client/src/model/service_endpoint_dto.dart';
 export 'package:affinidi_tdk_wallets_client/src/model/service_endpoint_input.dart';
 export 'package:affinidi_tdk_wallets_client/src/model/sign_credential400_response.dart';
 export 'package:affinidi_tdk_wallets_client/src/model/sign_credential_input_dto.dart';
