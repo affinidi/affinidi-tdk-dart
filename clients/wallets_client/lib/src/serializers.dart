@@ -26,6 +26,7 @@ import 'package:affinidi_tdk_wallets_client/src/model/not_found_error_details_in
 import 'package:affinidi_tdk_wallets_client/src/model/operation_forbidden_error.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/revoke_credential_input.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/revoke_credentials_input.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/service_endpoint_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/service_endpoint_input.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/sign_credential400_response.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/sign_credential_input_dto.dart';
@@ -66,6 +67,7 @@ part 'serializers.g.dart';
   OperationForbiddenError,
   RevokeCredentialInput,
   RevokeCredentialsInput,
+  ServiceEndpointDto,
   ServiceEndpointInput,
   SignCredential400Response,
   SignCredentialInputDto,
