@@ -103,6 +103,7 @@ Class | Method | HTTP request | Description
  - [OperationForbiddenError](doc/OperationForbiddenError.md)
  - [RevokeCredentialInput](doc/RevokeCredentialInput.md)
  - [RevokeCredentialsInput](doc/RevokeCredentialsInput.md)
+ - [ServiceEndpointDto](doc/ServiceEndpointDto.md)
  - [ServiceEndpointInput](doc/ServiceEndpointInput.md)
  - [SignCredential400Response](doc/SignCredential400Response.md)
  - [SignCredentialInputDto](doc/SignCredentialInputDto.md)
