@@ -16,6 +16,7 @@ doc/OperationForbiddenError.md
 doc/RevocationApi.md
 doc/RevokeCredentialInput.md
 doc/RevokeCredentialsInput.md
+doc/ServiceEndpointDto.md
 doc/ServiceEndpointInput.md
 doc/SignCredential400Response.md
 doc/SignCredentialInputDto.md
@@ -65,6 +66,7 @@ lib/src/model/not_found_error_details_inner.dart
 lib/src/model/operation_forbidden_error.dart
 lib/src/model/revoke_credential_input.dart
 lib/src/model/revoke_credentials_input.dart
+lib/src/model/service_endpoint_dto.dart
 lib/src/model/service_endpoint_input.dart
 lib/src/model/sign_credential400_response.dart
 lib/src/model/sign_credential_input_dto.dart
