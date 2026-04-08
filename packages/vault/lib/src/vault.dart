@@ -591,9 +591,8 @@ class Vault {
       );
     }
 
-    final currentUserProfile = currentUserProfiles.first;
-
-    final sharedStorage = currentUserProfile.sharedStorages
+    final sharedStorage = currentUserProfiles
+        .expand((profile) => profile.sharedStorages)
         .where((storage) => storage.id == ownerProfileId)
         .firstOrNull;
 
