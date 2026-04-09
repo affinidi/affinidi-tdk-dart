@@ -43,6 +43,7 @@
 /// - [unableToScanNode] - Indicates a failure in scanning a node.
 /// - [unableToRevokeAccess] - Indicates access cannot be revoked.
 /// - [unableToUpdateProfileData] - Indicates a failure in updating profile data.
+/// - [storageLimitExceeded] - Indicates that the vault storage limit has been exceeded.
 /// - [unableToUploadFile] - Indicates a failure in uploading a file.
 /// - [unableToUpdateAccount] - Indicates a failure in updating an account.
 enum TdkExceptionType {
@@ -185,6 +186,9 @@ enum TdkExceptionType {
 
   /// Indicates a failure in updating profile data.
   unableToUpdateProfileData(code: 'unable_to_update_profile_data'),
+
+  /// Indicates that the vault storage limit has been exceeded.
+  storageLimitExceeded(code: 'storage_limit_exceeded'),
 
   /// Indicates a failure in uploading a file.
   unableToUploadFile(code: 'unable_to_upload_file'),
