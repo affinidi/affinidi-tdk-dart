@@ -48,7 +48,8 @@ typedef VaultDelegatedDataManagerServiceFactory =
     });
 
 /// A VFS implementation of [ProfileRepository] for managing user profiles.
-class VfsProfileRepository implements ProfileRepository, ProfileAccessSharing {
+class VfsProfileRepository
+    implements ProfileRepository, ProfileAccessSharing, ProfileStorageInfo {
   /// The key ID for the root account.
   static const _rootAccountKeyId = '0';
   static const _nonceSize = 32;
@@ -701,5 +702,20 @@ class VfsProfileRepository implements ProfileRepository, ProfileAccessSharing {
     final didSigner = await _memoizedDidSigner('$accountIndex');
     final consumerAuthProvider = _consumerAuthProviderFactory(didSigner);
     return _iamApiServiceFactory(consumerAuthProvider);
+  }
+
+  @override
+  Future<VaultStorageUsage> getStorageUsage({
+    VaultCancelToken? cancelToken,
+  }) async {
+    _ensureConfigured();
+    final accountVaultDataManagerService = await _memoizedDataManagerService(
+      walletKeyId: _rootAccountKeyId,
+    );
+    final consumption = await accountVaultDataManagerService
+        .getVaultDataFileConsumption(cancelToken: cancelToken);
+    return VaultStorageUsage.fromBytes(
+      (consumption.sizeInMB * 1024 * 1024).round(),
+    );
   }
 }

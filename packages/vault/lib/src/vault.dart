@@ -14,8 +14,10 @@ import 'permissions.dart';
 import 'profile.dart';
 import 'storage_interfaces/profile_access_sharing.dart';
 import 'storage_interfaces/profile_repository.dart';
+import 'storage_interfaces/profile_storage_info.dart';
 import 'storage_interfaces/repository_configuration.dart';
 import 'storage_interfaces/vault_store.dart';
+import 'vault_storage_usage.dart';
 
 /// Manages vault operations and profile repositories.
 class Vault {
@@ -737,6 +739,44 @@ class Vault {
       accountIndex: profileInfo.accountIndex,
       granteeDid: granteeDid,
       permissionGroups: permissionGroups,
+      cancelToken: cancelToken,
+    );
+  }
+
+  /// Returns the current storage usage for the default profile repository.
+  ///
+  /// Throws [TdkException] if the vault is not initialized or the default
+  /// repository does not support storage usage reporting.
+  ///
+  /// Example:
+  /// ```dart
+  /// final usage = await vault.getStorageUsage();
+  /// print('Used: ${usage.usedMB.toStringAsFixed(2)} MB');
+  /// ```
+  Future<VaultStorageUsage> getStorageUsage({
+    VaultCancelToken? cancelToken,
+  }) async {
+    if (!_initialized) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Must initialize vault by calling ensureInitialized',
+          code: TdkExceptionType.vaultNotInitialized.code,
+        ),
+        StackTrace.current,
+      );
+    }
+    final repository = defaultProfileRepository;
+    if (repository is! ProfileStorageInfo) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message:
+              'The default profile repository does not support storage usage reporting',
+          code: TdkExceptionType.unsupportedOperation.code,
+        ),
+        StackTrace.current,
+      );
+    }
+    return (repository as ProfileStorageInfo).getStorageUsage(
       cancelToken: cancelToken,
     );
   }
