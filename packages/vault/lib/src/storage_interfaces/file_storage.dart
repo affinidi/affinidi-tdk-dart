@@ -74,11 +74,24 @@ abstract class FileStorage {
     VaultProgressCallback? onReceiveProgress,
   });
 
-  /// Allows adding a new file
-  /// Throws if there is another file with the same name in the folder
-  /// Throws for timeouts
-  /// Throws for network connectivity
-  /// Throws if exceeds space usage
+  /// Allows adding a new file.
+  ///
+  /// The vault enforces two storage constraints:
+  /// - **Per-file limit**: each individual file (after encryption) must fit
+  ///   within the S3 pre-signed POST policy's `content-length-range` cap.
+  ///   Files that exceed this limit cause S3 to return `EntityTooLarge`,
+  ///   which is surfaced as a `TdkException` with
+  ///   `code == 'storage_limit_exceeded'`.
+  /// - **Total vault limit**: the vault has a cumulative storage cap of
+  ///   **500 MB** across all files. Exceeding this also produces a
+  ///   `TdkException` with `code == 'storage_limit_exceeded'`.
+  ///
+  /// Use `Vault.getStorageUsage()` to check current consumption before
+  /// uploading large payloads.
+  ///
+  /// Throws if there is another file with the same name in the folder.
+  /// Throws for timeouts.
+  /// Throws for network connectivity.
   Future<void> createFile({
     required String fileName,
     required Uint8List data,
