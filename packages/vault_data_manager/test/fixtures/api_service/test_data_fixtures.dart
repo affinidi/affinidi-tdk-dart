@@ -25,6 +25,13 @@ class TestDataFixtures {
   static const String missingPropertiesForFileUpload =
       'missing_properties_for_file_upload';
   static const String unableToUploadFile = 'unable_to_upload_file';
+  static const String storageLimitExceeded = 'storage_limit_exceeded';
+
+  static const String s3EntityTooLargeXml =
+      '<?xml version="1.0" encoding="UTF-8"?>'
+      '<Error><Code>EntityTooLarge</Code>'
+      '<Message>Your proposed upload exceeds the maximum allowed size</Message>'
+      '</Error>';
   static const String unableToUpdateAccount = 'unable_to_update_account';
   static const String unableToGetNodeInfo = 'unable_to_get_node_info';
   static const String accountAlreadyExists = 'account_already_exists';
