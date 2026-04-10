@@ -40,6 +40,7 @@ void main() {
     uploadDioAdapter = DioAdapterFixtures.adapter(uploadDio);
     client.options.baseUrl = '';
     (uploadDio as MockDio).setShouldThrowError(false);
+    (uploadDio as MockDio).setS3ErrorXml('');
   });
 
   tearDown(() {
@@ -296,6 +297,52 @@ void main() {
           ),
         );
       });
+    });
+
+    group('and S3 rejects upload with EntityTooLarge', () {
+      test(
+        'it throws a storage_limit_exceeded exception with a descriptive message',
+        () async {
+          dioAdapter.mockRequestWithReply(
+            url: '/v1/nodes',
+            statusCode: 200,
+            data: {
+              'nodeId': NodeResponseFixtures.testNodeId,
+              'url': TestDataFixtures.uploadUrl,
+              'fields': TestDataFixtures.testUploadFields,
+            },
+            httpMethod: HttpMethod.post,
+          );
+
+          (uploadDio as MockDio).setS3ErrorXml(
+            TestDataFixtures.s3EntityTooLargeXml,
+          );
+
+          await expectLater(
+            vaultDataManagerApiService.createFile(
+              parentFolderId: NodeResponseFixtures.rootNodeId,
+              fileName: FileResponseFixtures.testFileName,
+              file: Uint8List.fromList([1, 2, 3]),
+              dekEncryptedByVfsPublicKey: TestDataFixtures.testDek,
+              dekEncryptedByWalletCryptoMaterial: TestDataFixtures.testDek,
+              walletCryptoMaterialHash: TestDataFixtures.testHash,
+            ),
+            throwsA(
+              isA<TdkException>()
+                  .having(
+                    (e) => e.code,
+                    'code',
+                    TestDataFixtures.storageLimitExceeded,
+                  )
+                  .having(
+                    (e) => e.message,
+                    'message',
+                    contains('storage limit exceeded'),
+                  ),
+            ),
+          );
+        },
+      );
     });
   });
 

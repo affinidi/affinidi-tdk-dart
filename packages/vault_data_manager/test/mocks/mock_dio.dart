@@ -10,9 +10,16 @@ class MockDio extends Mock implements Dio {
   BaseOptions get options => BaseOptions();
 
   bool _shouldThrowError = false;
+  String? _s3ErrorXml;
 
   void setShouldThrowError(bool value) {
     _shouldThrowError = value;
+    _s3ErrorXml = null;
+  }
+
+  void setS3ErrorXml(String? xml) {
+    _s3ErrorXml = (xml == null || xml.isEmpty) ? null : xml;
+    _shouldThrowError = false;
   }
 
   @override
@@ -86,6 +93,16 @@ class MockDio extends Mock implements Dio {
           ),
         );
       }
+      if (_s3ErrorXml != null) {
+        throw DioException(
+          requestOptions: requestOptions,
+          response: Response(
+            requestOptions: requestOptions,
+            statusCode: 400,
+            data: _s3ErrorXml,
+          ),
+        );
+      }
       return Response<T>(
         data:
             {
@@ -126,6 +143,16 @@ class MockDio extends Mock implements Dio {
             requestOptions: RequestOptions(path: path),
             statusCode: 500,
             data: {'error': TestDataFixtures.uploadFailed},
+          ),
+        );
+      }
+      if (_s3ErrorXml != null) {
+        throw DioException(
+          requestOptions: RequestOptions(path: path),
+          response: Response(
+            requestOptions: RequestOptions(path: path),
+            statusCode: 400,
+            data: _s3ErrorXml,
           ),
         );
       }

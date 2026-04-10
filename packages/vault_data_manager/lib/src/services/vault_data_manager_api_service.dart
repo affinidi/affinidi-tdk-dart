@@ -262,6 +262,24 @@ class VaultDataManagerApiService
         onSendProgress: onSendProgress?.toProgressCallback(),
       );
     } catch (e, stackTrace) {
+      if (e is DioException) {
+        final s3Error = _parseS3XmlError(e.response?.data);
+        if (s3Error != null) {
+          final isStorageLimit = _s3StorageLimitCodes.contains(s3Error.$1);
+          Error.throwWithStackTrace(
+            TdkException(
+              message: isStorageLimit
+                  ? 'Vault storage limit exceeded. Unable to upload file.'
+                  : 'Unable to upload file.',
+              code: isStorageLimit
+                  ? TdkExceptionType.storageLimitExceeded.code
+                  : TdkExceptionType.unableToUploadFile.code,
+              originalMessage: '${s3Error.$1}: ${s3Error.$2}',
+            ),
+            stackTrace,
+          );
+        }
+      }
       Error.throwWithStackTrace(
         TdkException(
           message: 'Unable to upload file.',
@@ -271,6 +289,28 @@ class VaultDataManagerApiService
         stackTrace,
       );
     }
+  }
+
+  /// S3 error codes that indicate a storage/size limit has been exceeded.
+  static const _s3StorageLimitCodes = {
+    'EntityTooLarge',
+    'EntityTooSmall',
+    'MaxMessageLengthExceeded',
+  };
+
+  /// Parses an S3 XML error response body and returns `(code, message)`,
+  /// or `null` if the body is not a recognisable S3 XML error.
+  (String, String)? _parseS3XmlError(dynamic responseData) {
+    if (responseData is! String) return null;
+    final codeMatch = RegExp(r'<Code>([^<]+)</Code>').firstMatch(responseData);
+    if (codeMatch == null) return null;
+    final messageMatch = RegExp(
+      r'<Message>([^<]+)</Message>',
+    ).firstMatch(responseData);
+    return (
+      codeMatch.group(1)!,
+      messageMatch?.group(1) ?? 'No message provided',
+    );
   }
 
   @override

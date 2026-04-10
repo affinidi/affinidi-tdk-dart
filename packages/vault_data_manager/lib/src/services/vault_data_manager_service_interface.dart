@@ -179,7 +179,13 @@ abstract interface class VaultDataManagerServiceInterface {
     VaultCancelToken? cancelToken,
   });
 
-  /// Creates a new file with encrypted content
+  /// Creates a new file with encrypted content.
+  ///
+  /// The backend enforces two limits that both surface as a [TdkException]
+  /// with `code == 'storage_limit_exceeded'`:
+  /// - **Per-file**: S3 pre-signed POST policy rejects individual files
+  ///   that are too large after encryption (`EntityTooLarge`).
+  /// - **Total vault**: cumulative storage is capped at **500 MB**.
   Future<void> createFile({
     required String fileName,
     required String parentFolderNodeId,
