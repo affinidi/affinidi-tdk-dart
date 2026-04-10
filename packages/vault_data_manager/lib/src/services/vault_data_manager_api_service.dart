@@ -302,11 +302,11 @@ class VaultDataManagerApiService
   /// or `null` if the body is not a recognisable S3 XML error.
   (String, String)? _parseS3XmlError(dynamic responseData) {
     if (responseData is! String) return null;
-    final codeMatch =
-        RegExp(r'<Code>([^<]+)</Code>').firstMatch(responseData);
+    final codeMatch = RegExp(r'<Code>([^<]+)</Code>').firstMatch(responseData);
     if (codeMatch == null) return null;
-    final messageMatch =
-        RegExp(r'<Message>([^<]+)</Message>').firstMatch(responseData);
+    final messageMatch = RegExp(
+      r'<Message>([^<]+)</Message>',
+    ).firstMatch(responseData);
     return (
       codeMatch.group(1)!,
       messageMatch?.group(1) ?? 'No message provided',

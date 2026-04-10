@@ -12,6 +12,5 @@ class VaultStorageUsage {
   }
 
   @override
-  String toString() =>
-      'VaultStorageUsage(usedBytes: $usedBytes)';
+  String toString() => 'VaultStorageUsage(usedBytes: $usedBytes)';
 }
