@@ -1,3 +1,7 @@
+## 2.0.3
+
+ - **FIX**: Improve storage limit error handling and expose vault storage usage API (#85).
+
 ## 2.0.2
 
  - Update a dependency to the latest release.

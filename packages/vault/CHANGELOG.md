@@ -1,3 +1,7 @@
+## 2.1.1
+
+ - **FIX**: Improve storage limit error handling and expose vault storage usage API (#85).
+
 ## 2.1.0
 
  - **FEAT**: cache and reuse profile details in share flow (#61).
