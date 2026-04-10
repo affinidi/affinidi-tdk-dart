@@ -765,8 +765,7 @@ class Vault {
         StackTrace.current,
       );
     }
-    final repository = defaultProfileRepository;
-    if (repository is! ProfileStorageInfo) {
+    if (defaultProfileRepository is! ProfileStorageInfo) {
       Error.throwWithStackTrace(
         TdkException(
           message:
@@ -776,7 +775,7 @@ class Vault {
         StackTrace.current,
       );
     }
-    return (repository as ProfileStorageInfo).getStorageUsage(
+    return (defaultProfileRepository as ProfileStorageInfo).getStorageUsage(
       cancelToken: cancelToken,
     );
   }
