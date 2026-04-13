@@ -74,11 +74,17 @@ Class | Method | HTTP request | Description
 [*RevocationApi*](doc/RevocationApi.md) | [**getRevocationListCredential**](doc/RevocationApi.md#getrevocationlistcredential) | **GET** /v1/wallets/{walletId}/revocation-list/{listId} | Return revocation list credential.
 [*RevocationApi*](doc/RevocationApi.md) | [**revokeCredential**](doc/RevocationApi.md#revokecredential) | **POST** /v1/wallets/{walletId}/revoke | Revoke Credential.
 [*RevocationApi*](doc/RevocationApi.md) | [**revokeCredentials**](doc/RevocationApi.md#revokecredentials) | **POST** /v2/wallets/{walletId}/credentials/revoke | Revoke Credentials.
+[*WalletApi*](doc/WalletApi.md) | [**createServiceEndpoint**](doc/WalletApi.md#createserviceendpoint) | **POST** /v2/wallets/{walletId}/services | 
 [*WalletApi*](doc/WalletApi.md) | [**createWallet**](doc/WalletApi.md#createwallet) | **POST** /v1/wallets | 
+[*WalletApi*](doc/WalletApi.md) | [**createWalletKey**](doc/WalletApi.md#createwalletkey) | **POST** /v2/wallets/{walletId}/keys | 
 [*WalletApi*](doc/WalletApi.md) | [**createWalletV2**](doc/WalletApi.md#createwalletv2) | **POST** /v2/wallets | 
 [*WalletApi*](doc/WalletApi.md) | [**deleteWallet**](doc/WalletApi.md#deletewallet) | **DELETE** /v1/wallets/{walletId} | 
 [*WalletApi*](doc/WalletApi.md) | [**getWallet**](doc/WalletApi.md#getwallet) | **GET** /v1/wallets/{walletId} | 
+[*WalletApi*](doc/WalletApi.md) | [**listServiceEndpoints**](doc/WalletApi.md#listserviceendpoints) | **GET** /v2/wallets/{walletId}/services | 
+[*WalletApi*](doc/WalletApi.md) | [**listWalletKeys**](doc/WalletApi.md#listwalletkeys) | **GET** /v2/wallets/{walletId}/keys | 
 [*WalletApi*](doc/WalletApi.md) | [**listWallets**](doc/WalletApi.md#listwallets) | **GET** /v1/wallets | 
+[*WalletApi*](doc/WalletApi.md) | [**removeServiceEndpoint**](doc/WalletApi.md#removeserviceendpoint) | **DELETE** /v2/wallets/{walletId}/services/{serviceId} | 
+[*WalletApi*](doc/WalletApi.md) | [**removeWalletKey**](doc/WalletApi.md#removewalletkey) | **DELETE** /v2/wallets/{walletId}/keys/{keyId} | 
 [*WalletApi*](doc/WalletApi.md) | [**signCredential**](doc/WalletApi.md#signcredential) | **POST** /v1/wallets/{walletId}/sign-credential | 
 [*WalletApi*](doc/WalletApi.md) | [**signCredentialsJwt**](doc/WalletApi.md#signcredentialsjwt) | **POST** /v2/wallets/{walletId}/credentials/jwt/sign | 
 [*WalletApi*](doc/WalletApi.md) | [**signCredentialsLdp**](doc/WalletApi.md#signcredentialsldp) | **POST** /v2/wallets/{walletId}/credentials/ldp/sign | 
@@ -86,23 +92,29 @@ Class | Method | HTTP request | Description
 [*WalletApi*](doc/WalletApi.md) | [**signJwtToken**](doc/WalletApi.md#signjwttoken) | **POST** /v1/wallets/{walletId}/sign-jwt | 
 [*WalletApi*](doc/WalletApi.md) | [**signJwtV2**](doc/WalletApi.md#signjwtv2) | **POST** /v2/wallets/{walletId}/jwt/sign | Sign JWT.
 [*WalletApi*](doc/WalletApi.md) | [**signPresentationsLdp**](doc/WalletApi.md#signpresentationsldp) | **POST** /v2/wallets/{walletId}/presentations/ldp/sign | 
+[*WalletApi*](doc/WalletApi.md) | [**updateServiceEndpoint**](doc/WalletApi.md#updateserviceendpoint) | **PATCH** /v2/wallets/{walletId}/services/{serviceId} | 
 [*WalletApi*](doc/WalletApi.md) | [**updateWallet**](doc/WalletApi.md#updatewallet) | **PATCH** /v1/wallets/{walletId} | 
+[*WalletApi*](doc/WalletApi.md) | [**updateWalletKey**](doc/WalletApi.md#updatewalletkey) | **PATCH** /v2/wallets/{walletId}/keys/{keyId} | 
 
 
 ## Documentation For Models
 
  - [CreateWalletInput](doc/CreateWalletInput.md)
+ - [CreateWalletKeyInput](doc/CreateWalletKeyInput.md)
  - [CreateWalletResponse](doc/CreateWalletResponse.md)
  - [CreateWalletV2Input](doc/CreateWalletV2Input.md)
  - [CreateWalletV2Response](doc/CreateWalletV2Response.md)
  - [EntityNotFoundError](doc/EntityNotFoundError.md)
  - [GetRevocationListCredentialResultDto](doc/GetRevocationListCredentialResultDto.md)
  - [InvalidParameterError](doc/InvalidParameterError.md)
+ - [ListServiceEndpointsOK](doc/ListServiceEndpointsOK.md)
+ - [ListWalletKeysOK](doc/ListWalletKeysOK.md)
  - [NotFoundError](doc/NotFoundError.md)
  - [NotFoundErrorDetailsInner](doc/NotFoundErrorDetailsInner.md)
  - [OperationForbiddenError](doc/OperationForbiddenError.md)
  - [RevokeCredentialInput](doc/RevokeCredentialInput.md)
  - [RevokeCredentialsInput](doc/RevokeCredentialsInput.md)
+ - [ServiceEndpointDto](doc/ServiceEndpointDto.md)
  - [ServiceEndpointInput](doc/ServiceEndpointInput.md)
  - [SignCredential400Response](doc/SignCredential400Response.md)
  - [SignCredentialInputDto](doc/SignCredentialInputDto.md)
@@ -122,9 +134,14 @@ Class | Method | HTTP request | Description
  - [SignPresentationLdpResultDto](doc/SignPresentationLdpResultDto.md)
  - [SigningFailedError](doc/SigningFailedError.md)
  - [TooManyRequestsError](doc/TooManyRequestsError.md)
+ - [UpdateServiceEndpointInput](doc/UpdateServiceEndpointInput.md)
  - [UpdateWalletInput](doc/UpdateWalletInput.md)
+ - [UpdateWalletKeyInput](doc/UpdateWalletKeyInput.md)
+ - [VerificationRelationship](doc/VerificationRelationship.md)
+ - [WalletDidType](doc/WalletDidType.md)
  - [WalletDto](doc/WalletDto.md)
  - [WalletDtoKeysInner](doc/WalletDtoKeysInner.md)
+ - [WalletKeyDto](doc/WalletKeyDto.md)
  - [WalletV2Dto](doc/WalletV2Dto.md)
  - [WalletsListDto](doc/WalletsListDto.md)
 

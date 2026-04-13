@@ -9,9 +9,14 @@ import 'package:dio/dio.dart';
 
 import 'package:affinidi_tdk_wallets_client/src/api_util.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/create_wallet_input.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/create_wallet_key_input.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/create_wallet_response.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/create_wallet_v2_input.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/create_wallet_v2_response.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/list_service_endpoints_ok.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/list_wallet_keys_ok.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/service_endpoint_dto.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/service_endpoint_input.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/sign_credential_input_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/sign_credential_result_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/sign_credentials_dm2_sd_jwt_input_dto.dart';
@@ -26,8 +31,12 @@ import 'package:affinidi_tdk_wallets_client/src/model/sign_jwt_v2_input_dto.dart
 import 'package:affinidi_tdk_wallets_client/src/model/sign_jwt_v2_result_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/sign_presentation_ldp_input_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/sign_presentation_ldp_result_dto.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/update_service_endpoint_input.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/update_wallet_input.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/update_wallet_key_input.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/wallet_did_type.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/wallet_dto.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/wallet_key_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/wallets_list_dto.dart';
 
 class WalletApi {
@@ -36,6 +45,118 @@ class WalletApi {
   final Serializers _serializers;
 
   const WalletApi(this._dio, this._serializers);
+
+  /// createServiceEndpoint
+  /// Add service endpoint to wallet, this applies to did:web only
+  ///
+  /// Parameters:
+  /// * [walletId] - id of the wallet
+  /// * [serviceEndpointInput] - AddServiceEndpoint
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future] containing a [Response] with a [ServiceEndpointDto] as data
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<ServiceEndpointDto>> createServiceEndpoint({
+    required String walletId,
+    required ServiceEndpointInput serviceEndpointInput,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final _path = r'/v2/wallets/{walletId}/services'.replaceAll(
+      '{'
+      r'walletId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        walletId,
+        const FullType(String),
+      ).toString(),
+    );
+    final _options = Options(
+      method: r'POST',
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'ProjectTokenAuth',
+            'keyName': 'authorization',
+            'where': 'header',
+          },
+        ],
+        ...?extra,
+      },
+      contentType: 'application/json',
+      validateStatus: validateStatus,
+    );
+
+    dynamic _bodyData;
+
+    try {
+      const _type = FullType(ServiceEndpointInput);
+      _bodyData = _serializers.serialize(
+        serviceEndpointInput,
+        specifiedType: _type,
+      );
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: _options.compose(_dio.options, _path),
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    ServiceEndpointDto? _responseData;
+
+    try {
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(ServiceEndpointDto),
+                )
+                as ServiceEndpointDto;
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    return Response<ServiceEndpointDto>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
+  }
 
   /// createWallet
   /// creates a wallet
@@ -126,6 +247,118 @@ class WalletApi {
     }
 
     return Response<CreateWalletResponse>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
+  }
+
+  /// createWalletKey
+  /// Add a new key to the wallet, this applies to did:web only
+  ///
+  /// Parameters:
+  /// * [walletId] - id of the wallet
+  /// * [createWalletKeyInput] - CreateWalletKey
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future] containing a [Response] with a [WalletKeyDto] as data
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<WalletKeyDto>> createWalletKey({
+    required String walletId,
+    required CreateWalletKeyInput createWalletKeyInput,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final _path = r'/v2/wallets/{walletId}/keys'.replaceAll(
+      '{'
+      r'walletId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        walletId,
+        const FullType(String),
+      ).toString(),
+    );
+    final _options = Options(
+      method: r'POST',
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'ProjectTokenAuth',
+            'keyName': 'authorization',
+            'where': 'header',
+          },
+        ],
+        ...?extra,
+      },
+      contentType: 'application/json',
+      validateStatus: validateStatus,
+    );
+
+    dynamic _bodyData;
+
+    try {
+      const _type = FullType(CreateWalletKeyInput);
+      _bodyData = _serializers.serialize(
+        createWalletKeyInput,
+        specifiedType: _type,
+      );
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: _options.compose(_dio.options, _path),
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    WalletKeyDto? _responseData;
+
+    try {
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(WalletKeyDto),
+                )
+                as WalletKeyDto;
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    return Response<WalletKeyDto>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,
@@ -389,6 +622,188 @@ class WalletApi {
     );
   }
 
+  /// listServiceEndpoints
+  /// List service endpoints in wallet, this applies to did:web only
+  ///
+  /// Parameters:
+  /// * [walletId] - id of the wallet
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future] containing a [Response] with a [ListServiceEndpointsOK] as data
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<ListServiceEndpointsOK>> listServiceEndpoints({
+    required String walletId,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final _path = r'/v2/wallets/{walletId}/services'.replaceAll(
+      '{'
+      r'walletId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        walletId,
+        const FullType(String),
+      ).toString(),
+    );
+    final _options = Options(
+      method: r'GET',
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'ProjectTokenAuth',
+            'keyName': 'authorization',
+            'where': 'header',
+          },
+        ],
+        ...?extra,
+      },
+      validateStatus: validateStatus,
+    );
+
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    ListServiceEndpointsOK? _responseData;
+
+    try {
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(ListServiceEndpointsOK),
+                )
+                as ListServiceEndpointsOK;
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    return Response<ListServiceEndpointsOK>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
+  }
+
+  /// listWalletKeys
+  /// List all keys in the wallet, this applies to did:web only
+  ///
+  /// Parameters:
+  /// * [walletId] - id of the wallet
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future] containing a [Response] with a [ListWalletKeysOK] as data
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<ListWalletKeysOK>> listWalletKeys({
+    required String walletId,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final _path = r'/v2/wallets/{walletId}/keys'.replaceAll(
+      '{'
+      r'walletId'
+      '}',
+      encodeQueryParameter(
+        _serializers,
+        walletId,
+        const FullType(String),
+      ).toString(),
+    );
+    final _options = Options(
+      method: r'GET',
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'ProjectTokenAuth',
+            'keyName': 'authorization',
+            'where': 'header',
+          },
+        ],
+        ...?extra,
+      },
+      validateStatus: validateStatus,
+    );
+
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    ListWalletKeysOK? _responseData;
+
+    try {
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(ListWalletKeysOK),
+                )
+                as ListWalletKeysOK;
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    return Response<ListWalletKeysOK>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
+  }
+
   /// listWallets
   /// lists all wallets
   ///
@@ -404,7 +819,7 @@ class WalletApi {
   /// Returns a [Future] containing a [Response] with a [WalletsListDto] as data
   /// Throws [DioException] if API call or serialization fails
   Future<Response<WalletsListDto>> listWallets({
-    String? didType,
+    WalletDidType? didType,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -435,7 +850,7 @@ class WalletApi {
         r'didType': encodeQueryParameter(
           _serializers,
           didType,
-          const FullType(String),
+          const FullType(WalletDidType),
         ),
     };
 
@@ -479,6 +894,154 @@ class WalletApi {
       statusMessage: _response.statusMessage,
       extra: _response.extra,
     );
+  }
+
+  /// removeServiceEndpoint
+  /// Remove service endpoint from wallet, this applies to did:web only
+  ///
+  /// Parameters:
+  /// * [walletId] - id of the wallet
+  /// * [serviceId] - id of the service endpoint to remove
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future]
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<void>> removeServiceEndpoint({
+    required String walletId,
+    required String serviceId,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final _path = r'/v2/wallets/{walletId}/services/{serviceId}'
+        .replaceAll(
+          '{'
+          r'walletId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            walletId,
+            const FullType(String),
+          ).toString(),
+        )
+        .replaceAll(
+          '{'
+          r'serviceId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            serviceId,
+            const FullType(String),
+          ).toString(),
+        );
+    final _options = Options(
+      method: r'DELETE',
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'ProjectTokenAuth',
+            'keyName': 'authorization',
+            'where': 'header',
+          },
+        ],
+        ...?extra,
+      },
+      validateStatus: validateStatus,
+    );
+
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    return _response;
+  }
+
+  /// removeWalletKey
+  /// Remove a key from the wallet, this applies to did:web only
+  ///
+  /// Parameters:
+  /// * [walletId] - id of the wallet
+  /// * [keyId] - id of the key to remove
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future]
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<void>> removeWalletKey({
+    required String walletId,
+    required String keyId,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final _path = r'/v2/wallets/{walletId}/keys/{keyId}'
+        .replaceAll(
+          '{'
+          r'walletId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            walletId,
+            const FullType(String),
+          ).toString(),
+        )
+        .replaceAll(
+          '{'
+          r'keyId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            keyId,
+            const FullType(String),
+          ).toString(),
+        );
+    final _options = Options(
+      method: r'DELETE',
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'ProjectTokenAuth',
+            'keyName': 'authorization',
+            'where': 'header',
+          },
+        ],
+        ...?extra,
+      },
+      validateStatus: validateStatus,
+    );
+
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    return _response;
   }
 
   /// signCredential
@@ -1264,6 +1827,131 @@ class WalletApi {
     );
   }
 
+  /// updateServiceEndpoint
+  /// Update service endpoint in wallet, this applies to did:web only
+  ///
+  /// Parameters:
+  /// * [walletId] - id of the wallet
+  /// * [serviceId] - id of the service endpoint to update
+  /// * [updateServiceEndpointInput] - UpdateServiceEndpoint
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future] containing a [Response] with a [ServiceEndpointDto] as data
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<ServiceEndpointDto>> updateServiceEndpoint({
+    required String walletId,
+    required String serviceId,
+    required UpdateServiceEndpointInput updateServiceEndpointInput,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final _path = r'/v2/wallets/{walletId}/services/{serviceId}'
+        .replaceAll(
+          '{'
+          r'walletId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            walletId,
+            const FullType(String),
+          ).toString(),
+        )
+        .replaceAll(
+          '{'
+          r'serviceId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            serviceId,
+            const FullType(String),
+          ).toString(),
+        );
+    final _options = Options(
+      method: r'PATCH',
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'ProjectTokenAuth',
+            'keyName': 'authorization',
+            'where': 'header',
+          },
+        ],
+        ...?extra,
+      },
+      contentType: 'application/json',
+      validateStatus: validateStatus,
+    );
+
+    dynamic _bodyData;
+
+    try {
+      const _type = FullType(UpdateServiceEndpointInput);
+      _bodyData = _serializers.serialize(
+        updateServiceEndpointInput,
+        specifiedType: _type,
+      );
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: _options.compose(_dio.options, _path),
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    ServiceEndpointDto? _responseData;
+
+    try {
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(ServiceEndpointDto),
+                )
+                as ServiceEndpointDto;
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    return Response<ServiceEndpointDto>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
+  }
+
   /// updateWallet
   /// update wallet details using wallet Id.
   ///
@@ -1365,6 +2053,131 @@ class WalletApi {
     }
 
     return Response<WalletDto>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
+  }
+
+  /// updateWalletKey
+  /// Update a wallet key&#39;s verification relationships, this applies to did:web only
+  ///
+  /// Parameters:
+  /// * [walletId] - id of the wallet
+  /// * [keyId] - wallet-scoped key identifier to update
+  /// * [updateWalletKeyInput] - UpdateWalletKey
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future] containing a [Response] with a [WalletKeyDto] as data
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<WalletKeyDto>> updateWalletKey({
+    required String walletId,
+    required String keyId,
+    required UpdateWalletKeyInput updateWalletKeyInput,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final _path = r'/v2/wallets/{walletId}/keys/{keyId}'
+        .replaceAll(
+          '{'
+          r'walletId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            walletId,
+            const FullType(String),
+          ).toString(),
+        )
+        .replaceAll(
+          '{'
+          r'keyId'
+          '}',
+          encodeQueryParameter(
+            _serializers,
+            keyId,
+            const FullType(String),
+          ).toString(),
+        );
+    final _options = Options(
+      method: r'PATCH',
+      headers: <String, dynamic>{...?headers},
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'ProjectTokenAuth',
+            'keyName': 'authorization',
+            'where': 'header',
+          },
+        ],
+        ...?extra,
+      },
+      contentType: 'application/json',
+      validateStatus: validateStatus,
+    );
+
+    dynamic _bodyData;
+
+    try {
+      const _type = FullType(UpdateWalletKeyInput);
+      _bodyData = _serializers.serialize(
+        updateWalletKeyInput,
+        specifiedType: _type,
+      );
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: _options.compose(_dio.options, _path),
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    WalletKeyDto? _responseData;
+
+    try {
+      final rawResponse = _response.data;
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+                  rawResponse,
+                  specifiedType: const FullType(WalletKeyDto),
+                )
+                as WalletKeyDto;
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    return Response<WalletKeyDto>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,

@@ -12,6 +12,7 @@ Method | HTTP request | Description
 [**createAccount**](AccountsApi.md#createaccount) | **POST** /v1/accounts | 
 [**deleteAccount**](AccountsApi.md#deleteaccount) | **DELETE** /v1/accounts/{accountIndex} | 
 [**listAccounts**](AccountsApi.md#listaccounts) | **GET** /v1/accounts | 
+[**listProfiles**](AccountsApi.md#listprofiles) | **GET** /v1/accounts/profiles | 
 [**updateAccount**](AccountsApi.md#updateaccount) | **PUT** /v1/accounts/{accountIndex} | 
 
 
@@ -146,6 +147,49 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**ListAccountsDto**](ListAccountsDto.md)
+
+### Authorization
+
+[ConsumerTokenAuth](../README.md#ConsumerTokenAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **listProfiles**
+> ListProfilesOK listProfiles()
+
+
+
+lists children of the root node with accounts
+
+### Example
+```dart
+import 'package:affinidi_tdk_vault_data_manager_client/api.dart';
+// TODO Configure API key authorization: ConsumerTokenAuth
+//defaultApiClient.getAuthentication<ApiKeyAuth>('ConsumerTokenAuth').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('ConsumerTokenAuth').apiKeyPrefix = 'Bearer';
+
+final api = AffinidiTdkVaultDataManagerClient().getAccountsApi();
+
+try {
+    final response = api.listProfiles();
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling AccountsApi->listProfiles: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**ListProfilesOK**](ListProfilesOK.md)
 
 ### Authorization
 

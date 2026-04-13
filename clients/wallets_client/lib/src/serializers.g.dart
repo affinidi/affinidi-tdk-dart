@@ -10,6 +10,8 @@ Serializers _$serializers =
     (Serializers().toBuilder()
           ..add(CreateWalletInput.serializer)
           ..add(CreateWalletInputDidMethodEnum.serializer)
+          ..add(CreateWalletKeyInput.serializer)
+          ..add(CreateWalletKeyInputKeyTypeEnum.serializer)
           ..add(CreateWalletResponse.serializer)
           ..add(CreateWalletV2Input.serializer)
           ..add(CreateWalletV2InputAlgorithmEnum.serializer)
@@ -24,6 +26,8 @@ Serializers _$serializers =
           ..add(InvalidParameterErrorHttpStatusCodeEnum.serializer)
           ..add(InvalidParameterErrorMessageEnum.serializer)
           ..add(InvalidParameterErrorNameEnum.serializer)
+          ..add(ListServiceEndpointsOK.serializer)
+          ..add(ListWalletKeysOK.serializer)
           ..add(NotFoundError.serializer)
           ..add(NotFoundErrorDetailsInner.serializer)
           ..add(NotFoundErrorHttpStatusCodeEnum.serializer)
@@ -35,7 +39,9 @@ Serializers _$serializers =
           ..add(OperationForbiddenErrorNameEnum.serializer)
           ..add(RevokeCredentialInput.serializer)
           ..add(RevokeCredentialsInput.serializer)
+          ..add(ServiceEndpointDto.serializer)
           ..add(ServiceEndpointInput.serializer)
+          ..add(ServiceEndpointInputServiceTypeEnum.serializer)
           ..add(SignCredential400Response.serializer)
           ..add(SignCredentialInputDto.serializer)
           ..add(SignCredentialInputDtoCredentialFormatEnum.serializer)
@@ -67,9 +73,15 @@ Serializers _$serializers =
           ..add(TooManyRequestsErrorHttpStatusCodeEnum.serializer)
           ..add(TooManyRequestsErrorMessageEnum.serializer)
           ..add(TooManyRequestsErrorNameEnum.serializer)
+          ..add(UpdateServiceEndpointInput.serializer)
           ..add(UpdateWalletInput.serializer)
+          ..add(UpdateWalletKeyInput.serializer)
+          ..add(VerificationRelationship.serializer)
+          ..add(WalletDidType.serializer)
           ..add(WalletDto.serializer)
           ..add(WalletDtoKeysInner.serializer)
+          ..add(WalletKeyDto.serializer)
+          ..add(WalletKeyDtoKeyTypeEnum.serializer)
           ..add(WalletV2Dto.serializer)
           ..add(WalletsListDto.serializer)
           ..addBuilderFactory(
@@ -110,6 +122,12 @@ Serializers _$serializers =
           )
           ..addBuilderFactory(
             const FullType(BuiltList, const [
+              const FullType(ServiceEndpointDto),
+            ]),
+            () => ListBuilder<ServiceEndpointDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, const [
               const FullType(ServiceEndpointInput),
             ]),
             () => ListBuilder<ServiceEndpointInput>(),
@@ -117,6 +135,24 @@ Serializers _$serializers =
           ..addBuilderFactory(
             const FullType(BuiltList, const [const FullType(String)]),
             () => ListBuilder<String>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, const [
+              const FullType(VerificationRelationship),
+            ]),
+            () => ListBuilder<VerificationRelationship>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, const [
+              const FullType(VerificationRelationship),
+            ]),
+            () => ListBuilder<VerificationRelationship>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, const [
+              const FullType(VerificationRelationship),
+            ]),
+            () => ListBuilder<VerificationRelationship>(),
           )
           ..addBuilderFactory(
             const FullType(BuiltList, const [const FullType(WalletDto)]),
@@ -133,6 +169,16 @@ Serializers _$serializers =
               const FullType(WalletDtoKeysInner),
             ]),
             () => ListBuilder<WalletDtoKeysInner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, const [
+              const FullType(ServiceEndpointDto),
+            ]),
+            () => ListBuilder<ServiceEndpointDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, const [const FullType(WalletKeyDto)]),
+            () => ListBuilder<WalletKeyDto>(),
           )
           ..addBuilderFactory(
             const FullType(BuiltMap, const [

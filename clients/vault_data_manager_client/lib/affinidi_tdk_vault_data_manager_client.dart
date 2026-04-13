@@ -37,6 +37,7 @@ export 'package:affinidi_tdk_vault_data_manager_client/src/model/json_web_key_dt
 export 'package:affinidi_tdk_vault_data_manager_client/src/model/json_web_key_set_dto.dart';
 export 'package:affinidi_tdk_vault_data_manager_client/src/model/list_accounts_dto.dart';
 export 'package:affinidi_tdk_vault_data_manager_client/src/model/list_node_children_ok.dart';
+export 'package:affinidi_tdk_vault_data_manager_client/src/model/list_profiles_ok.dart';
 export 'package:affinidi_tdk_vault_data_manager_client/src/model/list_root_node_children_ok.dart';
 export 'package:affinidi_tdk_vault_data_manager_client/src/model/list_scanned_files_ok.dart';
 export 'package:affinidi_tdk_vault_data_manager_client/src/model/list_scanned_files_ok_scanned_files_inner.dart';
@@ -45,6 +46,7 @@ export 'package:affinidi_tdk_vault_data_manager_client/src/model/move_node_input
 export 'package:affinidi_tdk_vault_data_manager_client/src/model/node_dto.dart';
 export 'package:affinidi_tdk_vault_data_manager_client/src/model/node_status.dart';
 export 'package:affinidi_tdk_vault_data_manager_client/src/model/node_type.dart';
+export 'package:affinidi_tdk_vault_data_manager_client/src/model/partial_profile_node_dto.dart';
 export 'package:affinidi_tdk_vault_data_manager_client/src/model/query_profile_data_ok.dart';
 export 'package:affinidi_tdk_vault_data_manager_client/src/model/restore_node_from_trashbin.dart';
 export 'package:affinidi_tdk_vault_data_manager_client/src/model/start_file_scan_input.dart';
