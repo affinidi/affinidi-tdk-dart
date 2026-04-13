@@ -15,17 +15,21 @@ import 'package:affinidi_tdk_wallets_client/src/date_serializer.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/date.dart';
 
 import 'package:affinidi_tdk_wallets_client/src/model/create_wallet_input.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/create_wallet_key_input.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/create_wallet_response.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/create_wallet_v2_input.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/create_wallet_v2_response.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/entity_not_found_error.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/get_revocation_list_credential_result_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/invalid_parameter_error.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/list_service_endpoints_ok.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/list_wallet_keys_ok.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/not_found_error.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/not_found_error_details_inner.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/operation_forbidden_error.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/revoke_credential_input.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/revoke_credentials_input.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/service_endpoint_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/service_endpoint_input.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/sign_credential400_response.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/sign_credential_input_dto.dart';
@@ -45,9 +49,14 @@ import 'package:affinidi_tdk_wallets_client/src/model/sign_presentation_ldp_inpu
 import 'package:affinidi_tdk_wallets_client/src/model/sign_presentation_ldp_result_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/signing_failed_error.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/too_many_requests_error.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/update_service_endpoint_input.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/update_wallet_input.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/update_wallet_key_input.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/verification_relationship.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/wallet_did_type.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/wallet_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/wallet_dto_keys_inner.dart';
+import 'package:affinidi_tdk_wallets_client/src/model/wallet_key_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/wallet_v2_dto.dart';
 import 'package:affinidi_tdk_wallets_client/src/model/wallets_list_dto.dart';
 
@@ -55,17 +64,21 @@ part 'serializers.g.dart';
 
 @SerializersFor([
   CreateWalletInput,
+  CreateWalletKeyInput,
   CreateWalletResponse,
   CreateWalletV2Input,
   CreateWalletV2Response,
   EntityNotFoundError,
   GetRevocationListCredentialResultDto,
   InvalidParameterError,
+  ListServiceEndpointsOK,
+  ListWalletKeysOK,
   NotFoundError,
   NotFoundErrorDetailsInner,
   OperationForbiddenError,
   RevokeCredentialInput,
   RevokeCredentialsInput,
+  ServiceEndpointDto,
   ServiceEndpointInput,
   SignCredential400Response,
   SignCredentialInputDto,
@@ -85,9 +98,14 @@ part 'serializers.g.dart';
   SignPresentationLdpResultDto,
   SigningFailedError,
   TooManyRequestsError,
+  UpdateServiceEndpointInput,
   UpdateWalletInput,
+  UpdateWalletKeyInput,
+  VerificationRelationship,
+  WalletDidType,
   WalletDto,
   WalletDtoKeysInner,
+  WalletKeyDto,
   WalletV2Dto,
   WalletsListDto,
 ])
