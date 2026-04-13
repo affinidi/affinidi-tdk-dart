@@ -26,6 +26,7 @@ doc/JsonWebKeyDto.md
 doc/JsonWebKeySetDto.md
 doc/ListAccountsDto.md
 doc/ListNodeChildrenOK.md
+doc/ListProfilesOK.md
 doc/ListRootNodeChildrenOK.md
 doc/ListScannedFilesOK.md
 doc/ListScannedFilesOKScannedFilesInner.md
@@ -35,6 +36,7 @@ doc/NodeDto.md
 doc/NodeStatus.md
 doc/NodeType.md
 doc/NodesApi.md
+doc/PartialProfileNodeDto.md
 doc/ProfileDataApi.md
 doc/QueryProfileDataOK.md
 doc/RestoreNodeFromTrashbin.md
@@ -83,6 +85,7 @@ lib/src/model/json_web_key_dto.dart
 lib/src/model/json_web_key_set_dto.dart
 lib/src/model/list_accounts_dto.dart
 lib/src/model/list_node_children_ok.dart
+lib/src/model/list_profiles_ok.dart
 lib/src/model/list_root_node_children_ok.dart
 lib/src/model/list_scanned_files_ok.dart
 lib/src/model/list_scanned_files_ok_scanned_files_inner.dart
@@ -91,6 +94,7 @@ lib/src/model/move_node_input.dart
 lib/src/model/node_dto.dart
 lib/src/model/node_status.dart
 lib/src/model/node_type.dart
+lib/src/model/partial_profile_node_dto.dart
 lib/src/model/query_profile_data_ok.dart
 lib/src/model/restore_node_from_trashbin.dart
 lib/src/model/start_file_scan_input.dart
