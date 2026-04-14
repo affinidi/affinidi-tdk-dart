@@ -1,3 +1,7 @@
+## 2.1.0
+
+ - **FEAT**: update cwe client (#87).
+
 
 # Change Log
 
