@@ -99,7 +99,7 @@ abstract interface class VaultDataManagerApiServiceInterface {
   });
 
   /// Gets the list of all profiles
-  Future<Response<ListRootNodeChildrenOK>> getListOfProfiles({
+  Future<Response<ListProfilesOK>> getListOfProfiles({
     CancelToken? cancelToken,
   });
 

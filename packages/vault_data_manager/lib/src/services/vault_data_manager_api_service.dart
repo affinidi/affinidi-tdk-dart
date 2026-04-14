@@ -464,11 +464,11 @@ class VaultDataManagerApiService
   }
 
   @override
-  Future<Response<ListRootNodeChildrenOK>> getListOfProfiles({
+  Future<Response<ListProfilesOK>> getListOfProfiles({
     CancelToken? cancelToken,
   }) async {
     try {
-      return _nodesApi.listRootNodeChildren(cancelToken: cancelToken);
+      return _accountsApi.listProfiles(cancelToken: cancelToken);
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
         TdkException(

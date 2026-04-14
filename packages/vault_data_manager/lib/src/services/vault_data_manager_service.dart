@@ -465,22 +465,28 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
 
     final profileNodes = profilesResponse.data?.nodes?.toList() ?? [];
 
-    final profiles = profileNodes
+    return profileNodes
         .map<VaultDataManagerProfile>(
           (nodeResponse) => VaultDataManagerProfile(
-            id: nodeResponse.nodeId,
+            id: nodeResponse.id,
+            accountIndex: nodeResponse.accountIndex,
             name: nodeResponse.name,
             description: nodeResponse.description,
-            pictureURI: nodeResponse.metadata != null
+            pictureURI: nodeResponse.profileMetadata != null
                 ? Metadata.fromJson(
-                    jsonDecode(nodeResponse.metadata!) as Map<String, dynamic>,
+                    jsonDecode(nodeResponse.profileMetadata!)
+                        as Map<String, dynamic>,
                   ).pictureURI
                 : '',
+            accountMetadata: nodeResponse.accountMetadata != null
+                ? AccountMetadata.fromJson(
+                    jsonDecode(nodeResponse.accountMetadata!)
+                        as Map<String, dynamic>,
+                  )
+                : null,
           ),
         )
         .toList();
-
-    return profiles;
   }
 
   @override
