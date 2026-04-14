@@ -5,7 +5,6 @@ import 'package:affinidi_tdk_vault_data_manager/affinidi_tdk_vault_data_manager.
 import 'package:affinidi_tdk_vault_data_manager/src/exceptions/tdk_exception_type.dart';
 import 'package:affinidi_tdk_vault_data_manager/src/model/profile_data.dart';
 import 'package:affinidi_tdk_vault_data_manager/src/model/recognized_profile_data.dart';
-import 'package:affinidi_tdk_vault_data_manager/src/model/vault_data_manager_profile.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/affinidi_tdk_vault_data_manager_client.dart';
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
@@ -22,6 +21,7 @@ import 'fixtures/get_root_node_info_ok.dart';
 import 'fixtures/get_scanned_file_info_ok.dart';
 import 'fixtures/list_node_children_profile_ok.dart';
 import 'fixtures/list_node_children_vc_ok.dart';
+import 'fixtures/list_profile_ok.dart';
 import 'fixtures/list_scanned_files_ok.dart';
 import 'fixtures/node.dart';
 import 'fixtures/profile.dart';
@@ -509,7 +509,7 @@ void main() {
           ).thenAnswer(
             (_) async => Response(
               requestOptions: RequestOptions(),
-              data: listRootNodeChildrenOK,
+              data: listProfilesOK,
             ),
           );
 

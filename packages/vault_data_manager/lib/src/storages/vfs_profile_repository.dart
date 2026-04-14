@@ -14,6 +14,7 @@ import '../exceptions/tdk_exception_type.dart';
 import '../helpers/dio_cancel_token_adapter.dart';
 import '../helpers/jwt_helper.dart';
 import '../model/account.dart';
+import '../model/vault_data_manager_profile.dart';
 import '../services/vault_data_manager_service.dart';
 import '../services/vault_data_manager_service_interface.dart';
 import '../services/vault_data_manager_shared_access_api_service.dart';
@@ -263,58 +264,35 @@ class VfsProfileRepository
     final accountVaultDataManagerService = await _memoizedDataManagerService(
       walletKeyId: _rootAccountKeyId,
     );
-    final accounts = await accountVaultDataManagerService.getAccounts(
+    final vfsProfiles = await accountVaultDataManagerService.getProfiles(
       cancelToken: cancelToken,
     );
-    final profiles = await Future.wait(
-      accounts.map(
-        (account) => _getAccountPerProfile(account, cancelToken: cancelToken),
-      ),
-      eagerError: cancelToken != null,
-    );
-    return profiles.nonNulls.toList();
+
+    final profiles = await Future.wait(vfsProfiles.map(_makeProfile));
+
+    return profiles;
   }
 
-  Future<Profile?> _getAccountPerProfile(
-    Account account, {
-    VaultCancelToken? cancelToken,
-  }) async {
-    if (!_configured) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Profile repository must be configured using a RepositoryConfiguration',
-          code: TdkExceptionType.profleNotConfigured.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final accountIndex = account.accountIndex;
-    final profileKeyPair = await _memoizedKeyPair(
-      accountIndex: '$accountIndex',
-    );
-
+  Future<Profile> _makeProfile(VaultDataManagerProfile profile) async {
+    final encryptedDekek = profile.accountMetadata?.dekekInfo.encryptedDekek;
     final profileDataManager = await _memoizedDataManagerService(
-      walletKeyId: accountIndex.toString(),
-      encryptedDekek: base64.decode(
-        account.accountMetadata!.dekekInfo.encryptedDekek,
-      ),
+      walletKeyId: profile.accountIndex.toString(),
+      encryptedDekek: encryptedDekek != null
+          ? base64.decode(encryptedDekek)
+          : null,
     );
 
-    final vfsProfiles = await profileDataManager.getProfiles(
-      cancelToken: cancelToken,
+    final profileKeyPair = await _memoizedKeyPair(
+      accountIndex: '${profile.accountIndex}',
     );
-    // Note: accounts should always have no more than one profile associated.
-    final profile = vfsProfiles.firstOrNull;
 
-    if (profile == null) {
-      return null;
-    }
+    final did = DidKey.getDid(profileKeyPair.publicKey);
+
     var sharedStorages = <String, SharedStorage>{};
 
-    if (account.hasSharedStorageData) {
-      for (var sharedStorage in account.accountMetadata!.sharedStorageData) {
+    final sharedStorageData = profile.accountMetadata?.sharedStorageData ?? [];
+    if (sharedStorageData.isNotEmpty) {
+      for (final sharedStorage in sharedStorageData) {
         sharedStorages[sharedStorage.nodePath] = VfsSharedStorage(
           id: sharedStorage.nodePath,
           sharedProfileId: sharedStorage.nodePath,
@@ -326,12 +304,11 @@ class VfsProfileRepository
         );
       }
     }
-    final did = DidKey.getDid(profileKeyPair.publicKey);
-    final vaultProfile = Profile(
+    return Profile(
       id: profile.id,
       name: profile.name,
       did: did,
-      accountIndex: accountIndex,
+      accountIndex: profile.accountIndex,
       profileRepositoryId: id,
       fileStorages: {
         _id: VFSFileStorage(id: _id, dataManagerService: profileDataManager),
@@ -345,7 +322,6 @@ class VfsProfileRepository
       },
       sharedStorages: sharedStorages,
     );
-    return vaultProfile;
   }
 
   @override

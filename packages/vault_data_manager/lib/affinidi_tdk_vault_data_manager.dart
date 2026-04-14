@@ -1,6 +1,7 @@
 /// This library allows accessing vault VFS on Cloud
 library;
 
+export 'src/model/vault_data_manager_profile.dart';
 export 'src/services/vault_data_manager_api_service.dart';
 export 'src/services/vault_data_manager_api_service_interface.dart';
 export 'src/services/vault_data_manager_encryption_service.dart';
