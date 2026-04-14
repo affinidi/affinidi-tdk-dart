@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 
 import '../model/account.dart';
 import '../model/node.dart';
-
 import '../model/profile_data.dart';
 import '../model/recognized_profile_data.dart';
 import '../model/scanned_file.dart';

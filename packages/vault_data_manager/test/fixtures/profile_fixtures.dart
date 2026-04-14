@@ -53,10 +53,15 @@ class ProfileFixtures {
 
   static VaultDataManagerProfile get testVaultDataManagerProfile =>
       VaultDataManagerProfile(
+        accountIndex: testAccountIndex,
         id: testProfileId,
         name: testProfileName,
         description: testProfileDescription,
         pictureURI: '',
+        accountMetadata: AccountMetadata(
+          dekekInfo: DekekInfo(encryptedDekek: 'dGVzdF9rZXk='),
+          sharedStorageData: [],
+        ),
       );
 
   static DidDocument get testDidDocument {
