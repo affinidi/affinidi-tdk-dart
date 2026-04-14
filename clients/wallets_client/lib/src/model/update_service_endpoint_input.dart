@@ -3,22 +3,21 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'service_endpoint_input.g.dart';
+part 'update_service_endpoint_input.g.dart';
 
-/// Input for adding a service endpoint
+/// Input for updating a service endpoint
 ///
 /// Properties:
 /// * [name] - Alphanumeric string with common punctuation (max 100 characters)
 /// * [description] - Alphanumeric string with common punctuation (max 500 characters)
 /// * [url] - HTTP or HTTPS URL
-/// * [serviceType] - type of service endpoint
 @BuiltValue()
-abstract class ServiceEndpointInput
-    implements Built<ServiceEndpointInput, ServiceEndpointInputBuilder> {
+abstract class UpdateServiceEndpointInput
+    implements
+        Built<UpdateServiceEndpointInput, UpdateServiceEndpointInputBuilder> {
   /// Alphanumeric string with common punctuation (max 100 characters)
   @BuiltValueField(wireName: r'name')
   String? get name;
@@ -29,40 +28,36 @@ abstract class ServiceEndpointInput
 
   /// HTTP or HTTPS URL
   @BuiltValueField(wireName: r'url')
-  String get url;
+  String? get url;
 
-  /// type of service endpoint
-  @BuiltValueField(wireName: r'serviceType')
-  ServiceEndpointInputServiceTypeEnum? get serviceType;
-  // enum serviceTypeEnum {  DIDCommMessaging,  LinkedDomains,  IdentityHub,  CredentialRegistry,  };
+  UpdateServiceEndpointInput._();
 
-  ServiceEndpointInput._();
-
-  factory ServiceEndpointInput([void updates(ServiceEndpointInputBuilder b)]) =
-      _$ServiceEndpointInput;
+  factory UpdateServiceEndpointInput([
+    void updates(UpdateServiceEndpointInputBuilder b),
+  ]) = _$UpdateServiceEndpointInput;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(ServiceEndpointInputBuilder b) => b;
+  static void _defaults(UpdateServiceEndpointInputBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<ServiceEndpointInput> get serializer =>
-      _$ServiceEndpointInputSerializer();
+  static Serializer<UpdateServiceEndpointInput> get serializer =>
+      _$UpdateServiceEndpointInputSerializer();
 }
 
-class _$ServiceEndpointInputSerializer
-    implements PrimitiveSerializer<ServiceEndpointInput> {
+class _$UpdateServiceEndpointInputSerializer
+    implements PrimitiveSerializer<UpdateServiceEndpointInput> {
   @override
   final Iterable<Type> types = const [
-    ServiceEndpointInput,
-    _$ServiceEndpointInput,
+    UpdateServiceEndpointInput,
+    _$UpdateServiceEndpointInput,
   ];
 
   @override
-  final String wireName = r'ServiceEndpointInput';
+  final String wireName = r'UpdateServiceEndpointInput';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    ServiceEndpointInput object, {
+    UpdateServiceEndpointInput object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
     if (object.name != null) {
@@ -79,16 +74,11 @@ class _$ServiceEndpointInputSerializer
         specifiedType: const FullType(String),
       );
     }
-    yield r'url';
-    yield serializers.serialize(
-      object.url,
-      specifiedType: const FullType(String),
-    );
-    if (object.serviceType != null) {
-      yield r'serviceType';
+    if (object.url != null) {
+      yield r'url';
       yield serializers.serialize(
-        object.serviceType,
-        specifiedType: const FullType(ServiceEndpointInputServiceTypeEnum),
+        object.url,
+        specifiedType: const FullType(String),
       );
     }
   }
@@ -96,7 +86,7 @@ class _$ServiceEndpointInputSerializer
   @override
   Object serialize(
     Serializers serializers,
-    ServiceEndpointInput object, {
+    UpdateServiceEndpointInput object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(
@@ -111,7 +101,7 @@ class _$ServiceEndpointInputSerializer
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required ServiceEndpointInputBuilder result,
+    required UpdateServiceEndpointInputBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
@@ -145,17 +135,6 @@ class _$ServiceEndpointInputSerializer
                   as String;
           result.url = valueDes;
           break;
-        case r'serviceType':
-          final valueDes =
-              serializers.deserialize(
-                    value,
-                    specifiedType: const FullType(
-                      ServiceEndpointInputServiceTypeEnum,
-                    ),
-                  )
-                  as ServiceEndpointInputServiceTypeEnum;
-          result.serviceType = valueDes;
-          break;
         default:
           unhandled.add(key);
           unhandled.add(value);
@@ -165,12 +144,12 @@ class _$ServiceEndpointInputSerializer
   }
 
   @override
-  ServiceEndpointInput deserialize(
+  UpdateServiceEndpointInput deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = ServiceEndpointInputBuilder();
+    final result = UpdateServiceEndpointInputBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(
@@ -183,36 +162,4 @@ class _$ServiceEndpointInputSerializer
     );
     return result.build();
   }
-}
-
-class ServiceEndpointInputServiceTypeEnum extends EnumClass {
-  /// type of service endpoint
-  @BuiltValueEnumConst(wireName: r'DIDCommMessaging')
-  static const ServiceEndpointInputServiceTypeEnum dIDCommMessaging =
-      _$serviceEndpointInputServiceTypeEnum_dIDCommMessaging;
-
-  /// type of service endpoint
-  @BuiltValueEnumConst(wireName: r'LinkedDomains')
-  static const ServiceEndpointInputServiceTypeEnum linkedDomains =
-      _$serviceEndpointInputServiceTypeEnum_linkedDomains;
-
-  /// type of service endpoint
-  @BuiltValueEnumConst(wireName: r'IdentityHub')
-  static const ServiceEndpointInputServiceTypeEnum identityHub =
-      _$serviceEndpointInputServiceTypeEnum_identityHub;
-
-  /// type of service endpoint
-  @BuiltValueEnumConst(wireName: r'CredentialRegistry')
-  static const ServiceEndpointInputServiceTypeEnum credentialRegistry =
-      _$serviceEndpointInputServiceTypeEnum_credentialRegistry;
-
-  static Serializer<ServiceEndpointInputServiceTypeEnum> get serializer =>
-      _$serviceEndpointInputServiceTypeEnumSerializer;
-
-  const ServiceEndpointInputServiceTypeEnum._(String name) : super(name);
-
-  static BuiltSet<ServiceEndpointInputServiceTypeEnum> get values =>
-      _$serviceEndpointInputServiceTypeEnumValues;
-  static ServiceEndpointInputServiceTypeEnum valueOf(String name) =>
-      _$serviceEndpointInputServiceTypeEnumValueOf(name);
 }
