@@ -482,7 +482,11 @@ class VaultDataManagerApiService
   }
 
   @override
-  Future<Response<CreateNodeOK>> createProfile({
+  Future<Response<CreateAccountWithProfileOK>> createProfile({
+    required int accountIndex,
+    Map<String, Object>? accountMetadata,
+    required String profileDid,
+    required String profileDidProof,
     required String profileName,
     required List<int> dekEncryptedByVfsPublicKey,
     required List<int> dekEncryptedByWalletCryptoMaterial,
@@ -495,17 +499,21 @@ class VaultDataManagerApiService
       ..edek = base64.encode(dekEncryptedByWalletCryptoMaterial)
       ..dekekId = walletCryptoMaterialHash;
 
-    final createNodeInput = CreateNodeInputBuilder()
-      ..name = profileName
-      ..description = profileDescription
-      ..type = NodeType.PROFILE
-      ..parentNodeId = rootNodeIdBase64Encoded
+    final createAccountWithProfileInput = CreateAccountWithProfileInputBuilder()
+      ..accountIndex = accountIndex
+      ..accountDid = profileDid
+      ..didProof = profileDidProof
+      ..accountMetadata = accountMetadata != null
+          ? JsonObject(accountMetadata)
+          : null
+      ..profileName = profileName
+      ..profileDescription = profileDescription
+      ..profileMetadata = JsonObject({'pictureURI': profilePictureURI})
       ..dek = base64.encode(dekEncryptedByVfsPublicKey)
-      ..metadata = jsonEncode({'pictureURI': profilePictureURI})
       ..edekInfo = edekInfo;
 
-    return _createNode(
-      createNodeInput: createNodeInput.build(),
+    return _accountsApi.createAccountWithProfile(
+      createAccountWithProfileInput: createAccountWithProfileInput.build(),
       cancelToken: cancelToken,
     );
   }

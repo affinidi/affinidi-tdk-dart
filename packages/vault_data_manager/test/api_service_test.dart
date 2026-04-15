@@ -366,6 +366,63 @@ void main() {
     });
   });
 
+  group('When creating an account with profile', () {
+    test(
+      'it posts the account and profile payload and returns the response',
+      () async {
+        final accountMetadata = <String, Object>{'tier': 'gold'};
+
+        dioAdapter.onPost(
+          '/v1/accounts/profiles',
+          (server) => server.reply(200, {
+            'accountIndex': 1,
+            'accountDid': TestDataFixtures.testDid,
+            'profileId': NodeResponseFixtures.profileNodeId,
+            'accountMetadata': accountMetadata,
+          }),
+          data: {
+            'accountIndex': 1,
+            'accountDid': TestDataFixtures.testDid,
+            'didProof': TestDataFixtures.testDidProof,
+            'accountMetadata': accountMetadata,
+            'profileName': 'Test Profile',
+            'profileDescription': 'Test Description',
+            'profileMetadata': {
+              'pictureURI': 'https://example.com/profile.png',
+            },
+            'dek': base64.encode(TestDataFixtures.testDek),
+            'edekInfo': {
+              'dekekId': TestDataFixtures.testHash,
+              'edek': base64.encode(TestDataFixtures.testDek),
+            },
+          },
+          headers: {'content-type': 'application/json'},
+        );
+
+        final result = await vaultDataManagerApiService.createProfile(
+          accountIndex: 1,
+          accountMetadata: accountMetadata,
+          profileDid: TestDataFixtures.testDid,
+          profileDidProof: TestDataFixtures.testDidProof,
+          profileName: 'Test Profile',
+          profileDescription: 'Test Description',
+          profilePictureURI: 'https://example.com/profile.png',
+          dekEncryptedByVfsPublicKey: TestDataFixtures.testDek,
+          dekEncryptedByWalletCryptoMaterial: TestDataFixtures.testDek,
+          walletCryptoMaterialHash: TestDataFixtures.testHash,
+        );
+
+        expect(result.data?.accountIndex, equals(1));
+        expect(result.data?.accountDid, equals(TestDataFixtures.testDid));
+        expect(
+          result.data?.profileId,
+          equals(NodeResponseFixtures.profileNodeId),
+        );
+        expect(result.data?.accountMetadata?.value, equals(accountMetadata));
+      },
+    );
+  });
+
   group('When downloading node contents', () {
     test('it includes encryption headers in the request', () async {
       final dek = TestDataFixtures.testDek;

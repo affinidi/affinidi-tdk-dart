@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/affinidi_tdk_vault_data_manager_client.dart';
 import 'package:dio/dio.dart';
+import 'package:ssi/ssi.dart';
 
 import '../model/account.dart';
 import '../model/node.dart';
@@ -49,8 +50,8 @@ abstract interface class VaultDataManagerServiceInterface {
 
   /// Creates a new profile
   ///
-  /// - [name] (required) - name of the new profile.
-  /// - [description] (optional) - description of the new profile.
+  /// - [profileName] (required) - name of the new profile.
+  /// - [profileDescription] (optional) - description of the new profile.
   /// - [profilePictureURI] (optional) - profile picture url.
   ///
   /// Example:
@@ -61,9 +62,14 @@ abstract interface class VaultDataManagerServiceInterface {
   ///   profilePictureURI: 'your_profile_picture_url',
   /// );
   /// ```
-  Future<Response<CreateNodeOK>> createProfile({
-    required String name,
-    String? description,
+  Future<Response<CreateAccountWithProfileOK>> createProfile({
+    required int accountIndex,
+    required AccountMetadata accountMetadata,
+    required String profileDid,
+    required String profileDidProof,
+    required KeyPair profileKeyPair,
+    required String profileName,
+    String? profileDescription,
     String? profilePictureURI,
     VaultCancelToken? cancelToken,
   });

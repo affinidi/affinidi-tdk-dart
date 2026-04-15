@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:affinidi_tdk_consumer_auth_provider/affinidi_tdk_consumer_auth_provider.dart';
@@ -149,25 +150,27 @@ void main() {
           ).thenAnswer((_) async => 0);
           when(
             () => mockDataManagerService.createProfile(
-              name: any(named: 'name'),
-              description: any(named: 'description'),
+              accountIndex: any(named: 'accountIndex'),
+              accountMetadata: any(named: 'accountMetadata'),
+              profileDid: any(named: 'profileDid'),
+              profileDidProof: any(named: 'profileDidProof'),
+              profileKeyPair: mockKeyPair,
+              profileName: any(named: 'profileName'),
+              profileDescription: any(named: 'profileDescription'),
+              profilePictureURI: any(named: 'profilePictureURI'),
+              cancelToken: any(named: 'cancelToken'),
             ),
           ).thenAnswer(
-            (_) async => Response<CreateNodeOK>(
-              data: CreateNodeOK(
-                (b) => b..nodeId = ProfileFixtures.testProfileId,
+            (_) async => Response<CreateAccountWithProfileOK>(
+              data: CreateAccountWithProfileOK(
+                (b) => b
+                  ..accountIndex = ProfileFixtures.testAccountIndex
+                  ..accountDid = ProfileFixtures.testDid
+                  ..profileId = ProfileFixtures.testProfileId,
               ),
               requestOptions: RequestOptions(path: ''),
             ),
           );
-          when(
-            () => mockDataManagerService.createAccount(
-              accountIndex: any(named: 'accountIndex'),
-              accountDid: any(named: 'accountDid'),
-              didProof: any(named: 'didProof'),
-              metadata: any(named: 'metadata'),
-            ),
-          ).thenAnswer((_) async {});
           when(
             () => mockVaultStore.setAccountIndex(any()),
           ).thenAnswer((_) async {});
@@ -182,8 +185,28 @@ void main() {
 
           verify(
             () => mockDataManagerService.createProfile(
-              name: ProfileFixtures.testProfileName,
-              description: ProfileFixtures.testProfileDescription,
+              accountIndex: ProfileFixtures.testAccountIndex,
+              accountMetadata: any(
+                named: 'accountMetadata',
+                that: isA<AccountMetadata>().having(
+                  (metadata) => metadata.dekekInfo.encryptedDekek,
+                  'encryptedDekek',
+                  base64.encode(ProfileFixtures.testEncryptedData),
+                ),
+              ),
+              profileDid: ProfileFixtures.testDid,
+              profileDidProof: any(
+                named: 'profileDidProof',
+                that: predicate<String>(
+                  (proof) => proof.isNotEmpty,
+                  'non-empty did proof',
+                ),
+              ),
+              profileKeyPair: mockKeyPair,
+              profileName: ProfileFixtures.testProfileName,
+              profileDescription: ProfileFixtures.testProfileDescription,
+              profilePictureURI: null,
+              cancelToken: null,
             ),
           ).called(1);
           verify(
@@ -191,6 +214,15 @@ void main() {
               ProfileFixtures.testAccountIndex,
             ),
           ).called(1);
+          verifyNever(
+            () => mockDataManagerService.createAccount(
+              accountIndex: any(named: 'accountIndex'),
+              accountDid: any(named: 'accountDid'),
+              didProof: any(named: 'didProof'),
+              metadata: any(named: 'metadata'),
+              cancelToken: any(named: 'cancelToken'),
+            ),
+          );
         });
       });
 
