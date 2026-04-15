@@ -605,8 +605,9 @@ void main() {
 
       // Verify removal
       final listResponse = await walletApi.listWalletKeys(walletId: walletId);
-      final remainingKeyIds =
-          listResponse.data!.keys!.map((k) => k.keyId).toList();
+      final remainingKeyIds = listResponse.data!.keys!
+          .map((k) => k.keyId)
+          .toList();
       expect(remainingKeyIds, isNot(contains(p256KeyId)));
     });
 
@@ -652,9 +653,7 @@ void main() {
     });
 
     test('Lists service endpoints', () async {
-      final response = await walletApi.listServiceEndpoints(
-        walletId: walletId,
-      );
+      final response = await walletApi.listServiceEndpoints(walletId: walletId);
 
       expect(response.data, isNotNull);
       expect(response.data!.services, isNotNull);
@@ -694,8 +693,9 @@ void main() {
       final listResponse = await walletApi.listServiceEndpoints(
         walletId: walletId,
       );
-      final remainingIds =
-          listResponse.data!.services!.map((s) => s.id).toList();
+      final remainingIds = listResponse.data!.services!
+          .map((s) => s.id)
+          .toList();
       expect(remainingIds, isNot(contains(serviceId2)));
     });
 
