@@ -189,7 +189,7 @@ class VfsProfileRepository
   }
 
   @override
-  Future<void> createProfile({
+  Future<Profile> createProfile({
     required String name,
     String? description,
     VaultCancelToken? cancelToken,
@@ -227,7 +227,7 @@ class VfsProfileRepository
     final accountVaultDataManagerService = await _memoizedDataManagerService(
       walletKeyId: _rootAccountKeyId,
     );
-    await accountVaultDataManagerService.createProfile(
+    final result = await accountVaultDataManagerService.createProfile(
       accountIndex: nextAccountIndex,
       accountMetadata: accountMetadata,
       profileDid: profileDid,
@@ -237,7 +237,43 @@ class VfsProfileRepository
       profileDescription: description,
       cancelToken: cancelToken,
     );
+    final profileId = result.data?.profileId;
+    if (profileId == null) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Failed to create profile in VFS',
+          code: TdkExceptionType.unableToCreateAccount.code,
+        ),
+        StackTrace.current,
+      );
+    }
+
     await _keyStorage.setAccountIndex(nextAccountIndex);
+
+    final profileDataManager = await _memoizedDataManagerService(
+      walletKeyId: nextAccountIndex.toString(),
+      encryptedDekek: encryptedDekek,
+    );
+
+    return Profile(
+      id: profileId,
+      name: name,
+      description: description,
+      did: profileDid,
+      accountIndex: nextAccountIndex,
+      profileRepositoryId: id,
+      fileStorages: {
+        _id: VFSFileStorage(id: _id, dataManagerService: profileDataManager),
+      },
+      credentialStorages: {
+        _id: VFSCredentialStorage(
+          id: _id,
+          dataManagerService: profileDataManager,
+          profileId: profileId,
+        ),
+      },
+      sharedStorages: {},
+    );
   }
 
   @override
