@@ -219,17 +219,6 @@ class VfsProfileRepository
     );
     final encryptedDekek = await profileKeyPair.encrypt(kekBuffer);
 
-    final profileDataManager = await _memoizedDataManagerService(
-      walletKeyId: nextAccountIndex.toString(),
-      encryptedDekek: encryptedDekek,
-    );
-
-    await profileDataManager.createProfile(
-      name: name,
-      description: description,
-      cancelToken: cancelToken,
-    );
-
     final accountMetadata = AccountMetadata(
       dekekInfo: DekekInfo(encryptedDekek: base64.encode(encryptedDekek)),
       sharedStorageData: [],
@@ -238,11 +227,14 @@ class VfsProfileRepository
     final accountVaultDataManagerService = await _memoizedDataManagerService(
       walletKeyId: _rootAccountKeyId,
     );
-    await accountVaultDataManagerService.createAccount(
+    await accountVaultDataManagerService.createProfile(
       accountIndex: nextAccountIndex,
-      accountDid: profileDid,
-      didProof: profileDidProof,
-      metadata: accountMetadata,
+      accountMetadata: accountMetadata,
+      profileDid: profileDid,
+      profileDidProof: profileDidProof,
+      profileKeyPair: profileKeyPair,
+      profileName: name,
+      profileDescription: description,
       cancelToken: cancelToken,
     );
     await _keyStorage.setAccountIndex(nextAccountIndex);
