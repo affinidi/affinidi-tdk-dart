@@ -1,3 +1,7 @@
+## 2.1.0
+
+ - **FEAT**: update vfs client (#90).
+
 
 # Change Log
 

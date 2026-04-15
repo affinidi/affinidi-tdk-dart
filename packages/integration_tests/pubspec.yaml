@@ -12,7 +12,7 @@ dev_dependencies:
   affinidi_tdk_iam_client: ^2.0.0
   affinidi_tdk_iota_client: ^2.0.0
   affinidi_tdk_login_configuration_client: ^2.0.0
-  affinidi_tdk_vault_data_manager_client: ^2.0.0
+  affinidi_tdk_vault_data_manager_client: ^2.1.0
   affinidi_tdk_vdip: ^2.0.1
   affinidi_tdk_vdsp: ^2.0.1
   affinidi_tdk_wallets_client: ^2.1.0
