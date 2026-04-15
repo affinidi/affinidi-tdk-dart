@@ -78,7 +78,7 @@ class EdgeProfileRepository implements ProfileRepository {
   /// The [description] for the profile
   /// The [cancelToken] to cancel the operation in progress.
   @override
-  Future<void> createProfile({
+  Future<Profile> createProfile({
     required String name,
     String? description,
     VaultCancelToken? cancelToken,
@@ -96,7 +96,7 @@ Profile repository must be configured using a RepositoryConfiguration''',
 
     final nextAccountIndex = (await _vaultStore.getAccountIndex()) + 1;
 
-    await _repository.createProfile(
+    final newId = await _repository.createProfile(
       name: name,
       description: description,
       cancelToken: cancelToken,
@@ -104,6 +104,39 @@ Profile repository must be configured using a RepositoryConfiguration''',
     );
 
     await _vaultStore.setAccountIndex(nextAccountIndex);
+
+    final profileKeyPair = await _memoizedKeyPair(
+      accountIndex: nextAccountIndex.toString(),
+    );
+    final profileDid = DidKey.getDid(profileKeyPair.publicKey);
+
+    return Profile(
+      id: newId,
+      name: name,
+      description: description,
+      did: profileDid,
+      accountIndex: nextAccountIndex,
+      profileRepositoryId: id,
+      fileStorages: {
+        _id: EdgeFileStorage(
+          repository: _repositoryFactory.createFileRepository(profileId: newId),
+          id: _id,
+          profileId: newId.toString(),
+          encryptionService: _encryptionService,
+        ),
+      },
+      credentialStorages: {
+        _id: EdgeCredentialStorage(
+          repository: _repositoryFactory.createCredentialRepository(
+            profileId: newId,
+          ),
+          id: _id,
+          profileId: newId.toString(),
+          encryptionService: _encryptionService,
+        ),
+      },
+      sharedStorages: {},
+    );
   }
 
   /// Deleted an existing local profile
