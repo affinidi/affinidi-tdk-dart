@@ -12,7 +12,7 @@ class EdgeDriftProfileRepository implements EdgeProfileRepositoryInterface {
   final Database _database;
 
   @override
-  Future<void> createProfile({
+  Future<String> createProfile({
     required String name,
     String? description,
     required int accountIndex,
@@ -25,6 +25,7 @@ class EdgeDriftProfileRepository implements EdgeProfileRepositoryInterface {
     );
 
     await _database.into(_database.profiles).insert(entry);
+    return entry.id.value;
   }
 
   @override

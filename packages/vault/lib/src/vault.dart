@@ -12,10 +12,13 @@ import 'item_permission.dart';
 import 'item_permissions_policy.dart';
 import 'permissions.dart';
 import 'profile.dart';
+import 'repository_decorators/cache_invalidating_profile_repository.dart';
+import 'repository_decorators/cache_invalidating_sharing_profile_repository.dart';
 import 'storage_interfaces/profile_access_sharing.dart';
 import 'storage_interfaces/profile_repository.dart';
 import 'storage_interfaces/profile_storage_info.dart';
 import 'storage_interfaces/repository_configuration.dart';
+import 'storage_interfaces/shared_storage.dart';
 import 'storage_interfaces/vault_store.dart';
 import 'vault_storage_usage.dart';
 
@@ -26,8 +29,62 @@ class Vault {
   bool _initialized = false;
   Future<void>? _initializing;
 
-  final Map<String, ProfileRepository> _profileRepositories;
-  var _profileInfoCache = <String, _ProfileRepositoryDetails>{};
+  late final Map<String, ProfileRepository> _profileRepositories;
+  List<Profile>? _profilesCache;
+
+  void _invalidateProfilesCache() {
+    _profilesCache = null;
+  }
+
+  void _setProfilesCache(List<Profile> profiles) {
+    _profilesCache = List.unmodifiable(profiles);
+  }
+
+  Profile? _findProfileById(List<Profile> profiles, String profileId) {
+    return profiles.where((p) => p.id == profileId).firstOrNull;
+  }
+
+  Future<Profile?> _getProfileById(
+    String profileId, {
+    VaultCancelToken? cancelToken,
+  }) async {
+    final cachedProfiles = _profilesCache;
+    if (cachedProfiles != null) {
+      final cachedProfile = _findProfileById(cachedProfiles, profileId);
+      if (cachedProfile != null) {
+        return cachedProfile;
+      }
+    }
+
+    final refreshedProfiles = await listProfiles(cancelToken: cancelToken);
+    return _findProfileById(refreshedProfiles, profileId);
+  }
+
+  SharedStorage? _findSharedStorage(
+    List<Profile> profiles,
+    String ownerProfileId,
+  ) {
+    return profiles
+        .expand((profile) => profile.sharedStorages)
+        .where((storage) => storage.id == ownerProfileId)
+        .firstOrNull;
+  }
+
+  ProfileRepository _makeCacheInvalidatingProfileRepository(
+    ProfileRepository repository,
+  ) {
+    if (repository is ProfileAccessSharing) {
+      return CacheInvalidatingSharingProfileRepository(
+        repository,
+        onProfilesMutated: _invalidateProfilesCache,
+      );
+    }
+
+    return CacheInvalidatingProfileRepository(
+      repository,
+      onProfilesMutated: _invalidateProfilesCache,
+    );
+  }
 
   /// Retrieves the map of profile repositories.
   ///
@@ -85,8 +142,12 @@ class Vault {
     required Map<String, ProfileRepository> profileRepositories,
     String? defaultProfileRepositoryId,
   }) : _wallet = wallet,
-       _vaultStore = vaultStore,
-       _profileRepositories = Map.unmodifiable(profileRepositories) {
+       _vaultStore = vaultStore {
+    _profileRepositories = Map.unmodifiable({
+      for (final entry in profileRepositories.entries)
+        entry.key: _makeCacheInvalidatingProfileRepository(entry.value),
+    });
+
     if (_profileRepositories.entries.isEmpty) {
       Error.throwWithStackTrace(
         TdkException(
@@ -218,10 +279,7 @@ class Vault {
     );
     final allProfiles = profiles.expand((profiles) => profiles).toList();
 
-    _profileInfoCache = {
-      for (var profile in allProfiles)
-        profile.id: _ProfileRepositoryDetails(profile: profile),
-    };
+    _setProfilesCache(allProfiles);
 
     return allProfiles;
   }
@@ -244,7 +302,10 @@ class Vault {
     DateTime? expiresAt,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileInfo(profileId);
+    final profileInfo = await _getProfileById(
+      profileId,
+      cancelToken: cancelToken,
+    );
 
     if (profileInfo == null) {
       Error.throwWithStackTrace(
@@ -312,7 +373,10 @@ class Vault {
     required SharedProfileDto sharedProfile,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileInfo(profileId);
+    final profileInfo = await _getProfileById(
+      profileId,
+      cancelToken: cancelToken,
+    );
 
     if (profileInfo == null) {
       Error.throwWithStackTrace(
@@ -371,7 +435,10 @@ class Vault {
     required SharedItemsDto sharedItems,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileInfo(profileId);
+    final profileInfo = await _getProfileById(
+      profileId,
+      cancelToken: cancelToken,
+    );
 
     if (profileInfo == null) {
       Error.throwWithStackTrace(
@@ -434,7 +501,10 @@ class Vault {
     required String granteeDid,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileInfo(profileId);
+    final profileInfo = await _getProfileById(
+      profileId,
+      cancelToken: cancelToken,
+    );
 
     if (profileInfo == null) {
       Error.throwWithStackTrace(
@@ -498,7 +568,10 @@ class Vault {
     required String granteeDid,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileInfo(profileId);
+    final profileInfo = await _getProfileById(
+      profileId,
+      cancelToken: cancelToken,
+    );
 
     if (profileInfo == null) {
       Error.throwWithStackTrace(
@@ -554,16 +627,6 @@ class Vault {
         .toList();
   }
 
-  Future<_ProfileRepositoryDetails?> _getProfileInfo(String profileId) async {
-    if (_profileInfoCache.containsKey(profileId)) {
-      return _profileInfoCache[profileId];
-    }
-
-    await listProfiles();
-
-    return _profileInfoCache[profileId];
-  }
-
   /// Reads a shared item
   ///
   /// [ownerProfileId] - ID of the profile that owns the item.
@@ -582,21 +645,25 @@ class Vault {
     VaultCancelToken? cancelToken,
     VaultProgressCallback? onReceiveProgress,
   }) async {
-    final currentUserProfiles = await listProfiles();
-    if (currentUserProfiles.isEmpty) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'No profiles found for current user',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
+    final cachedProfiles = _profilesCache;
+    var sharedStorage = cachedProfiles == null || cachedProfiles.isEmpty
+        ? null
+        : _findSharedStorage(cachedProfiles, ownerProfileId);
 
-    final sharedStorage = currentUserProfiles
-        .expand((profile) => profile.sharedStorages)
-        .where((storage) => storage.id == ownerProfileId)
-        .firstOrNull;
+    if (sharedStorage == null) {
+      final currentUserProfiles = await listProfiles(cancelToken: cancelToken);
+      if (currentUserProfiles.isEmpty) {
+        Error.throwWithStackTrace(
+          TdkException(
+            message: 'No profiles found for current user',
+            code: TdkExceptionType.invalidProfileIdentifier.code,
+          ),
+          StackTrace.current,
+        );
+      }
+
+      sharedStorage = _findSharedStorage(currentUserProfiles, ownerProfileId);
+    }
 
     if (sharedStorage == null) {
       Error.throwWithStackTrace(
@@ -626,7 +693,10 @@ class Vault {
     required String granteeDid,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileInfo(profileId);
+    final profileInfo = await _getProfileById(
+      profileId,
+      cancelToken: cancelToken,
+    );
 
     if (profileInfo == null) {
       Error.throwWithStackTrace(
@@ -693,7 +763,10 @@ class Vault {
     required ItemPermissionsPolicy policy,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileInfo(profileId);
+    final profileInfo = await _getProfileById(
+      profileId,
+      cancelToken: cancelToken,
+    );
 
     if (profileInfo == null) {
       Error.throwWithStackTrace(
@@ -779,15 +852,4 @@ class Vault {
       cancelToken: cancelToken,
     );
   }
-}
-
-class _ProfileRepositoryDetails {
-  _ProfileRepositoryDetails({required Profile profile})
-    : profileRepositoryId = profile.profileRepositoryId,
-      accountIndex = profile.accountIndex,
-      did = profile.did;
-
-  final String profileRepositoryId;
-  final int accountIndex;
-  final String did;
 }
