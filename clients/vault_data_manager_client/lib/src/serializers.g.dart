@@ -32,6 +32,7 @@ Serializers _$serializers =
           ..add(JsonWebKeySetDto.serializer)
           ..add(ListAccountsDto.serializer)
           ..add(ListNodeChildrenOK.serializer)
+          ..add(ListProfilesOK.serializer)
           ..add(ListRootNodeChildrenOK.serializer)
           ..add(ListScannedFilesOK.serializer)
           ..add(ListScannedFilesOKScannedFilesInner.serializer)
@@ -39,6 +40,7 @@ Serializers _$serializers =
           ..add(MoveNodeInput.serializer)
           ..add(NodeStatus.serializer)
           ..add(NodeType.serializer)
+          ..add(PartialProfileNodeDto.serializer)
           ..add(QueryProfileDataOK.serializer)
           ..add(RestoreNodeFromTrashbin.serializer)
           ..add(StartFileScanInput.serializer)
@@ -86,6 +88,12 @@ Serializers _$serializers =
           ..addBuilderFactory(
             const FullType(BuiltList, const [const FullType(NodeDto)]),
             () => ListBuilder<NodeDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, const [
+              const FullType(PartialProfileNodeDto),
+            ]),
+            () => ListBuilder<PartialProfileNodeDto>(),
           )
           ..addBuilderFactory(
             const FullType(BuiltMap, const [
