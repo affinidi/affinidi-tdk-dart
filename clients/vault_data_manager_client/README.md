@@ -71,6 +71,7 @@ Class | Method | HTTP request | Description
 [*AccountsApi*](doc/AccountsApi.md) | [**createAccount**](doc/AccountsApi.md#createaccount) | **POST** /v1/accounts | 
 [*AccountsApi*](doc/AccountsApi.md) | [**deleteAccount**](doc/AccountsApi.md#deleteaccount) | **DELETE** /v1/accounts/{accountIndex} | 
 [*AccountsApi*](doc/AccountsApi.md) | [**listAccounts**](doc/AccountsApi.md#listaccounts) | **GET** /v1/accounts | 
+[*AccountsApi*](doc/AccountsApi.md) | [**listProfiles**](doc/AccountsApi.md#listprofiles) | **GET** /v1/accounts/profiles | 
 [*AccountsApi*](doc/AccountsApi.md) | [**updateAccount**](doc/AccountsApi.md#updateaccount) | **PUT** /v1/accounts/{accountIndex} | 
 [*ConfigurationApi*](doc/ConfigurationApi.md) | [**getConfiguration**](doc/ConfigurationApi.md#getconfiguration) | **GET** /v1/config | 
 [*FilesApi*](doc/FilesApi.md) | [**getScannedFileInfo**](doc/FilesApi.md#getscannedfileinfo) | **GET** /v1/scanned-files/{scannedFileJobId} | 
@@ -114,6 +115,7 @@ Class | Method | HTTP request | Description
  - [JsonWebKeySetDto](doc/JsonWebKeySetDto.md)
  - [ListAccountsDto](doc/ListAccountsDto.md)
  - [ListNodeChildrenOK](doc/ListNodeChildrenOK.md)
+ - [ListProfilesOK](doc/ListProfilesOK.md)
  - [ListRootNodeChildrenOK](doc/ListRootNodeChildrenOK.md)
  - [ListScannedFilesOK](doc/ListScannedFilesOK.md)
  - [ListScannedFilesOKScannedFilesInner](doc/ListScannedFilesOKScannedFilesInner.md)
@@ -122,6 +124,7 @@ Class | Method | HTTP request | Description
  - [NodeDto](doc/NodeDto.md)
  - [NodeStatus](doc/NodeStatus.md)
  - [NodeType](doc/NodeType.md)
+ - [PartialProfileNodeDto](doc/PartialProfileNodeDto.md)
  - [QueryProfileDataOK](doc/QueryProfileDataOK.md)
  - [RestoreNodeFromTrashbin](doc/RestoreNodeFromTrashbin.md)
  - [StartFileScanInput](doc/StartFileScanInput.md)
