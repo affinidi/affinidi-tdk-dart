@@ -479,7 +479,7 @@ void main() {
         ..name = 'v2-multikey-test-tdk'
         ..description = 'Wallet for v2 multi-key & services tests TDK'
         ..didMethod = CreateWalletV2InputDidMethodEnum.web
-        ..didWebUrl = '$randomStr.com';
+        ..didWebUrl = 'https://$randomStr.com';
 
       final response = await walletApi.createWalletV2(
         createWalletV2Input: walletOptionsBuilder.build(),
