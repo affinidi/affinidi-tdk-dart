@@ -216,20 +216,31 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   }
 
   @override
-  Future<Response<CreateNodeOK>> createProfile({
-    required String name,
-    String? description,
+  Future<Response<CreateAccountWithProfileOK>> createProfile({
+    required int accountIndex,
+    required AccountMetadata accountMetadata,
+    required String profileDid,
+    required String profileDidProof,
+    required KeyPair profileKeyPair,
+    required String profileName,
+    String? profileDescription,
     String? profilePictureURI,
     VaultCancelToken? cancelToken,
   }) async {
     final dekGenerateModel = await _vaultDataManagerEncryptionService
         .generateDataEncryptionMaterial(
-          encryptionKey: await _keyPair.decrypt(_encryptedKey),
+          encryptionKey: await profileKeyPair.decrypt(
+            base64.decode(accountMetadata.dekekInfo.encryptedDekek),
+          ),
         );
 
     return await _vaultDataManagerApiService.createProfile(
-      profileName: name,
-      profileDescription: description,
+      accountIndex: accountIndex,
+      profileDid: profileDid,
+      profileDidProof: profileDidProof,
+      accountMetadata: accountMetadata.toJson(),
+      profileName: profileName,
+      profileDescription: profileDescription,
       profilePictureURI: profilePictureURI,
       dekEncryptedByVfsPublicKey: dekGenerateModel.dekEncryptedByApiPublicKey,
       dekEncryptedByWalletCryptoMaterial:
