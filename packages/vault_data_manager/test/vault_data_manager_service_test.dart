@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_data_manager/affinidi_tdk_vault_data_manager.dart';
 import 'package:affinidi_tdk_vault_data_manager/src/exceptions/tdk_exception_type.dart';
+import 'package:affinidi_tdk_vault_data_manager/src/model/account.dart';
 import 'package:affinidi_tdk_vault_data_manager/src/model/profile_data.dart';
 import 'package:affinidi_tdk_vault_data_manager/src/model/recognized_profile_data.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/affinidi_tdk_vault_data_manager_client.dart';
@@ -27,6 +29,7 @@ import 'fixtures/node.dart';
 import 'fixtures/profile.dart';
 import 'fixtures/profile_data.dart';
 import 'fixtures/verifiable_credential.dart';
+import 'mocks/mock_key_pair.dart';
 import 'mocks/mocks.dart';
 import 'mocks/vault_data_manager_api_service_mocks.dart';
 import 'mocks/vault_data_manager_encryption_service_mocks.dart';
@@ -222,9 +225,21 @@ void main() {
       test(
         'it calls vault data manager api and encryption services methods once',
         () async {
+          final profileKeyPair = MockKeyPair();
+          final encryptedDekek = Uint8List.fromList([9, 8, 7]);
+          final decryptedDekek = Uint8List.fromList([7, 8, 9]);
+          const profilePictureUrl = 'https://example.com/profile.png';
+          final accountMetadata = AccountMetadata(
+            dekekInfo: DekekInfo(encryptedDekek: base64.encode(encryptedDekek)),
+            sharedStorageData: <SharedStorageData>[],
+          );
+
           when(
             () => mockVaultDataManagerApiService.getListOfProfiles(),
           ).thenAnswer((_) async => Response(requestOptions: RequestOptions()));
+          when(
+            () => profileKeyPair.decrypt(encryptedDekek),
+          ).thenAnswer((_) async => decryptedDekek);
 
           when(
             vaultDataManagerEncryptionServiceMocks
@@ -232,18 +247,50 @@ void main() {
           ).thenAnswer((_) async => dataEncryptionMaterial);
 
           when(vaultDataManagerApiServiceMocks.createProfile).thenAnswer(
-            (_) async => Response<CreateNodeOK>(
+            (_) async => Response<CreateAccountWithProfileOK>(
+              data: CreateAccountWithProfileOK(
+                (b) => b
+                  ..accountIndex = 1
+                  ..accountDid = 'did:test:123'
+                  ..profileId = profileId,
+              ),
               requestOptions: RequestOptions(path: ''),
             ),
           );
 
-          await vaultDataManagerService.createProfile(name: profileName);
+          await vaultDataManagerService.createProfile(
+            accountIndex: 1,
+            accountMetadata: accountMetadata,
+            profileDid: 'did:test:123',
+            profileDidProof: 'proof',
+            profileKeyPair: profileKeyPair,
+            profileName: profileName,
+            profilePictureURI: profilePictureUrl,
+          );
 
+          verify(() => profileKeyPair.decrypt(encryptedDekek)).called(1);
           verify(
             vaultDataManagerEncryptionServiceMocks
                 .generateDataEncryptionMaterial,
           ).called(1);
-          verify(vaultDataManagerApiServiceMocks.createProfile).called(1);
+          verify(
+            () => mockVaultDataManagerApiService.createProfile(
+              accountIndex: 1,
+              accountMetadata: accountMetadata.toJson(),
+              profileDid: 'did:test:123',
+              profileDidProof: 'proof',
+              profileName: profileName,
+              profileDescription: null,
+              profilePictureURI: profilePictureUrl,
+              dekEncryptedByVfsPublicKey:
+                  dataEncryptionMaterial.dekEncryptedByApiPublicKey,
+              dekEncryptedByWalletCryptoMaterial:
+                  dataEncryptionMaterial.dekEncryptedByWalletCryptoMaterial,
+              walletCryptoMaterialHash:
+                  dataEncryptionMaterial.walletCryptoMaterialHash,
+              cancelToken: null,
+            ),
+          ).called(1);
         },
       );
     });

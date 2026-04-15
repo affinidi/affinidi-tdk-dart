@@ -123,7 +123,11 @@ abstract interface class VaultDataManagerApiServiceInterface {
   /// profileDescription: 'New profile description',
   /// profilePictureURI: 'https://www.hosting.net/yourImage.jpg',
   /// );
-  Future<Response<CreateNodeOK>> createProfile({
+  Future<Response<CreateAccountWithProfileOK>> createProfile({
+    required int accountIndex,
+    Map<String, Object>? accountMetadata,
+    required String profileDid,
+    required String profileDidProof,
     required String profileName,
     required List<int> dekEncryptedByVfsPublicKey,
     required List<int> dekEncryptedByWalletCryptoMaterial,
