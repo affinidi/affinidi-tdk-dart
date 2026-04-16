@@ -1,3 +1,7 @@
+## 2.1.2
+
+ - **FIX**: revert cache profiles for shared item reads (#93).
+
 ## 2.1.1
 
  - **FIX**: Improve storage limit error handling and expose vault storage usage API (#85).
