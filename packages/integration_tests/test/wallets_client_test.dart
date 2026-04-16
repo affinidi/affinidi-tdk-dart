@@ -1,5 +1,6 @@
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_wallets_client/affinidi_tdk_wallets_client.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/json_object.dart';
 import 'package:test/test.dart';
 
@@ -447,6 +448,272 @@ void main() {
       );
 
       expect(response.statusCode, anyOf([200, 204]));
+    });
+  });
+
+  // ========== V2 Multi-Key & Services Tests ==========
+
+  group('Wallets Client V2 Multi-Key & Services Tests', () {
+    late WalletApi walletApi;
+    var walletId = '';
+    var walletDid = '';
+
+    setUpAll(() async {
+      final apiGwUrl = Environment.fetchEnvironment().apiGwUrl;
+      var basePathOverride = replaceBaseDomain(
+        AffinidiTdkWalletsClient.basePath,
+        apiGwUrl,
+      );
+
+      final apiClient = AffinidiTdkWalletsClient(
+        authTokenHook: ResourceFactory.getAuthTokenHook(),
+        basePathOverride: basePathOverride,
+      );
+
+      walletApi = apiClient.getWalletApi();
+
+      await ResourceFactory.checkWalletLimitExceeded();
+
+      final randomStr = generateRandomString(10);
+      final walletOptionsBuilder = CreateWalletV2InputBuilder()
+        ..name = 'v2-multikey-test-tdk'
+        ..description = 'Wallet for v2 multi-key & services tests TDK'
+        ..didMethod = CreateWalletV2InputDidMethodEnum.web
+        ..didWebUrl = 'https://$randomStr.com';
+
+      final response = await walletApi.createWalletV2(
+        createWalletV2Input: walletOptionsBuilder.build(),
+      );
+
+      expect(response.data, isNotNull);
+      expect(response.data!.wallet, isNotNull);
+      walletId = response.data!.wallet!.id ?? '';
+      walletDid = response.data!.wallet!.did ?? '';
+    });
+
+    tearDownAll(() async {
+      if (walletId.isNotEmpty) {
+        await walletApi.deleteWallet(walletId: walletId);
+      }
+    });
+
+    test('Creates wallet v2 (did:web)', () {
+      expect(walletId, isNotEmpty);
+      expect(walletDid, isNotEmpty);
+      expect(walletDid, startsWith('did:web:'));
+    });
+
+    test('Lists default wallet keys', () async {
+      final response = await walletApi.listWalletKeys(walletId: walletId);
+
+      expect(response.data, isNotNull);
+      expect(response.data!.keys, isNotNull);
+      expect(response.data!.keys!.length, greaterThan(0));
+
+      final defaultKey = response.data!.keys!.first;
+      expect(defaultKey.keyId, isNotEmpty);
+      expect(defaultKey.keyAri, isNotEmpty);
+    });
+
+    String? edKeyId;
+
+    test('Creates wallet key (ed25519)', () async {
+      final keyInputBuilder = CreateWalletKeyInputBuilder()
+        ..keyType = CreateWalletKeyInputKeyTypeEnum.ed25519
+        ..relationships = ListBuilder<VerificationRelationship>([
+          VerificationRelationship.authentication,
+          VerificationRelationship.assertionMethod,
+        ]);
+
+      final response = await walletApi.createWalletKey(
+        walletId: walletId,
+        createWalletKeyInput: keyInputBuilder.build(),
+      );
+
+      expect(response.data, isNotNull);
+      expect(response.data!.keyId, isNotEmpty);
+      expect(response.data!.keyType, isNotNull);
+      expect(response.data!.relationships, isNotNull);
+      expect(response.data!.relationships!.length, equals(2));
+
+      edKeyId = response.data!.keyId;
+    });
+
+    String? p256KeyId;
+
+    test('Creates wallet key (p256)', () async {
+      final keyInputBuilder = CreateWalletKeyInputBuilder()
+        ..keyType = CreateWalletKeyInputKeyTypeEnum.p256
+        ..relationships = ListBuilder<VerificationRelationship>([
+          VerificationRelationship.keyAgreement,
+        ]);
+
+      final response = await walletApi.createWalletKey(
+        walletId: walletId,
+        createWalletKeyInput: keyInputBuilder.build(),
+      );
+
+      expect(response.data, isNotNull);
+      expect(response.data!.keyId, isNotEmpty);
+
+      p256KeyId = response.data!.keyId;
+    });
+
+    test('Lists wallet keys after adding keys', () async {
+      final response = await walletApi.listWalletKeys(walletId: walletId);
+
+      expect(response.data, isNotNull);
+      expect(response.data!.keys, isNotNull);
+      // default keys + ed25519 + p256
+      expect(response.data!.keys!.length, greaterThanOrEqualTo(3));
+    });
+
+    test('Updates wallet key relationships', () async {
+      expect(edKeyId, isNotNull);
+
+      final updateInputBuilder = UpdateWalletKeyInputBuilder()
+        ..relationships = ListBuilder<VerificationRelationship>([
+          VerificationRelationship.authentication,
+          VerificationRelationship.assertionMethod,
+          VerificationRelationship.capabilityInvocation,
+        ]);
+
+      final response = await walletApi.updateWalletKey(
+        walletId: walletId,
+        keyId: edKeyId!,
+        updateWalletKeyInput: updateInputBuilder.build(),
+      );
+
+      expect(response.data, isNotNull);
+      expect(response.data!.relationships, isNotNull);
+      expect(response.data!.relationships!.length, equals(3));
+      expect(
+        response.data!.relationships!.toList(),
+        contains(VerificationRelationship.capabilityInvocation),
+      );
+    });
+
+    test('Removes wallet key', () async {
+      expect(p256KeyId, isNotNull);
+
+      final response = await walletApi.removeWalletKey(
+        walletId: walletId,
+        keyId: p256KeyId!,
+      );
+
+      expect(response.statusCode, anyOf([200, 204]));
+
+      // Verify removal
+      final listResponse = await walletApi.listWalletKeys(walletId: walletId);
+      final remainingKeyIds = listResponse.data!.keys!
+          .map((k) => k.keyId)
+          .toList();
+      expect(remainingKeyIds, isNot(contains(p256KeyId)));
+    });
+
+    String? serviceId;
+
+    test('Creates service endpoint (LinkedDomains)', () async {
+      final svcInputBuilder = ServiceEndpointInputBuilder()
+        ..name = 'test-linked-domain'
+        ..description = 'Test linked domain endpoint'
+        ..url = 'https://example.com/api'
+        ..serviceType = ServiceEndpointInputServiceTypeEnum.linkedDomains;
+
+      final response = await walletApi.createServiceEndpoint(
+        walletId: walletId,
+        serviceEndpointInput: svcInputBuilder.build(),
+      );
+
+      expect(response.data, isNotNull);
+      expect(response.data!.id, isNotEmpty);
+      expect(response.data!.url, equals('https://example.com/api'));
+
+      serviceId = response.data!.id;
+    });
+
+    String? serviceId2;
+
+    test('Creates service endpoint (DIDCommMessaging)', () async {
+      final svcInputBuilder = ServiceEndpointInputBuilder()
+        ..name = 'test-didcomm'
+        ..description = 'Test DIDComm messaging endpoint'
+        ..url = 'https://example.com/didcomm'
+        ..serviceType = ServiceEndpointInputServiceTypeEnum.dIDCommMessaging;
+
+      final response = await walletApi.createServiceEndpoint(
+        walletId: walletId,
+        serviceEndpointInput: svcInputBuilder.build(),
+      );
+
+      expect(response.data, isNotNull);
+      expect(response.data!.id, isNotEmpty);
+
+      serviceId2 = response.data!.id;
+    });
+
+    test('Lists service endpoints', () async {
+      final response = await walletApi.listServiceEndpoints(walletId: walletId);
+
+      expect(response.data, isNotNull);
+      expect(response.data!.services, isNotNull);
+      expect(response.data!.services!.length, greaterThanOrEqualTo(2));
+    });
+
+    test('Updates service endpoint', () async {
+      expect(serviceId, isNotNull);
+
+      final updateInputBuilder = UpdateServiceEndpointInputBuilder()
+        ..name = 'updated-linked-domain'
+        ..description = 'Updated description'
+        ..url = 'https://example.com/api/v2';
+
+      final response = await walletApi.updateServiceEndpoint(
+        walletId: walletId,
+        serviceId: serviceId!,
+        updateServiceEndpointInput: updateInputBuilder.build(),
+      );
+
+      expect(response.data, isNotNull);
+      expect(response.data!.name, equals('updated-linked-domain'));
+      expect(response.data!.url, equals('https://example.com/api/v2'));
+    });
+
+    test('Removes service endpoint', () async {
+      expect(serviceId2, isNotNull);
+
+      final response = await walletApi.removeServiceEndpoint(
+        walletId: walletId,
+        serviceId: serviceId2!,
+      );
+
+      expect(response.statusCode, anyOf([200, 204]));
+
+      // Verify removal
+      final listResponse = await walletApi.listServiceEndpoints(
+        walletId: walletId,
+      );
+      final remainingIds = listResponse.data!.services!
+          .map((s) => s.id)
+          .toList();
+      expect(remainingIds, isNot(contains(serviceId2)));
+    });
+
+    test('Signs JWT v2 with specific keyId', () async {
+      expect(edKeyId, isNotNull);
+
+      final signBuilder = SignJwtV2InputDtoBuilder()
+        ..payload = JsonObject({'sub': 'test', 'data': 'multi-key-test'})
+        ..keyId = edKeyId;
+
+      final response = await walletApi.signJwtV2(
+        walletId: walletId,
+        signJwtV2InputDto: signBuilder.build(),
+      );
+
+      expect(response.data, isNotNull);
+      expect(response.data!.signedJwt, isNotNull);
+      expect(response.data!.signedJwt, startsWith('eyJ'));
     });
   });
 }
