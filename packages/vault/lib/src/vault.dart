@@ -12,11 +12,9 @@ import 'item_permission.dart';
 import 'item_permissions_policy.dart';
 import 'permissions.dart';
 import 'profile.dart';
-import 'repository_decorators/cache_invalidating_profile_repository.dart';
-import 'repository_decorators/cache_invalidating_sharing_profile_repository.dart';
+import 'profile_repository_handle.dart';
 import 'storage_interfaces/profile_access_sharing.dart';
 import 'storage_interfaces/profile_repository.dart';
-import 'storage_interfaces/profile_storage_info.dart';
 import 'storage_interfaces/repository_configuration.dart';
 import 'storage_interfaces/shared_storage.dart';
 import 'storage_interfaces/vault_store.dart';
@@ -29,6 +27,7 @@ class Vault {
   bool _initialized = false;
   Future<void>? _initializing;
 
+  late final Map<String, ProfileRepositoryHandle> _profileRepositoryHandles;
   late final Map<String, ProfileRepository> _profileRepositories;
   List<Profile>? _profilesCache;
 
@@ -70,20 +69,33 @@ class Vault {
         .firstOrNull;
   }
 
-  ProfileRepository _makeCacheInvalidatingProfileRepository(
-    ProfileRepository repository,
-  ) {
-    if (repository is ProfileAccessSharing) {
-      return CacheInvalidatingSharingProfileRepository(
-        repository,
-        onProfilesMutated: _invalidateProfilesCache,
+  ProfileAccessSharing _getProfileAccessSharingOrThrow(
+    String repositoryId, {
+    required String unsupportedMessage,
+  }) {
+    final repositoryHandle = _profileRepositoryHandles[repositoryId];
+    if (repositoryHandle == null) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Can not find profile repository $repositoryId',
+          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
+        ),
+        StackTrace.current,
       );
     }
 
-    return CacheInvalidatingProfileRepository(
-      repository,
-      onProfilesMutated: _invalidateProfilesCache,
-    );
+    final accessSharing = repositoryHandle.accessSharing;
+    if (accessSharing == null) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: unsupportedMessage,
+          code: TdkExceptionType.unsupportedProfileAccessSharing.code,
+        ),
+        StackTrace.current,
+      );
+    }
+
+    return accessSharing;
   }
 
   /// Retrieves the map of profile repositories.
@@ -143,9 +155,16 @@ class Vault {
     String? defaultProfileRepositoryId,
   }) : _wallet = wallet,
        _vaultStore = vaultStore {
-    _profileRepositories = Map.unmodifiable({
+    _profileRepositoryHandles = Map.unmodifiable({
       for (final entry in profileRepositories.entries)
-        entry.key: _makeCacheInvalidatingProfileRepository(entry.value),
+        entry.key: ProfileRepositoryHandle.fromRepository(
+          entry.value,
+          onProfilesMutated: _invalidateProfilesCache,
+        ),
+    });
+    _profileRepositories = Map.unmodifiable({
+      for (final entry in _profileRepositoryHandles.entries)
+        entry.key: entry.value.repository,
     });
 
     if (_profileRepositories.entries.isEmpty) {
@@ -331,19 +350,11 @@ class Vault {
       );
     }
 
-    if (profileRepository is! ProfileAccessSharing) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Sharing profiles is not supported on ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.unsupportedProfileAccessSharing.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileSharedAccessRepository =
-        profileRepository as ProfileAccessSharing;
+    final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
+      profileInfo.profileRepositoryId,
+      unsupportedMessage:
+          'Sharing profiles is not supported on ${profileInfo.profileRepositoryId}',
+    );
 
     // Use item-level access method since profile is a node
     final kek = await profileSharedAccessRepository.grantItemAccessMultiple(
@@ -402,19 +413,11 @@ class Vault {
       );
     }
 
-    if (profileRepository is! ProfileAccessSharing) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Sharing profiles is not supported on ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.unsupportedProfileAccessSharing.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileSharedAccessRepository =
-        profileRepository as ProfileAccessSharing;
+    final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
+      profileInfo.profileRepositoryId,
+      unsupportedMessage:
+          'Sharing profiles is not supported on ${profileInfo.profileRepositoryId}',
+    );
 
     // Use item-level access method since profile is a node
     await profileSharedAccessRepository.receiveItemAccess(
@@ -464,19 +467,11 @@ class Vault {
       );
     }
 
-    if (profileRepository is! ProfileAccessSharing) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Sharing nodes is not supported on ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.unsupportedProfileAccessSharing.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileSharedAccessRepository =
-        profileRepository as ProfileAccessSharing;
+    final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
+      profileInfo.profileRepositoryId,
+      unsupportedMessage:
+          'Sharing nodes is not supported on ${profileInfo.profileRepositoryId}',
+    );
 
     await profileSharedAccessRepository.receiveItemAccess(
       accountIndex: profileInfo.accountIndex,
@@ -530,19 +525,11 @@ class Vault {
       );
     }
 
-    if (profileRepository is! ProfileAccessSharing) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Sharing profiles is not supported on ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.unsupportedProfileAccessSharing.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileSharedAccessRepository =
-        profileRepository as ProfileAccessSharing;
+    final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
+      profileInfo.profileRepositoryId,
+      unsupportedMessage:
+          'Sharing profiles is not supported on ${profileInfo.profileRepositoryId}',
+    );
 
     // Use item-level access method since profile is a node
     await profileSharedAccessRepository.revokeItemAccess(
@@ -597,19 +584,11 @@ class Vault {
       );
     }
 
-    if (profileRepository is! ProfileAccessSharing) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Getting item access is not supported on ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.unsupportedProfileAccessSharing.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileSharedAccessRepository =
-        profileRepository as ProfileAccessSharing;
+    final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
+      profileInfo.profileRepositoryId,
+      unsupportedMessage:
+          'Getting item access is not supported on ${profileInfo.profileRepositoryId}',
+    );
 
     final result = await profileSharedAccessRepository.getItemAccess(
       accountIndex: profileInfo.accountIndex,
@@ -722,19 +701,11 @@ class Vault {
       );
     }
 
-    if (profileRepository is! ProfileAccessSharing) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Getting item permissions editor is not supported on ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.unsupportedProfileAccessSharing.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileSharedAccessRepository =
-        profileRepository as ProfileAccessSharing;
+    final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
+      profileInfo.profileRepositoryId,
+      unsupportedMessage:
+          'Getting item permissions editor is not supported on ${profileInfo.profileRepositoryId}',
+    );
 
     final access = await profileSharedAccessRepository.getItemAccess(
       accountIndex: profileInfo.accountIndex,
@@ -792,19 +763,11 @@ class Vault {
       );
     }
 
-    if (profileRepository is! ProfileAccessSharing) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Setting item permissions is not supported on ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.unsupportedProfileAccessSharing.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileSharedAccessRepository =
-        profileRepository as ProfileAccessSharing;
+    final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
+      profileInfo.profileRepositoryId,
+      unsupportedMessage:
+          'Setting item permissions is not supported on ${profileInfo.profileRepositoryId}',
+    );
 
     final permissionGroups = policy.buildPermissionGroups();
 
@@ -838,7 +801,17 @@ class Vault {
         StackTrace.current,
       );
     }
-    if (defaultProfileRepository is! ProfileStorageInfo) {
+
+    final storageInfo =
+        (_defaultProfileRepositoryId != null
+                ? _profileRepositoryHandles[_defaultProfileRepositoryId!]
+                : null)
+            ?.storageInfo;
+    final defaultStorageInfo =
+        storageInfo ??
+        _profileRepositoryHandles.entries.first.value.storageInfo;
+
+    if (defaultStorageInfo == null) {
       Error.throwWithStackTrace(
         TdkException(
           message:
@@ -848,8 +821,7 @@ class Vault {
         StackTrace.current,
       );
     }
-    return (defaultProfileRepository as ProfileStorageInfo).getStorageUsage(
-      cancelToken: cancelToken,
-    );
+
+    return defaultStorageInfo.getStorageUsage(cancelToken: cancelToken);
   }
 }
