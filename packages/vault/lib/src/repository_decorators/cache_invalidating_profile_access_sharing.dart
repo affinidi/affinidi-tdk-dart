@@ -4,22 +4,18 @@ import '../helpers/vault_cancel_token.dart';
 import '../permissions.dart';
 import '../storage_interfaces/profile_access_sharing.dart';
 import '../storage_interfaces/profile_repository.dart';
-import 'cache_invalidating_profile_repository.dart';
 
 /// A decorator for [ProfileRepository] that also implements [ProfileAccessSharing]
 /// and invalidates cache on sharing-related mutations.
-class CacheInvalidatingSharingProfileRepository
-    extends CacheInvalidatingProfileRepository
-    implements ProfileAccessSharing {
-  /// Creates an instance of [CacheInvalidatingSharingProfileRepository].
-  CacheInvalidatingSharingProfileRepository(
-    super.repository, {
-    required super.onProfilesMutated,
-  }) : _sharedRepository = repository as ProfileAccessSharing,
-       _onSharingProfilesMutated = onProfilesMutated;
+class CacheInvalidatingProfileAccessSharing implements ProfileAccessSharing {
+  /// Creates an instance of [CacheInvalidatingProfileAccessSharing].
+  CacheInvalidatingProfileAccessSharing(
+    this._accessSharing, {
+    required void Function() onProfilesMutated,
+  }) : _onProfilesMutated = onProfilesMutated;
 
-  final ProfileAccessSharing _sharedRepository;
-  final void Function() _onSharingProfilesMutated;
+  final ProfileAccessSharing _accessSharing;
+  final void Function() _onProfilesMutated;
 
   @override
   Future<Uint8List> grantItemAccessMultiple({
@@ -31,7 +27,7 @@ class CacheInvalidatingSharingProfileRepository
     permissionGroups,
     VaultCancelToken? cancelToken,
   }) {
-    return _sharedRepository.grantItemAccessMultiple(
+    return _accessSharing.grantItemAccessMultiple(
       accountIndex: accountIndex,
       granteeDid: granteeDid,
       permissionGroups: permissionGroups,
@@ -46,7 +42,7 @@ class CacheInvalidatingSharingProfileRepository
     required List<String> itemIds,
     VaultCancelToken? cancelToken,
   }) {
-    return _sharedRepository.revokeItemAccess(
+    return _accessSharing.revokeItemAccess(
       accountIndex: accountIndex,
       granteeDid: granteeDid,
       itemIds: itemIds,
@@ -60,7 +56,7 @@ class CacheInvalidatingSharingProfileRepository
     required String granteeDid,
     VaultCancelToken? cancelToken,
   }) {
-    return _sharedRepository.getItemAccess(
+    return _accessSharing.getItemAccess(
       accountIndex: accountIndex,
       granteeDid: granteeDid,
       cancelToken: cancelToken,
@@ -75,13 +71,13 @@ class CacheInvalidatingSharingProfileRepository
     required String ownerProfileDid,
     VaultCancelToken? cancelToken,
   }) async {
-    await _sharedRepository.receiveItemAccess(
+    await _accessSharing.receiveItemAccess(
       accountIndex: accountIndex,
       ownerProfileId: ownerProfileId,
       kek: kek,
       ownerProfileDid: ownerProfileDid,
       cancelToken: cancelToken,
     );
-    _onSharingProfilesMutated();
+    _onProfilesMutated();
   }
 }
