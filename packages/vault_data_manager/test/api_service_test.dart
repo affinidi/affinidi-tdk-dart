@@ -16,6 +16,7 @@ import 'package:test/test.dart';
 
 import 'fixtures/api_service/file_response_fixtures.dart';
 import 'fixtures/api_service/node_response_fixtures.dart';
+import 'fixtures/api_service/profiles_response_fixtures.dart';
 import 'fixtures/api_service/test_data_fixtures.dart';
 import 'mocks/mock_dio.dart';
 
@@ -52,9 +53,9 @@ void main() {
     group('and there are profiles available', () {
       test('it returns a list of profiles with correct data', () async {
         dioAdapter.mockRequestWithReply(
-          url: '/v1/nodes',
+          url: '/v1/accounts/profiles',
           statusCode: 200,
-          data: NodeResponseFixtures.profileList,
+          data: ProfilesResponseFixtures.profileList,
         );
         final profilesResponse = await vaultDataManagerApiService
             .getListOfProfiles();
@@ -64,9 +65,9 @@ void main() {
     group('and there are no profiles available', () {
       test('it returns an empty list of profiles', () async {
         dioAdapter.mockRequestWithReply(
-          url: '/v1/nodes',
+          url: '/v1/accounts/profiles',
           statusCode: 200,
-          data: NodeResponseFixtures.emptyList,
+          data: ProfilesResponseFixtures.emptyList,
         );
         final profilesResponse = await vaultDataManagerApiService
             .getListOfProfiles();
