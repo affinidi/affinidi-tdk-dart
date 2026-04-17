@@ -1,5 +1,6 @@
 import 'package:affinidi_tdk_vault_edge_provider/affinidi_tdk_vault_edge_provider.dart';
 import 'package:drift/drift.dart';
+import 'package:uuid/uuid.dart';
 
 import 'database/database.dart' hide Profile;
 
@@ -18,14 +19,16 @@ class EdgeDriftProfileRepository implements EdgeProfileRepositoryInterface {
     required int accountIndex,
     VaultCancelToken? cancelToken,
   }) async {
+    final id = const Uuid().v4();
     final entry = ProfilesCompanion.insert(
+      id: Value(id),
       name: name,
       description: Value(description),
       accountIndex: accountIndex,
     );
 
     await _database.into(_database.profiles).insert(entry);
-    return entry.id.value;
+    return id;
   }
 
   @override
