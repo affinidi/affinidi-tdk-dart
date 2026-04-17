@@ -10,32 +10,6 @@ class NodeResponseFixtures {
   static const String childNodeId1 = 'NzY3ZjYjY2hpbGQx';
   static const String childNodeId2 = 'NzY3ZjYjY2hpbGQy';
 
-  static final profileList = {
-    'nodes': [
-      {
-        'name': 'My profile',
-        'description': 'Test profile',
-        'status': 'CREATED',
-        'createdAt': '2025-03-03T13:59:40.752Z',
-        'modifiedAt': '2025-03-03T13:59:40.752Z',
-        'createdBy': 'did:key:test',
-        'modifiedBy': 'did:key:test',
-        'consumerId': 'did:key:test',
-        'fileCount': 0,
-        'profileCount': 0,
-        'folderCount': 0,
-        'vcCount': 0,
-        'schema': 'primary.schema',
-        'parentNodeId': rootNodeId,
-        'profileId': profileNodeId,
-        'type': 'PROFILE',
-        'nodeId': profileNodeId,
-        'edekInfo': {'dekekId': 'test-dekek-id', 'edek': 'test-edek'},
-        'metadata': jsonEncode({'pictureURI': ''}),
-      },
-    ],
-  };
-
   static final emptyList = {'nodes': []};
 
   static final profile = {
