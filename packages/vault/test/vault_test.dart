@@ -192,6 +192,56 @@ void main() {
         throwsA(isA<TdkException>()),
       );
     });
+
+    test(
+      'should return storage usage from the default profile repository',
+      () async {
+        final mockStorageInfoRepository =
+            MockProfileRepositoryWithStorageInfo();
+        const expectedUsage = VaultStorageUsage(usedBytes: 2048);
+
+        when(
+          mockStorageInfoRepository.isConfigured,
+        ).thenAnswer((_) async => false);
+        when(
+          () => mockStorageInfoRepository.configure(any()),
+        ).thenAnswer((_) async {});
+        when(
+          mockStorageInfoRepository.getStorageUsage,
+        ).thenAnswer((_) async => expectedUsage);
+
+        final vaultWithStorageInfo = await createTestVault(
+          vaultStore: mockVaultStore,
+          profileRepositories: {'storage': mockStorageInfoRepository},
+          defaultProfileRepositoryId: 'storage',
+        );
+
+        await vaultWithStorageInfo.ensureInitialized();
+
+        final usage = await vaultWithStorageInfo.getStorageUsage();
+
+        expect(usage.usedBytes, equals(expectedUsage.usedBytes));
+        verify(mockStorageInfoRepository.getStorageUsage).called(1);
+      },
+    );
+
+    test(
+      'should throw when default repository does not support storage usage',
+      () async {
+        await vault.ensureInitialized();
+
+        expect(
+          () => vault.getStorageUsage(),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              'unsupported_operation',
+            ),
+          ),
+        );
+      },
+    );
   });
 
   group('Profile Operations', () {
