@@ -20,7 +20,7 @@
 /// - [nullConsumedFileStorage] - Indicates the vault file consumption value is null.
 /// - [other] - Represents an unknown or unspecified error.
 /// - [profileIdNotSet] - Indicates the profile ID is not set.
-/// - [profleNotConfigured] - Indicates the profile repository is not configured.
+/// - [profileNotConfigured] - Indicates the profile repository is not configured.
 /// - [unableToCreateAccount] - Indicates a failure in creating an account.
 /// - [unableToCreateNode] - Indicates a failure in creating a node.
 /// - [unableToDeleteAccount] - Indicates a failure in deleting an account.
@@ -118,7 +118,7 @@ enum TdkExceptionType {
   profileIdNotSet(code: 'profile_id_not_set'),
 
   /// Exception thrown when the profile repository is not configured.
-  profleNotConfigured(code: 'profile_not_configured'),
+  profileNotConfigured(code: 'profile_not_configured'),
 
   /// Indicates a failure in creating an account.
   unableToCreateAccount(code: 'unable_to_create_account'),
