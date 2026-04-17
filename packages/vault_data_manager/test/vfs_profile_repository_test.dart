@@ -183,6 +183,10 @@ void main() {
             description: ProfileFixtures.testProfileDescription,
           );
 
+          final expectedProfileDid = DidKey.generateDocument(
+            mockKeyPair.publicKey,
+          ).id;
+
           verify(
             () => mockDataManagerService.createProfile(
               accountIndex: ProfileFixtures.testAccountIndex,
@@ -194,7 +198,7 @@ void main() {
                   base64.encode(ProfileFixtures.testEncryptedData),
                 ),
               ),
-              profileDid: ProfileFixtures.testDid,
+              profileDid: expectedProfileDid,
               profileDidProof: any(
                 named: 'profileDidProof',
                 that: predicate<String>(
@@ -240,6 +244,42 @@ void main() {
           expect(profiles.length, 1);
           expect(profiles.first.name, ProfileFixtures.testProfileName);
         });
+
+        test(
+          'should skip profiles without encryptedDekek and return the rest',
+          () async {
+            final profilesResponse = List.generate(4, (index) {
+              final profileId = 'profile_$index';
+              final hasEncryptedDekek = index != 2;
+
+              return VaultDataManagerProfile(
+                accountIndex: ProfileFixtures.testAccountIndex + index,
+                id: profileId,
+                name: 'Profile $index',
+                description: 'Description $index',
+                pictureURI: '',
+                accountMetadata: hasEncryptedDekek
+                    ? AccountMetadata(
+                        dekekInfo: DekekInfo(encryptedDekek: 'dGVzdF9rZXk='),
+                        sharedStorageData: [],
+                      )
+                    : null,
+              );
+            });
+
+            when(
+              () => mockDataManagerService.getProfiles(),
+            ).thenAnswer((_) async => profilesResponse);
+
+            final profiles = await sut.listProfiles();
+
+            expect(profiles, hasLength(3));
+            expect(
+              profiles.map((profile) => profile.id),
+              unorderedEquals(['profile_0', 'profile_1', 'profile_3']),
+            );
+          },
+        );
       });
 
       group('When updating a profile', () {
