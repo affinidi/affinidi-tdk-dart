@@ -199,7 +199,7 @@ class VfsProfileRepository
         TdkException(
           message:
               'Profile repository must be configured using a RepositoryConfiguration',
-          code: TdkExceptionType.profleNotConfigured.code,
+          code: TdkExceptionType.profileNotConfigured.code,
         ),
         StackTrace.current,
       );
@@ -283,7 +283,7 @@ class VfsProfileRepository
         TdkException(
           message:
               'Profile repository must be configured using a RepositoryConfiguration',
-          code: TdkExceptionType.profleNotConfigured.code,
+          code: TdkExceptionType.profileNotConfigured.code,
         ),
         StackTrace.current,
       );
@@ -362,7 +362,7 @@ class VfsProfileRepository
         TdkException(
           message:
               'Profile repository must be configured using a RepositoryConfiguration',
-          code: TdkExceptionType.profleNotConfigured.code,
+          code: TdkExceptionType.profileNotConfigured.code,
         ),
         StackTrace.current,
       );
@@ -408,7 +408,7 @@ class VfsProfileRepository
         TdkException(
           message:
               'Profile repository must be configured using a RepositoryConfiguration',
-          code: TdkExceptionType.profleNotConfigured.code,
+          code: TdkExceptionType.profileNotConfigured.code,
         ),
         StackTrace.current,
       );
@@ -604,7 +604,7 @@ class VfsProfileRepository
         TdkException(
           message:
               'Profile repository must be configured using a RepositoryConfiguration',
-          code: TdkExceptionType.profleNotConfigured.code,
+          code: TdkExceptionType.profileNotConfigured.code,
         ),
         StackTrace.current,
       );
@@ -692,7 +692,7 @@ class VfsProfileRepository
         TdkException(
           message:
               'Profile repository must be configured using a RepositoryConfiguration',
-          code: TdkExceptionType.profleNotConfigured.code,
+          code: TdkExceptionType.profileNotConfigured.code,
         ),
         StackTrace.current,
       );
