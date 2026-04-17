@@ -15,6 +15,7 @@ import 'profile.dart';
 import 'profile_repository_handle.dart';
 import 'storage_interfaces/profile_access_sharing.dart';
 import 'storage_interfaces/profile_repository.dart';
+import 'storage_interfaces/profile_storage_info.dart';
 import 'storage_interfaces/repository_configuration.dart';
 import 'storage_interfaces/shared_storage.dart';
 import 'storage_interfaces/vault_store.dart';
@@ -69,10 +70,9 @@ class Vault {
         .firstOrNull;
   }
 
-  ProfileAccessSharing _getProfileAccessSharingOrThrow(
-    String repositoryId, {
-    required String unsupportedMessage,
-  }) {
+  ProfileRepositoryHandle _getProfileRepositoryHandleOrThrow(
+    String repositoryId,
+  ) {
     final repositoryHandle = _profileRepositoryHandles[repositoryId];
     if (repositoryHandle == null) {
       Error.throwWithStackTrace(
@@ -83,6 +83,15 @@ class Vault {
         StackTrace.current,
       );
     }
+
+    return repositoryHandle;
+  }
+
+  ProfileAccessSharing _getProfileAccessSharingOrThrow(
+    String repositoryId, {
+    required String unsupportedMessage,
+  }) {
+    final repositoryHandle = _getProfileRepositoryHandleOrThrow(repositoryId);
 
     final accessSharing = repositoryHandle.accessSharing;
     if (accessSharing == null) {
@@ -96,6 +105,27 @@ class Vault {
     }
 
     return accessSharing;
+  }
+
+  ProfileStorageInfo _getProfileStorageInfoOrThrow(
+    String repositoryId, {
+    required String unsupportedMessage,
+    required TdkExceptionType unsupportedExceptionType,
+  }) {
+    final storageInfo = _getProfileRepositoryHandleOrThrow(
+      repositoryId,
+    ).storageInfo;
+    if (storageInfo == null) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: unsupportedMessage,
+          code: unsupportedExceptionType.code,
+        ),
+        StackTrace.current,
+      );
+    }
+
+    return storageInfo;
   }
 
   /// Retrieves the map of profile repositories.
@@ -336,20 +366,6 @@ class Vault {
       );
     }
 
-    final profileRepository =
-        _profileRepositories[profileInfo.profileRepositoryId];
-
-    if (profileRepository == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Can not find profile repository ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
     final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
       profileInfo.profileRepositoryId,
       unsupportedMessage:
@@ -399,20 +415,6 @@ class Vault {
       );
     }
 
-    final profileRepository =
-        _profileRepositories[profileInfo.profileRepositoryId];
-
-    if (profileRepository == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Can not find profile repository ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
     final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
       profileInfo.profileRepositoryId,
       unsupportedMessage:
@@ -448,20 +450,6 @@ class Vault {
         TdkException(
           message: 'Can not find profile $profileId',
           code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileRepository =
-        _profileRepositories[profileInfo.profileRepositoryId];
-
-    if (profileRepository == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Can not find profile repository ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
         ),
         StackTrace.current,
       );
@@ -511,20 +499,6 @@ class Vault {
       );
     }
 
-    final profileRepository =
-        _profileRepositories[profileInfo.profileRepositoryId];
-
-    if (profileRepository == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Can not find profile repository ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
     final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
       profileInfo.profileRepositoryId,
       unsupportedMessage:
@@ -565,20 +539,6 @@ class Vault {
         TdkException(
           message: 'Can not find profile with id $profileId',
           code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileRepository =
-        _profileRepositories[profileInfo.profileRepositoryId];
-
-    if (profileRepository == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Can not find profile repository ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
         ),
         StackTrace.current,
       );
@@ -687,20 +647,6 @@ class Vault {
       );
     }
 
-    final profileRepository =
-        _profileRepositories[profileInfo.profileRepositoryId];
-
-    if (profileRepository == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Can not find profile repository ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
     final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
       profileInfo.profileRepositoryId,
       unsupportedMessage:
@@ -749,20 +695,6 @@ class Vault {
       );
     }
 
-    final profileRepository =
-        _profileRepositories[profileInfo.profileRepositoryId];
-
-    if (profileRepository == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Can not find profile repository ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
     final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
       profileInfo.profileRepositoryId,
       unsupportedMessage:
@@ -790,6 +722,7 @@ class Vault {
   /// print('Used: ${usage.usedMB.toStringAsFixed(2)} MB');
   /// ```
   Future<VaultStorageUsage> getStorageUsage({
+    String? profileId,
     VaultCancelToken? cancelToken,
   }) async {
     if (!_initialized) {
@@ -802,25 +735,43 @@ class Vault {
       );
     }
 
-    final storageInfo =
-        (_defaultProfileRepositoryId != null
-                ? _profileRepositoryHandles[_defaultProfileRepositoryId!]
-                : null)
-            ?.storageInfo;
-    final defaultStorageInfo =
-        storageInfo ??
-        _profileRepositoryHandles.entries.first.value.storageInfo;
-
-    if (defaultStorageInfo == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'The default profile repository does not support storage usage reporting',
-          code: TdkExceptionType.unsupportedOperation.code,
-        ),
-        StackTrace.current,
+    if (profileId != null) {
+      final profileInfo = await _getProfileById(
+        profileId,
+        cancelToken: cancelToken,
       );
+
+      if (profileInfo == null) {
+        Error.throwWithStackTrace(
+          TdkException(
+            message: 'Can not find profile with id $profileId',
+            code: TdkExceptionType.invalidProfileIdentifier.code,
+          ),
+          StackTrace.current,
+        );
+      }
+
+      final storageInfo = _getProfileStorageInfoOrThrow(
+        profileInfo.profileRepositoryId,
+        unsupportedMessage:
+            'The profile repository for profile $profileId does not support storage usage reporting',
+        unsupportedExceptionType:
+            TdkExceptionType.unsupportedProfileStorageUsageReporting,
+      );
+
+      return storageInfo.getStorageUsage(cancelToken: cancelToken);
     }
+
+    final defaultProfileRepositoryId =
+        _defaultProfileRepositoryId ??
+        _profileRepositoryHandles.entries.first.key;
+    final defaultStorageInfo = _getProfileStorageInfoOrThrow(
+      defaultProfileRepositoryId,
+      unsupportedMessage:
+          'The default profile repository does not support storage usage reporting',
+      unsupportedExceptionType:
+          TdkExceptionType.unsupportedProfileStorageUsageReporting,
+    );
 
     return defaultStorageInfo.getStorageUsage(cancelToken: cancelToken);
   }
