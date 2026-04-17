@@ -13,6 +13,7 @@
 /// - [invalidConfiguration] - Indicates the provided configuration is invalid.
 /// - [invalidNodeType] - Indicates the node type is invalid.
 /// - [invalidRepositoryConfigurationType] - Indicates the repository configuration type is invalid.
+/// - [missingEncryptedDekek] - Indicates the encrypted data encryption key is missing.
 /// - [missingFileEdek] - Indicates the file info is not providing an edek
 /// - [missingPropertiesForFileUpload] - Indicates missing properties required for file upload.
 /// - [missingVaultStore] - Indicates the vault store is missing.
@@ -98,6 +99,9 @@ enum TdkExceptionType {
 
   /// Exception thrown when the file info is not providing an edek
   missingFileEdek(code: 'missing_file_edek'),
+
+  /// Exception thrown when the encrypted data encryption key is missing.
+  missingEncryptedDekek(code: 'missing_encrypted_dekek'),
 
   /// Indicates missing properties required for file upload.
   missingPropertiesForFileUpload(code: 'missing_properties_for_file_upload'),

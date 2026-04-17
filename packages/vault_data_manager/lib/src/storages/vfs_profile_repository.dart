@@ -75,6 +75,9 @@ class VfsProfileRepository
   final VaultDelegatedDataManagerServiceFactory
   _vaultDelegatedDataManagerServiceFactory;
 
+  /// Logger instance for error handling
+  final Logger _logger;
+
   /// Creates a new instance of [VfsProfileRepository].
   ///
   /// The [id] parameter is used to identify this repository instance.
@@ -120,6 +123,7 @@ class VfsProfileRepository
     VaultDataManagerServiceFactory? vaultDataManagerServiceFactory,
     VaultDelegatedDataManagerServiceFactory?
     vaultDelegatedDataManagerServiceFactory,
+    Logger? logger,
   }) : _cryptographyService = cryptographyService ?? CryptographyService(),
        _consumerAuthProviderFactory =
            consumerAuthProviderFactory ??
@@ -141,7 +145,8 @@ class VfsProfileRepository
            vaultDataManagerServiceFactory ?? VaultDataManagerService.create,
        _vaultDelegatedDataManagerServiceFactory =
            vaultDelegatedDataManagerServiceFactory ??
-           VaultDataManagerService.createDelegated;
+           VaultDataManagerService.createDelegated,
+       _logger = logger ?? Logger.instance;
 
   @override
   String get id => _id;
@@ -296,18 +301,37 @@ class VfsProfileRepository
       cancelToken: cancelToken,
     );
 
-    final profiles = await Future.wait(vfsProfiles.map(_makeProfile));
+    final profiles = await Future.wait<Profile?>(
+      vfsProfiles.map((profile) async {
+        try {
+          return await _makeProfile(profile);
+        } catch (e, stackTrace) {
+          _logger.log(
+            LogLevel.warning,
+            'Unable to reconstruct profile ${profile.id}: ${e.toString()}',
+            stackTrace: stackTrace,
+          );
 
-    return profiles;
+          return null;
+        }
+      }),
+    );
+
+    return profiles.nonNulls.toList();
   }
 
   Future<Profile> _makeProfile(VaultDataManagerProfile profile) async {
     final encryptedDekek = profile.accountMetadata?.dekekInfo.encryptedDekek;
+    if (encryptedDekek == null) {
+      throw TdkException(
+        message: 'Missing encrypted DEKEK for profile ${profile.id}',
+        code: TdkExceptionType.missingEncryptedDekek.code,
+      );
+    }
+
     final profileDataManager = await _memoizedDataManagerService(
       walletKeyId: profile.accountIndex.toString(),
-      encryptedDekek: encryptedDekek != null
-          ? base64.decode(encryptedDekek)
-          : null,
+      encryptedDekek: base64.decode(encryptedDekek),
     );
 
     final profileKeyPair = await _memoizedKeyPair(
