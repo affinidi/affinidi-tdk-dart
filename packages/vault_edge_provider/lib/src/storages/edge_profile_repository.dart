@@ -88,7 +88,7 @@ class EdgeProfileRepository implements ProfileRepository {
         TdkException(
           message: '''
 Profile repository must be configured using a RepositoryConfiguration''',
-          code: TdkExceptionType.profleNotConfigured.code,
+          code: TdkExceptionType.profileNotConfigured.code,
         ),
         StackTrace.current,
       );
@@ -153,7 +153,7 @@ Profile repository must be configured using a RepositoryConfiguration''',
         TdkException(
           message: '''
 Profile repository must be configured using a RepositoryConfiguration''',
-          code: TdkExceptionType.profleNotConfigured.code,
+          code: TdkExceptionType.profileNotConfigured.code,
         ),
         StackTrace.current,
       );
@@ -186,7 +186,7 @@ Profile repository must be configured using a RepositoryConfiguration''',
         TdkException(
           message: '''
 Profile repository must be configured using a RepositoryConfiguration''',
-          code: TdkExceptionType.profleNotConfigured.code,
+          code: TdkExceptionType.profileNotConfigured.code,
         ),
         StackTrace.current,
       );
@@ -251,7 +251,7 @@ Profile repository must be configured using a RepositoryConfiguration''',
         TdkException(
           message: '''
 Profile repository must be configured using a RepositoryConfiguration''',
-          code: TdkExceptionType.profleNotConfigured.code,
+          code: TdkExceptionType.profileNotConfigured.code,
         ),
         StackTrace.current,
       );
