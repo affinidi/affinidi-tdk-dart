@@ -206,11 +206,14 @@ Future<Profile> _createProfile(
       .where((profile) => profile.accountIndex == newAccountIndex)
       .firstOrNull;
 
+  Profile? profile;
   if (existingProfile == null) {
     print('[Demo] Creating profile for $name ...');
     try {
       final profileRepository = vault.defaultProfileRepository;
-      await profileRepository.createProfile(name: '$name $newAccountIndex');
+      profile = await profileRepository.createProfile(
+        name: '$name $newAccountIndex',
+      );
     } on TdkException catch (error) {
       print(
         [
@@ -225,10 +228,6 @@ Future<Profile> _createProfile(
 
   final profiles = await vault.listProfiles();
   _listProfileNames(profiles, label: name);
-
-  final profile = profiles
-      .where((p) => p.accountIndex == newAccountIndex)
-      .firstOrNull;
 
   if (profile == null) {
     throw UnsupportedError('Failed to create profile for $name');
