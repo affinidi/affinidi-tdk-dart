@@ -236,7 +236,80 @@ void main() {
             isA<TdkException>().having(
               (error) => error.code,
               'code',
-              'unsupported_operation',
+              'unsupported_profile_storage_usage_reporting',
+            ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'should return storage usage from the profile repository when profileId is provided',
+      () async {
+        final mockStorageInfoRepository =
+            MockProfileRepositoryWithStorageInfo();
+        const expectedUsage = VaultStorageUsage(usedBytes: 4096);
+        final profile = VaultFixtures.createTestProfile(
+          id: 'storage-profile',
+          profileRepositoryId: 'storage',
+        );
+
+        when(
+          () => mockProfileRepository.listProfiles(),
+        ).thenAnswer((_) async => []);
+        when(
+          mockStorageInfoRepository.isConfigured,
+        ).thenAnswer((_) async => false);
+        when(
+          () => mockStorageInfoRepository.configure(any()),
+        ).thenAnswer((_) async {});
+        when(
+          mockStorageInfoRepository.listProfiles,
+        ).thenAnswer((_) async => [profile]);
+        when(
+          mockStorageInfoRepository.getStorageUsage,
+        ).thenAnswer((_) async => expectedUsage);
+
+        final vaultWithStorageInfo = await createTestVault(
+          vaultStore: mockVaultStore,
+          profileRepositories: {
+            'default': mockProfileRepository,
+            'storage': mockStorageInfoRepository,
+          },
+          defaultProfileRepositoryId: 'default',
+        );
+
+        await vaultWithStorageInfo.ensureInitialized();
+
+        final usage = await vaultWithStorageInfo.getStorageUsage(
+          profileId: profile.id,
+        );
+
+        expect(usage.usedBytes, equals(expectedUsage.usedBytes));
+        verify(mockStorageInfoRepository.getStorageUsage).called(1);
+      },
+    );
+
+    test(
+      'should throw when profile repository does not support storage usage',
+      () async {
+        final profile = VaultFixtures.createTestProfile(
+          id: 'profile-no-storage',
+        );
+
+        when(
+          () => mockProfileRepository.listProfiles(),
+        ).thenAnswer((_) async => [profile]);
+
+        await vault.ensureInitialized();
+
+        expect(
+          () => vault.getStorageUsage(profileId: profile.id),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              'unsupported_profile_storage_usage_reporting',
             ),
           ),
         );
