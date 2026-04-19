@@ -18,6 +18,8 @@ import 'package:affinidi_tdk_vault_data_manager_client/src/model/account_dto.dar
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/consumer_metadata_dto.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/create_account_input.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/create_account_ok.dart';
+import 'package:affinidi_tdk_vault_data_manager_client/src/model/create_account_with_profile_input.dart';
+import 'package:affinidi_tdk_vault_data_manager_client/src/model/create_account_with_profile_ok.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/create_child_node_input.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/create_node_input.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/create_node_ok.dart';
@@ -62,6 +64,8 @@ part 'serializers.g.dart';
   ConsumerMetadataDto,
   CreateAccountInput,
   CreateAccountOK,
+  CreateAccountWithProfileInput,
+  CreateAccountWithProfileOK,
   CreateChildNodeInput,
   CreateNodeInput,
   CreateNodeOK,
