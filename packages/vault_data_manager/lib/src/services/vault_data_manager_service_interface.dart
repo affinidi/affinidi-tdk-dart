@@ -308,6 +308,21 @@ abstract interface class VaultDataManagerServiceInterface {
     VaultCancelToken? cancelToken,
   });
 
+  /// Patches an account for a given [accountIndex].
+  /// [accountIndex] - positive integer used to identify account.
+  /// [didProof] - JWT that proves ownership of profile DID.
+  /// [encryptedDekek] - A base64 encoded data encryption key.
+  /// [ownerProfileId] - Unique profile identifier.
+  /// [ownerProfileDid] - DID associated with the profile.
+  Future<void> patchAccount({
+    required int accountIndex,
+    required String didProof,
+    required String encryptedDekek,
+    required String ownerProfileId,
+    required String ownerProfileDid,
+    VaultCancelToken? cancelToken,
+  });
+
   /// Updates an account for a given [accountIndex].
   Future<void> updateAccount({
     required int accountIndex,
