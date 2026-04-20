@@ -10,6 +10,7 @@ All URIs are relative to *https://api.vault.affinidi.com/vfs*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**createAccount**](AccountsApi.md#createaccount) | **POST** /v1/accounts | 
+[**createAccountWithProfile**](AccountsApi.md#createaccountwithprofile) | **POST** /v1/accounts/profiles | 
 [**deleteAccount**](AccountsApi.md#deleteaccount) | **DELETE** /v1/accounts/{accountIndex} | 
 [**listAccounts**](AccountsApi.md#listaccounts) | **GET** /v1/accounts | 
 [**listProfiles**](AccountsApi.md#listprofiles) | **GET** /v1/accounts/profiles | 
@@ -51,6 +52,53 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**CreateAccountOK**](CreateAccountOK.md)
+
+### Authorization
+
+[ConsumerTokenAuth](../README.md#ConsumerTokenAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **createAccountWithProfile**
+> CreateAccountWithProfileOK createAccountWithProfile(createAccountWithProfileInput)
+
+
+
+creates account and corresponding profile at the same time
+
+### Example
+```dart
+import 'package:affinidi_tdk_vault_data_manager_client/api.dart';
+// TODO Configure API key authorization: ConsumerTokenAuth
+//defaultApiClient.getAuthentication<ApiKeyAuth>('ConsumerTokenAuth').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('ConsumerTokenAuth').apiKeyPrefix = 'Bearer';
+
+final api = AffinidiTdkVaultDataManagerClient().getAccountsApi();
+final CreateAccountWithProfileInput createAccountWithProfileInput = ; // CreateAccountWithProfileInput | CreateAccountWithProfile
+
+try {
+    final response = api.createAccountWithProfile(createAccountWithProfileInput);
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling AccountsApi->createAccountWithProfile: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **createAccountWithProfileInput** | [**CreateAccountWithProfileInput**](CreateAccountWithProfileInput.md)| CreateAccountWithProfile | 
+
+### Return type
+
+[**CreateAccountWithProfileOK**](CreateAccountWithProfileOK.md)
 
 ### Authorization
 

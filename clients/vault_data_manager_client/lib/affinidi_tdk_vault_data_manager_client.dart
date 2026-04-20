@@ -21,6 +21,8 @@ export 'package:affinidi_tdk_vault_data_manager_client/src/model/account_dto.dar
 export 'package:affinidi_tdk_vault_data_manager_client/src/model/consumer_metadata_dto.dart';
 export 'package:affinidi_tdk_vault_data_manager_client/src/model/create_account_input.dart';
 export 'package:affinidi_tdk_vault_data_manager_client/src/model/create_account_ok.dart';
+export 'package:affinidi_tdk_vault_data_manager_client/src/model/create_account_with_profile_input.dart';
+export 'package:affinidi_tdk_vault_data_manager_client/src/model/create_account_with_profile_ok.dart';
 export 'package:affinidi_tdk_vault_data_manager_client/src/model/create_child_node_input.dart';
 export 'package:affinidi_tdk_vault_data_manager_client/src/model/create_node_input.dart';
 export 'package:affinidi_tdk_vault_data_manager_client/src/model/create_node_ok.dart';
