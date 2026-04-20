@@ -46,6 +46,7 @@
 /// - [unableToUpdateProfileData] - Indicates a failure in updating profile data.
 /// - [storageLimitExceeded] - Indicates that the vault storage limit has been exceeded.
 /// - [unableToUploadFile] - Indicates a failure in uploading a file.
+/// - [unableToPatchAccount] - Indicates a failure in patching an account.
 /// - [unableToUpdateAccount] - Indicates a failure in updating an account.
 enum TdkExceptionType {
   ///Indicates that an account already exists.
@@ -199,6 +200,9 @@ enum TdkExceptionType {
 
   /// Indicates a failure in updating an account.
   unableToUpdateAccount(code: 'unable_to_update_account'),
+
+  /// Indicates a failure in patching an account.
+  unableToPatchAccount(code: 'unable_to_patch_account'),
 
   /// Exception thrown when access cannot be granted.
   unableToGrantAccess(code: 'unable_to_grant_access'),

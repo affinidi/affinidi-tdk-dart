@@ -637,65 +637,20 @@ class VfsProfileRepository
     final profileKeyPair = await _memoizedKeyPair(
       accountIndex: '$accountIndex',
     );
-    final sharedStorageData = SharedStorageData(
-      encryptedDekek: base64.encode(await profileKeyPair.encrypt(kek)),
-      nodePath: ownerProfileId,
-      profileDid: ownerProfileDid,
-    );
 
     final accountVaultDataManagerService = await _memoizedDataManagerService(
       walletKeyId: _rootAccountKeyId,
-    );
-    final accountsResponse = await accountVaultDataManagerService.getAccounts();
-    final previousAccountData = accountsResponse
-        .where((account) => account.accountIndex == accountIndex)
-        .firstOrNull;
-
-    if (previousAccountData == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Account with index $accountIndex does not exist',
-          code: TdkExceptionType.invalidAccountIndex.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final existingSharedStorageData =
-        previousAccountData.accountMetadata?.sharedStorageData ?? [];
-
-    final existingIndex = existingSharedStorageData.indexWhere(
-      (data) =>
-          data.nodePath == ownerProfileId && data.profileDid == ownerProfileDid,
-    );
-
-    final updatedSharedStorageData = List<SharedStorageData>.from(
-      existingSharedStorageData,
-    );
-    if (existingIndex >= 0) {
-      final existingEncryptedKek =
-          existingSharedStorageData[existingIndex].encryptedDekek;
-      final newEncryptedKek = sharedStorageData.encryptedDekek;
-      if (existingEncryptedKek != newEncryptedKek) {
-        updatedSharedStorageData[existingIndex] = sharedStorageData;
-      }
-    } else {
-      updatedSharedStorageData.add(sharedStorageData);
-    }
-
-    final updatedMetadata = AccountMetadata(
-      sharedStorageData: updatedSharedStorageData,
-      dekekInfo: previousAccountData.accountMetadata!.dekekInfo,
     );
 
     final profileDidSigner = await _memoizedDidSigner(accountIndex.toString());
     final profileDidProof = await _getDidProof(didSigner: profileDidSigner);
 
-    await accountVaultDataManagerService.updateAccount(
+    await accountVaultDataManagerService.patchAccount(
       accountIndex: accountIndex,
-      accountDid: profileDidSigner.did,
       didProof: profileDidProof,
-      metadata: updatedMetadata,
+      encryptedDekek: base64.encode(await profileKeyPair.encrypt(kek)),
+      ownerProfileId: ownerProfileId,
+      ownerProfileDid: ownerProfileDid,
       cancelToken: cancelToken,
     );
   }

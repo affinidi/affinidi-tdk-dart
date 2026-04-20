@@ -233,6 +233,22 @@ abstract interface class VaultDataManagerApiServiceInterface {
     VaultProgressCallback? onReceiveProgress,
   });
 
+  /// Patches an account for a given [accountIndex].
+  /// [accountIndex] - positive integer used to identify account.
+  /// [didProof] - JWT that proves ownership of profile DID.
+  /// [encryptedDekek] - A base64 encoded data encryption key.
+  /// [ownerProfileId] - Unique profile identifier.
+  /// [ownerProfileDid] - DID associated with the profile.
+  /// [cancelToken] - A [CancelToken] that can be used to cancel the operation.
+  Future<Response<UpdateAccountDto>> patchAccount({
+    required int accountIndex,
+    required String didProof,
+    required String encryptedDekek,
+    required String ownerProfileId,
+    required String ownerProfileDid,
+    CancelToken? cancelToken,
+  });
+
   /// Updates an account for a given [accountIndex].
   /// [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// [headers] - Can be used to add additional headers to the request
