@@ -14,7 +14,7 @@ Affinidi TDK dart client for Affinidi VAULT DATA MANAGER
 To use the package from [pub.dev](https://pub.dev), please include the following in pubspec.yaml
 ```yaml
 dependencies:
-  affinidi_tdk_vault_data_manager_client: ^2.0.0
+  affinidi_tdk_vault_data_manager_client: ^2.1.0
 ```
 
 ### Github
@@ -69,6 +69,7 @@ All URIs are relative to *https://api.vault.affinidi.com/vfs*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 [*AccountsApi*](doc/AccountsApi.md) | [**createAccount**](doc/AccountsApi.md#createaccount) | **POST** /v1/accounts | 
+[*AccountsApi*](doc/AccountsApi.md) | [**createAccountWithProfile**](doc/AccountsApi.md#createaccountwithprofile) | **POST** /v1/accounts/profiles | 
 [*AccountsApi*](doc/AccountsApi.md) | [**deleteAccount**](doc/AccountsApi.md#deleteaccount) | **DELETE** /v1/accounts/{accountIndex} | 
 [*AccountsApi*](doc/AccountsApi.md) | [**listAccounts**](doc/AccountsApi.md#listaccounts) | **GET** /v1/accounts | 
 [*AccountsApi*](doc/AccountsApi.md) | [**listProfiles**](doc/AccountsApi.md#listprofiles) | **GET** /v1/accounts/profiles | 
@@ -99,6 +100,8 @@ Class | Method | HTTP request | Description
  - [ConsumerMetadataDto](doc/ConsumerMetadataDto.md)
  - [CreateAccountInput](doc/CreateAccountInput.md)
  - [CreateAccountOK](doc/CreateAccountOK.md)
+ - [CreateAccountWithProfileInput](doc/CreateAccountWithProfileInput.md)
+ - [CreateAccountWithProfileOK](doc/CreateAccountWithProfileOK.md)
  - [CreateChildNodeInput](doc/CreateChildNodeInput.md)
  - [CreateNodeInput](doc/CreateNodeInput.md)
  - [CreateNodeOK](doc/CreateNodeOK.md)

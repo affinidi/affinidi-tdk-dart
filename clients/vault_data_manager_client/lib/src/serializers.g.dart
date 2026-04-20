@@ -13,6 +13,8 @@ Serializers _$serializers =
           ..add(ConsumerMetadataDto.serializer)
           ..add(CreateAccountInput.serializer)
           ..add(CreateAccountOK.serializer)
+          ..add(CreateAccountWithProfileInput.serializer)
+          ..add(CreateAccountWithProfileOK.serializer)
           ..add(CreateChildNodeInput.serializer)
           ..add(CreateNodeInput.serializer)
           ..add(CreateNodeOK.serializer)
