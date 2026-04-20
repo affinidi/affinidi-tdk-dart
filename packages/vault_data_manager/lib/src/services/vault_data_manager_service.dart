@@ -1013,6 +1013,27 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
           : null,
     );
   }
+
+  @override
+  Future<void> patchAccount({
+    required int accountIndex,
+    required String didProof,
+    required String encryptedDekek,
+    required String ownerProfileId,
+    required String ownerProfileDid,
+    VaultCancelToken? cancelToken,
+  }) async {
+    await _vaultDataManagerApiService.patchAccount(
+      accountIndex: accountIndex,
+      didProof: didProof,
+      encryptedDekek: encryptedDekek,
+      ownerProfileId: ownerProfileId,
+      ownerProfileDid: ownerProfileDid,
+      cancelToken: cancelToken != null
+          ? DioCancelTokenAdapter.from(cancelToken)
+          : null,
+    );
+  }
 }
 
 /// Extension methods for helping generating a DidSigner from a KeyPair.

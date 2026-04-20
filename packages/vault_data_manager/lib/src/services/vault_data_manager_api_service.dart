@@ -889,4 +889,38 @@ class VaultDataManagerApiService
       );
     }
   }
+
+  @override
+  Future<Response<UpdateAccountDto>> patchAccount({
+    required int accountIndex,
+    required String didProof,
+    required String encryptedDekek,
+    required String ownerProfileId,
+    required String ownerProfileDid,
+    CancelToken? cancelToken,
+  }) async {
+    try {
+      final patchAccountInput = PatchAccountInputBuilder()
+        ..didProof = didProof
+        ..encryptedDekek = encryptedDekek
+        ..ownerProfileId = ownerProfileId
+        ..ownerProfileDid = ownerProfileDid;
+
+      final response = await _accountsApi.patchAccount(
+        accountIndex: accountIndex,
+        patchAccountInput: patchAccountInput.build(),
+        cancelToken: cancelToken,
+      );
+
+      return response;
+    } catch (e, stackTrace) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Unable to patch account.',
+          code: TdkExceptionType.unableToPatchAccount.code,
+        ),
+        stackTrace,
+      );
+    }
+  }
 }
