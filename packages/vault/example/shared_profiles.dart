@@ -178,13 +178,11 @@ void main() async {
 
   // Bob to accept shared profile
   print('[Demo] Bob is accepting a shared profile ...');
-  await vaultBob.addSharedProfile(
+  bobProfile = await vaultBob.addSharedProfile(
     profileId: bobProfile.id,
     sharedProfile: sharedProfile,
   );
 
-  // Refresh bobProfile to ensure shared storage is attached after accept.
-  bobProfile = await _refreshProfile(vaultBob, bobProfile);
   final bobSharedStorages = bobProfile.sharedStorages;
 
   print(
@@ -261,18 +259,6 @@ void main() async {
   print(
     '[Demo] Final profile count - Alice: ${profilesAlice.length}, Bob: ${profilesBob.length}',
   );
-}
-
-Future<Profile> _refreshProfile(Vault vault, Profile profile) async {
-  final profiles = await vault.listProfiles();
-  final refreshedProfile = profiles
-      .where((p) => p.accountIndex == profile.accountIndex)
-      .firstOrNull;
-
-  if (refreshedProfile == null) {
-    throw Exception('Failed to refresh profile ${profile.name}');
-  }
-  return refreshedProfile;
 }
 
 Future<void> _deleteProfile(Vault vault, Profile profile) async {

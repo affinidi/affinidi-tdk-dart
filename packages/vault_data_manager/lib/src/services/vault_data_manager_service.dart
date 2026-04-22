@@ -985,9 +985,11 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
           (record) => Account(
             accountIndex: record.accountIndex,
             accountDid: record.accountDid,
-            accountMetadata: AccountMetadata.fromJson(
-              record.metadata!.asMap as Map<String, dynamic>,
-            ),
+            accountMetadata: record.metadata != null
+                ? AccountMetadata.fromJson(
+                    record.metadata!.asMap as Map<String, dynamic>,
+                  )
+                : null,
           ),
         )
         .toList();
@@ -1015,7 +1017,7 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   }
 
   @override
-  Future<void> patchAccount({
+  Future<Account> patchAccount({
     required int accountIndex,
     required String didProof,
     required String encryptedDekek,
@@ -1023,7 +1025,7 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     required String ownerProfileDid,
     VaultCancelToken? cancelToken,
   }) async {
-    await _vaultDataManagerApiService.patchAccount(
+    final response = await _vaultDataManagerApiService.patchAccount(
       accountIndex: accountIndex,
       didProof: didProof,
       encryptedDekek: encryptedDekek,
@@ -1031,6 +1033,27 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
       ownerProfileDid: ownerProfileDid,
       cancelToken: cancelToken != null
           ? DioCancelTokenAdapter.from(cancelToken)
+          : null,
+    );
+
+    final updatedAccount = response.data;
+    if (updatedAccount == null) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Unable to patch account.',
+          code: TdkExceptionType.unableToPatchAccount.code,
+        ),
+        StackTrace.current,
+      );
+    }
+
+    return Account(
+      accountIndex: updatedAccount.accountIndex,
+      accountDid: updatedAccount.accountDid,
+      accountMetadata: updatedAccount.metadata != null
+          ? AccountMetadata.fromJson(
+              updatedAccount.metadata!.asMap as Map<String, dynamic>,
+            )
           : null,
     );
   }
