@@ -12,7 +12,9 @@ class ProfilesResponseFixtures {
         'accountIndex': 1,
         'profileMetadata': jsonEncode({'pictureURI': ''}),
         'accountMetadata': jsonEncode({
-          'dekekInfo': {'encryptedDekek': 'dGVzdF9rZXk='},
+          'dekekInfo': {
+            'encryptedDekek': base64.encode([1, 2, 3]),
+          },
           'sharedStorageData': <Object?>[],
         }),
       },

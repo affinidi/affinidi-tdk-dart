@@ -14,6 +14,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:ssi/ssi.dart';
 import 'package:test/test.dart';
 
+import 'fixtures/dekek_info_fixtures.dart';
 import 'fixtures/key_fixtures.dart';
 import 'fixtures/profile_fixtures.dart';
 import 'mocks/mock_iam_api_service.dart';
@@ -51,7 +52,7 @@ void main() {
     registerFallbackValue(Uint8List.fromList([1, 2, 3]));
     registerFallbackValue(
       AccountMetadata(
-        dekekInfo: DekekInfo(encryptedDekek: 'dGVzdF9rZXk='),
+        dekekInfo: DeekekInfoFixtures.general,
         sharedStorageData: [],
       ),
     );
@@ -260,7 +261,7 @@ void main() {
                 pictureURI: '',
                 accountMetadata: hasEncryptedDekek
                     ? AccountMetadata(
-                        dekekInfo: DekekInfo(encryptedDekek: 'dGVzdF9rZXk='),
+                        dekekInfo: DeekekInfoFixtures.general,
                         sharedStorageData: [],
                       )
                     : null,
@@ -449,7 +450,7 @@ void main() {
               accountIndex: 0,
               accountDid: ProfileFixtures.testDid,
               accountMetadata: AccountMetadata(
-                dekekInfo: DekekInfo(encryptedDekek: 'dGVzdF9rZXk='),
+                dekekInfo: DeekekInfoFixtures.general,
                 sharedStorageData: [],
               ),
             ),
