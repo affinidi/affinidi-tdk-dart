@@ -314,7 +314,7 @@ abstract interface class VaultDataManagerServiceInterface {
   /// [encryptedDekek] - A base64 encoded data encryption key.
   /// [ownerProfileId] - Unique profile identifier.
   /// [ownerProfileDid] - DID associated with the profile.
-  Future<void> patchAccount({
+  Future<Account> patchAccount({
     required int accountIndex,
     required String didProof,
     required String encryptedDekek,

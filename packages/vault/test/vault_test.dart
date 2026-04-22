@@ -964,21 +964,23 @@ void main() {
         ).thenAnswer((_) async => [testProfile]);
         when(
           () => mockProfileRepository.receiveItemAccess(
-            accountIndex: 0,
+            profile: testProfile,
             ownerProfileId: 'owner-profile-id',
             kek: Uint8List.fromList([1, 2, 3, 4]),
             ownerProfileDid: 'did:key:owner-did',
           ),
-        ).thenAnswer((_) async {});
+        ).thenAnswer((_) async => testProfile);
 
-        await vault.acceptSharedItems(
+        final updatedProfile = await vault.acceptSharedItems(
           profileId: 'test-id',
           sharedItems: sharedItem,
         );
 
+        expect(updatedProfile, same(testProfile));
+
         verify(
           () => mockProfileRepository.receiveItemAccess(
-            accountIndex: 0,
+            profile: testProfile,
             ownerProfileId: 'owner-profile-id',
             kek: Uint8List.fromList([1, 2, 3, 4]),
             ownerProfileDid: 'did:key:owner-did',
@@ -1018,12 +1020,12 @@ void main() {
           ).thenAnswer((_) async => expectedContent);
           when(
             () => mockProfileRepository.receiveItemAccess(
-              accountIndex: 0,
+              profile: cachedProfile,
               ownerProfileId: 'owner-profile-id',
               kek: Uint8List.fromList([1, 2, 3, 4]),
               ownerProfileDid: 'did:key:owner-did',
             ),
-          ).thenAnswer((_) async {});
+          ).thenAnswer((_) async => refreshedProfile);
 
           var listProfilesCount = 0;
           when(() => mockProfileRepository.listProfiles()).thenAnswer((
@@ -1051,7 +1053,7 @@ void main() {
           expect(content, equals(expectedContent));
           verify(
             () => mockProfileRepository.receiveItemAccess(
-              accountIndex: 0,
+              profile: cachedProfile,
               ownerProfileId: 'owner-profile-id',
               kek: Uint8List.fromList([1, 2, 3, 4]),
               ownerProfileDid: 'did:key:owner-did',

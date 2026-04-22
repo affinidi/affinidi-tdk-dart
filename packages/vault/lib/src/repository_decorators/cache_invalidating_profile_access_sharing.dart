@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import '../helpers/vault_cancel_token.dart';
 import '../permissions.dart';
+import '../profile.dart';
 import '../storage_interfaces/profile_access_sharing.dart';
 import '../storage_interfaces/profile_repository.dart';
 
@@ -64,20 +65,21 @@ class CacheInvalidatingProfileAccessSharing implements ProfileAccessSharing {
   }
 
   @override
-  Future<void> receiveItemAccess({
-    required int accountIndex,
+  Future<Profile> receiveItemAccess({
+    required Profile profile,
     required String ownerProfileId,
     required Uint8List kek,
     required String ownerProfileDid,
     VaultCancelToken? cancelToken,
   }) async {
-    await _accessSharing.receiveItemAccess(
-      accountIndex: accountIndex,
+    final updatedProfile = await _accessSharing.receiveItemAccess(
+      profile: profile,
       ownerProfileId: ownerProfileId,
       kek: kek,
       ownerProfileDid: ownerProfileDid,
       cancelToken: cancelToken,
     );
     _onProfilesMutated();
+    return updatedProfile;
   }
 }
