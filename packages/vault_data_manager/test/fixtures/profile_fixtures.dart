@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
@@ -5,6 +6,8 @@ import 'package:affinidi_tdk_vault_data_manager/src/model/account.dart';
 import 'package:affinidi_tdk_vault_data_manager/src/model/vault_data_manager_profile.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:ssi/ssi.dart';
+
+import 'dekek_info_fixtures.dart';
 
 class ProfileFixtures {
   static const String repositoryId = 'test_repository';
@@ -46,7 +49,7 @@ class ProfileFixtures {
     accountIndex: testAccountIndex,
     accountDid: testDid,
     accountMetadata: AccountMetadata(
-      dekekInfo: DekekInfo(encryptedDekek: 'dGVzdF9rZXk='),
+      dekekInfo: DeekekInfoFixtures.general,
       sharedStorageData: [],
     ),
   );
@@ -59,7 +62,7 @@ class ProfileFixtures {
         description: testProfileDescription,
         pictureURI: '',
         accountMetadata: AccountMetadata(
-          dekekInfo: DekekInfo(encryptedDekek: 'dGVzdF9rZXk='),
+          dekekInfo: DeekekInfoFixtures.general,
           sharedStorageData: [],
         ),
       );
