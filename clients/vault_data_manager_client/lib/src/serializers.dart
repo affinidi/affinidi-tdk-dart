@@ -18,6 +18,8 @@ import 'package:affinidi_tdk_vault_data_manager_client/src/model/account_dto.dar
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/consumer_metadata_dto.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/create_account_input.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/create_account_ok.dart';
+import 'package:affinidi_tdk_vault_data_manager_client/src/model/create_account_with_profile_input.dart';
+import 'package:affinidi_tdk_vault_data_manager_client/src/model/create_account_with_profile_ok.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/create_child_node_input.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/create_node_input.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/create_node_ok.dart';
@@ -44,6 +46,7 @@ import 'package:affinidi_tdk_vault_data_manager_client/src/model/node_dto.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/node_status.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/node_type.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/partial_profile_node_dto.dart';
+import 'package:affinidi_tdk_vault_data_manager_client/src/model/patch_account_input.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/query_profile_data_ok.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/restore_node_from_trashbin.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/src/model/start_file_scan_input.dart';
@@ -62,6 +65,8 @@ part 'serializers.g.dart';
   ConsumerMetadataDto,
   CreateAccountInput,
   CreateAccountOK,
+  CreateAccountWithProfileInput,
+  CreateAccountWithProfileOK,
   CreateChildNodeInput,
   CreateNodeInput,
   CreateNodeOK,
@@ -89,6 +94,7 @@ part 'serializers.g.dart';
   NodeStatus,
   NodeType,
   PartialProfileNodeDto,
+  PatchAccountInput,
   QueryProfileDataOK,
   RestoreNodeFromTrashbin,
   StartFileScanInput,
