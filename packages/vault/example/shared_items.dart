@@ -127,12 +127,10 @@ void main() async {
   }
 
   print('[Demo] Bob is accepting the shared items ...');
-  await vaultBob.acceptSharedItems(
+  bobProfile = await vaultBob.acceptSharedItems(
     profileId: bobProfile.id,
     sharedItems: sharedItems1,
   );
-  // Refresh Bob's profile to ensure shared storage is attached after accept.
-  bobProfile = await _refreshProfile(vaultBob, bobProfile);
 
   print('[Demo] Bob is reading shared file1 metadata ...');
   await _printMetadataFromSharedStorage(
@@ -204,12 +202,10 @@ void main() async {
   }
 
   print('[Demo] Bob is accepting the shared items (file1 and file2) ...');
-  await vaultBob.acceptSharedItems(
+  bobProfile = await vaultBob.acceptSharedItems(
     profileId: bobProfile.id,
     sharedItems: sharedItems2,
   );
-  // Refresh Bob's profile again to pick up any new shared storage state.
-  bobProfile = await _refreshProfile(vaultBob, bobProfile);
 
   print('[Demo] Bob is reading shared file2 metadata ...');
   await _printMetadataFromSharedStorage(
@@ -401,18 +397,6 @@ void main() async {
   print(
     '[Demo] Final profile count; Alice: ${profilesAlice.length}, Bob: ${profilesBob.length}',
   );
-}
-
-Future<Profile> _refreshProfile(Vault vault, Profile profile) async {
-  final profiles = await vault.listProfiles();
-  final refreshedProfile = profiles
-      .where((p) => p.accountIndex == profile.accountIndex)
-      .firstOrNull;
-
-  if (refreshedProfile == null) {
-    throw Exception('Failed to refresh profile ${profile.name}');
-  }
-  return refreshedProfile;
 }
 
 Future<void> _deleteProfile(Vault vault, Profile profile) async {

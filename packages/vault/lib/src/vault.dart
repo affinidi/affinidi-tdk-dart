@@ -395,7 +395,7 @@ class Vault {
   /// [profileId] - Identifier of the profile to which add a shared storage
   /// [sharedProfile] - Shared profile info including kek and id
   /// [cancelToken] - Optional cancel token for the operation.
-  Future<void> addSharedProfile({
+  Future<Profile> addSharedProfile({
     required String profileId,
     required SharedProfileDto sharedProfile,
     VaultCancelToken? cancelToken,
@@ -422,8 +422,8 @@ class Vault {
     );
 
     // Use item-level access method since profile is a node
-    await profileSharedAccessRepository.receiveItemAccess(
-      accountIndex: profileInfo.accountIndex,
+    return await profileSharedAccessRepository.receiveItemAccess(
+      profile: profileInfo,
       ownerProfileId: sharedProfile.profileId,
       kek: sharedProfile.kek,
       ownerProfileDid: sharedProfile.profileDID,
@@ -435,7 +435,7 @@ class Vault {
   /// [profileId] - Identifier of the profile to which add the shared item
   /// [sharedItems] - Shared item info including KEK, owner profile id, and item ids.
   /// [cancelToken] - Optional cancel token for the operation.
-  Future<void> acceptSharedItems({
+  Future<Profile> acceptSharedItems({
     required String profileId,
     required SharedItemsDto sharedItems,
     VaultCancelToken? cancelToken,
@@ -461,8 +461,8 @@ class Vault {
           'Sharing nodes is not supported on ${profileInfo.profileRepositoryId}',
     );
 
-    await profileSharedAccessRepository.receiveItemAccess(
-      accountIndex: profileInfo.accountIndex,
+    return await profileSharedAccessRepository.receiveItemAccess(
+      profile: profileInfo,
       ownerProfileId: sharedItems.ownerProfileId,
       kek: sharedItems.kek,
       ownerProfileDid: sharedItems.ownerProfileDID,
