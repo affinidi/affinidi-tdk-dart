@@ -339,26 +339,16 @@ class VfsProfileRepository
     );
 
     final did = DidKey.getDid(profileKeyPair.publicKey);
+    final sharedStorages = await _makeSharedStorages(
+      profileKeyPair: profileKeyPair,
+      accountMetadata: profile.accountMetadata,
+    );
 
-    var sharedStorages = <String, SharedStorage>{};
-
-    final sharedStorageData = profile.accountMetadata?.sharedStorageData ?? [];
-    if (sharedStorageData.isNotEmpty) {
-      for (final sharedStorage in sharedStorageData) {
-        sharedStorages[sharedStorage.nodePath] = VfsSharedStorage(
-          id: sharedStorage.nodePath,
-          sharedProfileId: sharedStorage.nodePath,
-          dataManagerService: await _vaultDelegatedDataManagerServiceFactory(
-            profileDid: sharedStorage.profileDid,
-            keyPair: profileKeyPair,
-            encryptedDekek: base64.decode(sharedStorage.encryptedDekek),
-          ),
-        );
-      }
-    }
     return Profile(
       id: profile.id,
       name: profile.name,
+      description: profile.description,
+      profilePictureURI: profile.pictureURI,
       did: did,
       accountIndex: profile.accountIndex,
       profileRepositoryId: id,
@@ -374,6 +364,28 @@ class VfsProfileRepository
       },
       sharedStorages: sharedStorages,
     );
+  }
+
+  Future<Map<String, SharedStorage>> _makeSharedStorages({
+    required KeyPair profileKeyPair,
+    AccountMetadata? accountMetadata,
+  }) async {
+    final sharedStorages = <String, SharedStorage>{};
+    final sharedStorageData = accountMetadata?.sharedStorageData ?? [];
+
+    for (final sharedStorage in sharedStorageData) {
+      sharedStorages[sharedStorage.nodePath] = VfsSharedStorage(
+        id: sharedStorage.nodePath,
+        sharedProfileId: sharedStorage.nodePath,
+        dataManagerService: await _vaultDelegatedDataManagerServiceFactory(
+          profileDid: sharedStorage.profileDid,
+          keyPair: profileKeyPair,
+          encryptedDekek: base64.decode(sharedStorage.encryptedDekek),
+        ),
+      );
+    }
+
+    return sharedStorages;
   }
 
   @override
@@ -616,43 +628,43 @@ class VfsProfileRepository
   }
 
   @override
-  Future<void> receiveItemAccess({
-    required int accountIndex,
+  Future<Profile> receiveItemAccess({
+    required Profile profile,
     required String ownerProfileId,
     required Uint8List kek,
     required String ownerProfileDid,
     VaultCancelToken? cancelToken,
   }) async {
-    if (!_configured) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Profile repository must be configured using a RepositoryConfiguration',
-          code: TdkExceptionType.profileNotConfigured.code,
-        ),
-        StackTrace.current,
-      );
-    }
+    _ensureConfigured();
 
     final profileKeyPair = await _memoizedKeyPair(
-      accountIndex: '$accountIndex',
+      accountIndex: '${profile.accountIndex}',
     );
 
     final accountVaultDataManagerService = await _memoizedDataManagerService(
       walletKeyId: _rootAccountKeyId,
     );
 
-    final profileDidSigner = await _memoizedDidSigner(accountIndex.toString());
+    final profileDidSigner = await _memoizedDidSigner(
+      profile.accountIndex.toString(),
+    );
     final profileDidProof = await _getDidProof(didSigner: profileDidSigner);
 
-    await accountVaultDataManagerService.patchAccount(
-      accountIndex: accountIndex,
+    final updatedAccount = await accountVaultDataManagerService.patchAccount(
+      accountIndex: profile.accountIndex,
       didProof: profileDidProof,
       encryptedDekek: base64.encode(await profileKeyPair.encrypt(kek)),
       ownerProfileId: ownerProfileId,
       ownerProfileDid: ownerProfileDid,
       cancelToken: cancelToken,
     );
+
+    final sharedStorages = await _makeSharedStorages(
+      profileKeyPair: profileKeyPair,
+      accountMetadata: updatedAccount.accountMetadata,
+    );
+
+    return profile.copyWithSharedStorages(sharedStorages);
   }
 
   Future<KeyPair> _getProfileKeyPair({required String accountIndex}) async {
@@ -699,6 +711,23 @@ class VfsProfileRepository
         .getVaultDataFileConsumption(cancelToken: cancelToken);
     return VaultStorageUsage.fromBytes(
       (consumption.sizeInMB * 1024 * 1024).round(),
+    );
+  }
+}
+
+extension _ProfileSharedStorages on Profile {
+  Profile copyWithSharedStorages(Map<String, SharedStorage> sharedStorages) {
+    return Profile(
+      id: id,
+      accountIndex: accountIndex,
+      name: name,
+      did: did,
+      description: description,
+      profilePictureURI: profilePictureURI,
+      profileRepositoryId: profileRepositoryId,
+      fileStorages: fileStorages,
+      credentialStorages: credentialStorages,
+      sharedStorages: sharedStorages,
     );
   }
 }
