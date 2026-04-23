@@ -44,7 +44,7 @@ class Vault {
     return profiles.where((p) => p.id == profileId).firstOrNull;
   }
 
-  Future<Profile?> _getProfileById(
+  Future<Profile> _getProfileByIdOrThrow(
     String profileId, {
     VaultCancelToken? cancelToken,
   }) async {
@@ -57,7 +57,16 @@ class Vault {
     }
 
     final refreshedProfiles = await listProfiles(cancelToken: cancelToken);
-    return _findProfileById(refreshedProfiles, profileId);
+    final profileInfo = _findProfileById(refreshedProfiles, profileId);
+
+    if (profileInfo == null) {
+      throw TdkException(
+        message: 'Cannot find profile with id: $profileId',
+        code: TdkExceptionType.invalidProfileIdentifier.code,
+      );
+    }
+
+    return profileInfo;
   }
 
   SharedStorage? _findSharedStorage(
@@ -75,12 +84,9 @@ class Vault {
   ) {
     final repositoryHandle = _profileRepositoryHandles[repositoryId];
     if (repositoryHandle == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Can not find profile repository $repositoryId',
-          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-        ),
-        StackTrace.current,
+      throw TdkException(
+        message: 'Cannot find the profile repository with id: $repositoryId',
+        code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
       );
     }
 
@@ -351,20 +357,10 @@ class Vault {
     DateTime? expiresAt,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileById(
+    final profileInfo = await _getProfileByIdOrThrow(
       profileId,
       cancelToken: cancelToken,
     );
-
-    if (profileInfo == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Can not find profile with id $profileId',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
 
     final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
       profileInfo.profileRepositoryId,
@@ -400,20 +396,10 @@ class Vault {
     required SharedProfileDto sharedProfile,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileById(
+    final profileInfo = await _getProfileByIdOrThrow(
       profileId,
       cancelToken: cancelToken,
     );
-
-    if (profileInfo == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Can not find profile $profileId',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
 
     final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
       profileInfo.profileRepositoryId,
@@ -440,20 +426,10 @@ class Vault {
     required SharedItemsDto sharedItems,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileById(
+    final profileInfo = await _getProfileByIdOrThrow(
       profileId,
       cancelToken: cancelToken,
     );
-
-    if (profileInfo == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Can not find profile $profileId',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
 
     final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
       profileInfo.profileRepositoryId,
@@ -484,20 +460,10 @@ class Vault {
     required String granteeDid,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileById(
+    final profileInfo = await _getProfileByIdOrThrow(
       profileId,
       cancelToken: cancelToken,
     );
-
-    if (profileInfo == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Can not find profile $profileId',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
 
     final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
       profileInfo.profileRepositoryId,
@@ -529,20 +495,10 @@ class Vault {
     required String granteeDid,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileById(
+    final profileInfo = await _getProfileByIdOrThrow(
       profileId,
       cancelToken: cancelToken,
     );
-
-    if (profileInfo == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Can not find profile with id $profileId',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
 
     final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
       profileInfo.profileRepositoryId,
@@ -632,20 +588,10 @@ class Vault {
     required String granteeDid,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileById(
+    final profileInfo = await _getProfileByIdOrThrow(
       profileId,
       cancelToken: cancelToken,
     );
-
-    if (profileInfo == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Can not find profile with id $profileId',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
 
     final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
       profileInfo.profileRepositoryId,
@@ -680,20 +626,10 @@ class Vault {
     required ItemPermissionsPolicy policy,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileById(
+    final profileInfo = await _getProfileByIdOrThrow(
       profileId,
       cancelToken: cancelToken,
     );
-
-    if (profileInfo == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Can not find profile with id $profileId',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
 
     final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
       profileInfo.profileRepositoryId,
@@ -736,20 +672,10 @@ class Vault {
     }
 
     if (profileId != null) {
-      final profileInfo = await _getProfileById(
+      final profileInfo = await _getProfileByIdOrThrow(
         profileId,
         cancelToken: cancelToken,
       );
-
-      if (profileInfo == null) {
-        Error.throwWithStackTrace(
-          TdkException(
-            message: 'Can not find profile with id $profileId',
-            code: TdkExceptionType.invalidProfileIdentifier.code,
-          ),
-          StackTrace.current,
-        );
-      }
 
       final storageInfo = _getProfileStorageInfoOrThrow(
         profileInfo.profileRepositoryId,
