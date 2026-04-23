@@ -31,13 +31,17 @@ class Vault {
   late final Map<String, ProfileRepositoryHandle> _profileRepositoryHandles;
   late final Map<String, ProfileRepository> _profileRepositories;
   List<Profile>? _profilesCache;
+  int _profilesCacheVersion = 0;
 
   void _invalidateProfilesCache() {
     _profilesCache = null;
+    _profilesCacheVersion++;
   }
 
-  void _setProfilesCache(List<Profile> profiles) {
-    _profilesCache = List.unmodifiable(profiles);
+  void _setProfilesCache(List<Profile> profiles, int version) {
+    if (version == _profilesCacheVersion) {
+      _profilesCache = List.unmodifiable(profiles);
+    }
   }
 
   Profile? _findProfileById(List<Profile> profiles, String profileId) {
@@ -327,6 +331,7 @@ class Vault {
       );
     }
 
+    final version = _profilesCacheVersion;
     final profiles = await Future.wait(
       _profileRepositories.values.map(
         (repository) => repository.listProfiles(),
@@ -334,7 +339,7 @@ class Vault {
     );
     final allProfiles = profiles.expand((profiles) => profiles).toList();
 
-    _setProfilesCache(allProfiles);
+    _setProfilesCache(allProfiles, version);
 
     return allProfiles;
   }
