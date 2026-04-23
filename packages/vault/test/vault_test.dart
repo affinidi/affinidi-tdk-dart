@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
@@ -376,6 +377,111 @@ void main() {
       expect(profiles.length, equals(2));
       expect(profiles.map((p) => p.id), containsAll(['profile1', 'profile2']));
     });
+  });
+
+  group('Profiles Cache', () {
+    late Profile testProfile;
+    late Profile updatedProfile;
+
+    setUp(() async {
+      await vault.ensureInitialized();
+
+      testProfile = VaultFixtures.createTestProfile(id: 'profile-1');
+      updatedProfile = VaultFixtures.createTestProfile(
+        id: 'profile-1',
+        name: 'Updated Profile',
+      );
+    });
+
+    test(
+      'should always update cache with latest data from listProfiles',
+      () async {
+        when(
+          () => mockProfileRepository.listProfiles(),
+        ).thenAnswer((_) async => [testProfile]);
+        await vault.listProfiles();
+
+        when(
+          () => mockProfileRepository.listProfiles(),
+        ).thenAnswer((_) async => [updatedProfile]);
+        final profiles = await vault.listProfiles();
+
+        expect(profiles.first.name, equals('Updated Profile'));
+      },
+    );
+
+    test(
+      'should refetch profiles after invalidation during an in-flight fetch',
+      () async {
+        final fetchCompleter = Completer<List<Profile>>();
+        final staleProfile = VaultFixtures.createTestProfile(
+          id: 'profile-1',
+          accountIndex: 0,
+        );
+        final deletedProfile = VaultFixtures.createTestProfile(id: 'profile-2');
+        final freshProfile = VaultFixtures.createTestProfile(
+          id: 'profile-1',
+          accountIndex: 1,
+        );
+
+        // The first listProfiles stays in flight until we resolve the completer.
+        when(
+          () => mockProfileRepository.listProfiles(),
+        ).thenAnswer((_) => fetchCompleter.future);
+        when(
+          () => mockProfileRepository.deleteProfile(deletedProfile),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockProfileRepository.grantItemAccessMultiple(
+            accountIndex: 0,
+            granteeDid: 'did:test:123',
+            permissionGroups: any(named: 'permissionGroups'),
+            cancelToken: any(named: 'cancelToken'),
+          ),
+        ).thenThrow(StateError('stale cached profile was used'));
+        when(
+          () => mockProfileRepository.grantItemAccessMultiple(
+            accountIndex: 1,
+            granteeDid: 'did:test:123',
+            permissionGroups: any(named: 'permissionGroups'),
+            cancelToken: any(named: 'cancelToken'),
+          ),
+        ).thenAnswer((_) async => Uint8List.fromList([1, 2, 3]));
+
+        // Start listProfiles but don't await; the fetch is now in flight.
+        final listFuture = vault.listProfiles();
+
+        // A concurrent deletion invalidates the cache while the fetch is active.
+        await vault.defaultProfileRepository.deleteProfile(deletedProfile);
+
+        // Complete the in-flight fetch with data that is now stale.
+        fetchCompleter.complete([staleProfile, deletedProfile]);
+        await listFuture;
+
+        // If the stale cache survived, shareProfile would reuse accountIndex 0.
+        // Instead it should refetch and use the fresh profile with accountIndex 1.
+        when(
+          () => mockProfileRepository.listProfiles(),
+        ).thenAnswer((_) async => [freshProfile]);
+
+        final sharedProfile = await vault.shareProfile(
+          profileId: 'profile-1',
+          toDid: 'did:test:123',
+          permissions: Permissions.read,
+        );
+
+        verify(() => mockProfileRepository.listProfiles()).called(2);
+        verify(
+          () => mockProfileRepository.grantItemAccessMultiple(
+            accountIndex: 1,
+            granteeDid: 'did:test:123',
+            permissionGroups: any(named: 'permissionGroups'),
+            cancelToken: any(named: 'cancelToken'),
+          ),
+        ).called(1);
+        expect(sharedProfile.profileId, equals('profile-1'));
+      },
+    );
   });
 
   group('Profile Sharing', () {
