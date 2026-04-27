@@ -48,7 +48,7 @@ class Vault {
     return profiles.where((p) => p.id == profileId).firstOrNull;
   }
 
-  Future<Profile> _getProfileByIdOrThrow(
+  Future<Profile> _getProfileById(
     String profileId, {
     VaultCancelToken? cancelToken,
   }) async {
@@ -83,9 +83,7 @@ class Vault {
         .firstOrNull;
   }
 
-  ProfileRepositoryHandle _getProfileRepositoryHandleOrThrow(
-    String repositoryId,
-  ) {
+  ProfileRepositoryHandle _getProfileRepositoryHandle(String repositoryId) {
     final repositoryHandle = _profileRepositoryHandles[repositoryId];
     if (repositoryHandle == null) {
       throw TdkException(
@@ -97,11 +95,11 @@ class Vault {
     return repositoryHandle;
   }
 
-  ProfileAccessSharing _getProfileAccessSharingOrThrow(
+  ProfileAccessSharing _getProfileAccessSharing(
     String repositoryId, {
     required String unsupportedMessage,
   }) {
-    final repositoryHandle = _getProfileRepositoryHandleOrThrow(repositoryId);
+    final repositoryHandle = _getProfileRepositoryHandle(repositoryId);
 
     final accessSharing = repositoryHandle.accessSharing;
     if (accessSharing == null) {
@@ -117,14 +115,12 @@ class Vault {
     return accessSharing;
   }
 
-  ProfileStorageInfo _getProfileStorageInfoOrThrow(
+  ProfileStorageInfo _getProfileStorageInfo(
     String repositoryId, {
     required String unsupportedMessage,
     required TdkExceptionType unsupportedExceptionType,
   }) {
-    final storageInfo = _getProfileRepositoryHandleOrThrow(
-      repositoryId,
-    ).storageInfo;
+    final storageInfo = _getProfileRepositoryHandle(repositoryId).storageInfo;
     if (storageInfo == null) {
       Error.throwWithStackTrace(
         TdkException(
@@ -362,12 +358,12 @@ class Vault {
     DateTime? expiresAt,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileByIdOrThrow(
+    final profileInfo = await _getProfileById(
       profileId,
       cancelToken: cancelToken,
     );
 
-    final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
+    final profileSharedAccessRepository = _getProfileAccessSharing(
       profileInfo.profileRepositoryId,
       unsupportedMessage:
           'Sharing profiles is not supported on ${profileInfo.profileRepositoryId}',
@@ -401,12 +397,12 @@ class Vault {
     required SharedProfileDto sharedProfile,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileByIdOrThrow(
+    final profileInfo = await _getProfileById(
       profileId,
       cancelToken: cancelToken,
     );
 
-    final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
+    final profileSharedAccessRepository = _getProfileAccessSharing(
       profileInfo.profileRepositoryId,
       unsupportedMessage:
           'Sharing profiles is not supported on ${profileInfo.profileRepositoryId}',
@@ -431,12 +427,12 @@ class Vault {
     required SharedItemsDto sharedItems,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileByIdOrThrow(
+    final profileInfo = await _getProfileById(
       profileId,
       cancelToken: cancelToken,
     );
 
-    final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
+    final profileSharedAccessRepository = _getProfileAccessSharing(
       profileInfo.profileRepositoryId,
       unsupportedMessage:
           'Sharing nodes is not supported on ${profileInfo.profileRepositoryId}',
@@ -465,12 +461,12 @@ class Vault {
     required String granteeDid,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileByIdOrThrow(
+    final profileInfo = await _getProfileById(
       profileId,
       cancelToken: cancelToken,
     );
 
-    final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
+    final profileSharedAccessRepository = _getProfileAccessSharing(
       profileInfo.profileRepositoryId,
       unsupportedMessage:
           'Sharing profiles is not supported on ${profileInfo.profileRepositoryId}',
@@ -500,12 +496,12 @@ class Vault {
     required String granteeDid,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileByIdOrThrow(
+    final profileInfo = await _getProfileById(
       profileId,
       cancelToken: cancelToken,
     );
 
-    final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
+    final profileSharedAccessRepository = _getProfileAccessSharing(
       profileInfo.profileRepositoryId,
       unsupportedMessage:
           'Getting item access is not supported on ${profileInfo.profileRepositoryId}',
@@ -593,12 +589,12 @@ class Vault {
     required String granteeDid,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileByIdOrThrow(
+    final profileInfo = await _getProfileById(
       profileId,
       cancelToken: cancelToken,
     );
 
-    final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
+    final profileSharedAccessRepository = _getProfileAccessSharing(
       profileInfo.profileRepositoryId,
       unsupportedMessage:
           'Getting item permissions editor is not supported on ${profileInfo.profileRepositoryId}',
@@ -631,12 +627,12 @@ class Vault {
     required ItemPermissionsPolicy policy,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileByIdOrThrow(
+    final profileInfo = await _getProfileById(
       profileId,
       cancelToken: cancelToken,
     );
 
-    final profileSharedAccessRepository = _getProfileAccessSharingOrThrow(
+    final profileSharedAccessRepository = _getProfileAccessSharing(
       profileInfo.profileRepositoryId,
       unsupportedMessage:
           'Setting item permissions is not supported on ${profileInfo.profileRepositoryId}',
@@ -677,12 +673,12 @@ class Vault {
     }
 
     if (profileId != null) {
-      final profileInfo = await _getProfileByIdOrThrow(
+      final profileInfo = await _getProfileById(
         profileId,
         cancelToken: cancelToken,
       );
 
-      final storageInfo = _getProfileStorageInfoOrThrow(
+      final storageInfo = _getProfileStorageInfo(
         profileInfo.profileRepositoryId,
         unsupportedMessage:
             'The profile repository for profile $profileId does not support storage usage reporting',
@@ -696,7 +692,7 @@ class Vault {
     final defaultProfileRepositoryId =
         _defaultProfileRepositoryId ??
         _profileRepositoryHandles.entries.first.key;
-    final defaultStorageInfo = _getProfileStorageInfoOrThrow(
+    final defaultStorageInfo = _getProfileStorageInfo(
       defaultProfileRepositoryId,
       unsupportedMessage:
           'The default profile repository does not support storage usage reporting',
