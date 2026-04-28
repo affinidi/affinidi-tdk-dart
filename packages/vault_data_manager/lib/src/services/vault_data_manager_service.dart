@@ -33,8 +33,6 @@ import 'vault_data_manager_service_interface.dart';
 /// Implementation of [VaultDataManagerServiceInterface] that handles encrypted storage
 /// operations using vault data manager services.
 class VaultDataManagerService implements VaultDataManagerServiceInterface {
-  static const Duration _httpClientIdleTimeout = Duration(seconds: 30);
-
   /// Service for handling encryption operations
   late final VaultDataManagerEncryptionServiceInterface
   _vaultDataManagerEncryptionService;
@@ -82,8 +80,10 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     required Uint8List encryptedDekek,
     required KeyPair keyPair,
   }) async {
+    final authDio = _makeConfiguredDio();
     final consumerAuthProvider = ConsumerAuthProvider(
       signer: keyPair.didSigner(),
+      client: authDio,
     );
     return _create(
       encryptedDekek: encryptedDekek,
@@ -102,8 +102,10 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     required Uint8List encryptedDekek,
     required KeyPair keyPair,
   }) async {
+    final authDio = _makeConfiguredDio();
     final consumerAuthProvider = ConsumerAuthProvider(
       signer: keyPair.didSigner(),
+      client: authDio,
     );
     return _create(
       encryptedDekek: encryptedDekek,
@@ -120,17 +122,7 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   }) async {
     final elementsVaultApiUrl =
         Environment.fetchEnvironment().elementsVaultApiUrl;
-    final dio = Dio(
-      BaseOptions(
-        baseUrl: '$elementsVaultApiUrl/vfs',
-        connectTimeout: const Duration(milliseconds: 15000),
-        receiveTimeout: const Duration(milliseconds: 15000),
-      ),
-    );
-    configureHttpClientConnectionSettings(
-      dio,
-      idleTimeout: _httpClientIdleTimeout,
-    );
+    final dio = _makeConfiguredDio(baseUrl: '$elementsVaultApiUrl/vfs');
     final vaultDataManagerApiService = VaultDataManagerApiService(
       apiClient: AffinidiTdkVaultDataManagerClient(
         dio: dio,
@@ -154,6 +146,21 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     );
 
     return instance;
+  }
+
+  static Dio _makeConfiguredDio({String? baseUrl}) {
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: baseUrl ?? '',
+        connectTimeout: const Duration(seconds: 15),
+        receiveTimeout: const Duration(seconds: 15),
+      ),
+    );
+    configureHttpClientConnectionSettings(
+      dio,
+      idleTimeout: const Duration(seconds: 30),
+    );
+    return dio;
   }
 
   @override
