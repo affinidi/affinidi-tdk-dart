@@ -482,6 +482,99 @@ void main() {
         expect(sharedProfile.profileId, equals('profile-1'));
       },
     );
+
+    test('should return cached profile from getProfileById', () async {
+      when(
+        () => mockProfileRepository.listProfiles(),
+      ).thenAnswer((_) async => [testProfile]);
+
+      await vault.listProfiles();
+      clearInteractions(mockProfileRepository);
+
+      final profile = await vault.getProfileById('profile-1');
+
+      expect(profile, same(testProfile));
+      verifyNever(() => mockProfileRepository.listProfiles());
+    });
+
+    test('should refetch profiles when getProfileById cache misses', () async {
+      final cachedProfile = VaultFixtures.createTestProfile(
+        id: 'cached-profile',
+      );
+
+      var listProfilesCount = 0;
+      when(() => mockProfileRepository.listProfiles()).thenAnswer((_) async {
+        listProfilesCount++;
+        return listProfilesCount == 1 ? [cachedProfile] : [testProfile];
+      });
+
+      await vault.listProfiles();
+      clearInteractions(mockProfileRepository);
+
+      final profile = await vault.getProfileById('profile-1');
+
+      expect(profile, same(testProfile));
+      verify(() => mockProfileRepository.listProfiles()).called(1);
+    });
+
+    test(
+      'should return cached shared storage from getSharedStorageByOwnerId',
+      () async {
+        final profileWithSharedStorage = VaultFixtures.createTestProfile(
+          id: 'profile-with-shared-storage',
+          sharedStorages: {'test': mockSharedStorage},
+        );
+
+        when(() => mockSharedStorage.id).thenReturn('owner-profile-id');
+        when(
+          () => mockProfileRepository.listProfiles(),
+        ).thenAnswer((_) async => [profileWithSharedStorage]);
+
+        await vault.listProfiles();
+        clearInteractions(mockProfileRepository);
+
+        final sharedStorage = await vault.getSharedStorageByOwnerId(
+          'owner-profile-id',
+        );
+
+        expect(sharedStorage, same(mockSharedStorage));
+        verifyNever(() => mockProfileRepository.listProfiles());
+      },
+    );
+
+    test(
+      'should refetch profiles when getSharedStorageByOwnerId cache misses',
+      () async {
+        final wrongSharedStorage = MockSharedStorage();
+        final cachedProfile = VaultFixtures.createTestProfile(
+          id: 'cached-profile',
+          sharedStorages: {'wrong': wrongSharedStorage},
+        );
+        final refreshedProfile = VaultFixtures.createTestProfile(
+          id: 'refreshed-profile',
+          sharedStorages: {'test': mockSharedStorage},
+        );
+
+        when(() => wrongSharedStorage.id).thenReturn('different-owner-id');
+        when(() => mockSharedStorage.id).thenReturn('owner-profile-id');
+
+        var listProfilesCount = 0;
+        when(() => mockProfileRepository.listProfiles()).thenAnswer((_) async {
+          listProfilesCount++;
+          return listProfilesCount == 1 ? [cachedProfile] : [refreshedProfile];
+        });
+
+        await vault.listProfiles();
+        clearInteractions(mockProfileRepository);
+
+        final sharedStorage = await vault.getSharedStorageByOwnerId(
+          'owner-profile-id',
+        );
+
+        expect(sharedStorage, same(mockSharedStorage));
+        verify(() => mockProfileRepository.listProfiles()).called(1);
+      },
+    );
   });
 
   group('Profile Sharing', () {
