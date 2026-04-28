@@ -32,7 +32,8 @@ class VaultDataManagerApiService
   static final int? _apiTimeOutInMilliseconds =
       Environment.apiTimeOutInMilliseconds;
 
-  final Dio _dio;
+  final Dio _fileClient;
+  final Dio _vfsClient;
   final FilesApi _filesApi;
   final NodesApi _nodesApi;
   final ConfigurationApi _configApi;
@@ -43,9 +44,24 @@ class VaultDataManagerApiService
   /// Creates an instance of [VaultDataManagerApiService].
   VaultDataManagerApiService({
     required AffinidiTdkVaultDataManagerClient apiClient,
-    Dio? dio,
-  }) : _dio =
-           dio ??
+    Dio? fileClient,
+    Dio? vfsClient,
+  }) : _fileClient =
+           fileClient ??
+           ((_apiTimeOutInMilliseconds != null)
+               ? Dio(
+                   BaseOptions(
+                     connectTimeout: Duration(
+                       milliseconds: _apiTimeOutInMilliseconds!,
+                     ),
+                     receiveTimeout: Duration(
+                       milliseconds: _apiTimeOutInMilliseconds!,
+                     ),
+                   ),
+                 )
+               : Dio()),
+       _vfsClient =
+           vfsClient ??
            ((_apiTimeOutInMilliseconds != null)
                ? Dio(
                    BaseOptions(
@@ -256,7 +272,7 @@ class VaultDataManagerApiService
     VaultProgressCallback? onSendProgress,
   }) async {
     try {
-      return await _dio.post(
+      return await _fileClient.post(
         uploadUrl,
         data: data,
         onSendProgress: onSendProgress?.toProgressCallback(),
@@ -576,7 +592,7 @@ class VaultDataManagerApiService
   @override
   Future<Response> getProfileTemplate({CancelToken? cancelToken}) async {
     try {
-      return _dio.get(profileTemplateUrl, cancelToken: cancelToken);
+      return _fileClient.get(profileTemplateUrl, cancelToken: cancelToken);
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
         TdkException(
@@ -614,7 +630,7 @@ class VaultDataManagerApiService
       final vautlUrl = VaultUtils.fetchElementsVaultApiUrl();
       final absoluteUrl = '$vautlUrl/vfs/.well-known/jwks.json';
 
-      final response = await _dio.get<dynamic>(absoluteUrl);
+      final response = await _vfsClient.get<dynamic>(absoluteUrl);
 
       final data = response.data as Map<String, dynamic>;
       final jwks = (data['keys'] as List).first;
@@ -680,7 +696,7 @@ class VaultDataManagerApiService
     VaultProgressCallback? onReceiveProgress,
   }) async {
     try {
-      return _dio.fetch(
+      return _fileClient.fetch(
         RequestOptions(
           method: 'GET',
           baseUrl: downloadUrl,
