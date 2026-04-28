@@ -48,7 +48,13 @@ class Vault {
     return profiles.where((p) => p.id == profileId).firstOrNull;
   }
 
-  Future<Profile> _getProfileById(
+  /// Retrieves a profile by its ID.
+  ///
+  /// [profileId] - The ID of the profile to retrieve.
+  /// [cancelToken] - Optional cancel token for the operation.
+  ///
+  /// Throws [TdkException] if the profile is not found or the vault is not initialized.
+  Future<Profile> getProfileById(
     String profileId, {
     VaultCancelToken? cancelToken,
   }) async {
@@ -71,6 +77,27 @@ class Vault {
     }
 
     return profileInfo;
+  }
+
+  /// Retrieves a shared storage by the owner profile ID.
+  ///
+  /// [ownerProfileId] - The ID of the owner profile whose shared storage to retrieve.
+  ///
+  /// Returns the [SharedStorage] if found, or null if not found.
+  Future<SharedStorage?> getSharedStorageByOwnerId(
+    String ownerProfileId, {
+    VaultCancelToken? cancelToken,
+  }) async {
+    final cachedProfiles = _profilesCache;
+    if (cachedProfiles != null) {
+      final cachedStorage = _findSharedStorage(cachedProfiles, ownerProfileId);
+      if (cachedStorage != null) {
+        return cachedStorage;
+      }
+    }
+
+    final refreshedProfiles = await listProfiles(cancelToken: cancelToken);
+    return _findSharedStorage(refreshedProfiles, ownerProfileId);
   }
 
   SharedStorage? _findSharedStorage(
@@ -358,7 +385,7 @@ class Vault {
     DateTime? expiresAt,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileById(
+    final profileInfo = await getProfileById(
       profileId,
       cancelToken: cancelToken,
     );
@@ -397,7 +424,7 @@ class Vault {
     required SharedProfileDto sharedProfile,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileById(
+    final profileInfo = await getProfileById(
       profileId,
       cancelToken: cancelToken,
     );
@@ -427,7 +454,7 @@ class Vault {
     required SharedItemsDto sharedItems,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileById(
+    final profileInfo = await getProfileById(
       profileId,
       cancelToken: cancelToken,
     );
@@ -461,7 +488,7 @@ class Vault {
     required String granteeDid,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileById(
+    final profileInfo = await getProfileById(
       profileId,
       cancelToken: cancelToken,
     );
@@ -496,7 +523,7 @@ class Vault {
     required String granteeDid,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileById(
+    final profileInfo = await getProfileById(
       profileId,
       cancelToken: cancelToken,
     );
@@ -589,7 +616,7 @@ class Vault {
     required String granteeDid,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileById(
+    final profileInfo = await getProfileById(
       profileId,
       cancelToken: cancelToken,
     );
@@ -627,7 +654,7 @@ class Vault {
     required ItemPermissionsPolicy policy,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileById(
+    final profileInfo = await getProfileById(
       profileId,
       cancelToken: cancelToken,
     );
@@ -673,7 +700,7 @@ class Vault {
     }
 
     if (profileId != null) {
-      final profileInfo = await _getProfileById(
+      final profileInfo = await getProfileById(
         profileId,
         cancelToken: cancelToken,
       );
