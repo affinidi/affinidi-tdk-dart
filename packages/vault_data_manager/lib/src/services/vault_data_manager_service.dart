@@ -120,16 +120,16 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     required KeyPair keyPair,
     required Future<String?> Function() authTokenHook,
   }) async {
-    final elementsVaultApiUrl =
-        Environment.fetchEnvironment().elementsVaultApiUrl;
-    final dio = _makeConfiguredDio(baseUrl: '$elementsVaultApiUrl/vfs');
-    final apiServiceDio = _makeConfiguredDio();
+    final elementsVaultApiUrl = VaultUtils.fetchElementsVaultApiUrl();
+    final vfsClient = _makeConfiguredDio(baseUrl: '$elementsVaultApiUrl/vfs');
+    final fileClient = _makeConfiguredDio();
     final vaultDataManagerApiService = VaultDataManagerApiService(
       apiClient: AffinidiTdkVaultDataManagerClient(
-        dio: dio,
+        dio: vfsClient,
         authTokenHook: authTokenHook,
       ),
-      dio: apiServiceDio,
+      fileClient: fileClient,
+      vfsClient: vfsClient,
     );
 
     final vfsPublicKey = await vaultDataManagerApiService
