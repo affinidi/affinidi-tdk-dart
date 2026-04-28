@@ -123,11 +123,13 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     final elementsVaultApiUrl =
         Environment.fetchEnvironment().elementsVaultApiUrl;
     final dio = _makeConfiguredDio(baseUrl: '$elementsVaultApiUrl/vfs');
+    final apiServiceDio = _makeConfiguredDio();
     final vaultDataManagerApiService = VaultDataManagerApiService(
       apiClient: AffinidiTdkVaultDataManagerClient(
         dio: dio,
         authTokenHook: authTokenHook,
       ),
+      dio: apiServiceDio,
     );
 
     final vfsPublicKey = await vaultDataManagerApiService
