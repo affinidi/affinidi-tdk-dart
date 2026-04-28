@@ -13,6 +13,8 @@ import 'package:ssi/ssi.dart';
 
 import '../exceptions/tdk_exception_type.dart';
 import '../helpers/dio_cancel_token_adapter.dart';
+import '../helpers/http_client_connection_settings_stub.dart'
+    if (dart.library.io) '../helpers/http_client_connection_settings_io.dart';
 import '../model/account.dart';
 import '../model/node.dart';
 import '../model/node_status.dart';
@@ -31,6 +33,8 @@ import 'vault_data_manager_service_interface.dart';
 /// Implementation of [VaultDataManagerServiceInterface] that handles encrypted storage
 /// operations using vault data manager services.
 class VaultDataManagerService implements VaultDataManagerServiceInterface {
+  static const Duration _httpClientIdleTimeout = Duration(seconds: 30);
+
   /// Service for handling encryption operations
   late final VaultDataManagerEncryptionServiceInterface
   _vaultDataManagerEncryptionService;
@@ -116,10 +120,21 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   }) async {
     final elementsVaultApiUrl =
         Environment.fetchEnvironment().elementsVaultApiUrl;
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: '$elementsVaultApiUrl/vfs',
+        connectTimeout: const Duration(milliseconds: 15000),
+        receiveTimeout: const Duration(milliseconds: 15000),
+      ),
+    );
+    configureHttpClientConnectionSettings(
+      dio,
+      idleTimeout: _httpClientIdleTimeout,
+    );
     final vaultDataManagerApiService = VaultDataManagerApiService(
       apiClient: AffinidiTdkVaultDataManagerClient(
+        dio: dio,
         authTokenHook: authTokenHook,
-        basePathOverride: '$elementsVaultApiUrl/vfs',
       ),
     );
 
