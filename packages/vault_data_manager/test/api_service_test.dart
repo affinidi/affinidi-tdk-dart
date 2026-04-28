@@ -26,20 +26,27 @@ void main() {
   late DioAdapter dioAdapter;
   late Dio uploadDio;
   late DioAdapter uploadDioAdapter;
+  late Dio vfsDio;
+  late DioAdapter vfsDioAdapter;
 
   setUpAll(() {
     uploadDio = MockDio();
     uploadDio.options.baseUrl = '';
+    vfsDio = Dio();
+    vfsDio.options.baseUrl = '';
     vaultDataManagerApiService = VaultDataManagerApiService(
       apiClient: AffinidiTdkVaultDataManagerClient(dio: client),
-      dio: uploadDio,
+      fileClient: uploadDio,
+      vfsClient: vfsDio,
     );
   });
 
   setUp(() {
     dioAdapter = DioAdapterFixtures.adapter(client);
     uploadDioAdapter = DioAdapterFixtures.adapter(uploadDio);
+    vfsDioAdapter = DioAdapterFixtures.adapter(vfsDio);
     client.options.baseUrl = '';
+    vfsDio.options.baseUrl = '';
     (uploadDio as MockDio).setShouldThrowError(false);
     (uploadDio as MockDio).setS3ErrorXml('');
   });
@@ -47,6 +54,7 @@ void main() {
   tearDown(() {
     dioAdapter.reset();
     uploadDioAdapter.reset();
+    vfsDioAdapter.reset();
   });
 
   group('When retrieving list of profiles', () {
@@ -587,7 +595,7 @@ void main() {
 
   group('When getting vault data manager public key', () {
     test('it returns the public key', () async {
-      uploadDioAdapter.onGet(
+      vfsDioAdapter.onGet(
         TestDataFixtures.jwksUrl,
         (server) => server.reply(200, {
           'keys': [
