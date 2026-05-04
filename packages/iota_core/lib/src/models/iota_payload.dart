@@ -98,18 +98,18 @@ class IotaPayload {
   ///
   /// Null fields are omitted from the output.
   Map<String, dynamic> toJson() => {
-        'nonce': nonce,
-        'state': state,
-        'client_id': clientId,
-        'client_id_scheme': clientIdScheme,
-        'client_metadata_uri': clientMetadataUri,
-        'response_uri': responseUri,
-        'response_type': responseType,
-        'response_mode': responseMode,
-        'scope': scope,
-        if (aud != null) 'aud': aud,
-        'exp': exp,
-        'iat': iat,
-        'presentation_definition': presentationDefinition,
-      };
+    'nonce': nonce,
+    'state': state,
+    'client_id': clientId,
+    'client_id_scheme': clientIdScheme,
+    'client_metadata_uri': clientMetadataUri,
+    'response_uri': responseUri,
+    'response_type': responseType,
+    'response_mode': responseMode,
+    'scope': scope,
+    if (aud != null) 'aud': aud,
+    'exp': exp,
+    'iat': iat,
+    'presentation_definition': presentationDefinition,
+  };
 }

@@ -7,11 +7,11 @@ import 'fixtures/jwt_fixtures.dart';
 import 'mocks/mock_cryptography_service.dart';
 
 VerifyJwtResult _validResult() => VerifyJwtResult(
-      isValid: true,
-      isExpired: false,
-      errorMessage: null,
-      jwtPayload: null,
-    );
+  isValid: true,
+  isExpired: false,
+  errorMessage: null,
+  jwtPayload: null,
+);
 
 Map<String, dynamic> _baseDecodedPayload({
   String nonce = 'test-nonce',
@@ -26,23 +26,22 @@ Map<String, dynamic> _baseDecodedPayload({
   int exp = 9999999999,
   int iat = 1000000000,
   Map<String, dynamic>? presentationDefinition,
-}) =>
-    {
-      'nonce': nonce,
-      'state': state,
-      'client_id': clientId,
-      'client_id_scheme': clientIdScheme,
-      'client_metadata_uri': clientMetadataUri,
-      'response_uri': responseUri,
-      'response_type': responseType,
-      'response_mode': responseMode,
-      'scope': scope,
-      'exp': exp,
-      'iat': iat,
-      'presentation_definition':
-          presentationDefinition ?? {'id': 'pd-1', 'input_descriptors': <Map<String, dynamic>>[]},
-
-    };
+}) => {
+  'nonce': nonce,
+  'state': state,
+  'client_id': clientId,
+  'client_id_scheme': clientIdScheme,
+  'client_metadata_uri': clientMetadataUri,
+  'response_uri': responseUri,
+  'response_type': responseType,
+  'response_mode': responseMode,
+  'scope': scope,
+  'exp': exp,
+  'iat': iat,
+  'presentation_definition':
+      presentationDefinition ??
+      {'id': 'pd-1', 'input_descriptors': <Map<String, dynamic>>[]},
+};
 
 void main() {
   late MockCryptographyService mockCryptography;
@@ -64,12 +63,12 @@ void main() {
           () => service.validateOid4vpRequest(uri),
           throwsA(
             isA<TdkException>()
-                .having((e) => e.code, 'code', TdkExceptionType.parseFailure.code)
                 .having(
-                  (e) => e.message,
-                  'message',
-                  'Something went wrong',
-                ),
+                  (e) => e.code,
+                  'code',
+                  TdkExceptionType.parseFailure.code,
+                )
+                .having((e) => e.message, 'message', 'Something went wrong'),
           ),
         );
       });
@@ -229,35 +228,32 @@ void main() {
     });
 
     group('and the client_id is empty', () {
-      test(
-        'should throw a TdkException with code missing_client_id',
-        () async {
-          when(
-            () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
-          ).thenReturn(_baseDecodedPayload(clientId: ''));
-          when(
-            () => mockCryptography.verifyJwt(
-              jwtToken: any(named: 'jwtToken'),
-              didKey: any(named: 'didKey'),
-            ),
-          ).thenReturn(_validResult());
+      test('should throw a TdkException with code missing_client_id', () async {
+        when(
+          () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+        ).thenReturn(_baseDecodedPayload(clientId: ''));
+        when(
+          () => mockCryptography.verifyJwt(
+            jwtToken: any(named: 'jwtToken'),
+            didKey: any(named: 'didKey'),
+          ),
+        ).thenReturn(_validResult());
 
-          final uri = Uri.parse(
-            'openid4vp://authorize?request=$jwtWithEmptyClientId',
-          );
+        final uri = Uri.parse(
+          'openid4vp://authorize?request=$jwtWithEmptyClientId',
+        );
 
-          await expectLater(
-            () => service.validateOid4vpRequest(uri),
-            throwsA(
-              isA<TdkException>().having(
-                (e) => e.code,
-                'code',
-                TdkExceptionType.missingClientId.code,
-              ),
+        await expectLater(
+          () => service.validateOid4vpRequest(uri),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.missingClientId.code,
             ),
-          );
-        },
-      );
+          ),
+        );
+      });
     });
 
     group('and the response_mode is not `direct_post`', () {
@@ -311,46 +307,56 @@ void main() {
         expect(result.request.nonce, 'test-nonce');
         expect(result.request.state, 'test-state');
         expect(result.request.clientId, 'did:key:z6Mk');
-        expect(result.request.clientMetadataUri, 'https://example.com/metadata');
-        expect(result.request.acceptResponseUri, 'https://example.com/response');
-        expect(result.request.rejectResponseUri, 'https://example.com/response');
+        expect(
+          result.request.clientMetadataUri,
+          'https://example.com/metadata',
+        );
+        expect(
+          result.request.acceptResponseUri,
+          'https://example.com/response',
+        );
+        expect(
+          result.request.rejectResponseUri,
+          'https://example.com/response',
+        );
         expect(result.request.responseMode, 'direct_post');
         expect(result.request.scope, 'openid');
         expect(result.presentationDefinition['id'], 'pd-1');
         expect(result.purpose, isNull);
       });
 
-      test('should return an Oid4vpShareRequest with purpose when present',
-          () async {
-        when(
-          () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
-        ).thenReturn(
-          _baseDecodedPayload(
-            presentationDefinition: {
-              'id': 'pd-1',
-              'input_descriptors': <Map<String, dynamic>>[],
-              'purpose':
-                  '{"data_collection_purpose":"KYC verification","request_description":"Verify identity"}',
+      test(
+        'should return an Oid4vpShareRequest with purpose when present',
+        () async {
+          when(
+            () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+          ).thenReturn(
+            _baseDecodedPayload(
+              presentationDefinition: {
+                'id': 'pd-1',
+                'input_descriptors': <Map<String, dynamic>>[],
+                'purpose':
+                    '{"data_collection_purpose":"KYC verification","request_description":"Verify identity"}',
+              },
+            ),
+          );
+          when(
+            () => mockCryptography.verifyJwt(
+              jwtToken: any(named: 'jwtToken'),
+              didKey: any(named: 'didKey'),
+            ),
+          ).thenReturn(_validResult());
 
-            },
-          ),
-        );
-        when(
-          () => mockCryptography.verifyJwt(
-            jwtToken: any(named: 'jwtToken'),
-            didKey: any(named: 'didKey'),
-          ),
-        ).thenReturn(_validResult());
+          final result = await service.validateOid4vpRequest(
+            Uri.parse('openid4vp://authorize?request=$validJwtWithPurpose'),
+          );
 
-        final result = await service.validateOid4vpRequest(
-          Uri.parse('openid4vp://authorize?request=$validJwtWithPurpose'),
-        );
-
-        expect(result.purpose, isNotNull);
-        expect(result.purpose!.dataCollectionPurpose, 'KYC verification');
-        expect(result.purpose!.requestDescription, 'Verify identity');
-        expect(result.purpose!.isValid, isTrue);
-      });
+          expect(result.purpose, isNotNull);
+          expect(result.purpose!.dataCollectionPurpose, 'KYC verification');
+          expect(result.purpose!.requestDescription, 'Verify identity');
+          expect(result.purpose!.isValid, isTrue);
+        },
+      );
 
       test(
         'should return an Oid4vpShareRequest with null purpose when purpose isValid is false',

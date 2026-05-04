@@ -14,10 +14,7 @@ class RequestPurpose {
   /// Creates a new [RequestPurpose] instance.
   ///
   /// Both [dataCollectionPurpose] and [requestDescription] are optional.
-  const RequestPurpose({
-    this.dataCollectionPurpose,
-    this.requestDescription,
-  });
+  const RequestPurpose({this.dataCollectionPurpose, this.requestDescription});
 
   /// Creates a [RequestPurpose] from a JSON value.
   ///
@@ -49,8 +46,7 @@ class RequestPurpose {
     }
 
     return RequestPurpose(
-      dataCollectionPurpose:
-          parsedJson['data_collection_purpose']?.toString(),
+      dataCollectionPurpose: parsedJson['data_collection_purpose']?.toString(),
       requestDescription: parsedJson['request_description']?.toString(),
     );
   }
@@ -59,11 +55,10 @@ class RequestPurpose {
   ///
   /// Null fields are omitted from the output.
   Map<String, dynamic> toJson() => {
-        if (dataCollectionPurpose != null)
-          'data_collection_purpose': dataCollectionPurpose,
-        if (requestDescription != null)
-          'request_description': requestDescription,
-      };
+    if (dataCollectionPurpose != null)
+      'data_collection_purpose': dataCollectionPurpose,
+    if (requestDescription != null) 'request_description': requestDescription,
+  };
 
   /// Returns `true` when a non-empty [dataCollectionPurpose] is present.
   bool get isValid => dataCollectionPurpose?.isNotEmpty ?? false;

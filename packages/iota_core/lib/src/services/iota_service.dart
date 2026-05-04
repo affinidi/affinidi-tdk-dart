@@ -36,7 +36,7 @@ class IotaService implements IotaServiceInterface {
   /// Parameters:
   /// - [cryptography] - service used to decode and verify the JWT.
   IotaService({required CryptographyServiceInterface cryptography})
-      : _cryptography = cryptography;
+    : _cryptography = cryptography;
 
   /// Parses and validates an Iota OID4VP request URI.
   ///

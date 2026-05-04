@@ -10,7 +10,10 @@ export 'src/models/share_requirements.dart';
 export 'src/services/iota_service.dart';
 export 'src/services/iota_service_interface.dart';
 
+/// Entry point for Iota core utilities.
 class IotaCore {
+  /// Exchanges a limited token for temporary AWS credentials used to connect
+  /// to the Iota WebSocket endpoint.
   static Future<IotaCredentials> limitedTokenToIotaCredentials(
     String token,
   ) async {
