@@ -5,8 +5,7 @@ import 'package:test/test.dart';
 
 // Fixtures generated with OpenSSL secp256k1 key + dart_jsonwebtoken ES256K
 // signing. Test-only — do NOT use these keys in production.
-const _testDid =
-    'did:key:zQ3shmBVsvSAHDWX3zhAk9h4ikFh8BFz9PhtSmyy5Sp5ZRejB';
+const _testDid = 'did:key:zQ3shmBVsvSAHDWX3zhAk9h4ikFh8BFz9PhtSmyy5Sp5ZRejB';
 
 // Valid JWT (exp: 9999999999 — year 2286)
 const _validJwt =
@@ -105,4 +104,3 @@ void main() {
     });
   });
 }
-
