@@ -33,19 +33,21 @@ class VaultDataManagerApiService
       Environment.apiTimeOutInMilliseconds;
 
   final Dio _fileClient;
-  final Dio _vfsClient;
+  final Dio _publicKeyClient;
   final FilesApi _filesApi;
   final NodesApi _nodesApi;
   final ConfigurationApi _configApi;
   final ProfileDataApi _profileDataApi;
   final AccountsApi _accountsApi;
   final CryptographyService _cryptographyService = CryptographyService();
+  final String Function() _publicKeyBaseUrlResolver;
 
   /// Creates an instance of [VaultDataManagerApiService].
   VaultDataManagerApiService({
     required AffinidiTdkVaultDataManagerClient apiClient,
     Dio? fileClient,
-    Dio? vfsClient,
+    Dio? publicKeyClient,
+    String Function()? publicKeyBaseUrlResolver,
   }) : _fileClient =
            fileClient ??
            ((_apiTimeOutInMilliseconds != null)
@@ -60,20 +62,9 @@ class VaultDataManagerApiService
                    ),
                  )
                : Dio()),
-       _vfsClient =
-           vfsClient ??
-           ((_apiTimeOutInMilliseconds != null)
-               ? Dio(
-                   BaseOptions(
-                     connectTimeout: Duration(
-                       milliseconds: _apiTimeOutInMilliseconds!,
-                     ),
-                     receiveTimeout: Duration(
-                       milliseconds: _apiTimeOutInMilliseconds!,
-                     ),
-                   ),
-                 )
-               : Dio()),
+       _publicKeyClient = publicKeyClient ?? Dio(),
+       _publicKeyBaseUrlResolver =
+           publicKeyBaseUrlResolver ?? VaultUtils.fetchElementsVaultApiUrl,
        _filesApi = apiClient.getFilesApi(),
        _nodesApi = apiClient.getNodesApi(),
        _configApi = apiClient.getConfigurationApi(),
@@ -627,14 +618,20 @@ class VaultDataManagerApiService
   @override
   Future<Map<String, dynamic>> getVaultDataManagerPublicKey() async {
     try {
-      final vaultUrl = VaultUtils.fetchElementsVaultApiUrl();
+      final vaultUrl = _publicKeyBaseUrlResolver();
       final absoluteUrl = '$vaultUrl/vfs/.well-known/jwks.json';
-
-      final response = await _vfsClient.get<dynamic>(absoluteUrl);
+      final response = await _publicKeyClient.get<dynamic>(
+        absoluteUrl,
+        options: Options(
+          validateStatus: (status) =>
+              status != null &&
+              ((status >= 200 && status < 300) || status == 304),
+        ),
+      );
 
       final data = response.data as Map<String, dynamic>;
       final jwks = (data['keys'] as List).first;
-      return jwks as Map<String, dynamic>;
+      return Map<String, dynamic>.from(jwks as Map);
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
         TdkException(
