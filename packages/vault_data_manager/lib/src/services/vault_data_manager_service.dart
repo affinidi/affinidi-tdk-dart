@@ -24,6 +24,7 @@ import '../model/recognized_profile_data.dart';
 import '../model/scanned_file.dart';
 import '../model/vault_consumption.dart';
 import '../model/vault_data_manager_profile.dart';
+import 'public_key_client.dart';
 import 'vault_data_manager_api_service.dart';
 import 'vault_data_manager_api_service_interface.dart';
 import 'vault_data_manager_encryption_service.dart';
@@ -115,6 +116,7 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     );
   }
 
+  static final _publicKeyClient = PublicKeyClient.createConfiguredDio();
   static Future<VaultDataManagerService> _create({
     required Uint8List encryptedDekek,
     required KeyPair keyPair,
@@ -129,7 +131,7 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
         authTokenHook: authTokenHook,
       ),
       fileClient: fileClient,
-      vfsClient: vfsClient,
+      publicKeyClient: _publicKeyClient,
     );
 
     final vfsPublicKey = await vaultDataManagerApiService
