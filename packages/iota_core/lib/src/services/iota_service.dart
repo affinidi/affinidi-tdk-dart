@@ -108,20 +108,9 @@ class IotaService implements IotaServiceInterface {
     RequestPurpose? purpose;
     final rawPurpose = payload.presentationDefinition['purpose'];
     if (rawPurpose != null) {
-      try {
-        final parsed = RequestPurpose.fromJson(rawPurpose);
-        if (parsed.isValid) {
-          purpose = parsed;
-        }
-      } catch (e) {
-        Error.throwWithStackTrace(
-          TdkException(
-            message: 'Failed to parse request purpose.',
-            code: TdkExceptionType.parseFailure.code,
-            originalMessage: e.toString(),
-          ),
-          StackTrace.current,
-        );
+      final parsed = RequestPurpose.fromJson(rawPurpose);
+      if (parsed.isValid) {
+        purpose = parsed;
       }
     }
 

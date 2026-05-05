@@ -123,7 +123,7 @@ void main() {
 
     group('and the JWT signature is invalid', () {
       test(
-        'should throw a TdkException with code invalid_or_expired_jwt',
+        'should throw a TdkException with code invalid_or_expired_jwt and set originalMessage',
         () async {
           when(
             () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
@@ -147,11 +147,17 @@ void main() {
           await expectLater(
             () => service.validateOid4vpRequest(uri),
             throwsA(
-              isA<TdkException>().having(
-                (e) => e.code,
-                'code',
-                TdkExceptionType.invalidOrExpiredJwt.code,
-              ),
+              isA<TdkException>()
+                  .having(
+                    (e) => e.code,
+                    'code',
+                    TdkExceptionType.invalidOrExpiredJwt.code,
+                  )
+                  .having(
+                    (e) => e.originalMessage,
+                    'originalMessage',
+                    'bad signature',
+                  ),
             ),
           );
         },
@@ -196,29 +202,26 @@ void main() {
     });
 
     group('and the client_id_scheme is not `did`', () {
-      test(
-        'should throw a TdkException with code parse_failure',
-        () async {
-          when(
-            () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
-          ).thenReturn(_baseDecodedPayload(clientIdScheme: 'x509_san_dns'));
+      test('should throw a TdkException with code parse_failure', () async {
+        when(
+          () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+        ).thenReturn(_baseDecodedPayload(clientIdScheme: 'x509_san_dns'));
 
-          final uri = Uri.parse(
-            'openid4vp://authorize?request=$jwtWithWrongClientIdScheme',
-          );
+        final uri = Uri.parse(
+          'openid4vp://authorize?request=$jwtWithWrongClientIdScheme',
+        );
 
-          await expectLater(
-            () => service.validateOid4vpRequest(uri),
-            throwsA(
-              isA<TdkException>().having(
-                (e) => e.code,
-                'code',
-                TdkExceptionType.parseFailure.code,
-              ),
+        await expectLater(
+          () => service.validateOid4vpRequest(uri),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.parseFailure.code,
             ),
-          );
-        },
-      );
+          ),
+        );
+      });
     });
 
     group('and the client_id is empty', () {
@@ -226,12 +229,6 @@ void main() {
         when(
           () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
         ).thenReturn(_baseDecodedPayload(clientId: ''));
-        when(
-          () => mockCryptography.verifyJwt(
-            jwtToken: any(named: 'jwtToken'),
-            didKey: any(named: 'didKey'),
-          ),
-        ).thenReturn(_validResult());
 
         final uri = Uri.parse(
           'openid4vp://authorize?request=$jwtWithEmptyClientId',
@@ -282,7 +279,58 @@ void main() {
       );
     });
 
+    group('and the purpose field is malformed JSON', () {
+      test('should return an Oid4vpShareRequest with null purpose', () async {
+        when(
+          () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+        ).thenReturn(
+          _baseDecodedPayload(
+            presentationDefinition: {
+              'id': 'pd-1',
+              'input_descriptors': <Map<String, dynamic>>[],
+              'purpose': '{not-valid-json',
+            },
+          ),
+        );
+        when(
+          () => mockCryptography.verifyJwt(
+            jwtToken: any(named: 'jwtToken'),
+            didKey: any(named: 'didKey'),
+          ),
+        ).thenReturn(_validResult());
+
+        final result = await service.validateOid4vpRequest(
+          Uri.parse('openid4vp://authorize?request=$validJwt'),
+        );
+
+        expect(result.purpose, isNull);
+      });
+    });
+
     group('and the URI is valid', () {
+      test('should call verifyJwt with the clientId as didKey', () async {
+        when(
+          () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+        ).thenReturn(_baseDecodedPayload(clientId: 'did:key:z6Mk'));
+        when(
+          () => mockCryptography.verifyJwt(
+            jwtToken: any(named: 'jwtToken'),
+            didKey: 'did:key:z6Mk',
+          ),
+        ).thenReturn(_validResult());
+
+        await service.validateOid4vpRequest(
+          Uri.parse('openid4vp://authorize?request=$validJwt'),
+        );
+
+        verify(
+          () => mockCryptography.verifyJwt(
+            jwtToken: any(named: 'jwtToken'),
+            didKey: 'did:key:z6Mk',
+          ),
+        ).called(1);
+      });
+
       test('should return an Oid4vpShareRequest with no purpose', () async {
         when(
           () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
