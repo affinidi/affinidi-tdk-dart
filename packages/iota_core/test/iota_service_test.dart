@@ -197,17 +197,11 @@ void main() {
 
     group('and the client_id_scheme is not `did`', () {
       test(
-        'should throw a TdkException with code invalid_or_expired_jwt',
+        'should throw a TdkException with code parse_failure',
         () async {
           when(
             () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
           ).thenReturn(_baseDecodedPayload(clientIdScheme: 'x509_san_dns'));
-          when(
-            () => mockCryptography.verifyJwt(
-              jwtToken: any(named: 'jwtToken'),
-              didKey: any(named: 'didKey'),
-            ),
-          ).thenReturn(_validResult());
 
           final uri = Uri.parse(
             'openid4vp://authorize?request=$jwtWithWrongClientIdScheme',
@@ -219,7 +213,7 @@ void main() {
               isA<TdkException>().having(
                 (e) => e.code,
                 'code',
-                TdkExceptionType.invalidOrExpiredJwt.code,
+                TdkExceptionType.parseFailure.code,
               ),
             ),
           );
