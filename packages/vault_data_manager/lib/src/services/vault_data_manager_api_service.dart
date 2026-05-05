@@ -118,11 +118,11 @@ class VaultDataManagerApiService
       );
     }
 
-    final hasPropertiesForForFileUpload =
+    final hasPropertiesForFileUpload =
         createNodeResponse.data?.url != null &&
         createNodeResponse.data?.fields != null;
 
-    if (!hasPropertiesForForFileUpload) {
+    if (!hasPropertiesForFileUpload) {
       Error.throwWithStackTrace(
         TdkException(
           message: 'Unable to retrieve properties to upload the file.',
@@ -187,11 +187,11 @@ class VaultDataManagerApiService
       );
     }
 
-    final hasPropertiesForForFileUpload =
+    final hasPropertiesForFileUpload =
         createNodeResponse.data?.url != null &&
         createNodeResponse.data?.fields != null;
 
-    if (!hasPropertiesForForFileUpload) {
+    if (!hasPropertiesForFileUpload) {
       Error.throwWithStackTrace(
         TdkException(
           message:
@@ -627,8 +627,8 @@ class VaultDataManagerApiService
   @override
   Future<Map<String, dynamic>> getVaultDataManagerPublicKey() async {
     try {
-      final vautlUrl = VaultUtils.fetchElementsVaultApiUrl();
-      final absoluteUrl = '$vautlUrl/vfs/.well-known/jwks.json';
+      final vaultUrl = VaultUtils.fetchElementsVaultApiUrl();
+      final absoluteUrl = '$vaultUrl/vfs/.well-known/jwks.json';
 
       final response = await _vfsClient.get<dynamic>(absoluteUrl);
 
