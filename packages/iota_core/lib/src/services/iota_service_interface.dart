@@ -30,8 +30,8 @@ abstract interface class IotaServiceInterface {
   ///
   /// Throws:
   /// - [TdkException] if the URI cannot be parsed or a required field is missing.
-  ///   - `parse_failure`: when the `request` query parameter is absent or malformed.
-  ///   - `invalid_or_expired_jwt`: when the JWT payload cannot be decoded.
+  ///   - `parse_failure`: when the `request` query parameter is absent, malformed, or the JWT payload cannot be decoded.
+  ///   - `invalid_or_expired_jwt`: when the JWT signature is invalid or the token has expired.
   ///   - `missing_client_id`: when the `client_id` field is absent from the payload.
   ///   - `invalid_response_mode`: when `response_mode` is not `direct_post`.
   ///
