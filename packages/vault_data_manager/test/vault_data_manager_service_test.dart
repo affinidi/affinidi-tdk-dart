@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -108,6 +109,122 @@ void main() {
           isA<VaultDataManagerService>(),
         );
       });
+    });
+  });
+
+  group('When encryption service initialization is lazy', () {
+    test('it does not initialize for non-encryption operations', () async {
+      var initializationCount = 0;
+      final keyPair = await getRootKeyPair();
+      final lazyService = VaultDataManagerService.lazy(
+        mockVaultDataManagerApiService,
+        vaultDataManagerEncryptionServiceFactory: () async {
+          initializationCount += 1;
+          return mockVaultDataManagerEncryptionService;
+        },
+        keyPair: keyPair,
+        encryptedKey: await keyPair.encrypt(Uint8List(2)),
+      );
+
+      when(vaultDataManagerApiServiceMocks.createFolder).thenAnswer(
+        (_) async =>
+            Response<CreateNodeOK>(requestOptions: RequestOptions(path: '')),
+      );
+
+      await lazyService.createFolder(
+        folderName: 'folder_name',
+        parentNodeId: 'parent_node_id',
+      );
+
+      expect(initializationCount, 0);
+      verify(vaultDataManagerApiServiceMocks.createFolder).called(1);
+      verifyNever(
+        vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
+      );
+    });
+
+    test('it initializes once and reuses the encryption service', () async {
+      var initializationCount = 0;
+      final keyPair = await getRootKeyPair();
+      final lazyService = VaultDataManagerService.lazy(
+        mockVaultDataManagerApiService,
+        vaultDataManagerEncryptionServiceFactory: () async {
+          initializationCount += 1;
+          return mockVaultDataManagerEncryptionService;
+        },
+        keyPair: keyPair,
+        encryptedKey: await keyPair.encrypt(Uint8List(2)),
+      );
+
+      when(
+        vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
+      ).thenAnswer((_) async => dataEncryptionMaterial);
+      when(vaultDataManagerApiServiceMocks.createFile).thenAnswer(
+        (_) async =>
+            Response<CreateNodeOK>(requestOptions: RequestOptions(path: '')),
+      );
+
+      await lazyService.createFile(
+        fileName: 'file_name.pdf',
+        parentFolderNodeId: 'parent_node_id',
+        data: Uint8List(5),
+      );
+      await lazyService.createFile(
+        fileName: 'file_name_2.pdf',
+        parentFolderNodeId: 'parent_node_id',
+        data: Uint8List(5),
+      );
+
+      expect(initializationCount, 1);
+      verify(
+        vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
+      ).called(2);
+      verify(vaultDataManagerApiServiceMocks.createFile).called(2);
+    });
+
+    test('it coalesces concurrent first-use initialization', () async {
+      final initializationCompleter =
+          Completer<VaultDataManagerEncryptionServiceInterface>();
+      var initializationCount = 0;
+      final keyPair = await getRootKeyPair();
+      final lazyService = VaultDataManagerService.lazy(
+        mockVaultDataManagerApiService,
+        vaultDataManagerEncryptionServiceFactory: () {
+          initializationCount += 1;
+          return initializationCompleter.future;
+        },
+        keyPair: keyPair,
+        encryptedKey: await keyPair.encrypt(Uint8List(2)),
+      );
+
+      when(
+        vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
+      ).thenAnswer((_) async => dataEncryptionMaterial);
+      when(vaultDataManagerApiServiceMocks.createFile).thenAnswer(
+        (_) async =>
+            Response<CreateNodeOK>(requestOptions: RequestOptions(path: '')),
+      );
+
+      final firstCreate = lazyService.createFile(
+        fileName: 'file_name.pdf',
+        parentFolderNodeId: 'parent_node_id',
+        data: Uint8List(5),
+      );
+      final secondCreate = lazyService.createFile(
+        fileName: 'file_name_2.pdf',
+        parentFolderNodeId: 'parent_node_id',
+        data: Uint8List(5),
+      );
+
+      initializationCompleter.complete(mockVaultDataManagerEncryptionService);
+
+      await Future.wait([firstCreate, secondCreate]);
+
+      expect(initializationCount, 1);
+      verify(
+        vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
+      ).called(2);
+      verify(vaultDataManagerApiServiceMocks.createFile).called(2);
     });
   });
 
