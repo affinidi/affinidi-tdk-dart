@@ -104,6 +104,10 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
          keyPair: keyPair,
        );
 
+  static final _publicKeyClient = PublicKeyClient.createConfiguredDio();
+  static final _fileClient = _makeConfiguredDio();
+  static final _authClient = _makeConfiguredDio();
+
   /// Creates a new vault file system service instance with encryption.
   ///
   /// - [encryptedDekek] - encrypted kek of delegated profile
@@ -112,10 +116,9 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     required Uint8List encryptedDekek,
     required KeyPair keyPair,
   }) async {
-    final authDio = _makeConfiguredDio();
     final consumerAuthProvider = ConsumerAuthProvider(
       signer: keyPair.didSigner(),
-      client: authDio,
+      client: _authClient,
     );
     return _create(
       encryptedDekek: encryptedDekek,
@@ -134,10 +137,9 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     required Uint8List encryptedDekek,
     required KeyPair keyPair,
   }) async {
-    final authDio = _makeConfiguredDio();
     final consumerAuthProvider = ConsumerAuthProvider(
       signer: keyPair.didSigner(),
-      client: authDio,
+      client: _authClient,
     );
     return _create(
       encryptedDekek: encryptedDekek,
@@ -147,7 +149,6 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     );
   }
 
-  static final _publicKeyClient = PublicKeyClient.createConfiguredDio();
   static Future<VaultDataManagerService> _create({
     required Uint8List encryptedDekek,
     required KeyPair keyPair,
@@ -155,13 +156,12 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   }) async {
     final elementsVaultApiUrl = VaultUtils.fetchElementsVaultApiUrl();
     final vfsClient = _makeConfiguredDio(baseUrl: '$elementsVaultApiUrl/vfs');
-    final fileClient = _makeConfiguredDio();
     final vaultDataManagerApiService = VaultDataManagerApiService(
       apiClient: AffinidiTdkVaultDataManagerClient(
         dio: vfsClient,
         authTokenHook: authTokenHook,
       ),
-      fileClient: fileClient,
+      fileClient: _fileClient,
       publicKeyClient: _publicKeyClient,
     );
 
