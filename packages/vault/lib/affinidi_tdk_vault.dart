@@ -6,6 +6,13 @@ export 'package:ssi/ssi.dart'
     show KeyStore, StoredKey, UniversalParser, VerifiableCredential;
 
 export 'src/digital_credential.dart';
+export 'src/exceptions/tdk_exception_type.dart';
+export 'src/models/iota_payload.dart';
+export 'src/models/iota_request.dart';
+export 'src/models/request_purpose.dart';
+export 'src/models/share_requirements.dart';
+export 'src/services/iota_service.dart';
+export 'src/services/iota_service_interface.dart';
 export 'src/dto/shared_item_dto.dart';
 export 'src/dto/shared_profile_dto.dart';
 export 'src/helpers/file_utils.dart';
