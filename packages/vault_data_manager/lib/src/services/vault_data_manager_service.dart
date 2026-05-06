@@ -35,8 +35,13 @@ import 'vault_data_manager_service_interface.dart';
 /// operations using vault data manager services.
 class VaultDataManagerService implements VaultDataManagerServiceInterface {
   /// Service for handling encryption operations
-  late final VaultDataManagerEncryptionServiceInterface
+  VaultDataManagerEncryptionServiceInterface?
   _vaultDataManagerEncryptionService;
+
+  final Future<VaultDataManagerEncryptionServiceInterface> Function()?
+  _vaultDataManagerEncryptionServiceFactory;
+  Future<VaultDataManagerEncryptionServiceInterface>?
+  _vaultDataManagerEncryptionServiceFuture;
 
   /// Service for API operations with the vault
   late final VaultDataManagerApiServiceInterface _vaultDataManagerApiService;
@@ -48,12 +53,18 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   final KeyPair _keyPair;
 
   VaultDataManagerService._(
-    this._vaultDataManagerEncryptionService,
+    VaultDataManagerEncryptionServiceInterface?
+    vaultDataManagerEncryptionService,
     this._vaultDataManagerApiService, {
+    Future<VaultDataManagerEncryptionServiceInterface> Function()?
+    vaultDataManagerEncryptionServiceFactory,
     Logger? logger,
     required Uint8List encryptedDekek,
     required KeyPair keyPair,
   }) : _logger = logger ?? Logger.instance,
+       _vaultDataManagerEncryptionService = vaultDataManagerEncryptionService,
+       _vaultDataManagerEncryptionServiceFactory =
+           vaultDataManagerEncryptionServiceFactory,
        _encryptedKey = encryptedDekek,
        _keyPair = keyPair;
 
@@ -69,6 +80,26 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   }) : this._(
          vaultDataManagerEncryptionService,
          vaultDataManagerApiService,
+         encryptedDekek: encryptedKey,
+         keyPair: keyPair,
+       );
+
+  /// Creates a new instance of [VaultDataManagerService] with lazy encryption
+  /// service initialization for testing purposes.
+  @visibleForTesting
+  VaultDataManagerService.lazy(
+    VaultDataManagerApiServiceInterface vaultDataManagerApiService, {
+    required Future<VaultDataManagerEncryptionServiceInterface> Function()
+    vaultDataManagerEncryptionServiceFactory,
+    Logger? logger,
+    required Uint8List encryptedKey,
+    required KeyPair keyPair,
+  }) : this._(
+         null,
+         vaultDataManagerApiService,
+         vaultDataManagerEncryptionServiceFactory:
+             vaultDataManagerEncryptionServiceFactory,
+         logger: logger,
          encryptedDekek: encryptedKey,
          keyPair: keyPair,
        );
@@ -134,17 +165,18 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
       publicKeyClient: _publicKeyClient,
     );
 
-    final vfsPublicKey = await vaultDataManagerApiService
-        .getVaultDataManagerPublicKey();
-
-    final vaultDataManagerEncryptionService = VaultDataManagerEncryptionService(
-      cryptographyService: CryptographyService(),
-      jwk: vfsPublicKey,
-    );
-
     final instance = VaultDataManagerService._(
-      vaultDataManagerEncryptionService,
+      null,
       vaultDataManagerApiService,
+      vaultDataManagerEncryptionServiceFactory: () async {
+        final vfsPublicKey = await vaultDataManagerApiService
+            .getVaultDataManagerPublicKey();
+
+        return VaultDataManagerEncryptionService(
+          cryptographyService: CryptographyService(),
+          jwk: vfsPublicKey,
+        );
+      },
       encryptedDekek: encryptedDekek,
       keyPair: keyPair,
     );
@@ -167,6 +199,38 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     return dio;
   }
 
+  Future<VaultDataManagerEncryptionServiceInterface>
+  _getVaultDataManagerEncryptionService() {
+    final encryptionService = _vaultDataManagerEncryptionService;
+    if (encryptionService != null) {
+      return Future.value(encryptionService);
+    }
+
+    final inFlightInitialization = _vaultDataManagerEncryptionServiceFuture;
+    if (inFlightInitialization != null) {
+      return inFlightInitialization;
+    }
+
+    final encryptionServiceFactory = _vaultDataManagerEncryptionServiceFactory;
+    if (encryptionServiceFactory == null) {
+      throw StateError('Vault data manager encryption service is unavailable.');
+    }
+
+    final initialization = () async {
+      try {
+        final initializedService = await encryptionServiceFactory();
+        _vaultDataManagerEncryptionService = initializedService;
+        return initializedService;
+      } catch (_) {
+        _vaultDataManagerEncryptionServiceFuture = null;
+        rethrow;
+      }
+    }();
+
+    _vaultDataManagerEncryptionServiceFuture = initialization;
+    return initialization;
+  }
+
   @override
   Future<void> addVerifiableCredentialToProfile({
     required String profileId,
@@ -176,7 +240,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     final verifiableCredentialBlob = utf8.encode(
       jsonEncode(verifiableCredential),
     );
-    final dekGenerateModel = await _vaultDataManagerEncryptionService
+    final encryptionService = await _getVaultDataManagerEncryptionService();
+    final dekGenerateModel = await encryptionService
         .generateDataEncryptionMaterial(
           encryptionKey: await _keyPair.decrypt(_encryptedKey),
         );
@@ -206,7 +271,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     VaultCancelToken? cancelToken,
     VaultProgressCallback? onSendProgress,
   }) async {
-    final dekGenerateModel = await _vaultDataManagerEncryptionService
+    final encryptionService = await _getVaultDataManagerEncryptionService();
+    final dekGenerateModel = await encryptionService
         .generateDataEncryptionMaterial(
           encryptionKey: await _keyPair.decrypt(_encryptedKey),
         );
@@ -253,7 +319,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     String? profilePictureURI,
     VaultCancelToken? cancelToken,
   }) async {
-    final dekGenerateModel = await _vaultDataManagerEncryptionService
+    final encryptionService = await _getVaultDataManagerEncryptionService();
+    final dekGenerateModel = await encryptionService
         .generateDataEncryptionMaterial(
           encryptionKey: await profileKeyPair.decrypt(
             base64.decode(accountMetadata.dekekInfo.encryptedDekek),
@@ -468,7 +535,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
 
     final encryptedDekBase64 = nodeInfoResponse.data?.edekInfo?.edek;
 
-    final dekEncryptedByVfsPublicKey = await _vaultDataManagerEncryptionService
+    final encryptionService = await _getVaultDataManagerEncryptionService();
+    final dekEncryptedByVfsPublicKey = await encryptionService
         .getDekEncryptedByApiPublicKey(
           encryptedDekBase64: encryptedDekBase64!,
           encryptionKey: await _keyPair.decrypt(_encryptedKey),
@@ -641,7 +709,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     );
 
     final encryptedDekBase64 = nodeInfo.data?.edekInfo?.edek;
-    final dekEncryptedByVfsPublicKey = await _vaultDataManagerEncryptionService
+    final encryptionService = await _getVaultDataManagerEncryptionService();
+    final dekEncryptedByVfsPublicKey = await encryptionService
         .getDekEncryptedByApiPublicKey(
           encryptedDekBase64: encryptedDekBase64!,
           encryptionKey: await _keyPair.decrypt(_encryptedKey),
@@ -662,7 +731,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     required ProfileData profileData,
     VaultCancelToken? cancelToken,
   }) async {
-    final dekGenerateModel = await _vaultDataManagerEncryptionService
+    final encryptionService = await _getVaultDataManagerEncryptionService();
+    final dekGenerateModel = await encryptionService
         .generateDataEncryptionMaterial(
           encryptionKey: await _keyPair.decrypt(_encryptedKey),
         );
@@ -720,7 +790,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
       );
     }
 
-    final dekEncryptedByVfsPublicKey = await _vaultDataManagerEncryptionService
+    final encryptionService = await _getVaultDataManagerEncryptionService();
+    final dekEncryptedByVfsPublicKey = await encryptionService
         .getDekEncryptedByApiPublicKey(
           encryptedDekBase64: commonNodeEdek,
           encryptionKey: await _keyPair.decrypt(_encryptedKey),
@@ -768,7 +839,7 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     }
     final encryptedDekBase64 = nodeInfo.edekInfo!.edek;
 
-    final dek = await _vaultDataManagerEncryptionService.decryptDek(
+    final dek = await encryptionService.decryptDek(
       encryptedDek: base64.decode(encryptedDekBase64),
       encryptionKey: await _keyPair.decrypt(_encryptedKey),
     );
