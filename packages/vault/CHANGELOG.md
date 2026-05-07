@@ -1,3 +1,7 @@
+## 2.2.0-dev
+
+ - **FEAT**: Add OID4VP share flow service (`ShareFlowService`) for parsing and validating Iota OID4VP request URIs.
+
 ## 2.1.2
 
  - **FIX**: revert cache profiles for shared item reads (#93).
