@@ -45,5 +45,8 @@ abstract interface class ShareFlowServiceInterface {
   /// );
   /// print(shareRequest.request.nonce);
   /// ```
-  Future<Oid4vpShareRequest> validateOid4vpRequest(Uri uri, {String? walletDid});
+  Future<Oid4vpShareRequest> validateOid4vpRequest(
+    Uri uri, {
+    String? walletDid,
+  });
 }

@@ -124,33 +124,30 @@ void main() {
     });
 
     group('and the JWT payload is missing required fields', () {
-      test(
-        'should throw a TdkException with code parse_failure',
-        () async {
-          when(
-            () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
-          ).thenReturn({'nonce': 'only-nonce'}); // missing required fields
+      test('should throw a TdkException with code parse_failure', () async {
+        when(
+          () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+        ).thenReturn({'nonce': 'only-nonce'}); // missing required fields
 
-          final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
+        final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
 
-          await expectLater(
-            () => service.validateOid4vpRequest(uri),
-            throwsA(
-              isA<TdkException>()
-                  .having(
-                    (e) => e.code,
-                    'code',
-                    TdkExceptionType.parseFailure.code,
-                  )
-                  .having(
-                    (e) => e.message,
-                    'message',
-                    'JWT payload is missing required fields.',
-                  ),
-            ),
-          );
-        },
-      );
+        await expectLater(
+          () => service.validateOid4vpRequest(uri),
+          throwsA(
+            isA<TdkException>()
+                .having(
+                  (e) => e.code,
+                  'code',
+                  TdkExceptionType.parseFailure.code,
+                )
+                .having(
+                  (e) => e.message,
+                  'message',
+                  'JWT payload is missing required fields.',
+                ),
+          ),
+        );
+      });
     });
 
     group('and the JWT signature is invalid', () {
@@ -429,10 +426,7 @@ void main() {
         expect(result.request.nonce, 'test-nonce');
         expect(result.request.state, 'test-state');
         expect(result.request.clientId, 'did:key:z6Mk');
-        expect(
-          result.request.clientMetadata,
-          {'client_name': 'Test Verifier'},
-        );
+        expect(result.request.clientMetadata, {'client_name': 'Test Verifier'});
         expect(
           result.request.acceptResponseUri,
           'https://example.com/response',
