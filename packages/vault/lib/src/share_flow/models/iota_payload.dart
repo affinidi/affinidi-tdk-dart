@@ -12,8 +12,10 @@ class IotaPayload {
   /// The scheme used to identify the client (e.g. `did`).
   final String clientIdScheme;
 
-  /// URI pointing to the client metadata document.
-  final String clientMetadataUri;
+  /// The client metadata object as defined in OID4VP 1.0 final §5.1.
+  ///
+  /// Optional — verifiers may omit this field.
+  final Map<String, dynamic>? clientMetadata;
 
   /// The URI to which the response should be sent.
   final String responseUri;
@@ -25,7 +27,10 @@ class IotaPayload {
   final String responseMode;
 
   /// The scope of the authorization request.
-  final String scope;
+  ///
+  /// Optional per OID4VP 1.0 final §5.2 — either `scope` or `dcql_query`
+  /// must be present, but not both.
+  final String? scope;
 
   /// Optional audience claim of the JWT.
   final String? aud;
@@ -46,11 +51,11 @@ class IotaPayload {
   /// - [state] - state value used to correlate the authorization request and response.
   /// - [clientId] - client identifier of the verifier.
   /// - [clientIdScheme] - scheme used to identify the client.
-  /// - [clientMetadataUri] - URI pointing to the client metadata document.
+  /// - [clientMetadata] - optional client metadata object.
   /// - [responseUri] - URI to which the response should be sent.
   /// - [responseType] - type of the response.
   /// - [responseMode] - mode in which the response is delivered.
-  /// - [scope] - scope of the authorization request.
+  /// - [scope] - optional scope of the authorization request.
   /// - [aud] - optional audience claim of the JWT.
   /// - [exp] - expiration time of the JWT as a Unix timestamp (seconds).
   /// - [iat] - issued-at time of the JWT as a Unix timestamp (seconds).
@@ -60,11 +65,11 @@ class IotaPayload {
     required this.state,
     required this.clientId,
     required this.clientIdScheme,
-    required this.clientMetadataUri,
+    this.clientMetadata,
     required this.responseUri,
     required this.responseType,
     required this.responseMode,
-    required this.scope,
+    this.scope,
     this.aud,
     required this.exp,
     required this.iat,
@@ -81,11 +86,11 @@ class IotaPayload {
       state: json['state'] as String,
       clientId: json['client_id'] as String,
       clientIdScheme: json['client_id_scheme'] as String,
-      clientMetadataUri: json['client_metadata_uri'] as String,
+      clientMetadata: json['client_metadata'] as Map<String, dynamic>?,
       responseUri: json['response_uri'] as String,
       responseType: json['response_type'] as String,
       responseMode: json['response_mode'] as String,
-      scope: json['scope'] as String,
+      scope: json['scope'] as String?,
       aud: json['aud'] as String?,
       exp: (json['exp'] as num).toInt(),
       iat: (json['iat'] as num).toInt(),
@@ -102,11 +107,11 @@ class IotaPayload {
     'state': state,
     'client_id': clientId,
     'client_id_scheme': clientIdScheme,
-    'client_metadata_uri': clientMetadataUri,
+    if (clientMetadata != null) 'client_metadata': clientMetadata,
     'response_uri': responseUri,
     'response_type': responseType,
     'response_mode': responseMode,
-    'scope': scope,
+    if (scope != null) 'scope': scope,
     if (aud != null) 'aud': aud,
     'exp': exp,
     'iat': iat,

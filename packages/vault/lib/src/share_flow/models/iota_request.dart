@@ -18,7 +18,10 @@ class IotaRequest {
   final String rejectResponseUri;
 
   /// The scope of the authorization request.
-  final String scope;
+  ///
+  /// Optional per OID4VP 1.0 final §5.2 — either `scope` or `dcql_query`
+  /// must be present, but not both.
+  final String? scope;
 
   /// The state value used to correlate the authorization request and response.
   final String state;
@@ -29,8 +32,10 @@ class IotaRequest {
   /// The client identifier of the verifier.
   final String? clientId;
 
-  /// URI pointing to the client metadata document.
-  final String? clientMetadataUri;
+  /// The client metadata object as defined in OID4VP 1.0 final §5.1.
+  ///
+  /// Optional — verifiers may omit this field.
+  final Map<String, dynamic>? clientMetadata;
 
   /// Creates a new [IotaRequest] instance.
   ///
@@ -39,21 +44,21 @@ class IotaRequest {
   /// - [responseMode] - mode in which the response is delivered.
   /// - [acceptResponseUri] - URI to which an accepted response should be sent.
   /// - [rejectResponseUri] - URI to which a rejected response should be sent.
-  /// - [scope] - scope of the authorization request.
+  /// - [scope] - optional scope of the authorization request.
   /// - [state] - state value used to correlate the request and response.
   /// - [nonce] - nonce value to bind the presentation to the request.
   /// - [clientId] - optional client identifier of the verifier.
-  /// - [clientMetadataUri] - optional URI pointing to the client metadata document.
+  /// - [clientMetadata] - optional client metadata object.
   const IotaRequest({
     required this.responseType,
     required this.responseMode,
     required this.acceptResponseUri,
     required this.rejectResponseUri,
-    required this.scope,
+    this.scope,
     required this.state,
     required this.nonce,
     this.clientId,
-    this.clientMetadataUri,
+    this.clientMetadata,
   });
 
   /// Creates an [IotaRequest] from an [IotaPayload].
@@ -70,7 +75,7 @@ class IotaRequest {
       state: payload.state,
       nonce: payload.nonce,
       clientId: payload.clientId,
-      clientMetadataUri: payload.clientMetadataUri,
+      clientMetadata: payload.clientMetadata,
     );
   }
 }

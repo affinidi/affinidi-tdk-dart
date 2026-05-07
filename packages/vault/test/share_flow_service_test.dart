@@ -18,26 +18,28 @@ Map<String, dynamic> _baseDecodedPayload({
   String state = 'test-state',
   String clientId = 'did:key:z6Mk',
   String clientIdScheme = 'did',
-  String clientMetadataUri = 'https://example.com/metadata',
+  Map<String, dynamic>? clientMetadata = const {'client_name': 'Test Verifier'},
   String responseUri = 'https://example.com/response',
   String responseType = 'vp_token',
   String responseMode = 'direct_post',
-  String scope = 'openid',
+  String? scope = 'openid',
   int exp = 9999999999,
   int iat = 1000000000,
+  String? aud,
   Map<String, dynamic>? presentationDefinition,
 }) => {
   'nonce': nonce,
   'state': state,
   'client_id': clientId,
   'client_id_scheme': clientIdScheme,
-  'client_metadata_uri': clientMetadataUri,
+  if (clientMetadata != null) 'client_metadata': clientMetadata,
   'response_uri': responseUri,
   'response_type': responseType,
   'response_mode': responseMode,
-  'scope': scope,
+  if (scope != null) 'scope': scope,
   'exp': exp,
   'iat': iat,
+  if (aud != null) 'aud': aud,
   'presentation_definition':
       presentationDefinition ??
       {'id': 'pd-1', 'input_descriptors': <Map<String, dynamic>>[]},
@@ -232,26 +234,68 @@ void main() {
     });
 
     group('and the client_id_scheme is not `did`', () {
-      test('should throw a TdkException with code parse_failure', () async {
-        when(
-          () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
-        ).thenReturn(_baseDecodedPayload(clientIdScheme: 'x509_san_dns'));
-
-        final uri = Uri.parse(
-          'openid4vp://authorize?request=$jwtWithWrongClientIdScheme',
-        );
-
-        await expectLater(
-          () => service.validateOid4vpRequest(uri),
-          throwsA(
-            isA<TdkException>().having(
-              (e) => e.code,
-              'code',
-              TdkExceptionType.parseFailure.code,
+      test(
+        'should throw a TdkException with code invalid_or_expired_jwt',
+        () async {
+          when(
+            () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+          ).thenReturn(_baseDecodedPayload(clientIdScheme: 'x509_san_dns'));
+          when(
+            () => mockCryptography.verifyJwt(
+              jwtToken: any(named: 'jwtToken'),
+              didKey: any(named: 'didKey'),
             ),
-          ),
-        );
-      });
+          ).thenReturn(_validResult());
+
+          final uri = Uri.parse(
+            'openid4vp://authorize?request=$jwtWithWrongClientIdScheme',
+          );
+
+          await expectLater(
+            () => service.validateOid4vpRequest(uri),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.invalidOrExpiredJwt.code,
+              ),
+            ),
+          );
+        },
+      );
+    });
+
+    group('and the `aud` claim does not match the walletDid', () {
+      test(
+        'should throw a TdkException with code invalid_or_expired_jwt',
+        () async {
+          when(
+            () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+          ).thenReturn(_baseDecodedPayload(aud: 'did:key:someOtherDid'));
+          when(
+            () => mockCryptography.verifyJwt(
+              jwtToken: any(named: 'jwtToken'),
+              didKey: any(named: 'didKey'),
+            ),
+          ).thenReturn(_validResult());
+
+          final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
+
+          await expectLater(
+            () => service.validateOid4vpRequest(
+              uri,
+              walletDid: 'did:key:myWalletDid',
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.invalidOrExpiredJwt.code,
+              ),
+            ),
+          );
+        },
+      );
     });
 
     group('and the client_id is empty', () {
@@ -259,6 +303,12 @@ void main() {
         when(
           () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
         ).thenReturn(_baseDecodedPayload(clientId: ''));
+        when(
+          () => mockCryptography.verifyJwt(
+            jwtToken: any(named: 'jwtToken'),
+            didKey: any(named: 'didKey'),
+          ),
+        ).thenReturn(_validResult());
 
         final uri = Uri.parse(
           'openid4vp://authorize?request=$jwtWithEmptyClientId',
@@ -380,8 +430,8 @@ void main() {
         expect(result.request.state, 'test-state');
         expect(result.request.clientId, 'did:key:z6Mk');
         expect(
-          result.request.clientMetadataUri,
-          'https://example.com/metadata',
+          result.request.clientMetadata,
+          {'client_name': 'Test Verifier'},
         );
         expect(
           result.request.acceptResponseUri,
@@ -395,6 +445,7 @@ void main() {
         expect(result.request.scope, 'openid');
         expect(result.presentationDefinition['id'], 'pd-1');
         expect(result.purpose, isNull);
+        expect(result.jwtAssertion, validJwt);
       });
 
       test(

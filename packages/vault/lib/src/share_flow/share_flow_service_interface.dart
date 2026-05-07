@@ -24,24 +24,26 @@ abstract interface class ShareFlowServiceInterface {
   /// contents, and returns a structured [Oid4vpShareRequest].
   ///
   /// [uri] - the OID4VP request URI containing a `request` JWT query parameter.
+  /// [walletDid] - DID of the current wallet. When provided, the `aud`
+  /// claim in the JWT payload is validated against it.
   ///
   /// Returns an [Oid4vpShareRequest] with the normalised request parameters,
   /// presentation definition, and optional purpose metadata.
   ///
   /// Throws:
   /// - [TdkException] if the URI cannot be parsed or a required field is missing.
-  ///   - `parse_failure`: when the `request` query parameter is absent, malformed,
-  ///     the JWT payload cannot be decoded, or the `client_id_scheme` is not `did`.
+  ///   - `parse_failure`: when the `request` query parameter is absent, malformed, or the JWT payload cannot be decoded.
+  ///   - `invalid_or_expired_jwt`: when the JWT signature is invalid, the token has expired, the `client_id_scheme` is not `did`, or the `aud` does not match [walletDid].
   ///   - `missing_client_id`: when the `client_id` field is absent from the payload.
-  ///   - `invalid_or_expired_jwt`: when the JWT signature is invalid or the token has expired.
   ///   - `invalid_response_mode`: when `response_mode` is not `direct_post`.
   ///
   /// Example:
   /// ```dart
   /// final shareRequest = await service.validateOid4vpRequest(
   ///   Uri.parse('openid4vp://authorize?request=<jwt>'),
+  ///   walletDid: 'did:key:z6Mk...',
   /// );
   /// print(shareRequest.request.nonce);
   /// ```
-  Future<Oid4vpShareRequest> validateOid4vpRequest(Uri uri);
+  Future<Oid4vpShareRequest> validateOid4vpRequest(Uri uri, {String? walletDid});
 }

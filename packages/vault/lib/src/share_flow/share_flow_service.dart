@@ -21,7 +21,10 @@ class ShareFlowService implements ShareFlowServiceInterface {
     : _cryptography = cryptography;
 
   @override
-  Future<Oid4vpShareRequest> validateOid4vpRequest(Uri uri) async {
+  Future<Oid4vpShareRequest> validateOid4vpRequest(
+    Uri uri, {
+    String? walletDid,
+  }) async {
     final embeddedException = uri.queryParameters['exception'];
     if (embeddedException != null) {
       Error.throwWithStackTrace(
@@ -72,36 +75,32 @@ class ShareFlowService implements ShareFlowServiceInterface {
       );
     }
 
-    if (payload.clientId.isEmpty) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'client_id is required.',
-          code: TdkExceptionType.missingClientId.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    if (payload.clientIdScheme != _didScheme) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Unsupported client_id_scheme: ${payload.clientIdScheme}.',
-          code: TdkExceptionType.parseFailure.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
     final verifyResult = _cryptography.verifyJwt(
       jwtToken: jwtToken,
       didKey: payload.clientId,
     );
-    if (!verifyResult.isValid || verifyResult.isExpired) {
+    final isValidClientIdScheme = payload.clientIdScheme == _didScheme;
+    final isValidAud =
+        payload.aud == null || walletDid == null || payload.aud == walletDid;
+    if (!verifyResult.isValid ||
+        verifyResult.isExpired ||
+        !isValidClientIdScheme ||
+        !isValidAud) {
       Error.throwWithStackTrace(
         TdkException(
           message: 'JWT is invalid or has expired.',
           code: TdkExceptionType.invalidOrExpiredJwt.code,
           originalMessage: verifyResult.errorMessage,
+        ),
+        StackTrace.current,
+      );
+    }
+
+    if (payload.clientId.isEmpty) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'client_id is required.',
+          code: TdkExceptionType.missingClientId.code,
         ),
         StackTrace.current,
       );
@@ -129,6 +128,7 @@ class ShareFlowService implements ShareFlowServiceInterface {
     return Oid4vpShareRequest(
       request: IotaRequest.fromPayload(payload),
       presentationDefinition: payload.presentationDefinition,
+      jwtAssertion: jwtToken,
       purpose: purpose,
     );
   }

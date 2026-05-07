@@ -15,15 +15,23 @@ class Oid4vpShareRequest {
   /// The purpose metadata extracted from the presentation definition, if present.
   final RequestPurpose? purpose;
 
+  /// The raw JWT assertion string from the `request` query parameter.
+  ///
+  /// Must be forwarded when submitting the VP response or constructing
+  /// an IDV redirect.
+  final String jwtAssertion;
+
   /// Creates a new [Oid4vpShareRequest] instance.
   ///
   /// Parameters:
   /// - [request] - the normalised authorization request parameters.
   /// - [presentationDefinition] - the presentation definition describing the required credentials.
   /// - [purpose] - optional purpose metadata extracted from the presentation definition.
+  /// - [jwtAssertion] - the raw JWT string from the `request` query parameter.
   const Oid4vpShareRequest({
     required this.request,
     required this.presentationDefinition,
+    required this.jwtAssertion,
     this.purpose,
   });
 }
