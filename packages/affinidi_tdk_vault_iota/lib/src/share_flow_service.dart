@@ -1,7 +1,7 @@
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 
-import '../exceptions/tdk_exception_type.dart';
+import 'exceptions/tdk_exception_type.dart';
 import 'models/iota_payload.dart';
 import 'models/iota_request.dart';
 import 'models/request_purpose.dart';

@@ -1,3 +1,5 @@
+import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
+
 /// Placeholder JWT tokens used in share flow service tests.
 ///
 /// The actual content of these tokens does not matter because

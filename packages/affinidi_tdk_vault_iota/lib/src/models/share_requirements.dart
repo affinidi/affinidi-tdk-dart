@@ -26,8 +26,8 @@ class Oid4vpShareRequest {
   /// Parameters:
   /// - [request] - the normalised authorization request parameters.
   /// - [presentationDefinition] - the presentation definition describing the required credentials.
-  /// - [purpose] - optional purpose metadata extracted from the presentation definition.
   /// - [jwtAssertion] - the raw JWT string from the `request` query parameter.
+  /// - [purpose] - optional purpose metadata extracted from the presentation definition.
   const Oid4vpShareRequest({
     required this.request,
     required this.presentationDefinition,
