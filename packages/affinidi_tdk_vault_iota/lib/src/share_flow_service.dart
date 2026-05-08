@@ -2,9 +2,8 @@ import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 
 import 'exceptions/tdk_exception_type.dart';
+import 'extensions/iota_payload_extensions.dart';
 import 'models/iota_payload.dart';
-import 'models/iota_request.dart';
-import 'models/request_purpose.dart';
 import 'models/share_requirements.dart';
 import 'share_flow_service_interface.dart';
 
@@ -29,8 +28,9 @@ class ShareFlowService implements ShareFlowServiceInterface {
     if (embeddedException != null) {
       Error.throwWithStackTrace(
         TdkException(
-          message: embeddedException,
+          message: 'Request failed.',
           code: TdkExceptionType.parseFailure.code,
+          originalMessage: embeddedException,
         ),
         StackTrace.current,
       );
@@ -75,6 +75,16 @@ class ShareFlowService implements ShareFlowServiceInterface {
       );
     }
 
+    if (payload.clientId.isEmpty) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'client_id is required.',
+          code: TdkExceptionType.missingClientId.code,
+        ),
+        StackTrace.current,
+      );
+    }
+
     final verifyResult = _cryptography.verifyJwt(
       jwtToken: jwtToken,
       didKey: payload.clientId,
@@ -96,16 +106,6 @@ class ShareFlowService implements ShareFlowServiceInterface {
       );
     }
 
-    if (payload.clientId.isEmpty) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'client_id is required.',
-          code: TdkExceptionType.missingClientId.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
     if (payload.responseMode != _directPost) {
       Error.throwWithStackTrace(
         TdkException(
@@ -116,20 +116,11 @@ class ShareFlowService implements ShareFlowServiceInterface {
       );
     }
 
-    RequestPurpose? purpose;
-    final rawPurpose = payload.presentationDefinition['purpose'];
-    if (rawPurpose != null) {
-      final parsed = RequestPurpose.fromJson(rawPurpose);
-      if (parsed.isValid) {
-        purpose = parsed;
-      }
-    }
-
     return Oid4vpShareRequest(
-      request: IotaRequest.fromPayload(payload),
+      request: payload.toRequest(),
       presentationDefinition: payload.presentationDefinition,
       jwtAssertion: jwtToken,
-      purpose: purpose,
+      purpose: payload.purpose,
     );
   }
 }

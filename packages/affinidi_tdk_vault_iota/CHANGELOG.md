@@ -1,6 +1,8 @@
-# Change Log
+# CHANGELOG
 
 ## 1.0.0-dev
 
-- Initial release.
-- **FEAT**: Add OID4VP share flow service (`ShareFlowService`) for parsing and validating Iota OID4VP request URIs.
+- Initial release with OID4VP share flow support.
+- Parse and validate Iota OID4VP request URIs.
+- Verify JWT signatures and expiry.
+- Extract presentation definition and purpose metadata.

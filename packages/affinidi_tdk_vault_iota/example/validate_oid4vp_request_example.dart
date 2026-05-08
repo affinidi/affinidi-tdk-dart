@@ -13,9 +13,7 @@ Future<void> main() async {
   // - A QR code scan
   // - A deep link
   // - An API response
-  final uri = Uri.parse(
-    'openid4vp://authorize?request=<your-request-jwt>',
-  );
+  final uri = Uri.parse('openid4vp://authorize?request=<your-request-jwt>');
 
   // Optionally supply the wallet DID to validate the `aud` claim in the JWT.
   const walletDid = 'did:key:z6Mk...';

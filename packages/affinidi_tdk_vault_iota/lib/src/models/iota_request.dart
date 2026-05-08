@@ -1,6 +1,4 @@
-import 'iota_payload.dart';
-
-/// Normalised OID4VP authorisation request built from an [IotaPayload].
+/// Normalised OID4VP authorisation request built from a payload.
 ///
 /// Provides a structured view of the authorization request parameters
 /// required to present or reject the sharing flow.
@@ -60,22 +58,4 @@ class IotaRequest {
     this.clientId,
     this.clientMetadata,
   });
-
-  /// Creates an [IotaRequest] from an [IotaPayload].
-  ///
-  /// Parameters:
-  /// - [payload] - the decoded JWT payload from the OID4VP request URI.
-  factory IotaRequest.fromPayload(IotaPayload payload) {
-    return IotaRequest(
-      responseType: payload.responseType,
-      responseMode: payload.responseMode,
-      acceptResponseUri: payload.responseUri,
-      rejectResponseUri: payload.responseUri,
-      scope: payload.scope,
-      state: payload.state,
-      nonce: payload.nonce,
-      clientId: payload.clientId,
-      clientMetadata: payload.clientMetadata,
-    );
-  }
 }

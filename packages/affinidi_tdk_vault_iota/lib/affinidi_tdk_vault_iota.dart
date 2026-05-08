@@ -1,8 +1,6 @@
-/// This library provides OID4VP share flow support for Iota.
-library;
-
 export 'package:affinidi_tdk_common/affinidi_tdk_common.dart' show TdkException;
 export 'src/exceptions/tdk_exception_type.dart';
+export 'src/extensions/iota_payload_extensions.dart';
 export 'src/models/iota_payload.dart';
 export 'src/models/iota_request.dart';
 export 'src/models/request_purpose.dart';

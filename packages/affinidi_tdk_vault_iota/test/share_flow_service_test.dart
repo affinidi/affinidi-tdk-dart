@@ -70,7 +70,12 @@ void main() {
                   'code',
                   TdkExceptionType.parseFailure.code,
                 )
-                .having((e) => e.message, 'message', 'Something went wrong'),
+                .having((e) => e.message, 'message', 'Request failed.')
+                .having(
+                  (e) => e.originalMessage,
+                  'originalMessage',
+                  'Something went wrong',
+                ),
           ),
         );
       });
