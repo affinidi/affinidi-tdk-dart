@@ -1,3 +1,0 @@
-tags:
-  integration:
-    skip: "Requires .env with real credentials — run manually only"
