@@ -5,5 +5,3 @@ jobs:
   dart-pipeline:
     uses: affinidi/pipeline-dart/.github/workflows/check.yaml@main
     secrets: inherit
-    with:
-      env_vars: MELOS_DIFF_BASE=origin/${{ github.base_ref }}
