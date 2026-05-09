@@ -21,6 +21,8 @@ workspace:
   - packages/test_utilities
   - packages/vault
   - packages/vault_data_manager
+  - packages/affinidi_tdk_vault_iota
+  - packages/affinidi_tdk_vault_iota/example
   - packages/vault_flutter_utils
   - packages/vault_flutter_utils/example/flutter_secure_storage
   - packages/integration_tests
