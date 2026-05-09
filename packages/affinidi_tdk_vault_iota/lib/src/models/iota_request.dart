@@ -28,7 +28,7 @@ class IotaRequest {
   final String nonce;
 
   /// The client identifier of the verifier.
-  final String? clientId;
+  final String clientId;
 
   /// The client metadata object as defined in OID4VP 1.0 final §5.1.
   ///
@@ -45,7 +45,7 @@ class IotaRequest {
   /// - [scope] - optional scope of the authorization request.
   /// - [state] - state value used to correlate the request and response.
   /// - [nonce] - nonce value to bind the presentation to the request.
-  /// - [clientId] - optional client identifier of the verifier.
+  /// - [clientId] - client identifier of the verifier.
   /// - [clientMetadata] - optional client metadata object.
   const IotaRequest({
     required this.responseType,
@@ -55,7 +55,7 @@ class IotaRequest {
     this.scope,
     required this.state,
     required this.nonce,
-    this.clientId,
+    required this.clientId,
     this.clientMetadata,
   });
 }

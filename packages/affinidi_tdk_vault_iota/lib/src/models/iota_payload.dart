@@ -84,7 +84,7 @@ class IotaPayload {
     return IotaPayload(
       nonce: json['nonce'] as String,
       state: json['state'] as String,
-      clientId: json['client_id'] as String,
+      clientId: (json['client_id'] as String?) ?? '',
       clientIdScheme: json['client_id_scheme'] as String,
       clientMetadata: json['client_metadata'] as Map<String, dynamic>?,
       responseUri: json['response_uri'] as String,
