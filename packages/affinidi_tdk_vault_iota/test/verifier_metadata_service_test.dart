@@ -96,6 +96,68 @@ void main() {
       });
 
       test(
+        'should throw TdkException on non-200 from clientMetadataUri',
+        () async {
+          final service = VerifierMetadataService(
+            baseUrl: _baseUrl,
+            httpClient: _clientReturning(403, {'error': 'forbidden'}),
+          );
+          addTearDown(service.dispose);
+
+          await expectLater(
+            () => service.fetchVerifierMetadata(
+              clientId: _clientId,
+              clientMetadataUri:
+                  Uri.parse('https://other.example.com/metadata/verifier'),
+            ),
+            throwsA(
+              isA<TdkException>()
+                  .having(
+                    (e) => e.code,
+                    'code',
+                    TdkExceptionType.verifierMetadataFetchFailed.code,
+                  )
+                  .having(
+                    (e) => e.message,
+                    'message',
+                    contains('403'),
+                  ),
+            ),
+          );
+        },
+      );
+
+      test(
+        'should throw TdkException when clientMetadataUri returns invalid JSON',
+        () async {
+          final httpClient = MockClient(
+            (_) async => http.Response('not-json', 200),
+          );
+
+          final service = VerifierMetadataService(
+            baseUrl: _baseUrl,
+            httpClient: httpClient,
+          );
+          addTearDown(service.dispose);
+
+          await expectLater(
+            () => service.fetchVerifierMetadata(
+              clientId: _clientId,
+              clientMetadataUri:
+                  Uri.parse('https://other.example.com/metadata/verifier'),
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.verifierMetadataFetchFailed.code,
+              ),
+            ),
+          );
+        },
+      );
+
+      test(
         'should prefer embeddedClientMetadata over clientMetadataUri',
         () async {
           // Client throws if called — proves embedded is used, not the URI.
@@ -240,6 +302,32 @@ void main() {
         () async {
           final httpClient = MockClient(
             (_) async => http.Response('not-json', 200),
+          );
+
+          final service = VerifierMetadataService(
+            baseUrl: _baseUrl,
+            httpClient: httpClient,
+          );
+          addTearDown(service.dispose);
+
+          await expectLater(
+            () => service.fetchVerifierMetadata(clientId: _clientId),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.verifierMetadataFetchFailed.code,
+              ),
+            ),
+          );
+        },
+      );
+
+      test(
+        'should throw TdkException when response body is a JSON array, not an object',
+        () async {
+          final httpClient = MockClient(
+            (_) async => http.Response(jsonEncode([_validMetadataJson()]), 200),
           );
 
           final service = VerifierMetadataService(
