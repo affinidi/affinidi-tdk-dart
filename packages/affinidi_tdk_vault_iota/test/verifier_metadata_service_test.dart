@@ -7,8 +7,6 @@ import 'package:test/test.dart';
 
 const _baseUrl = 'https://apse1.api.affinidi.io';
 const _clientId = 'did:key:z6Mk';
-const _metadataPath =
-    '/vpa/v1/login/configurations/metadata/$_clientId';
 
 Map<String, dynamic> _validMetadataJson() => {
       'name': 'Test Verifier',
@@ -33,6 +31,7 @@ void main() {
           baseUrl: _baseUrl,
           httpClient: httpClient,
         );
+        addTearDown(service.dispose);
 
         final result = await service.fetchVerifierMetadata(
           clientId: _clientId,
@@ -53,6 +52,7 @@ void main() {
           baseUrl: _baseUrl,
           httpClient: httpClient,
         );
+        addTearDown(service.dispose);
 
         await expectLater(
           () => service.fetchVerifierMetadata(
@@ -70,6 +70,56 @@ void main() {
       });
     });
 
+    group('when clientMetadataUri is provided', () {
+      test('should GET the absolute clientMetadataUri directly', () async {
+        final absoluteUri =
+            Uri.parse('https://other.example.com/metadata/verifier');
+        Uri? capturedUri;
+        final httpClient = MockClient((request) async {
+          capturedUri = request.url;
+          return http.Response(jsonEncode(_validMetadataJson()), 200);
+        });
+
+        final service = VerifierMetadataService(
+          baseUrl: _baseUrl,
+          httpClient: httpClient,
+        );
+        addTearDown(service.dispose);
+
+        final result = await service.fetchVerifierMetadata(
+          clientId: _clientId,
+          clientMetadataUri: absoluteUri,
+        );
+
+        expect(capturedUri, absoluteUri);
+        expect(result.name, 'Test Verifier');
+      });
+
+      test(
+        'should prefer embeddedClientMetadata over clientMetadataUri',
+        () async {
+          // Client throws if called — proves embedded is used, not the URI.
+          final httpClient =
+              MockClient((_) async => throw StateError('no call'));
+
+          final service = VerifierMetadataService(
+            baseUrl: _baseUrl,
+            httpClient: httpClient,
+          );
+          addTearDown(service.dispose);
+
+          final result = await service.fetchVerifierMetadata(
+            clientId: _clientId,
+            clientMetadataUri:
+                Uri.parse('https://other.example.com/metadata/verifier'),
+            embeddedClientMetadata: _validMetadataJson(),
+          );
+
+          expect(result.name, 'Test Verifier');
+        },
+      );
+    });
+
     group('when embeddedClientMetadata is absent', () {
       test('should GET the correct URL', () async {
         Uri? capturedUri;
@@ -82,12 +132,13 @@ void main() {
           baseUrl: _baseUrl,
           httpClient: httpClient,
         );
+        addTearDown(service.dispose);
 
         await service.fetchVerifierMetadata(clientId: _clientId);
 
         expect(
-          capturedUri.toString(),
-          '$_baseUrl$_metadataPath',
+          capturedUri,
+          Uri.parse('$_baseUrl/vpa/v1/login/configurations/metadata/$_clientId'),
         );
       });
 
@@ -96,6 +147,7 @@ void main() {
           baseUrl: _baseUrl,
           httpClient: _clientReturning(200, _validMetadataJson()),
         );
+        addTearDown(service.dispose);
 
         final result = await service.fetchVerifierMetadata(clientId: _clientId);
 
@@ -117,6 +169,7 @@ void main() {
           baseUrl: _baseUrl,
           httpClient: _clientReturning(200, body),
         );
+        addTearDown(service.dispose);
 
         final result = await service.fetchVerifierMetadata(clientId: _clientId);
 
@@ -130,6 +183,7 @@ void main() {
             baseUrl: _baseUrl,
             httpClient: _clientReturning(404, {'error': 'not found'}),
           );
+          addTearDown(service.dispose);
 
           await expectLater(
             () => service.fetchVerifierMetadata(clientId: _clientId),
@@ -160,6 +214,7 @@ void main() {
             baseUrl: _baseUrl,
             httpClient: httpClient,
           );
+          addTearDown(service.dispose);
 
           await expectLater(
             () => service.fetchVerifierMetadata(clientId: _clientId),
@@ -191,6 +246,7 @@ void main() {
             baseUrl: _baseUrl,
             httpClient: httpClient,
           );
+          addTearDown(service.dispose);
 
           await expectLater(
             () => service.fetchVerifierMetadata(clientId: _clientId),

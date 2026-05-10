@@ -70,4 +70,12 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
       );
     }
   }
+
+  /// Releases the underlying HTTP client.
+  ///
+  /// Call this when the service is no longer needed.
+  @override
+  void dispose() {
+    _httpClient.close();
+  }
 }
