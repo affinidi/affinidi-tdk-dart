@@ -4,6 +4,7 @@ import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:http/http.dart' as http;
 
 import '../exceptions/tdk_exception_type.dart';
+import '../http_status_code.dart';
 import '../models/verifier_client_metadata.dart';
 import 'verifier_metadata_service_interface.dart';
 
@@ -30,6 +31,7 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
   @override
   Future<VerifierClientMetadata> fetchVerifierMetadata({
     required String clientId,
+    Uri? clientMetadataUri,
     Map<String, dynamic>? embeddedClientMetadata,
   }) async {
     try {
@@ -37,10 +39,11 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
         return VerifierClientMetadata.fromJson(embeddedClientMetadata);
       }
 
-      final uri = Uri.parse('$_baseUrl$_metadataPath/$clientId');
+      final uri =
+          clientMetadataUri ?? Uri.parse('$_baseUrl$_metadataPath/$clientId');
       final response = await _httpClient.get(uri);
 
-      if (response.statusCode != 200) {
+      if (response.statusCode != HttpStatusCode.ok) {
         Error.throwWithStackTrace(
           TdkException(
             message:
