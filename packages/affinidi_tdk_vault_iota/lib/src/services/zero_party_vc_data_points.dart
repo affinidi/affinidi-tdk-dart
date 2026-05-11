@@ -84,9 +84,6 @@ abstract final class ZeroPartyVcDataPoints {
       _addressCountry,
     },
     'HITContacts': {_phoneNumber, _email},
-    'HITIdentity': {_nickname, _gender, _birthdate},
-    // ProfileTemplate carries no specific data paths — its presence signals
-    // that a profile VC must be generated.
-    'ProfileTemplate': {},
+    'HITIdentity': {_nickname, _gender, _birthdate}
   };
 }
