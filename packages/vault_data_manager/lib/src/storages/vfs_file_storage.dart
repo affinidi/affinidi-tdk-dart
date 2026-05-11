@@ -92,42 +92,32 @@ class VFSFileStorage implements FileStorage {
     required String parentFolderId,
     VaultCancelToken? cancelToken,
   }) async {
-    await _vaultDataManagerService.createFolder(
+    final nodeId = await _vaultDataManagerService.createFolder(
       folderName: folderName,
       parentNodeId: parentFolderId,
       cancelToken: cancelToken,
     );
-
-    // Create succeeds but returns no node id; list children (paginated) until match.
-    String? cursor;
-    while (true) {
-      final page = await _vaultDataManagerService.getChildNodes(
-        nodeId: parentFolderId,
-        exclusiveStartItemId: cursor,
-        cancelToken: cancelToken,
+    final node = await _vaultDataManagerService.getNodeInfo(
+      nodeId,
+      cancelToken: cancelToken,
+    );
+    if (node.type != NodeType.FOLDER) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Node is not a folder',
+          code: TdkExceptionType.invalidNodeType.code,
+        ),
+        StackTrace.current,
       );
-      for (final node in page.items) {
-        if (node.type == NodeType.FOLDER && node.name == folderName) {
-          return Folder(
-            id: node.nodeId,
-            name: node.name,
-            createdAt: DateTime.parse(node.createdAt),
-            modifiedAt: DateTime.parse(node.modifiedAt),
-          );
-        }
-      }
-      final next = page.lastEvaluatedItemId;
-      if (next == null || next == cursor) {
-        Error.throwWithStackTrace(
-          TdkException(
-            message: 'Created folder not found',
-            code: TdkExceptionType.folderNotFound.code,
-          ),
-          StackTrace.current,
-        );
-      }
-      cursor = next;
     }
+
+    return Folder(
+      id: node.nodeId,
+      name: node.name,
+      createdAt: DateTime.parse(node.createdAt),
+      modifiedAt: DateTime.parse(node.modifiedAt),
+      parentId: node.parentNodeId,
+    );
   }
 
   @override

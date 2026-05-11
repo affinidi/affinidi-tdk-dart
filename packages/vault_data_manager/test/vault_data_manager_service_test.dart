@@ -203,15 +203,18 @@ void main() {
     group('and it is created successfully,', () {
       test('it calls vault data manager api service method once', () async {
         when(vaultDataManagerApiServiceMocks.createFolder).thenAnswer(
-          (_) async =>
-              Response<CreateNodeOK>(requestOptions: RequestOptions(path: '')),
+          (_) async => Response<CreateNodeOK>(
+            requestOptions: RequestOptions(path: ''),
+            data: CreateNodeOK((b) => b..nodeId = 'created-folder-id'),
+          ),
         );
 
-        await vaultDataManagerService.createFolder(
+        final nodeId = await vaultDataManagerService.createFolder(
           folderName: 'folder_name',
           parentNodeId: 'parent_node_id',
         );
 
+        expect(nodeId, 'created-folder-id');
         verify(vaultDataManagerApiServiceMocks.createFolder).called(1);
       });
     });

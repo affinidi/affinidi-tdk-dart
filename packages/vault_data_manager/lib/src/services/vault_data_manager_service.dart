@@ -201,18 +201,29 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   }
 
   @override
-  Future<void> createFolder({
+  Future<String> createFolder({
     required String folderName,
     required String parentNodeId,
     VaultCancelToken? cancelToken,
   }) async {
-    await _vaultDataManagerApiService.createFolder(
+    final response = await _vaultDataManagerApiService.createFolder(
       name: folderName,
       parentNodeId: parentNodeId,
       cancelToken: cancelToken != null
           ? DioCancelTokenAdapter.from(cancelToken)
           : null,
     );
+    final nodeId = response.data?.nodeId;
+    if (nodeId == null || nodeId.isEmpty) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Created folder is missing node id',
+          code: TdkExceptionType.unableToCreateNode.code,
+        ),
+        StackTrace.current,
+      );
+    }
+    return nodeId;
   }
 
   @override

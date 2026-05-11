@@ -43,7 +43,7 @@ void main() {
         folderName: any(named: 'folderName'),
         parentNodeId: any(named: 'parentNodeId'),
       ),
-    ).thenAnswer((_) async {});
+    ).thenAnswer((_) async => 'created-folder-id');
     when(
       () => mockDataManagerService.deleteFile(any()),
     ).thenAnswer((_) async {});
@@ -154,7 +154,7 @@ void main() {
             folderName: any(named: 'folderName'),
             parentNodeId: any(named: 'parentNodeId'),
           ),
-        ).thenAnswer((_) async {});
+        ).thenAnswer((_) async => 'created-folder-id');
 
         final folderNode = Node(
           nodeId: '1',
@@ -174,15 +174,11 @@ void main() {
         );
 
         when(
-          () => mockDataManagerService.getChildNodes(
-            nodeId: NodeFixtures.testParentId,
+          () => mockDataManagerService.getNodeInfo(
+            'created-folder-id',
+            cancelToken: any(named: 'cancelToken'),
           ),
-        ).thenAnswer(
-          (_) async => PaginatedList<Node>(
-            items: [folderNode],
-            lastEvaluatedItemId: null,
-          ),
-        );
+        ).thenAnswer((_) async => folderNode);
 
         await storage.createFolder(
           folderName: FileFixtures.testFolderName,

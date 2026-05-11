@@ -9,64 +9,6 @@ import 'mocks/mock_registrations.dart';
 import 'mocks/mock_setup.dart';
 import 'mocks/mock_vault_data_manager_service.dart';
 
-/// Stubs [mockService.getChildNodes] so the first [folderOnPageNumber] - 1 pages
-/// contain only unrelated nodes and the folder appears on page [folderOnPageNumber].
-void stubPaginatedChildrenEndingWithCreatedFolder(
-  MockVaultDataManagerService mockService, {
-  required int folderOnPageNumber,
-}) {
-  assert(folderOnPageNumber >= 2);
-  final parentId = FileFixtures.testParentId;
-  final cursorKeys = List.generate(
-    folderOnPageNumber - 1,
-    (i) => 'cursor-after-page-${i + 1}',
-  );
-
-  when(
-    () => mockService.getChildNodes(
-      nodeId: parentId,
-      limit: any(named: 'limit'),
-      exclusiveStartItemId: null,
-      cancelToken: any(named: 'cancelToken'),
-    ),
-  ).thenAnswer(
-    (_) async => PaginatedList<Node>(
-      items: [FileFixtures.mockFileNode],
-      lastEvaluatedItemId: cursorKeys.first,
-    ),
-  );
-
-  for (var i = 0; i < folderOnPageNumber - 2; i++) {
-    when(
-      () => mockService.getChildNodes(
-        nodeId: parentId,
-        limit: any(named: 'limit'),
-        exclusiveStartItemId: cursorKeys[i],
-        cancelToken: any(named: 'cancelToken'),
-      ),
-    ).thenAnswer(
-      (_) async => PaginatedList<Node>(
-        items: [FileFixtures.mockFileNode],
-        lastEvaluatedItemId: cursorKeys[i + 1],
-      ),
-    );
-  }
-
-  when(
-    () => mockService.getChildNodes(
-      nodeId: parentId,
-      limit: any(named: 'limit'),
-      exclusiveStartItemId: cursorKeys.last,
-      cancelToken: any(named: 'cancelToken'),
-    ),
-  ).thenAnswer(
-    (_) async => PaginatedList<Node>(
-      items: [FileFixtures.mockFolderNode],
-      lastEvaluatedItemId: null,
-    ),
-  );
-}
-
 void main() {
   setUpAll(registerAllFallbackValues);
 
@@ -92,124 +34,63 @@ void main() {
       group('and creating a folder', () {
         test('it should create a folder successfully', () async {
           when(
-            () => mockService.getChildNodes(nodeId: any(named: 'nodeId')),
-          ).thenAnswer(
-            (_) async => PaginatedList<Node>(
-              items: [FileFixtures.mockFolderNode],
-              lastEvaluatedItemId: null,
+            () => mockService.createFolder(
+              parentNodeId: any(named: 'parentNodeId'),
+              folderName: any(named: 'folderName'),
             ),
-          );
+          ).thenAnswer((_) async => FileFixtures.testFolderId);
+          when(
+            () => mockService.getNodeInfo(
+              FileFixtures.testFolderId,
+              cancelToken: any(named: 'cancelToken'),
+            ),
+          ).thenAnswer((_) async => FileFixtures.mockFolderNode);
 
-          await vfsFileStorage.createFolder(
+          final folder = await vfsFileStorage.createFolder(
             folderName: FileFixtures.testFolderName,
             parentFolderId: FileFixtures.testParentId,
           );
 
+          expect(folder.id, FileFixtures.testFolderId);
+          expect(folder.name, FileFixtures.testFolderName);
           verify(
             () => mockService.createFolder(
               parentNodeId: FileFixtures.testParentId,
               folderName: FileFixtures.testFolderName,
             ),
           ).called(1);
+          verify(
+            () => mockService.getNodeInfo(
+              FileFixtures.testFolderId,
+              cancelToken: any(named: 'cancelToken'),
+            ),
+          ).called(1);
         });
 
-        group('pagination after create', () {
-          for (final folderOnPage in [2, 3, 4]) {
-            test(
-              'it should find created folder on page $folderOnPage',
-              () async {
-                stubPaginatedChildrenEndingWithCreatedFolder(
-                  mockService,
-                  folderOnPageNumber: folderOnPage,
-                );
-
-                final folder = await vfsFileStorage.createFolder(
-                  folderName: FileFixtures.testFolderName,
-                  parentFolderId: FileFixtures.testParentId,
-                );
-
-                expect(folder.id, FileFixtures.testFolderId);
-                expect(folder.name, FileFixtures.testFolderName);
-
-                verify(
-                  () => mockService.getChildNodes(
-                    nodeId: FileFixtures.testParentId,
-                    limit: any(named: 'limit'),
-                    exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
-                    cancelToken: any(named: 'cancelToken'),
-                  ),
-                ).called(folderOnPage);
-              },
-            );
-          }
-        });
-
-        test(
-          'it should throw if child listing repeats the same pagination cursor',
-          () async {
-            const stuckKey = 'stuck-cursor';
-
-            when(
-              () => mockService.getChildNodes(
-                nodeId: FileFixtures.testParentId,
-                limit: any(named: 'limit'),
-                exclusiveStartItemId: null,
-                cancelToken: any(named: 'cancelToken'),
-              ),
-            ).thenAnswer(
-              (_) async =>
-                  PaginatedList<Node>(items: [], lastEvaluatedItemId: stuckKey),
-            );
-
-            when(
-              () => mockService.getChildNodes(
-                nodeId: FileFixtures.testParentId,
-                limit: any(named: 'limit'),
-                exclusiveStartItemId: stuckKey,
-                cancelToken: any(named: 'cancelToken'),
-              ),
-            ).thenAnswer(
-              (_) async =>
-                  PaginatedList<Node>(items: [], lastEvaluatedItemId: stuckKey),
-            );
-
-            await expectLater(
-              vfsFileStorage.createFolder(
-                folderName: FileFixtures.testFolderName,
-                parentFolderId: FileFixtures.testParentId,
-              ),
-              throwsA(
-                predicate<Object>(
-                  (e) => e is TdkException && e.code == 'folder_not_found',
-                ),
-              ),
-            );
-
-            verify(
-              () => mockService.getChildNodes(
-                nodeId: FileFixtures.testParentId,
-                limit: any(named: 'limit'),
-                exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
-                cancelToken: any(named: 'cancelToken'),
-              ),
-            ).called(2);
-          },
-        );
-
-        test('it should throw if folder not found after creation', () async {
+        test('it should throw if created node is not a folder', () async {
           when(
-            () => mockService.getChildNodes(nodeId: any(named: 'nodeId')),
-          ).thenAnswer(
-            (_) async =>
-                PaginatedList<Node>(items: [], lastEvaluatedItemId: null),
-          );
+            () => mockService.createFolder(
+              parentNodeId: any(named: 'parentNodeId'),
+              folderName: any(named: 'folderName'),
+            ),
+          ).thenAnswer((_) async => FileFixtures.testFolderId);
+          when(
+            () => mockService.getNodeInfo(
+              FileFixtures.testFolderId,
+              cancelToken: any(named: 'cancelToken'),
+            ),
+          ).thenAnswer((_) async => FileFixtures.mockFileNode);
 
           await expectLater(
             vfsFileStorage.createFolder(
-              folderName: 'missing-folder',
+              folderName: FileFixtures.testFolderName,
               parentFolderId: FileFixtures.testParentId,
             ),
-            throwsA(isA<TdkException>()),
+            throwsA(
+              predicate<Object>(
+                (e) => e is TdkException && e.code == 'invalid_node_type',
+              ),
+            ),
           );
         });
       });
