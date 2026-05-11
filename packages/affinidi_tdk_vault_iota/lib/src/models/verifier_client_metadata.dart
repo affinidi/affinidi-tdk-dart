@@ -45,9 +45,9 @@ class VerifierClientMetadata {
   ///
   /// Null fields are omitted from the output.
   Map<String, dynamic> toJson() => {
-        if (name != null) 'name': name,
-        if (logo != null) 'logo': logo,
-        if (origin != null) 'origin': origin,
-        if (domainVerified != null) 'domainVerified': domainVerified,
-      };
+    if (name != null) 'name': name,
+    if (logo != null) 'logo': logo,
+    if (origin != null) 'origin': origin,
+    if (domainVerified != null) 'domainVerified': domainVerified,
+  };
 }

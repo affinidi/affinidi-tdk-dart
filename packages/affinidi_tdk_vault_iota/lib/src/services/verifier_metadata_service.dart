@@ -22,11 +22,9 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
   /// [baseUrl] - the base URL of the Affinidi API
   /// (e.g. `https://apse1.api.affinidi.io`).
   /// [httpClient] - optional HTTP client; defaults to a new [http.Client].
-  VerifierMetadataService({
-    required String baseUrl,
-    http.Client? httpClient,
-  })  : _baseUrl = baseUrl,
-        _httpClient = httpClient ?? http.Client();
+  VerifierMetadataService({required String baseUrl, http.Client? httpClient})
+    : _baseUrl = baseUrl,
+      _httpClient = httpClient ?? http.Client();
 
   @override
   Future<VerifierClientMetadata> fetchVerifierMetadata({
