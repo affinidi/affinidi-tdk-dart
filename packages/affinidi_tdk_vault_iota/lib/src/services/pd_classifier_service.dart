@@ -343,13 +343,13 @@ class PDClassifier {
 
       if (filter == null) continue;
 
-      // $.@context filter → extract context
-      if (paths.contains(PdClassifierConstants.contextPath)) {
+      if (paths.contains(PdClassifierConstants.contextPath) &&
+          filter[PdClassifierConstants.containsKey] is Map) {
         context = _extractConstraint(filter);
       }
 
-      // $.type filter → extract type
-      if (paths.contains(PdClassifierConstants.typePath)) {
+      if (paths.contains(PdClassifierConstants.typePath) &&
+          filter[PdClassifierConstants.containsKey] is Map) {
         types.add(_extractConstraint(filter));
       }
 

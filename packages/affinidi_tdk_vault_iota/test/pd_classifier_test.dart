@@ -186,9 +186,10 @@ void main() {
         ),
       );
     });
-    test('should throw when a filter contains value is not a map', () {
-      expect(
-        () => classifier.classify(
+    test(
+      'should treat a descriptor with a non-Map contains as a claimed VC',
+      () {
+        final result = classifier.classify(
           _pd([
             {
               'id': 'bad-contains',
@@ -202,16 +203,11 @@ void main() {
               },
             },
           ]),
-        ),
-        throwsA(
-          isA<TdkException>().having(
-            (e) => e.code,
-            'code',
-            TdkExceptionType.invalidPresentationDefinition.code,
-          ),
-        ),
-      );
-    });
+        );
+        expect(result.claimedDescriptors, hasLength(1));
+        expect(result.claimedDescriptors.first.id, 'bad-contains');
+      },
+    );
 
     test('should throw when a filter contains.const value is not a string', () {
       expect(
