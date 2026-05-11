@@ -92,32 +92,31 @@ class VFSFileStorage implements FileStorage {
     required String parentFolderId,
     VaultCancelToken? cancelToken,
   }) async {
-    await _vaultDataManagerService.createFolder(
+    final nodeId = await _vaultDataManagerService.createFolder(
       folderName: folderName,
       parentNodeId: parentFolderId,
       cancelToken: cancelToken,
     );
-
-    final response = await _vaultDataManagerService.getChildNodes(
-      nodeId: parentFolderId,
+    final node = await _vaultDataManagerService.getNodeInfo(
+      nodeId,
       cancelToken: cancelToken,
     );
-    final folder = response.items.firstWhere(
-      (node) => node.name == folderName && node.type == NodeType.FOLDER,
-      orElse: () => Error.throwWithStackTrace(
+    if (node.type != NodeType.FOLDER) {
+      Error.throwWithStackTrace(
         TdkException(
-          message: 'Created folder not found',
-          code: TdkExceptionType.folderNotFound.code,
+          message: 'Node is not a folder',
+          code: TdkExceptionType.invalidNodeType.code,
         ),
         StackTrace.current,
-      ),
-    );
+      );
+    }
 
     return Folder(
-      id: folder.nodeId,
-      name: folder.name,
-      createdAt: DateTime.parse(folder.createdAt),
-      modifiedAt: DateTime.parse(folder.modifiedAt),
+      id: node.nodeId,
+      name: node.name,
+      createdAt: DateTime.parse(node.createdAt),
+      modifiedAt: DateTime.parse(node.modifiedAt),
+      parentId: node.parentNodeId,
     );
   }
 

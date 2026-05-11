@@ -34,41 +34,63 @@ void main() {
       group('and creating a folder', () {
         test('it should create a folder successfully', () async {
           when(
-            () => mockService.getChildNodes(nodeId: any(named: 'nodeId')),
-          ).thenAnswer(
-            (_) async => PaginatedList<Node>(
-              items: [FileFixtures.mockFolderNode],
-              lastEvaluatedItemId: null,
+            () => mockService.createFolder(
+              parentNodeId: any(named: 'parentNodeId'),
+              folderName: any(named: 'folderName'),
             ),
-          );
+          ).thenAnswer((_) async => FileFixtures.testFolderId);
+          when(
+            () => mockService.getNodeInfo(
+              FileFixtures.testFolderId,
+              cancelToken: any(named: 'cancelToken'),
+            ),
+          ).thenAnswer((_) async => FileFixtures.mockFolderNode);
 
-          await vfsFileStorage.createFolder(
+          final folder = await vfsFileStorage.createFolder(
             folderName: FileFixtures.testFolderName,
             parentFolderId: FileFixtures.testParentId,
           );
 
+          expect(folder.id, FileFixtures.testFolderId);
+          expect(folder.name, FileFixtures.testFolderName);
           verify(
             () => mockService.createFolder(
               parentNodeId: FileFixtures.testParentId,
               folderName: FileFixtures.testFolderName,
             ),
           ).called(1);
+          verify(
+            () => mockService.getNodeInfo(
+              FileFixtures.testFolderId,
+              cancelToken: any(named: 'cancelToken'),
+            ),
+          ).called(1);
         });
 
-        test('it should throw if folder not found after creation', () async {
+        test('it should throw if created node is not a folder', () async {
           when(
-            () => mockService.getChildNodes(nodeId: any(named: 'nodeId')),
-          ).thenAnswer(
-            (_) async =>
-                PaginatedList<Node>(items: [], lastEvaluatedItemId: null),
-          );
+            () => mockService.createFolder(
+              parentNodeId: any(named: 'parentNodeId'),
+              folderName: any(named: 'folderName'),
+            ),
+          ).thenAnswer((_) async => FileFixtures.testFolderId);
+          when(
+            () => mockService.getNodeInfo(
+              FileFixtures.testFolderId,
+              cancelToken: any(named: 'cancelToken'),
+            ),
+          ).thenAnswer((_) async => FileFixtures.mockFileNode);
 
-          expect(
-            () => vfsFileStorage.createFolder(
-              folderName: 'missing-folder',
+          await expectLater(
+            vfsFileStorage.createFolder(
+              folderName: FileFixtures.testFolderName,
               parentFolderId: FileFixtures.testParentId,
             ),
-            throwsA(isA<TdkException>()),
+            throwsA(
+              predicate<Object>(
+                (e) => e is TdkException && e.code == 'invalid_node_type',
+              ),
+            ),
           );
         });
       });
