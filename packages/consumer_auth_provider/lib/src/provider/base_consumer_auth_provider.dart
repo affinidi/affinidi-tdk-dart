@@ -5,6 +5,7 @@ import 'package:ssi/ssi.dart';
 
 import '../consumer_auth_provider_interface.dart';
 import '../exceptions/tdk_exception_type.dart';
+import '../helpers/execution_time_meter.dart';
 import 'cis_token_provider.dart';
 import 'consumer_token_provider.dart';
 import 'delegated_token_provider.dart';
@@ -57,7 +58,9 @@ class BaseConsumerAuthProvider implements ConsumerAuthProviderInterface {
         return _consumerToken!;
       }
 
+      final getTokenMetrics = ExecutionTimeMeter('fetchConsumerToken')..start();
       _consumerToken = await _consumerTokenProvider.getToken();
+      getTokenMetrics.stop();
 
       return _consumerToken!;
     } on TdkException catch (_) {

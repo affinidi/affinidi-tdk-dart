@@ -4,6 +4,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:ssi/ssi.dart';
 
 import '../exceptions/tdk_exception_type.dart';
+import '../helpers/execution_time_meter.dart';
 import '../mixins/jwt_token_did_checker.dart';
 import 'token_provider.dart';
 
@@ -89,18 +90,24 @@ class ConsumerTokenProvider extends TokenProvider with JwtTokenDidChecker {
       'client_id': did,
     };
 
-    final response = await _dioInstance.post<Map<String, dynamic>>(
-      _tokenEndpoint,
-      data: data,
-      options: Options(
-        contentType: 'application/json',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-      ),
-    );
+    final fetchTokenMetrics = ExecutionTimeMeter('fetchConsumerTokenFromServer')
+      ..start();
+    try {
+      final response = await _dioInstance.post<Map<String, dynamic>>(
+        _tokenEndpoint,
+        data: data,
+        options: Options(
+          contentType: 'application/json',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
+      );
 
-    return response.data!['access_token'] as String;
+      return response.data!['access_token'] as String;
+    } finally {
+      fetchTokenMetrics.stop();
+    }
   }
 }
