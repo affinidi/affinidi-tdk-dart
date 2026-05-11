@@ -3,23 +3,7 @@ import 'dart:convert';
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'package:test/test.dart';
 
-// Fixtures generated with OpenSSL secp256k1 key + dart_jsonwebtoken ES256K
-// signing. Test-only — do NOT use these keys in production.
-const _testDid = 'did:key:zQ3shmBVsvSAHDWX3zhAk9h4ikFh8BFz9PhtSmyy5Sp5ZRejB';
-
-// Valid JWT (exp: 9999999999 — year 2286)
-const _validJwt =
-    'eyJhbGciOiJFUzI1NksiLCJ0eXAiOiJKV1QifQ'
-    '.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzc3OTcwNTg4LCJleHAiOjk5OTk5OTk5OTl9'
-    '.CBvlgV06vsuIOPRaaDfx_KAYHpTsZj3PrGLlHfuU1pEYY'
-    'P5xwK1KTIhvCaQxxQzVeeeZCslnKGUnJI2X2h8IrQ';
-
-// Expired JWT (exp: 1000000001 — year 2001)
-const _expiredJwt =
-    'eyJhbGciOiJFUzI1NksiLCJ0eXAiOiJKV1QifQ'
-    '.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzc3OTcwNTg4LCJleHAiOjEwMDAwMDAwMDF9'
-    '.PsEegrkCB5eWVZiBiNBB2buy8jFG18cvhVIo1TH2lxO'
-    'WqQjt40qQNxIyrN55NUGC9hWBZyJOeSG7eImKbsVjzQ';
+import 'fixtures/cryptography_fixtures.dart' as fixtures;
 
 void main() {
   late CryptographyService cryptographyService;
@@ -57,8 +41,8 @@ void main() {
   group('verifyJwt', () {
     test('should return isValid=true for a correctly signed JWT', () {
       final result = cryptographyService.verifyJwt(
-        jwtToken: _validJwt,
-        didKey: _testDid,
+        jwtToken: fixtures.validJwt,
+        didKey: fixtures.testDid,
       );
 
       expect(result.isValid, isTrue);
@@ -69,8 +53,8 @@ void main() {
 
     test('should return isExpired=true for an expired JWT', () {
       final result = cryptographyService.verifyJwt(
-        jwtToken: _expiredJwt,
-        didKey: _testDid,
+        jwtToken: fixtures.expiredJwt,
+        didKey: fixtures.testDid,
       );
 
       expect(result.isValid, isFalse);
@@ -79,14 +63,14 @@ void main() {
     });
 
     test('should return isValid=false for a JWT with a tampered signature', () {
-      final parts = _validJwt.split('.');
+      final parts = fixtures.validJwt.split('.');
       final tampered =
           '${parts[0]}.${parts[1]}'
           '.TAMPERED_SIGNATURE';
 
       final result = cryptographyService.verifyJwt(
         jwtToken: tampered,
-        didKey: _testDid,
+        didKey: fixtures.testDid,
       );
 
       expect(result.isValid, isFalse);
@@ -97,7 +81,7 @@ void main() {
 
   group('decodeJwtToken', () {
     test('should decode the payload of a valid JWT', () {
-      final payload = cryptographyService.decodeJwtToken(token: _validJwt);
+      final payload = cryptographyService.decodeJwtToken(token: fixtures.validJwt);
 
       expect(payload['sub'], 'test');
       expect(payload['exp'], 9999999999);
