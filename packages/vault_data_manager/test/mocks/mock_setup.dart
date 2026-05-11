@@ -17,7 +17,7 @@ void stubFileService(
       parentNodeId: any(named: 'parentNodeId'),
       folderName: any(named: 'folderName'),
     ),
-  ).thenAnswer((_) async => Future<void>.value());
+  ).thenAnswer((_) async => 'created-folder-node-id');
 
   when(
     () => service.getChildNodes(
