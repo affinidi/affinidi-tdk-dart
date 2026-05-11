@@ -3,6 +3,7 @@
 /// Parsed from the `submission_requirements` array of a Presentation
 /// Definition. The JSON key for the group name is `from`.
 class SubmissionRequirements {
+  /// Creates a [SubmissionRequirements] instance.
   const SubmissionRequirements({
     this.min,
     this.max,
@@ -22,6 +23,9 @@ class SubmissionRequirements {
   /// The group identifier this requirement applies to (JSON key: `from`).
   final String groupName;
 
+  /// Creates a [SubmissionRequirements] from a JSON map.
+  ///
+  /// The group name is read from the `from` key per the OID4VP spec.
   factory SubmissionRequirements.fromJson(Map<String, dynamic> json) {
     return SubmissionRequirements(
       min: json['min'] as int?,

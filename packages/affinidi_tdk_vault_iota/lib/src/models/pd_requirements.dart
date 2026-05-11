@@ -33,6 +33,7 @@ import 'verified_identity_document_info.dart';
 /// - [shouldGenerateProfileVC]: `true` if a `ProfileTemplate` VC must be
 ///   generated for this request.
 class PDRequirements {
+  /// Creates a [PDRequirements] instance.
   const PDRequirements({
     required this.claimedDescriptors,
     required this.zpdLinkedDescriptors,
@@ -72,6 +73,7 @@ class PDRequirements {
   /// Human-readable purpose declared in the Presentation Definition.
   final RequestPurpose? purpose;
 
+  /// Returns a copy of this [PDRequirements] with the given fields replaced.
   PDRequirements copyWith({
     List<PDDescriptor>? claimedDescriptors,
     List<PDDescriptor>? zpdLinkedDescriptors,

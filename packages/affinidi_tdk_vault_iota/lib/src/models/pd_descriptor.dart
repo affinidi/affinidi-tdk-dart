@@ -9,13 +9,17 @@ import 'dart:convert';
 class PDDescriptor {
   final Map<String, dynamic> _data;
 
+  /// Creates a [PDDescriptor] from the raw input descriptor [data] map.
   PDDescriptor({required Map<String, dynamic> data}) : _data = data;
 
+  /// Creates an empty [PDDescriptor] with a placeholder `id`.
   factory PDDescriptor.empty() => PDDescriptor(data: {'id': 'id'});
 
+  /// Creates a [PDDescriptor] from a JSON [data] map.
   static PDDescriptor fromJson(Map<String, dynamic> data) =>
       PDDescriptor(data: data);
 
+  /// Converts this [PDDescriptor] back to its original JSON map.
   Map<String, dynamic> toJson() => _data;
 
   /// The unique identifier of this input descriptor.
