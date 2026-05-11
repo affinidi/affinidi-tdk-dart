@@ -331,18 +331,14 @@ class PDClassifier {
       }
 
       if (filter == null) continue;
-      final containsMap =
-          filter[PdClassifierConstants.containsKey] as Map<String, dynamic>?;
 
       // $.@context filter → extract context
-      if (paths.contains(PdClassifierConstants.contextPath) &&
-          containsMap != null) {
+      if (paths.contains(PdClassifierConstants.contextPath)) {
         context = _extractConstraint(filter);
       }
 
       // $.type filter → extract type
-      if (paths.contains(PdClassifierConstants.typePath) &&
-          containsMap != null) {
+      if (paths.contains(PdClassifierConstants.typePath)) {
         types.add(_extractConstraint(filter));
       }
 
@@ -442,26 +438,70 @@ class PDClassifier {
   /// }
   /// ```
   String _extractConstraint(Map<String, dynamic> filter) {
-    final containsMap =
-        filter[PdClassifierConstants.containsKey] as Map<String, dynamic>?;
+    final rawContains = filter[PdClassifierConstants.containsKey];
 
-    if (containsMap != null) {
-      if (containsMap.containsKey(PdClassifierConstants.patternKey)) {
-        return _stripAnchors(
-          containsMap[PdClassifierConstants.patternKey] as String,
+    if (rawContains != null) {
+      if (rawContains is! Map<String, dynamic>) {
+        Error.throwWithStackTrace(
+          TdkException(
+            message: 'PD filter "contains" must be a JSON object.',
+            code: TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+          StackTrace.current,
         );
       }
-      if (containsMap.containsKey(PdClassifierConstants.constKey)) {
-        return containsMap[PdClassifierConstants.constKey] as String;
+      if (rawContains.containsKey(PdClassifierConstants.patternKey)) {
+        final value = rawContains[PdClassifierConstants.patternKey];
+        if (value is! String) {
+          Error.throwWithStackTrace(
+            TdkException(
+              message: 'PD filter "contains.pattern" must be a string.',
+              code: TdkExceptionType.invalidPresentationDefinition.code,
+            ),
+            StackTrace.current,
+          );
+        }
+        return _stripAnchors(value);
+      }
+      if (rawContains.containsKey(PdClassifierConstants.constKey)) {
+        final value = rawContains[PdClassifierConstants.constKey];
+        if (value is! String) {
+          Error.throwWithStackTrace(
+            TdkException(
+              message: 'PD filter "contains.const" must be a string.',
+              code: TdkExceptionType.invalidPresentationDefinition.code,
+            ),
+            StackTrace.current,
+          );
+        }
+        return value;
       }
     } else {
       if (filter.containsKey(PdClassifierConstants.patternKey)) {
-        return _stripAnchors(
-          filter[PdClassifierConstants.patternKey] as String,
-        );
+        final value = filter[PdClassifierConstants.patternKey];
+        if (value is! String) {
+          Error.throwWithStackTrace(
+            TdkException(
+              message: 'PD filter "pattern" must be a string.',
+              code: TdkExceptionType.invalidPresentationDefinition.code,
+            ),
+            StackTrace.current,
+          );
+        }
+        return _stripAnchors(value);
       }
       if (filter.containsKey(PdClassifierConstants.constKey)) {
-        return filter[PdClassifierConstants.constKey] as String;
+        final value = filter[PdClassifierConstants.constKey];
+        if (value is! String) {
+          Error.throwWithStackTrace(
+            TdkException(
+              message: 'PD filter "const" must be a string.',
+              code: TdkExceptionType.invalidPresentationDefinition.code,
+            ),
+            StackTrace.current,
+          );
+        }
+        return value;
       }
     }
 
@@ -528,13 +568,31 @@ class PDClassifier {
   Map<String, SubmissionRequirements> _extractSubmissionRequirements(
     Map<String, dynamic> pd,
   ) {
-    final rawList =
-        pd[PdClassifierConstants.submissionRequirementsKey] as List<dynamic>?;
-    if (rawList == null) return const {};
+    final rawValue = pd[PdClassifierConstants.submissionRequirementsKey];
+    if (rawValue == null) return const {};
 
-    final requirements = rawList
-        .map((e) => SubmissionRequirements.fromJson(e as Map<String, dynamic>))
-        .toList();
+    if (rawValue is! List) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'submission_requirements must be a list.',
+          code: TdkExceptionType.invalidPresentationDefinition.code,
+        ),
+        StackTrace.current,
+      );
+    }
+
+    final requirements = rawValue.map((e) {
+      if (e is! Map<String, dynamic>) {
+        Error.throwWithStackTrace(
+          TdkException(
+            message: 'Each submission_requirements entry must be a JSON object.',
+            code: TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+          StackTrace.current,
+        );
+      }
+      return SubmissionRequirements.fromJson(e);
+    }).toList();
 
     for (final req in requirements) {
       if ((req.min != null && req.min! < 1) ||
