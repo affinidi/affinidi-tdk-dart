@@ -14,7 +14,7 @@ export 'src/models/share_requirements.dart';
 export 'src/models/submission_requirements.dart';
 export 'src/models/verified_identity_document_info.dart';
 export 'src/models/verifier_client_metadata.dart';
-export 'src/services/pd_classifier.dart';
+export 'src/services/pd_classifier_service.dart';
 export 'src/services/verifier_metadata_service.dart';
 export 'src/services/verifier_metadata_service_interface.dart';
 export 'src/share_flow_service.dart';
