@@ -241,6 +241,34 @@ void main() {
         ),
       );
     });
+
+    test('should throw when a descriptor is missing an id', () {
+      expect(
+        () => classifier.classify({
+          'input_descriptors': [
+            {
+              'constraints': {
+                'fields': [
+                  {
+                    'path': [r'$.type'],
+                    'filter': {
+                      'contains': {'const': 'UniversityDegree'},
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
+      );
+    });
   });
 
   // ── Claimed VCs ───────────────────────────────────────────────────────────

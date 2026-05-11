@@ -144,6 +144,16 @@ class PDClassifier {
               StackTrace.current,
             );
           }
+          if (d['id'] is! String) {
+            Error.throwWithStackTrace(
+              TdkException(
+                message:
+                    'Each input_descriptors entry must have a string "id" field.',
+                code: TdkExceptionType.invalidPresentationDefinition.code,
+              ),
+              StackTrace.current,
+            );
+          }
           return _extractRequestedType(d);
         })
         .map(_computeRequiredDataPoints)
