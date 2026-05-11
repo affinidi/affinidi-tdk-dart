@@ -1,12 +1,13 @@
 import 'dart:typed_data';
 
-import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 
 import '../exceptions/tdk_exception_type.dart';
 import '../model/node_status.dart';
 import '../model/node_type.dart';
 import '../services/vault_data_manager_service_interface.dart';
+
+const _maxint = 2147483647;
 
 /// A VFS based implementation of [FileStorage] for managing files and folders.
 class VFSFileStorage implements FileStorage {
@@ -98,41 +99,27 @@ class VFSFileStorage implements FileStorage {
       parentNodeId: parentFolderId,
       cancelToken: cancelToken,
     );
-
-    final pageSize = Environment.vfsDefaultPageSize;
-    String? exclusiveStartItemId;
-    do {
-      final response = await _vaultDataManagerService.getChildNodes(
-        nodeId: parentFolderId,
-        limit: pageSize,
-        exclusiveStartItemId: exclusiveStartItemId,
-        cancelToken: cancelToken,
-      );
-
-      final match = response.items
-          .where(
-            (node) => node.name == folderName && node.type == NodeType.FOLDER,
-          )
-          .firstOrNull;
-
-      if (match != null) {
-        return Folder(
-          id: match.nodeId,
-          name: match.name,
-          createdAt: DateTime.parse(match.createdAt),
-          modifiedAt: DateTime.parse(match.modifiedAt),
-        );
-      }
-
-      exclusiveStartItemId = response.lastEvaluatedItemId;
-    } while (exclusiveStartItemId != null);
-
-    Error.throwWithStackTrace(
-      TdkException(
-        message: 'Created folder not found',
-        code: TdkExceptionType.folderNotFound.code,
+    final response = await _vaultDataManagerService.getChildNodes(
+      nodeId: parentFolderId,
+      limit: _maxint,
+      cancelToken: cancelToken,
+    );
+    final folder = response.items.firstWhere(
+      (node) => node.name == folderName && node.type == NodeType.FOLDER,
+      orElse: () => Error.throwWithStackTrace(
+        TdkException(
+          message: 'Created folder not found',
+          code: TdkExceptionType.folderNotFound.code,
+        ),
+        StackTrace.current,
       ),
-      StackTrace.current,
+    );
+
+    return Folder(
+      id: folder.nodeId,
+      name: folder.name,
+      createdAt: DateTime.parse(folder.createdAt),
+      modifiedAt: DateTime.parse(folder.modifiedAt),
     );
   }
 

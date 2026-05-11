@@ -1,8 +1,6 @@
-import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_data_manager/affinidi_tdk_vault_data_manager.dart';
 import 'package:affinidi_tdk_vault_data_manager/src/model/node.dart';
-import 'package:affinidi_tdk_vault_data_manager/src/model/node_type.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
@@ -37,7 +35,7 @@ void main() {
         test('it should create a folder successfully', () async {
           when(
             () => mockService.getChildNodes(
-              nodeId: any(named: 'nodeId'),
+              nodeId: FileFixtures.testParentId,
               limit: any(named: 'limit'),
               exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
               cancelToken: any(named: 'cancelToken'),
@@ -49,127 +47,33 @@ void main() {
             ),
           );
 
-          await vfsFileStorage.createFolder(
+          final folder = await vfsFileStorage.createFolder(
             folderName: FileFixtures.testFolderName,
             parentFolderId: FileFixtures.testParentId,
           );
 
+          expect(folder.id, FileFixtures.testFolderId);
+          expect(folder.name, FileFixtures.testFolderName);
           verify(
             () => mockService.createFolder(
               parentNodeId: FileFixtures.testParentId,
               folderName: FileFixtures.testFolderName,
             ),
           ).called(1);
-        });
-
-        test('it should pass the configured default page size when looking up '
-            'the newly created folder', () async {
-          when(
-            () => mockService.getChildNodes(
-              nodeId: any(named: 'nodeId'),
-              limit: any(named: 'limit'),
-              exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
-              cancelToken: any(named: 'cancelToken'),
-            ),
-          ).thenAnswer(
-            (_) async => PaginatedList<Node>(
-              items: [FileFixtures.mockFolderNode],
-              lastEvaluatedItemId: null,
-            ),
-          );
-
-          await vfsFileStorage.createFolder(
-            folderName: FileFixtures.testFolderName,
-            parentFolderId: FileFixtures.testParentId,
-          );
-
           verify(
             () => mockService.getChildNodes(
               nodeId: FileFixtures.testParentId,
-              limit: Environment.vfsDefaultPageSize,
-              exclusiveStartItemId: null,
-              cancelToken: null,
+              limit: 2147483647,
+              exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+              cancelToken: any(named: 'cancelToken'),
             ),
           ).called(1);
         });
 
-        test(
-          'it should keep paginating until the created folder is found',
-          () async {
-            const firstPageItemId = 'first-page-item-id';
-            final otherFolderNode = Node(
-              nodeId: firstPageItemId,
-              name: 'some-other-folder',
-              type: NodeType.FOLDER,
-              status: FileFixtures.mockFolderNode.status,
-              createdAt: '2024-01-01T00:00:00Z',
-              modifiedAt: '2024-01-01T00:00:00Z',
-              createdBy: FileFixtures.mockFolderNode.createdBy,
-              modifiedBy: FileFixtures.mockFolderNode.modifiedBy,
-              fileCount: 0,
-              folderCount: 0,
-              profileCount: 0,
-              consumerId: FileFixtures.mockFolderNode.consumerId,
-              profileId: FileFixtures.mockFolderNode.profileId,
-              parentNodeId: FileFixtures.testParentId,
-            );
-
-            when(
-              () => mockService.getChildNodes(
-                nodeId: FileFixtures.testParentId,
-                limit: any(named: 'limit'),
-                exclusiveStartItemId: null,
-                cancelToken: any(named: 'cancelToken'),
-              ),
-            ).thenAnswer(
-              (_) async => PaginatedList<Node>(
-                items: [otherFolderNode],
-                lastEvaluatedItemId: firstPageItemId,
-              ),
-            );
-            when(
-              () => mockService.getChildNodes(
-                nodeId: FileFixtures.testParentId,
-                limit: any(named: 'limit'),
-                exclusiveStartItemId: firstPageItemId,
-                cancelToken: any(named: 'cancelToken'),
-              ),
-            ).thenAnswer(
-              (_) async => PaginatedList<Node>(
-                items: [FileFixtures.mockFolderNode],
-                lastEvaluatedItemId: null,
-              ),
-            );
-
-            final folder = await vfsFileStorage.createFolder(
-              folderName: FileFixtures.testFolderName,
-              parentFolderId: FileFixtures.testParentId,
-            );
-
-            expect(folder.id, equals(FileFixtures.mockFolderNode.nodeId));
-            verify(
-              () => mockService.getChildNodes(
-                nodeId: FileFixtures.testParentId,
-                limit: any(named: 'limit'),
-                exclusiveStartItemId: null,
-                cancelToken: any(named: 'cancelToken'),
-              ),
-            ).called(1);
-            verify(
-              () => mockService.getChildNodes(
-                nodeId: FileFixtures.testParentId,
-                limit: any(named: 'limit'),
-                exclusiveStartItemId: firstPageItemId,
-                cancelToken: any(named: 'cancelToken'),
-              ),
-            ).called(1);
-          },
-        );
-
         test('it should throw if folder not found after creation', () async {
           when(
             () => mockService.getChildNodes(
-              nodeId: any(named: 'nodeId'),
+              nodeId: FileFixtures.testParentId,
               limit: any(named: 'limit'),
               exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
               cancelToken: any(named: 'cancelToken'),

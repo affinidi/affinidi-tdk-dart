@@ -103,41 +103,6 @@ class Environment {
     const String.fromEnvironment('AFFINIDI_API_TIMEOUT_MS', defaultValue: ''),
   );
 
-  /// Fallback page size applied to paginated Vault Data Manager (VFS) API
-  /// calls when the caller does not supply an explicit `limit`.
-  ///
-  /// This is used for VFS endpoints such as listing folder children and
-  /// internal lookups (e.g. resolving a newly created folder by name after
-  /// `createFolder`). Without an explicit limit the server applies its own
-  /// default value, which can cause folders that exist beyond the first
-  /// server page to appear missing.
-  static const defaultVfsPageSize = 50;
-
-  /// Name of the env variable that overrides [defaultVfsPageSize].
-  static const vfsDefaultPageSizeVariableName =
-      'AFFINIDI_VFS_DEFAULT_PAGE_SIZE';
-
-  /// Resolves the page size used as a fallback for paginated VFS API calls
-  /// when the caller does not provide a `limit`.
-  ///
-  /// The value can be tuned per client by setting the
-  /// `AFFINIDI_VFS_DEFAULT_PAGE_SIZE` compile-time environment variable
-  /// (passed via `--dart-define=AFFINIDI_VFS_DEFAULT_PAGE_SIZE=<n>`).
-  /// Values that are not parseable as a positive integer fall back to
-  /// [defaultVfsPageSize] (currently 50).
-  static int get vfsDefaultPageSize {
-    final raw = int.tryParse(
-      const String.fromEnvironment(
-        vfsDefaultPageSizeVariableName,
-        defaultValue: '',
-      ),
-    );
-    if (raw == null || raw <= 0) {
-      return defaultVfsPageSize;
-    }
-    return raw;
-  }
-
   /// Gets the current log level from the environment variable 'AFFINIDI_TDK_LOG_LEVEL'.
   LogLevel get logLevel =>
       _levels[const String.fromEnvironment('AFFINIDI_TDK_LOG_LEVEL')] ??
