@@ -183,7 +183,61 @@ void main() {
         ),
       );
     });
-  });
+    test('should throw when a filter contains value is not a map', () {
+      expect(
+        () => classifier.classify(
+          _pd([
+            {
+              'id': 'bad-contains',
+              'constraints': {
+                'fields': [
+                  {
+                    'path': [r'$.type'],
+                    'filter': {'contains': 'not-a-map'},
+                  },
+                ],
+              },
+            },
+          ]),
+        ),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
+      );
+    });
+
+    test('should throw when a filter contains.const value is not a string', () {
+      expect(
+        () => classifier.classify(
+          _pd([
+            {
+              'id': 'bad-const',
+              'constraints': {
+                'fields': [
+                  {
+                    'path': [r'$.type'],
+                    'filter': {
+                      'contains': {'const': 42},
+                    },
+                  },
+                ],
+              },
+            },
+          ]),
+        ),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
+      );
+    });  });
 
   // ── Claimed VCs ───────────────────────────────────────────────────────────
 
@@ -596,6 +650,38 @@ void main() {
 
       expect(
         () => classifier.classify(pd),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
+      );
+    });
+
+    test('should throw when submission_requirements is not a list', () {
+      expect(
+        () => classifier.classify({
+          'input_descriptors': [],
+          'submission_requirements': 'not-a-list',
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
+      );
+    });
+
+    test('should throw when a submission_requirements entry is not a map', () {
+      expect(
+        () => classifier.classify({
+          'input_descriptors': [],
+          'submission_requirements': ['not-a-map'],
+        }),
         throwsA(
           isA<TdkException>().having(
             (e) => e.code,
