@@ -4,13 +4,19 @@
 /// identify and display the requesting party on the consent screen.
 class VerifierClientMetadata {
   /// The human-readable name of the verifier.
-  final String name;
+  ///
+  /// Optional per OID4VP 1.0 final §5.1 — may be `null` when not provided.
+  final String? name;
 
   /// URL of the verifier's logo image.
-  final String logo;
+  ///
+  /// Optional per OID4VP 1.0 final §5.1 — may be `null` when not provided.
+  final String? logo;
 
   /// The origin (base URL) of the verifier's site.
-  final String origin;
+  ///
+  /// Optional per OID4VP 1.0 final §5.1 — may be `null` when not provided.
+  final String? origin;
 
   /// Whether the verifier's domain has been verified.
   ///
@@ -19,18 +25,18 @@ class VerifierClientMetadata {
 
   /// Creates a new [VerifierClientMetadata] instance.
   const VerifierClientMetadata({
-    required this.name,
-    required this.logo,
-    required this.origin,
+    this.name,
+    this.logo,
+    this.origin,
     this.domainVerified,
   });
 
   /// Creates a [VerifierClientMetadata] from a JSON map.
   factory VerifierClientMetadata.fromJson(Map<String, dynamic> json) {
     return VerifierClientMetadata(
-      name: json['name'] as String,
-      logo: json['logo'] as String,
-      origin: json['origin'] as String,
+      name: json['name'] as String?,
+      logo: json['logo'] as String?,
+      origin: json['origin'] as String?,
       domainVerified: json['domainVerified'] as bool?,
     );
   }
@@ -39,9 +45,9 @@ class VerifierClientMetadata {
   ///
   /// Null fields are omitted from the output.
   Map<String, dynamic> toJson() => {
-        'name': name,
-        'logo': logo,
-        'origin': origin,
+        if (name != null) 'name': name,
+        if (logo != null) 'logo': logo,
+        if (origin != null) 'origin': origin,
         if (domainVerified != null) 'domainVerified': domainVerified,
       };
 }

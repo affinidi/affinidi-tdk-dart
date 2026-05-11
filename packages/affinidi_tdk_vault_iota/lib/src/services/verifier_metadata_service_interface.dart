@@ -24,30 +24,26 @@ abstract interface class VerifierMetadataServiceInterface {
   /// Resolves the identity and branding of a verifier.
   ///
   /// Resolution priority:
-  /// 1. If [embeddedClientMetadata] is provided, it is parsed directly — no
+  /// 1. If [clientMetadata] is provided, it is parsed directly — no
   ///    network request is made.
-  /// 2. If [clientMetadataUri] is provided, a `GET` request is made to that
-  ///    absolute URI.
-  /// 3. Otherwise a `GET` request is made to
+  /// 2. Otherwise a `GET` request is made to
   ///    `/vpa/v1/login/configurations/metadata/{clientId}`.
   ///
   /// [clientId] - the `client_id` from the OID4VP request (the verifier DID).
-  /// [clientMetadataUri] - optional absolute URI from the `client_metadata_uri`
-  /// JWT claim pointing to the verifier's metadata document.
-  /// [embeddedClientMetadata] - optional metadata map from the `client_metadata`
-  /// JWT claim. When supplied, both network paths are skipped.
+  /// [clientMetadata] - optional metadata map from the `client_metadata`
+  /// JWT claim (OID4VP 1.0 final §5.1). When supplied, the network path is
+  /// skipped.
   ///
   /// Returns a [VerifierClientMetadata] with the verifier's name, logo, and
   /// origin.
   ///
   /// Throws:
   /// - [TdkException] with code `verifier_metadata_fetch_failed` when the
-  ///   verifier cannot be identified (network failure, unexpected response
-  ///   shape, or missing required fields).
+  ///   verifier cannot be identified (network failure or unexpected response
+  ///   shape).
   Future<VerifierClientMetadata> fetchVerifierMetadata({
     required String clientId,
-    Uri? clientMetadataUri,
-    Map<String, dynamic>? embeddedClientMetadata,
+    Map<String, dynamic>? clientMetadata,
   });
 
   /// Releases resources held by this service.

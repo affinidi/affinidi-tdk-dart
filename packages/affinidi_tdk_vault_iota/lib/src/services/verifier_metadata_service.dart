@@ -31,16 +31,14 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
   @override
   Future<VerifierClientMetadata> fetchVerifierMetadata({
     required String clientId,
-    Uri? clientMetadataUri,
-    Map<String, dynamic>? embeddedClientMetadata,
+    Map<String, dynamic>? clientMetadata,
   }) async {
     try {
-      if (embeddedClientMetadata != null) {
-        return VerifierClientMetadata.fromJson(embeddedClientMetadata);
+      if (clientMetadata != null) {
+        return VerifierClientMetadata.fromJson(clientMetadata);
       }
 
-      final uri =
-          clientMetadataUri ?? Uri.parse('$_baseUrl$_metadataPath/$clientId');
+      final uri = Uri.parse('$_baseUrl$_metadataPath/$clientId');
       final response = await _httpClient.get(uri);
 
       if (response.statusCode != HttpStatusCode.ok) {

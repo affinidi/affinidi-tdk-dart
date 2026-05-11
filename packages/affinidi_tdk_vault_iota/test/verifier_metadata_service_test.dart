@@ -21,7 +21,7 @@ http.Client _clientReturning(int statusCode, Object body) => MockClient(
 
 void main() {
   group('VerifierMetadataService', () {
-    group('when embeddedClientMetadata is provided', () {
+    group('when clientMetadata is provided', () {
       test('should parse it directly without making a network request',
           () async {
         // A client that throws if called — ensures no network request is made.
@@ -35,7 +35,7 @@ void main() {
 
         final result = await service.fetchVerifierMetadata(
           clientId: _clientId,
-          embeddedClientMetadata: _validMetadataJson(),
+          clientMetadata: _validMetadataJson(),
         );
 
         expect(result.name, 'Test Verifier');
@@ -44,7 +44,7 @@ void main() {
         expect(result.domainVerified, isTrue);
       });
 
-      test('should throw TdkException when embedded metadata is malformed',
+      test('should return null fields when clientMetadata has no recognised keys',
           () async {
         final httpClient = MockClient((_) async => throw StateError('no call'));
 
@@ -54,135 +54,20 @@ void main() {
         );
         addTearDown(service.dispose);
 
-        await expectLater(
-          () => service.fetchVerifierMetadata(
-            clientId: _clientId,
-            embeddedClientMetadata: {'unexpected_field': 42},
-          ),
-          throwsA(
-            isA<TdkException>().having(
-              (e) => e.code,
-              'code',
-              TdkExceptionType.verifierMetadataFetchFailed.code,
-            ),
-          ),
-        );
-      });
-    });
-
-    group('when clientMetadataUri is provided', () {
-      test('should GET the absolute clientMetadataUri directly', () async {
-        final absoluteUri =
-            Uri.parse('https://other.example.com/metadata/verifier');
-        Uri? capturedUri;
-        final httpClient = MockClient((request) async {
-          capturedUri = request.url;
-          return http.Response(jsonEncode(_validMetadataJson()), 200);
-        });
-
-        final service = VerifierMetadataService(
-          baseUrl: _baseUrl,
-          httpClient: httpClient,
-        );
-        addTearDown(service.dispose);
-
         final result = await service.fetchVerifierMetadata(
           clientId: _clientId,
-          clientMetadataUri: absoluteUri,
+          clientMetadata: {'unexpected_field': 42},
         );
 
-        expect(capturedUri, absoluteUri);
-        expect(result.name, 'Test Verifier');
+        // All spec fields are optional — unrecognised keys produce null values.
+        expect(result.name, isNull);
+        expect(result.logo, isNull);
+        expect(result.origin, isNull);
+        expect(result.domainVerified, isNull);
       });
-
-      test(
-        'should throw TdkException on non-200 from clientMetadataUri',
-        () async {
-          final service = VerifierMetadataService(
-            baseUrl: _baseUrl,
-            httpClient: _clientReturning(403, {'error': 'forbidden'}),
-          );
-          addTearDown(service.dispose);
-
-          await expectLater(
-            () => service.fetchVerifierMetadata(
-              clientId: _clientId,
-              clientMetadataUri:
-                  Uri.parse('https://other.example.com/metadata/verifier'),
-            ),
-            throwsA(
-              isA<TdkException>()
-                  .having(
-                    (e) => e.code,
-                    'code',
-                    TdkExceptionType.verifierMetadataFetchFailed.code,
-                  )
-                  .having(
-                    (e) => e.message,
-                    'message',
-                    contains('403'),
-                  ),
-            ),
-          );
-        },
-      );
-
-      test(
-        'should throw TdkException when clientMetadataUri returns invalid JSON',
-        () async {
-          final httpClient = MockClient(
-            (_) async => http.Response('not-json', 200),
-          );
-
-          final service = VerifierMetadataService(
-            baseUrl: _baseUrl,
-            httpClient: httpClient,
-          );
-          addTearDown(service.dispose);
-
-          await expectLater(
-            () => service.fetchVerifierMetadata(
-              clientId: _clientId,
-              clientMetadataUri:
-                  Uri.parse('https://other.example.com/metadata/verifier'),
-            ),
-            throwsA(
-              isA<TdkException>().having(
-                (e) => e.code,
-                'code',
-                TdkExceptionType.verifierMetadataFetchFailed.code,
-              ),
-            ),
-          );
-        },
-      );
-
-      test(
-        'should prefer embeddedClientMetadata over clientMetadataUri',
-        () async {
-          // Client throws if called — proves embedded is used, not the URI.
-          final httpClient =
-              MockClient((_) async => throw StateError('no call'));
-
-          final service = VerifierMetadataService(
-            baseUrl: _baseUrl,
-            httpClient: httpClient,
-          );
-          addTearDown(service.dispose);
-
-          final result = await service.fetchVerifierMetadata(
-            clientId: _clientId,
-            clientMetadataUri:
-                Uri.parse('https://other.example.com/metadata/verifier'),
-            embeddedClientMetadata: _validMetadataJson(),
-          );
-
-          expect(result.name, 'Test Verifier');
-        },
-      );
     });
 
-    group('when embeddedClientMetadata is absent', () {
+    group('when clientMetadata is absent', () {
       test('should GET the correct URL', () async {
         Uri? capturedUri;
         final httpClient = MockClient((request) async {
