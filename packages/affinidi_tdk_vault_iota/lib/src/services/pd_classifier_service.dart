@@ -209,7 +209,17 @@ class PDClassifier {
       );
     }
 
-    return requirements;
+    return PDRequirements(
+      claimedDescriptors: List.unmodifiable(requirements.claimedDescriptors),
+      zpdLinkedDescriptors:
+          List.unmodifiable(requirements.zpdLinkedDescriptors),
+      idvDescriptors: List.unmodifiable(requirements.idvDescriptors),
+      dataPoints: Set.unmodifiable(requirements.dataPoints),
+      zeroPartyVCs: Set.unmodifiable(requirements.zeroPartyVCs),
+      idvInfo: requirements.idvInfo,
+      submissionRequirementsByGroup: requirements.submissionRequirementsByGroup,
+      purpose: requirements.purpose,
+    );
   }
 
   // ── Private helpers ──────────────────────────────────────────────────────
