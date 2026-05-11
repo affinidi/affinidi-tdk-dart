@@ -513,6 +513,27 @@ void main() {
         throwsA(isA<TdkException>()),
       );
     });
+
+    test('should throw invalidPresentationDefinition when from field is missing',
+        () {
+      final pd = _pd(
+        [_descriptor(id: 'd1', type: 'UniversityDegree')],
+        submissionRequirements: [
+          {'count': 1},
+        ],
+      );
+
+      expect(
+        () => classifier.classify(pd),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
+      );
+    });
   });
 
   // ── Mixed descriptors ─────────────────────────────────────────────────────
