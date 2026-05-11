@@ -88,6 +88,19 @@ void main() {
         ),
       );
     });
+
+    test('should throw TdkException when input_descriptors is not a list', () {
+      expect(
+        () => classifier.classify({'input_descriptors': 'not-a-list'}),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
+      );
+    });
   });
 
   // ── Claimed VCs ───────────────────────────────────────────────────────────

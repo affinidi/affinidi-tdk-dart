@@ -101,18 +101,21 @@ class PDClassifier {
   /// }
   /// ```
   PDRequirements classify(Map<String, dynamic> pd) {
-    final rawDescriptors =
-        pd[PdClassifierConstants.inputDescriptorsKey] as List<dynamic>?;
+    final rawValue = pd[PdClassifierConstants.inputDescriptorsKey];
 
-    if (rawDescriptors == null) {
+    if (rawValue is! List) {
       Error.throwWithStackTrace(
         TdkException(
-          message: 'Presentation Definition is missing input_descriptors.',
+          message: rawValue == null
+              ? 'Presentation Definition is missing input_descriptors.'
+              : 'Presentation Definition input_descriptors must be a list.',
           code: TdkExceptionType.invalidPresentationDefinition.code,
         ),
         StackTrace.current,
       );
     }
+
+    final rawDescriptors = rawValue;
 
     final purpose = _extractPurpose(pd[PdClassifierConstants.purposeKey]);
 
@@ -217,7 +220,8 @@ class PDClassifier {
       dataPoints: Set.unmodifiable(requirements.dataPoints),
       zeroPartyVCs: Set.unmodifiable(requirements.zeroPartyVCs),
       idvInfo: requirements.idvInfo,
-      submissionRequirementsByGroup: requirements.submissionRequirementsByGroup,
+      submissionRequirementsByGroup:
+          Map.unmodifiable(requirements.submissionRequirementsByGroup),
       purpose: requirements.purpose,
     );
   }
