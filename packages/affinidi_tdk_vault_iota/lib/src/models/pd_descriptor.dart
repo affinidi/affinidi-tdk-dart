@@ -16,7 +16,7 @@ class PDDescriptor {
   factory PDDescriptor.empty() => PDDescriptor(data: {'id': 'id'});
 
   /// Creates a [PDDescriptor] from a JSON [data] map.
-  static PDDescriptor fromJson(Map<String, dynamic> data) =>
+  factory PDDescriptor.fromJson(Map<String, dynamic> data) =>
       PDDescriptor(data: data);
 
   /// Converts this [PDDescriptor] back to its original JSON map.
