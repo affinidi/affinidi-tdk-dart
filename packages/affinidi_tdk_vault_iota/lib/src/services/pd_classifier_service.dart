@@ -134,7 +134,19 @@ class PDClassifier {
     var hasInvalidIdvPd = false;
 
     requirements = rawDescriptors
-        .map((d) => _extractRequestedType(d as Map<String, dynamic>))
+        .map((d) {
+          if (d is! Map<String, dynamic>) {
+            Error.throwWithStackTrace(
+              TdkException(
+                message:
+                    'Each input_descriptors entry must be a JSON object.',
+                code: TdkExceptionType.invalidPresentationDefinition.code,
+              ),
+              StackTrace.current,
+            );
+          }
+          return _extractRequestedType(d);
+        })
         .map(_computeRequiredDataPoints)
         .fold(requirements, (result, tmp) {
           final isZeroPartyVC = tmp.dataPoints != null;

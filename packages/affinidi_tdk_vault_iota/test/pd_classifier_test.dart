@@ -101,6 +101,19 @@ void main() {
         ),
       );
     });
+
+    test('should throw TdkException when a descriptor entry is not a map', () {
+      expect(
+        () => classifier.classify({'input_descriptors': ['not-a-map']}),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
+      );
+    });
   });
 
   // ── Claimed VCs ───────────────────────────────────────────────────────────
