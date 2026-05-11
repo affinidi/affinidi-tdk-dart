@@ -57,14 +57,14 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
       return VerifierClientMetadata.fromJson(json);
     } on TdkException {
       rethrow;
-    } catch (e) {
+    } catch (e, stackTrace) {
       Error.throwWithStackTrace(
         TdkException(
           message: 'Failed to fetch verifier metadata.',
           code: TdkExceptionType.verifierMetadataFetchFailed.code,
           originalMessage: e.toString(),
         ),
-        StackTrace.current,
+        stackTrace,
       );
     }
   }
