@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 
 import '../exceptions/tdk_exception_type.dart';
@@ -98,26 +99,40 @@ class VFSFileStorage implements FileStorage {
       cancelToken: cancelToken,
     );
 
-    final response = await _vaultDataManagerService.getChildNodes(
-      nodeId: parentFolderId,
-      cancelToken: cancelToken,
-    );
-    final folder = response.items.firstWhere(
-      (node) => node.name == folderName && node.type == NodeType.FOLDER,
-      orElse: () => Error.throwWithStackTrace(
-        TdkException(
-          message: 'Created folder not found',
-          code: TdkExceptionType.folderNotFound.code,
-        ),
-        StackTrace.current,
-      ),
-    );
+    final pageSize = Environment.vfsDefaultPageSize;
+    String? exclusiveStartItemId;
+    do {
+      final response = await _vaultDataManagerService.getChildNodes(
+        nodeId: parentFolderId,
+        limit: pageSize,
+        exclusiveStartItemId: exclusiveStartItemId,
+        cancelToken: cancelToken,
+      );
 
-    return Folder(
-      id: folder.nodeId,
-      name: folder.name,
-      createdAt: DateTime.parse(folder.createdAt),
-      modifiedAt: DateTime.parse(folder.modifiedAt),
+      final match = response.items
+          .where(
+            (node) => node.name == folderName && node.type == NodeType.FOLDER,
+          )
+          .firstOrNull;
+
+      if (match != null) {
+        return Folder(
+          id: match.nodeId,
+          name: match.name,
+          createdAt: DateTime.parse(match.createdAt),
+          modifiedAt: DateTime.parse(match.modifiedAt),
+        );
+      }
+
+      exclusiveStartItemId = response.lastEvaluatedItemId;
+    } while (exclusiveStartItemId != null);
+
+    Error.throwWithStackTrace(
+      TdkException(
+        message: 'Created folder not found',
+        code: TdkExceptionType.folderNotFound.code,
+      ),
+      StackTrace.current,
     );
   }
 

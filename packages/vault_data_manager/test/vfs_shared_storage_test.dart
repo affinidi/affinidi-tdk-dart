@@ -27,7 +27,12 @@ void main() {
     mockDataManagerService = MockVaultDataManagerService();
 
     when(
-      () => mockDataManagerService.getChildNodes(nodeId: any(named: 'nodeId')),
+      () => mockDataManagerService.getChildNodes(
+        nodeId: any(named: 'nodeId'),
+        limit: any(named: 'limit'),
+        exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+        cancelToken: any(named: 'cancelToken'),
+      ),
     ).thenAnswer(
       (_) async => PaginatedList<Node>(items: [], lastEvaluatedItemId: null),
     );
@@ -176,6 +181,9 @@ void main() {
         when(
           () => mockDataManagerService.getChildNodes(
             nodeId: NodeFixtures.testParentId,
+            limit: any(named: 'limit'),
+            exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+            cancelToken: any(named: 'cancelToken'),
           ),
         ).thenAnswer(
           (_) async => PaginatedList<Node>(
