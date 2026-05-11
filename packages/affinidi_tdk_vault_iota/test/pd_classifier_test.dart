@@ -691,6 +691,42 @@ void main() {
         ),
       );
     });
+
+    test('should throw when the from field is not a string', () {
+      expect(
+        () => classifier.classify({
+          'input_descriptors': [],
+          'submission_requirements': [
+            {'from': 42, 'count': 1},
+          ],
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
+      );
+    });
+
+    test('should throw when a numeric field is not a number', () {
+      expect(
+        () => classifier.classify({
+          'input_descriptors': [],
+          'submission_requirements': [
+            {'from': 'A', 'count': 'not-a-number'},
+          ],
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
+      );
+    });
   });
 
   // ── Mixed descriptors ─────────────────────────────────────────────────────
