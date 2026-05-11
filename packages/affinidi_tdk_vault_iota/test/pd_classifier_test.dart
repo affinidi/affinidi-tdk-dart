@@ -24,7 +24,8 @@ Map<String, dynamic> _descriptor({
     fields.add({
       'path': [r'$.@context'],
       'filter': {
-        'contains': usePattern ? {'pattern': '^$context\$'} : {'const': context},
+        'contains':
+            usePattern ? {'pattern': '^$context\$'} : {'const': context},
       },
     });
   }
@@ -73,10 +74,10 @@ void main() {
     classifier = const PDClassifier(validIdvIssuers: [_trustedIssuer]);
   });
 
-  // ── Missing input_descriptors ─────────────────────────────────────────────
+  // ── Invalid PD structure ──────────────────────────────────────────────────
 
-  group('when input_descriptors is missing', () {
-    test('should throw TdkException with invalidPresentationDefinition', () {
+  group('when input_descriptors is structurally invalid', () {
+    test('should throw when input_descriptors is missing', () {
       expect(
         () => classifier.classify({}),
         throwsA(
@@ -89,7 +90,7 @@ void main() {
       );
     });
 
-    test('should throw TdkException when input_descriptors is not a list', () {
+    test('should throw when input_descriptors is not a list', () {
       expect(
         () => classifier.classify({'input_descriptors': 'not-a-list'}),
         throwsA(
@@ -102,9 +103,77 @@ void main() {
       );
     });
 
-    test('should throw TdkException when a descriptor entry is not a map', () {
+    test('should throw when a descriptor entry is not a map', () {
       expect(
-        () => classifier.classify({'input_descriptors': ['not-a-map']}),
+        () => classifier.classify({
+          'input_descriptors': ['not-a-map'],
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
+      );
+    });
+
+    test('should throw when a descriptor group field is not a list or string',
+        () {
+      expect(
+        () => classifier.classify({
+          'input_descriptors': [
+            {
+              'id': 'bad-group',
+              'group': 42,
+              'constraints': {
+                'fields': [
+                  {
+                    'path': [r'$.type'],
+                    'filter': {
+                      'contains': {'const': 'UniversityDegree'},
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
+      );
+    });
+
+    test(r'should throw when a descriptor has duplicate $.@context fields', () {
+      expect(
+        () => classifier.classify(
+          _pd([
+            {
+              'id': 'dup-ctx',
+              'constraints': {
+                'fields': [
+                  {
+                    'path': [r'$.@context'],
+                    'filter': {
+                      'contains': {'const': 'https://ctx1.example/'},
+                    },
+                  },
+                  {
+                    'path': [r'$.@context'],
+                    'filter': {
+                      'contains': {'const': 'https://ctx2.example/'},
+                    },
+                  },
+                ],
+              },
+            },
+          ]),
+        ),
         throwsA(
           isA<TdkException>().having(
             (e) => e.code,
@@ -118,7 +187,7 @@ void main() {
 
   // ── Claimed VCs ───────────────────────────────────────────────────────────
 
-  group('claimed VC descriptors', () {
+  group('when the descriptor requests a claimed VC', () {
     test('should route a standard VC descriptor to claimedDescriptors', () {
       final pd = _pd([_descriptor(id: 'cred1', type: 'UniversityDegree')]);
       final result = classifier.classify(pd);
@@ -131,7 +200,7 @@ void main() {
       expect(result.zeroPartyVCs, isEmpty);
     });
 
-    test('should route multiple standard VCs to claimedDescriptors', () {
+    test('should route multiple claimed VCs to claimedDescriptors', () {
       final pd = _pd([
         _descriptor(id: 'd1', type: 'UniversityDegree'),
         _descriptor(id: 'd2', type: 'EmploymentCredential'),
@@ -142,14 +211,8 @@ void main() {
       expect(result.claimedVCsRequested, isTrue);
     });
 
-    test('claimedVCsRequested is false when no claimed or IDV descriptors', () {
-      final pd = _pd([_descriptor(id: 'hit1', type: 'HITGivenName')]);
-      final result = classifier.classify(pd);
-
-      expect(result.claimedVCsRequested, isFalse);
-    });
-
-    test('descriptor without constraints goes to claimedDescriptors', () {
+    test('should route a descriptor without constraints to claimedDescriptors',
+        () {
       final pd = _pd([
         {'id': 'bare', 'name': 'Bare descriptor'},
       ]);
@@ -158,12 +221,21 @@ void main() {
       expect(result.claimedDescriptors, hasLength(1));
       expect(result.claimedDescriptors.first.id, 'bare');
     });
+
+    test('should set claimedVCsRequested false when no claimed or IDV descriptors',
+        () {
+      final pd = _pd([_descriptor(id: 'hit1', type: 'HITGivenName')]);
+      final result = classifier.classify(pd);
+
+      expect(result.claimedVCsRequested, isFalse);
+    });
   });
 
-  // ── ZPD-linked VCs (Email / PhoneNumber) ──────────────────────────────────
+  // ── ZPD-linked VCs ────────────────────────────────────────────────────────
 
-  group('ZPD-linked VC descriptors', () {
-    test('should route Email descriptor to zpdLinkedDescriptors', () {
+  group('when the descriptor requests a ZPD-linked VC', () {
+    test('should route Email to zpdLinkedDescriptors and add its data point',
+        () {
       final pd = _pd([_descriptor(id: 'email1', type: 'Email')]);
       final result = classifier.classify(pd);
 
@@ -173,7 +245,9 @@ void main() {
       expect(result.claimedDescriptors, isEmpty);
     });
 
-    test('should route PhoneNumber descriptor to zpdLinkedDescriptors', () {
+    test(
+        'should route PhoneNumber to zpdLinkedDescriptors and add its data point',
+        () {
       final pd = _pd([_descriptor(id: 'phone1', type: 'PhoneNumber')]);
       final result = classifier.classify(pd);
 
@@ -181,7 +255,7 @@ void main() {
       expect(result.dataPoints, contains(r'$.person.properties.phoneNumber'));
     });
 
-    test('zpdRequested is true when zpdLinkedDescriptors are present', () {
+    test('should set zpdRequested true', () {
       final pd = _pd([_descriptor(id: 'e1', type: 'Email')]);
       final result = classifier.classify(pd);
 
@@ -189,10 +263,10 @@ void main() {
     });
   });
 
-  // ── Zero-party VCs (HIT* / ProfileTemplate) ───────────────────────────────
+  // ── Zero-party VCs ────────────────────────────────────────────────────────
 
-  group('zero-party VC descriptors', () {
-    test('should add HITGivenName type to zeroPartyVCs and correct dataPoint',
+  group('when the descriptor requests a zero-party VC', () {
+    test('should add HITGivenName to zeroPartyVCs with the correct data point',
         () {
       final pd = _pd([_descriptor(id: 'h1', type: 'HITGivenName')]);
       final result = classifier.classify(pd);
@@ -211,7 +285,8 @@ void main() {
       expect(result.dataPoints, contains(r'$.person.properties.email'));
     });
 
-    test('should add ProfileTemplate with empty dataPoints and set zeroPartyVCs',
+    test(
+        'should add ProfileTemplate when context matches and set shouldGenerateProfileVC',
         () {
       final pd = _pd([
         _descriptor(
@@ -227,9 +302,9 @@ void main() {
       expect(result.zpdRequested, isTrue);
     });
 
-    test('ProfileTemplate without matching context goes to claimedDescriptors',
+    test(
+        'should route ProfileTemplate to claimedDescriptors when context does not match',
         () {
-      // Context doesn't match profileContext — not treated as ProfileTemplate.
       final pd = _pd([
         _descriptor(
           id: 'pt2',
@@ -243,7 +318,8 @@ void main() {
       expect(result.zeroPartyVCs, isEmpty);
     });
 
-    test('shouldGenerateProfileVC is false when ProfileTemplate is absent', () {
+    test('should set shouldGenerateProfileVC false when ProfileTemplate is absent',
+        () {
       final pd = _pd([_descriptor(id: 'd1', type: 'HITGivenName')]);
       final result = classifier.classify(pd);
 
@@ -251,10 +327,11 @@ void main() {
     });
   });
 
-  // ── IDV descriptors ──────────────────────────────────────────────────────
+  // ── IDV VCs ───────────────────────────────────────────────────────────────
 
-  group('IDV descriptors', () {
-    test('should route VerifiedIdentityDocument from trusted issuer to idvDescriptors',
+  group('when the descriptor requests identity verification', () {
+    test(
+        'should route VerifiedIdentityDocument from trusted issuer to idvDescriptors',
         () {
       final pd = _pd([
         _descriptor(
@@ -271,7 +348,7 @@ void main() {
       expect(result.claimedVCsRequested, isTrue);
     });
 
-    test('should populate idvInfo.schemaContextUrl when context is present', () {
+    test('should populate idvInfo.schemaContextUrl from the context field', () {
       final pd = _pd([
         _descriptor(
           id: 'idv2',
@@ -286,7 +363,7 @@ void main() {
           'https://schema.affinidi.io/passport/context.jsonld');
     });
 
-    test('should populate idvInfo.type from the specific sub-type', () {
+    test('should populate idvInfo.type from the specific IDV sub-type', () {
       final pd = _pd([
         {
           'id': 'passport',
@@ -296,7 +373,8 @@ void main() {
                 'path': [r'$.@context'],
                 'filter': {
                   'contains': {
-                    'const': 'https://schema.affinidi.io/passport/context.jsonld',
+                    'const':
+                        'https://schema.affinidi.io/passport/context.jsonld',
                   },
                 },
               },
@@ -325,7 +403,8 @@ void main() {
       expect(result.idvInfo?.type, 'Passport');
     });
 
-    test('VerifiedIdentityDocument from untrusted issuer goes to claimedDescriptors',
+    test(
+        'should route VerifiedIdentityDocument from untrusted issuer to claimedDescriptors',
         () {
       final pd = _pd([
         _descriptor(
@@ -340,7 +419,8 @@ void main() {
       expect(result.idvDescriptors, isEmpty);
     });
 
-    test('should throw unsupportedMultipleIdvTypes when descriptor has > 2 IDV types',
+    test(
+        'should throw unsupportedMultipleIdvTypes when descriptor requests more than two IDV types',
         () {
       final pd = _pd([
         {
@@ -387,10 +467,10 @@ void main() {
     });
   });
 
-  // ── Pattern filter (regex anchors stripped) ───────────────────────────────
+  // ── Regex pattern filters ─────────────────────────────────────────────────
 
-  group('pattern filter handling', () {
-    test('should strip ^ and \$ anchors from regex type filter', () {
+  group('when a descriptor field filter uses a regex pattern', () {
+    test(r'should strip ^ and $ anchors from a type pattern filter', () {
       final pd = _pd([
         _descriptor(id: 'p1', type: 'HITGivenName', usePattern: true),
       ]);
@@ -399,7 +479,7 @@ void main() {
       expect(result.zeroPartyVCs, contains('HITGivenName'));
     });
 
-    test('should strip anchors from context pattern filter', () {
+    test(r'should strip ^ and $ anchors from a context pattern filter', () {
       final pd = _pd([
         _descriptor(
           id: 'pt3',
@@ -414,50 +494,10 @@ void main() {
     });
   });
 
-  // ── Multiple $.@context fields ────────────────────────────────────────────
-
-  group(r'multiple $.@context fields', () {
-    test('should throw invalidPresentationDefinition when descriptor has two @context fields',
-        () {
-      final pd = _pd([
-        {
-          'id': 'dup-ctx',
-          'constraints': {
-            'fields': [
-              {
-                'path': [r'$.@context'],
-                'filter': {
-                  'contains': {'const': 'https://ctx1.example/'},
-                },
-              },
-              {
-                'path': [r'$.@context'],
-                'filter': {
-                  'contains': {'const': 'https://ctx2.example/'},
-                },
-              },
-            ],
-          },
-        },
-      ]);
-
-      expect(
-        () => classifier.classify(pd),
-        throwsA(
-          isA<TdkException>().having(
-            (e) => e.code,
-            'code',
-            TdkExceptionType.invalidPresentationDefinition.code,
-          ),
-        ),
-      );
-    });
-  });
-
   // ── Purpose ───────────────────────────────────────────────────────────────
 
-  group('purpose field', () {
-    test('should parse purpose from a map in the PD', () {
+  group('when the PD includes a purpose field', () {
+    test('should parse purpose from a map', () {
       final pd = _pd(
         [_descriptor(id: 'd1', type: 'UniversityDegree')],
         purpose: {
@@ -492,8 +532,8 @@ void main() {
 
   // ── Submission requirements ───────────────────────────────────────────────
 
-  group('submission requirements', () {
-    test('should parse submission requirements and key by group name', () {
+  group('when the PD includes submission_requirements', () {
+    test('should parse requirements and key them by group name', () {
       final pd = _pd(
         [_descriptor(id: 'd1', type: 'UniversityDegree', group: ['A'])],
         submissionRequirements: [
@@ -506,7 +546,7 @@ void main() {
       expect(result.submissionRequirementsByGroup['A']?.count, 1);
     });
 
-    test('should throw invalidPresentationDefinition when count is zero', () {
+    test('should throw when count is zero', () {
       final pd = _pd(
         [_descriptor(id: 'd1', type: 'UniversityDegree')],
         submissionRequirements: [
@@ -526,7 +566,7 @@ void main() {
       );
     });
 
-    test('should throw invalidPresentationDefinition when min is zero', () {
+    test('should throw when min is zero', () {
       final pd = _pd(
         [_descriptor(id: 'd1', type: 'UniversityDegree')],
         submissionRequirements: [
@@ -536,12 +576,17 @@ void main() {
 
       expect(
         () => classifier.classify(pd),
-        throwsA(isA<TdkException>()),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
       );
     });
 
-    test('should throw invalidPresentationDefinition when from field is missing',
-        () {
+    test('should throw when the from field is missing', () {
       final pd = _pd(
         [_descriptor(id: 'd1', type: 'UniversityDegree')],
         submissionRequirements: [
@@ -564,8 +609,10 @@ void main() {
 
   // ── Mixed descriptors ─────────────────────────────────────────────────────
 
-  group('mixed descriptor types', () {
-    test('should classify claimed, ZPD-linked, and zero-party in one PD', () {
+  group('when the PD has multiple descriptor types', () {
+    test(
+        'should classify claimed, ZPD-linked, and zero-party descriptors correctly',
+        () {
       final pd = _pd([
         _descriptor(id: 'degree', type: 'UniversityDegree'),
         _descriptor(id: 'email', type: 'Email'),
@@ -578,11 +625,17 @@ void main() {
       expect(result.zpdLinkedDescriptors, hasLength(1));
       expect(result.zpdLinkedDescriptors.first.id, 'email');
       expect(result.zeroPartyVCs, contains('HITGivenName'));
-      expect(result.dataPoints,
-          containsAll([r'$.person.properties.email', r'$.person.properties.givenName']));
+      expect(
+        result.dataPoints,
+        containsAll([
+          r'$.person.properties.email',
+          r'$.person.properties.givenName',
+        ]),
+      );
     });
 
-    test('empty PD produces empty requirements', () {
+    test('should return empty requirements for an empty input_descriptors list',
+        () {
       final pd = _pd([]);
       final result = classifier.classify(pd);
 
@@ -598,9 +651,9 @@ void main() {
 
   // ── Issuer filter path variants ───────────────────────────────────────────
 
-  group('issuer filter path variants', () {
+  group('when the issuer filter uses different JSON paths', () {
     for (final issuerPath in [r'$.issuer', r'$.vc.issuer', r'$.iss']) {
-      test('should extract issuer from path $issuerPath', () {
+      test('should recognise the trusted issuer via $issuerPath', () {
         final pd = _pd([
           {
             'id': 'idv-$issuerPath',

@@ -262,10 +262,19 @@ class PDClassifier {
     // if (inputDescriptor.containsKey(PDParserFields.groupNameKey)) {
     //   group = (inputDescriptor[groupNameKey] as List).first.toString();
     // }
-    final rawGroup =
-        inputDescriptor[PdClassifierConstants.groupNameKey] as List<dynamic>?;
-    if (rawGroup != null && rawGroup.isNotEmpty) {
+    final rawGroup = inputDescriptor[PdClassifierConstants.groupNameKey];
+    if (rawGroup is List && rawGroup.isNotEmpty) {
       groupName = rawGroup.first.toString();
+    } else if (rawGroup is String && rawGroup.isNotEmpty) {
+      groupName = rawGroup;
+    } else if (rawGroup != null) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'input_descriptor "group" field must be a list or string.',
+          code: TdkExceptionType.invalidPresentationDefinition.code,
+        ),
+        StackTrace.current,
+      );
     }
 
     final rawConstraints =
