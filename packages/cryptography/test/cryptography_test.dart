@@ -81,7 +81,9 @@ void main() {
 
   group('decodeJwtToken', () {
     test('should decode the payload of a valid JWT', () {
-      final payload = cryptographyService.decodeJwtToken(token: fixtures.validJwt);
+      final payload = cryptographyService.decodeJwtToken(
+        token: fixtures.validJwt,
+      );
 
       expect(payload['sub'], 'test');
       expect(payload['exp'], 9999999999);
