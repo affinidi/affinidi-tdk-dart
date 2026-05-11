@@ -84,6 +84,6 @@ abstract final class ZeroPartyVcDataPoints {
       _addressCountry,
     },
     'HITContacts': {_phoneNumber, _email},
-    'HITIdentity': {_nickname, _gender, _birthdate}
+    'HITIdentity': {_nickname, _gender, _birthdate},
   };
 }

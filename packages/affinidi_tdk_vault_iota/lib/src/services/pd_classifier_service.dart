@@ -138,8 +138,7 @@ class PDClassifier {
           if (d is! Map<String, dynamic>) {
             Error.throwWithStackTrace(
               TdkException(
-                message:
-                    'Each input_descriptors entry must be a JSON object.',
+                message: 'Each input_descriptors entry must be a JSON object.',
                 code: TdkExceptionType.invalidPresentationDefinition.code,
               ),
               StackTrace.current,
@@ -226,14 +225,16 @@ class PDClassifier {
 
     return PDRequirements(
       claimedDescriptors: List.unmodifiable(requirements.claimedDescriptors),
-      zpdLinkedDescriptors:
-          List.unmodifiable(requirements.zpdLinkedDescriptors),
+      zpdLinkedDescriptors: List.unmodifiable(
+        requirements.zpdLinkedDescriptors,
+      ),
       idvDescriptors: List.unmodifiable(requirements.idvDescriptors),
       dataPoints: Set.unmodifiable(requirements.dataPoints),
       zeroPartyVCs: Set.unmodifiable(requirements.zeroPartyVCs),
       idvInfo: requirements.idvInfo,
-      submissionRequirementsByGroup:
-          Map.unmodifiable(requirements.submissionRequirementsByGroup),
+      submissionRequirementsByGroup: Map.unmodifiable(
+        requirements.submissionRequirementsByGroup,
+      ),
       purpose: requirements.purpose,
     );
   }
@@ -585,7 +586,8 @@ class PDClassifier {
       if (e is! Map<String, dynamic>) {
         Error.throwWithStackTrace(
           TdkException(
-            message: 'Each submission_requirements entry must be a JSON object.',
+            message:
+                'Each submission_requirements entry must be a JSON object.',
             code: TdkExceptionType.invalidPresentationDefinition.code,
           ),
           StackTrace.current,

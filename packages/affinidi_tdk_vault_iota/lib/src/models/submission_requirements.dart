@@ -35,8 +35,7 @@ class SubmissionRequirements {
   /// [TdkExceptionType.invalidPresentationDefinition] if the `from` key is
   /// absent or null.
   factory SubmissionRequirements.fromJson(Map<String, dynamic> json) {
-    final rawFrom =
-        json[PdClassifierConstants.submissionRequirementsFromKey];
+    final rawFrom = json[PdClassifierConstants.submissionRequirementsFromKey];
     if (rawFrom == null) {
       Error.throwWithStackTrace(
         TdkException(

@@ -10,7 +10,8 @@ class PDDescriptor {
   final Map<String, dynamic> _data;
 
   /// Creates a [PDDescriptor] from the raw input descriptor [data] map.
-  PDDescriptor({required Map<String, dynamic> data}) : _data = data;
+  PDDescriptor({required Map<String, dynamic> data})
+      : _data = Map.unmodifiable(data);
 
   /// Creates an empty [PDDescriptor] with a placeholder `id`.
   factory PDDescriptor.empty() => PDDescriptor(data: {'id': 'id'});
