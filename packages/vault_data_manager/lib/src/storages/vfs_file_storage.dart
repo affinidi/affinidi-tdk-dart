@@ -98,27 +98,36 @@ class VFSFileStorage implements FileStorage {
       cancelToken: cancelToken,
     );
 
-    final response = await _vaultDataManagerService.getChildNodes(
-      nodeId: parentFolderId,
-      cancelToken: cancelToken,
-    );
-    final folder = response.items.firstWhere(
-      (node) => node.name == folderName && node.type == NodeType.FOLDER,
-      orElse: () => Error.throwWithStackTrace(
-        TdkException(
-          message: 'Created folder not found',
-          code: TdkExceptionType.folderNotFound.code,
-        ),
-        StackTrace.current,
-      ),
-    );
-
-    return Folder(
-      id: folder.nodeId,
-      name: folder.name,
-      createdAt: DateTime.parse(folder.createdAt),
-      modifiedAt: DateTime.parse(folder.modifiedAt),
-    );
+    // Create succeeds but returns no node id; list children (paginated) until match.
+    String? cursor;
+    while (true) {
+      final page = await _vaultDataManagerService.getChildNodes(
+        nodeId: parentFolderId,
+        exclusiveStartItemId: cursor,
+        cancelToken: cancelToken,
+      );
+      for (final node in page.items) {
+        if (node.type == NodeType.FOLDER && node.name == folderName) {
+          return Folder(
+            id: node.nodeId,
+            name: node.name,
+            createdAt: DateTime.parse(node.createdAt),
+            modifiedAt: DateTime.parse(node.modifiedAt),
+          );
+        }
+      }
+      final next = page.lastEvaluatedItemId;
+      if (next == null || next == cursor) {
+        Error.throwWithStackTrace(
+          TdkException(
+            message: 'Created folder not found',
+            code: TdkExceptionType.folderNotFound.code,
+          ),
+          StackTrace.current,
+        );
+      }
+      cursor = next;
+    }
   }
 
   @override
