@@ -35,9 +35,9 @@ class SubmissionRequirements {
   /// [TdkExceptionType.invalidPresentationDefinition] if the `from` key is
   /// absent or null.
   factory SubmissionRequirements.fromJson(Map<String, dynamic> json) {
-    final groupName =
-        json[PdClassifierConstants.submissionRequirementsFromKey] as String?;
-    if (groupName == null) {
+    final rawFrom =
+        json[PdClassifierConstants.submissionRequirementsFromKey];
+    if (rawFrom == null) {
       Error.throwWithStackTrace(
         TdkException(
           message:
@@ -47,11 +47,35 @@ class SubmissionRequirements {
         StackTrace.current,
       );
     }
+    if (rawFrom is! String) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'submission_requirements "from" field must be a string.',
+          code: TdkExceptionType.invalidPresentationDefinition.code,
+        ),
+        StackTrace.current,
+      );
+    }
+
+    int? _toInt(String key) {
+      final v = json[key];
+      if (v == null) return null;
+      if (v is int) return v;
+      if (v is num) return v.toInt();
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'submission_requirements "$key" field must be a number.',
+          code: TdkExceptionType.invalidPresentationDefinition.code,
+        ),
+        StackTrace.current,
+      );
+    }
+
     return SubmissionRequirements(
-      min: json[PdClassifierConstants.submissionRequirementsMinKey] as int?,
-      max: json[PdClassifierConstants.submissionRequirementsMaxKey] as int?,
-      count: json[PdClassifierConstants.submissionRequirementsCountKey] as int?,
-      groupName: groupName,
+      min: _toInt(PdClassifierConstants.submissionRequirementsMinKey),
+      max: _toInt(PdClassifierConstants.submissionRequirementsMaxKey),
+      count: _toInt(PdClassifierConstants.submissionRequirementsCountKey),
+      groupName: rawFrom,
     );
   }
 }
