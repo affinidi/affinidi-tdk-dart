@@ -1,6 +1,7 @@
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 
 import '../exceptions/tdk_exception_type.dart';
+import '../services/pd_classifier_constants.dart';
 
 /// Describes how credentials from a specific group must be submitted in a VP.
 ///
@@ -34,7 +35,8 @@ class SubmissionRequirements {
   /// [TdkExceptionType.invalidPresentationDefinition] if the `from` key is
   /// absent or null.
   factory SubmissionRequirements.fromJson(Map<String, dynamic> json) {
-    final groupName = json['from'] as String?;
+    final groupName =
+        json[PdClassifierConstants.submissionRequirementsFromKey] as String?;
     if (groupName == null) {
       Error.throwWithStackTrace(
         TdkException(
@@ -46,9 +48,9 @@ class SubmissionRequirements {
       );
     }
     return SubmissionRequirements(
-      min: json['min'] as int?,
-      max: json['max'] as int?,
-      count: json['count'] as int?,
+      min: json[PdClassifierConstants.submissionRequirementsMinKey] as int?,
+      max: json[PdClassifierConstants.submissionRequirementsMaxKey] as int?,
+      count: json[PdClassifierConstants.submissionRequirementsCountKey] as int?,
       groupName: groupName,
     );
   }
