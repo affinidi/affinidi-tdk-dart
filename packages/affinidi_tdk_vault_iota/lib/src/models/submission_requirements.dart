@@ -65,7 +65,9 @@ class SubmissionRequirements {
     if ((min != null && max != null && min > max) ||
         (count != null && max != null && count > max) ||
         (count != null && min != null && count < min)) {
-      _throw('Malformed submission_requirements: invalid min/max/count combination.');
+      _throw(
+        'Malformed submission_requirements: invalid min/max/count combination.',
+      );
     }
 
     return SubmissionRequirements(
