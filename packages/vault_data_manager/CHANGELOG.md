@@ -1,3 +1,7 @@
+## 2.0.7
+
+ - **FIX**: folder creation lookup by fetching children with max limit (#104).
+
 ## 2.0.6
 
  - Update a dependency to the latest release.
