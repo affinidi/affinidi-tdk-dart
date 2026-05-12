@@ -2,20 +2,23 @@
 ///
 /// Returned by the verifier metadata service and consumed by the caller to
 /// identify and display the requesting party on the consent screen.
+///
+/// Field optionality follows the OID4VP 1.0 final specification, §5.1 —
+/// https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-5.1
 class VerifierClientMetadata {
   /// The human-readable name of the verifier.
   ///
-  /// Optional per OID4VP 1.0 final §5.1 — may be `null` when not provided.
+  /// May be `null` when not provided by the verifier.
   final String? name;
 
   /// URL of the verifier's logo image.
   ///
-  /// Optional per OID4VP 1.0 final §5.1 — may be `null` when not provided.
+  /// May be `null` when not provided by the verifier.
   final String? logo;
 
   /// The origin (base URL) of the verifier's site.
   ///
-  /// Optional per OID4VP 1.0 final §5.1 — may be `null` when not provided.
+  /// May be `null` when not provided by the verifier.
   final String? origin;
 
   /// Whether the verifier's domain has been verified.
