@@ -14,18 +14,6 @@ import 'zpd_linked_vc_types.dart';
 ///
 /// Produced by [PDClassifier._extractRequestedType] and consumed by
 /// [PDClassifier._computeRequiredDataPoints] and the fold classifier.
-///
-/// Original vault_universal_ui:
-/// ```dart
-/// class PDParserTmpResult {
-///   final dynamic inputDescriptor;
-///   final String? context;
-///   final String? groupName;
-///   final List<String> types;
-///   final String? issuer;
-///   final Set<String>? dataPoints;
-/// }
-/// ```
 class _PdParserTmpResult {
   const _PdParserTmpResult({
     required this.inputDescriptor,
@@ -63,9 +51,6 @@ class _PdParserTmpResult {
 /// Produces a [PDRequirements] that tells the caller which types of data a
 /// verifier is requesting — claimed VCs, ZPD-linked VCs, profile data, or
 /// identity verification.
-///
-/// Original vault_universal_ui: `PDParser` in
-/// `apps/vault/lib/src/features/share_flow/repository/pd_parser.dart`.
 class PDClassifier {
   /// Creates a [PDClassifier].
   ///
@@ -85,21 +70,6 @@ class PDClassifier {
   /// structurally invalid, or
   /// [TdkExceptionType.unsupportedMultipleIdvTypes] if a single descriptor
   /// requests more than one IDV document type.
-  ///
-  /// Original vault_universal_ui:
-  /// ```dart
-  /// PDRequirements extractRequirements(dynamic pd) {
-  ///   final List<dynamic>? inputDescriptors = pd[PDParserFields.inputDescriptorsKey];
-  ///   if (inputDescriptors == null) throw Exception('Invalid PD');
-  ///   ...
-  ///   requirements = inputDescriptors
-  ///       .map(_extractRequestedType)
-  ///       .map(_computeRequiredDataPoints)
-  ///       .fold(requirements, (result, requiredDataPoints) { ... });
-  ///   ...
-  ///   return requirements;
-  /// }
-  /// ```
   PDRequirements classify(Map<String, dynamic> pd) {
     final rawValue = pd[PdClassifierConstants.inputDescriptorsKey];
 
@@ -245,14 +215,6 @@ class PDClassifier {
 
   /// Extracts context, type(s), issuer, and group from a single input
   /// descriptor by inspecting its `constraints.fields[]`.
-  ///
-  /// Original vault_universal_ui:
-  /// ```dart
-  /// PDParserTmpResult _extractRequestedType(dynamic inputDescriptor) {
-  ///   // walks constraints.fields[], looks for path filters matching
-  ///   // $.@context, $.type, $.issuer / $.vc.issuer / $.iss, and group
-  /// }
-  /// ```
   _PdParserTmpResult _extractRequestedType(
     Map<String, dynamic> inputDescriptor,
   ) {
@@ -360,19 +322,6 @@ class PDClassifier {
   }
 
   /// Maps recognised zero-party VC types to their profile data paths.
-  ///
-  /// Original vault_universal_ui:
-  /// ```dart
-  /// PDParserTmpResult _computeRequiredDataPoints(PDParserTmpResult tmp) {
-  ///   if (tmp.types.contains(PDParserFields.profileType) &&
-  ///       tmp.context == PDParserFields.profileContext) {
-  ///     return tmp with dataPoints: <String>{};   // ProfileTemplate
-  ///   }
-  ///   final dataPoints = _typeDataPoints[tmp.types.first];
-  ///   if (dataPoints == null) return tmp;         // not a ZPD VC
-  ///   return tmp with dataPoints: dataPoints;
-  /// }
-  /// ```
   _PdParserTmpResult _computeRequiredDataPoints(_PdParserTmpResult tmp) {
     if (tmp.types.isEmpty) return tmp;
 
@@ -390,17 +339,6 @@ class PDClassifier {
 
   /// Returns the ZPD data paths linked to a ZPD-linked VC type (e.g. Email,
   /// PhoneNumber), or an empty list if the type is not ZPD-linked.
-  ///
-  /// Original vault_universal_ui:
-  /// ```dart
-  /// List<String> _getLinkedZPD(PDParserTmpResult requiredDataPoints) {
-  ///   if (requiredDataPoints.types.length > 1) {
-  ///     _logger.warn("unsupported _getLinkedZPD call with types > 1");
-  ///     return [];
-  ///   }
-  ///   return ZpdLinkedData.byType[requiredDataPoints.types.first] ?? [];
-  /// }
-  /// ```
   List<String> _getLinkedZpdPaths(_PdParserTmpResult requiredDataPoints) {
     if (requiredDataPoints.types.isEmpty) return const [];
     if (requiredDataPoints.types.length > 1) {
@@ -417,20 +355,6 @@ class PDClassifier {
   ///
   /// Looks for `contains.pattern`, `contains.const`, `pattern`, or `const`
   /// in that priority order. Strips `^` / `$` anchors from regex patterns.
-  ///
-  /// Original vault_universal_ui:
-  /// ```dart
-  /// String _extractConstraint(Map<String, dynamic> filter) {
-  ///   if (filter[containsKey] != null) {
-  ///     if (contains.containsKey(patternKey)) return stripPattern(...);
-  ///     if (contains.containsKey(constKey))   return contains[constKey];
-  ///   } else {
-  ///     if (filter.containsKey(patternKey)) return stripPattern(...);
-  ///     if (filter.containsKey(constKey))   return filter[constKey];
-  ///   }
-  ///   throw Exception('Could not extract constraint');
-  /// }
-  /// ```
   String _extractConstraint(Map<String, dynamic> filter) {
     final rawContains = filter[PdClassifierConstants.containsKey];
 
@@ -509,8 +433,6 @@ class PDClassifier {
   }
 
   /// Removes leading `^` and trailing `$` from a regex pattern string.
-  ///
-  /// Original vault_universal_ui: `_stripPatternSpecialCharacters`.
   String _stripAnchors(String pattern) {
     var result = pattern;
     if (result.startsWith('^')) result = result.substring(1);
@@ -519,17 +441,6 @@ class PDClassifier {
   }
 
   /// Parses the `purpose` field of a PD (may be a JSON string or a map).
-  ///
-  /// Original vault_universal_ui:
-  /// ```dart
-  /// try {
-  ///   final purposeJson = jsonDecode(purposeJsonString);
-  ///   purpose = RequestPurpose.fromJson(purposeJson);
-  /// } catch (e) {
-  ///   _logger.error('Failed to parse purpose JSON: $e');
-  ///   purpose = null;
-  /// }
-  /// ```
   RequestPurpose? _extractPurpose(dynamic rawPurpose) {
     if (rawPurpose == null) return null;
     try {
@@ -548,17 +459,6 @@ class PDClassifier {
   ///
   /// Throws [TdkException] with [TdkExceptionType.invalidPresentationDefinition]
   /// if any requirement has a zero or negative count/min/max.
-  ///
-  /// Original vault_universal_ui:
-  /// ```dart
-  /// final submissionRequirements = pd[submissionRequirementsKey] != null
-  ///     ? (pd[key] as List).map(SubmissionRequirements.fromJson).toList()
-  ///     : null;
-  /// for (final req in submissionRequirements) {
-  ///   if ((req.min != null && req.min! < 1) || ...) throw genericError();
-  /// }
-  /// submissionRequirementsByGroup[req.groupName] = req;
-  /// ```
   Map<String, SubmissionRequirements> _extractSubmissionRequirements(
     Map<String, dynamic> pd,
   ) {
