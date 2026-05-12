@@ -53,7 +53,7 @@ melos:
       noSelect: true
       packageFilters:
         includePrivatePackages: false
-        diff: origin/main
+        diff: origin/feat/iota-share-flow
     analyze:
       exec: dart analyze .
       concurrency: 4
@@ -62,7 +62,7 @@ melos:
       packageFilters:
         flutter: true
         includePrivatePackages: false
-        diff: origin/main
+        diff: origin/feat/iota-share-flow
     test:
       run: |
         melos run test-flutter
@@ -78,7 +78,7 @@ melos:
       packageFilters:
         flutter: true
         includePrivatePackages: false
-        diff: origin/main
+        diff: origin/feat/iota-share-flow
         ignore:
           - "*_example*"
     test-dart:
@@ -91,7 +91,7 @@ melos:
       packageFilters:
         flutter: false
         private: false
-        diff: origin/main
+        diff: origin/feat/iota-share-flow
         ignore:
           - "*_example*"
     test-integration:
