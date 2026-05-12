@@ -56,7 +56,8 @@ class ConsumerTokenProvider extends TokenProvider with JwtTokenDidChecker {
     final token = await getJwtToken(
       signer: _signer,
       expiration: _consumerTokenExpiration,
-      audience: _tokenEndpoint,
+      audience:
+          'https://apse1.dev.api.affinidi.io/iam/v1/consumer/oauth2/token', //_tokenEndpoint,
     );
     final did = _signer.did;
     final consumerToken = await _fetchConsumerToken(
