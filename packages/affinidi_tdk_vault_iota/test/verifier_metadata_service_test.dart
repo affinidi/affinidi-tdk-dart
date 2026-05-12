@@ -92,8 +92,9 @@ void main() {
 
         expect(
           capturedUri,
-          Uri.parse(
-            '$_baseUrl/vpa/v1/login/configurations/metadata/$_clientId',
+          Uri.parse(_baseUrl).replace(
+            path:
+                '/vpa/v1/login/configurations/metadata/${Uri.encodeComponent(_clientId)}',
           ),
         );
       });

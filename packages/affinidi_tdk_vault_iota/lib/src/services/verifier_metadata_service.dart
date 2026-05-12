@@ -35,7 +35,9 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
         return VerifierClientMetadata.fromJson(clientMetadata);
       }
 
-      final uri = Uri.parse('$_baseUrl$_metadataPath/$clientId');
+      final uri = Uri.parse(
+        _baseUrl,
+      ).replace(path: '$_metadataPath/${Uri.encodeComponent(clientId)}');
       final response = await _httpClient.get(uri);
 
       if (response.statusCode != HttpStatusCode.ok) {

@@ -2,7 +2,7 @@
 enum TdkExceptionType {
   /// Exception thrown when the verifier's client metadata could not be fetched
   /// or parsed.
-  failedToFetchVerifierMetadata('failed_to_fetch_verifier_metadata'); 
+  failedToFetchVerifierMetadata('failed_to_fetch_verifier_metadata');
 
   /// Creates a new instance of [TdkExceptionType].
   ///
