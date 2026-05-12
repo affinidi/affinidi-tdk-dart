@@ -713,7 +713,7 @@ void main() {
     test('should throw when submission_requirements is not a list', () {
       expect(
         () => classifier.classify({
-          'input_descriptors': [],
+          'input_descriptors': <dynamic>[],
           'submission_requirements': 'not-a-list',
         }),
         throwsA(
@@ -729,7 +729,7 @@ void main() {
     test('should throw when a submission_requirements entry is not a map', () {
       expect(
         () => classifier.classify({
-          'input_descriptors': [],
+          'input_descriptors': <dynamic>[],
           'submission_requirements': ['not-a-map'],
         }),
         throwsA(
@@ -745,7 +745,7 @@ void main() {
     test('should throw when the from field is not a string', () {
       expect(
         () => classifier.classify({
-          'input_descriptors': [],
+          'input_descriptors': <dynamic>[],
           'submission_requirements': [
             {'from': 42, 'count': 1},
           ],
@@ -763,7 +763,7 @@ void main() {
     test('should throw when a numeric field is not a number', () {
       expect(
         () => classifier.classify({
-          'input_descriptors': [],
+          'input_descriptors': <dynamic>[],
           'submission_requirements': [
             {'from': 'A', 'count': 'not-a-number'},
           ],
