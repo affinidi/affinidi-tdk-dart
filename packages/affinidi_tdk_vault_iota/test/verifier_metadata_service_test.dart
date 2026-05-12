@@ -137,7 +137,7 @@ void main() {
       );
 
       test(
-        'should throw TdkException with verifier_metadata_fetch_failed on non-200',
+        'should throw TdkException with failed_to_fetch_verifier_metadata on non-200',
         () async {
           final service = VerifierMetadataService(
             baseUrl: _baseUrl,
@@ -161,7 +161,7 @@ void main() {
       );
 
       test(
-        'should throw TdkException with verifier_metadata_fetch_failed on network error',
+        'should throw TdkException with failed_to_fetch_verifier_metadata on network error',
         () async {
           final httpClient = MockClient(
             (_) async => throw Exception('connection refused'),

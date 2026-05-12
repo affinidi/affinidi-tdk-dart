@@ -38,7 +38,7 @@ abstract interface class VerifierMetadataServiceInterface {
   /// origin.
   ///
   /// Throws:
-  /// - [TdkException] with code `verifier_metadata_fetch_failed` when the
+  /// - [TdkException] with code `failed_to_fetch_verifier_metadata` when the
   ///   verifier cannot be identified (network failure or unexpected response
   ///   shape).
   Future<VerifierClientMetadata> fetchVerifierMetadata({
