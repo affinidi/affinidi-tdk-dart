@@ -176,6 +176,9 @@ void main() {
         when(
           () => mockDataManagerService.getChildNodes(
             nodeId: NodeFixtures.testParentId,
+            limit: any(named: 'limit'),
+            exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+            cancelToken: any(named: 'cancelToken'),
           ),
         ).thenAnswer(
           (_) async => PaginatedList<Node>(

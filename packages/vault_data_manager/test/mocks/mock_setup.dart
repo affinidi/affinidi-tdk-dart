@@ -19,7 +19,14 @@ void stubFileService(
     ),
   ).thenAnswer((_) async => Future<void>.value());
 
-  when(() => service.getChildNodes(nodeId: any(named: 'nodeId'))).thenAnswer(
+  when(
+    () => service.getChildNodes(
+      nodeId: any(named: 'nodeId'),
+      limit: any(named: 'limit'),
+      exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+      cancelToken: any(named: 'cancelToken'),
+    ),
+  ).thenAnswer(
     (_) async => PaginatedList<Node>(items: [], lastEvaluatedItemId: null),
   );
 

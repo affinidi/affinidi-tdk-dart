@@ -7,6 +7,8 @@ import '../model/node_status.dart';
 import '../model/node_type.dart';
 import '../services/vault_data_manager_service_interface.dart';
 
+const _maxint = 2147483647;
+
 /// A VFS based implementation of [FileStorage] for managing files and folders.
 class VFSFileStorage implements FileStorage {
   /// Creates a new instance of [VFSFileStorage].
@@ -97,9 +99,9 @@ class VFSFileStorage implements FileStorage {
       parentNodeId: parentFolderId,
       cancelToken: cancelToken,
     );
-
     final response = await _vaultDataManagerService.getChildNodes(
       nodeId: parentFolderId,
+      limit: _maxint,
       cancelToken: cancelToken,
     );
     final folder = response.items.firstWhere(

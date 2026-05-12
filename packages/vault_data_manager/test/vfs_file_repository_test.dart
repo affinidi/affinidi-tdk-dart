@@ -34,7 +34,12 @@ void main() {
       group('and creating a folder', () {
         test('it should create a folder successfully', () async {
           when(
-            () => mockService.getChildNodes(nodeId: any(named: 'nodeId')),
+            () => mockService.getChildNodes(
+              nodeId: FileFixtures.testParentId,
+              limit: any(named: 'limit'),
+              exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+              cancelToken: any(named: 'cancelToken'),
+            ),
           ).thenAnswer(
             (_) async => PaginatedList<Node>(
               items: [FileFixtures.mockFolderNode],
@@ -42,22 +47,37 @@ void main() {
             ),
           );
 
-          await vfsFileStorage.createFolder(
+          final folder = await vfsFileStorage.createFolder(
             folderName: FileFixtures.testFolderName,
             parentFolderId: FileFixtures.testParentId,
           );
 
+          expect(folder.id, FileFixtures.testFolderId);
+          expect(folder.name, FileFixtures.testFolderName);
           verify(
             () => mockService.createFolder(
               parentNodeId: FileFixtures.testParentId,
               folderName: FileFixtures.testFolderName,
             ),
           ).called(1);
+          verify(
+            () => mockService.getChildNodes(
+              nodeId: FileFixtures.testParentId,
+              limit: 2147483647,
+              exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+              cancelToken: any(named: 'cancelToken'),
+            ),
+          ).called(1);
         });
 
         test('it should throw if folder not found after creation', () async {
           when(
-            () => mockService.getChildNodes(nodeId: any(named: 'nodeId')),
+            () => mockService.getChildNodes(
+              nodeId: FileFixtures.testParentId,
+              limit: any(named: 'limit'),
+              exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+              cancelToken: any(named: 'cancelToken'),
+            ),
           ).thenAnswer(
             (_) async =>
                 PaginatedList<Node>(items: [], lastEvaluatedItemId: null),
