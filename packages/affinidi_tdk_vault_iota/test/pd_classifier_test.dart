@@ -777,6 +777,66 @@ void main() {
         ),
       );
     });
+
+    test('should throw when min is greater than max', () {
+      final pd = _pd(
+        [_descriptor(id: 'd1', type: 'UniversityDegree')],
+        submissionRequirements: [
+          {'from': 'A', 'min': 3, 'max': 2},
+        ],
+      );
+
+      expect(
+        () => classifier.classify(pd),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
+      );
+    });
+
+    test('should throw when count is greater than max', () {
+      final pd = _pd(
+        [_descriptor(id: 'd1', type: 'UniversityDegree')],
+        submissionRequirements: [
+          {'from': 'A', 'count': 5, 'max': 3},
+        ],
+      );
+
+      expect(
+        () => classifier.classify(pd),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
+      );
+    });
+
+    test('should throw when count is less than min', () {
+      final pd = _pd(
+        [_descriptor(id: 'd1', type: 'UniversityDegree')],
+        submissionRequirements: [
+          {'from': 'A', 'count': 1, 'min': 2},
+        ],
+      );
+
+      expect(
+        () => classifier.classify(pd),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
+      );
+    });
   });
 
   // ── Mixed descriptors ─────────────────────────────────────────────────────

@@ -28,52 +28,50 @@ class SubmissionRequirements {
   /// The group identifier this requirement applies to (JSON key: `from`).
   final String groupName;
 
-  /// Creates a [SubmissionRequirements] from a JSON map.
-  ///
-  /// The group name is read from the `from` key per the OID4VP spec.
   /// Throws a [TdkException] with
   /// [TdkExceptionType.invalidPresentationDefinition] if the `from` key is
   /// absent or null.
+  static Never _throw(String message) => throw TdkException(
+    message: message,
+    code: TdkExceptionType.invalidPresentationDefinition.code,
+  );
+
+  /// Creates a [SubmissionRequirements] from a JSON map.
+  ///
+  /// The group name is read from the `from` key per the OID4VP spec.
   factory SubmissionRequirements.fromJson(Map<String, dynamic> json) {
     final rawFrom = json[PdClassifierConstants.submissionRequirementsFromKey];
     if (rawFrom == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'submission_requirements entry is missing the required "from" field.',
-          code: TdkExceptionType.invalidPresentationDefinition.code,
-        ),
-        StackTrace.current,
+      _throw(
+        'submission_requirements entry is missing the required "from" field.',
       );
     }
     if (rawFrom is! String) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'submission_requirements "from" field must be a string.',
-          code: TdkExceptionType.invalidPresentationDefinition.code,
-        ),
-        StackTrace.current,
-      );
+      _throw('submission_requirements "from" field must be a string.');
     }
 
-    int? _toInt(String key) {
+    int? toInt(String key) {
       final v = json[key];
       if (v == null) return null;
       if (v is int) return v;
       if (v is num) return v.toInt();
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'submission_requirements "$key" field must be a number.',
-          code: TdkExceptionType.invalidPresentationDefinition.code,
-        ),
-        StackTrace.current,
-      );
+      _throw('submission_requirements "$key" field must be a number.');
+    }
+
+    final min = toInt(PdClassifierConstants.submissionRequirementsMinKey);
+    final max = toInt(PdClassifierConstants.submissionRequirementsMaxKey);
+    final count = toInt(PdClassifierConstants.submissionRequirementsCountKey);
+
+    if ((min != null && max != null && min > max) ||
+        (count != null && max != null && count > max) ||
+        (count != null && min != null && count < min)) {
+      _throw('Malformed submission_requirements: invalid min/max/count combination.');
     }
 
     return SubmissionRequirements(
-      min: _toInt(PdClassifierConstants.submissionRequirementsMinKey),
-      max: _toInt(PdClassifierConstants.submissionRequirementsMaxKey),
-      count: _toInt(PdClassifierConstants.submissionRequirementsCountKey),
+      min: min,
+      max: max,
+      count: count,
       groupName: rawFrom,
     );
   }
