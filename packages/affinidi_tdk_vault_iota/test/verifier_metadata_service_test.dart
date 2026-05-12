@@ -20,6 +20,24 @@ http.Client _clientReturning(int statusCode, Object body) =>
 
 void main() {
   group('VerifierMetadataService', () {
+    group('when clientId is empty', () {
+      test('should throw TdkException with invalid_client_id', () async {
+        final service = VerifierMetadataService(baseUrl: _baseUrl);
+        addTearDown(service.dispose);
+
+        await expectLater(
+          () => service.fetchVerifierMetadata(clientId: ''),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidClientId.code,
+            ),
+          ),
+        );
+      });
+    });
+
     group('when clientMetadata is provided', () {
       test(
         'should parse it directly without making a network request',

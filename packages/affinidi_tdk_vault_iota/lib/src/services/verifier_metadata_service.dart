@@ -17,6 +17,27 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
 
   static const _metadataPath = '/vpa/v1/login/configurations/metadata';
 
+  static Never _throwInvalidClientId() => Error.throwWithStackTrace(
+    TdkException(
+      message: 'clientId must not be empty.',
+      code: TdkExceptionType.invalidClientId.code,
+    ),
+    StackTrace.current,
+  );
+
+  static Never _throwFetchFailed(
+    String message, {
+    String? originalMessage,
+    StackTrace? stackTrace,
+  }) => Error.throwWithStackTrace(
+    TdkException(
+      message: message,
+      code: TdkExceptionType.failedToFetchVerifierMetadata.code,
+      originalMessage: originalMessage,
+    ),
+    stackTrace ?? StackTrace.current,
+  );
+
   /// Creates a new [VerifierMetadataService].
   ///
   /// [baseUrl] - the base URL of the Affinidi API.
@@ -30,6 +51,8 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
     required String clientId,
     Map<String, dynamic>? clientMetadata,
   }) async {
+    if (clientId.isEmpty) _throwInvalidClientId();
+
     try {
       if (clientMetadata != null) {
         return VerifierClientMetadata.fromJson(clientMetadata);
@@ -41,29 +64,20 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
       final response = await _httpClient.get(uri);
 
       if (response.statusCode != HttpStatusCode.ok) {
-        Error.throwWithStackTrace(
-          TdkException(
-            message:
-                'Verifier metadata request failed with status ${response.statusCode}.',
-            code: TdkExceptionType.failedToFetchVerifierMetadata.code,
-          ),
-          StackTrace.current,
+        _throwFetchFailed(
+          'Verifier metadata request failed with status ${response.statusCode}.',
         );
       }
 
-      final Map<String, dynamic> json =
-          jsonDecode(response.body) as Map<String, dynamic>;
+      final json = jsonDecode(response.body) as Map<String, dynamic>;
       return VerifierClientMetadata.fromJson(json);
     } on TdkException {
       rethrow;
     } catch (e, stackTrace) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Failed to fetch verifier metadata.',
-          code: TdkExceptionType.failedToFetchVerifierMetadata.code,
-          originalMessage: e.toString(),
-        ),
-        stackTrace,
+      _throwFetchFailed(
+        'Failed to fetch verifier metadata.',
+        originalMessage: e.toString(),
+        stackTrace: stackTrace,
       );
     }
   }
