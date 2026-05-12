@@ -157,51 +157,43 @@ class PDClassifier {
           return _extractRequestedType(d);
         })
         .map(_computeRequiredDataPoints)
-        .fold(requirements, (result, tmp) {
-          final isZeroPartyVC = tmp.dataPoints != null;
-          final linkedZpdPaths = _getLinkedZpdPaths(tmp);
+        .fold(requirements, (result, requiredDataPoints) {
+          final isZeroPartyVC = requiredDataPoints.dataPoints != null;
+          final linkedZpdPaths = _getLinkedZpdPaths(requiredDataPoints);
           final isIdv =
-              validIdvIssuers.contains(tmp.issuer) &&
-              tmp.types.contains(
+              validIdvIssuers.contains(requiredDataPoints.issuer) &&
+              requiredDataPoints.types.contains(
                 PdClassifierConstants.verifiedIdentityDocumentType,
               );
 
           if (isZeroPartyVC) {
-            // HIT* / ProfileTemplate — original:
-            // result.dataPoints.addAll(requiredDataPoints.dataPoints!);
-            // result.zeroPartyVCs.add(requiredDataPoints.types.first);
-            result.dataPoints.addAll(tmp.dataPoints!);
-            if (tmp.types.isNotEmpty) {
-              result.zeroPartyVCs.add(tmp.types.first);
+            result.dataPoints.addAll(requiredDataPoints.dataPoints!);
+            if (requiredDataPoints.types.isNotEmpty) {
+              result.zeroPartyVCs.add(requiredDataPoints.types.first);
             }
           } else if (linkedZpdPaths.isNotEmpty) {
-            // ZPD-linked (Email / PhoneNumber) — original:
-            // result.zpdLinkedDescriptors.add(PDDescriptor(data: ...));
-            // result.dataPoints.addAll(linkedZpdDatapoints);
             result.zpdLinkedDescriptors.add(
-              PDDescriptor(data: tmp.inputDescriptor),
+              PDDescriptor(data: requiredDataPoints.inputDescriptor),
             );
             result.dataPoints.addAll(linkedZpdPaths);
           } else if (isIdv) {
-            // Identity verification — original:
-            // if (requiredDataPoints.types.length > 2) isIdvInvalidPD = true;
-            // result.idvDescriptors.add(...);
-            // populate idvInfo from context + specific sub-type
-            if (tmp.types.length > 2) {
+            if (requiredDataPoints.types.length > 2) {
               hasInvalidIdvPd = true;
             }
 
-            result.idvDescriptors.add(PDDescriptor(data: tmp.inputDescriptor));
+            result.idvDescriptors.add(
+              PDDescriptor(data: requiredDataPoints.inputDescriptor),
+            );
 
             VerifiedIdentityDocumentInfo? idvInfo;
-            if (tmp.context != null) {
+            if (requiredDataPoints.context != null) {
               idvInfo = VerifiedIdentityDocumentInfo(
-                schemaContextUrl: tmp.context,
+                schemaContextUrl: requiredDataPoints.context,
               );
             }
 
-            if (tmp.types.length > 1) {
-              final specificType = tmp.types.firstWhere(
+            if (requiredDataPoints.types.length > 1) {
+              final specificType = requiredDataPoints.types.firstWhere(
                 (t) => t != PdClassifierConstants.verifiedIdentityDocumentType,
               );
               idvInfo =
@@ -215,7 +207,7 @@ class PDClassifier {
           } else {
             // Standard claimed VC
             result.claimedDescriptors.add(
-              PDDescriptor(data: tmp.inputDescriptor),
+              PDDescriptor(data: requiredDataPoints.inputDescriptor),
             );
           }
 
@@ -269,10 +261,6 @@ class PDClassifier {
     String? issuer;
     String? groupName;
 
-    // Extract group name — original:
-    // if (inputDescriptor.containsKey(PDParserFields.groupNameKey)) {
-    //   group = (inputDescriptor[groupNameKey] as List).first.toString();
-    // }
     final rawGroup = inputDescriptor[PdClassifierConstants.groupNameKey];
     if (rawGroup is List && rawGroup.isNotEmpty) {
       groupName = rawGroup.first.toString();
@@ -324,9 +312,6 @@ class PDClassifier {
       final rawFilter = field[PdClassifierConstants.filterKey];
       final filter = rawFilter is Map<String, dynamic> ? rawFilter : null;
 
-      // Guard against duplicate $.@context paths — original:
-      // contextPathCount += paths.where((p) => p == contextPath).length;
-      // if (contextPathCount > 1) throw invalidPDMultipleContextsError
       contextPathCount += paths
           .where((p) => p == PdClassifierConstants.contextPath)
           .length;
@@ -353,8 +338,6 @@ class PDClassifier {
         types.add(_extractConstraint(filter));
       }
 
-      // issuer filter — original paths: $.issuer, $.vc.issuer, $.iss
-      // filter must have type:string and pattern or const
       final isIssuerPath =
           paths.contains(r'$.issuer') ||
           paths.contains(r'$.vc.issuer') ||
@@ -418,16 +401,16 @@ class PDClassifier {
   ///   return ZpdLinkedData.byType[requiredDataPoints.types.first] ?? [];
   /// }
   /// ```
-  List<String> _getLinkedZpdPaths(_PdParserTmpResult tmp) {
-    if (tmp.types.isEmpty) return const [];
-    if (tmp.types.length > 1) {
+  List<String> _getLinkedZpdPaths(_PdParserTmpResult requiredDataPoints) {
+    if (requiredDataPoints.types.isEmpty) return const [];
+    if (requiredDataPoints.types.length > 1) {
       Logger.instance.warning(
         'ZPD-linked VC lookup called with multiple types — skipping.',
         component: 'PDClassifier',
       );
       return const [];
     }
-    return ZpdLinkedVcTypes.byType[tmp.types.first] ?? const [];
+    return ZpdLinkedVcTypes.byType[requiredDataPoints.types.first] ?? const [];
   }
 
   /// Extracts a string value from a PD filter map.
