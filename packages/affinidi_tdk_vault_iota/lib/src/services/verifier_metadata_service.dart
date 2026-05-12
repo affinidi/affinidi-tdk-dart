@@ -44,7 +44,7 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
           TdkException(
             message:
                 'Verifier metadata request failed with status ${response.statusCode}.',
-            code: TdkExceptionType.verifierMetadataFetchFailed.code,
+            code: TdkExceptionType.failedToFetchVerifierMetadata.code,
           ),
           StackTrace.current,
         );
@@ -59,7 +59,7 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
       Error.throwWithStackTrace(
         TdkException(
           message: 'Failed to fetch verifier metadata.',
-          code: TdkExceptionType.verifierMetadataFetchFailed.code,
+          code: TdkExceptionType.failedToFetchVerifierMetadata.code,
           originalMessage: e.toString(),
         ),
         stackTrace,

@@ -152,7 +152,7 @@ void main() {
                   .having(
                     (e) => e.code,
                     'code',
-                    TdkExceptionType.verifierMetadataFetchFailed.code,
+                    TdkExceptionType.failedToFetchVerifierMetadata.code,
                   )
                   .having((e) => e.message, 'message', contains('404')),
             ),
@@ -180,7 +180,7 @@ void main() {
                   .having(
                     (e) => e.code,
                     'code',
-                    TdkExceptionType.verifierMetadataFetchFailed.code,
+                    TdkExceptionType.failedToFetchVerifierMetadata.code,
                   )
                   .having(
                     (e) => e.originalMessage,
@@ -211,7 +211,7 @@ void main() {
               isA<TdkException>().having(
                 (e) => e.code,
                 'code',
-                TdkExceptionType.verifierMetadataFetchFailed.code,
+                TdkExceptionType.failedToFetchVerifierMetadata.code,
               ),
             ),
           );
@@ -237,7 +237,7 @@ void main() {
               isA<TdkException>().having(
                 (e) => e.code,
                 'code',
-                TdkExceptionType.verifierMetadataFetchFailed.code,
+                TdkExceptionType.failedToFetchVerifierMetadata.code,
               ),
             ),
           );
