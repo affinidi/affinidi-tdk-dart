@@ -3,24 +3,6 @@ import '../models/pd_requirements.dart';
 /// Static mapping from zero-party VC type to the set of profile data paths
 /// it covers.
 ///
-/// Original vault_universal_ui reference:
-/// `packages/domain/lib/model/deprecated_profile/profile_data_mapper.dart`
-/// via `PDParser.computeDataPointsMap()`:
-///
-/// ```dart
-/// static Map<String, Set<String>> computeDataPointsMap() {
-///   final Map<String, Set<String>> map = {};
-///   for (var mapper in profileDataMappersList) {
-///     map[mapper.type] = mapper.correspondingDatapointTypes.entries
-///         .fold<Set<String>>({}, (paths, e) {
-///       paths.add(e.value.profilePath!);
-///       return paths;
-///     });
-///   }
-///   return map;
-/// }
-/// ```
-///
 /// Each HIT* and UserProfile VC type maps to the profile data paths it
 /// provides. When an input descriptor requests one of these types, the paths
 /// are added to [PDRequirements.dataPoints] and the type is added to
@@ -47,8 +29,6 @@ abstract final class ZeroPartyVcDataPoints {
       r'$.person.properties.addresses.items[0].properties.addressCountry';
 
   /// Maps a zero-party VC type to the profile paths it covers.
-  ///
-  /// Entries mirror `profileDataMappersList` from vault_universal_ui.
   static const Map<String, Set<String>> byType = {
     'UserProfile': {
       _givenName,
