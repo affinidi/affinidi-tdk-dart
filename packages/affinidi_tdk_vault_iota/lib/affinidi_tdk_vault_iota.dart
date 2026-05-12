@@ -14,7 +14,7 @@ export 'src/models/submission_requirements.dart';
 export 'src/models/vc_availability.dart';
 export 'src/models/vc_match_result.dart';
 export 'src/models/vc_unavailability_reason.dart';
-export 'src/models/verified_identity_document_info.dart';
 export 'src/models/vcs_group_by_type.dart';
+export 'src/models/verified_identity_document_info.dart';
 export 'src/services/pd_classifier_service.dart';
 export 'src/services/share_requirements_matcher_service.dart';
