@@ -17,25 +17,14 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
 
   static const _metadataPath = '/vpa/v1/login/configurations/metadata';
 
-  static Never _throwInvalidClientId() => Error.throwWithStackTrace(
-    TdkException(
-      message: 'clientId must not be empty.',
-      code: TdkExceptionType.invalidClientId.code,
-    ),
-    StackTrace.current,
-  );
-
-  static Never _throwFetchFailed(
-    String message, {
+  static Never _throw(
+    String message,
+    TdkExceptionType type, {
     String? originalMessage,
-    StackTrace? stackTrace,
-  }) => Error.throwWithStackTrace(
-    TdkException(
-      message: message,
-      code: TdkExceptionType.failedToFetchVerifierMetadata.code,
-      originalMessage: originalMessage,
-    ),
-    stackTrace ?? StackTrace.current,
+  }) => throw TdkException(
+    message: message,
+    code: type.code,
+    originalMessage: originalMessage,
   );
 
   /// Creates a new [VerifierMetadataService].
@@ -51,7 +40,9 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
     required String clientId,
     Map<String, dynamic>? clientMetadata,
   }) async {
-    if (clientId.isEmpty) _throwInvalidClientId();
+    if (clientId.isEmpty) {
+      _throw('clientId must not be empty.', TdkExceptionType.invalidClientId);
+    }
 
     try {
       if (clientMetadata != null) {
@@ -64,8 +55,9 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
       final response = await _httpClient.get(uri);
 
       if (response.statusCode != HttpStatusCode.ok) {
-        _throwFetchFailed(
+        _throw(
           'Verifier metadata request failed with status ${response.statusCode}.',
+          TdkExceptionType.failedToFetchVerifierMetadata,
         );
       }
 
@@ -73,11 +65,11 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
       return VerifierClientMetadata.fromJson(json);
     } on TdkException {
       rethrow;
-    } catch (e, stackTrace) {
-      _throwFetchFailed(
+    } catch (e) {
+      _throw(
         'Failed to fetch verifier metadata.',
+        TdkExceptionType.failedToFetchVerifierMetadata,
         originalMessage: e.toString(),
-        stackTrace: stackTrace,
       );
     }
   }
