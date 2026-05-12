@@ -62,6 +62,22 @@ class PDClassifier {
   /// Trusted IDV issuer DIDs.
   final List<String> validIdvIssuers;
 
+  static Never _throwInvalidPd(String message) => Error.throwWithStackTrace(
+    TdkException(
+      message: message,
+      code: TdkExceptionType.invalidPresentationDefinition.code,
+    ),
+    StackTrace.current,
+  );
+
+  static Never _throwUnsupportedIdvTypes() => Error.throwWithStackTrace(
+    TdkException(
+      message: 'Multiple IDV types in a single descriptor are not supported.',
+      code: TdkExceptionType.unsupportedMultipleIdvTypes.code,
+    ),
+    StackTrace.current,
+  );
+
   /// Classifies [pd] and returns a [PDRequirements] breakdown.
   ///
   /// [pd] must be a `Map<String, dynamic>` containing at least an
@@ -74,14 +90,10 @@ class PDClassifier {
     final rawValue = pd[PdClassifierConstants.inputDescriptorsKey];
 
     if (rawValue is! List) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: rawValue == null
-              ? 'Presentation Definition is missing input_descriptors.'
-              : 'Presentation Definition input_descriptors must be a list.',
-          code: TdkExceptionType.invalidPresentationDefinition.code,
-        ),
-        StackTrace.current,
+      _throwInvalidPd(
+        rawValue == null
+            ? 'Presentation Definition is missing input_descriptors.'
+            : 'Presentation Definition input_descriptors must be a list.',
       );
     }
 
@@ -106,93 +118,29 @@ class PDClassifier {
     requirements = rawDescriptors
         .map((d) {
           if (d is! Map<String, dynamic>) {
-            Error.throwWithStackTrace(
-              TdkException(
-                message: 'Each input_descriptors entry must be a JSON object.',
-                code: TdkExceptionType.invalidPresentationDefinition.code,
-              ),
-              StackTrace.current,
+            _throwInvalidPd(
+              'Each input_descriptors entry must be a JSON object.',
             );
           }
           if (d['id'] is! String) {
-            Error.throwWithStackTrace(
-              TdkException(
-                message:
-                    'Each input_descriptors entry must have a string "id" field.',
-                code: TdkExceptionType.invalidPresentationDefinition.code,
-              ),
-              StackTrace.current,
+            _throwInvalidPd(
+              'Each input_descriptors entry must have a string "id" field.',
             );
           }
           return _extractRequestedType(d);
         })
         .map(_computeRequiredDataPoints)
         .fold(requirements, (result, requiredDataPoints) {
-          final isZeroPartyVC = requiredDataPoints.dataPoints != null;
-          final linkedZpdPaths = _getLinkedZpdPaths(requiredDataPoints);
-          final isIdv =
-              validIdvIssuers.contains(requiredDataPoints.issuer) &&
-              requiredDataPoints.types.contains(
-                PdClassifierConstants.verifiedIdentityDocumentType,
-              );
-
-          if (isZeroPartyVC) {
-            result.dataPoints.addAll(requiredDataPoints.dataPoints!);
-            if (requiredDataPoints.types.isNotEmpty) {
-              result.zeroPartyVCs.add(requiredDataPoints.types.first);
-            }
-          } else if (linkedZpdPaths.isNotEmpty) {
-            result.zpdLinkedDescriptors.add(
-              PDDescriptor(data: requiredDataPoints.inputDescriptor),
-            );
-            result.dataPoints.addAll(linkedZpdPaths);
-          } else if (isIdv) {
-            if (requiredDataPoints.types.length > 2) {
-              hasInvalidIdvPd = true;
-            }
-
-            result.idvDescriptors.add(
-              PDDescriptor(data: requiredDataPoints.inputDescriptor),
-            );
-
-            VerifiedIdentityDocumentInfo? idvInfo;
-            if (requiredDataPoints.context != null) {
-              idvInfo = VerifiedIdentityDocumentInfo(
-                schemaContextUrl: requiredDataPoints.context,
-              );
-            }
-
-            if (requiredDataPoints.types.length > 1) {
-              final specificType = requiredDataPoints.types.firstWhere(
-                (t) => t != PdClassifierConstants.verifiedIdentityDocumentType,
-              );
-              idvInfo =
-                  idvInfo?.copyWith(type: specificType) ??
-                  VerifiedIdentityDocumentInfo(type: specificType);
-            }
-
-            if (idvInfo != null) {
-              result = result.copyWith(idvInfo: idvInfo);
-            }
-          } else {
-            // Standard claimed VC
-            result.claimedDescriptors.add(
-              PDDescriptor(data: requiredDataPoints.inputDescriptor),
-            );
-          }
-
-          return result;
+          final (updated, invalidIdv) = _classifyDescriptor(
+            result,
+            requiredDataPoints,
+          );
+          if (invalidIdv) hasInvalidIdvPd = true;
+          return updated;
         });
 
     if (hasInvalidIdvPd) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Multiple IDV types in a single descriptor are not supported.',
-          code: TdkExceptionType.unsupportedMultipleIdvTypes.code,
-        ),
-        StackTrace.current,
-      );
+      _throwUnsupportedIdvTypes();
     }
 
     return PDRequirements(
@@ -211,7 +159,78 @@ class PDClassifier {
     );
   }
 
-  // ── Private helpers ──────────────────────────────────────────────────────
+  /// Routes a single [requiredDataPoints] result into the appropriate
+  /// bucket of [result].
+  ///
+  /// Returns `(updatedResult, hasInvalidIdv)` where `hasInvalidIdv` is `true`
+  /// when the descriptor is an IDV type that requested more than two types.
+  (PDRequirements, bool) _classifyDescriptor(
+    PDRequirements result,
+    _PdParserTmpResult requiredDataPoints,
+  ) {
+    final isZeroPartyVC = requiredDataPoints.dataPoints != null;
+    final linkedZpdPaths = _getLinkedZpdPaths(requiredDataPoints);
+    final isIdv =
+        validIdvIssuers.contains(requiredDataPoints.issuer) &&
+        requiredDataPoints.types.contains(
+          PdClassifierConstants.verifiedIdentityDocumentType,
+        );
+
+    if (isZeroPartyVC) {
+      result.dataPoints.addAll(requiredDataPoints.dataPoints!);
+      if (requiredDataPoints.types.isNotEmpty) {
+        result.zeroPartyVCs.add(requiredDataPoints.types.first);
+      }
+      return (result, false);
+    }
+
+    if (linkedZpdPaths.isNotEmpty) {
+      result.zpdLinkedDescriptors.add(
+        PDDescriptor(data: requiredDataPoints.inputDescriptor),
+      );
+      result.dataPoints.addAll(linkedZpdPaths);
+      return (result, false);
+    }
+
+    if (isIdv) {
+      final hasInvalidIdv = requiredDataPoints.types.length > 2;
+      result.idvDescriptors.add(
+        PDDescriptor(data: requiredDataPoints.inputDescriptor),
+      );
+      final idvInfo = _buildIdvInfo(requiredDataPoints);
+      if (idvInfo != null) result = result.copyWith(idvInfo: idvInfo);
+      return (result, hasInvalidIdv);
+    }
+
+    result.claimedDescriptors.add(
+      PDDescriptor(data: requiredDataPoints.inputDescriptor),
+    );
+    return (result, false);
+  }
+
+  /// Builds a [VerifiedIdentityDocumentInfo] from an IDV descriptor result.
+  VerifiedIdentityDocumentInfo? _buildIdvInfo(
+    _PdParserTmpResult requiredDataPoints,
+  ) {
+    VerifiedIdentityDocumentInfo? idvInfo;
+
+    if (requiredDataPoints.context != null) {
+      idvInfo = VerifiedIdentityDocumentInfo(
+        schemaContextUrl: requiredDataPoints.context,
+      );
+    }
+
+    if (requiredDataPoints.types.length > 1) {
+      final specificType = requiredDataPoints.types.firstWhere(
+        (t) => t != PdClassifierConstants.verifiedIdentityDocumentType,
+      );
+      idvInfo =
+          idvInfo?.copyWith(type: specificType) ??
+          VerifiedIdentityDocumentInfo(type: specificType);
+    }
+
+    return idvInfo;
+  }
 
   /// Extracts context, type(s), issuer, and group from a single input
   /// descriptor by inspecting its `constraints.fields[]`.
@@ -229,12 +248,8 @@ class PDClassifier {
     } else if (rawGroup is String && rawGroup.isNotEmpty) {
       groupName = rawGroup;
     } else if (rawGroup != null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'input_descriptor "group" field must be a list or string.',
-          code: TdkExceptionType.invalidPresentationDefinition.code,
-        ),
-        StackTrace.current,
+      _throwInvalidPd(
+        'input_descriptor "group" field must be a list or string.',
       );
     }
 
@@ -250,9 +265,8 @@ class PDClassifier {
       );
     }
 
-    final fields =
-        rawConstraints[PdClassifierConstants.fieldsKey] as List<dynamic>?;
-    if (fields == null) {
+    final rawFields = rawConstraints[PdClassifierConstants.fieldsKey];
+    if (rawFields is! List) {
       return _PdParserTmpResult(
         inputDescriptor: inputDescriptor,
         types: types,
@@ -264,11 +278,11 @@ class PDClassifier {
 
     var contextPathCount = 0;
 
-    for (final field in fields) {
+    for (final field in rawFields) {
       if (field is! Map<String, dynamic>) continue;
 
-      final rawPaths = field[PdClassifierConstants.pathKey] as List<dynamic>?;
-      if (rawPaths == null) continue;
+      final rawPaths = field[PdClassifierConstants.pathKey];
+      if (rawPaths is! List) continue;
 
       final paths = rawPaths.map((e) => e.toString()).toList();
       final rawFilter = field[PdClassifierConstants.filterKey];
@@ -278,13 +292,8 @@ class PDClassifier {
           .where((p) => p == PdClassifierConstants.contextPath)
           .length;
       if (contextPathCount > 1) {
-        Error.throwWithStackTrace(
-          TdkException(
-            message:
-                'Multiple \$.@context fields in a single descriptor are not supported.',
-            code: TdkExceptionType.invalidPresentationDefinition.code,
-          ),
-          StackTrace.current,
+        _throwInvalidPd(
+          'Multiple \$.@context fields in a single descriptor are not supported.',
         );
       }
 
@@ -360,37 +369,19 @@ class PDClassifier {
 
     if (rawContains != null) {
       if (rawContains is! Map<String, dynamic>) {
-        Error.throwWithStackTrace(
-          TdkException(
-            message: 'PD filter "contains" must be a JSON object.',
-            code: TdkExceptionType.invalidPresentationDefinition.code,
-          ),
-          StackTrace.current,
-        );
+        _throwInvalidPd('PD filter "contains" must be a JSON object.');
       }
       if (rawContains.containsKey(PdClassifierConstants.patternKey)) {
         final value = rawContains[PdClassifierConstants.patternKey];
         if (value is! String) {
-          Error.throwWithStackTrace(
-            TdkException(
-              message: 'PD filter "contains.pattern" must be a string.',
-              code: TdkExceptionType.invalidPresentationDefinition.code,
-            ),
-            StackTrace.current,
-          );
+          _throwInvalidPd('PD filter "contains.pattern" must be a string.');
         }
         return _stripAnchors(value);
       }
       if (rawContains.containsKey(PdClassifierConstants.constKey)) {
         final value = rawContains[PdClassifierConstants.constKey];
         if (value is! String) {
-          Error.throwWithStackTrace(
-            TdkException(
-              message: 'PD filter "contains.const" must be a string.',
-              code: TdkExceptionType.invalidPresentationDefinition.code,
-            ),
-            StackTrace.current,
-          );
+          _throwInvalidPd('PD filter "contains.const" must be a string.');
         }
         return value;
       }
@@ -398,38 +389,20 @@ class PDClassifier {
       if (filter.containsKey(PdClassifierConstants.patternKey)) {
         final value = filter[PdClassifierConstants.patternKey];
         if (value is! String) {
-          Error.throwWithStackTrace(
-            TdkException(
-              message: 'PD filter "pattern" must be a string.',
-              code: TdkExceptionType.invalidPresentationDefinition.code,
-            ),
-            StackTrace.current,
-          );
+          _throwInvalidPd('PD filter "pattern" must be a string.');
         }
         return _stripAnchors(value);
       }
       if (filter.containsKey(PdClassifierConstants.constKey)) {
         final value = filter[PdClassifierConstants.constKey];
         if (value is! String) {
-          Error.throwWithStackTrace(
-            TdkException(
-              message: 'PD filter "const" must be a string.',
-              code: TdkExceptionType.invalidPresentationDefinition.code,
-            ),
-            StackTrace.current,
-          );
+          _throwInvalidPd('PD filter "const" must be a string.');
         }
         return value;
       }
     }
 
-    Error.throwWithStackTrace(
-      TdkException(
-        message: 'Could not extract constraint value from PD filter.',
-        code: TdkExceptionType.invalidPresentationDefinition.code,
-      ),
-      StackTrace.current,
-    );
+    _throwInvalidPd('Could not extract constraint value from PD filter.');
   }
 
   /// Removes leading `^` and trailing `$` from a regex pattern string.
@@ -466,24 +439,13 @@ class PDClassifier {
     if (rawValue == null) return const {};
 
     if (rawValue is! List) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'submission_requirements must be a list.',
-          code: TdkExceptionType.invalidPresentationDefinition.code,
-        ),
-        StackTrace.current,
-      );
+      _throwInvalidPd('submission_requirements must be a list.');
     }
 
     final requirements = rawValue.map((e) {
       if (e is! Map<String, dynamic>) {
-        Error.throwWithStackTrace(
-          TdkException(
-            message:
-                'Each submission_requirements entry must be a JSON object.',
-            code: TdkExceptionType.invalidPresentationDefinition.code,
-          ),
-          StackTrace.current,
+        _throwInvalidPd(
+          'Each submission_requirements entry must be a JSON object.',
         );
       }
       return SubmissionRequirements.fromJson(e);
@@ -493,13 +455,8 @@ class PDClassifier {
       if ((req.min != null && req.min! < 1) ||
           (req.max != null && req.max! < 1) ||
           (req.count != null && req.count! < 1)) {
-        Error.throwWithStackTrace(
-          TdkException(
-            message:
-                'submission_requirements contains an invalid count/min/max value.',
-            code: TdkExceptionType.invalidPresentationDefinition.code,
-          ),
-          StackTrace.current,
+        _throwInvalidPd(
+          'submission_requirements contains an invalid count/min/max value.',
         );
       }
     }
