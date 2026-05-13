@@ -3,6 +3,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:ssi/ssi.dart';
 import 'package:test/test.dart';
 
+import 'fixtures/pd_descriptor_fixtures.dart';
 import 'fixtures/verifiable_credential_fixtures.dart';
 import 'mocks/mock_verifiable_credential.dart';
 
@@ -13,47 +14,17 @@ const _otherIssuer = 'did:key:z6MkOtherIssuer';
 
 // ── Helper builders ───────────────────────────────────────────────────────────
 
-/// Builds a descriptor that matches on [type] and optionally [issuer].
-Map<String, dynamic> _descriptor({
-  required String id,
-  required String type,
-  String? issuer,
-  List<String>? group,
-}) {
-  final fields = <Map<String, dynamic>>[
-    {
-      'path': [r'$.type'],
-      'filter': {
-        'contains': {'const': type},
-      },
-    },
-  ];
-
-  if (issuer != null) {
-    fields.add({
-      'path': [r'$.issuer'],
-      'filter': {'type': 'string', 'const': issuer},
-    });
-  }
-
-  return {
-    'id': id,
-    'constraints': {'fields': fields},
-    if (group != null) 'group': group,
-  };
-}
-
 PDRequirements _requirements(
   List<Map<String, dynamic>> claimedDescriptors, {
   List<Map<String, dynamic>> idvDescriptors = const [],
   Map<String, SubmissionRequirements> submissionRequirementsByGroup = const {},
 }) {
   return PDRequirements(
-    claimedDescriptors:
-        claimedDescriptors.map((d) => PDDescriptor(data: d)).toList(),
+    claimedDescriptors: claimedDescriptors
+        .map((d) => PDDescriptor(data: d))
+        .toList(),
     zpdLinkedDescriptors: const [],
-    idvDescriptors:
-        idvDescriptors.map((d) => PDDescriptor(data: d)).toList(),
+    idvDescriptors: idvDescriptors.map((d) => PDDescriptor(data: d)).toList(),
     dataPoints: const {},
     zeroPartyVCs: const {},
     submissionRequirementsByGroup: submissionRequirementsByGroup,
@@ -73,8 +44,9 @@ void main() {
     });
 
     test('should mark the credential as available', () async {
-      final req =
-          _requirements([_descriptor(id: 'd1', type: 'UniversityDegree')]);
+      final req = _requirements([
+        buildDescriptor(id: 'd1', type: 'UniversityDegree'),
+      ]);
       final result = await matcher.match(req, [vc]);
 
       expect(result.vcsGroups, hasLength(1));
@@ -86,16 +58,18 @@ void main() {
     });
 
     test('should report isEnoughVCsAvailableToShare as true', () async {
-      final req =
-          _requirements([_descriptor(id: 'd1', type: 'UniversityDegree')]);
+      final req = _requirements([
+        buildDescriptor(id: 'd1', type: 'UniversityDegree'),
+      ]);
       final result = await matcher.match(req, [vc]);
 
       expect(result.isEnoughVCsAvailableToShare, isTrue);
     });
 
     test('should include the VC in availableCredentials', () async {
-      final req =
-          _requirements([_descriptor(id: 'd1', type: 'UniversityDegree')]);
+      final req = _requirements([
+        buildDescriptor(id: 'd1', type: 'UniversityDegree'),
+      ]);
       final result = await matcher.match(req, [vc]);
 
       expect(result.availableCredentials, contains(vc));
@@ -107,23 +81,20 @@ void main() {
   group('when no VC matches the descriptor type', () {
     test('should mark the descriptor as missing', () async {
       final vc = buildTestVc(type: 'UniversityDegree');
-      final req = _requirements(
-        [_descriptor(id: 'd1', type: 'EmploymentCredential')],
-      );
+      final req = _requirements([
+        buildDescriptor(id: 'd1', type: 'EmploymentCredential'),
+      ]);
       final result = await matcher.match(req, [vc]);
 
       final first = result.vcsGroups.values.first.matchedVCs.first;
       expect(first, isA<VcUnavailable>());
-      expect(
-        (first as VcUnavailable).reason,
-        VcUnavailabilityReason.missing,
-      );
+      expect((first as VcUnavailable).reason, VcUnavailabilityReason.missing);
     });
 
     test('should report isEnoughVCsAvailableToShare as false', () async {
-      final req = _requirements(
-        [_descriptor(id: 'd1', type: 'EmploymentCredential')],
-      );
+      final req = _requirements([
+        buildDescriptor(id: 'd1', type: 'EmploymentCredential'),
+      ]);
       final result = await matcher.match(req, []);
 
       expect(result.isEnoughVCsAvailableToShare, isFalse);
@@ -134,12 +105,9 @@ void main() {
 
   group('when the descriptor includes an issuer constraint', () {
     test('should match a VC whose issuer equals the filter', () async {
-      final vc = buildTestVc(
-        type: 'UniversityDegree',
-        issuer: _trustedIssuer,
-      );
+      final vc = buildTestVc(type: 'UniversityDegree', issuer: _trustedIssuer);
       final req = _requirements([
-        _descriptor(
+        buildDescriptor(
           id: 'd1',
           type: 'UniversityDegree',
           issuer: _trustedIssuer,
@@ -153,28 +121,24 @@ void main() {
       );
     });
 
-    test('should not match a VC whose issuer differs from the filter',
-        () async {
-      final vc = buildTestVc(
-        type: 'UniversityDegree',
-        issuer: _otherIssuer,
-      );
-      final req = _requirements([
-        _descriptor(
-          id: 'd1',
-          type: 'UniversityDegree',
-          issuer: _trustedIssuer,
-        ),
-      ]);
-      final result = await matcher.match(req, [vc]);
+    test(
+      'should not match a VC whose issuer differs from the filter',
+      () async {
+        final vc = buildTestVc(type: 'UniversityDegree', issuer: _otherIssuer);
+        final req = _requirements([
+          buildDescriptor(
+            id: 'd1',
+            type: 'UniversityDegree',
+            issuer: _trustedIssuer,
+          ),
+        ]);
+        final result = await matcher.match(req, [vc]);
 
-      final first = result.vcsGroups.values.first.matchedVCs.first;
-      expect(first, isA<VcUnavailable>());
-      expect(
-        (first as VcUnavailable).reason,
-        VcUnavailabilityReason.missing,
-      );
-    });
+        final first = result.vcsGroups.values.first.matchedVCs.first;
+        expect(first, isA<VcUnavailable>());
+        expect((first as VcUnavailable).reason, VcUnavailabilityReason.missing);
+      },
+    );
   });
 
   // ── Expired credentials ───────────────────────────────────────────────────
@@ -185,16 +149,14 @@ void main() {
         type: 'UniversityDegree',
         validUntil: '2000-01-01T00:00:00Z',
       );
-      final req =
-          _requirements([_descriptor(id: 'd1', type: 'UniversityDegree')]);
+      final req = _requirements([
+        buildDescriptor(id: 'd1', type: 'UniversityDegree'),
+      ]);
       final result = await matcher.match(req, [expiredVc]);
 
       final first = result.vcsGroups.values.first.matchedVCs.first;
       expect(first, isA<VcUnavailable>());
-      expect(
-        (first as VcUnavailable).reason,
-        VcUnavailabilityReason.expired,
-      );
+      expect((first as VcUnavailable).reason, VcUnavailabilityReason.expired);
       expect(first.bestMatchVc, expiredVc);
     });
 
@@ -208,8 +170,9 @@ void main() {
         validFrom: '2024-01-01T00:00:00Z',
         validUntil: '2000-01-01T00:00:00Z',
       );
-      final req =
-          _requirements([_descriptor(id: 'd1', type: 'UniversityDegree')]);
+      final req = _requirements([
+        buildDescriptor(id: 'd1', type: 'UniversityDegree'),
+      ]);
       final result = await matcher.match(req, [expiredVc, validVc]);
 
       final matchedVCs = result.vcsGroups.values.first.matchedVCs;
@@ -221,22 +184,22 @@ void main() {
   // ── VC evaluation throws ──────────────────────────────────────────────────
 
   group('when evaluating a VC throws', () {
-    test('should record the descriptor as unknown rather than propagating',
-        () async {
-      final badVc = MockVerifiableCredential();
-      when(() => badVc.toJson()).thenThrow(Exception('VC evaluation failed'));
+    test(
+      'should record the descriptor as unknown rather than propagating',
+      () async {
+        final badVc = MockVerifiableCredential();
+        when(() => badVc.toJson()).thenThrow(Exception('VC evaluation failed'));
 
-      final req =
-          _requirements([_descriptor(id: 'd1', type: 'UniversityDegree')]);
-      final result = await matcher.match(req, [badVc]);
+        final req = _requirements([
+          buildDescriptor(id: 'd1', type: 'UniversityDegree'),
+        ]);
+        final result = await matcher.match(req, [badVc]);
 
-      final first = result.vcsGroups.values.first.matchedVCs.first;
-      expect(first, isA<VcUnavailable>());
-      expect(
-        (first as VcUnavailable).reason,
-        VcUnavailabilityReason.unknown,
-      );
-    });
+        final first = result.vcsGroups.values.first.matchedVCs.first;
+        expect(first, isA<VcUnavailable>());
+        expect((first as VcUnavailable).reason, VcUnavailabilityReason.unknown);
+      },
+    );
   });
 
   // ── IDV descriptors ───────────────────────────────────────────────────────
@@ -250,9 +213,9 @@ void main() {
       );
 
       final req = _requirements(
-        [_descriptor(id: 'degree', type: 'UniversityDegree')],
+        [buildDescriptor(id: 'degree', type: 'UniversityDegree')],
         idvDescriptors: [
-          _descriptor(
+          buildDescriptor(
             id: 'passport',
             type: 'VerifiedIdentityDocument',
             issuer: _trustedIssuer,
@@ -272,7 +235,9 @@ void main() {
     test('should apply count to VCsGroupByType min and max', () async {
       final vc = buildTestVc(type: 'UniversityDegree');
       final req = _requirements(
-        [_descriptor(id: 'd1', type: 'UniversityDegree', group: ['A'])],
+        [
+          buildDescriptor(id: 'd1', type: 'UniversityDegree', group: ['A']),
+        ],
         submissionRequirementsByGroup: {
           'A': const SubmissionRequirements(count: 2, groupName: 'A'),
         },
@@ -284,12 +249,12 @@ void main() {
       expect(group.maximumVCsCountToShare, 2);
     });
 
-    test(
-        'should default to 1 when no submission requirement exists for the '
+    test('should default to 1 when no submission requirement exists for the '
         'descriptor', () async {
       final vc = buildTestVc(type: 'UniversityDegree');
-      final req =
-          _requirements([_descriptor(id: 'd1', type: 'UniversityDegree')]);
+      final req = _requirements([
+        buildDescriptor(id: 'd1', type: 'UniversityDegree'),
+      ]);
       final result = await matcher.match(req, [vc]);
 
       final group = result.vcsGroups.values.first;
@@ -306,8 +271,8 @@ void main() {
       final employVc = buildTestVc(type: 'EmploymentCredential');
 
       final req = _requirements([
-        _descriptor(id: 'd1', type: 'UniversityDegree'),
-        _descriptor(id: 'd2', type: 'EmploymentCredential'),
+        buildDescriptor(id: 'd1', type: 'UniversityDegree'),
+        buildDescriptor(id: 'd2', type: 'EmploymentCredential'),
       ]);
       final result = await matcher.match(req, [degreeVc, employVc]);
 
@@ -319,8 +284,8 @@ void main() {
       final degreeVc = buildTestVc(type: 'UniversityDegree');
 
       final req = _requirements([
-        _descriptor(id: 'd1', type: 'UniversityDegree'),
-        _descriptor(id: 'd2', type: 'EmploymentCredential'),
+        buildDescriptor(id: 'd1', type: 'UniversityDegree'),
+        buildDescriptor(id: 'd2', type: 'EmploymentCredential'),
       ]);
       final result = await matcher.match(req, [degreeVc]);
 
@@ -343,26 +308,30 @@ void main() {
   // ── maximumRecommendedVCs ─────────────────────────────────────────────────
 
   group('maximumRecommendedVCs', () {
-    test('should return up to maximumVCsCountToShare from each group',
-        () async {
-      final vc1 = buildTestVc(
-        type: 'UniversityDegree',
-        validFrom: '2025-06-01T00:00:00Z',
-      );
-      final vc2 = buildTestVc(
-        type: 'UniversityDegree',
-        validFrom: '2024-01-01T00:00:00Z',
-      );
+    test(
+      'should return up to maximumVCsCountToShare from each group',
+      () async {
+        final vc1 = buildTestVc(
+          type: 'UniversityDegree',
+          validFrom: '2025-06-01T00:00:00Z',
+        );
+        final vc2 = buildTestVc(
+          type: 'UniversityDegree',
+          validFrom: '2024-01-01T00:00:00Z',
+        );
 
-      final req = _requirements([
-        _descriptor(id: 'd1', type: 'UniversityDegree', group: ['A']),
-      ], submissionRequirementsByGroup: {
-        'A': const SubmissionRequirements(count: 1, groupName: 'A'),
-      });
-      final result = await matcher.match(req, [vc1, vc2]);
+        final req = _requirements(
+          [
+            buildDescriptor(id: 'd1', type: 'UniversityDegree', group: ['A']),
+          ],
+          submissionRequirementsByGroup: {
+            'A': const SubmissionRequirements(count: 1, groupName: 'A'),
+          },
+        );
+        final result = await matcher.match(req, [vc1, vc2]);
 
-      expect(result.maximumRecommendedVCs, hasLength(1));
-    });
+        expect(result.maximumRecommendedVCs, hasLength(1));
+      },
+    );
   });
 }
-

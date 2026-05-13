@@ -5,7 +5,6 @@ import '../models/claimed_credentials_result.dart';
 import '../models/vc_availability.dart';
 import '../models/vc_unavailability_reason.dart';
 import '../models/vcs_group_by_type.dart';
-import 'pd_classifier_constants.dart';
 
 /// Matches a user's vault credentials against the share requirements
 /// produced by [PDClassifier].
@@ -39,7 +38,10 @@ class ShareRequirementsMatcher {
     final vcsGroups = <PDDescriptor, VCsGroupByType>{};
 
     for (final descriptor in allDescriptors) {
-      final submissionReq = _submissionRequirementsFor(descriptor, requirements);
+      final submissionReq = _submissionRequirementsFor(
+        descriptor,
+        requirements,
+      );
 
       try {
         final matchedVCs = _PexEvaluator.selectMatching(
@@ -54,7 +56,8 @@ class ShareRequirementsMatcher {
           continue;
         }
 
-        final sorted = [...matchedVCs]..sort(
+        final sorted = [...matchedVCs]
+          ..sort(
             (a, b) => (b.validFrom ?? DateTime(0)).compareTo(
               a.validFrom ?? DateTime(0),
             ),
@@ -90,16 +93,12 @@ class ShareRequirementsMatcher {
         );
       } catch (_) {
         vcsGroups[descriptor] = const VCsGroupByType(
-          matchedVCs: [
-            VcUnavailable(reason: VcUnavailabilityReason.unknown),
-          ],
+          matchedVCs: [VcUnavailable(reason: VcUnavailabilityReason.unknown)],
         );
       }
     }
 
-    return ClaimedCredentialsResult(
-      vcsGroups: Map.unmodifiable(vcsGroups),
-    );
+    return ClaimedCredentialsResult(vcsGroups: Map.unmodifiable(vcsGroups));
   }
 
   /// Extracts the [SubmissionRequirements] for [descriptor]'s group, if any.
@@ -107,15 +106,7 @@ class ShareRequirementsMatcher {
     PDDescriptor descriptor,
     PDRequirements requirements,
   ) {
-    final rawGroup = descriptor.toJson()[PdClassifierConstants.groupNameKey];
-    final String? group;
-    if (rawGroup is List && rawGroup.isNotEmpty) {
-      group = rawGroup.first.toString();
-    } else if (rawGroup is String && rawGroup.isNotEmpty) {
-      group = rawGroup;
-    } else {
-      group = null;
-    }
+    final group = descriptor.groupName;
     if (group == null) return null;
     return requirements.submissionRequirementsByGroup[group];
   }
@@ -141,8 +132,7 @@ abstract final class _PexEvaluator {
     Map<String, dynamic> inputDescriptor,
     List<VerifiableCredential> allVCs,
   ) {
-    final constraints =
-        inputDescriptor['constraints'] as Map<String, dynamic>?;
+    final constraints = inputDescriptor['constraints'] as Map<String, dynamic>?;
     final fields = constraints?['fields'] as List<dynamic>? ?? const [];
 
     if (fields.isEmpty) return List.of(allVCs);
@@ -150,10 +140,7 @@ abstract final class _PexEvaluator {
     return allVCs.where((vc) => _matchesAllFields(vc, fields)).toList();
   }
 
-  static bool _matchesAllFields(
-    VerifiableCredential vc,
-    List<dynamic> fields,
-  ) {
+  static bool _matchesAllFields(VerifiableCredential vc, List<dynamic> fields) {
     final vcJson = vc.toJson();
     return fields.every((field) {
       if (field is! Map<String, dynamic>) return true;
@@ -214,10 +201,7 @@ abstract final class _PexEvaluator {
       final pattern = contains['pattern']?.toString();
 
       if (constValue != null) {
-        return _listOrStringMatches(
-          value,
-          (s) => s == constValue,
-        );
+        return _listOrStringMatches(value, (s) => s == constValue);
       }
       if (pattern != null) {
         final regex = RegExp(pattern);
