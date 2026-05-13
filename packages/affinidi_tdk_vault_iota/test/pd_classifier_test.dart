@@ -6,6 +6,9 @@ import 'package:test/test.dart';
 const _trustedIssuer = 'did:key:z6MkIdvIssuer';
 const _untrustedIssuer = 'did:key:z6MkUntrusted';
 
+const _profileContext =
+    'https://schema.affinidi.io/profile-template/context.jsonld';
+
 // Builds a minimal input descriptor with a $.type filter.
 Map<String, dynamic> _descriptor({
   required String id,
@@ -273,7 +276,10 @@ void main() {
 
       expect(result.claimedDescriptors, hasLength(1));
       expect(result.claimedDescriptors.first.id, 'cred1');
+      expect(result.zpdLinkedDescriptors, isEmpty);
       expect(result.idvDescriptors, isEmpty);
+      expect(result.dataPoints, isEmpty);
+      expect(result.zeroPartyVCs, isEmpty);
     });
 
     test('should route multiple claimed VCs to claimedDescriptors', () {
@@ -303,10 +309,115 @@ void main() {
     test(
       'should set claimedVCsRequested false when no claimed or IDV descriptors',
       () {
-        final pd = _pd([]);
+        final pd = _pd([_descriptor(id: 'hit1', type: 'HITGivenName')]);
         final result = classifier.classify(pd);
 
         expect(result.claimedVCsRequested, isFalse);
+      },
+    );
+  });
+
+  // ── ZPD-linked VCs ────────────────────────────────────────────────────────
+
+  group('when the descriptor requests a ZPD-linked VC', () {
+    test(
+      'should route Email to zpdLinkedDescriptors and add its data point',
+      () {
+        final pd = _pd([_descriptor(id: 'email1', type: 'Email')]);
+        final result = classifier.classify(pd);
+
+        expect(result.zpdLinkedDescriptors, hasLength(1));
+        expect(result.zpdLinkedDescriptors.first.id, 'email1');
+        expect(result.dataPoints, contains(r'$.person.properties.email'));
+        expect(result.claimedDescriptors, isEmpty);
+      },
+    );
+
+    test(
+      'should route PhoneNumber to zpdLinkedDescriptors and add its data point',
+      () {
+        final pd = _pd([_descriptor(id: 'phone1', type: 'PhoneNumber')]);
+        final result = classifier.classify(pd);
+
+        expect(result.zpdLinkedDescriptors, hasLength(1));
+        expect(result.dataPoints, contains(r'$.person.properties.phoneNumber'));
+      },
+    );
+
+    test('should set zpdRequested true', () {
+      final pd = _pd([_descriptor(id: 'e1', type: 'Email')]);
+      final result = classifier.classify(pd);
+
+      expect(result.zpdRequested, isTrue);
+    });
+  });
+
+  // ── Zero-party VCs ────────────────────────────────────────────────────────
+
+  group('when the descriptor requests a zero-party VC', () {
+    test(
+      'should add HITGivenName to zeroPartyVCs with the correct data point',
+      () {
+        final pd = _pd([_descriptor(id: 'h1', type: 'HITGivenName')]);
+        final result = classifier.classify(pd);
+
+        expect(result.zeroPartyVCs, contains('HITGivenName'));
+        expect(result.dataPoints, contains(r'$.person.properties.givenName'));
+        expect(result.claimedDescriptors, isEmpty);
+      },
+    );
+
+    test('should add HITContacts with both email and phone data points', () {
+      final pd = _pd([_descriptor(id: 'hc', type: 'HITContacts')]);
+      final result = classifier.classify(pd);
+
+      expect(result.zeroPartyVCs, contains('HITContacts'));
+      expect(result.dataPoints, contains(r'$.person.properties.phoneNumber'));
+      expect(result.dataPoints, contains(r'$.person.properties.email'));
+    });
+
+    test(
+      'should add ProfileTemplate when context matches and set shouldGenerateProfileVC',
+      () {
+        final pd = _pd([
+          _descriptor(
+            id: 'pt',
+            type: 'ProfileTemplate',
+            context: _profileContext,
+          ),
+        ]);
+        final result = classifier.classify(pd);
+
+        expect(result.zeroPartyVCs, contains('ProfileTemplate'));
+        expect(result.shouldGenerateProfileVC, isTrue);
+        expect(result.zpdRequested, isTrue);
+      },
+    );
+
+    test(
+      'should route ProfileTemplate to claimedDescriptors when context does not match',
+      () {
+        final pd = _pd([
+          _descriptor(
+            id: 'pt2',
+            type: 'ProfileTemplate',
+            context: 'https://other.context/',
+          ),
+        ]);
+        final result = classifier.classify(pd);
+
+        expect(result.claimedDescriptors, hasLength(1));
+        expect(result.zeroPartyVCs, isEmpty);
+      },
+    );
+
+    test(
+      'should set shouldGenerateProfileVC false when ProfileTemplate is absent',
+      () {
+        final pd = _pd([_descriptor(id: 'd1', type: 'HITGivenName')]);
+        final result = classifier.classify(pd);
+
+        expect(result.shouldGenerateProfileVC, isFalse);
       },
     );
   });
@@ -461,12 +572,25 @@ void main() {
   group('when a descriptor field filter uses a regex pattern', () {
     test(r'should strip ^ and $ anchors from a type pattern filter', () {
       final pd = _pd([
-        _descriptor(id: 'p1', type: 'UniversityDegree', usePattern: true),
+        _descriptor(id: 'p1', type: 'HITGivenName', usePattern: true),
       ]);
       final result = classifier.classify(pd);
 
-      expect(result.claimedDescriptors, hasLength(1));
-      expect(result.claimedDescriptors.first.id, 'p1');
+      expect(result.zeroPartyVCs, contains('HITGivenName'));
+    });
+
+    test(r'should strip ^ and $ anchors from a context pattern filter', () {
+      final pd = _pd([
+        _descriptor(
+          id: 'pt3',
+          type: 'ProfileTemplate',
+          context: _profileContext,
+          usePattern: true,
+        ),
+      ]);
+      final result = classifier.classify(pd);
+
+      expect(result.zeroPartyVCs, contains('ProfileTemplate'));
     });
   });
 
@@ -719,22 +843,27 @@ void main() {
 
   group('when the PD has multiple descriptor types', () {
     test(
-      'should classify claimed and IDV descriptors correctly',
+      'should classify claimed, ZPD-linked, and zero-party descriptors correctly',
       () {
         final pd = _pd([
           _descriptor(id: 'degree', type: 'UniversityDegree'),
-          _descriptor(
-            id: 'idv1',
-            type: 'VerifiedIdentityDocument',
-            issuer: _trustedIssuer,
-          ),
+          _descriptor(id: 'email', type: 'Email'),
+          _descriptor(id: 'givenName', type: 'HITGivenName'),
         ]);
         final result = classifier.classify(pd);
 
         expect(result.claimedDescriptors, hasLength(1));
         expect(result.claimedDescriptors.first.id, 'degree');
-        expect(result.idvDescriptors, hasLength(1));
-        expect(result.idvDescriptors.first.id, 'idv1');
+        expect(result.zpdLinkedDescriptors, hasLength(1));
+        expect(result.zpdLinkedDescriptors.first.id, 'email');
+        expect(result.zeroPartyVCs, contains('HITGivenName'));
+        expect(
+          result.dataPoints,
+          containsAll([
+            r'$.person.properties.email',
+            r'$.person.properties.givenName',
+          ]),
+        );
       },
     );
 
@@ -745,8 +874,12 @@ void main() {
         final result = classifier.classify(pd);
 
         expect(result.claimedDescriptors, isEmpty);
+        expect(result.zpdLinkedDescriptors, isEmpty);
         expect(result.idvDescriptors, isEmpty);
+        expect(result.dataPoints, isEmpty);
+        expect(result.zeroPartyVCs, isEmpty);
         expect(result.claimedVCsRequested, isFalse);
+        expect(result.zpdRequested, isFalse);
       },
     );
   });
