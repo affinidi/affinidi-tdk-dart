@@ -1,3 +1,6 @@
+/// @docImport 'pd_classifier_service.dart';
+library;
+
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:ssi/ssi.dart';
 
@@ -9,7 +12,6 @@ import '../models/submission_requirements.dart';
 import '../models/vc_availability.dart';
 import '../models/vc_unavailability_reason.dart';
 import '../models/vcs_group_by_type.dart';
-import 'pd_classifier_service.dart' show PDClassifier;
 
 part 'pex_evaluator.dart';
 
