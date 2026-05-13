@@ -172,7 +172,7 @@ class PDClassifier {
       if (requiredDataPoints.types.isNotEmpty) {
         result.zeroPartyVCs.add(requiredDataPoints.types.first);
       }
-      return (result, false);
+      return result;
     }
 
     if (linkedZpdPaths.isNotEmpty) {
@@ -180,7 +180,7 @@ class PDClassifier {
         PDDescriptor(data: requiredDataPoints.inputDescriptor),
       );
       result.dataPoints.addAll(linkedZpdPaths);
-      return (result, false);
+      return result;
     }
 
     if (isIdv) {
