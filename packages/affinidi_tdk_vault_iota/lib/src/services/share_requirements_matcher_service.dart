@@ -1,10 +1,7 @@
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:ssi/ssi.dart';
 
 import '../../affinidi_tdk_vault_iota.dart';
-import '../models/claimed_credentials_result.dart';
-import '../models/vc_availability.dart';
-import '../models/vc_unavailability_reason.dart';
-import '../models/vcs_group_by_type.dart';
 
 part 'pex_evaluator.dart';
 
@@ -19,8 +16,21 @@ part 'pex_evaluator.dart';
 ///
 /// ZPD-linked descriptors are not matched here — they follow a separate flow.
 class ShareRequirementsMatcher {
+  final Logger _logger;
+  final RevocationList2020Verifier? _revocationVerifier;
+  static const _componentName = 'ShareRequirementsMatcher';
+
   /// Creates a [ShareRequirementsMatcher].
-  const ShareRequirementsMatcher();
+  ///
+  /// - [revocationVerifier] - optional [RevocationList2020Verifier] used to
+  ///   check each matched credential's revocation status. When omitted,
+  ///   revocation is not checked and credentials are assumed non-revoked.
+  /// - [logger] - optional [Logger] instance; defaults to [Logger.instance].
+  ShareRequirementsMatcher({
+    RevocationList2020Verifier? revocationVerifier,
+    Logger? logger,
+  })  : _revocationVerifier = revocationVerifier,
+        _logger = logger ?? Logger.instance;
 
   /// Matches [allVCs] against each claimed and IDV descriptor in
   /// [requirements] and returns an availability breakdown per descriptor.
@@ -31,8 +41,11 @@ class ShareRequirementsMatcher {
   /// - [allVCs] (required) - the full list of [VerifiableCredential]s from
   ///   the user's vault to match against.
   ///
-  /// Individual descriptor failures are caught and recorded as
+  /// Individual descriptor failures are caught, logged, and recorded as
   /// [VcUnavailabilityReason.unknown] rather than propagating.
+  ///
+  /// The method is `async` to support future revocation-status checks, which
+  /// require network I/O.
   ///
   /// Returns a [ClaimedCredentialsResult] mapping each descriptor to its
   /// [VCsGroupByType] (available, expired, or missing).
@@ -66,8 +79,13 @@ class ShareRequirementsMatcher {
           continue;
         }
 
-        vcsGroups[descriptor] = _buildVCsGroup(matchedVCs, submissionReq);
-      } catch (_) {
+        vcsGroups[descriptor] = await _buildVCsGroup(matchedVCs, submissionReq);
+      } catch (e, stack) {
+        _logger.error(
+          'Failed to evaluate descriptor "${descriptor.id}": $e',
+          stackTrace: stack,
+          component: _componentName,
+        );
         vcsGroups[descriptor] = const VCsGroupByType(
           matchedVCs: [VcUnavailable(reason: VcUnavailabilityReason.unknown)],
         );
@@ -96,51 +114,70 @@ class ShareRequirementsMatcher {
   }
 
   /// Sorts [matchedVCs] by [VerifiableCredential.validFrom] (newest first)
-  /// and partitions them into available and expired availability entries.
+  /// and classifies each into available, revoked, or expired.
   ///
   /// - [matchedVCs] (required) - non-empty list of VCs that passed PEX
   ///   field evaluation for a single descriptor.
   /// - [submissionReq] - optional [SubmissionRequirements] controlling the
   ///   minimum and maximum VC counts to share; defaults to 1/1 when absent.
   ///
-  /// Returns a [VCsGroupByType] with available VCs listed before expired ones.
-  VCsGroupByType _buildVCsGroup(
+  /// Revocation is checked via [RevocationList2020Verifier] when one was
+  /// provided at construction time. If the revocation check itself throws,
+  /// the credential is treated as available and the error is logged.
+  ///
+  /// Returns a [VCsGroupByType] with available VCs first, then revoked, then
+  /// expired.
+  Future<VCsGroupByType> _buildVCsGroup(
     List<VerifiableCredential> matchedVCs,
     SubmissionRequirements? submissionReq,
-  ) {
+  ) async {
     final sorted = [...matchedVCs]
       ..sort(
         (a, b) =>
             (b.validFrom ?? DateTime(0)).compareTo(a.validFrom ?? DateTime(0)),
       );
 
-    final available = sorted
-        .where(
-          (vc) =>
-              vc.validUntil == null || vc.validUntil!.isAfter(DateTime.now()),
-        )
-        .map((vc) => VcAvailable(vc: vc))
-        .toList();
+    final now = DateTime.now();
+    final available = <VcAvailable>[];
+    final revoked = <VcUnavailable>[];
+    final expired = <VcUnavailable>[];
 
-    final expired = sorted
-        .where(
-          (vc) =>
-              vc.validUntil != null &&
-              vc.validUntil!.isBefore(DateTime.now()),
-        )
-        .map(
-          (vc) => VcUnavailable(
-            reason: VcUnavailabilityReason.expired,
-            bestMatchVc: vc,
-          ),
-        )
-        .toList();
+    for (final vc in sorted) {
+      if (vc.validUntil != null && vc.validUntil!.isBefore(now)) {
+        expired.add(
+          VcUnavailable(reason: VcUnavailabilityReason.expired, bestMatchVc: vc),
+        );
+        continue;
+      }
+
+      if (_revocationVerifier != null && vc is ParsedVerifiableCredential) {
+        try {
+          final result = await _revocationVerifier.verify(vc);
+          if (result.errors.isNotEmpty) {
+            revoked.add(
+              VcUnavailable(
+                reason: VcUnavailabilityReason.revoked,
+                bestMatchVc: vc,
+              ),
+            );
+            continue;
+          }
+        } catch (e, stack) {
+          _logger.warning(
+            'Revocation check failed for VC — treating as available: $e',
+            component: _componentName,
+          );
+          _logger.debug(stack.toString(), component: _componentName);
+        }
+      }
+
+      available.add(VcAvailable(vc: vc));
+    }
 
     return VCsGroupByType(
-      matchedVCs: [...available, ...expired],
+      matchedVCs: [...available, ...revoked, ...expired],
       minimumVCsCountToShare: submissionReq?.minimumVCsCountToShare ?? 1,
       maximumVCsCountToShare: submissionReq?.maximumVCsCountToShare ?? 1,
     );
   }
 }
-

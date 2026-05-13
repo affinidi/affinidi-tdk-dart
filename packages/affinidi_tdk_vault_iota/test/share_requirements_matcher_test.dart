@@ -1,16 +1,22 @@
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:mocktail/mocktail.dart' hide VerificationResult;
 import 'package:ssi/ssi.dart';
 import 'package:test/test.dart';
 
 import 'fixtures/pd_descriptor_fixtures.dart';
 import 'fixtures/verifiable_credential_fixtures.dart';
+import 'mocks/mock_revocation_verifier.dart';
 import 'mocks/mock_verifiable_credential.dart';
 
 // ── Shared test constants ─────────────────────────────────────────────────────
 
 const _trustedIssuer = 'did:key:z6MkIdvIssuer';
 const _otherIssuer = 'did:key:z6MkOtherIssuer';
+
+// ── Fakes ─────────────────────────────────────────────────────────────────────
+
+class _FakeParsedVerifiableCredential extends Fake
+    implements ParsedVerifiableCredential<dynamic> {}
 
 // ── Helper builders ───────────────────────────────────────────────────────────
 
@@ -333,5 +339,128 @@ void main() {
         expect(result.maximumRecommendedVCs, hasLength(1));
       },
     );
+  });
+
+  // ── Revoked credentials ───────────────────────────────────────────────────
+
+  group('when a revocation verifier is provided', () {
+    late MockRevocationVerifier verifier;
+    late ShareRequirementsMatcher matcherWithVerifier;
+
+    setUpAll(() {
+      registerFallbackValue(_FakeParsedVerifiableCredential());
+    });
+
+    setUp(() {
+      verifier = MockRevocationVerifier();
+      matcherWithVerifier =
+          ShareRequirementsMatcher(revocationVerifier: verifier);
+    });
+
+    test('should mark a VC as revoked when the verifier returns errors',
+        () async {
+      final vc = buildTestVc(type: 'UniversityDegree');
+      when(
+        () => verifier.verify(any()),
+      ).thenAnswer(
+        (_) async =>
+            VerificationResult.invalid(errors: ['credential is revoked']),
+      );
+
+      final req = _requirements([
+        buildDescriptor(id: 'd1', type: 'UniversityDegree'),
+      ]);
+      final result = await matcherWithVerifier.match(req, [vc]);
+
+      final first = result.vcsGroups.values.first.matchedVCs.first;
+      expect(first, isA<VcUnavailable>());
+      expect((first as VcUnavailable).reason, VcUnavailabilityReason.revoked);
+      expect(first.bestMatchVc, vc);
+    });
+
+    test('should mark a VC as available when the verifier returns ok',
+        () async {
+      final vc = buildTestVc(type: 'UniversityDegree');
+      when(
+        () => verifier.verify(any()),
+      ).thenAnswer((_) async => VerificationResult.ok());
+
+      final req = _requirements([
+        buildDescriptor(id: 'd1', type: 'UniversityDegree'),
+      ]);
+      final result = await matcherWithVerifier.match(req, [vc]);
+
+      expect(
+        result.vcsGroups.values.first.matchedVCs.first,
+        isA<VcAvailable>(),
+      );
+    });
+
+    test('should place revoked credentials after available ones', () async {
+      final validVc = buildTestVc(
+        type: 'UniversityDegree',
+        validFrom: '2025-01-01T00:00:00Z',
+      );
+      final revokedVc = buildTestVc(
+        type: 'UniversityDegree',
+        validFrom: '2024-01-01T00:00:00Z',
+      );
+
+      when(() => verifier.verify(any())).thenAnswer((invocation) async {
+        final arg = invocation.positionalArguments.first;
+        if (arg == revokedVc) {
+          return VerificationResult.invalid(errors: ['revoked']);
+        }
+        return VerificationResult.ok();
+      });
+
+      final req = _requirements([
+        buildDescriptor(id: 'd1', type: 'UniversityDegree'),
+      ]);
+      final result =
+          await matcherWithVerifier.match(req, [revokedVc, validVc]);
+
+      final matchedVCs = result.vcsGroups.values.first.matchedVCs;
+      expect(matchedVCs[0], isA<VcAvailable>());
+      expect(matchedVCs[1], isA<VcUnavailable>());
+      expect(
+        (matchedVCs[1] as VcUnavailable).reason,
+        VcUnavailabilityReason.revoked,
+      );
+    });
+
+    test('should treat a VC as available when the verifier throws', () async {
+      final vc = buildTestVc(type: 'UniversityDegree');
+      when(
+        () => verifier.verify(any()),
+      ).thenThrow(Exception('network error'));
+
+      final req = _requirements([
+        buildDescriptor(id: 'd1', type: 'UniversityDegree'),
+      ]);
+      final result = await matcherWithVerifier.match(req, [vc]);
+
+      expect(
+        result.vcsGroups.values.first.matchedVCs.first,
+        isA<VcAvailable>(),
+      );
+    });
+  });
+
+  group('when no revocation verifier is provided', () {
+    test('should not check revocation and treat matched VCs as available',
+        () async {
+      final vc = buildTestVc(type: 'UniversityDegree');
+      final req = _requirements([
+        buildDescriptor(id: 'd1', type: 'UniversityDegree'),
+      ]);
+      // matcher has no verifier — uses default ShareRequirementsMatcher()
+      final result = await matcher.match(req, [vc]);
+
+      expect(
+        result.vcsGroups.values.first.matchedVCs.first,
+        isA<VcAvailable>(),
+      );
+    });
   });
 }
