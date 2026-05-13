@@ -62,21 +62,9 @@ class PDClassifier {
   /// Trusted IDV issuer DIDs.
   final List<String> validIdvIssuers;
 
-  static Never _throwInvalidPd(String message) => Error.throwWithStackTrace(
-    TdkException(
-      message: message,
-      code: TdkExceptionType.invalidPresentationDefinition.code,
-    ),
-    StackTrace.current,
-  );
-
-  static Never _throwUnsupportedIdvTypes() => Error.throwWithStackTrace(
-    TdkException(
-      message: 'Multiple IDV types in a single descriptor are not supported.',
-      code: TdkExceptionType.unsupportedMultipleIdvTypes.code,
-    ),
-    StackTrace.current,
-  );
+  /// Throws a [TdkException] with [message] and [code].
+  static Never _throw(String message, String code) =>
+      throw TdkException(message: message, code: code);
 
   /// Classifies [pd] and returns a [PDRequirements] breakdown.
   ///
@@ -90,11 +78,11 @@ class PDClassifier {
     final rawValue = pd[PdClassifierConstants.inputDescriptorsKey];
 
     if (rawValue is! List) {
-      _throwInvalidPd(
+      _throw(
         rawValue == null
             ? 'Presentation Definition is missing input_descriptors.'
             : 'Presentation Definition input_descriptors must be a list.',
-      );
+      TdkExceptionType.invalidPresentationDefinition.code,);
     }
 
     final rawDescriptors = rawValue;
@@ -118,14 +106,14 @@ class PDClassifier {
     requirements = rawDescriptors
         .map((d) {
           if (d is! Map<String, dynamic>) {
-            _throwInvalidPd(
+            _throw(
               'Each input_descriptors entry must be a JSON object.',
-            );
+            TdkExceptionType.invalidPresentationDefinition.code,);
           }
           if (d['id'] is! String) {
-            _throwInvalidPd(
+            _throw(
               'Each input_descriptors entry must have a string "id" field.',
-            );
+            TdkExceptionType.invalidPresentationDefinition.code,);
           }
           return _extractRequestedType(d);
         })
@@ -140,7 +128,10 @@ class PDClassifier {
         });
 
     if (hasInvalidIdvPd) {
-      _throwUnsupportedIdvTypes();
+      _throw(
+        'Multiple IDV types in a single descriptor are not supported.',
+        TdkExceptionType.unsupportedMultipleIdvTypes.code,
+      );
     }
 
     return PDRequirements(
@@ -248,9 +239,9 @@ class PDClassifier {
     } else if (rawGroup is String && rawGroup.isNotEmpty) {
       groupName = rawGroup;
     } else if (rawGroup != null) {
-      _throwInvalidPd(
+      _throw(
         'input_descriptor "group" field must be a list or string.',
-      );
+      TdkExceptionType.invalidPresentationDefinition.code,);
     }
 
     final rawConstraints =
@@ -292,9 +283,9 @@ class PDClassifier {
           .where((p) => p == PdClassifierConstants.contextPath)
           .length;
       if (contextPathCount > 1) {
-        _throwInvalidPd(
+        _throw(
           'Multiple \$.@context fields in a single descriptor are not supported.',
-        );
+        TdkExceptionType.invalidPresentationDefinition.code,);
       }
 
       if (filter == null) continue;
@@ -369,19 +360,19 @@ class PDClassifier {
 
     if (rawContains != null) {
       if (rawContains is! Map<String, dynamic>) {
-        _throwInvalidPd('PD filter "contains" must be a JSON object.');
+        _throw('PD filter "contains" must be a JSON object.', TdkExceptionType.invalidPresentationDefinition.code);
       }
       if (rawContains.containsKey(PdClassifierConstants.patternKey)) {
         final value = rawContains[PdClassifierConstants.patternKey];
         if (value is! String) {
-          _throwInvalidPd('PD filter "contains.pattern" must be a string.');
+          _throw('PD filter "contains.pattern" must be a string.', TdkExceptionType.invalidPresentationDefinition.code);
         }
         return _stripAnchors(value);
       }
       if (rawContains.containsKey(PdClassifierConstants.constKey)) {
         final value = rawContains[PdClassifierConstants.constKey];
         if (value is! String) {
-          _throwInvalidPd('PD filter "contains.const" must be a string.');
+          _throw('PD filter "contains.const" must be a string.', TdkExceptionType.invalidPresentationDefinition.code);
         }
         return value;
       }
@@ -389,20 +380,20 @@ class PDClassifier {
       if (filter.containsKey(PdClassifierConstants.patternKey)) {
         final value = filter[PdClassifierConstants.patternKey];
         if (value is! String) {
-          _throwInvalidPd('PD filter "pattern" must be a string.');
+          _throw('PD filter "pattern" must be a string.', TdkExceptionType.invalidPresentationDefinition.code);
         }
         return _stripAnchors(value);
       }
       if (filter.containsKey(PdClassifierConstants.constKey)) {
         final value = filter[PdClassifierConstants.constKey];
         if (value is! String) {
-          _throwInvalidPd('PD filter "const" must be a string.');
+          _throw('PD filter "const" must be a string.', TdkExceptionType.invalidPresentationDefinition.code);
         }
         return value;
       }
     }
 
-    _throwInvalidPd('Could not extract constraint value from PD filter.');
+    _throw('Could not extract constraint value from PD filter.', TdkExceptionType.invalidPresentationDefinition.code);
   }
 
   /// Removes leading `^` and trailing `$` from a regex pattern string.
@@ -439,14 +430,14 @@ class PDClassifier {
     if (rawValue == null) return const {};
 
     if (rawValue is! List) {
-      _throwInvalidPd('submission_requirements must be a list.');
+      _throw('submission_requirements must be a list.', TdkExceptionType.invalidPresentationDefinition.code);
     }
 
     final requirements = rawValue.map((e) {
       if (e is! Map<String, dynamic>) {
-        _throwInvalidPd(
+        _throw(
           'Each submission_requirements entry must be a JSON object.',
-        );
+        TdkExceptionType.invalidPresentationDefinition.code,);
       }
       return SubmissionRequirements.fromJson(e);
     }).toList();
@@ -455,9 +446,9 @@ class PDClassifier {
       if ((req.min != null && req.min! < 1) ||
           (req.max != null && req.max! < 1) ||
           (req.count != null && req.count! < 1)) {
-        _throwInvalidPd(
+        _throw(
           'submission_requirements contains an invalid count/min/max value.',
-        );
+        TdkExceptionType.invalidPresentationDefinition.code,);
       }
     }
 
