@@ -82,7 +82,8 @@ class PDClassifier {
         rawValue == null
             ? 'Presentation Definition is missing input_descriptors.'
             : 'Presentation Definition input_descriptors must be a list.',
-      TdkExceptionType.invalidPresentationDefinition.code,);
+        TdkExceptionType.invalidPresentationDefinition.code,
+      );
     }
 
     final rawDescriptors = rawValue;
@@ -108,12 +109,14 @@ class PDClassifier {
           if (d is! Map<String, dynamic>) {
             _throw(
               'Each input_descriptors entry must be a JSON object.',
-            TdkExceptionType.invalidPresentationDefinition.code,);
+              TdkExceptionType.invalidPresentationDefinition.code,
+            );
           }
           if (d['id'] is! String) {
             _throw(
               'Each input_descriptors entry must have a string "id" field.',
-            TdkExceptionType.invalidPresentationDefinition.code,);
+              TdkExceptionType.invalidPresentationDefinition.code,
+            );
           }
           return _extractRequestedType(d);
         })
@@ -241,7 +244,8 @@ class PDClassifier {
     } else if (rawGroup != null) {
       _throw(
         'input_descriptor "group" field must be a list or string.',
-      TdkExceptionType.invalidPresentationDefinition.code,);
+        TdkExceptionType.invalidPresentationDefinition.code,
+      );
     }
 
     final rawConstraints =
@@ -285,7 +289,8 @@ class PDClassifier {
       if (contextPathCount > 1) {
         _throw(
           'Multiple \$.@context fields in a single descriptor are not supported.',
-        TdkExceptionType.invalidPresentationDefinition.code,);
+          TdkExceptionType.invalidPresentationDefinition.code,
+        );
       }
 
       if (filter == null) continue;
@@ -360,19 +365,28 @@ class PDClassifier {
 
     if (rawContains != null) {
       if (rawContains is! Map<String, dynamic>) {
-        _throw('PD filter "contains" must be a JSON object.', TdkExceptionType.invalidPresentationDefinition.code);
+        _throw(
+          'PD filter "contains" must be a JSON object.',
+          TdkExceptionType.invalidPresentationDefinition.code,
+        );
       }
       if (rawContains.containsKey(PdClassifierConstants.patternKey)) {
         final value = rawContains[PdClassifierConstants.patternKey];
         if (value is! String) {
-          _throw('PD filter "contains.pattern" must be a string.', TdkExceptionType.invalidPresentationDefinition.code);
+          _throw(
+            'PD filter "contains.pattern" must be a string.',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          );
         }
         return _stripAnchors(value);
       }
       if (rawContains.containsKey(PdClassifierConstants.constKey)) {
         final value = rawContains[PdClassifierConstants.constKey];
         if (value is! String) {
-          _throw('PD filter "contains.const" must be a string.', TdkExceptionType.invalidPresentationDefinition.code);
+          _throw(
+            'PD filter "contains.const" must be a string.',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          );
         }
         return value;
       }
@@ -380,20 +394,29 @@ class PDClassifier {
       if (filter.containsKey(PdClassifierConstants.patternKey)) {
         final value = filter[PdClassifierConstants.patternKey];
         if (value is! String) {
-          _throw('PD filter "pattern" must be a string.', TdkExceptionType.invalidPresentationDefinition.code);
+          _throw(
+            'PD filter "pattern" must be a string.',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          );
         }
         return _stripAnchors(value);
       }
       if (filter.containsKey(PdClassifierConstants.constKey)) {
         final value = filter[PdClassifierConstants.constKey];
         if (value is! String) {
-          _throw('PD filter "const" must be a string.', TdkExceptionType.invalidPresentationDefinition.code);
+          _throw(
+            'PD filter "const" must be a string.',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          );
         }
         return value;
       }
     }
 
-    _throw('Could not extract constraint value from PD filter.', TdkExceptionType.invalidPresentationDefinition.code);
+    _throw(
+      'Could not extract constraint value from PD filter.',
+      TdkExceptionType.invalidPresentationDefinition.code,
+    );
   }
 
   /// Removes leading `^` and trailing `$` from a regex pattern string.
@@ -430,14 +453,18 @@ class PDClassifier {
     if (rawValue == null) return const {};
 
     if (rawValue is! List) {
-      _throw('submission_requirements must be a list.', TdkExceptionType.invalidPresentationDefinition.code);
+      _throw(
+        'submission_requirements must be a list.',
+        TdkExceptionType.invalidPresentationDefinition.code,
+      );
     }
 
     final requirements = rawValue.map((e) {
       if (e is! Map<String, dynamic>) {
         _throw(
           'Each submission_requirements entry must be a JSON object.',
-        TdkExceptionType.invalidPresentationDefinition.code,);
+          TdkExceptionType.invalidPresentationDefinition.code,
+        );
       }
       return SubmissionRequirements.fromJson(e);
     }).toList();
@@ -448,7 +475,8 @@ class PDClassifier {
           (req.count != null && req.count! < 1)) {
         _throw(
           'submission_requirements contains an invalid count/min/max value.',
-        TdkExceptionType.invalidPresentationDefinition.code,);
+          TdkExceptionType.invalidPresentationDefinition.code,
+        );
       }
     }
 
