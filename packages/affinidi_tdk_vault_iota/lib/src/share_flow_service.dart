@@ -15,6 +15,19 @@ class ShareFlowService implements ShareFlowServiceInterface {
   static const _directPost = 'direct_post';
   static const _didScheme = 'did';
 
+  /// Throws a [TdkException] with the given [message] and [type] code.
+  ///
+  /// [originalMessage] is an optional underlying error message to include.
+  static Never _throw(
+    String message,
+    TdkExceptionType type, {
+    String? originalMessage,
+  }) => throw TdkException(
+    message: message,
+    code: type.code,
+    originalMessage: originalMessage,
+  );
+
   /// Creates a new [ShareFlowService] instance.
   ShareFlowService({required CryptographyServiceInterface cryptography})
     : _cryptography = cryptography;
@@ -26,24 +39,18 @@ class ShareFlowService implements ShareFlowServiceInterface {
   }) async {
     final embeddedException = uri.queryParameters['exception'];
     if (embeddedException != null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Request failed.',
-          code: TdkExceptionType.parseFailure.code,
-          originalMessage: embeddedException,
-        ),
-        StackTrace.current,
+      _throw(
+        'Request failed.',
+        TdkExceptionType.parseFailure,
+        originalMessage: embeddedException,
       );
     }
 
     final jwtToken = uri.queryParameters['request'];
     if (jwtToken == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Non-Iota OID4VP URIs are not supported.',
-          code: TdkExceptionType.parseFailure.code,
-        ),
-        StackTrace.current,
+      _throw(
+        'Non-Iota OID4VP URIs are not supported.',
+        TdkExceptionType.parseFailure,
       );
     }
 
@@ -51,13 +58,10 @@ class ShareFlowService implements ShareFlowServiceInterface {
     try {
       decoded = _cryptography.decodeJwtToken(token: jwtToken);
     } catch (e) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Failed to decode JWT token.',
-          code: TdkExceptionType.parseFailure.code,
-          originalMessage: e.toString(),
-        ),
-        StackTrace.current,
+      _throw(
+        'Failed to decode JWT token.',
+        TdkExceptionType.parseFailure,
+        originalMessage: e.toString(),
       );
     }
 
@@ -65,24 +69,15 @@ class ShareFlowService implements ShareFlowServiceInterface {
     try {
       payload = IotaPayload.fromJson(decoded);
     } catch (e) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'JWT payload is missing required fields.',
-          code: TdkExceptionType.parseFailure.code,
-          originalMessage: e.toString(),
-        ),
-        StackTrace.current,
+      _throw(
+        'JWT payload is missing required fields.',
+        TdkExceptionType.parseFailure,
+        originalMessage: e.toString(),
       );
     }
 
     if (payload.clientId.isEmpty) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'client_id is required.',
-          code: TdkExceptionType.missingClientId.code,
-        ),
-        StackTrace.current,
-      );
+      _throw('client_id is required.', TdkExceptionType.missingClientId);
     }
 
     final verifyResult = _cryptography.verifyJwt(
@@ -96,23 +91,17 @@ class ShareFlowService implements ShareFlowServiceInterface {
         verifyResult.isExpired ||
         !isValidClientIdScheme ||
         !isValidAud) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'JWT is invalid or has expired.',
-          code: TdkExceptionType.invalidOrExpiredJwt.code,
-          originalMessage: verifyResult.errorMessage,
-        ),
-        StackTrace.current,
+      _throw(
+        'JWT is invalid or has expired.',
+        TdkExceptionType.invalidOrExpiredJwt,
+        originalMessage: verifyResult.errorMessage,
       );
     }
 
     if (payload.responseMode != _directPost) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Invalid response_mode: ${payload.responseMode}.',
-          code: TdkExceptionType.invalidResponseMode.code,
-        ),
-        StackTrace.current,
+      _throw(
+        'Invalid response_mode: ${payload.responseMode}.',
+        TdkExceptionType.invalidResponseMode,
       );
     }
 
