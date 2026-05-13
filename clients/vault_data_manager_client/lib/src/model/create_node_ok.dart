@@ -14,6 +14,8 @@ part 'create_node_ok.g.dart';
 ///
 /// Properties:
 /// * [nodeId]
+/// * [createdAt] - creation date/time
+/// * [modifiedAt] - modification date/time
 /// * [url]
 /// * [link]
 /// * [fields]
@@ -22,6 +24,14 @@ abstract class CreateNodeOK
     implements Built<CreateNodeOK, CreateNodeOKBuilder> {
   @BuiltValueField(wireName: r'nodeId')
   String get nodeId;
+
+  /// creation date/time
+  @BuiltValueField(wireName: r'createdAt')
+  String get createdAt;
+
+  /// modification date/time
+  @BuiltValueField(wireName: r'modifiedAt')
+  String get modifiedAt;
 
   @BuiltValueField(wireName: r'url')
   String? get url;
@@ -58,6 +68,16 @@ class _$CreateNodeOKSerializer implements PrimitiveSerializer<CreateNodeOK> {
     yield r'nodeId';
     yield serializers.serialize(
       object.nodeId,
+      specifiedType: const FullType(String),
+    );
+    yield r'createdAt';
+    yield serializers.serialize(
+      object.createdAt,
+      specifiedType: const FullType(String),
+    );
+    yield r'modifiedAt';
+    yield serializers.serialize(
+      object.modifiedAt,
       specifiedType: const FullType(String),
     );
     if (object.url != null) {
@@ -119,6 +139,24 @@ class _$CreateNodeOKSerializer implements PrimitiveSerializer<CreateNodeOK> {
                   )
                   as String;
           result.nodeId = valueDes;
+          break;
+        case r'createdAt':
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
+          result.createdAt = valueDes;
+          break;
+        case r'modifiedAt':
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String;
+          result.modifiedAt = valueDes;
           break;
         case r'url':
           final valueDes =
