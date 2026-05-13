@@ -38,12 +38,23 @@ abstract final class PexEvaluator {
   /// - [fields] (required) - list of `constraints.fields` objects from the
   ///   input descriptor.
   ///
-  /// Returns `true` when all fields are satisfied (unknown field shapes pass
-  /// by default).
+  /// Returns `true` when all fields are satisfied.
+  ///
+  /// Throws a [StateError] if a `fields[]` entry is not a JSON object —
+  /// matching the fail-closed behaviour of the `@sphereon/pex` JS library,
+  /// which also rejects a VC when a field entry has no `path` property.
+  /// This case indicates a malformed PD that [PDClassifier] should have
+  /// rejected before evaluation reaches this point.
   static bool _matchesAllFields(VerifiableCredential vc, List<dynamic> fields) {
     final vcJson = vc.toJson();
     return fields.every((field) {
-      if (field is! Map<String, dynamic>) return true;
+      if (field is! Map<String, dynamic>) {
+        throw StateError(
+          'Malformed PD: constraints.fields[] entry is not a JSON object '
+          '(got ${field.runtimeType}: $field). '
+          'The descriptor should have been rejected by PDClassifier.',
+        );
+      }
       return _evaluateField(field, vcJson);
     });
   }
