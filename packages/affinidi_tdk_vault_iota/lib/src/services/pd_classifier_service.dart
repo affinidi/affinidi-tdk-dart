@@ -7,8 +7,6 @@ import '../models/request_purpose.dart';
 import '../models/submission_requirements.dart';
 import '../models/verified_identity_document_info.dart';
 import 'pd_classifier_constants.dart';
-import 'zero_party_vc_data_points.dart';
-import 'zpd_linked_vc_types.dart';
 
 part 'pd_parser.dart';
 
@@ -20,7 +18,7 @@ Never _throw(String message, String code) =>
 /// Intermediate parsing result for a single input descriptor.
 ///
 /// Produced by [PDClassifier._extractRequestedType] and consumed by
-/// [PDClassifier._computeRequiredDataPoints] and the fold classifier.
+/// the fold classifier.
 class _PdParserTmpResult {
   const _PdParserTmpResult({
     required this.inputDescriptor,
@@ -28,7 +26,6 @@ class _PdParserTmpResult {
     this.context,
     this.groupName,
     this.issuer,
-    this.dataPoints,
   });
 
   final Map<String, dynamic> inputDescriptor;
@@ -36,20 +33,6 @@ class _PdParserTmpResult {
   final String? context;
   final String? groupName;
   final String? issuer;
-
-  /// Non-null when this descriptor maps to zero-party (HIT* / ProfileTemplate)
-  /// profile data paths. An empty set means the type was recognised but
-  /// declares no specific paths (e.g. `ProfileTemplate`).
-  final Set<String>? dataPoints;
-
-  _PdParserTmpResult copyWith({Set<String>? dataPoints}) => _PdParserTmpResult(
-    inputDescriptor: inputDescriptor,
-    types: types,
-    context: context,
-    groupName: groupName,
-    issuer: issuer,
-    dataPoints: dataPoints ?? this.dataPoints,
-  );
 }
 
 /// Classifies the input descriptors of a Presentation Definition into
@@ -102,10 +85,7 @@ class PDClassifier {
 
     var requirements = PDRequirements(
       claimedDescriptors: [],
-      zpdLinkedDescriptors: [],
       idvDescriptors: [],
-      dataPoints: {},
-      zeroPartyVCs: {},
       submissionRequirementsByGroup: submissionRequirementsByGroup,
       purpose: purpose,
     );
@@ -134,12 +114,7 @@ class PDClassifier {
 
     return PDRequirements(
       claimedDescriptors: List.unmodifiable(requirements.claimedDescriptors),
-      zpdLinkedDescriptors: List.unmodifiable(
-        requirements.zpdLinkedDescriptors,
-      ),
       idvDescriptors: List.unmodifiable(requirements.idvDescriptors),
-      dataPoints: Set.unmodifiable(requirements.dataPoints),
-      zeroPartyVCs: Set.unmodifiable(requirements.zeroPartyVCs),
       idvInfo: requirements.idvInfo,
       submissionRequirementsByGroup: Map.unmodifiable(
         requirements.submissionRequirementsByGroup,
@@ -159,29 +134,11 @@ class PDClassifier {
     PDRequirements result,
     _PdParserTmpResult requiredDataPoints,
   ) {
-    final isZeroPartyVC = requiredDataPoints.dataPoints != null;
-    final linkedZpdPaths = _getLinkedZpdPaths(requiredDataPoints);
     final isIdv =
         validIdvIssuers.contains(requiredDataPoints.issuer) &&
         requiredDataPoints.types.contains(
           PdClassifierConstants.verifiedIdentityDocumentType,
         );
-
-    if (isZeroPartyVC) {
-      result.dataPoints.addAll(requiredDataPoints.dataPoints!);
-      if (requiredDataPoints.types.isNotEmpty) {
-        result.zeroPartyVCs.add(requiredDataPoints.types.first);
-      }
-      return result;
-    }
-
-    if (linkedZpdPaths.isNotEmpty) {
-      result.zpdLinkedDescriptors.add(
-        PDDescriptor(data: requiredDataPoints.inputDescriptor),
-      );
-      result.dataPoints.addAll(linkedZpdPaths);
-      return result;
-    }
 
     if (isIdv) {
       if (requiredDataPoints.types.length > 2) {

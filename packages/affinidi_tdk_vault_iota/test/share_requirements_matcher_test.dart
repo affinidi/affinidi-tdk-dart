@@ -51,11 +51,8 @@ PDRequirements _requirements(
   return PDRequirements(
     claimedDescriptors:
         claimedDescriptors.map((d) => PDDescriptor(data: d)).toList(),
-    zpdLinkedDescriptors: const [],
     idvDescriptors:
         idvDescriptors.map((d) => PDDescriptor(data: d)).toList(),
-    dataPoints: const {},
-    zeroPartyVCs: const {},
     submissionRequirementsByGroup: submissionRequirementsByGroup,
   );
 }

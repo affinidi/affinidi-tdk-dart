@@ -60,15 +60,6 @@ abstract final class PdClassifierConstants {
   /// JSON key for the `count` field of a submission requirement.
   static const String submissionRequirementsCountKey = 'count';
 
-  // ── Profile / ZPD constants ──────────────────────────────────────────────
-
-  /// JSON-LD context URL that identifies a `ProfileTemplate` VC.
-  static const String profileContext =
-      'https://schema.affinidi.io/profile-template/context.jsonld';
-
-  /// VC type string for a `ProfileTemplate` zero-party data VC.
-  static const String profileType = 'ProfileTemplate';
-
   /// VC type string for an identity verification document VC.
   static const String verifiedIdentityDocumentType = 'VerifiedIdentityDocument';
 }
