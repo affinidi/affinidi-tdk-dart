@@ -1,7 +1,15 @@
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:ssi/ssi.dart';
 
-import '../../affinidi_tdk_vault_iota.dart';
+import '../extensions/submission_requirements_extensions.dart';
+import '../models/claimed_credentials_result.dart';
+import '../models/pd_descriptor.dart';
+import '../models/pd_requirements.dart';
+import '../models/submission_requirements.dart';
+import '../models/vc_availability.dart';
+import '../models/vc_unavailability_reason.dart';
+import '../models/vcs_group_by_type.dart';
+import 'pd_classifier_service.dart' show PDClassifier;
 
 part 'pex_evaluator.dart';
 

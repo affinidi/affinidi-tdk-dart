@@ -1,6 +1,6 @@
 import 'package:ssi/ssi.dart';
 
-import '../../affinidi_tdk_vault_iota.dart';
+import 'pd_descriptor.dart';
 import 'vc_availability.dart';
 import 'vcs_group_by_type.dart';
 
