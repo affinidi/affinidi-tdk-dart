@@ -12,7 +12,6 @@ export 'src/models/pd_requirements.dart';
 export 'src/models/request_purpose.dart';
 export 'src/models/submission_requirements.dart';
 export 'src/models/vc_availability.dart';
-export 'src/models/vc_match_result.dart';
 export 'src/models/vc_unavailability_reason.dart';
 export 'src/models/vcs_group_by_type.dart';
 export 'src/models/verified_identity_document_info.dart';
