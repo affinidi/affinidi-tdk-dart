@@ -17,6 +17,11 @@ part 'pd_parser.dart';
 Never _throw(String message, String code) =>
     throw TdkException(message: message, code: code);
 
+/// Throws a [TdkException] with [message] and [code].
+/// Shared by [PDClassifier] and [PdFilterParser] via the part mechanism.
+Never _throw(String message, String code) =>
+    throw TdkException(message: message, code: code);
+
 /// Intermediate parsing result for a single input descriptor.
 ///
 /// Produced by [PDClassifier._extractRequestedType] and consumed by

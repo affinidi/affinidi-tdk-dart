@@ -1,7 +1,6 @@
 import 'package:ssi/ssi.dart';
 
 import 'pd_descriptor.dart';
-import 'vc_availability.dart';
 import 'vcs_group_by_type.dart';
 
 /// The result of matching a user's vault credentials against the claimed and
@@ -25,7 +24,6 @@ class ClaimedCredentialsResult {
   /// per group, across all descriptor groups.
   List<VerifiableCredential> get maximumRecommendedVCs => vcsGroups.values
       .expand((group) => group.recommendedMaximumVCs)
-      .whereType<VcAvailable>()
       .map((a) => a.vc)
       .toList();
 

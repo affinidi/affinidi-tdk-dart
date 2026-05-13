@@ -46,9 +46,12 @@ class VCsGroupByType {
       allAvailableVCs.length == minimumVCsCountToShare &&
       allAvailableVCs.length == maximumVCsCountToShare;
 
-  /// The recommended set of credentials to share — up to [maximumVCsCountToShare].
-  List<VcAvailability> get recommendedMaximumVCs =>
-      matchedVCs.sublist(0, min(maximumVCsCountToShare, matchedVCs.length));
+  /// The recommended set of credentials to share — up to [maximumVCsCountToShare]
+  /// available credentials. Only [VcAvailable] entries are included.
+  List<VcAvailable> get recommendedMaximumVCs {
+    final available = allAvailableVCs;
+    return available.sublist(0, min(maximumVCsCountToShare, available.length));
+  }
 
   /// All credentials from [matchedVCs] that are available to share.
   List<VcAvailable> get allAvailableVCs =>
