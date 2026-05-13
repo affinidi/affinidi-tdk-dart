@@ -40,6 +40,17 @@ class PDDescriptor {
     return null;
   }
 
+  /// Two [PDDescriptor]s are equal when their [id]s match.
+  ///
+  /// The `id` field is required and unique per the PEX spec, making it the
+  /// canonical identity of a descriptor. This allows [PDDescriptor] to be
+  /// used safely as a [Map] key even when reconstructed from JSON.
+  @override
+  bool operator ==(Object other) => other is PDDescriptor && other.id == id;
+
+  @override
+  int get hashCode => id.hashCode;
+
   @override
   String toString() => jsonEncode(_data);
 }

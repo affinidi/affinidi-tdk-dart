@@ -129,8 +129,7 @@ abstract final class PexEvaluator {
         return _listOrStringMatches(value, (s) => s == constValue);
       }
       if (pattern != null) {
-        final regex = RegExp(pattern);
-        return _listOrStringMatches(value, regex.hasMatch);
+        return _matchesPattern(value, pattern);
       }
     }
 
@@ -141,12 +140,30 @@ abstract final class PexEvaluator {
 
     final pattern = filter['pattern']?.toString();
     if (pattern != null) {
-      final regex = RegExp(pattern);
-      return _listOrStringMatches(value, regex.hasMatch);
+      return _matchesPattern(value, pattern);
     }
 
     // Filter has no condition we recognise (e.g. type-only filter) — pass.
     return true;
+  }
+
+  /// Compiles [pattern] into a [RegExp] and tests [value] against it.
+  ///
+  /// - [value] (required) - the resolved VC JSON value to test (may be a
+  ///   `List`, `String`, or other scalar).
+  /// - [pattern] (required) - the regex string from the filter object.
+  ///
+  /// Returns `false` when [pattern] is not a valid regular expression, rather
+  /// than propagating a [FormatException] that would be swallowed as
+  /// [VcUnavailabilityReason.unknown] by the outer error handler.
+  static bool _matchesPattern(dynamic value, String pattern) {
+    final RegExp regex;
+    try {
+      regex = RegExp(pattern);
+    } on FormatException {
+      return false;
+    }
+    return _listOrStringMatches(value, regex.hasMatch);
   }
 
   /// Applies [predicate] to each element of [value] when it is a [List], or
