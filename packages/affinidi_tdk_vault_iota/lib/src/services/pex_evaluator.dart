@@ -1,0 +1,179 @@
+part of 'share_requirements_matcher_service.dart';
+
+// ── PEX field evaluator ───────────────────────────────────────────────────────
+
+/// Evaluates Presentation Definition field constraints against a list of
+/// Verifiable Credentials.
+///
+/// Supports the subset of PEX required for credential-type and issuer
+/// matching:
+/// - JSONPath: `$.type`, `$.issuer`, and any top-level field path
+/// - Filter shapes: `{const}`, `{pattern}`, `{contains: {const}}`,
+///   `{contains: {pattern}}`
+abstract final class PexEvaluator {
+  /// Returns the VCs from [allVCs] that satisfy all `constraints.fields` in
+  /// [inputDescriptor].
+  ///
+  /// - [inputDescriptor] (required) - a single input descriptor JSON object.
+  /// - [allVCs] (required) - all [VerifiableCredential]s to filter.
+  ///
+  /// Returns all [allVCs] when the descriptor has no `constraints` or no
+  /// `fields`. Otherwise returns only the VCs that satisfy every field
+  /// constraint.
+  static List<VerifiableCredential> selectMatching(
+    Map<String, dynamic> inputDescriptor,
+    List<VerifiableCredential> allVCs,
+  ) {
+    final constraints = inputDescriptor['constraints'] as Map<String, dynamic>?;
+    final fields = constraints?['fields'] as List<dynamic>? ?? const [];
+
+    if (fields.isEmpty) return List.of(allVCs);
+
+    return allVCs.where((vc) => _matchesAllFields(vc, fields)).toList();
+  }
+
+  /// Returns `true` if [vcJson] satisfies every constraint in [fields].
+  ///
+  /// - [vc] (required) - the [VerifiableCredential] being tested.
+  /// - [fields] (required) - list of `constraints.fields` objects from the
+  ///   input descriptor.
+  ///
+  /// Returns `true` when all fields are satisfied (unknown field shapes pass
+  /// by default).
+  static bool _matchesAllFields(VerifiableCredential vc, List<dynamic> fields) {
+    final vcJson = vc.toJson();
+    return fields.every((field) {
+      if (field is! Map<String, dynamic>) return true;
+      return _evaluateField(field, vcJson);
+    });
+  }
+
+  /// Returns `true` if [vcJson] satisfies the [field] constraint.
+  ///
+  /// - [field] (required) - a single `constraints.fields[]` entry.
+  /// - [vcJson] (required) - the VC serialised to a JSON map.
+  ///
+  /// A field is satisfied when at least one of its `path` entries resolves
+  /// to a non-null value that passes the optional `filter`.
+  static bool _evaluateField(
+    Map<String, dynamic> field,
+    Map<String, dynamic> vcJson,
+  ) {
+    final paths = (field['path'] as List?)?.cast<String>() ?? const [];
+    final filter = field['filter'] as Map<String, dynamic>?;
+
+    for (final path in paths) {
+      final value = _resolveJsonPath(vcJson, path);
+      if (value != null && (filter == null || _matchesFilter(value, filter))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /// Resolves a simple dot-notation JSONPath against [vcJson].
+  ///
+  /// - [vcJson] (required) - the VC serialised to a JSON map.
+  /// - [path] (required) - a JSONPath string such as `$.type` or `$.issuer`.
+  ///   Only `$` and `$.field.subfield` notation is supported.
+  ///
+  /// Returns the resolved value, or `null` if the path cannot be traversed.
+  static dynamic _resolveJsonPath(Map<String, dynamic> vcJson, String path) {
+    if (path == r'$') return vcJson;
+    if (!path.startsWith(r'$.')) return null;
+
+    final segments = path.substring(2).split('.');
+    dynamic current = vcJson;
+
+    for (final segment in segments) {
+      if (current is! Map<String, dynamic>) return null;
+      current = current[segment];
+    }
+    return current;
+  }
+
+  /// Returns `true` if [value] satisfies [filter].
+  ///
+  /// - [value] (required) - the resolved value from the VC JSON (may be a
+  ///   `List`, `String`, `Map`, or other scalar).
+  /// - [filter] (required) - the `filter` object from a
+  ///   `constraints.fields[]` entry.
+  ///
+  /// Supported filter shapes:
+  /// - `{contains: {const: "value"}}` — list/string contains the value
+  /// - `{contains: {pattern: "regex"}}` — list/string matches the regex
+  /// - `{const: "value"}` — list/string equals the value
+  /// - `{pattern: "regex"}` — list/string matches the regex
+  /// - `{type: "string"}` alone — passes without further checks
+  ///
+  /// Returns `true` when [value] matches [filter], or when the filter shape
+  /// is not recognised.
+  static bool _matchesFilter(dynamic value, Map<String, dynamic> filter) {
+    final contains = filter['contains'];
+    if (contains is Map<String, dynamic>) {
+      final constValue = contains['const']?.toString();
+      final pattern = contains['pattern']?.toString();
+
+      if (constValue != null) {
+        return _listOrStringMatches(value, (s) => s == constValue);
+      }
+      if (pattern != null) {
+        final regex = RegExp(pattern);
+        return _listOrStringMatches(value, regex.hasMatch);
+      }
+    }
+
+    final constValue = filter['const']?.toString();
+    if (constValue != null) {
+      return _listOrStringMatches(value, (s) => s == constValue);
+    }
+
+    final pattern = filter['pattern']?.toString();
+    if (pattern != null) {
+      final regex = RegExp(pattern);
+      return _listOrStringMatches(value, regex.hasMatch);
+    }
+
+    // Filter has no condition we recognise (e.g. type-only filter) — pass.
+    return true;
+  }
+
+  /// Applies [predicate] to each element of [value] when it is a [List], or
+  /// to the extracted string representation when [value] is a scalar.
+  ///
+  /// - [value] (required) - the resolved VC JSON value to test.
+  /// - [predicate] (required) - the string-level test to apply.
+  ///
+  /// Returns `true` if [predicate] holds for at least one element (or the
+  /// scalar itself).
+  static bool _listOrStringMatches(
+    dynamic value,
+    bool Function(String) predicate,
+  ) {
+    if (value is List) {
+      return value.any((e) {
+        final s = _toStringValue(e);
+        return s != null && predicate(s);
+      });
+    }
+    final s = _toStringValue(value);
+    return s != null && predicate(s);
+  }
+
+  /// Coerces [value] to a string for filter comparison.
+  ///
+  /// - [value] - the raw JSON value; may be `null`, a `String`, a
+  ///   `Map<String, dynamic>`, or any other scalar.
+  ///
+  /// Returns the string as-is, the `id` field for issuer-as-object shapes,
+  /// `value.toString()` for other scalars, or `null` when [value] is `null`.
+  static String? _toStringValue(dynamic value) {
+    if (value == null) return null;
+    if (value is String) return value;
+    if (value is Map<String, dynamic>) {
+      final id = value['id'];
+      if (id != null) return _toStringValue(id);
+    }
+    return value.toString();
+  }
+}
