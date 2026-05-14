@@ -28,23 +28,20 @@ abstract final class PexEvaluator {
 
     if (fields.isEmpty) return List.of(allVCs);
 
-    return allVCs.where((vc) => _matchesAllFields(vc, fields)).toList();
+    // Compile each field's JSON Schema filter once, before iterating over VCs.
+    final compiledFields = _compileFields(fields);
+    return allVCs.where((vc) => _matchesAllFields(vc, compiledFields)).toList();
   }
 
-  /// Returns `true` if `vcJson` satisfies every constraint in [fields].
+  /// Parses and compiles each entry in [fields] into a
+  /// `(paths, schema)` record.
   ///
-  /// - [vc] (required) - the [VerifiableCredential] being tested.
-  /// - [fields] (required) - list of `constraints.fields` objects from the
-  ///   input descriptor.
-  ///
-  /// Returns `true` when all fields are satisfied.
-  ///
-  /// Throws a [StateError] if a `fields[]` entry is not a JSON object.
-  /// This indicates a malformed PD that [PDClassifier] should have rejected
-  /// before evaluation reaches this point.
-  static bool _matchesAllFields(VerifiableCredential vc, List<dynamic> fields) {
-    final vcJson = vc.toJson();
-    return fields.every((field) {
+  /// Throws a [StateError] for any entry that is not a JSON object — this
+  /// indicates a malformed PD that [PDClassifier] should have rejected.
+  static List<({List<String> paths, JsonSchema? schema})> _compileFields(
+    List<dynamic> fields,
+  ) {
+    return fields.map((field) {
       if (field is! Map<String, dynamic>) {
         throw StateError(
           'Malformed PD: constraints.fields[] entry is not a JSON object '
@@ -52,27 +49,39 @@ abstract final class PexEvaluator {
           'The descriptor should have been rejected by PDClassifier.',
         );
       }
-      return _evaluateField(field, vcJson);
-    });
+      final paths =
+          (field['path'] as List?)?.cast<String>() ?? const <String>[];
+      final rawFilter = field['filter'] as Map<String, dynamic>?;
+      return (
+        paths: paths,
+        schema: rawFilter != null ? JsonSchema.create(rawFilter) : null,
+      );
+    }).toList();
   }
 
-  /// Returns `true` if [vcJson] satisfies the [field] constraint.
+  /// Returns `true` if [vc] satisfies every compiled field constraint.
+  static bool _matchesAllFields(
+    VerifiableCredential vc,
+    List<({List<String> paths, JsonSchema? schema})> compiledFields,
+  ) {
+    final vcJson = vc.toJson();
+    return compiledFields.every(
+      (field) => _evaluateField(field.paths, field.schema, vcJson),
+    );
+  }
+
+  /// Returns `true` if [vcJson] satisfies the compiled [field] constraint.
   ///
-  /// - [field] (required) - a single `constraints.fields[]` entry.
-  /// - [vcJson] (required) - the VC serialised to a JSON map.
-  ///
-  /// A field is satisfied when at least one of its `path` entries resolves
-  /// to a non-null value that passes the optional `filter`.
+  /// A field is satisfied when at least one of its [paths] resolves to a
+  /// non-null value that passes the optional [schema].
   static bool _evaluateField(
-    Map<String, dynamic> field,
+    List<String> paths,
+    JsonSchema? schema,
     Map<String, dynamic> vcJson,
   ) {
-    final paths = (field['path'] as List?)?.cast<String>() ?? const [];
-    final filter = field['filter'] as Map<String, dynamic>?;
-
     for (final path in paths) {
       final value = _resolveJsonPath(vcJson, path);
-      if (value != null && (filter == null || _matchesFilter(value, filter))) {
+      if (value != null && (schema == null || schema.validate(value).isValid)) {
         return true;
       }
     }
@@ -98,19 +107,5 @@ abstract final class PexEvaluator {
       current = current[segment];
     }
     return current;
-  }
-
-  /// Returns `true` if [value] satisfies [filter].
-  ///
-  /// - [value] (required) - the resolved value from the VC JSON (may be a
-  ///   `List`, `String`, `Map`, or other scalar).
-  /// - [filter] (required) - the `filter` object from a
-  ///   `constraints.fields[]` entry, which is a JSON Schema (Draft 7).
-  ///
-  /// Validates using a full JSON Schema (Draft 7) evaluator for spec-correct
-  /// results across all supported keywords.
-  static bool _matchesFilter(dynamic value, Map<String, dynamic> filter) {
-    final schema = JsonSchema.create(filter);
-    return schema.validate(value).isValid;
   }
 }
