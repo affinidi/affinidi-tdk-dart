@@ -274,42 +274,39 @@ void main() {
     });
 
     group('and the `aud` claim does not match the walletDid', () {
-      test(
-        'should throw a TdkException with code invalid_audience',
-        () async {
-          when(
-            () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
-          ).thenReturn(_baseDecodedPayload(aud: 'did:key:someOtherDid'));
-          when(
-            () => mockCryptography.verifyJwt(
-              jwtToken: any(named: 'jwtToken'),
-              didKey: any(named: 'didKey'),
-            ),
-          ).thenReturn(_validResult());
+      test('should throw a TdkException with code invalid_audience', () async {
+        when(
+          () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+        ).thenReturn(_baseDecodedPayload(aud: 'did:key:someOtherDid'));
+        when(
+          () => mockCryptography.verifyJwt(
+            jwtToken: any(named: 'jwtToken'),
+            didKey: any(named: 'didKey'),
+          ),
+        ).thenReturn(_validResult());
 
-          final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
+        final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
 
-          await expectLater(
-            () => service.validateOid4vpRequest(
-              uri,
-              walletDid: 'did:key:myWalletDid',
-            ),
-            throwsA(
-              isA<TdkException>()
-                  .having(
-                    (e) => e.code,
-                    'code',
-                    TdkExceptionType.invalidAudience.code,
-                  )
-                  .having(
-                    (e) => e.message,
-                    'message',
-                    'JWT aud does not match the wallet DID.',
-                  ),
-            ),
-          );
-        },
-      );
+        await expectLater(
+          () => service.validateOid4vpRequest(
+            uri,
+            walletDid: 'did:key:myWalletDid',
+          ),
+          throwsA(
+            isA<TdkException>()
+                .having(
+                  (e) => e.code,
+                  'code',
+                  TdkExceptionType.invalidAudience.code,
+                )
+                .having(
+                  (e) => e.message,
+                  'message',
+                  'JWT aud does not match the wallet DID.',
+                ),
+          ),
+        );
+      });
 
       test(
         'should not throw when walletDid is null (aud check skipped)',
@@ -333,30 +330,27 @@ void main() {
         },
       );
 
-      test(
-        'should not throw when aud is absent (aud check skipped)',
-        () async {
-          when(
-            () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
-          ).thenReturn(_baseDecodedPayload());
-          when(
-            () => mockCryptography.verifyJwt(
-              jwtToken: any(named: 'jwtToken'),
-              didKey: any(named: 'didKey'),
-            ),
-          ).thenReturn(_validResult());
+      test('should not throw when aud is absent (aud check skipped)', () async {
+        when(
+          () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+        ).thenReturn(_baseDecodedPayload());
+        when(
+          () => mockCryptography.verifyJwt(
+            jwtToken: any(named: 'jwtToken'),
+            didKey: any(named: 'didKey'),
+          ),
+        ).thenReturn(_validResult());
 
-          final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
+        final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
 
-          await expectLater(
-            () => service.validateOid4vpRequest(
-              uri,
-              walletDid: 'did:key:myWalletDid',
-            ),
-            completes,
-          );
-        },
-      );
+        await expectLater(
+          () => service.validateOid4vpRequest(
+            uri,
+            walletDid: 'did:key:myWalletDid',
+          ),
+          completes,
+        );
+      });
     });
 
     group('and the client_id is empty', () {
