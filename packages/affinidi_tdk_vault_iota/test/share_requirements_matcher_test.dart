@@ -511,4 +511,44 @@ void main() {
       },
     );
   });
+
+  // ── Unrecognised filter operators ─────────────────────────────────────────
+
+  group('when a filter uses an unrecognised operator', () {
+    Map<String, dynamic> descriptorWithFilter(
+      String id,
+      Map<String, dynamic> filter,
+    ) => {
+      'id': id,
+      'constraints': {
+        'fields': [
+          {'path': [r'$.type'], 'filter': filter},
+        ],
+      },
+    };
+
+    test('should not match when the filter has an unsupported operator',
+        () async {
+      final vc = buildTestVc(type: 'UniversityDegree');
+      final req = _requirements([
+        descriptorWithFilter('d1', {
+          'type': 'string',
+          'enum': ['UniversityDegree', 'EmploymentCredential'],
+        }),
+      ]);
+      final result = await matcher.match(req, [vc]);
+
+      expect(result.vcsGroups.values.first.matchedVCs.first, isA<VcUnavailable>());
+    });
+
+    test('should match when the filter has only a type annotation', () async {
+      final vc = buildTestVc(type: 'UniversityDegree');
+      final req = _requirements([
+        descriptorWithFilter('d1', {'type': 'array'}),
+      ]);
+      final result = await matcher.match(req, [vc]);
+
+      expect(result.vcsGroups.values.first.matchedVCs.first, isA<VcAvailable>());
+    });
+  });
 }

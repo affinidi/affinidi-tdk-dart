@@ -143,8 +143,8 @@ abstract final class PexEvaluator {
       return _matchesPattern(value, pattern);
     }
 
-    // Filter has no condition we recognise (e.g. type-only filter) — pass.
-    return true;
+    final meaningfulKeys = filter.keys.where((k) => k != 'type').toSet();
+    return meaningfulKeys.isEmpty;
   }
 
   /// Compiles [pattern] into a [RegExp] and tests [value] against it.
