@@ -38,6 +38,11 @@ abstract final class PexEvaluator {
   ///
   /// Throws a [StateError] for any entry that is not a JSON object — this
   /// indicates a malformed PD that [PDClassifier] should have rejected.
+  ///
+  /// If a `filter` value cannot be compiled into a valid [JsonSchema], that
+  /// field is recorded with empty `paths` so it is treated as permanently
+  /// non-matching. This prevents one malformed filter from invalidating the
+  /// entire descriptor.
   static List<({List<String> paths, JsonSchema? schema})> _compileFields(
     List<dynamic> fields,
   ) {
@@ -52,10 +57,14 @@ abstract final class PexEvaluator {
       final paths =
           (field['path'] as List?)?.cast<String>() ?? const <String>[];
       final rawFilter = field['filter'] as Map<String, dynamic>?;
-      return (
-        paths: paths,
-        schema: rawFilter != null ? JsonSchema.create(rawFilter) : null,
-      );
+      if (rawFilter == null) {
+        return (paths: paths, schema: null);
+      }
+      try {
+        return (paths: paths, schema: JsonSchema.create(rawFilter));
+      } on Object {
+        return (paths: const <String>[], schema: null);
+      }
     }).toList();
   }
 
