@@ -55,8 +55,8 @@ class ShareRequirementsMatcher {
   /// Individual descriptor failures are caught, logged, and recorded as
   /// [VcUnavailabilityReason.unknown] rather than propagating.
   ///
-  /// The method is `async` to support future revocation-status checks, which
-  /// require network I/O.
+  /// The method is `async` because revocation-status checks may require
+  /// network I/O when a [RevocationList2020Verifier] is provided.
   ///
   /// Returns a [ClaimedCredentialsResult] mapping each descriptor to its
   /// [VCsGroupByType] (available, expired, or missing).

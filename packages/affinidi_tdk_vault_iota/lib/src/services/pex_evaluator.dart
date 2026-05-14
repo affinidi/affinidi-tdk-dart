@@ -44,7 +44,7 @@ abstract final class PexEvaluator {
   /// `(paths, schema)` record.
   ///
   /// Throws a [StateError] for any entry that is not a JSON object — this
-  /// indicates a malformed PD that [PDClassifier] should have rejected.s
+  /// indicates a malformed PD that [PDClassifier] should have rejected.
   static List<({List<String> paths, JsonSchema? schema})> _compileFields(
     List<dynamic> fields,
   ) {
