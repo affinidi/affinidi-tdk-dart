@@ -59,12 +59,17 @@ class _PdParserTmpResult {
 /// verifier is requesting — claimed VCs, ZPD-linked VCs, profile data, or
 /// identity verification.
 class PDClassifier {
+  final Logger _logger;
+  static const _componentName = 'PDClassifier';
+
   /// Creates a [PDClassifier].
   ///
-  /// [validIdvIssuers] is the list of DID strings that are trusted IDV
-  /// issuers. A descriptor is routed to [PDRequirements.idvDescriptors] only
-  /// when its extracted issuer appears in this list.
-  const PDClassifier({required this.validIdvIssuers});
+  /// - [validIdvIssuers] (required) - list of DID strings that are trusted IDV
+  ///   issuers. A descriptor is routed to [PDRequirements.idvDescriptors] only
+  ///   when its extracted issuer appears in this list.
+  /// - [logger] - optional [Logger] instance; defaults to [Logger.instance].
+  PDClassifier({required this.validIdvIssuers, Logger? logger})
+    : _logger = logger ?? Logger.instance;
 
   /// Trusted IDV issuer DIDs.
   final List<String> validIdvIssuers;
@@ -105,8 +110,6 @@ class PDClassifier {
       purpose: purpose,
     );
 
-    var hasInvalidIdvPd = false;
-
     requirements = rawDescriptors
         .map((d) {
           if (d is! Map<String, dynamic>) {
@@ -124,21 +127,10 @@ class PDClassifier {
           return _extractRequestedType(d);
         })
         .map(_computeRequiredDataPoints)
-        .fold(requirements, (result, requiredDataPoints) {
-          final (updated, invalidIdv) = _classifyDescriptor(
-            result,
-            requiredDataPoints,
-          );
-          if (invalidIdv) hasInvalidIdvPd = true;
-          return updated;
-        });
-
-    if (hasInvalidIdvPd) {
-      _throw(
-        'Multiple IDV types in a single descriptor are not supported.',
-        TdkExceptionType.unsupportedMultipleIdvTypes.code,
-      );
-    }
+        .fold(
+          requirements,
+          _classifyDescriptor,
+        );
 
     return PDRequirements(
       claimedDescriptors: List.unmodifiable(requirements.claimedDescriptors),
@@ -159,9 +151,11 @@ class PDClassifier {
   /// Routes a single [requiredDataPoints] result into the appropriate
   /// bucket of [result].
   ///
-  /// Returns `(updatedResult, hasInvalidIdv)` where `hasInvalidIdv` is `true`
-  /// when the descriptor is an IDV type that requested more than two types.
-  (PDRequirements, bool) _classifyDescriptor(
+  /// Throws a [TdkException] with code
+  /// [TdkExceptionType.unsupportedMultipleIdvTypes] immediately when an IDV
+  /// descriptor requests more than two types, rather than deferring the error
+  /// to the end of classification.
+  PDRequirements _classifyDescriptor(
     PDRequirements result,
     _PdParserTmpResult requiredDataPoints,
   ) {
@@ -178,7 +172,7 @@ class PDClassifier {
       if (requiredDataPoints.types.isNotEmpty) {
         result.zeroPartyVCs.add(requiredDataPoints.types.first);
       }
-      return (result, false);
+      return result;
     }
 
     if (linkedZpdPaths.isNotEmpty) {
@@ -186,23 +180,28 @@ class PDClassifier {
         PDDescriptor(data: requiredDataPoints.inputDescriptor),
       );
       result.dataPoints.addAll(linkedZpdPaths);
-      return (result, false);
+      return result;
     }
 
     if (isIdv) {
-      final hasInvalidIdv = requiredDataPoints.types.length > 2;
+      if (requiredDataPoints.types.length > 2) {
+        _throw(
+          'Multiple IDV types in a single descriptor are not supported.',
+          TdkExceptionType.unsupportedMultipleIdvTypes.code,
+        );
+      }
       result.idvDescriptors.add(
         PDDescriptor(data: requiredDataPoints.inputDescriptor),
       );
       final idvInfo = _buildIdvInfo(requiredDataPoints);
       if (idvInfo != null) result = result.copyWith(idvInfo: idvInfo);
-      return (result, hasInvalidIdv);
+      return result;
     }
 
     result.claimedDescriptors.add(
       PDDescriptor(data: requiredDataPoints.inputDescriptor),
     );
-    return (result, false);
+    return result;
   }
 
   /// Builds a [VerifiedIdentityDocumentInfo] from an IDV descriptor result.
@@ -350,9 +349,9 @@ class PDClassifier {
   List<String> _getLinkedZpdPaths(_PdParserTmpResult requiredDataPoints) {
     if (requiredDataPoints.types.isEmpty) return const [];
     if (requiredDataPoints.types.length > 1) {
-      Logger.instance.warning(
+      _logger.warning(
         'ZPD-linked VC lookup called with multiple types — skipping.',
-        component: 'PDClassifier',
+        component: _componentName,
       );
       return const [];
     }
@@ -366,9 +365,9 @@ class PDClassifier {
       final parsed = RequestPurpose.fromJson(rawPurpose);
       return parsed.isValid ? parsed : null;
     } catch (e) {
-      Logger.instance.warning(
+      _logger.warning(
         'Failed to parse PD purpose: $e',
-        component: 'PDClassifier',
+        component: _componentName,
       );
       return null;
     }

@@ -72,7 +72,7 @@ void main() {
   late PDClassifier classifier;
 
   setUp(() {
-    classifier = const PDClassifier(validIdvIssuers: [_trustedIssuer]);
+    classifier = PDClassifier(validIdvIssuers: [_trustedIssuer]);
   });
 
   // ── Invalid PD structure ──────────────────────────────────────────────────
