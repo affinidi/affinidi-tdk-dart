@@ -222,6 +222,26 @@ void main() {
         ),
       );
     });
+
+    test('should throw when two descriptors share the same id', () {
+      expect(
+        () => classifier.classify({
+          'input_descriptors': [
+            {'id': 'dup'},
+            {'id': 'dup'},
+          ],
+        }),
+        throwsA(
+          isA<TdkException>()
+              .having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.invalidPresentationDefinition.code,
+              )
+              .having((e) => e.message, 'message', contains('dup')),
+        ),
+      );
+    });
   });
 
   // ── Claimed VCs ───────────────────────────────────────────────────────────

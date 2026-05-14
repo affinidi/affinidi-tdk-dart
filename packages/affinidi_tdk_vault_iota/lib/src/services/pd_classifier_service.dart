@@ -110,6 +110,8 @@ class PDClassifier {
       purpose: purpose,
     );
 
+    final seenIds = <String>{};
+
     requirements = rawDescriptors
         .map((d) {
           if (d is! Map<String, dynamic>) {
@@ -121,6 +123,13 @@ class PDClassifier {
           if (d['id'] is! String) {
             _throw(
               'Each input_descriptors entry must have a string "id" field.',
+              TdkExceptionType.invalidPresentationDefinition.code,
+            );
+          }
+          final id = d['id'] as String;
+          if (!seenIds.add(id)) {
+            _throw(
+              'Duplicate input_descriptor id: "$id".',
               TdkExceptionType.invalidPresentationDefinition.code,
             );
           }
