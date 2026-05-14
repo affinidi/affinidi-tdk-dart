@@ -172,9 +172,10 @@ class ShareRequirementsMatcher {
         continue;
       }
 
-      if (_revocationVerifier != null && vc is ParsedVerifiableCredential) {
+      final verifier = _revocationVerifier;
+      if (verifier != null && vc is ParsedVerifiableCredential) {
         try {
-          final result = await _revocationVerifier.verify(vc);
+          final result = await verifier.verify(vc);
           if (result.errors.isNotEmpty) {
             revoked.add(
               VcUnavailable(
