@@ -117,8 +117,9 @@ abstract final class PexEvaluator {
   /// - `{pattern: "regex"}` — list/string matches the regex
   /// - `{type: "string"}` alone — passes without further checks
   ///
-  /// Returns `true` when [value] matches [filter], or when the filter shape
-  /// is not recognised.
+  /// Returns `true` when [value] matches a supported [filter]. Unsupported
+  /// filter shapes return `false`, except `{type: ...}` by itself, which is
+  /// treated as a no-op and returns `true`.
   static bool _matchesFilter(dynamic value, Map<String, dynamic> filter) {
     final contains = filter['contains'];
     if (contains is Map<String, dynamic>) {
