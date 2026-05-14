@@ -22,7 +22,7 @@ class ClaimedCredentialsResult {
 
   /// The recommended set of credentials to share — up to the maximum allowed
   /// per group, across all descriptor groups.
-  List<VerifiableCredential> get maximumRecommendedVCs => vcsGroups.values
+  List<VerifiableCredential> get recommendedMaximumVCs => vcsGroups.values
       .expand((group) => group.recommendedMaximumVCs)
       .map((a) => a.vc)
       .toList();

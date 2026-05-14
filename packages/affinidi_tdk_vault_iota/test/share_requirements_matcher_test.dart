@@ -311,9 +311,9 @@ void main() {
     });
   });
 
-  // ── maximumRecommendedVCs ─────────────────────────────────────────────────
+  // ── recommendedMaximumVCs ─────────────────────────────────────────────────
 
-  group('maximumRecommendedVCs', () {
+  group('recommendedMaximumVCs', () {
     test(
       'should return up to maximumVCsCountToShare from each group',
       () async {
@@ -335,8 +335,8 @@ void main() {
           },
         );
         final result = await matcher.match(req, [vc1, vc2]);
-
-        expect(result.maximumRecommendedVCs, hasLength(1));
+c
+        expect(result.recommendedMaximumVCs, hasLength(1));
       },
     );
   });
