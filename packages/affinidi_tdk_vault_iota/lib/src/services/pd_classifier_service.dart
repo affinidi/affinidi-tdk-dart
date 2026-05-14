@@ -136,10 +136,7 @@ class PDClassifier {
           return _extractRequestedType(d);
         })
         .map(_computeRequiredDataPoints)
-        .fold(
-          requirements,
-          _classifyDescriptor,
-        );
+        .fold(requirements, _classifyDescriptor);
 
     return PDRequirements(
       claimedDescriptors: List.unmodifiable(requirements.claimedDescriptors),

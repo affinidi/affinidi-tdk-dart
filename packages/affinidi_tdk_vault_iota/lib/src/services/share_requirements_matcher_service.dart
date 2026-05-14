@@ -39,8 +39,8 @@ class ShareRequirementsMatcher {
   ShareRequirementsMatcher({
     RevocationList2020Verifier? revocationVerifier,
     Logger? logger,
-  })  : _revocationVerifier = revocationVerifier,
-        _logger = logger ?? Logger.instance;
+  }) : _revocationVerifier = revocationVerifier,
+       _logger = logger ?? Logger.instance;
 
   /// Matches [allVCs] against each claimed and IDV descriptor in
   /// [requirements] and returns an availability breakdown per descriptor.
@@ -83,8 +83,12 @@ class ShareRequirementsMatcher {
         );
 
         if (matchedVCs.isEmpty) {
-          vcsGroups[descriptor] = const VCsGroupByType(
-            matchedVCs: [VcUnavailable(reason: VcUnavailabilityReason.missing)],
+          vcsGroups[descriptor] = VCsGroupByType(
+            minimumVCsCountToShare: submissionReq?.minimumVCsCountToShare ?? 1,
+            maximumVCsCountToShare: submissionReq?.maximumVCsCountToShare ?? 1,
+            matchedVCs: const [
+              VcUnavailable(reason: VcUnavailabilityReason.missing),
+            ],
           );
           continue;
         }
@@ -96,8 +100,12 @@ class ShareRequirementsMatcher {
           stackTrace: stack,
           component: _componentName,
         );
-        vcsGroups[descriptor] = const VCsGroupByType(
-          matchedVCs: [VcUnavailable(reason: VcUnavailabilityReason.unknown)],
+        vcsGroups[descriptor] = VCsGroupByType(
+          minimumVCsCountToShare: submissionReq?.minimumVCsCountToShare ?? 1,
+          maximumVCsCountToShare: submissionReq?.maximumVCsCountToShare ?? 1,
+          matchedVCs: const [
+            VcUnavailable(reason: VcUnavailabilityReason.unknown),
+          ],
         );
       }
     }
@@ -155,7 +163,10 @@ class ShareRequirementsMatcher {
     for (final vc in sorted) {
       if (vc.validUntil != null && vc.validUntil!.isBefore(now)) {
         expired.add(
-          VcUnavailable(reason: VcUnavailabilityReason.expired, bestMatchVc: vc),
+          VcUnavailable(
+            reason: VcUnavailabilityReason.expired,
+            bestMatchVc: vc,
+          ),
         );
         continue;
       }
