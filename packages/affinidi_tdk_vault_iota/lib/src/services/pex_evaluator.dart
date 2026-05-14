@@ -30,19 +30,21 @@ abstract final class PexEvaluator {
 
     // Compile each field's JSON Schema filter once, before iterating over VCs.
     final compiledFields = _compileFields(fields);
-    return allVCs.where((vc) => _matchesAllFields(vc, compiledFields)).toList();
+
+    return allVCs.where((vc) {
+      try {
+        return _matchesAllFields(vc, compiledFields);
+      } on Object {
+        return false;
+      }
+    }).toList();
   }
 
   /// Parses and compiles each entry in [fields] into a
   /// `(paths, schema)` record.
   ///
   /// Throws a [StateError] for any entry that is not a JSON object — this
-  /// indicates a malformed PD that [PDClassifier] should have rejected.
-  ///
-  /// If a `filter` value cannot be compiled into a valid [JsonSchema], that
-  /// field is recorded with empty `paths` so it is treated as permanently
-  /// non-matching. This prevents one malformed filter from invalidating the
-  /// entire descriptor.
+  /// indicates a malformed PD that [PDClassifier] should have rejected.s
   static List<({List<String> paths, JsonSchema? schema})> _compileFields(
     List<dynamic> fields,
   ) {
@@ -55,10 +57,15 @@ abstract final class PexEvaluator {
         );
       }
       final paths =
-          (field['path'] as List?)?.cast<String>() ?? const <String>[];
-      final rawFilter = field['filter'] as Map<String, dynamic>?;
+          (field['path'] as List?)?.whereType<String>().toList() ??
+          const <String>[];
+      final rawFilter = field['filter'];
       if (rawFilter == null) {
         return (paths: paths, schema: null);
+      }
+      if (rawFilter is! Map<String, dynamic>) {
+        // filter is present but not a JSON object — treat as non-matching.
+        return (paths: const <String>[], schema: null);
       }
       try {
         return (paths: paths, schema: JsonSchema.create(rawFilter));
@@ -79,7 +86,7 @@ abstract final class PexEvaluator {
     );
   }
 
-  /// Returns `true` if [vcJson] satisfies the compiled [field] constraint.
+  /// Returns `true` if [vcJson] satisfies the compiled `field` constraint.
   ///
   /// A field is satisfied when at least one of its [paths] resolves to a
   /// non-null value that passes the optional [schema].
