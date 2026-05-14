@@ -194,7 +194,7 @@ void main() {
       'should record the descriptor as unknown rather than propagating',
       () async {
         final badVc = MockVerifiableCredential();
-        when(() => badVc.toJson()).thenThrow(Exception('VC evaluation failed'));
+        when(badVc.toJson).thenThrow(Exception('VC evaluation failed'));
 
         final req = _requirements([
           buildDescriptor(id: 'd1', type: 'UniversityDegree'),
