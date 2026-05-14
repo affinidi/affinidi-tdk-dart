@@ -335,7 +335,6 @@ void main() {
           },
         );
         final result = await matcher.match(req, [vc1, vc2]);
-c
         expect(result.recommendedMaximumVCs, hasLength(1));
       },
     );
