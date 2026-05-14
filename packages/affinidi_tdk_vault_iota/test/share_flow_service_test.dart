@@ -237,7 +237,7 @@ void main() {
 
     group('and the client_id_scheme is not `did`', () {
       test(
-        'should throw a TdkException with code invalid_or_expired_jwt',
+        'should throw a TdkException with code invalid_client_id_scheme',
         () async {
           when(
             () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
@@ -256,11 +256,17 @@ void main() {
           await expectLater(
             () => service.validateOid4vpRequest(uri),
             throwsA(
-              isA<TdkException>().having(
-                (e) => e.code,
-                'code',
-                TdkExceptionType.invalidOrExpiredJwt.code,
-              ),
+              isA<TdkException>()
+                  .having(
+                    (e) => e.code,
+                    'code',
+                    TdkExceptionType.invalidClientIdScheme.code,
+                  )
+                  .having(
+                    (e) => e.message,
+                    'message',
+                    contains('x509_san_dns'),
+                  ),
             ),
           );
         },
@@ -269,7 +275,7 @@ void main() {
 
     group('and the `aud` claim does not match the walletDid', () {
       test(
-        'should throw a TdkException with code invalid_or_expired_jwt',
+        'should throw a TdkException with code invalid_audience',
         () async {
           when(
             () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
@@ -289,12 +295,65 @@ void main() {
               walletDid: 'did:key:myWalletDid',
             ),
             throwsA(
-              isA<TdkException>().having(
-                (e) => e.code,
-                'code',
-                TdkExceptionType.invalidOrExpiredJwt.code,
-              ),
+              isA<TdkException>()
+                  .having(
+                    (e) => e.code,
+                    'code',
+                    TdkExceptionType.invalidAudience.code,
+                  )
+                  .having(
+                    (e) => e.message,
+                    'message',
+                    'JWT aud does not match the wallet DID.',
+                  ),
             ),
+          );
+        },
+      );
+
+      test(
+        'should not throw when walletDid is null (aud check skipped)',
+        () async {
+          when(
+            () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+          ).thenReturn(_baseDecodedPayload(aud: 'did:key:someOtherDid'));
+          when(
+            () => mockCryptography.verifyJwt(
+              jwtToken: any(named: 'jwtToken'),
+              didKey: any(named: 'didKey'),
+            ),
+          ).thenReturn(_validResult());
+
+          final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
+
+          await expectLater(
+            () => service.validateOid4vpRequest(uri),
+            completes,
+          );
+        },
+      );
+
+      test(
+        'should not throw when aud is absent (aud check skipped)',
+        () async {
+          when(
+            () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+          ).thenReturn(_baseDecodedPayload());
+          when(
+            () => mockCryptography.verifyJwt(
+              jwtToken: any(named: 'jwtToken'),
+              didKey: any(named: 'didKey'),
+            ),
+          ).thenReturn(_validResult());
+
+          final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
+
+          await expectLater(
+            () => service.validateOid4vpRequest(
+              uri,
+              walletDid: 'did:key:myWalletDid',
+            ),
+            completes,
           );
         },
       );

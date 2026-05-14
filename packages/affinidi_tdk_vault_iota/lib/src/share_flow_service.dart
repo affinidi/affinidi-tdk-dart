@@ -84,17 +84,31 @@ class ShareFlowService implements ShareFlowServiceInterface {
       jwtToken: jwtToken,
       didKey: payload.clientId,
     );
-    final isValidClientIdScheme = payload.clientIdScheme == _didScheme;
-    final isValidAud =
-        payload.aud == null || walletDid == null || payload.aud == walletDid;
-    if (!verifyResult.isValid ||
-        verifyResult.isExpired ||
-        !isValidClientIdScheme ||
-        !isValidAud) {
+    if (!verifyResult.isValid) {
       _throw(
-        'JWT is invalid or has expired.',
+        'JWT signature verification failed.',
         TdkExceptionType.invalidOrExpiredJwt,
         originalMessage: verifyResult.errorMessage,
+      );
+    }
+    if (verifyResult.isExpired) {
+      _throw(
+        'JWT has expired.',
+        TdkExceptionType.invalidOrExpiredJwt,
+        originalMessage: verifyResult.errorMessage,
+      );
+    }
+    if (payload.clientIdScheme != _didScheme) {
+      _throw(
+        "client_id_scheme must be '$_didScheme', "
+        'got: ${payload.clientIdScheme}.',
+        TdkExceptionType.invalidClientIdScheme,
+      );
+    }
+    if (payload.aud != null && walletDid != null && payload.aud != walletDid) {
+      _throw(
+        'JWT aud does not match the wallet DID.',
+        TdkExceptionType.invalidAudience,
       );
     }
 

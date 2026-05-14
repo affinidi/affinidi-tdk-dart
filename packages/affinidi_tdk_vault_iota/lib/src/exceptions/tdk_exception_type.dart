@@ -17,6 +17,12 @@ enum TdkExceptionType {
   /// Exception thrown when the `client_id` field is missing from the request.
   missingClientId('missing_client_id'),
 
+  /// Exception thrown when the `client_id_scheme` in the request is not `did`.
+  invalidClientIdScheme('invalid_client_id_scheme'),
+
+  /// Exception thrown when the JWT `aud` claim does not match the wallet DID.
+  invalidAudience('invalid_audience'),
+
   /// Exception thrown when the URI could not be parsed or a required field was missing.
   parseFailure('parse_failure'),
 
