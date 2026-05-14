@@ -10,6 +10,13 @@ import 'pd_classifier_constants.dart';
 import 'zero_party_vc_data_points.dart';
 import 'zpd_linked_vc_types.dart';
 
+part 'pd_parser.dart';
+
+/// Throws a [TdkException] with [message] and [code].
+/// Shared by [PDClassifier] and [PDParser] via the part mechanism.
+Never _throw(String message, String code) =>
+    throw TdkException(message: message, code: code);
+
 /// Intermediate parsing result for a single input descriptor.
 ///
 /// Produced by [PDClassifier._extractRequestedType] and consumed by
@@ -61,10 +68,6 @@ class PDClassifier {
 
   /// Trusted IDV issuer DIDs.
   final List<String> validIdvIssuers;
-
-  /// Throws a [TdkException] with [message] and [code].
-  static Never _throw(String message, String code) =>
-      throw TdkException(message: message, code: code);
 
   /// Classifies [pd] and returns a [PDRequirements] breakdown.
   ///
@@ -297,12 +300,12 @@ class PDClassifier {
 
       if (paths.contains(PdClassifierConstants.contextPath) &&
           filter[PdClassifierConstants.containsKey] is Map) {
-        context = _extractConstraint(filter);
+        context = PDParser.extractValue(filter);
       }
 
       if (paths.contains(PdClassifierConstants.typePath) &&
           filter[PdClassifierConstants.containsKey] is Map) {
-        types.add(_extractConstraint(filter));
+        types.add(PDParser.extractValue(filter));
       }
 
       final isIssuerPath =
@@ -313,7 +316,7 @@ class PDClassifier {
           filter[PdClassifierConstants.typeKey] == 'string' &&
           (filter.containsKey(PdClassifierConstants.patternKey) ||
               filter.containsKey(PdClassifierConstants.constKey))) {
-        issuer = _extractConstraint(filter);
+        issuer = PDParser.extractValue(filter);
       }
     }
 
@@ -354,77 +357,6 @@ class PDClassifier {
       return const [];
     }
     return ZpdLinkedVcTypes.byType[requiredDataPoints.types.first] ?? const [];
-  }
-
-  /// Extracts a string value from a PD filter map.
-  ///
-  /// Looks for `contains.pattern`, `contains.const`, `pattern`, or `const`
-  /// in that priority order. Strips `^` / `$` anchors from regex patterns.
-  String _extractConstraint(Map<String, dynamic> filter) {
-    final rawContains = filter[PdClassifierConstants.containsKey];
-
-    if (rawContains != null) {
-      if (rawContains is! Map<String, dynamic>) {
-        _throw(
-          'PD filter "contains" must be a JSON object.',
-          TdkExceptionType.invalidPresentationDefinition.code,
-        );
-      }
-      if (rawContains.containsKey(PdClassifierConstants.patternKey)) {
-        final value = rawContains[PdClassifierConstants.patternKey];
-        if (value is! String) {
-          _throw(
-            'PD filter "contains.pattern" must be a string.',
-            TdkExceptionType.invalidPresentationDefinition.code,
-          );
-        }
-        return _stripAnchors(value);
-      }
-      if (rawContains.containsKey(PdClassifierConstants.constKey)) {
-        final value = rawContains[PdClassifierConstants.constKey];
-        if (value is! String) {
-          _throw(
-            'PD filter "contains.const" must be a string.',
-            TdkExceptionType.invalidPresentationDefinition.code,
-          );
-        }
-        return value;
-      }
-    } else {
-      if (filter.containsKey(PdClassifierConstants.patternKey)) {
-        final value = filter[PdClassifierConstants.patternKey];
-        if (value is! String) {
-          _throw(
-            'PD filter "pattern" must be a string.',
-            TdkExceptionType.invalidPresentationDefinition.code,
-          );
-        }
-        return _stripAnchors(value);
-      }
-      if (filter.containsKey(PdClassifierConstants.constKey)) {
-        final value = filter[PdClassifierConstants.constKey];
-        if (value is! String) {
-          _throw(
-            'PD filter "const" must be a string.',
-            TdkExceptionType.invalidPresentationDefinition.code,
-          );
-        }
-        return value;
-      }
-    }
-
-    _throw(
-      'Could not extract constraint value from PD filter.',
-      TdkExceptionType.invalidPresentationDefinition.code,
-    );
-  }
-
-  /// Removes leading `^` and trailing `$` from a regex pattern string.
-  String _stripAnchors(String pattern) {
-    var result = pattern;
-    if (result.startsWith('^')) result = result.substring(1);
-    if (result.endsWith(r'$')) result = result.substring(0, result.length - 1);
-    return result;
   }
 
   /// Parses the `purpose` field of a PD (may be a JSON string or a map).
