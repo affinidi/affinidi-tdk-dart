@@ -11,6 +11,7 @@ resolution: workspace
 dependencies:
   affinidi_tdk_common: ^2.0.0
   affinidi_tdk_cryptography: ^3.0.0
+  json_schema: ^5.2.0
   ssi: ^3.3.0
 
 dev_dependencies:

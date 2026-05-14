@@ -512,23 +512,25 @@ void main() {
     );
   });
 
-  // ── Unrecognised filter operators ─────────────────────────────────────────
+  // ── JSON Schema filter evaluation ──────────────────────────────────────────
 
-  group('when a filter uses an unrecognised operator', () {
+  group('JSON Schema filter evaluation', () {
     Map<String, dynamic> descriptorWithFilter(
       String id,
-      Map<String, dynamic> filter,
-    ) => {
+      Map<String, dynamic> filter, {
+      String path = r'$.type',
+    }) => {
       'id': id,
       'constraints': {
         'fields': [
-          {'path': [r'$.type'], 'filter': filter},
+          {'path': [path], 'filter': filter},
         ],
       },
     };
 
-    test('should not match when the filter has an unsupported operator',
+    test('should not match when the value type does not match the schema type',
         () async {
+      // $.type resolves to a List; {type: 'string'} rejects non-strings.
       final vc = buildTestVc(type: 'UniversityDegree');
       final req = _requirements([
         descriptorWithFilter('d1', {
@@ -541,6 +543,29 @@ void main() {
       expect(result.vcsGroups.values.first.matchedVCs.first, isA<VcUnavailable>());
     });
 
+    test('should match when enum contains the resolved string value', () async {
+      final vc = buildTestVc(
+        type: 'UniversityDegree',
+        issuer: _trustedIssuer,
+      );
+      final req = _requirements([
+        descriptorWithFilter(
+          'd1',
+          {
+            'type': 'string',
+            'enum': [_trustedIssuer, _otherIssuer],
+          },
+          path: r'$.issuer',
+        ),
+      ]);
+      final result = await matcher.match(req, [vc]);
+
+      expect(
+        result.vcsGroups.values.first.matchedVCs.first,
+        isA<VcAvailable>(),
+      );
+    });
+
     test('should match when the filter has only a type annotation', () async {
       final vc = buildTestVc(type: 'UniversityDegree');
       final req = _requirements([
@@ -549,6 +574,24 @@ void main() {
       final result = await matcher.match(req, [vc]);
 
       expect(result.vcsGroups.values.first.matchedVCs.first, isA<VcAvailable>());
+    });
+
+    test('should match when contains+enum is used on an array value', () async {
+      final vc = buildTestVc(type: 'UniversityDegree');
+      final req = _requirements([
+        descriptorWithFilter('d1', {
+          'type': 'array',
+          'contains': {
+            'enum': ['UniversityDegree'],
+          },
+        }),
+      ]);
+      final result = await matcher.match(req, [vc]);
+
+      expect(
+        result.vcsGroups.values.first.matchedVCs.first,
+        isA<VcAvailable>(),
+      );
     });
   });
 }

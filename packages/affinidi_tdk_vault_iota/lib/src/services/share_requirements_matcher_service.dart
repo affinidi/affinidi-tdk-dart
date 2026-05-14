@@ -2,6 +2,7 @@
 library;
 
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:json_schema/json_schema.dart';
 import 'package:ssi/ssi.dart';
 
 import '../extensions/submission_requirements_extensions.dart';

@@ -5,11 +5,10 @@ part of 'share_requirements_matcher_service.dart';
 /// Evaluates Presentation Definition field constraints against a list of
 /// Verifiable Credentials.
 ///
-/// Supports the subset of PEX required for credential-type and issuer
-/// matching:
-/// - JSONPath: `$.type`, `$.issuer`, and any top-level field path
-/// - Filter shapes: `{const}`, `{pattern}`, `{contains: {const}}`,
-///   `{contains: {pattern}}`
+/// Supports:
+/// - JSONPath: `$.type`, `$.issuer`, and any dot-notation field path
+/// - Filter: any valid JSON Schema (Draft 7) — `const`, `enum`, `pattern`,
+///   `contains`, `minimum`, `maximum`, `format`, etc.
 abstract final class PexEvaluator {
   /// Returns the VCs from [allVCs] that satisfy all `constraints.fields` in
   /// [inputDescriptor].
@@ -32,7 +31,7 @@ abstract final class PexEvaluator {
     return allVCs.where((vc) => _matchesAllFields(vc, fields)).toList();
   }
 
-  /// Returns `true` if [vcJson] satisfies every constraint in [fields].
+  /// Returns `true` if `vcJson` satisfies every constraint in [fields].
   ///
   /// - [vc] (required) - the [VerifiableCredential] being tested.
   /// - [fields] (required) - list of `constraints.fields` objects from the
@@ -40,11 +39,9 @@ abstract final class PexEvaluator {
   ///
   /// Returns `true` when all fields are satisfied.
   ///
-  /// Throws a [StateError] if a `fields[]` entry is not a JSON object —
-  /// matching the fail-closed behaviour of the `@sphereon/pex` JS library,
-  /// which also rejects a VC when a field entry has no `path` property.
-  /// This case indicates a malformed PD that [PDClassifier] should have
-  /// rejected before evaluation reaches this point.
+  /// Throws a [StateError] if a `fields[]` entry is not a JSON object.
+  /// This indicates a malformed PD that [PDClassifier] should have rejected
+  /// before evaluation reaches this point.
   static bool _matchesAllFields(VerifiableCredential vc, List<dynamic> fields) {
     final vcJson = vc.toJson();
     return fields.every((field) {
@@ -108,101 +105,12 @@ abstract final class PexEvaluator {
   /// - [value] (required) - the resolved value from the VC JSON (may be a
   ///   `List`, `String`, `Map`, or other scalar).
   /// - [filter] (required) - the `filter` object from a
-  ///   `constraints.fields[]` entry.
+  ///   `constraints.fields[]` entry, which is a JSON Schema (Draft 7).
   ///
-  /// Supported filter shapes:
-  /// - `{contains: {const: "value"}}` — list/string contains the value
-  /// - `{contains: {pattern: "regex"}}` — list/string matches the regex
-  /// - `{const: "value"}` — list/string equals the value
-  /// - `{pattern: "regex"}` — list/string matches the regex
-  /// - `{type: "string"}` alone — passes without further checks
-  ///
-  /// Returns `true` when [value] matches a supported [filter]. Unsupported
-  /// filter shapes return `false`, except `{type: ...}` by itself, which is
-  /// treated as a no-op and returns `true`.
+  /// Validates using a full JSON Schema (Draft 7) evaluator for spec-correct
+  /// results across all supported keywords.
   static bool _matchesFilter(dynamic value, Map<String, dynamic> filter) {
-    final contains = filter['contains'];
-    if (contains is Map<String, dynamic>) {
-      final constValue = contains['const']?.toString();
-      final pattern = contains['pattern']?.toString();
-
-      if (constValue != null) {
-        return _listOrStringMatches(value, (s) => s == constValue);
-      }
-      if (pattern != null) {
-        return _matchesPattern(value, pattern);
-      }
-    }
-
-    final constValue = filter['const']?.toString();
-    if (constValue != null) {
-      return _listOrStringMatches(value, (s) => s == constValue);
-    }
-
-    final pattern = filter['pattern']?.toString();
-    if (pattern != null) {
-      return _matchesPattern(value, pattern);
-    }
-
-    final meaningfulKeys = filter.keys.where((k) => k != 'type').toSet();
-    return meaningfulKeys.isEmpty;
-  }
-
-  /// Compiles [pattern] into a [RegExp] and tests [value] against it.
-  ///
-  /// - [value] (required) - the resolved VC JSON value to test (may be a
-  ///   `List`, `String`, or other scalar).
-  /// - [pattern] (required) - the regex string from the filter object.
-  ///
-  /// Returns `false` when [pattern] is not a valid regular expression, rather
-  /// than propagating a [FormatException] that would be swallowed as
-  /// [VcUnavailabilityReason.unknown] by the outer error handler.
-  static bool _matchesPattern(dynamic value, String pattern) {
-    final RegExp regex;
-    try {
-      regex = RegExp(pattern);
-    } on FormatException {
-      return false;
-    }
-    return _listOrStringMatches(value, regex.hasMatch);
-  }
-
-  /// Applies [predicate] to each element of [value] when it is a [List], or
-  /// to the extracted string representation when [value] is a scalar.
-  ///
-  /// - [value] (required) - the resolved VC JSON value to test.
-  /// - [predicate] (required) - the string-level test to apply.
-  ///
-  /// Returns `true` if [predicate] holds for at least one element (or the
-  /// scalar itself).
-  static bool _listOrStringMatches(
-    dynamic value,
-    bool Function(String) predicate,
-  ) {
-    if (value is List) {
-      return value.any((e) {
-        final s = _toStringValue(e);
-        return s != null && predicate(s);
-      });
-    }
-    final s = _toStringValue(value);
-    return s != null && predicate(s);
-  }
-
-  /// Coerces [value] to a string for filter comparison.
-  ///
-  /// - [value] - the raw JSON value; may be `null`, a `String`, a
-  ///   `Map<String, dynamic>`, or any other scalar.
-  ///
-  /// Returns the string as-is, the `id` field for issuer-as-object shapes,
-  /// `value.toString()` for other scalars, or `null` when [value] is `null`.
-  static String? _toStringValue(dynamic value) {
-    if (value == null) return null;
-    if (value is String) return value;
-    if (value is Map<String, dynamic>) {
-      final id = value['id'];
-      if (id != null) return _toStringValue(id);
-    }
-    return value.toString();
+    final schema = JsonSchema.create(filter);
+    return schema.validate(value).isValid;
   }
 }
