@@ -1,3 +1,37 @@
+
+
+### Breaking Changes
+
+ - `VaultDataManagerServiceInterface.createProfile(...)` now performs the account-and-profile flow in a single call and returns `Response<CreateAccountWithProfileOK>`.
+ - `createProfile(...)` now requires `accountIndex`, `accountMetadata`, `profileDid`, `profileDidProof`, `profileKeyPair`, and `profileName`; `description` is now `profileDescription`.
+ - `createFolder(...)` now returns the created folder node id.
+ - `VfsProfileRepository.createProfile(...)` now returns the created `Profile`.
+ - `VaultDataManagerApiServiceInterface.getListOfProfiles(...)` now returns `Response<ListProfilesOK>` instead of `Response<ListRootNodeChildrenOK>` so account and profile metadata can be read from a single response.
+ - `VaultDataManagerProfile` now requires `accountIndex` and may include `accountMetadata`, so existing mocks, fixtures, and consumers must be updated for the expanded model shape.
+ - Configuration error checks must use `profile_not_configured` instead of the previous misspelled value.
+
+### Added
+
+ - Added `patchAccount(...)` to update shared storage account metadata without rewriting the full account payload.
+ - Profile reconstruction from the profiles endpoint now carries `accountIndex` and optional `accountMetadata` through to `VaultDataManagerProfile`.
+
+### Changed
+
+ - Profile and account metadata are now read from `getListOfProfiles(...)` in a single response instead of separate lookups.
+ - Shared access acceptance now patches account shared policies through the new backend endpoint, reducing network calls and returning an updated `Profile` immediately.
+ - Incomplete VFS profiles without a usable encrypted DEKEK are skipped with warning logs instead of failing the full `listProfiles()` call.
+ - HTTP clients are split and reused for auth, VFS, file, and public key traffic; connection idle timeout is increased to 30 seconds; encryption service initialization is lazy; and download connections disable persistent connections to reduce latency and stale-connection failures.
+ - Folder creation now uses the API response node id instead of a secondary lookup.
+
+### Migration
+
+ - Update direct calls, mocks, and custom implementations of `VaultDataManagerServiceInterface.createProfile(...)` to provide account metadata and profile crypto material.
+ - Update direct calls, mocks, and custom implementations of `VaultDataManagerApiServiceInterface.getListOfProfiles(...)` to expect `Response<ListProfilesOK>`.
+ - Update custom mocks, fixtures, and code paths that construct `VaultDataManagerProfile` to include `accountIndex` and handle optional `accountMetadata`.
+ - Capture the returned folder node id from `createFolder(...)` instead of doing a follow-up lookup.
+ - Rename any `profle_not_configured` checks to `profile_not_configured`.
+ - If you implement or mock `VfsProfileRepository` through `ProfileRepository`, return a `Profile` from `createProfile(...)`.
+
 ## 2.0.9
 
  - Update a dependency to the latest release.
@@ -33,8 +67,6 @@
 ## 2.0.1
 
  - **FIX**: remove call to list profiles while creating a new profile (#59).
-
-# Change Log
 
 ## 2.0.0
 
