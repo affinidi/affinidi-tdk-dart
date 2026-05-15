@@ -162,15 +162,8 @@ class Environment {
 
   /// Helper to get environment type from environment variable with prod as default
   static EnvironmentType _getEnvironmentTypeFromVariable() {
-    return EnvironmentType.values.firstWhere(
-      (e) =>
-          e.value ==
-          const String.fromEnvironment(
-            enviromentVariableName,
-            defaultValue: 'prod',
-          ),
-      orElse: () => EnvironmentType.prod,
-    );
+    // hardcode to dev for testing new endpoints migration
+    return EnvironmentType.dev;
   }
 
   /// Fetches the current environment based on the provided environment variable.
