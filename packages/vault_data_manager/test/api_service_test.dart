@@ -456,6 +456,22 @@ void main() {
 
       expect(result.data, equals(Uint8List.fromList([1, 2, 3])));
     });
+
+    test('it disables persistent connections for downloads', () async {
+      final fileClient = MockDio();
+      final service = VaultDataManagerApiService(
+        apiClient: AffinidiTdkVaultDataManagerClient(dio: client),
+        fileClient: fileClient,
+        publicKeyClient: vfsDio,
+      );
+
+      final result = await service.downloadNodeContents(
+        downloadUrl: TestDataFixtures.downloadUrl,
+        dek: Uint8List.fromList(TestDataFixtures.testDek),
+      );
+
+      expect(result.requestOptions.persistentConnection, isFalse);
+    });
   });
 
   group('When getting profile template', () {
