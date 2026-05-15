@@ -698,6 +698,7 @@ class VaultDataManagerApiService
           method: 'GET',
           baseUrl: downloadUrl,
           responseType: ResponseType.bytes,
+          persistentConnection: false,
           cancelToken: cancelToken,
           onReceiveProgress: onReceiveProgress?.toProgressCallback(),
           headers: {
