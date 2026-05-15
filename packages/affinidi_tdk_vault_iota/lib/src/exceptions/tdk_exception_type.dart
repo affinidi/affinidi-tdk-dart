@@ -33,7 +33,8 @@ enum TdkExceptionType {
   /// types (i.e. more than `VerifiedIdsentityDocument` + one specific subtype).
   unsupportedMultipleIdvTypes('unsupported_multiple_idv_types'),
 
-  /// Thrown when submitting the VP to the verifier callback fails.
+  /// Thrown when submitting the VP to the verifier callback fails — e.g.
+  /// network error, invalid state token, or a non-2xx response.
   submissionFailed('submission_failed');
 
   /// Creates a new instance of [TdkExceptionType].
