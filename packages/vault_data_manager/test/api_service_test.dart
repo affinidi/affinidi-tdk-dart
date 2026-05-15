@@ -9,7 +9,6 @@ import 'package:affinidi_tdk_vault_data_manager/src/dto/error_response.dart';
 import 'package:affinidi_tdk_vault_data_manager/src/exceptions/tdk_exception_type.dart';
 import 'package:affinidi_tdk_vault_data_manager/src/extensions/tdk_exception_extension.dart';
 import 'package:affinidi_tdk_vault_data_manager/src/helpers/retry_helper.dart';
-import 'package:affinidi_tdk_vault_data_manager/src/services/public_key_client.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/affinidi_tdk_vault_data_manager_client.dart';
 import 'package:dio/dio.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
@@ -38,12 +37,10 @@ void main() {
     dioAdapter = DioAdapterFixtures.adapter(client);
     uploadDioAdapter = DioAdapterFixtures.adapter(uploadDio);
     vfsDioAdapter = DioAdapterFixtures.adapter(vfsDio);
-    vfsDio = PublicKeyClient.createConfiguredDio(dio: vfsDio);
     client.options.baseUrl = '';
     vfsDio.options.baseUrl = '';
     (uploadDio as MockDio).setShouldThrowError(false);
     (uploadDio as MockDio).setS3ErrorXml('');
-    await PublicKeyClient.clearCache(vfsDio);
     vaultDataManagerApiService = VaultDataManagerApiService(
       apiClient: AffinidiTdkVaultDataManagerClient(dio: client),
       fileClient: uploadDio,
@@ -55,7 +52,6 @@ void main() {
     dioAdapter.reset();
     uploadDioAdapter.reset();
     vfsDioAdapter.reset();
-    await PublicKeyClient.clearCache(vfsDio);
   });
 
   group('When retrieving list of profiles', () {
@@ -616,95 +612,21 @@ void main() {
       expect(result['kid'], equals(TestDataFixtures.testKid));
     });
 
-    test('it reuses a cached key while the TTL is valid', () async {
-      var requestCount = 0;
-      final service = VaultDataManagerApiService(
-        apiClient: AffinidiTdkVaultDataManagerClient(dio: client),
-        fileClient: uploadDio,
-        publicKeyClient: vfsDio,
-      );
-
-      vfsDioAdapter.onGet(TestDataFixtures.jwksUrl, (server) {
-        requestCount++;
-        server.reply(200, {
-          'keys': [
-            {
-              'kty': 'RSA',
-              'kid': TestDataFixtures.testKid,
-              'use': 'sig',
-              'n': 'test-n',
-              'e': 'AQAB',
-            },
-          ],
-        });
-      });
-
-      final first = await service.getVaultDataManagerPublicKey();
-      final second = await service.getVaultDataManagerPublicKey();
-
-      expect(first['kid'], equals(TestDataFixtures.testKid));
-      expect(second['kid'], equals(TestDataFixtures.testKid));
-      expect(requestCount, equals(1));
-    });
-
-    test('it coalesces concurrent requests for the same key', () async {
-      var requestCount = 0;
-      final service = VaultDataManagerApiService(
-        apiClient: AffinidiTdkVaultDataManagerClient(dio: client),
-        fileClient: uploadDio,
-        publicKeyClient: vfsDio,
-      );
-
-      vfsDioAdapter.onGet(
-        TestDataFixtures.jwksUrl,
-        (server) => server.replyCallback(200, (request) {
-          requestCount++;
-          return {
-            'keys': [
-              {
-                'kty': 'RSA',
-                'kid': TestDataFixtures.testKid,
-                'use': 'sig',
-                'n': 'test-n',
-                'e': 'AQAB',
-              },
-            ],
-          };
-        }),
-      );
-
-      final results = await Future.wait([
-        service.getVaultDataManagerPublicKey(),
-        service.getVaultDataManagerPublicKey(),
-        service.getVaultDataManagerPublicKey(),
-      ]);
-
-      expect(results[0]['kid'], equals(TestDataFixtures.testKid));
-      expect(results[1]['kid'], equals(TestDataFixtures.testKid));
-      expect(results[2]['kid'], equals(TestDataFixtures.testKid));
-      expect(requestCount, equals(1));
-    });
-
     test(
-      'it revalidates a stale key with If-None-Match and reuses the cached body on 304',
+      'it refetches the key on sequential lookups without validators',
       () async {
-        const etag = '"jwks-etag"';
-        String? ifNoneMatchHeader;
-        final stalePublicKeyClient = PublicKeyClient.createConfiguredDio(
-          dio: vfsDio,
-          cacheTtl: Duration.zero,
-        );
+        var requestCount = 0;
         final service = VaultDataManagerApiService(
           apiClient: AffinidiTdkVaultDataManagerClient(dio: client),
           fileClient: uploadDio,
-          publicKeyClient: stalePublicKeyClient,
+          publicKeyClient: vfsDio,
         );
 
         vfsDioAdapter.onGet(
           TestDataFixtures.jwksUrl,
-          (server) => server.reply(
-            200,
-            {
+          (server) => server.replyCallback(200, (request) {
+            requestCount++;
+            return {
               'keys': [
                 {
                   'kty': 'RSA',
@@ -714,131 +636,40 @@ void main() {
                   'e': 'AQAB',
                 },
               ],
-            },
-            headers: {
-              Headers.contentTypeHeader: [Headers.jsonContentType],
-              'etag': [etag],
-            },
-          ),
+            };
+          }),
         );
 
         final first = await service.getVaultDataManagerPublicKey();
-
-        vfsDioAdapter.reset();
-        vfsDioAdapter.onGet(
-          TestDataFixtures.jwksUrl,
-          (server) => server.replyCallback(
-            304,
-            (request) {
-              ifNoneMatchHeader = request.headers['if-none-match'] as String?;
-              return '';
-            },
-            headers: {
-              Headers.contentTypeHeader: [Headers.jsonContentType],
-              'etag': [etag],
-            },
-          ),
-        );
-
         final second = await service.getVaultDataManagerPublicKey();
 
         expect(first['kid'], equals(TestDataFixtures.testKid));
         expect(second['kid'], equals(TestDataFixtures.testKid));
-        expect(ifNoneMatchHeader, equals(etag));
+        expect(requestCount, equals(2));
       },
     );
 
-    test('it refetches the key once the TTL expires', () async {
-      var requestCount = 0;
-      final stalePublicKeyClient = PublicKeyClient.createConfiguredDio(
-        dio: vfsDio,
-        cacheTtl: Duration.zero,
-      );
-      final service = VaultDataManagerApiService(
-        apiClient: AffinidiTdkVaultDataManagerClient(dio: client),
-        fileClient: uploadDio,
-        publicKeyClient: stalePublicKeyClient,
-      );
-
-      vfsDioAdapter.onGet(
-        TestDataFixtures.jwksUrl,
-        (server) => server.replyCallback(200, (request) {
-          requestCount++;
-          return {
-            'keys': [
-              {
-                'kty': 'RSA',
-                'kid': 'kid-$requestCount',
-                'use': 'sig',
-                'n': 'test-n-$requestCount',
-                'e': 'AQAB',
-              },
-            ],
-          };
-        }),
-      );
-
-      final first = await service.getVaultDataManagerPublicKey();
-      final second = await service.getVaultDataManagerPublicKey();
-
-      expect(first['kid'], equals('kid-1'));
-      expect(second['kid'], equals('kid-2'));
-      expect(requestCount, equals(2));
-    });
-
     test(
-      'it evicts the least recently used key when max size is exceeded',
+      'it refetches the key on sequential lookups when validators are absent',
       () async {
-        var firstUrlRequests = 0;
-        var secondUrlRequests = 0;
-        final firstUrl = 'https://first.example.com';
-        final secondUrl = 'https://second.example.com';
-
-        final boundedPublicKeyClient = PublicKeyClient.createConfiguredDio(
-          dio: vfsDio,
-          cacheMaxEntries: 1,
-        );
-        final firstService = VaultDataManagerApiService(
+        var requestCount = 0;
+        final service = VaultDataManagerApiService(
           apiClient: AffinidiTdkVaultDataManagerClient(dio: client),
           fileClient: uploadDio,
-          publicKeyClient: boundedPublicKeyClient,
-          publicKeyBaseUrlResolver: () => firstUrl,
-        );
-        final secondService = VaultDataManagerApiService(
-          apiClient: AffinidiTdkVaultDataManagerClient(dio: client),
-          fileClient: uploadDio,
-          publicKeyClient: boundedPublicKeyClient,
-          publicKeyBaseUrlResolver: () => secondUrl,
+          publicKeyClient: vfsDio,
         );
 
         vfsDioAdapter.onGet(
-          '$firstUrl/vfs/.well-known/jwks.json',
+          TestDataFixtures.jwksUrl,
           (server) => server.replyCallback(200, (request) {
-            firstUrlRequests++;
+            requestCount++;
             return {
               'keys': [
                 {
                   'kty': 'RSA',
-                  'kid': 'first-$firstUrlRequests',
+                  'kid': 'kid-$requestCount',
                   'use': 'sig',
-                  'n': 'first-n',
-                  'e': 'AQAB',
-                },
-              ],
-            };
-          }),
-        );
-        vfsDioAdapter.onGet(
-          '$secondUrl/vfs/.well-known/jwks.json',
-          (server) => server.replyCallback(200, (request) {
-            secondUrlRequests++;
-            return {
-              'keys': [
-                {
-                  'kty': 'RSA',
-                  'kid': 'second-$secondUrlRequests',
-                  'use': 'sig',
-                  'n': 'second-n',
+                  'n': 'test-n-$requestCount',
                   'e': 'AQAB',
                 },
               ],
@@ -846,13 +677,12 @@ void main() {
           }),
         );
 
-        await firstService.getVaultDataManagerPublicKey();
-        await secondService.getVaultDataManagerPublicKey();
-        final firstAgain = await firstService.getVaultDataManagerPublicKey();
+        final first = await service.getVaultDataManagerPublicKey();
+        final second = await service.getVaultDataManagerPublicKey();
 
-        expect(firstAgain['kid'], equals('first-2'));
-        expect(firstUrlRequests, equals(2));
-        expect(secondUrlRequests, equals(1));
+        expect(first['kid'], equals('kid-1'));
+        expect(second['kid'], equals('kid-2'));
+        expect(requestCount, equals(2));
       },
     );
   });
