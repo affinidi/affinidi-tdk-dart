@@ -6,6 +6,26 @@ For detailed change histories and complete release notes for a specific client o
 
 ---
 
+## 2026‑05‑15
+
+### Breaking Changes
+
+- `affinidi_tdk_vault`, `affinidi_tdk_vault_data_manager`, `affinidi_tdk_vault_edge_provider`, and `affinidi_tdk_vault_edge_drift_provider` now expose profile creation and shared access APIs that return created or refreshed objects instead of `void`. See the package changelogs for migration steps.
+- VFS profile provisioning now uses the combined account-and-profile flow, and configuration error checks now use the corrected `profile_not_configured` code.
+
+### Added
+
+- Added targeted Vault lookup APIs for profile retrieval, shared storage lookup by owner profile id, and per-profile storage usage checks.
+- Added account patching support in Vault Data Manager so shared storage metadata can be updated without rewriting the full account payload.
+- Folder creation APIs now return the created node id.
+
+### Changed
+
+- Reduced Vault and VFS latency by reusing dedicated auth, file, and public key HTTP connections, increasing idle timeouts, lazily initializing encryption material, and disabling persistent connections for download flows where it improves stability.
+- Shared profile and shared item acceptance flows now return an updated `Profile`, so shared storage state is immediately available to callers.
+- VFS profile listing is more resilient: incomplete profiles are skipped with warning logs instead of failing the full listing operation.
+- Folder creation now uses the backend-returned node id, fixing folder creation flows that previously depended on follow-up lookups.
+
 ## 2026‑02‑19
 
 ### Breaking Changes
