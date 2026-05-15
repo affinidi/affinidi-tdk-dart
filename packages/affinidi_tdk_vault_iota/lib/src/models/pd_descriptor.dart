@@ -29,6 +29,28 @@ class PDDescriptor {
   /// A description of this input descriptor, if present.
   String? get description => _data['description'] as String?;
 
+  /// The group this descriptor belongs to, if any.
+  ///
+  /// The PEX `group` field may be a [List] or a plain [String]. Returns the
+  /// first (or only) value, or `null` when absent.
+  String? get groupName {
+    final raw = _data['group'];
+    if (raw is List && raw.isNotEmpty) return raw.first.toString();
+    if (raw is String && raw.isNotEmpty) return raw;
+    return null;
+  }
+
+  /// Two [PDDescriptor]s are equal when their [id]s match.
+  ///
+  /// The `id` field is required and unique per the PEX spec, making it the
+  /// canonical identity of a descriptor. This allows [PDDescriptor] to be
+  /// used safely as a [Map] key even when reconstructed from JSON.
+  @override
+  bool operator ==(Object other) => other is PDDescriptor && other.id == id;
+
+  @override
+  int get hashCode => id.hashCode;
+
   @override
   String toString() => jsonEncode(_data);
 }
