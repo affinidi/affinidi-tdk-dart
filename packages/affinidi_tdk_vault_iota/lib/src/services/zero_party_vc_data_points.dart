@@ -8,8 +8,7 @@ import '../models/pd_requirements.dart';
 /// are added to [PDRequirements.dataPoints] and the type is added to
 /// [PDRequirements.zeroPartyVCs].
 abstract final class ZeroPartyVcDataPoints {
-  // Profile path constants — resolved from
-  // `packages/domain/lib/model/profile/profile.dart`
+   // Profile JSONPath constants used by the zero-party VC type mapping below.
   static const _givenName = r'$.person.properties.givenName';
   static const _familyName = r'$.person.properties.familyName';
   static const _middleName = r'$.person.properties.middleName';
