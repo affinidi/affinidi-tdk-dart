@@ -24,7 +24,6 @@ import '../model/recognized_profile_data.dart';
 import '../model/scanned_file.dart';
 import '../model/vault_consumption.dart';
 import '../model/vault_data_manager_profile.dart';
-import 'public_key_client.dart';
 import 'vault_data_manager_api_service.dart';
 import 'vault_data_manager_api_service_interface.dart';
 import 'vault_data_manager_encryption_service.dart';
@@ -40,8 +39,6 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
 
   final Future<VaultDataManagerEncryptionServiceInterface> Function()?
   _vaultDataManagerEncryptionServiceFactory;
-  Future<VaultDataManagerEncryptionServiceInterface>?
-  _vaultDataManagerEncryptionServiceFuture;
 
   /// Service for API operations with the vault
   late final VaultDataManagerApiServiceInterface _vaultDataManagerApiService;
@@ -104,7 +101,7 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
          keyPair: keyPair,
        );
 
-  static final _publicKeyClient = PublicKeyClient.createConfiguredDio();
+  static final _publicKeyClient = _makeConfiguredDio();
   static final _fileClient = _makeConfiguredDio();
   static final _authClient = _makeConfiguredDio();
 
@@ -202,13 +199,9 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   Future<VaultDataManagerEncryptionServiceInterface>
   _getVaultDataManagerEncryptionService() {
     final encryptionService = _vaultDataManagerEncryptionService;
-    if (encryptionService != null) {
+    if (encryptionService != null &&
+        _vaultDataManagerEncryptionServiceFactory == null) {
       return Future.value(encryptionService);
-    }
-
-    final inFlightInitialization = _vaultDataManagerEncryptionServiceFuture;
-    if (inFlightInitialization != null) {
-      return inFlightInitialization;
     }
 
     final encryptionServiceFactory = _vaultDataManagerEncryptionServiceFactory;
@@ -216,19 +209,7 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
       throw StateError('Vault data manager encryption service is unavailable.');
     }
 
-    final initialization = () async {
-      try {
-        final initializedService = await encryptionServiceFactory();
-        _vaultDataManagerEncryptionService = initializedService;
-        return initializedService;
-      } catch (_) {
-        _vaultDataManagerEncryptionServiceFuture = null;
-        rethrow;
-      }
-    }();
-
-    _vaultDataManagerEncryptionServiceFuture = initialization;
-    return initialization;
+    return encryptionServiceFactory();
   }
 
   @override

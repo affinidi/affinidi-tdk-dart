@@ -127,8 +127,10 @@ void main() {
       );
 
       when(vaultDataManagerApiServiceMocks.createFolder).thenAnswer(
-        (_) async =>
-            Response<CreateNodeOK>(requestOptions: RequestOptions(path: '')),
+        (_) async => Response<CreateNodeOK>(
+          requestOptions: RequestOptions(path: ''),
+          data: CreateNodeOK((b) => b..nodeId = 'created-folder-id'),
+        ),
       );
 
       await lazyService.createFolder(
@@ -143,7 +145,7 @@ void main() {
       );
     });
 
-    test('it initializes once and reuses the encryption service', () async {
+    test('it initializes the encryption service for each operation', () async {
       var initializationCount = 0;
       final keyPair = await getRootKeyPair();
       final lazyService = VaultDataManagerService.lazy(
@@ -175,57 +177,60 @@ void main() {
         data: Uint8List(5),
       );
 
-      expect(initializationCount, 1);
+      expect(initializationCount, 2);
       verify(
         vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
       ).called(2);
       verify(vaultDataManagerApiServiceMocks.createFile).called(2);
     });
 
-    test('it coalesces concurrent first-use initialization', () async {
-      final initializationCompleter =
-          Completer<VaultDataManagerEncryptionServiceInterface>();
-      var initializationCount = 0;
-      final keyPair = await getRootKeyPair();
-      final lazyService = VaultDataManagerService.lazy(
-        mockVaultDataManagerApiService,
-        vaultDataManagerEncryptionServiceFactory: () {
-          initializationCount += 1;
-          return initializationCompleter.future;
-        },
-        keyPair: keyPair,
-        encryptedKey: await keyPair.encrypt(Uint8List(2)),
-      );
+    test(
+      'it initializes the encryption service per concurrent operation',
+      () async {
+        final initializationCompleter =
+            Completer<VaultDataManagerEncryptionServiceInterface>();
+        var initializationCount = 0;
+        final keyPair = await getRootKeyPair();
+        final lazyService = VaultDataManagerService.lazy(
+          mockVaultDataManagerApiService,
+          vaultDataManagerEncryptionServiceFactory: () {
+            initializationCount += 1;
+            return initializationCompleter.future;
+          },
+          keyPair: keyPair,
+          encryptedKey: await keyPair.encrypt(Uint8List(2)),
+        );
 
-      when(
-        vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
-      ).thenAnswer((_) async => dataEncryptionMaterial);
-      when(vaultDataManagerApiServiceMocks.createFile).thenAnswer(
-        (_) async =>
-            Response<CreateNodeOK>(requestOptions: RequestOptions(path: '')),
-      );
+        when(
+          vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
+        ).thenAnswer((_) async => dataEncryptionMaterial);
+        when(vaultDataManagerApiServiceMocks.createFile).thenAnswer(
+          (_) async =>
+              Response<CreateNodeOK>(requestOptions: RequestOptions(path: '')),
+        );
 
-      final firstCreate = lazyService.createFile(
-        fileName: 'file_name.pdf',
-        parentFolderNodeId: 'parent_node_id',
-        data: Uint8List(5),
-      );
-      final secondCreate = lazyService.createFile(
-        fileName: 'file_name_2.pdf',
-        parentFolderNodeId: 'parent_node_id',
-        data: Uint8List(5),
-      );
+        final firstCreate = lazyService.createFile(
+          fileName: 'file_name.pdf',
+          parentFolderNodeId: 'parent_node_id',
+          data: Uint8List(5),
+        );
+        final secondCreate = lazyService.createFile(
+          fileName: 'file_name_2.pdf',
+          parentFolderNodeId: 'parent_node_id',
+          data: Uint8List(5),
+        );
 
-      initializationCompleter.complete(mockVaultDataManagerEncryptionService);
+        initializationCompleter.complete(mockVaultDataManagerEncryptionService);
 
-      await Future.wait([firstCreate, secondCreate]);
+        await Future.wait([firstCreate, secondCreate]);
 
-      expect(initializationCount, 1);
-      verify(
-        vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
-      ).called(2);
-      verify(vaultDataManagerApiServiceMocks.createFile).called(2);
-    });
+        expect(initializationCount, 2);
+        verify(
+          vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
+        ).called(2);
+        verify(vaultDataManagerApiServiceMocks.createFile).called(2);
+      },
+    );
   });
 
   group('When adding verifiable credential to profile', () {
