@@ -82,7 +82,7 @@ class Environment {
 
   /// The name of the environment variable that holds the current environment type.
   static const enviromentVariableName = 'AFFINIDI_TDK_ENVIRONMENT';
-  static const _consumerAudienceEndpoint = '/cid/v1/consumer/oauth2/token/dart';
+  static const _consumerAudienceEndpoint = '/iam/v1/consumer/oauth2/token';
   static const _consumerCisEndpoint = '/cis';
   static const _defaultRegion = ElementsRegion.apSoutheast1;
   static final Map<String, LogLevel> _levels = {
