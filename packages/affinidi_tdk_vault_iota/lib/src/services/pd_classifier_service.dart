@@ -110,6 +110,8 @@ class PDClassifier {
       purpose: purpose,
     );
 
+    final seenIds = <String>{};
+
     requirements = rawDescriptors
         .map((d) {
           if (d is! Map<String, dynamic>) {
@@ -121,6 +123,13 @@ class PDClassifier {
           if (d['id'] is! String) {
             _throw(
               'Each input_descriptors entry must have a string "id" field.',
+              TdkExceptionType.invalidPresentationDefinition.code,
+            );
+          }
+          final id = d['id'] as String;
+          if (!seenIds.add(id)) {
+            _throw(
+              'Duplicate input_descriptor id: "$id".',
               TdkExceptionType.invalidPresentationDefinition.code,
             );
           }
@@ -166,15 +175,8 @@ class PDClassifier {
 
     if (isZeroPartyVC) {
       result.dataPoints.addAll(requiredDataPoints.dataPoints!);
-      final matchedZeroPartyType = requiredDataPoints.types
-          .where(
-            (t) =>
-                ZeroPartyVcDataPoints.byType.containsKey(t) ||
-                t == PdClassifierConstants.profileType,
-          )
-          .firstOrNull;
-      if (matchedZeroPartyType != null) {
-        result.zeroPartyVCs.add(matchedZeroPartyType);
+      if (requiredDataPoints.types.isNotEmpty) {
+        result.zeroPartyVCs.add(requiredDataPoints.types.first);
       }
       return result;
     }
@@ -342,12 +344,10 @@ class PDClassifier {
       return tmp.copyWith(dataPoints: const <String>{});
     }
 
-    final matchedType = tmp.types
-        .where(ZeroPartyVcDataPoints.byType.containsKey)
-        .firstOrNull;
-    if (matchedType == null) return tmp;
+    final dataPoints = ZeroPartyVcDataPoints.byType[tmp.types.first];
+    if (dataPoints == null) return tmp;
 
-    return tmp.copyWith(dataPoints: ZeroPartyVcDataPoints.byType[matchedType]!);
+    return tmp.copyWith(dataPoints: dataPoints);
   }
 
   /// Returns the ZPD data paths linked to a ZPD-linked VC type (e.g. Email,
