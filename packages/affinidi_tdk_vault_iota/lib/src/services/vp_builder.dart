@@ -1,14 +1,13 @@
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
 
-/// Builds and signs a W3C Verifiable Presentation (Data Model V1).
-abstract final class VpBuilder {
+/// Defines the contract for building a signed Verifiable Presentation.
+abstract class VpBuilderInterface {
   /// Builds a signed VP from the given [signer], [credentials], [nonce], and
   /// [domain].
   ///
   /// Parameters:
-  /// * [signer] - The DID signer that controls the holder's key. The proof
-  ///   suite is derived from [signer]'s [SignatureScheme].
+  /// * [signer] - The DID signer that controls the holder's key.
   /// * [credentials] - The ordered list of credentials to include in the VP.
   /// * [nonce] - The nonce from the OID4VP request; used as the proof challenge.
   /// * [domain] - The `client_id` from the OID4VP request; binds the VP to the
@@ -17,7 +16,21 @@ abstract final class VpBuilder {
   /// Returns a [Future] containing the signed VP as a JSON map.
   /// Throws [ArgumentError] if [credentials] is empty.
   /// Throws [UnimplementedError] if the signer uses an unsupported key scheme.
-  static Future<Map<String, dynamic>> build({
+  Future<Map<String, dynamic>> build({
+    required DidSigner signer,
+    required List<ParsedVerifiableCredential<dynamic>> credentials,
+    required String nonce,
+    required String domain,
+  });
+}
+
+/// Builds and signs a W3C Verifiable Presentation (Data Model V1).
+class VpBuilder implements VpBuilderInterface {
+  /// Creates a [VpBuilder].
+  const VpBuilder();
+
+  @override
+  Future<Map<String, dynamic>> build({
     required DidSigner signer,
     required List<ParsedVerifiableCredential<dynamic>> credentials,
     required String nonce,
@@ -49,7 +62,7 @@ abstract final class VpBuilder {
     return signed.toJson();
   }
 
-  static EmbeddedProofGenerator _buildProofGenerator(
+  EmbeddedProofGenerator _buildProofGenerator(
     DidSigner signer,
     String nonce,
     String domain,
