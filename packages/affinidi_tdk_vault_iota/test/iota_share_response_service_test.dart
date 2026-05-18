@@ -91,7 +91,7 @@ void main() {
             nonce: 'test-nonce',
             clientId: 'did:key:test-verifier',
             definitionId: 'pd_1',
-            selectedCredentials: [(descriptor, fakeVC)],
+            selectedCredentials: [(descriptor: descriptor, credential: fakeVC)],
           ),
           completes,
         );
@@ -105,7 +105,7 @@ void main() {
           nonce: 'test-nonce',
           clientId: 'did:key:test-verifier',
           definitionId: 'pd_1',
-          selectedCredentials: [(descriptor, fakeVC)],
+          selectedCredentials: [(descriptor: descriptor, credential: fakeVC)],
         );
 
         verify(
@@ -137,7 +137,7 @@ void main() {
           nonce: 'my-nonce',
           clientId: 'did:key:test-verifier',
           definitionId: 'pd_captured',
-          selectedCredentials: [(descriptor, fakeVC)],
+          selectedCredentials: [(descriptor: descriptor, credential: fakeVC)],
         );
 
         expect(captured, isNotNull);
@@ -154,7 +154,7 @@ void main() {
           nonce: 'my-nonce',
           clientId: 'did:key:test-verifier',
           definitionId: 'pd_1',
-          selectedCredentials: [(descriptor, fakeVC)],
+          selectedCredentials: [(descriptor: descriptor, credential: fakeVC)],
         );
 
         expect(result, equals(Uri.parse('https://verifier.example.com/done')));
@@ -176,7 +176,7 @@ void main() {
           nonce: 'my-nonce',
           clientId: 'did:key:test-verifier',
           definitionId: 'pd_1',
-          selectedCredentials: [(descriptor, fakeVC)],
+          selectedCredentials: [(descriptor: descriptor, credential: fakeVC)],
         );
 
         expect(result, isNull);
@@ -201,7 +201,7 @@ void main() {
             nonce: 'nonce',
             clientId: 'did:key:test-verifier',
             definitionId: 'pd_1',
-            selectedCredentials: [(descriptor, fakeVC)],
+            selectedCredentials: [(descriptor: descriptor, credential: fakeVC)],
           ),
           throwsA(
             isA<TdkException>().having(

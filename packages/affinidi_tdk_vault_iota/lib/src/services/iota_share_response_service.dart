@@ -46,8 +46,8 @@ class IotaShareResponseService {
   /// * [nonce] - The `nonce` from the request JWT; used as the VP proof challenge.
   /// * [clientId] - The `client_id` from the request JWT; used as the VP proof domain.
   /// * [definitionId] - The ID of the Presentation Definition being satisfied.
-  /// * [selectedCredentials] - Ordered pairs of (descriptor, credential). Position
-  ///   `i` maps descriptor `i` to `$.verifiableCredential[i]` in the VP.
+  /// * [selectedCredentials] - Ordered list of `(descriptor, credential)` pairs.
+  ///   Position `i` maps `descriptor` `i` to `$.verifiableCredential[i]` in the VP.
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
   /// Throws [TdkException] with code `submission_failed` if the API call fails.
@@ -56,7 +56,11 @@ class IotaShareResponseService {
     required String nonce,
     required String clientId,
     required String definitionId,
-    required List<(PDDescriptor, ParsedVerifiableCredential<dynamic>)>
+    required List<
+          ({
+            PDDescriptor descriptor,
+            ParsedVerifiableCredential<dynamic> credential,
+          })>
         selectedCredentials,
   }) async {
     _logger.log(
@@ -64,8 +68,8 @@ class IotaShareResponseService {
       'Building VP for ${selectedCredentials.length} credential(s)',
     );
 
-    final descriptors = selectedCredentials.map((r) => r.$1).toList();
-    final credentials = selectedCredentials.map((r) => r.$2).toList();
+    final descriptors = selectedCredentials.map((r) => r.descriptor).toList();
+    final credentials = selectedCredentials.map((r) => r.credential).toList();
 
     final submission = PresentationSubmissionBuilder.build(
       definitionId: definitionId,
