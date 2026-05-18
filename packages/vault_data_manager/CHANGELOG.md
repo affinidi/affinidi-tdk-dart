@@ -20,7 +20,7 @@
  - Profile and account metadata are now read from `getListOfProfiles(...)` in a single response instead of separate lookups.
  - Shared access acceptance now patches account shared policies through the new backend endpoint, reducing network calls and returning an updated `Profile` immediately.
  - Incomplete VFS profiles without a usable encrypted DEKEK are skipped with warning logs instead of failing the full `listProfiles()` call.
- - HTTP clients are split and reused for auth, VFS, file, and public key traffic; connection idle timeout is increased to 30 seconds; encryption service initialization is lazy; and download connections disable persistent connections to reduce latency and stale-connection failures.
+ - HTTP clients are split and reused for auth, VFS, file, and public key traffic. Connection and receive timeouts are configurable via `AFFINIDI_API_TIMEOUT_MS` with a 15-second default, and idle timeout is configurable via `AFFINIDI_API_IDLE_TIMEOUT_MS` with a 30-second default. Encryption service initialization is lazy, and download connections disable persistent connections to reduce latency and stale-connection failures.
  - Folder creation now uses the API response node id instead of a secondary lookup.
 
 ### Migration
