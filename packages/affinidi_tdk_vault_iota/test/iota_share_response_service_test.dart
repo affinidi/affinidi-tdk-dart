@@ -20,8 +20,7 @@ class _FakeVpBuilder implements VpBuilderInterface {
     required List<ParsedVerifiableCredential<dynamic>> credentials,
     required String nonce,
     required String domain,
-  }) async =>
-      result;
+  }) async => result;
 }
 
 class _FakeVC extends Fake implements ParsedVerifiableCredential<dynamic> {}
@@ -32,10 +31,7 @@ Future<DidSigner> _buildTestSigner() async {
   final keyStore = InMemoryKeyStore();
   final wallet = PersistentWallet(keyStore);
   final keyPair = await wallet.generateKey(keyType: KeyType.ed25519);
-  final didManager = DidKeyManager(
-    wallet: wallet,
-    store: InMemoryDidStore(),
-  );
+  final didManager = DidKeyManager(wallet: wallet, store: InMemoryDidStore());
   await didManager.addVerificationMethod(keyPair.id);
   return didManager.getSigner(
     didManager.assertionMethod.first,
@@ -47,7 +43,10 @@ void main() {
   late MockCallbackApi callbackApi;
   late DidSigner signer;
 
-  final fakeVp = <String, dynamic>{'type': 'VerifiablePresentation', 'proof': <String, dynamic>{}};
+  final fakeVp = <String, dynamic>{
+    'type': 'VerifiablePresentation',
+    'proof': <String, dynamic>{},
+  };
   final fakeVC = _FakeVC();
   final descriptor = PDDescriptor.fromJson({'id': 'desc_1'});
 
@@ -73,13 +72,17 @@ void main() {
           () => callbackApi.iotOIDC4VPCallback(
             callbackInput: any(named: 'callbackInput'),
           ),
-        ).thenAnswer((_) async => Response(
-          data: CallbackResponseOK((b) => b
-            ..message = 'OK'
-            ..redirectUri = 'https://verifier.example.com/done'),
-          requestOptions: RequestOptions(path: '/v1/callback'),
-          statusCode: 200,
-        ));
+        ).thenAnswer(
+          (_) async => Response(
+            data: CallbackResponseOK(
+              (b) => b
+                ..message = 'OK'
+                ..redirectUri = 'https://verifier.example.com/done',
+            ),
+            requestOptions: RequestOptions(path: '/v1/callback'),
+            statusCode: 200,
+          ),
+        );
       });
 
       test('should complete without throwing', () async {
@@ -115,36 +118,38 @@ void main() {
         ).called(1);
       });
 
-      test('should pass state, presentationSubmission, and vpToken to the callback',
-          () async {
-        final service = _buildService();
-        CallbackInput? captured;
+      test(
+        'should pass state, presentationSubmission, and vpToken to the callback',
+        () async {
+          final service = _buildService();
+          CallbackInput? captured;
 
-        when(
-          () => callbackApi.iotOIDC4VPCallback(
-            callbackInput: any(named: 'callbackInput'),
-          ),
-        ).thenAnswer((inv) async {
-          captured = inv.namedArguments[#callbackInput] as CallbackInput;
-          return Response(
-            requestOptions: RequestOptions(path: '/v1/callback'),
-            statusCode: 200,
+          when(
+            () => callbackApi.iotOIDC4VPCallback(
+              callbackInput: any(named: 'callbackInput'),
+            ),
+          ).thenAnswer((inv) async {
+            captured = inv.namedArguments[#callbackInput] as CallbackInput;
+            return Response(
+              requestOptions: RequestOptions(path: '/v1/callback'),
+              statusCode: 200,
+            );
+          });
+
+          await service.submitShareResponse(
+            state: 'my-state',
+            nonce: 'my-nonce',
+            clientId: 'did:key:test-verifier',
+            definitionId: 'pd_captured',
+            selectedCredentials: [(descriptor: descriptor, credential: fakeVC)],
           );
-        });
 
-        await service.submitShareResponse(
-          state: 'my-state',
-          nonce: 'my-nonce',
-          clientId: 'did:key:test-verifier',
-          definitionId: 'pd_captured',
-          selectedCredentials: [(descriptor: descriptor, credential: fakeVC)],
-        );
-
-        expect(captured, isNotNull);
-        expect(captured!.state, equals('my-state'));
-        expect(captured!.presentationSubmission, isNotNull);
-        expect(captured!.vpToken, isNotNull);
-      });
+          expect(captured, isNotNull);
+          expect(captured!.state, equals('my-state'));
+          expect(captured!.presentationSubmission, isNotNull);
+          expect(captured!.vpToken, isNotNull);
+        },
+      );
 
       test('should return the redirect URI from the response', () async {
         final service = _buildService();
@@ -160,27 +165,32 @@ void main() {
         expect(result, equals(Uri.parse('https://verifier.example.com/done')));
       });
 
-      test('should return null when the response has no redirect URI', () async {
-        when(
-          () => callbackApi.iotOIDC4VPCallback(
-            callbackInput: any(named: 'callbackInput'),
-          ),
-        ).thenAnswer((_) async => Response(
-          requestOptions: RequestOptions(path: '/v1/callback'),
-          statusCode: 200,
-        ));
-        final service = _buildService();
+      test(
+        'should return null when the response has no redirect URI',
+        () async {
+          when(
+            () => callbackApi.iotOIDC4VPCallback(
+              callbackInput: any(named: 'callbackInput'),
+            ),
+          ).thenAnswer(
+            (_) async => Response(
+              requestOptions: RequestOptions(path: '/v1/callback'),
+              statusCode: 200,
+            ),
+          );
+          final service = _buildService();
 
-        final result = await service.submitShareResponse(
-          state: 'my-state',
-          nonce: 'my-nonce',
-          clientId: 'did:key:test-verifier',
-          definitionId: 'pd_1',
-          selectedCredentials: [(descriptor: descriptor, credential: fakeVC)],
-        );
+          final result = await service.submitShareResponse(
+            state: 'my-state',
+            nonce: 'my-nonce',
+            clientId: 'did:key:test-verifier',
+            definitionId: 'pd_1',
+            selectedCredentials: [(descriptor: descriptor, credential: fakeVC)],
+          );
 
-        expect(result, isNull);
-      });
+          expect(result, isNull);
+        },
+      );
     });
 
     group('and the callback API throws an exception', () {
@@ -222,49 +232,58 @@ void main() {
           () => callbackApi.iotOIDC4VPCallback(
             callbackInput: any(named: 'callbackInput'),
           ),
-        ).thenAnswer((_) async => Response(
-          requestOptions: RequestOptions(path: '/v1/callback'),
-          statusCode: 200,
-        ));
-      });
-
-      test('should send state and access_denied error to the callback', () async {
-        final service = _buildService();
-        CallbackInput? captured;
-
-        when(
-          () => callbackApi.iotOIDC4VPCallback(
-            callbackInput: any(named: 'callbackInput'),
-          ),
-        ).thenAnswer((inv) async {
-          captured = inv.namedArguments[#callbackInput] as CallbackInput;
-          return Response(
+        ).thenAnswer(
+          (_) async => Response(
             requestOptions: RequestOptions(path: '/v1/callback'),
             statusCode: 200,
-          );
-        });
-
-        await service.rejectShareResponse(state: 'my-state');
-
-        expect(captured, isNotNull);
-        expect(captured!.state, equals('my-state'));
-        expect(captured!.error, equals('access_denied'));
-        expect(captured!.vpToken, isNull);
-        expect(captured!.presentationSubmission, isNull);
+          ),
+        );
       });
+
+      test(
+        'should send state and access_denied error to the callback',
+        () async {
+          final service = _buildService();
+          CallbackInput? captured;
+
+          when(
+            () => callbackApi.iotOIDC4VPCallback(
+              callbackInput: any(named: 'callbackInput'),
+            ),
+          ).thenAnswer((inv) async {
+            captured = inv.namedArguments[#callbackInput] as CallbackInput;
+            return Response(
+              requestOptions: RequestOptions(path: '/v1/callback'),
+              statusCode: 200,
+            );
+          });
+
+          await service.rejectShareResponse(state: 'my-state');
+
+          expect(captured, isNotNull);
+          expect(captured!.state, equals('my-state'));
+          expect(captured!.error, equals('access_denied'));
+          expect(captured!.vpToken, isNull);
+          expect(captured!.presentationSubmission, isNull);
+        },
+      );
 
       test('should return the redirect URI from the response', () async {
         when(
           () => callbackApi.iotOIDC4VPCallback(
             callbackInput: any(named: 'callbackInput'),
           ),
-        ).thenAnswer((_) async => Response(
-          data: CallbackResponseOK((b) => b
-            ..message = 'OK'
-            ..redirectUri = 'https://verifier.example.com/done'),
-          requestOptions: RequestOptions(path: '/v1/callback'),
-          statusCode: 200,
-        ));
+        ).thenAnswer(
+          (_) async => Response(
+            data: CallbackResponseOK(
+              (b) => b
+                ..message = 'OK'
+                ..redirectUri = 'https://verifier.example.com/done',
+            ),
+            requestOptions: RequestOptions(path: '/v1/callback'),
+            statusCode: 200,
+          ),
+        );
         final service = _buildService();
 
         final result = await service.rejectShareResponse(state: 'my-state');
@@ -278,10 +297,12 @@ void main() {
           () => rejectCallbackApi.iotOIDC4VPCallback(
             callbackInput: any(named: 'callbackInput'),
           ),
-        ).thenAnswer((_) async => Response(
-          requestOptions: RequestOptions(path: '/v1/callback'),
-          statusCode: 200,
-        ));
+        ).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: '/v1/callback'),
+            statusCode: 200,
+          ),
+        );
 
         final service = IotaShareResponseService(
           approveCallbackApi: callbackApi,
