@@ -722,7 +722,7 @@ onProblemReport: (message) {
 
 ## Complete Example
 
-See [example/basic_example.dart](https://github.com/affinidi/affinidi-tdk/blob/main/libs/dart/didcomm/vdip/example/basic_example.dart) for a complete runnable example that demonstrates:
+See [example/main.dart](https://github.com/affinidi/affinidi-tdk-dart/blob/main/packages/didcomm/vdip/example/main.dart) for a complete runnable example that demonstrates:
 
 - Feature discovery between holder and issuer
 - Credential request workflows with and without holder-bound assertions
