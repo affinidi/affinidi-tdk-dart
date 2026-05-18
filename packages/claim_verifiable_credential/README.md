@@ -42,7 +42,7 @@ After successfully installing the package, import it into your code.
 
 ```dart
 import 'dart:typed_data';
-import 'package:affinidi_tdk_claim_verifiable_credential/oid4vci_claim_verifiable_credential.dart';
+import 'package:affinidi_tdk_claim_verifiable_credential/affinidi_tdk_claim_verifiable_credential.dart';
 
 void main() async {
 
