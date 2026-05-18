@@ -17,14 +17,14 @@ For detailed change histories and complete release notes for a specific client o
 
 - Added targeted Vault lookup APIs for profile retrieval, shared storage lookup by owner profile id, and per-profile storage usage checks.
 - Added account patching support in Vault Data Manager so shared storage metadata can be updated without rewriting the full account payload.
-- Folder creation APIs now return the created node id.
+- Folder creation APIs now return the created `Folder`.
 
 ### Changed
 
 - Reduced Vault and VFS latency by reusing dedicated auth, file, and public key HTTP connections. Connection and receive timeouts are now configurable via `AFFINIDI_API_TIMEOUT_MS`, and idle timeout is configurable via `AFFINIDI_API_IDLE_TIMEOUT_MS`, while preserving the existing defaults. Encryption material is initialized lazily, and download flows disable persistent connections where it improves stability.
 - Shared profile and shared item acceptance flows now return an updated `Profile`, so shared storage state is immediately available to callers.
 - VFS profile listing is more resilient: incomplete profiles are skipped with warning logs instead of failing the full listing operation.
-- Folder creation now uses the backend-returned node id, fixing folder creation flows that previously depended on follow-up lookups.
+- Folder creation now returns the backend-created `Folder`, removing follow-up lookups that were previously needed to reconstruct folder metadata.
 
 ## 2026‑02‑19
 

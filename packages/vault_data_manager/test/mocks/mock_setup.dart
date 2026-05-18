@@ -17,7 +17,15 @@ void stubFileService(
       parentNodeId: any(named: 'parentNodeId'),
       folderName: any(named: 'folderName'),
     ),
-  ).thenAnswer((_) async => 'created-folder-node-id');
+  ).thenAnswer(
+    (invocation) async => Folder(
+      id: 'created-folder-node-id',
+      name: 'created-folder',
+      createdAt: DateTime.parse('2024-01-01T00:00:00Z'),
+      modifiedAt: DateTime.parse('2024-01-01T00:00:00Z'),
+      parentId: invocation.namedArguments[#parentNodeId] as String?,
+    ),
+  );
 
   when(
     () => service.getChildNodes(

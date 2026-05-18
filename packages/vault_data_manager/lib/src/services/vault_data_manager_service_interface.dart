@@ -178,7 +178,7 @@ abstract interface class VaultDataManagerServiceInterface {
   });
 
   /// Creates a new folder and returns its node id.
-  Future<String> createFolder({
+  Future<Folder> createFolder({
     required String folderName,
     required String parentNodeId,
     VaultCancelToken? cancelToken,

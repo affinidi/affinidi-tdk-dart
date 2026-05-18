@@ -38,13 +38,15 @@ void main() {
               parentNodeId: any(named: 'parentNodeId'),
               folderName: any(named: 'folderName'),
             ),
-          ).thenAnswer((_) async => FileFixtures.testFolderId);
-          when(
-            () => mockService.getNodeInfo(
-              FileFixtures.testFolderId,
-              cancelToken: any(named: 'cancelToken'),
+          ).thenAnswer(
+            (_) async => Folder(
+              id: FileFixtures.testFolderId,
+              name: FileFixtures.testFolderName,
+              createdAt: DateTime.parse('2024-01-01T00:00:00Z'),
+              modifiedAt: DateTime.parse('2024-01-01T00:00:00Z'),
+              parentId: FileFixtures.testParentId,
             ),
-          ).thenAnswer((_) async => FileFixtures.mockFolderNode);
+          );
 
           final folder = await vfsFileStorage.createFolder(
             folderName: FileFixtures.testFolderName,
@@ -59,39 +61,6 @@ void main() {
               folderName: FileFixtures.testFolderName,
             ),
           ).called(1);
-          verify(
-            () => mockService.getNodeInfo(
-              FileFixtures.testFolderId,
-              cancelToken: any(named: 'cancelToken'),
-            ),
-          ).called(1);
-        });
-
-        test('it should throw if created node is not a folder', () async {
-          when(
-            () => mockService.createFolder(
-              parentNodeId: any(named: 'parentNodeId'),
-              folderName: any(named: 'folderName'),
-            ),
-          ).thenAnswer((_) async => FileFixtures.testFolderId);
-          when(
-            () => mockService.getNodeInfo(
-              FileFixtures.testFolderId,
-              cancelToken: any(named: 'cancelToken'),
-            ),
-          ).thenAnswer((_) async => FileFixtures.mockFileNode);
-
-          await expectLater(
-            vfsFileStorage.createFolder(
-              folderName: FileFixtures.testFolderName,
-              parentFolderId: FileFixtures.testParentId,
-            ),
-            throwsA(
-              predicate<Object>(
-                (e) => e is TdkException && e.code == 'invalid_node_type',
-              ),
-            ),
-          );
         });
       });
 

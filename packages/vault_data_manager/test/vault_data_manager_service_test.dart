@@ -129,7 +129,12 @@ void main() {
       when(vaultDataManagerApiServiceMocks.createFolder).thenAnswer(
         (_) async => Response<CreateNodeOK>(
           requestOptions: RequestOptions(path: ''),
-          data: CreateNodeOK((b) => b..nodeId = 'created-folder-id'),
+          data: CreateNodeOK(
+            (b) => b
+              ..nodeId = 'created-folder-id'
+              ..createdAt = '2024-01-01T00:00:00Z'
+              ..modifiedAt = '2024-01-01T00:00:00Z',
+          ),
         ),
       );
 
@@ -330,16 +335,25 @@ void main() {
         when(vaultDataManagerApiServiceMocks.createFolder).thenAnswer(
           (_) async => Response<CreateNodeOK>(
             requestOptions: RequestOptions(path: ''),
-            data: CreateNodeOK((b) => b..nodeId = 'created-folder-id'),
+            data: CreateNodeOK(
+              (b) => b
+                ..nodeId = 'created-folder-id'
+                ..createdAt = '2024-01-01T00:00:00Z'
+                ..modifiedAt = '2024-01-01T00:00:00Z',
+            ),
           ),
         );
 
-        final nodeId = await vaultDataManagerService.createFolder(
+        final folder = await vaultDataManagerService.createFolder(
           folderName: 'folder_name',
           parentNodeId: 'parent_node_id',
         );
 
-        expect(nodeId, 'created-folder-id');
+        expect(folder.id, 'created-folder-id');
+        expect(folder.name, 'folder_name');
+        expect(folder.parentId, 'parent_node_id');
+        expect(folder.createdAt, DateTime.parse('2024-01-01T00:00:00Z'));
+        expect(folder.modifiedAt, DateTime.parse('2024-01-01T00:00:00Z'));
         verify(vaultDataManagerApiServiceMocks.createFolder).called(1);
       });
     });
