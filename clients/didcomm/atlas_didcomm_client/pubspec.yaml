@@ -9,7 +9,7 @@ environment:
   sdk: ^3.8.0
 
 dependencies:
-  affinidi_tdk_didcomm_mediator_client: ^2.0.0
+  affinidi_tdk_didcomm_mediator_client: ^2.0.1
   crypto: ^3.0.6
   dcql: ^1.2.0
   json_annotation: ^4.9.0

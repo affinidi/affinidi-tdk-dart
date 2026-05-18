@@ -9,8 +9,8 @@ environment:
 resolution: workspace
 
 dependencies:
-  affinidi_tdk_vault: ^2.1.2
-  affinidi_tdk_vault_data_manager: ^2.0.8
+  affinidi_tdk_vault: ^2.1.3
+  affinidi_tdk_vault_data_manager: ^2.0.9
   base_codecs: ^1.0.1
   ssi: ^3.3.0
 

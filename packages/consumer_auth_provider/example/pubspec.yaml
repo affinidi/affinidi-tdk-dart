@@ -8,6 +8,6 @@ environment:
 resolution: workspace
 
 dependencies:
-  affinidi_tdk_consumer_auth_provider: ^5.0.0
+  affinidi_tdk_consumer_auth_provider: ^5.0.1
   base_codecs: ^1.0.1
   ssi: ^3.3.0

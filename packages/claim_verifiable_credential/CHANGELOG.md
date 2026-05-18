@@ -1,3 +1,7 @@
+## 2.0.1
+
+ - **FIX**: rename entry point to match package name (#120).
+
 # Change Log
 
 ## 2.0.0
