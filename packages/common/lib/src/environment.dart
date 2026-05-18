@@ -103,6 +103,15 @@ class Environment {
     const String.fromEnvironment('AFFINIDI_API_TIMEOUT_MS', defaultValue: ''),
   );
 
+  /// Gets the amount of milliseconds to use for HTTP connection idle timeouts
+  /// 'AFFINIDI_API_IDLE_TIMEOUT_MS'.
+  static int? get apiIdleTimeoutInMilliseconds => int.tryParse(
+    const String.fromEnvironment(
+      'AFFINIDI_API_IDLE_TIMEOUT_MS',
+      defaultValue: '',
+    ),
+  );
+
   /// Gets the current log level from the environment variable 'AFFINIDI_TDK_LOG_LEVEL'.
   LogLevel get logLevel =>
       _levels[const String.fromEnvironment('AFFINIDI_TDK_LOG_LEVEL')] ??
