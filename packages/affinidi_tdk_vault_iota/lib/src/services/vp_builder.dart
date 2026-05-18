@@ -46,7 +46,10 @@ class VpBuilder implements VpBuilderInterface {
       );
     }
 
-    final proofGenerator = signer.toProofGenerator(nonce: nonce, domain: domain);
+    final proofGenerator = signer.toProofGenerator(
+      nonce: nonce,
+      domain: domain,
+    );
 
     final unsigned = MutableVpDataModelV1(
       context: MutableJsonLdContext.fromJson([dmV1ContextUrl]),
@@ -63,5 +66,4 @@ class VpBuilder implements VpBuilderInterface {
 
     return signed.toJson();
   }
-
 }

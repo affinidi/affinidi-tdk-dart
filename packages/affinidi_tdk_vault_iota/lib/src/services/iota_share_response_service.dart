@@ -33,11 +33,11 @@ class IotaShareResponseService {
     required DidSigner signer,
     Logger? logger,
     VpBuilderInterface? vpBuilder,
-  })  : _approveCallbackApi = approveCallbackApi,
-        _rejectCallbackApi = rejectCallbackApi ?? approveCallbackApi,
-        _signer = signer,
-        _logger = logger ?? Logger.instance,
-        _vpBuilder = vpBuilder ?? const VpBuilder();
+  }) : _approveCallbackApi = approveCallbackApi,
+       _rejectCallbackApi = rejectCallbackApi ?? approveCallbackApi,
+       _signer = signer,
+       _logger = logger ?? Logger.instance,
+       _vpBuilder = vpBuilder ?? const VpBuilder();
 
   /// Builds and submits a Verifiable Presentation to the Iota callback endpoint.
   ///
@@ -57,11 +57,12 @@ class IotaShareResponseService {
     required String clientId,
     required String definitionId,
     required List<
-          ({
-            PDDescriptor descriptor,
-            ParsedVerifiableCredential<dynamic> credential,
-          })>
-        selectedCredentials,
+      ({
+        PDDescriptor descriptor,
+        ParsedVerifiableCredential<dynamic> credential,
+      })
+    >
+    selectedCredentials,
   }) async {
     _logger.log(
       LogLevel.fine,
@@ -103,16 +104,16 @@ class IotaShareResponseService {
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
   /// Throws [TdkException] with code `submission_failed` if the API call fails.
-  Future<Uri?> rejectShareResponse({
-    required String state,
-  }) async {
+  Future<Uri?> rejectShareResponse({required String state}) async {
     _logger.log(LogLevel.fine, 'Rejecting share response (state: $state)');
 
     return _postCallback(
       _rejectCallbackApi,
-      CallbackInput((b) => b
-        ..state = state
-        ..error = 'access_denied'),
+      CallbackInput(
+        (b) => b
+          ..state = state
+          ..error = 'access_denied',
+      ),
     );
   }
 
@@ -133,4 +134,3 @@ class IotaShareResponseService {
     }
   }
 }
-

@@ -111,11 +111,14 @@ void main() {
           path: r'$.verifiableCredential[0]',
         );
 
-        expect(entry.toJson(), equals({
-          'id': 'test_id',
-          'format': 'ldp_vc',
-          'path': r'$.verifiableCredential[0]',
-        }));
+        expect(
+          entry.toJson(),
+          equals({
+            'id': 'test_id',
+            'format': 'ldp_vc',
+            'path': r'$.verifiableCredential[0]',
+          }),
+        );
       });
     });
   });

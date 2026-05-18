@@ -16,32 +16,29 @@ extension DidSignerProofGenerator on DidSigner {
   EmbeddedProofGenerator toProofGenerator({
     required String nonce,
     required String domain,
-  }) =>
-      switch (signatureScheme) {
-        SignatureScheme.ecdsa_secp256k1_sha256 =>
-          Secp256k1Signature2019Generator(
-            signer: this,
-            challenge: nonce,
-            domain: [domain],
-            proofPurpose: ProofPurpose.authentication,
-          ),
-        SignatureScheme.ecdsa_p256_sha256 ||
-        SignatureScheme.ecdsa_p384_sha384 ||
-        SignatureScheme.ecdsa_p521_sha512 =>
-          DataIntegrityEcdsaJcsGenerator(
-            signer: this,
-            challenge: nonce,
-            domain: [domain],
-            proofPurpose: ProofPurpose.authentication,
-          ),
-        SignatureScheme.ed25519 => DataIntegrityEddsaJcsGenerator(
-            signer: this,
-            challenge: nonce,
-            domain: [domain],
-            proofPurpose: ProofPurpose.authentication,
-          ),
-        SignatureScheme.rsa_pkcs1_sha256 => throw UnimplementedError(
-            'RSA is not supported for VP signing',
-          ),
-      };
+  }) => switch (signatureScheme) {
+    SignatureScheme.ecdsa_secp256k1_sha256 => Secp256k1Signature2019Generator(
+      signer: this,
+      challenge: nonce,
+      domain: [domain],
+      proofPurpose: ProofPurpose.authentication,
+    ),
+    SignatureScheme.ecdsa_p256_sha256 ||
+    SignatureScheme.ecdsa_p384_sha384 ||
+    SignatureScheme.ecdsa_p521_sha512 => DataIntegrityEcdsaJcsGenerator(
+      signer: this,
+      challenge: nonce,
+      domain: [domain],
+      proofPurpose: ProofPurpose.authentication,
+    ),
+    SignatureScheme.ed25519 => DataIntegrityEddsaJcsGenerator(
+      signer: this,
+      challenge: nonce,
+      domain: [domain],
+      proofPurpose: ProofPurpose.authentication,
+    ),
+    SignatureScheme.rsa_pkcs1_sha256 => throw UnimplementedError(
+      'RSA is not supported for VP signing',
+    ),
+  };
 }
