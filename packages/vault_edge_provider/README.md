@@ -81,14 +81,6 @@ Future<void> main() async {
 
 For more sample usage, go to the [example folder](https://github.com/affinidi/affinidi-tdk/tree/main/packages/dart/vault_edge_provider/example).
 
-## Regenerate Classes
-
-The package uses code generation. To regenerate classes, run:
-
-```bash
-dart run build_runner build --delete-conflicting-outputs
-```
-
 ## Support & feedback
 
 If you face any issues or have suggestions, please don't hesitate to contact us using [this link](https://share.hsforms.com/1i-4HKZRXSsmENzXtPdIG4g8oa2v).
