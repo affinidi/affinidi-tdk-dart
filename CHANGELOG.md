@@ -21,7 +21,7 @@ For detailed change histories and complete release notes for a specific client o
 
 ### Changed
 
-- Reduced Vault and VFS latency by reusing dedicated auth, file, and public key HTTP connections, increasing idle timeouts, lazily initializing encryption material, and disabling persistent connections for download flows where it improves stability.
+- Reduced Vault and VFS latency by reusing dedicated auth, file, and public key HTTP connections. Connection and receive timeouts are now configurable via `AFFINIDI_API_TIMEOUT_MS`, and idle timeout is configurable via `AFFINIDI_API_IDLE_TIMEOUT_MS`, while preserving the existing defaults. Encryption material is initialized lazily, and download flows disable persistent connections where it improves stability.
 - Shared profile and shared item acceptance flows now return an updated `Profile`, so shared storage state is immediately available to callers.
 - VFS profile listing is more resilient: incomplete profiles are skipped with warning logs instead of failing the full listing operation.
 - Folder creation now uses the backend-returned node id, fixing folder creation flows that previously depended on follow-up lookups.

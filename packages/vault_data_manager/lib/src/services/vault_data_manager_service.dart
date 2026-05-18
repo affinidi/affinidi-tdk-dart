@@ -182,17 +182,21 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   }
 
   static Dio _makeConfiguredDio({String? baseUrl}) {
+    final apiConnectionTimeout = Duration(
+      milliseconds: Environment.apiTimeOutInMilliseconds ?? 15000,
+    );
+    final apiIdleTimeout = Duration(
+      milliseconds: Environment.apiIdleTimeoutInMilliseconds ?? 30000,
+    );
+
     final dio = Dio(
       BaseOptions(
         baseUrl: baseUrl ?? '',
-        connectTimeout: const Duration(seconds: 15),
-        receiveTimeout: const Duration(seconds: 15),
+        connectTimeout: apiConnectionTimeout,
+        receiveTimeout: apiConnectionTimeout,
       ),
     );
-    configureHttpClientConnectionSettings(
-      dio,
-      idleTimeout: const Duration(seconds: 30),
-    );
+    configureHttpClientConnectionSettings(dio, idleTimeout: apiIdleTimeout);
     return dio;
   }
 
