@@ -10,6 +10,10 @@ class _$CreateNodeOK extends CreateNodeOK {
   @override
   final String nodeId;
   @override
+  final String createdAt;
+  @override
+  final String modifiedAt;
+  @override
   final String? url;
   @override
   final String? link;
@@ -19,8 +23,14 @@ class _$CreateNodeOK extends CreateNodeOK {
   factory _$CreateNodeOK([void Function(CreateNodeOKBuilder)? updates]) =>
       (CreateNodeOKBuilder()..update(updates))._build();
 
-  _$CreateNodeOK._({required this.nodeId, this.url, this.link, this.fields})
-    : super._();
+  _$CreateNodeOK._({
+    required this.nodeId,
+    required this.createdAt,
+    required this.modifiedAt,
+    this.url,
+    this.link,
+    this.fields,
+  }) : super._();
   @override
   CreateNodeOK rebuild(void Function(CreateNodeOKBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -33,6 +43,8 @@ class _$CreateNodeOK extends CreateNodeOK {
     if (identical(other, this)) return true;
     return other is CreateNodeOK &&
         nodeId == other.nodeId &&
+        createdAt == other.createdAt &&
+        modifiedAt == other.modifiedAt &&
         url == other.url &&
         link == other.link &&
         fields == other.fields;
@@ -42,6 +54,8 @@ class _$CreateNodeOK extends CreateNodeOK {
   int get hashCode {
     var _$hash = 0;
     _$hash = $jc(_$hash, nodeId.hashCode);
+    _$hash = $jc(_$hash, createdAt.hashCode);
+    _$hash = $jc(_$hash, modifiedAt.hashCode);
     _$hash = $jc(_$hash, url.hashCode);
     _$hash = $jc(_$hash, link.hashCode);
     _$hash = $jc(_$hash, fields.hashCode);
@@ -53,6 +67,8 @@ class _$CreateNodeOK extends CreateNodeOK {
   String toString() {
     return (newBuiltValueToStringHelper(r'CreateNodeOK')
           ..add('nodeId', nodeId)
+          ..add('createdAt', createdAt)
+          ..add('modifiedAt', modifiedAt)
           ..add('url', url)
           ..add('link', link)
           ..add('fields', fields))
@@ -67,6 +83,14 @@ class CreateNodeOKBuilder
   String? _nodeId;
   String? get nodeId => _$this._nodeId;
   set nodeId(String? nodeId) => _$this._nodeId = nodeId;
+
+  String? _createdAt;
+  String? get createdAt => _$this._createdAt;
+  set createdAt(String? createdAt) => _$this._createdAt = createdAt;
+
+  String? _modifiedAt;
+  String? get modifiedAt => _$this._modifiedAt;
+  set modifiedAt(String? modifiedAt) => _$this._modifiedAt = modifiedAt;
 
   String? _url;
   String? get url => _$this._url;
@@ -90,6 +114,8 @@ class CreateNodeOKBuilder
     final $v = _$v;
     if ($v != null) {
       _nodeId = $v.nodeId;
+      _createdAt = $v.createdAt;
+      _modifiedAt = $v.modifiedAt;
       _url = $v.url;
       _link = $v.link;
       _fields = $v.fields?.toBuilder();
@@ -121,6 +147,16 @@ class CreateNodeOKBuilder
               nodeId,
               r'CreateNodeOK',
               'nodeId',
+            ),
+            createdAt: BuiltValueNullFieldError.checkNotNull(
+              createdAt,
+              r'CreateNodeOK',
+              'createdAt',
+            ),
+            modifiedAt: BuiltValueNullFieldError.checkNotNull(
+              modifiedAt,
+              r'CreateNodeOK',
+              'modifiedAt',
             ),
             url: url,
             link: link,
