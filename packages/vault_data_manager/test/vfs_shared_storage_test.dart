@@ -43,7 +43,15 @@ void main() {
         folderName: any(named: 'folderName'),
         parentNodeId: any(named: 'parentNodeId'),
       ),
-    ).thenAnswer((_) async => 'created-folder-id');
+    ).thenAnswer(
+      (_) async => Folder(
+        id: 'created-folder-id',
+        name: FileFixtures.testFolderName,
+        createdAt: DateTime.parse('2024-01-01T00:00:00Z'),
+        modifiedAt: DateTime.parse('2024-01-01T00:00:00Z'),
+        parentId: NodeFixtures.testParentId,
+      ),
+    );
     when(
       () => mockDataManagerService.deleteFile(any()),
     ).thenAnswer((_) async {});
@@ -154,36 +162,25 @@ void main() {
             folderName: any(named: 'folderName'),
             parentNodeId: any(named: 'parentNodeId'),
           ),
-        ).thenAnswer((_) async => 'created-folder-id');
-
-        final folderNode = Node(
-          nodeId: '1',
-          status: NodeStatus.CREATED,
-          name: FileFixtures.testFolderName,
-          consumerId: NodeFixtures.testConsumerId,
-          parentNodeId: NodeFixtures.testParentId,
-          profileId: NodeFixtures.testProfileId,
-          createdAt: DateTime.now().toIso8601String(),
-          modifiedAt: DateTime.now().toIso8601String(),
-          createdBy: NodeFixtures.testUser,
-          modifiedBy: NodeFixtures.testUser,
-          type: NodeType.FOLDER,
-          fileCount: 0,
-          profileCount: 0,
-          folderCount: 0,
+        ).thenAnswer(
+          (_) async => Folder(
+            id: 'created-folder-id',
+            name: FileFixtures.testFolderName,
+            createdAt: DateTime.parse('2024-01-01T00:00:00Z'),
+            modifiedAt: DateTime.parse('2024-01-01T00:00:00Z'),
+            parentId: NodeFixtures.testParentId,
+          ),
         );
 
-        when(
-          () => mockDataManagerService.getNodeInfo(
-            'created-folder-id',
-            cancelToken: any(named: 'cancelToken'),
-          ),
-        ).thenAnswer((_) async => folderNode);
-
-        await storage.createFolder(
+        final folder = await storage.createFolder(
           folderName: FileFixtures.testFolderName,
           parentFolderId: NodeFixtures.testParentId,
         );
+
+        expect(folder.id, 'created-folder-id');
+        expect(folder.parentId, NodeFixtures.testParentId);
+        expect(folder.createdAt, DateTime.parse('2024-01-01T00:00:00Z'));
+        expect(folder.modifiedAt, DateTime.parse('2024-01-01T00:00:00Z'));
 
         verify(
           () => mockDataManagerService.createFolder(

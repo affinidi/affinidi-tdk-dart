@@ -278,7 +278,7 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   }
 
   @override
-  Future<String> createFolder({
+  Future<Folder> createFolder({
     required String folderName,
     required String parentNodeId,
     VaultCancelToken? cancelToken,
@@ -290,17 +290,38 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
           ? DioCancelTokenAdapter.from(cancelToken)
           : null,
     );
+
     final nodeId = response.data?.nodeId;
     if (nodeId == null || nodeId.isEmpty) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Created folder is missing node id',
-          code: TdkExceptionType.unableToCreateNode.code,
-        ),
-        StackTrace.current,
+      throw TdkException(
+        message: 'Created folder is missing node id',
+        code: TdkExceptionType.unableToCreateNode.code,
       );
     }
-    return nodeId;
+
+    final createdAt = response.data?.createdAt;
+    if (createdAt == null || createdAt.isEmpty) {
+      throw TdkException(
+        message: 'Created folder is missing createdAt',
+        code: TdkExceptionType.unableToCreateNode.code,
+      );
+    }
+
+    final modifiedAt = response.data?.modifiedAt;
+    if (modifiedAt == null || modifiedAt.isEmpty) {
+      throw TdkException(
+        message: 'Created folder is missing modifiedAt',
+        code: TdkExceptionType.unableToCreateNode.code,
+      );
+    }
+
+    return Folder(
+      id: nodeId,
+      name: folderName,
+      createdAt: DateTime.parse(createdAt),
+      modifiedAt: DateTime.parse(modifiedAt),
+      parentId: parentNodeId,
+    );
   }
 
   @override
