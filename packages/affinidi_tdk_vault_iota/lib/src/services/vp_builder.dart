@@ -1,6 +1,8 @@
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
 
+import '../extensions/did_signer_extensions.dart';
+
 /// Defines the contract for building a signed Verifiable Presentation.
 abstract class VpBuilderInterface {
   /// Builds a signed VP from the given [signer], [credentials], [nonce], and
@@ -44,7 +46,7 @@ class VpBuilder implements VpBuilderInterface {
       );
     }
 
-    final proofGenerator = _buildProofGenerator(signer, nonce, domain);
+    final proofGenerator = signer.toProofGenerator(nonce: nonce, domain: domain);
 
     final unsigned = MutableVpDataModelV1(
       context: MutableJsonLdContext.fromJson([dmV1ContextUrl]),
@@ -62,36 +64,4 @@ class VpBuilder implements VpBuilderInterface {
     return signed.toJson();
   }
 
-  EmbeddedProofGenerator _buildProofGenerator(
-    DidSigner signer,
-    String nonce,
-    String domain,
-  ) =>
-      switch (signer.signatureScheme) {
-        SignatureScheme.ecdsa_secp256k1_sha256 =>
-          Secp256k1Signature2019Generator(
-            signer: signer,
-            challenge: nonce,
-            domain: [domain],
-            proofPurpose: ProofPurpose.authentication,
-          ),
-        SignatureScheme.ecdsa_p256_sha256 ||
-        SignatureScheme.ecdsa_p384_sha384 ||
-        SignatureScheme.ecdsa_p521_sha512 =>
-          DataIntegrityEcdsaJcsGenerator(
-            signer: signer,
-            challenge: nonce,
-            domain: [domain],
-            proofPurpose: ProofPurpose.authentication,
-          ),
-        SignatureScheme.ed25519 => DataIntegrityEddsaJcsGenerator(
-            signer: signer,
-            challenge: nonce,
-            domain: [domain],
-            proofPurpose: ProofPurpose.authentication,
-          ),
-        SignatureScheme.rsa_pkcs1_sha256 => throw UnimplementedError(
-            'RSA is not supported for VP signing',
-          ),
-      };
 }
