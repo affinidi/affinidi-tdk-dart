@@ -4,7 +4,7 @@
 
  - `VaultDataManagerServiceInterface.createProfile(...)` now performs the account-and-profile flow in a single call and returns `Response<CreateAccountWithProfileOK>`.
  - `createProfile(...)` now requires `accountIndex`, `accountMetadata`, `profileDid`, `profileDidProof`, `profileKeyPair`, and `profileName`; `description` is now `profileDescription`.
- - `createFolder(...)` now returns the created folder node id.
+ - `createFolder(...)` now returns the created `Folder`.
  - `VfsProfileRepository.createProfile(...)` now returns the created `Profile`.
  - `VaultDataManagerApiServiceInterface.getListOfProfiles(...)` now returns `Response<ListProfilesOK>` instead of `Response<ListRootNodeChildrenOK>` so account and profile metadata can be read from a single response.
  - `VaultDataManagerProfile` now requires `accountIndex` and may include `accountMetadata`, so existing mocks, fixtures, and consumers must be updated for the expanded model shape.
@@ -21,14 +21,14 @@
  - Shared access acceptance now patches account shared policies through the new backend endpoint, reducing network calls and returning an updated `Profile` immediately.
  - Incomplete VFS profiles without a usable encrypted DEKEK are skipped with warning logs instead of failing the full `listProfiles()` call.
  - HTTP clients are split and reused for auth, VFS, file, and public key traffic. Connection and receive timeouts are configurable via `AFFINIDI_API_TIMEOUT_MS` with a 15-second default, and idle timeout is configurable via `AFFINIDI_API_IDLE_TIMEOUT_MS` with a 30-second default. Encryption service initialization is lazy, and download connections disable persistent connections to reduce latency and stale-connection failures.
- - Folder creation now uses the API response node id instead of a secondary lookup.
+ - Folder creation now returns the created `Folder` directly instead of requiring a secondary lookup by node id.
 
 ### Migration
 
  - Update direct calls, mocks, and custom implementations of `VaultDataManagerServiceInterface.createProfile(...)` to provide account metadata and profile crypto material.
  - Update direct calls, mocks, and custom implementations of `VaultDataManagerApiServiceInterface.getListOfProfiles(...)` to expect `Response<ListProfilesOK>`.
  - Update custom mocks, fixtures, and code paths that construct `VaultDataManagerProfile` to include `accountIndex` and handle optional `accountMetadata`.
- - Capture the returned folder node id from `createFolder(...)` instead of doing a follow-up lookup.
+ - Update `createFolder(...)` call sites, mocks, and custom implementations to consume the returned `Folder` instead of a node id.
  - Rename any `profle_not_configured` checks to `profile_not_configured`.
  - If you implement or mock `VfsProfileRepository` through `ProfileRepository`, return a `Profile` from `createProfile(...)`.
 
