@@ -46,7 +46,7 @@ void main() {
           profileName: IotaConsentRecordFixtures.profileName,
           did: IotaConsentRecordFixtures.did,
           sharedVcIds: ['vc-1'],
-          sharedVcTypesCsv: 'SomeType',
+          claimedVcTypesCsv: 'SomeType',
           isAutoShareEnabled: true,
         );
 
@@ -73,7 +73,7 @@ void main() {
           profileName: IotaConsentRecordFixtures.profileName,
           did: IotaConsentRecordFixtures.did,
           sharedVcIds: ['vc-1', 'vc-2'],
-          sharedVcTypesCsv: 'SomeType',
+          claimedVcTypesCsv: 'SomeType',
           isAutoShareEnabled: true,
         );
 
@@ -105,7 +105,7 @@ void main() {
               profileName: IotaConsentRecordFixtures.profileName,
               did: IotaConsentRecordFixtures.did,
               sharedVcIds: [],
-              sharedVcTypesCsv: '',
+              claimedVcTypesCsv: '',
               isAutoShareEnabled: false,
             ),
             throwsA(

@@ -13,8 +13,10 @@ abstract interface class IotaConsentRecordServiceInterface {
   /// * [profileName] - Display name of the profile used for the share.
   /// * [did] - The holder DID that signed the VP.
   /// * [sharedVcIds] - IDs of the VCs included in the VP.
-  /// * [sharedVcTypesCsv] - Comma-separated VC types included in the VP.
+  /// * [claimedVcTypesCsv] - Comma-separated VC types included in the VP.
   /// * [isAutoShareEnabled] - Whether the user enabled automatic sharing for this verifier.
+  /// * [historySharedData] - Labeled data points shared in the VP.
+  /// * [isConsentManagementEnabled] - Whether the verifier has consent management enabled.
   ///
   /// Throws `TdkException` with code `failed_to_persist_consent_record` if the
   /// underlying store operation fails.
@@ -26,7 +28,9 @@ abstract interface class IotaConsentRecordServiceInterface {
     required String profileName,
     required String did,
     required List<String> sharedVcIds,
-    required String sharedVcTypesCsv,
+    required String claimedVcTypesCsv,
     required bool isAutoShareEnabled,
+    Map<String, String> historySharedData = const {},
+    bool isConsentManagementEnabled = false,
   });
 }

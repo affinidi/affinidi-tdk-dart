@@ -50,8 +50,10 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     required String profileName,
     required String did,
     required List<String> sharedVcIds,
-    required String sharedVcTypesCsv,
+    required String claimedVcTypesCsv,
     required bool isAutoShareEnabled,
+    Map<String, String> historySharedData = const {},
+    bool isConsentManagementEnabled = false,
   }) async {
     _logger.log(LogLevel.fine, 'Saving consent record for clientId: $clientId');
 
@@ -85,7 +87,9 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
         clientId: clientId,
         isAutoShareEnabled: isAutoShareEnabled,
         sharedVcIds: sharedVcIds,
-        sharedVcTypesCsv: sharedVcTypesCsv,
+        claimedVcTypesCsv: claimedVcTypesCsv,
+        historySharedData: historySharedData,
+        isConsentManagementEnabled: isConsentManagementEnabled,
       );
 
       await _store.saveOrUpdate(record);

@@ -180,7 +180,15 @@ class ConsentRecords extends Table {
   TextColumn get sharedVcIds => text()();
 
   /// Comma-separated list of VC types included in the VP.
-  TextColumn get sharedVcTypesCsv => text()();
+  TextColumn get claimedVcTypesCsv => text()();
+
+  /// Whether the verifier has consent management enabled.
+  BoolColumn get isConsentManagementEnabled =>
+      boolean().withDefault(const Constant(false))();
+
+  /// Labeled data points shared in the VP, stored as a JSON object.
+  TextColumn get historySharedData =>
+      text().withDefault(const Constant('{}'))();
 
   @override
   Set<Column> get primaryKey => {requestHash, did};
