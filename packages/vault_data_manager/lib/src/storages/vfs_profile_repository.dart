@@ -14,6 +14,7 @@ import '../exceptions/tdk_exception_type.dart';
 import '../helpers/dio_cancel_token_adapter.dart';
 import '../helpers/jwt_helper.dart';
 import '../model/account.dart';
+import '../model/vault_data_manager_profile.dart';
 import '../services/vault_data_manager_service.dart';
 import '../services/vault_data_manager_service_interface.dart';
 import '../services/vault_data_manager_shared_access_api_service.dart';
@@ -74,6 +75,9 @@ class VfsProfileRepository
   final VaultDelegatedDataManagerServiceFactory
   _vaultDelegatedDataManagerServiceFactory;
 
+  /// Logger instance for error handling
+  final Logger _logger;
+
   /// Creates a new instance of [VfsProfileRepository].
   ///
   /// The [id] parameter is used to identify this repository instance.
@@ -119,6 +123,7 @@ class VfsProfileRepository
     VaultDataManagerServiceFactory? vaultDataManagerServiceFactory,
     VaultDelegatedDataManagerServiceFactory?
     vaultDelegatedDataManagerServiceFactory,
+    Logger? logger,
   }) : _cryptographyService = cryptographyService ?? CryptographyService(),
        _consumerAuthProviderFactory =
            consumerAuthProviderFactory ??
@@ -140,7 +145,8 @@ class VfsProfileRepository
            vaultDataManagerServiceFactory ?? VaultDataManagerService.create,
        _vaultDelegatedDataManagerServiceFactory =
            vaultDelegatedDataManagerServiceFactory ??
-           VaultDataManagerService.createDelegated;
+           VaultDataManagerService.createDelegated,
+       _logger = logger ?? Logger.instance;
 
   @override
   String get id => _id;
@@ -188,7 +194,7 @@ class VfsProfileRepository
   }
 
   @override
-  Future<void> createProfile({
+  Future<Profile> createProfile({
     required String name,
     String? description,
     VaultCancelToken? cancelToken,
@@ -198,7 +204,7 @@ class VfsProfileRepository
         TdkException(
           message:
               'Profile repository must be configured using a RepositoryConfiguration',
-          code: TdkExceptionType.profleNotConfigured.code,
+          code: TdkExceptionType.profileNotConfigured.code,
         ),
         StackTrace.current,
       );
@@ -218,17 +224,6 @@ class VfsProfileRepository
     );
     final encryptedDekek = await profileKeyPair.encrypt(kekBuffer);
 
-    final profileDataManager = await _memoizedDataManagerService(
-      walletKeyId: nextAccountIndex.toString(),
-      encryptedDekek: encryptedDekek,
-    );
-
-    await profileDataManager.createProfile(
-      name: name,
-      description: description,
-      cancelToken: cancelToken,
-    );
-
     final accountMetadata = AccountMetadata(
       dekekInfo: DekekInfo(encryptedDekek: base64.encode(encryptedDekek)),
       sharedStorageData: [],
@@ -237,14 +232,53 @@ class VfsProfileRepository
     final accountVaultDataManagerService = await _memoizedDataManagerService(
       walletKeyId: _rootAccountKeyId,
     );
-    await accountVaultDataManagerService.createAccount(
+    final result = await accountVaultDataManagerService.createProfile(
       accountIndex: nextAccountIndex,
-      accountDid: profileDid,
-      didProof: profileDidProof,
-      metadata: accountMetadata,
+      accountMetadata: accountMetadata,
+      profileDid: profileDid,
+      profileDidProof: profileDidProof,
+      profileKeyPair: profileKeyPair,
+      profileName: name,
+      profileDescription: description,
       cancelToken: cancelToken,
     );
+    final profileId = result.data?.profileId;
+    if (profileId == null) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Failed to create profile in VFS',
+          code: TdkExceptionType.unableToCreateAccount.code,
+        ),
+        StackTrace.current,
+      );
+    }
+
     await _keyStorage.setAccountIndex(nextAccountIndex);
+
+    final profileDataManager = await _memoizedDataManagerService(
+      walletKeyId: nextAccountIndex.toString(),
+      encryptedDekek: encryptedDekek,
+    );
+
+    return Profile(
+      id: profileId,
+      name: name,
+      description: description,
+      did: profileDid,
+      accountIndex: nextAccountIndex,
+      profileRepositoryId: id,
+      fileStorages: {
+        _id: VFSFileStorage(id: _id, dataManagerService: profileDataManager),
+      },
+      credentialStorages: {
+        _id: VFSCredentialStorage(
+          id: _id,
+          dataManagerService: profileDataManager,
+          profileId: profileId,
+        ),
+      },
+      sharedStorages: {},
+    );
   }
 
   @override
@@ -254,7 +288,7 @@ class VfsProfileRepository
         TdkException(
           message:
               'Profile repository must be configured using a RepositoryConfiguration',
-          code: TdkExceptionType.profleNotConfigured.code,
+          code: TdkExceptionType.profileNotConfigured.code,
         ),
         StackTrace.current,
       );
@@ -263,75 +297,60 @@ class VfsProfileRepository
     final accountVaultDataManagerService = await _memoizedDataManagerService(
       walletKeyId: _rootAccountKeyId,
     );
-    final accounts = await accountVaultDataManagerService.getAccounts(
+    final vfsProfiles = await accountVaultDataManagerService.getProfiles(
       cancelToken: cancelToken,
     );
-    final profiles = await Future.wait(
-      accounts.map(
-        (account) => _getAccountPerProfile(account, cancelToken: cancelToken),
-      ),
-      eagerError: cancelToken != null,
+
+    final profiles = await Future.wait<Profile?>(
+      vfsProfiles.map((profile) async {
+        try {
+          return await _makeProfile(profile);
+        } catch (e, stackTrace) {
+          _logger.log(
+            LogLevel.warning,
+            'Unable to reconstruct profile ${profile.id}: ${e.toString()}',
+            stackTrace: stackTrace,
+          );
+
+          return null;
+        }
+      }),
     );
+
     return profiles.nonNulls.toList();
   }
 
-  Future<Profile?> _getAccountPerProfile(
-    Account account, {
-    VaultCancelToken? cancelToken,
-  }) async {
-    if (!_configured) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Profile repository must be configured using a RepositoryConfiguration',
-          code: TdkExceptionType.profleNotConfigured.code,
-        ),
-        StackTrace.current,
+  Future<Profile> _makeProfile(VaultDataManagerProfile profile) async {
+    final encryptedDekek = profile.accountMetadata?.dekekInfo.encryptedDekek;
+    if (encryptedDekek == null) {
+      throw TdkException(
+        message: 'Missing encrypted DEKEK for profile ${profile.id}',
+        code: TdkExceptionType.missingEncryptedDekek.code,
       );
     }
 
-    final accountIndex = account.accountIndex;
-    final profileKeyPair = await _memoizedKeyPair(
-      accountIndex: '$accountIndex',
-    );
-
     final profileDataManager = await _memoizedDataManagerService(
-      walletKeyId: accountIndex.toString(),
-      encryptedDekek: base64.decode(
-        account.accountMetadata!.dekekInfo.encryptedDekek,
-      ),
+      walletKeyId: profile.accountIndex.toString(),
+      encryptedDekek: base64.decode(encryptedDekek),
     );
 
-    final vfsProfiles = await profileDataManager.getProfiles(
-      cancelToken: cancelToken,
+    final profileKeyPair = await _memoizedKeyPair(
+      accountIndex: '${profile.accountIndex}',
     );
-    // Note: accounts should always have no more than one profile associated.
-    final profile = vfsProfiles.firstOrNull;
 
-    if (profile == null) {
-      return null;
-    }
-    var sharedStorages = <String, SharedStorage>{};
-
-    if (account.hasSharedStorageData) {
-      for (var sharedStorage in account.accountMetadata!.sharedStorageData) {
-        sharedStorages[sharedStorage.nodePath] = VfsSharedStorage(
-          id: sharedStorage.nodePath,
-          sharedProfileId: sharedStorage.nodePath,
-          dataManagerService: await _vaultDelegatedDataManagerServiceFactory(
-            profileDid: sharedStorage.profileDid,
-            keyPair: profileKeyPair,
-            encryptedDekek: base64.decode(sharedStorage.encryptedDekek),
-          ),
-        );
-      }
-    }
     final did = DidKey.getDid(profileKeyPair.publicKey);
-    final vaultProfile = Profile(
+    final sharedStorages = await _makeSharedStorages(
+      profileKeyPair: profileKeyPair,
+      accountMetadata: profile.accountMetadata,
+    );
+
+    return Profile(
       id: profile.id,
       name: profile.name,
+      description: profile.description,
+      profilePictureURI: profile.pictureURI,
       did: did,
-      accountIndex: accountIndex,
+      accountIndex: profile.accountIndex,
       profileRepositoryId: id,
       fileStorages: {
         _id: VFSFileStorage(id: _id, dataManagerService: profileDataManager),
@@ -345,7 +364,28 @@ class VfsProfileRepository
       },
       sharedStorages: sharedStorages,
     );
-    return vaultProfile;
+  }
+
+  Future<Map<String, SharedStorage>> _makeSharedStorages({
+    required KeyPair profileKeyPair,
+    AccountMetadata? accountMetadata,
+  }) async {
+    final sharedStorages = <String, SharedStorage>{};
+    final sharedStorageData = accountMetadata?.sharedStorageData ?? [];
+
+    for (final sharedStorage in sharedStorageData) {
+      sharedStorages[sharedStorage.nodePath] = VfsSharedStorage(
+        id: sharedStorage.nodePath,
+        sharedProfileId: sharedStorage.nodePath,
+        dataManagerService: await _vaultDelegatedDataManagerServiceFactory(
+          profileDid: sharedStorage.profileDid,
+          keyPair: profileKeyPair,
+          encryptedDekek: base64.decode(sharedStorage.encryptedDekek),
+        ),
+      );
+    }
+
+    return sharedStorages;
   }
 
   @override
@@ -358,7 +398,7 @@ class VfsProfileRepository
         TdkException(
           message:
               'Profile repository must be configured using a RepositoryConfiguration',
-          code: TdkExceptionType.profleNotConfigured.code,
+          code: TdkExceptionType.profileNotConfigured.code,
         ),
         StackTrace.current,
       );
@@ -404,7 +444,7 @@ class VfsProfileRepository
         TdkException(
           message:
               'Profile repository must be configured using a RepositoryConfiguration',
-          code: TdkExceptionType.profleNotConfigured.code,
+          code: TdkExceptionType.profileNotConfigured.code,
         ),
         StackTrace.current,
       );
@@ -588,88 +628,43 @@ class VfsProfileRepository
   }
 
   @override
-  Future<void> receiveItemAccess({
-    required int accountIndex,
+  Future<Profile> receiveItemAccess({
+    required Profile profile,
     required String ownerProfileId,
     required Uint8List kek,
     required String ownerProfileDid,
     VaultCancelToken? cancelToken,
   }) async {
-    if (!_configured) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Profile repository must be configured using a RepositoryConfiguration',
-          code: TdkExceptionType.profleNotConfigured.code,
-        ),
-        StackTrace.current,
-      );
-    }
+    _ensureConfigured();
 
     final profileKeyPair = await _memoizedKeyPair(
-      accountIndex: '$accountIndex',
-    );
-    final sharedStorageData = SharedStorageData(
-      encryptedDekek: base64.encode(await profileKeyPair.encrypt(kek)),
-      nodePath: ownerProfileId,
-      profileDid: ownerProfileDid,
+      accountIndex: '${profile.accountIndex}',
     );
 
     final accountVaultDataManagerService = await _memoizedDataManagerService(
       walletKeyId: _rootAccountKeyId,
     );
-    final accountsResponse = await accountVaultDataManagerService.getAccounts();
-    final previousAccountData = accountsResponse
-        .where((account) => account.accountIndex == accountIndex)
-        .firstOrNull;
 
-    if (previousAccountData == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Account with index $accountIndex does not exist',
-          code: TdkExceptionType.invalidAccountIndex.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final existingSharedStorageData =
-        previousAccountData.accountMetadata?.sharedStorageData ?? [];
-
-    final existingIndex = existingSharedStorageData.indexWhere(
-      (data) =>
-          data.nodePath == ownerProfileId && data.profileDid == ownerProfileDid,
+    final profileDidSigner = await _memoizedDidSigner(
+      profile.accountIndex.toString(),
     );
-
-    final updatedSharedStorageData = List<SharedStorageData>.from(
-      existingSharedStorageData,
-    );
-    if (existingIndex >= 0) {
-      final existingEncryptedKek =
-          existingSharedStorageData[existingIndex].encryptedDekek;
-      final newEncryptedKek = sharedStorageData.encryptedDekek;
-      if (existingEncryptedKek != newEncryptedKek) {
-        updatedSharedStorageData[existingIndex] = sharedStorageData;
-      }
-    } else {
-      updatedSharedStorageData.add(sharedStorageData);
-    }
-
-    final updatedMetadata = AccountMetadata(
-      sharedStorageData: updatedSharedStorageData,
-      dekekInfo: previousAccountData.accountMetadata!.dekekInfo,
-    );
-
-    final profileDidSigner = await _memoizedDidSigner(accountIndex.toString());
     final profileDidProof = await _getDidProof(didSigner: profileDidSigner);
 
-    await accountVaultDataManagerService.updateAccount(
-      accountIndex: accountIndex,
-      accountDid: profileDidSigner.did,
+    final updatedAccount = await accountVaultDataManagerService.patchAccount(
+      accountIndex: profile.accountIndex,
       didProof: profileDidProof,
-      metadata: updatedMetadata,
+      encryptedDekek: base64.encode(await profileKeyPair.encrypt(kek)),
+      ownerProfileId: ownerProfileId,
+      ownerProfileDid: ownerProfileDid,
       cancelToken: cancelToken,
     );
+
+    final sharedStorages = await _makeSharedStorages(
+      profileKeyPair: profileKeyPair,
+      accountMetadata: updatedAccount.accountMetadata,
+    );
+
+    return profile.copyWithSharedStorages(sharedStorages);
   }
 
   Future<KeyPair> _getProfileKeyPair({required String accountIndex}) async {
@@ -688,7 +683,7 @@ class VfsProfileRepository
         TdkException(
           message:
               'Profile repository must be configured using a RepositoryConfiguration',
-          code: TdkExceptionType.profleNotConfigured.code,
+          code: TdkExceptionType.profileNotConfigured.code,
         ),
         StackTrace.current,
       );
@@ -716,6 +711,23 @@ class VfsProfileRepository
         .getVaultDataFileConsumption(cancelToken: cancelToken);
     return VaultStorageUsage.fromBytes(
       (consumption.sizeInMB * 1024 * 1024).round(),
+    );
+  }
+}
+
+extension _ProfileSharedStorages on Profile {
+  Profile copyWithSharedStorages(Map<String, SharedStorage> sharedStorages) {
+    return Profile(
+      id: id,
+      accountIndex: accountIndex,
+      name: name,
+      did: did,
+      description: description,
+      profilePictureURI: profilePictureURI,
+      profileRepositoryId: profileRepositoryId,
+      fileStorages: fileStorages,
+      credentialStorages: credentialStorages,
+      sharedStorages: sharedStorages,
     );
   }
 }

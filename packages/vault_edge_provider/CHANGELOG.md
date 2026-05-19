@@ -1,3 +1,21 @@
+
+
+### Breaking Changes
+
+ - `EdgeProfileRepositoryInterface.createProfile(...)` now returns the generated local profile id.
+ - `EdgeProfileRepository.createProfile(...)` now returns the created `Profile`.
+ - Configuration error checks must use `profile_not_configured` instead of `profle_not_configured`.
+
+### Changed
+
+ - Newly created edge profiles are returned with initialized file and credential storages, so callers can continue without an additional lookup.
+
+### Migration
+
+ - Update custom `EdgeProfileRepositoryInterface` implementations and test doubles to return the created profile id.
+ - Update `ProfileRepository.createProfile(...)` call sites, mocks, and overrides to expect `Future<Profile>`.
+ - Rename any string or code comparisons for the configuration error to `profile_not_configured`.
+
 ## 2.0.4
 
  - Update a dependency to the latest release.
@@ -13,8 +31,6 @@
 ## 2.0.1
 
  - Update a dependency to the latest release.
-
-# Change Log
 
 ## 2.0.0
 

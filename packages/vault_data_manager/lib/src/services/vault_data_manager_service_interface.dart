@@ -3,10 +3,10 @@ import 'dart:typed_data';
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/affinidi_tdk_vault_data_manager_client.dart';
 import 'package:dio/dio.dart';
+import 'package:ssi/ssi.dart';
 
 import '../model/account.dart';
 import '../model/node.dart';
-
 import '../model/profile_data.dart';
 import '../model/recognized_profile_data.dart';
 import '../model/scanned_file.dart';
@@ -50,8 +50,8 @@ abstract interface class VaultDataManagerServiceInterface {
 
   /// Creates a new profile
   ///
-  /// - [name] (required) - name of the new profile.
-  /// - [description] (optional) - description of the new profile.
+  /// - [profileName] (required) - name of the new profile.
+  /// - [profileDescription] (optional) - description of the new profile.
   /// - [profilePictureURI] (optional) - profile picture url.
   ///
   /// Example:
@@ -62,9 +62,14 @@ abstract interface class VaultDataManagerServiceInterface {
   ///   profilePictureURI: 'your_profile_picture_url',
   /// );
   /// ```
-  Future<Response<CreateNodeOK>> createProfile({
-    required String name,
-    String? description,
+  Future<Response<CreateAccountWithProfileOK>> createProfile({
+    required int accountIndex,
+    required AccountMetadata accountMetadata,
+    required String profileDid,
+    required String profileDidProof,
+    required KeyPair profileKeyPair,
+    required String profileName,
+    String? profileDescription,
     String? profilePictureURI,
     VaultCancelToken? cancelToken,
   });
@@ -172,8 +177,8 @@ abstract interface class VaultDataManagerServiceInterface {
     VaultCancelToken? cancelToken,
   });
 
-  /// Creates a new folder
-  Future<void> createFolder({
+  /// Creates a new folder and returns its node id.
+  Future<Folder> createFolder({
     required String folderName,
     required String parentNodeId,
     VaultCancelToken? cancelToken,
@@ -300,6 +305,21 @@ abstract interface class VaultDataManagerServiceInterface {
   /// Deletes an account for a given [accountIndex].
   Future<void> deleteAccount({
     required int accountIndex,
+    VaultCancelToken? cancelToken,
+  });
+
+  /// Patches an account for a given [accountIndex].
+  /// [accountIndex] - positive integer used to identify account.
+  /// [didProof] - JWT that proves ownership of profile DID.
+  /// [encryptedDekek] - A base64 encoded data encryption key.
+  /// [ownerProfileId] - Unique profile identifier.
+  /// [ownerProfileDid] - DID associated with the profile.
+  Future<Account> patchAccount({
+    required int accountIndex,
+    required String didProof,
+    required String encryptedDekek,
+    required String ownerProfileId,
+    required String ownerProfileDid,
     VaultCancelToken? cancelToken,
   });
 

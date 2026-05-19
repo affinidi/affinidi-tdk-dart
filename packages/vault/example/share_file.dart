@@ -6,7 +6,7 @@ import 'package:affinidi_tdk_vault_data_manager/affinidi_tdk_vault_data_manager.
 
 void main() async {
   final labelAlice = 'Alice';
-  final accountIndexAlice = 15;
+  final accountIndexAlice = 16;
   final vaultAlice = await _createVault(
     labelAlice,
     accountIndexAlice,
@@ -25,7 +25,7 @@ void main() async {
   final file = await _addFileToProfile(profileAlice, profileAlice.id, fileName);
 
   final labelBob = 'Bob';
-  final accountIndexBob = 15;
+  final accountIndexBob = 16;
   final vaultBob = await _createVault(labelBob, accountIndexBob, seedIndex: 2);
   final profileBob = await _createProfile(vaultBob, labelBob, accountIndexBob);
 
@@ -206,11 +206,14 @@ Future<Profile> _createProfile(
       .where((profile) => profile.accountIndex == newAccountIndex)
       .firstOrNull;
 
+  Profile? profile;
   if (existingProfile == null) {
     print('[Demo] Creating profile for $name ...');
     try {
       final profileRepository = vault.defaultProfileRepository;
-      await profileRepository.createProfile(name: '$name $newAccountIndex');
+      profile = await profileRepository.createProfile(
+        name: '$name $newAccountIndex',
+      );
     } on TdkException catch (error) {
       print(
         [
@@ -225,10 +228,6 @@ Future<Profile> _createProfile(
 
   final profiles = await vault.listProfiles();
   _listProfileNames(profiles, label: name);
-
-  final profile = profiles
-      .where((p) => p.accountIndex == newAccountIndex)
-      .firstOrNull;
 
   if (profile == null) {
     throw UnsupportedError('Failed to create profile for $name');
