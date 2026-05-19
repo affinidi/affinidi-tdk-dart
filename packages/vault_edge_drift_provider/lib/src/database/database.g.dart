@@ -1438,6 +1438,762 @@ class CredentialsCompanion extends UpdateCompanion<Credential> {
   }
 }
 
+class $ConsentRecordsTable extends ConsentRecords
+    with TableInfo<$ConsentRecordsTable, ConsentRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ConsentRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _requestHashMeta = const VerificationMeta(
+    'requestHash',
+  );
+  @override
+  late final GeneratedColumn<String> requestHash = GeneratedColumn<String>(
+    'request_hash',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _didMeta = const VerificationMeta('did');
+  @override
+  late final GeneratedColumn<String> did = GeneratedColumn<String>(
+    'did',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _hashMeta = const VerificationMeta('hash');
+  @override
+  late final GeneratedColumn<String> hash = GeneratedColumn<String>(
+    'hash',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _logoMeta = const VerificationMeta('logo');
+  @override
+  late final GeneratedColumn<String> logo = GeneratedColumn<String>(
+    'logo',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _siteUrlMeta = const VerificationMeta(
+    'siteUrl',
+  );
+  @override
+  late final GeneratedColumn<String> siteUrl = GeneratedColumn<String>(
+    'site_url',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sharedAtMeta = const VerificationMeta(
+    'sharedAt',
+  );
+  @override
+  late final GeneratedColumn<String> sharedAt = GeneratedColumn<String>(
+    'shared_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _profileNameMeta = const VerificationMeta(
+    'profileName',
+  );
+  @override
+  late final GeneratedColumn<String> profileName = GeneratedColumn<String>(
+    'profile_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _profileIdMeta = const VerificationMeta(
+    'profileId',
+  );
+  @override
+  late final GeneratedColumn<String> profileId = GeneratedColumn<String>(
+    'profile_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _clientIdMeta = const VerificationMeta(
+    'clientId',
+  );
+  @override
+  late final GeneratedColumn<String> clientId = GeneratedColumn<String>(
+    'client_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _isAutoShareEnabledMeta =
+      const VerificationMeta('isAutoShareEnabled');
+  @override
+  late final GeneratedColumn<bool> isAutoShareEnabled = GeneratedColumn<bool>(
+    'is_auto_share_enabled',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_auto_share_enabled" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _sharedVcIdsMeta = const VerificationMeta(
+    'sharedVcIds',
+  );
+  @override
+  late final GeneratedColumn<String> sharedVcIds = GeneratedColumn<String>(
+    'shared_vc_ids',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sharedVcTypesCsvMeta = const VerificationMeta(
+    'sharedVcTypesCsv',
+  );
+  @override
+  late final GeneratedColumn<String> sharedVcTypesCsv = GeneratedColumn<String>(
+    'shared_vc_types_csv',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    requestHash,
+    did,
+    hash,
+    logo,
+    siteUrl,
+    sharedAt,
+    profileName,
+    profileId,
+    clientId,
+    isAutoShareEnabled,
+    sharedVcIds,
+    sharedVcTypesCsv,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'consent_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ConsentRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('request_hash')) {
+      context.handle(
+        _requestHashMeta,
+        requestHash.isAcceptableOrUnknown(
+          data['request_hash']!,
+          _requestHashMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_requestHashMeta);
+    }
+    if (data.containsKey('did')) {
+      context.handle(
+        _didMeta,
+        did.isAcceptableOrUnknown(data['did']!, _didMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_didMeta);
+    }
+    if (data.containsKey('hash')) {
+      context.handle(
+        _hashMeta,
+        hash.isAcceptableOrUnknown(data['hash']!, _hashMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_hashMeta);
+    }
+    if (data.containsKey('logo')) {
+      context.handle(
+        _logoMeta,
+        logo.isAcceptableOrUnknown(data['logo']!, _logoMeta),
+      );
+    }
+    if (data.containsKey('site_url')) {
+      context.handle(
+        _siteUrlMeta,
+        siteUrl.isAcceptableOrUnknown(data['site_url']!, _siteUrlMeta),
+      );
+    }
+    if (data.containsKey('shared_at')) {
+      context.handle(
+        _sharedAtMeta,
+        sharedAt.isAcceptableOrUnknown(data['shared_at']!, _sharedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sharedAtMeta);
+    }
+    if (data.containsKey('profile_name')) {
+      context.handle(
+        _profileNameMeta,
+        profileName.isAcceptableOrUnknown(
+          data['profile_name']!,
+          _profileNameMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_profileNameMeta);
+    }
+    if (data.containsKey('profile_id')) {
+      context.handle(
+        _profileIdMeta,
+        profileId.isAcceptableOrUnknown(data['profile_id']!, _profileIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_profileIdMeta);
+    }
+    if (data.containsKey('client_id')) {
+      context.handle(
+        _clientIdMeta,
+        clientId.isAcceptableOrUnknown(data['client_id']!, _clientIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_clientIdMeta);
+    }
+    if (data.containsKey('is_auto_share_enabled')) {
+      context.handle(
+        _isAutoShareEnabledMeta,
+        isAutoShareEnabled.isAcceptableOrUnknown(
+          data['is_auto_share_enabled']!,
+          _isAutoShareEnabledMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_isAutoShareEnabledMeta);
+    }
+    if (data.containsKey('shared_vc_ids')) {
+      context.handle(
+        _sharedVcIdsMeta,
+        sharedVcIds.isAcceptableOrUnknown(
+          data['shared_vc_ids']!,
+          _sharedVcIdsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_sharedVcIdsMeta);
+    }
+    if (data.containsKey('shared_vc_types_csv')) {
+      context.handle(
+        _sharedVcTypesCsvMeta,
+        sharedVcTypesCsv.isAcceptableOrUnknown(
+          data['shared_vc_types_csv']!,
+          _sharedVcTypesCsvMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_sharedVcTypesCsvMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {requestHash, did};
+  @override
+  ConsentRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ConsentRecord(
+      requestHash: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}request_hash'],
+      )!,
+      did: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}did'],
+      )!,
+      hash: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}hash'],
+      )!,
+      logo: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}logo'],
+      ),
+      siteUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}site_url'],
+      ),
+      sharedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shared_at'],
+      )!,
+      profileName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}profile_name'],
+      )!,
+      profileId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}profile_id'],
+      )!,
+      clientId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}client_id'],
+      )!,
+      isAutoShareEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_auto_share_enabled'],
+      )!,
+      sharedVcIds: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shared_vc_ids'],
+      )!,
+      sharedVcTypesCsv: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shared_vc_types_csv'],
+      )!,
+    );
+  }
+
+  @override
+  $ConsentRecordsTable createAlias(String alias) {
+    return $ConsentRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class ConsentRecord extends DataClass implements Insertable<ConsentRecord> {
+  /// Hash of the share request: `sha1(clientId | presentationDefinition)`.
+  ///
+  /// Stable across repeat requests from the same verifier with the same PD.
+  final String requestHash;
+
+  /// The holder's DID used to sign the Verifiable Presentation.
+  final String did;
+
+  /// Full fingerprint of the share event.
+  final String hash;
+
+  /// URL of the verifier's logo image, if available.
+  final String? logo;
+
+  /// Origin (base URL) of the verifier's site, if available.
+  final String? siteUrl;
+
+  /// ISO 8601 timestamp of when the share was first completed.
+  final String sharedAt;
+
+  /// Display name of the profile used for this share.
+  final String profileName;
+
+  /// Identifier of the profile used for this share.
+  final String profileId;
+
+  /// The verifier's `client_id` from the OID4VP authorization request.
+  final String clientId;
+
+  /// Whether the user has enabled automatic sharing for this verifier.
+  final bool isAutoShareEnabled;
+
+  /// Identifiers of the shared VCs, stored as a comma-separated string.
+  final String sharedVcIds;
+
+  /// Comma-separated list of VC types included in the VP.
+  final String sharedVcTypesCsv;
+  const ConsentRecord({
+    required this.requestHash,
+    required this.did,
+    required this.hash,
+    this.logo,
+    this.siteUrl,
+    required this.sharedAt,
+    required this.profileName,
+    required this.profileId,
+    required this.clientId,
+    required this.isAutoShareEnabled,
+    required this.sharedVcIds,
+    required this.sharedVcTypesCsv,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['request_hash'] = Variable<String>(requestHash);
+    map['did'] = Variable<String>(did);
+    map['hash'] = Variable<String>(hash);
+    if (!nullToAbsent || logo != null) {
+      map['logo'] = Variable<String>(logo);
+    }
+    if (!nullToAbsent || siteUrl != null) {
+      map['site_url'] = Variable<String>(siteUrl);
+    }
+    map['shared_at'] = Variable<String>(sharedAt);
+    map['profile_name'] = Variable<String>(profileName);
+    map['profile_id'] = Variable<String>(profileId);
+    map['client_id'] = Variable<String>(clientId);
+    map['is_auto_share_enabled'] = Variable<bool>(isAutoShareEnabled);
+    map['shared_vc_ids'] = Variable<String>(sharedVcIds);
+    map['shared_vc_types_csv'] = Variable<String>(sharedVcTypesCsv);
+    return map;
+  }
+
+  ConsentRecordsCompanion toCompanion(bool nullToAbsent) {
+    return ConsentRecordsCompanion(
+      requestHash: Value(requestHash),
+      did: Value(did),
+      hash: Value(hash),
+      logo: logo == null && nullToAbsent ? const Value.absent() : Value(logo),
+      siteUrl: siteUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(siteUrl),
+      sharedAt: Value(sharedAt),
+      profileName: Value(profileName),
+      profileId: Value(profileId),
+      clientId: Value(clientId),
+      isAutoShareEnabled: Value(isAutoShareEnabled),
+      sharedVcIds: Value(sharedVcIds),
+      sharedVcTypesCsv: Value(sharedVcTypesCsv),
+    );
+  }
+
+  factory ConsentRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ConsentRecord(
+      requestHash: serializer.fromJson<String>(json['requestHash']),
+      did: serializer.fromJson<String>(json['did']),
+      hash: serializer.fromJson<String>(json['hash']),
+      logo: serializer.fromJson<String?>(json['logo']),
+      siteUrl: serializer.fromJson<String?>(json['siteUrl']),
+      sharedAt: serializer.fromJson<String>(json['sharedAt']),
+      profileName: serializer.fromJson<String>(json['profileName']),
+      profileId: serializer.fromJson<String>(json['profileId']),
+      clientId: serializer.fromJson<String>(json['clientId']),
+      isAutoShareEnabled: serializer.fromJson<bool>(json['isAutoShareEnabled']),
+      sharedVcIds: serializer.fromJson<String>(json['sharedVcIds']),
+      sharedVcTypesCsv: serializer.fromJson<String>(json['sharedVcTypesCsv']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'requestHash': serializer.toJson<String>(requestHash),
+      'did': serializer.toJson<String>(did),
+      'hash': serializer.toJson<String>(hash),
+      'logo': serializer.toJson<String?>(logo),
+      'siteUrl': serializer.toJson<String?>(siteUrl),
+      'sharedAt': serializer.toJson<String>(sharedAt),
+      'profileName': serializer.toJson<String>(profileName),
+      'profileId': serializer.toJson<String>(profileId),
+      'clientId': serializer.toJson<String>(clientId),
+      'isAutoShareEnabled': serializer.toJson<bool>(isAutoShareEnabled),
+      'sharedVcIds': serializer.toJson<String>(sharedVcIds),
+      'sharedVcTypesCsv': serializer.toJson<String>(sharedVcTypesCsv),
+    };
+  }
+
+  ConsentRecord copyWith({
+    String? requestHash,
+    String? did,
+    String? hash,
+    Value<String?> logo = const Value.absent(),
+    Value<String?> siteUrl = const Value.absent(),
+    String? sharedAt,
+    String? profileName,
+    String? profileId,
+    String? clientId,
+    bool? isAutoShareEnabled,
+    String? sharedVcIds,
+    String? sharedVcTypesCsv,
+  }) => ConsentRecord(
+    requestHash: requestHash ?? this.requestHash,
+    did: did ?? this.did,
+    hash: hash ?? this.hash,
+    logo: logo.present ? logo.value : this.logo,
+    siteUrl: siteUrl.present ? siteUrl.value : this.siteUrl,
+    sharedAt: sharedAt ?? this.sharedAt,
+    profileName: profileName ?? this.profileName,
+    profileId: profileId ?? this.profileId,
+    clientId: clientId ?? this.clientId,
+    isAutoShareEnabled: isAutoShareEnabled ?? this.isAutoShareEnabled,
+    sharedVcIds: sharedVcIds ?? this.sharedVcIds,
+    sharedVcTypesCsv: sharedVcTypesCsv ?? this.sharedVcTypesCsv,
+  );
+  ConsentRecord copyWithCompanion(ConsentRecordsCompanion data) {
+    return ConsentRecord(
+      requestHash: data.requestHash.present
+          ? data.requestHash.value
+          : this.requestHash,
+      did: data.did.present ? data.did.value : this.did,
+      hash: data.hash.present ? data.hash.value : this.hash,
+      logo: data.logo.present ? data.logo.value : this.logo,
+      siteUrl: data.siteUrl.present ? data.siteUrl.value : this.siteUrl,
+      sharedAt: data.sharedAt.present ? data.sharedAt.value : this.sharedAt,
+      profileName: data.profileName.present
+          ? data.profileName.value
+          : this.profileName,
+      profileId: data.profileId.present ? data.profileId.value : this.profileId,
+      clientId: data.clientId.present ? data.clientId.value : this.clientId,
+      isAutoShareEnabled: data.isAutoShareEnabled.present
+          ? data.isAutoShareEnabled.value
+          : this.isAutoShareEnabled,
+      sharedVcIds: data.sharedVcIds.present
+          ? data.sharedVcIds.value
+          : this.sharedVcIds,
+      sharedVcTypesCsv: data.sharedVcTypesCsv.present
+          ? data.sharedVcTypesCsv.value
+          : this.sharedVcTypesCsv,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ConsentRecord(')
+          ..write('requestHash: $requestHash, ')
+          ..write('did: $did, ')
+          ..write('hash: $hash, ')
+          ..write('logo: $logo, ')
+          ..write('siteUrl: $siteUrl, ')
+          ..write('sharedAt: $sharedAt, ')
+          ..write('profileName: $profileName, ')
+          ..write('profileId: $profileId, ')
+          ..write('clientId: $clientId, ')
+          ..write('isAutoShareEnabled: $isAutoShareEnabled, ')
+          ..write('sharedVcIds: $sharedVcIds, ')
+          ..write('sharedVcTypesCsv: $sharedVcTypesCsv')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    requestHash,
+    did,
+    hash,
+    logo,
+    siteUrl,
+    sharedAt,
+    profileName,
+    profileId,
+    clientId,
+    isAutoShareEnabled,
+    sharedVcIds,
+    sharedVcTypesCsv,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ConsentRecord &&
+          other.requestHash == this.requestHash &&
+          other.did == this.did &&
+          other.hash == this.hash &&
+          other.logo == this.logo &&
+          other.siteUrl == this.siteUrl &&
+          other.sharedAt == this.sharedAt &&
+          other.profileName == this.profileName &&
+          other.profileId == this.profileId &&
+          other.clientId == this.clientId &&
+          other.isAutoShareEnabled == this.isAutoShareEnabled &&
+          other.sharedVcIds == this.sharedVcIds &&
+          other.sharedVcTypesCsv == this.sharedVcTypesCsv);
+}
+
+class ConsentRecordsCompanion extends UpdateCompanion<ConsentRecord> {
+  final Value<String> requestHash;
+  final Value<String> did;
+  final Value<String> hash;
+  final Value<String?> logo;
+  final Value<String?> siteUrl;
+  final Value<String> sharedAt;
+  final Value<String> profileName;
+  final Value<String> profileId;
+  final Value<String> clientId;
+  final Value<bool> isAutoShareEnabled;
+  final Value<String> sharedVcIds;
+  final Value<String> sharedVcTypesCsv;
+  final Value<int> rowid;
+  const ConsentRecordsCompanion({
+    this.requestHash = const Value.absent(),
+    this.did = const Value.absent(),
+    this.hash = const Value.absent(),
+    this.logo = const Value.absent(),
+    this.siteUrl = const Value.absent(),
+    this.sharedAt = const Value.absent(),
+    this.profileName = const Value.absent(),
+    this.profileId = const Value.absent(),
+    this.clientId = const Value.absent(),
+    this.isAutoShareEnabled = const Value.absent(),
+    this.sharedVcIds = const Value.absent(),
+    this.sharedVcTypesCsv = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ConsentRecordsCompanion.insert({
+    required String requestHash,
+    required String did,
+    required String hash,
+    this.logo = const Value.absent(),
+    this.siteUrl = const Value.absent(),
+    required String sharedAt,
+    required String profileName,
+    required String profileId,
+    required String clientId,
+    required bool isAutoShareEnabled,
+    required String sharedVcIds,
+    required String sharedVcTypesCsv,
+    this.rowid = const Value.absent(),
+  }) : requestHash = Value(requestHash),
+       did = Value(did),
+       hash = Value(hash),
+       sharedAt = Value(sharedAt),
+       profileName = Value(profileName),
+       profileId = Value(profileId),
+       clientId = Value(clientId),
+       isAutoShareEnabled = Value(isAutoShareEnabled),
+       sharedVcIds = Value(sharedVcIds),
+       sharedVcTypesCsv = Value(sharedVcTypesCsv);
+  static Insertable<ConsentRecord> custom({
+    Expression<String>? requestHash,
+    Expression<String>? did,
+    Expression<String>? hash,
+    Expression<String>? logo,
+    Expression<String>? siteUrl,
+    Expression<String>? sharedAt,
+    Expression<String>? profileName,
+    Expression<String>? profileId,
+    Expression<String>? clientId,
+    Expression<bool>? isAutoShareEnabled,
+    Expression<String>? sharedVcIds,
+    Expression<String>? sharedVcTypesCsv,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (requestHash != null) 'request_hash': requestHash,
+      if (did != null) 'did': did,
+      if (hash != null) 'hash': hash,
+      if (logo != null) 'logo': logo,
+      if (siteUrl != null) 'site_url': siteUrl,
+      if (sharedAt != null) 'shared_at': sharedAt,
+      if (profileName != null) 'profile_name': profileName,
+      if (profileId != null) 'profile_id': profileId,
+      if (clientId != null) 'client_id': clientId,
+      if (isAutoShareEnabled != null)
+        'is_auto_share_enabled': isAutoShareEnabled,
+      if (sharedVcIds != null) 'shared_vc_ids': sharedVcIds,
+      if (sharedVcTypesCsv != null) 'shared_vc_types_csv': sharedVcTypesCsv,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ConsentRecordsCompanion copyWith({
+    Value<String>? requestHash,
+    Value<String>? did,
+    Value<String>? hash,
+    Value<String?>? logo,
+    Value<String?>? siteUrl,
+    Value<String>? sharedAt,
+    Value<String>? profileName,
+    Value<String>? profileId,
+    Value<String>? clientId,
+    Value<bool>? isAutoShareEnabled,
+    Value<String>? sharedVcIds,
+    Value<String>? sharedVcTypesCsv,
+    Value<int>? rowid,
+  }) {
+    return ConsentRecordsCompanion(
+      requestHash: requestHash ?? this.requestHash,
+      did: did ?? this.did,
+      hash: hash ?? this.hash,
+      logo: logo ?? this.logo,
+      siteUrl: siteUrl ?? this.siteUrl,
+      sharedAt: sharedAt ?? this.sharedAt,
+      profileName: profileName ?? this.profileName,
+      profileId: profileId ?? this.profileId,
+      clientId: clientId ?? this.clientId,
+      isAutoShareEnabled: isAutoShareEnabled ?? this.isAutoShareEnabled,
+      sharedVcIds: sharedVcIds ?? this.sharedVcIds,
+      sharedVcTypesCsv: sharedVcTypesCsv ?? this.sharedVcTypesCsv,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (requestHash.present) {
+      map['request_hash'] = Variable<String>(requestHash.value);
+    }
+    if (did.present) {
+      map['did'] = Variable<String>(did.value);
+    }
+    if (hash.present) {
+      map['hash'] = Variable<String>(hash.value);
+    }
+    if (logo.present) {
+      map['logo'] = Variable<String>(logo.value);
+    }
+    if (siteUrl.present) {
+      map['site_url'] = Variable<String>(siteUrl.value);
+    }
+    if (sharedAt.present) {
+      map['shared_at'] = Variable<String>(sharedAt.value);
+    }
+    if (profileName.present) {
+      map['profile_name'] = Variable<String>(profileName.value);
+    }
+    if (profileId.present) {
+      map['profile_id'] = Variable<String>(profileId.value);
+    }
+    if (clientId.present) {
+      map['client_id'] = Variable<String>(clientId.value);
+    }
+    if (isAutoShareEnabled.present) {
+      map['is_auto_share_enabled'] = Variable<bool>(isAutoShareEnabled.value);
+    }
+    if (sharedVcIds.present) {
+      map['shared_vc_ids'] = Variable<String>(sharedVcIds.value);
+    }
+    if (sharedVcTypesCsv.present) {
+      map['shared_vc_types_csv'] = Variable<String>(sharedVcTypesCsv.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ConsentRecordsCompanion(')
+          ..write('requestHash: $requestHash, ')
+          ..write('did: $did, ')
+          ..write('hash: $hash, ')
+          ..write('logo: $logo, ')
+          ..write('siteUrl: $siteUrl, ')
+          ..write('sharedAt: $sharedAt, ')
+          ..write('profileName: $profileName, ')
+          ..write('profileId: $profileId, ')
+          ..write('clientId: $clientId, ')
+          ..write('isAutoShareEnabled: $isAutoShareEnabled, ')
+          ..write('sharedVcIds: $sharedVcIds, ')
+          ..write('sharedVcTypesCsv: $sharedVcTypesCsv, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   $DatabaseManager get managers => $DatabaseManager(this);
@@ -1445,6 +2201,7 @@ abstract class _$Database extends GeneratedDatabase {
   late final $ItemsTable items = $ItemsTable(this);
   late final $FileContentsTable fileContents = $FileContentsTable(this);
   late final $CredentialsTable credentials = $CredentialsTable(this);
+  late final $ConsentRecordsTable consentRecords = $ConsentRecordsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1454,6 +2211,7 @@ abstract class _$Database extends GeneratedDatabase {
     items,
     fileContents,
     credentials,
+    consentRecords,
   ];
 }
 
@@ -2882,6 +3640,349 @@ typedef $$CredentialsTableProcessedTableManager =
       Credential,
       PrefetchHooks Function({bool profileId})
     >;
+typedef $$ConsentRecordsTableCreateCompanionBuilder =
+    ConsentRecordsCompanion Function({
+      required String requestHash,
+      required String did,
+      required String hash,
+      Value<String?> logo,
+      Value<String?> siteUrl,
+      required String sharedAt,
+      required String profileName,
+      required String profileId,
+      required String clientId,
+      required bool isAutoShareEnabled,
+      required String sharedVcIds,
+      required String sharedVcTypesCsv,
+      Value<int> rowid,
+    });
+typedef $$ConsentRecordsTableUpdateCompanionBuilder =
+    ConsentRecordsCompanion Function({
+      Value<String> requestHash,
+      Value<String> did,
+      Value<String> hash,
+      Value<String?> logo,
+      Value<String?> siteUrl,
+      Value<String> sharedAt,
+      Value<String> profileName,
+      Value<String> profileId,
+      Value<String> clientId,
+      Value<bool> isAutoShareEnabled,
+      Value<String> sharedVcIds,
+      Value<String> sharedVcTypesCsv,
+      Value<int> rowid,
+    });
+
+class $$ConsentRecordsTableFilterComposer
+    extends Composer<_$Database, $ConsentRecordsTable> {
+  $$ConsentRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get requestHash => $composableBuilder(
+    column: $table.requestHash,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get did => $composableBuilder(
+    column: $table.did,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get hash => $composableBuilder(
+    column: $table.hash,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get logo => $composableBuilder(
+    column: $table.logo,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get siteUrl => $composableBuilder(
+    column: $table.siteUrl,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sharedAt => $composableBuilder(
+    column: $table.sharedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get profileName => $composableBuilder(
+    column: $table.profileName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get profileId => $composableBuilder(
+    column: $table.profileId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get clientId => $composableBuilder(
+    column: $table.clientId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isAutoShareEnabled => $composableBuilder(
+    column: $table.isAutoShareEnabled,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sharedVcIds => $composableBuilder(
+    column: $table.sharedVcIds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sharedVcTypesCsv => $composableBuilder(
+    column: $table.sharedVcTypesCsv,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ConsentRecordsTableOrderingComposer
+    extends Composer<_$Database, $ConsentRecordsTable> {
+  $$ConsentRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get requestHash => $composableBuilder(
+    column: $table.requestHash,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get did => $composableBuilder(
+    column: $table.did,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get hash => $composableBuilder(
+    column: $table.hash,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get logo => $composableBuilder(
+    column: $table.logo,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get siteUrl => $composableBuilder(
+    column: $table.siteUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sharedAt => $composableBuilder(
+    column: $table.sharedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get profileName => $composableBuilder(
+    column: $table.profileName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get profileId => $composableBuilder(
+    column: $table.profileId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get clientId => $composableBuilder(
+    column: $table.clientId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isAutoShareEnabled => $composableBuilder(
+    column: $table.isAutoShareEnabled,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sharedVcIds => $composableBuilder(
+    column: $table.sharedVcIds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sharedVcTypesCsv => $composableBuilder(
+    column: $table.sharedVcTypesCsv,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ConsentRecordsTableAnnotationComposer
+    extends Composer<_$Database, $ConsentRecordsTable> {
+  $$ConsentRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get requestHash => $composableBuilder(
+    column: $table.requestHash,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get did =>
+      $composableBuilder(column: $table.did, builder: (column) => column);
+
+  GeneratedColumn<String> get hash =>
+      $composableBuilder(column: $table.hash, builder: (column) => column);
+
+  GeneratedColumn<String> get logo =>
+      $composableBuilder(column: $table.logo, builder: (column) => column);
+
+  GeneratedColumn<String> get siteUrl =>
+      $composableBuilder(column: $table.siteUrl, builder: (column) => column);
+
+  GeneratedColumn<String> get sharedAt =>
+      $composableBuilder(column: $table.sharedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get profileName => $composableBuilder(
+    column: $table.profileName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get profileId =>
+      $composableBuilder(column: $table.profileId, builder: (column) => column);
+
+  GeneratedColumn<String> get clientId =>
+      $composableBuilder(column: $table.clientId, builder: (column) => column);
+
+  GeneratedColumn<bool> get isAutoShareEnabled => $composableBuilder(
+    column: $table.isAutoShareEnabled,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get sharedVcIds => $composableBuilder(
+    column: $table.sharedVcIds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get sharedVcTypesCsv => $composableBuilder(
+    column: $table.sharedVcTypesCsv,
+    builder: (column) => column,
+  );
+}
+
+class $$ConsentRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$Database,
+          $ConsentRecordsTable,
+          ConsentRecord,
+          $$ConsentRecordsTableFilterComposer,
+          $$ConsentRecordsTableOrderingComposer,
+          $$ConsentRecordsTableAnnotationComposer,
+          $$ConsentRecordsTableCreateCompanionBuilder,
+          $$ConsentRecordsTableUpdateCompanionBuilder,
+          (
+            ConsentRecord,
+            BaseReferences<_$Database, $ConsentRecordsTable, ConsentRecord>,
+          ),
+          ConsentRecord,
+          PrefetchHooks Function()
+        > {
+  $$ConsentRecordsTableTableManager(_$Database db, $ConsentRecordsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ConsentRecordsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ConsentRecordsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ConsentRecordsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> requestHash = const Value.absent(),
+                Value<String> did = const Value.absent(),
+                Value<String> hash = const Value.absent(),
+                Value<String?> logo = const Value.absent(),
+                Value<String?> siteUrl = const Value.absent(),
+                Value<String> sharedAt = const Value.absent(),
+                Value<String> profileName = const Value.absent(),
+                Value<String> profileId = const Value.absent(),
+                Value<String> clientId = const Value.absent(),
+                Value<bool> isAutoShareEnabled = const Value.absent(),
+                Value<String> sharedVcIds = const Value.absent(),
+                Value<String> sharedVcTypesCsv = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ConsentRecordsCompanion(
+                requestHash: requestHash,
+                did: did,
+                hash: hash,
+                logo: logo,
+                siteUrl: siteUrl,
+                sharedAt: sharedAt,
+                profileName: profileName,
+                profileId: profileId,
+                clientId: clientId,
+                isAutoShareEnabled: isAutoShareEnabled,
+                sharedVcIds: sharedVcIds,
+                sharedVcTypesCsv: sharedVcTypesCsv,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String requestHash,
+                required String did,
+                required String hash,
+                Value<String?> logo = const Value.absent(),
+                Value<String?> siteUrl = const Value.absent(),
+                required String sharedAt,
+                required String profileName,
+                required String profileId,
+                required String clientId,
+                required bool isAutoShareEnabled,
+                required String sharedVcIds,
+                required String sharedVcTypesCsv,
+                Value<int> rowid = const Value.absent(),
+              }) => ConsentRecordsCompanion.insert(
+                requestHash: requestHash,
+                did: did,
+                hash: hash,
+                logo: logo,
+                siteUrl: siteUrl,
+                sharedAt: sharedAt,
+                profileName: profileName,
+                profileId: profileId,
+                clientId: clientId,
+                isAutoShareEnabled: isAutoShareEnabled,
+                sharedVcIds: sharedVcIds,
+                sharedVcTypesCsv: sharedVcTypesCsv,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ConsentRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$Database,
+      $ConsentRecordsTable,
+      ConsentRecord,
+      $$ConsentRecordsTableFilterComposer,
+      $$ConsentRecordsTableOrderingComposer,
+      $$ConsentRecordsTableAnnotationComposer,
+      $$ConsentRecordsTableCreateCompanionBuilder,
+      $$ConsentRecordsTableUpdateCompanionBuilder,
+      (
+        ConsentRecord,
+        BaseReferences<_$Database, $ConsentRecordsTable, ConsentRecord>,
+      ),
+      ConsentRecord,
+      PrefetchHooks Function()
+    >;
 
 class $DatabaseManager {
   final _$Database _db;
@@ -2894,4 +3995,6 @@ class $DatabaseManager {
       $$FileContentsTableTableManager(_db, _db.fileContents);
   $$CredentialsTableTableManager get credentials =>
       $$CredentialsTableTableManager(_db, _db.credentials);
+  $$ConsentRecordsTableTableManager get consentRecords =>
+      $$ConsentRecordsTableTableManager(_db, _db.consentRecords);
 }
