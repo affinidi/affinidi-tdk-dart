@@ -14,7 +14,8 @@ part 'wallet_key_dto.g.dart';
 ///
 /// Properties:
 /// * [keyId] - wallet-scoped key identifier (e.g., \"key-1\")
-/// * [keyType] - cryptographic algorithm used by this key
+/// * [algorithm] - cryptographic algorithm used by this key
+/// * [keyType] - Deprecated alias of `algorithm`. Always equal to `algorithm` and included for backward compatibility.
 /// * [keyAri] - ARI identifier for the key (e.g., \"ari:key:...\")
 /// * [relationships] - verification relationships this key supports
 @BuiltValue()
@@ -25,6 +26,12 @@ abstract class WalletKeyDto
   String? get keyId;
 
   /// cryptographic algorithm used by this key
+  @BuiltValueField(wireName: r'algorithm')
+  WalletKeyDtoAlgorithmEnum? get algorithm;
+  // enum algorithmEnum {  secp256k1,  ed25519,  p256,  };
+
+  /// Deprecated alias of `algorithm`. Always equal to `algorithm` and included for backward compatibility.
+  @Deprecated('keyType has been deprecated')
   @BuiltValueField(wireName: r'keyType')
   WalletKeyDtoKeyTypeEnum? get keyType;
   // enum keyTypeEnum {  secp256k1,  ed25519,  p256,  };
@@ -65,6 +72,13 @@ class _$WalletKeyDtoSerializer implements PrimitiveSerializer<WalletKeyDto> {
       yield serializers.serialize(
         object.keyId,
         specifiedType: const FullType(String),
+      );
+    }
+    if (object.algorithm != null) {
+      yield r'algorithm';
+      yield serializers.serialize(
+        object.algorithm,
+        specifiedType: const FullType(WalletKeyDtoAlgorithmEnum),
       );
     }
     if (object.keyType != null) {
@@ -126,6 +140,15 @@ class _$WalletKeyDtoSerializer implements PrimitiveSerializer<WalletKeyDto> {
                   as String;
           result.keyId = valueDes;
           break;
+        case r'algorithm':
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(WalletKeyDtoAlgorithmEnum),
+                  )
+                  as WalletKeyDtoAlgorithmEnum;
+          result.algorithm = valueDes;
+          break;
         case r'keyType':
           final valueDes =
               serializers.deserialize(
@@ -184,18 +207,45 @@ class _$WalletKeyDtoSerializer implements PrimitiveSerializer<WalletKeyDto> {
   }
 }
 
-class WalletKeyDtoKeyTypeEnum extends EnumClass {
+class WalletKeyDtoAlgorithmEnum extends EnumClass {
   /// cryptographic algorithm used by this key
+  @BuiltValueEnumConst(wireName: r'secp256k1')
+  static const WalletKeyDtoAlgorithmEnum secp256k1 =
+      _$walletKeyDtoAlgorithmEnum_secp256k1;
+
+  /// cryptographic algorithm used by this key
+  @BuiltValueEnumConst(wireName: r'ed25519')
+  static const WalletKeyDtoAlgorithmEnum ed25519 =
+      _$walletKeyDtoAlgorithmEnum_ed25519;
+
+  /// cryptographic algorithm used by this key
+  @BuiltValueEnumConst(wireName: r'p256')
+  static const WalletKeyDtoAlgorithmEnum p256 =
+      _$walletKeyDtoAlgorithmEnum_p256;
+
+  static Serializer<WalletKeyDtoAlgorithmEnum> get serializer =>
+      _$walletKeyDtoAlgorithmEnumSerializer;
+
+  const WalletKeyDtoAlgorithmEnum._(String name) : super(name);
+
+  static BuiltSet<WalletKeyDtoAlgorithmEnum> get values =>
+      _$walletKeyDtoAlgorithmEnumValues;
+  static WalletKeyDtoAlgorithmEnum valueOf(String name) =>
+      _$walletKeyDtoAlgorithmEnumValueOf(name);
+}
+
+class WalletKeyDtoKeyTypeEnum extends EnumClass {
+  /// Deprecated alias of `algorithm`. Always equal to `algorithm` and included for backward compatibility.
   @BuiltValueEnumConst(wireName: r'secp256k1')
   static const WalletKeyDtoKeyTypeEnum secp256k1 =
       _$walletKeyDtoKeyTypeEnum_secp256k1;
 
-  /// cryptographic algorithm used by this key
+  /// Deprecated alias of `algorithm`. Always equal to `algorithm` and included for backward compatibility.
   @BuiltValueEnumConst(wireName: r'ed25519')
   static const WalletKeyDtoKeyTypeEnum ed25519 =
       _$walletKeyDtoKeyTypeEnum_ed25519;
 
-  /// cryptographic algorithm used by this key
+  /// Deprecated alias of `algorithm`. Always equal to `algorithm` and included for backward compatibility.
   @BuiltValueEnumConst(wireName: r'p256')
   static const WalletKeyDtoKeyTypeEnum p256 = _$walletKeyDtoKeyTypeEnum_p256;
 
