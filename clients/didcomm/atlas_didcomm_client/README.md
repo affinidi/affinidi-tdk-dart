@@ -178,8 +178,8 @@ https://share.hsforms.com/1i-4HKZRXSsmENzXtPdIG4g8oa2v
 
 ### Reporting Technical Issues
 
-- Search existing issues: https://github.com/affinidi/affinidi-tdk/issues
-- Open a new issue with details and a minimal repro: https://github.com/affinidi/affinidi-tdk/issues/new
+- Search existing issues: https://github.com/affinidi/affinidi-tdk-dart/issues
+- Open a new issue with details and a minimal repro: https://github.com/affinidi/affinidi-tdk-dart/issues/new
 
 ## Contributing
 
