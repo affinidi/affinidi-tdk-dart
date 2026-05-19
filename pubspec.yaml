@@ -68,7 +68,7 @@ melos:
         melos run coverage-report
     test-flutter:
       description: Run tests in each flutter package
-      exec: flutter test --coverage
+      exec: flutter test --coverage --reporter expanded
       dirExists: test
       concurrency: 4
       failFast: true
@@ -81,7 +81,7 @@ melos:
           - "*_example*"
     test-dart:
       description: Run tests in each dart package
-      exec: dart run coverage:test_with_coverage
+      exec: dart run coverage:test_with_coverage -- --reporter expanded
       dirExists: test
       concurrency: 4
       failFast: true
