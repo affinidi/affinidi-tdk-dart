@@ -33,4 +33,16 @@ abstract interface class IotaConsentRecordServiceInterface {
     Map<String, String> historySharedData = const {},
     bool isConsentManagementEnabled = false,
   });
+
+  /// Computes the stable request fingerprint for a verifier + PD combination.
+  ///
+  /// Parameters:
+  /// * [clientId] - The verifier's `client_id` from the OID4VP request.
+  /// * [presentationDefinition] - The raw PD JSON map.
+  ///
+  /// Returns a hex SHA-1 digest to check for an existing consent record
+  String computeRequestHash({
+    required String clientId,
+    required Map<String, dynamic> presentationDefinition,
+  });
 }
