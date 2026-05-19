@@ -1,3 +1,5 @@
+import '../services/consent_record_store.dart';
+
 /// Types of exceptions that can occur in the Vault Iota share flow.
 enum TdkExceptionType {
   /// Exception thrown when the verifier's client metadata could not be fetched
