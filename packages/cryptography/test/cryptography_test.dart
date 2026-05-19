@@ -12,8 +12,16 @@ void main() {
     cryptographyService = CryptographyService();
   });
 
-  group('AES-256 encrypt and decrypt', () {
-    test('should round-trip a string through AES-256 hex encoding', () async {
+  group('createHash', () {
+    test('returns a non-empty string for a given input', () {
+      final result = cryptographyService.createHash(hashSource: 'client123|{}');
+
+      expect(result, isNotEmpty);
+    });
+  });
+
+  group('Aes256EncryptStringToHex and Aes256DecryptStringFromHex', () {
+    test('decrypts back to the original plaintext', () async {
       const password = 'password';
       const salt = 'fixed_salt';
       const dataToEncrypt = 'Hello, Affinidi!';

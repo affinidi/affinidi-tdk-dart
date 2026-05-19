@@ -8,6 +8,8 @@ export 'src/models/request_purpose.dart';
 export 'src/models/share_requirements.dart';
 export 'src/models/verifier_client_metadata.dart';
 export 'src/services/consent_record_store.dart';
+export 'src/services/iota_consent_record_service.dart';
+export 'src/services/iota_consent_record_service_interface.dart';
 export 'src/services/verifier_metadata_service.dart';
 export 'src/services/verifier_metadata_service_interface.dart';
 export 'src/share_flow_service.dart';
