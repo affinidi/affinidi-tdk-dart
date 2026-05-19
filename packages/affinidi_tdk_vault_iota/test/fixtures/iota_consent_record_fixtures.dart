@@ -15,28 +15,28 @@ class IotaConsentRecordFixtures {
   );
 
   static IotaConsentRecord empty() => IotaConsentRecord(
-        hash: '',
-        requestHash: '',
-        did: '',
-        sharedAt: '',
-        profileName: '',
-        profileId: '',
-        clientId: '',
-        isAutoShareEnabled: false,
-        sharedVcIds: [],
-        sharedVcTypesCsv: '',
-      );
+    hash: '',
+    requestHash: '',
+    did: '',
+    sharedAt: '',
+    profileName: '',
+    profileId: '',
+    clientId: '',
+    isAutoShareEnabled: false,
+    sharedVcIds: [],
+    sharedVcTypesCsv: '',
+  );
 
   static IotaConsentRecord existing() => IotaConsentRecord(
-        hash: 'old_hash',
-        requestHash: 'request_hash',
-        did: did,
-        sharedAt: sharedAt,
-        profileName: profileName,
-        profileId: profileId,
-        clientId: clientId,
-        isAutoShareEnabled: false,
-        sharedVcIds: ['vc-1'],
-        sharedVcTypesCsv: 'SomeType',
-      );
+    hash: 'old_hash',
+    requestHash: 'request_hash',
+    did: did,
+    sharedAt: sharedAt,
+    profileName: profileName,
+    profileId: profileId,
+    clientId: clientId,
+    isAutoShareEnabled: false,
+    sharedVcIds: ['vc-1'],
+    sharedVcTypesCsv: 'SomeType',
+  );
 }

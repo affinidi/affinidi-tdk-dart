@@ -50,9 +50,9 @@ void main() {
           isAutoShareEnabled: true,
         );
 
-        final captured = verify(
-          () => store.saveOrUpdate(captureAny()),
-        ).captured.single as IotaConsentRecord;
+        final captured =
+            verify(() => store.saveOrUpdate(captureAny())).captured.single
+                as IotaConsentRecord;
 
         expect(captured.clientId, IotaConsentRecordFixtures.clientId);
         expect(captured.did, IotaConsentRecordFixtures.did);
@@ -77,44 +77,47 @@ void main() {
           isAutoShareEnabled: true,
         );
 
-        final captured = verify(
-          () => store.saveOrUpdate(captureAny()),
-        ).captured.single as IotaConsentRecord;
+        final captured =
+            verify(() => store.saveOrUpdate(captureAny())).captured.single
+                as IotaConsentRecord;
 
         expect(captured.sharedAt, IotaConsentRecordFixtures.sharedAt);
         expect(captured.sharedVcIds, ['vc-1', 'vc-2']);
       });
 
-      test('throws TdkException with failedToPersistConsentRecord when the store throws', () async {
-        when(
-          () => store.findByRequestHashAndDid(any(), any()),
-        ).thenAnswer((_) async => null);
+      test(
+        'throws TdkException with failedToPersistConsentRecord when the store throws',
+        () async {
+          when(
+            () => store.findByRequestHashAndDid(any(), any()),
+          ).thenAnswer((_) async => null);
 
-        when(
-          () => store.saveOrUpdate(any()),
-        ).thenThrow(Exception('db error'));
+          when(
+            () => store.saveOrUpdate(any()),
+          ).thenThrow(Exception('db error'));
 
-        await expectLater(
-          () => service.saveConsentRecord(
-            clientId: IotaConsentRecordFixtures.clientId,
-            presentationDefinition: {},
-            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-            profileId: IotaConsentRecordFixtures.profileId,
-            profileName: IotaConsentRecordFixtures.profileName,
-            did: IotaConsentRecordFixtures.did,
-            sharedVcIds: [],
-            sharedVcTypesCsv: '',
-            isAutoShareEnabled: false,
-          ),
-          throwsA(
-            isA<TdkException>().having(
-              (e) => e.code,
-              'code',
-              TdkExceptionType.failedToPersistConsentRecord.code,
+          await expectLater(
+            () => service.saveConsentRecord(
+              clientId: IotaConsentRecordFixtures.clientId,
+              presentationDefinition: {},
+              verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+              profileId: IotaConsentRecordFixtures.profileId,
+              profileName: IotaConsentRecordFixtures.profileName,
+              did: IotaConsentRecordFixtures.did,
+              sharedVcIds: [],
+              sharedVcTypesCsv: '',
+              isAutoShareEnabled: false,
             ),
-          ),
-        );
-      });
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.failedToPersistConsentRecord.code,
+              ),
+            ),
+          );
+        },
+      );
     });
   });
 }

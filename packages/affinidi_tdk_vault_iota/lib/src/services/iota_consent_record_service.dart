@@ -90,11 +90,18 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
 
       await _store.saveOrUpdate(record);
 
-      _logger.log(LogLevel.fine, 'Consent record saved for clientId: $clientId');
+      _logger.log(
+        LogLevel.fine,
+        'Consent record saved for clientId: $clientId',
+      );
     } catch (e) {
       if (e is TdkException) rethrow;
 
-      _logger.log(LogLevel.warning, 'Failed to persist consent record', error: e);
+      _logger.log(
+        LogLevel.warning,
+        'Failed to persist consent record',
+        error: e,
+      );
 
       throw TdkException(
         message: 'Failed to persist consent record.',
@@ -137,6 +144,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     required String? siteUrl,
     required String vcFingerprint,
   }) => _cryptography.createHash(
-    hashSource: '$profileId|$did|$clientId|${logo ?? ''}|${siteUrl ?? ''}|$vcFingerprint',
+    hashSource:
+        '$profileId|$did|$clientId|${logo ?? ''}|${siteUrl ?? ''}|$vcFingerprint',
   );
 }
