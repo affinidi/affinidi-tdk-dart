@@ -1561,17 +1561,46 @@ class $ConsentRecordsTable extends ConsentRecords
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _sharedVcTypesCsvMeta = const VerificationMeta(
-    'sharedVcTypesCsv',
+  static const VerificationMeta _claimedVcTypesCsvMeta = const VerificationMeta(
+    'claimedVcTypesCsv',
   );
   @override
-  late final GeneratedColumn<String> sharedVcTypesCsv = GeneratedColumn<String>(
-    'shared_vc_types_csv',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
+  late final GeneratedColumn<String> claimedVcTypesCsv =
+      GeneratedColumn<String>(
+        'claimed_vc_types_csv',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _isConsentManagementEnabledMeta =
+      const VerificationMeta('isConsentManagementEnabled');
+  @override
+  late final GeneratedColumn<bool> isConsentManagementEnabled =
+      GeneratedColumn<bool>(
+        'is_consent_management_enabled',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("is_consent_management_enabled" IN (0, 1))',
+        ),
+        defaultValue: const Constant(false),
+      );
+  static const VerificationMeta _historySharedDataMeta = const VerificationMeta(
+    'historySharedData',
   );
+  @override
+  late final GeneratedColumn<String> historySharedData =
+      GeneratedColumn<String>(
+        'history_shared_data',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant('{}'),
+      );
   @override
   List<GeneratedColumn> get $columns => [
     requestHash,
@@ -1585,7 +1614,9 @@ class $ConsentRecordsTable extends ConsentRecords
     clientId,
     isAutoShareEnabled,
     sharedVcIds,
-    sharedVcTypesCsv,
+    claimedVcTypesCsv,
+    isConsentManagementEnabled,
+    historySharedData,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1695,16 +1726,34 @@ class $ConsentRecordsTable extends ConsentRecords
     } else if (isInserting) {
       context.missing(_sharedVcIdsMeta);
     }
-    if (data.containsKey('shared_vc_types_csv')) {
+    if (data.containsKey('claimed_vc_types_csv')) {
       context.handle(
-        _sharedVcTypesCsvMeta,
-        sharedVcTypesCsv.isAcceptableOrUnknown(
-          data['shared_vc_types_csv']!,
-          _sharedVcTypesCsvMeta,
+        _claimedVcTypesCsvMeta,
+        claimedVcTypesCsv.isAcceptableOrUnknown(
+          data['claimed_vc_types_csv']!,
+          _claimedVcTypesCsvMeta,
         ),
       );
     } else if (isInserting) {
-      context.missing(_sharedVcTypesCsvMeta);
+      context.missing(_claimedVcTypesCsvMeta);
+    }
+    if (data.containsKey('is_consent_management_enabled')) {
+      context.handle(
+        _isConsentManagementEnabledMeta,
+        isConsentManagementEnabled.isAcceptableOrUnknown(
+          data['is_consent_management_enabled']!,
+          _isConsentManagementEnabledMeta,
+        ),
+      );
+    }
+    if (data.containsKey('history_shared_data')) {
+      context.handle(
+        _historySharedDataMeta,
+        historySharedData.isAcceptableOrUnknown(
+          data['history_shared_data']!,
+          _historySharedDataMeta,
+        ),
+      );
     }
     return context;
   }
@@ -1759,9 +1808,17 @@ class $ConsentRecordsTable extends ConsentRecords
         DriftSqlType.string,
         data['${effectivePrefix}shared_vc_ids'],
       )!,
-      sharedVcTypesCsv: attachedDatabase.typeMapping.read(
+      claimedVcTypesCsv: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}shared_vc_types_csv'],
+        data['${effectivePrefix}claimed_vc_types_csv'],
+      )!,
+      isConsentManagementEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_consent_management_enabled'],
+      )!,
+      historySharedData: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}history_shared_data'],
       )!,
     );
   }
@@ -1809,7 +1866,13 @@ class ConsentRecord extends DataClass implements Insertable<ConsentRecord> {
   final String sharedVcIds;
 
   /// Comma-separated list of VC types included in the VP.
-  final String sharedVcTypesCsv;
+  final String claimedVcTypesCsv;
+
+  /// Whether the verifier has consent management enabled.
+  final bool isConsentManagementEnabled;
+
+  /// Labeled data points shared in the VP, stored as a JSON object.
+  final String historySharedData;
   const ConsentRecord({
     required this.requestHash,
     required this.did,
@@ -1822,7 +1885,9 @@ class ConsentRecord extends DataClass implements Insertable<ConsentRecord> {
     required this.clientId,
     required this.isAutoShareEnabled,
     required this.sharedVcIds,
-    required this.sharedVcTypesCsv,
+    required this.claimedVcTypesCsv,
+    required this.isConsentManagementEnabled,
+    required this.historySharedData,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1842,7 +1907,11 @@ class ConsentRecord extends DataClass implements Insertable<ConsentRecord> {
     map['client_id'] = Variable<String>(clientId);
     map['is_auto_share_enabled'] = Variable<bool>(isAutoShareEnabled);
     map['shared_vc_ids'] = Variable<String>(sharedVcIds);
-    map['shared_vc_types_csv'] = Variable<String>(sharedVcTypesCsv);
+    map['claimed_vc_types_csv'] = Variable<String>(claimedVcTypesCsv);
+    map['is_consent_management_enabled'] = Variable<bool>(
+      isConsentManagementEnabled,
+    );
+    map['history_shared_data'] = Variable<String>(historySharedData);
     return map;
   }
 
@@ -1861,7 +1930,9 @@ class ConsentRecord extends DataClass implements Insertable<ConsentRecord> {
       clientId: Value(clientId),
       isAutoShareEnabled: Value(isAutoShareEnabled),
       sharedVcIds: Value(sharedVcIds),
-      sharedVcTypesCsv: Value(sharedVcTypesCsv),
+      claimedVcTypesCsv: Value(claimedVcTypesCsv),
+      isConsentManagementEnabled: Value(isConsentManagementEnabled),
+      historySharedData: Value(historySharedData),
     );
   }
 
@@ -1882,7 +1953,11 @@ class ConsentRecord extends DataClass implements Insertable<ConsentRecord> {
       clientId: serializer.fromJson<String>(json['clientId']),
       isAutoShareEnabled: serializer.fromJson<bool>(json['isAutoShareEnabled']),
       sharedVcIds: serializer.fromJson<String>(json['sharedVcIds']),
-      sharedVcTypesCsv: serializer.fromJson<String>(json['sharedVcTypesCsv']),
+      claimedVcTypesCsv: serializer.fromJson<String>(json['claimedVcTypesCsv']),
+      isConsentManagementEnabled: serializer.fromJson<bool>(
+        json['isConsentManagementEnabled'],
+      ),
+      historySharedData: serializer.fromJson<String>(json['historySharedData']),
     );
   }
   @override
@@ -1900,7 +1975,11 @@ class ConsentRecord extends DataClass implements Insertable<ConsentRecord> {
       'clientId': serializer.toJson<String>(clientId),
       'isAutoShareEnabled': serializer.toJson<bool>(isAutoShareEnabled),
       'sharedVcIds': serializer.toJson<String>(sharedVcIds),
-      'sharedVcTypesCsv': serializer.toJson<String>(sharedVcTypesCsv),
+      'claimedVcTypesCsv': serializer.toJson<String>(claimedVcTypesCsv),
+      'isConsentManagementEnabled': serializer.toJson<bool>(
+        isConsentManagementEnabled,
+      ),
+      'historySharedData': serializer.toJson<String>(historySharedData),
     };
   }
 
@@ -1916,7 +1995,9 @@ class ConsentRecord extends DataClass implements Insertable<ConsentRecord> {
     String? clientId,
     bool? isAutoShareEnabled,
     String? sharedVcIds,
-    String? sharedVcTypesCsv,
+    String? claimedVcTypesCsv,
+    bool? isConsentManagementEnabled,
+    String? historySharedData,
   }) => ConsentRecord(
     requestHash: requestHash ?? this.requestHash,
     did: did ?? this.did,
@@ -1929,7 +2010,10 @@ class ConsentRecord extends DataClass implements Insertable<ConsentRecord> {
     clientId: clientId ?? this.clientId,
     isAutoShareEnabled: isAutoShareEnabled ?? this.isAutoShareEnabled,
     sharedVcIds: sharedVcIds ?? this.sharedVcIds,
-    sharedVcTypesCsv: sharedVcTypesCsv ?? this.sharedVcTypesCsv,
+    claimedVcTypesCsv: claimedVcTypesCsv ?? this.claimedVcTypesCsv,
+    isConsentManagementEnabled:
+        isConsentManagementEnabled ?? this.isConsentManagementEnabled,
+    historySharedData: historySharedData ?? this.historySharedData,
   );
   ConsentRecord copyWithCompanion(ConsentRecordsCompanion data) {
     return ConsentRecord(
@@ -1952,9 +2036,15 @@ class ConsentRecord extends DataClass implements Insertable<ConsentRecord> {
       sharedVcIds: data.sharedVcIds.present
           ? data.sharedVcIds.value
           : this.sharedVcIds,
-      sharedVcTypesCsv: data.sharedVcTypesCsv.present
-          ? data.sharedVcTypesCsv.value
-          : this.sharedVcTypesCsv,
+      claimedVcTypesCsv: data.claimedVcTypesCsv.present
+          ? data.claimedVcTypesCsv.value
+          : this.claimedVcTypesCsv,
+      isConsentManagementEnabled: data.isConsentManagementEnabled.present
+          ? data.isConsentManagementEnabled.value
+          : this.isConsentManagementEnabled,
+      historySharedData: data.historySharedData.present
+          ? data.historySharedData.value
+          : this.historySharedData,
     );
   }
 
@@ -1972,7 +2062,9 @@ class ConsentRecord extends DataClass implements Insertable<ConsentRecord> {
           ..write('clientId: $clientId, ')
           ..write('isAutoShareEnabled: $isAutoShareEnabled, ')
           ..write('sharedVcIds: $sharedVcIds, ')
-          ..write('sharedVcTypesCsv: $sharedVcTypesCsv')
+          ..write('claimedVcTypesCsv: $claimedVcTypesCsv, ')
+          ..write('isConsentManagementEnabled: $isConsentManagementEnabled, ')
+          ..write('historySharedData: $historySharedData')
           ..write(')'))
         .toString();
   }
@@ -1990,7 +2082,9 @@ class ConsentRecord extends DataClass implements Insertable<ConsentRecord> {
     clientId,
     isAutoShareEnabled,
     sharedVcIds,
-    sharedVcTypesCsv,
+    claimedVcTypesCsv,
+    isConsentManagementEnabled,
+    historySharedData,
   );
   @override
   bool operator ==(Object other) =>
@@ -2007,7 +2101,9 @@ class ConsentRecord extends DataClass implements Insertable<ConsentRecord> {
           other.clientId == this.clientId &&
           other.isAutoShareEnabled == this.isAutoShareEnabled &&
           other.sharedVcIds == this.sharedVcIds &&
-          other.sharedVcTypesCsv == this.sharedVcTypesCsv);
+          other.claimedVcTypesCsv == this.claimedVcTypesCsv &&
+          other.isConsentManagementEnabled == this.isConsentManagementEnabled &&
+          other.historySharedData == this.historySharedData);
 }
 
 class ConsentRecordsCompanion extends UpdateCompanion<ConsentRecord> {
@@ -2022,7 +2118,9 @@ class ConsentRecordsCompanion extends UpdateCompanion<ConsentRecord> {
   final Value<String> clientId;
   final Value<bool> isAutoShareEnabled;
   final Value<String> sharedVcIds;
-  final Value<String> sharedVcTypesCsv;
+  final Value<String> claimedVcTypesCsv;
+  final Value<bool> isConsentManagementEnabled;
+  final Value<String> historySharedData;
   final Value<int> rowid;
   const ConsentRecordsCompanion({
     this.requestHash = const Value.absent(),
@@ -2036,7 +2134,9 @@ class ConsentRecordsCompanion extends UpdateCompanion<ConsentRecord> {
     this.clientId = const Value.absent(),
     this.isAutoShareEnabled = const Value.absent(),
     this.sharedVcIds = const Value.absent(),
-    this.sharedVcTypesCsv = const Value.absent(),
+    this.claimedVcTypesCsv = const Value.absent(),
+    this.isConsentManagementEnabled = const Value.absent(),
+    this.historySharedData = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ConsentRecordsCompanion.insert({
@@ -2051,7 +2151,9 @@ class ConsentRecordsCompanion extends UpdateCompanion<ConsentRecord> {
     required String clientId,
     required bool isAutoShareEnabled,
     required String sharedVcIds,
-    required String sharedVcTypesCsv,
+    required String claimedVcTypesCsv,
+    this.isConsentManagementEnabled = const Value.absent(),
+    this.historySharedData = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : requestHash = Value(requestHash),
        did = Value(did),
@@ -2062,7 +2164,7 @@ class ConsentRecordsCompanion extends UpdateCompanion<ConsentRecord> {
        clientId = Value(clientId),
        isAutoShareEnabled = Value(isAutoShareEnabled),
        sharedVcIds = Value(sharedVcIds),
-       sharedVcTypesCsv = Value(sharedVcTypesCsv);
+       claimedVcTypesCsv = Value(claimedVcTypesCsv);
   static Insertable<ConsentRecord> custom({
     Expression<String>? requestHash,
     Expression<String>? did,
@@ -2075,7 +2177,9 @@ class ConsentRecordsCompanion extends UpdateCompanion<ConsentRecord> {
     Expression<String>? clientId,
     Expression<bool>? isAutoShareEnabled,
     Expression<String>? sharedVcIds,
-    Expression<String>? sharedVcTypesCsv,
+    Expression<String>? claimedVcTypesCsv,
+    Expression<bool>? isConsentManagementEnabled,
+    Expression<String>? historySharedData,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -2091,7 +2195,10 @@ class ConsentRecordsCompanion extends UpdateCompanion<ConsentRecord> {
       if (isAutoShareEnabled != null)
         'is_auto_share_enabled': isAutoShareEnabled,
       if (sharedVcIds != null) 'shared_vc_ids': sharedVcIds,
-      if (sharedVcTypesCsv != null) 'shared_vc_types_csv': sharedVcTypesCsv,
+      if (claimedVcTypesCsv != null) 'claimed_vc_types_csv': claimedVcTypesCsv,
+      if (isConsentManagementEnabled != null)
+        'is_consent_management_enabled': isConsentManagementEnabled,
+      if (historySharedData != null) 'history_shared_data': historySharedData,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -2108,7 +2215,9 @@ class ConsentRecordsCompanion extends UpdateCompanion<ConsentRecord> {
     Value<String>? clientId,
     Value<bool>? isAutoShareEnabled,
     Value<String>? sharedVcIds,
-    Value<String>? sharedVcTypesCsv,
+    Value<String>? claimedVcTypesCsv,
+    Value<bool>? isConsentManagementEnabled,
+    Value<String>? historySharedData,
     Value<int>? rowid,
   }) {
     return ConsentRecordsCompanion(
@@ -2123,7 +2232,10 @@ class ConsentRecordsCompanion extends UpdateCompanion<ConsentRecord> {
       clientId: clientId ?? this.clientId,
       isAutoShareEnabled: isAutoShareEnabled ?? this.isAutoShareEnabled,
       sharedVcIds: sharedVcIds ?? this.sharedVcIds,
-      sharedVcTypesCsv: sharedVcTypesCsv ?? this.sharedVcTypesCsv,
+      claimedVcTypesCsv: claimedVcTypesCsv ?? this.claimedVcTypesCsv,
+      isConsentManagementEnabled:
+          isConsentManagementEnabled ?? this.isConsentManagementEnabled,
+      historySharedData: historySharedData ?? this.historySharedData,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -2164,8 +2276,16 @@ class ConsentRecordsCompanion extends UpdateCompanion<ConsentRecord> {
     if (sharedVcIds.present) {
       map['shared_vc_ids'] = Variable<String>(sharedVcIds.value);
     }
-    if (sharedVcTypesCsv.present) {
-      map['shared_vc_types_csv'] = Variable<String>(sharedVcTypesCsv.value);
+    if (claimedVcTypesCsv.present) {
+      map['claimed_vc_types_csv'] = Variable<String>(claimedVcTypesCsv.value);
+    }
+    if (isConsentManagementEnabled.present) {
+      map['is_consent_management_enabled'] = Variable<bool>(
+        isConsentManagementEnabled.value,
+      );
+    }
+    if (historySharedData.present) {
+      map['history_shared_data'] = Variable<String>(historySharedData.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -2187,7 +2307,9 @@ class ConsentRecordsCompanion extends UpdateCompanion<ConsentRecord> {
           ..write('clientId: $clientId, ')
           ..write('isAutoShareEnabled: $isAutoShareEnabled, ')
           ..write('sharedVcIds: $sharedVcIds, ')
-          ..write('sharedVcTypesCsv: $sharedVcTypesCsv, ')
+          ..write('claimedVcTypesCsv: $claimedVcTypesCsv, ')
+          ..write('isConsentManagementEnabled: $isConsentManagementEnabled, ')
+          ..write('historySharedData: $historySharedData, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -3653,7 +3775,9 @@ typedef $$ConsentRecordsTableCreateCompanionBuilder =
       required String clientId,
       required bool isAutoShareEnabled,
       required String sharedVcIds,
-      required String sharedVcTypesCsv,
+      required String claimedVcTypesCsv,
+      Value<bool> isConsentManagementEnabled,
+      Value<String> historySharedData,
       Value<int> rowid,
     });
 typedef $$ConsentRecordsTableUpdateCompanionBuilder =
@@ -3669,7 +3793,9 @@ typedef $$ConsentRecordsTableUpdateCompanionBuilder =
       Value<String> clientId,
       Value<bool> isAutoShareEnabled,
       Value<String> sharedVcIds,
-      Value<String> sharedVcTypesCsv,
+      Value<String> claimedVcTypesCsv,
+      Value<bool> isConsentManagementEnabled,
+      Value<String> historySharedData,
       Value<int> rowid,
     });
 
@@ -3737,8 +3863,18 @@ class $$ConsentRecordsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get sharedVcTypesCsv => $composableBuilder(
-    column: $table.sharedVcTypesCsv,
+  ColumnFilters<String> get claimedVcTypesCsv => $composableBuilder(
+    column: $table.claimedVcTypesCsv,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isConsentManagementEnabled => $composableBuilder(
+    column: $table.isConsentManagementEnabled,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get historySharedData => $composableBuilder(
+    column: $table.historySharedData,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -3807,8 +3943,18 @@ class $$ConsentRecordsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get sharedVcTypesCsv => $composableBuilder(
-    column: $table.sharedVcTypesCsv,
+  ColumnOrderings<String> get claimedVcTypesCsv => $composableBuilder(
+    column: $table.claimedVcTypesCsv,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isConsentManagementEnabled => $composableBuilder(
+    column: $table.isConsentManagementEnabled,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get historySharedData => $composableBuilder(
+    column: $table.historySharedData,
     builder: (column) => ColumnOrderings(column),
   );
 }
@@ -3863,8 +4009,18 @@ class $$ConsentRecordsTableAnnotationComposer
     builder: (column) => column,
   );
 
-  GeneratedColumn<String> get sharedVcTypesCsv => $composableBuilder(
-    column: $table.sharedVcTypesCsv,
+  GeneratedColumn<String> get claimedVcTypesCsv => $composableBuilder(
+    column: $table.claimedVcTypesCsv,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isConsentManagementEnabled => $composableBuilder(
+    column: $table.isConsentManagementEnabled,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get historySharedData => $composableBuilder(
+    column: $table.historySharedData,
     builder: (column) => column,
   );
 }
@@ -3911,7 +4067,9 @@ class $$ConsentRecordsTableTableManager
                 Value<String> clientId = const Value.absent(),
                 Value<bool> isAutoShareEnabled = const Value.absent(),
                 Value<String> sharedVcIds = const Value.absent(),
-                Value<String> sharedVcTypesCsv = const Value.absent(),
+                Value<String> claimedVcTypesCsv = const Value.absent(),
+                Value<bool> isConsentManagementEnabled = const Value.absent(),
+                Value<String> historySharedData = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ConsentRecordsCompanion(
                 requestHash: requestHash,
@@ -3925,7 +4083,9 @@ class $$ConsentRecordsTableTableManager
                 clientId: clientId,
                 isAutoShareEnabled: isAutoShareEnabled,
                 sharedVcIds: sharedVcIds,
-                sharedVcTypesCsv: sharedVcTypesCsv,
+                claimedVcTypesCsv: claimedVcTypesCsv,
+                isConsentManagementEnabled: isConsentManagementEnabled,
+                historySharedData: historySharedData,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -3941,7 +4101,9 @@ class $$ConsentRecordsTableTableManager
                 required String clientId,
                 required bool isAutoShareEnabled,
                 required String sharedVcIds,
-                required String sharedVcTypesCsv,
+                required String claimedVcTypesCsv,
+                Value<bool> isConsentManagementEnabled = const Value.absent(),
+                Value<String> historySharedData = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ConsentRecordsCompanion.insert(
                 requestHash: requestHash,
@@ -3955,7 +4117,9 @@ class $$ConsentRecordsTableTableManager
                 clientId: clientId,
                 isAutoShareEnabled: isAutoShareEnabled,
                 sharedVcIds: sharedVcIds,
-                sharedVcTypesCsv: sharedVcTypesCsv,
+                claimedVcTypesCsv: claimedVcTypesCsv,
+                isConsentManagementEnabled: isConsentManagementEnabled,
+                historySharedData: historySharedData,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

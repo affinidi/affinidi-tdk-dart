@@ -46,7 +46,15 @@ class IotaConsentRecord {
   final List<String> sharedVcIds;
 
   /// Comma-separated list of VC types included in the VP.
-  final String sharedVcTypesCsv;
+  final String claimedVcTypesCsv;
+
+  /// Labeled data points shared in the VP, keyed by display name.
+  final Map<String, String> historySharedData;
+
+  /// Whether the verifier has consent management enabled.
+  ///
+  /// When `true`, automatic sharing is suppressed regardless of [isAutoShareEnabled].
+  final bool isConsentManagementEnabled;
 
   /// Creates an [IotaConsentRecord].
   const IotaConsentRecord({
@@ -61,7 +69,9 @@ class IotaConsentRecord {
     required this.clientId,
     required this.isAutoShareEnabled,
     required this.sharedVcIds,
-    required this.sharedVcTypesCsv,
+    required this.claimedVcTypesCsv,
+    this.historySharedData = const {},
+    this.isConsentManagementEnabled = false,
   });
 
   /// Creates an [IotaConsentRecord] from a JSON map.
@@ -78,7 +88,11 @@ class IotaConsentRecord {
       clientId: json['clientId'] as String? ?? '',
       isAutoShareEnabled: json['isAutoShareEnabled'] as bool,
       sharedVcIds: List<String>.from(json['sharedVcIds'] as List? ?? []),
-      sharedVcTypesCsv: json['sharedVcTypesCsv'] as String? ?? '',
+      claimedVcTypesCsv: json['claimedVcTypesCsv'] as String? ?? '',
+      historySharedData: (json['historySharedData'] as Map<String, dynamic>? ?? {}).map(
+        (k, v) => MapEntry(k, v as String),
+      ),
+      isConsentManagementEnabled: json['isConsentManagementEnabled'] as bool? ?? false,
     );
   }
 
@@ -95,7 +109,9 @@ class IotaConsentRecord {
     'clientId': clientId,
     'isAutoShareEnabled': isAutoShareEnabled,
     'sharedVcIds': sharedVcIds,
-    'sharedVcTypesCsv': sharedVcTypesCsv,
+    'claimedVcTypesCsv': claimedVcTypesCsv,
+    'historySharedData': historySharedData,
+    'isConsentManagementEnabled': isConsentManagementEnabled,
   };
 
   /// Returns a copy of this record with the specified fields replaced.
@@ -111,7 +127,9 @@ class IotaConsentRecord {
     String? clientId,
     bool? isAutoShareEnabled,
     List<String>? sharedVcIds,
-    String? sharedVcTypesCsv,
+    String? claimedVcTypesCsv,
+    Map<String, String>? historySharedData,
+    bool? isConsentManagementEnabled,
   }) {
     return IotaConsentRecord(
       hash: hash ?? this.hash,
@@ -125,7 +143,9 @@ class IotaConsentRecord {
       clientId: clientId ?? this.clientId,
       isAutoShareEnabled: isAutoShareEnabled ?? this.isAutoShareEnabled,
       sharedVcIds: sharedVcIds ?? this.sharedVcIds,
-      sharedVcTypesCsv: sharedVcTypesCsv ?? this.sharedVcTypesCsv,
+      claimedVcTypesCsv: claimedVcTypesCsv ?? this.claimedVcTypesCsv,
+      historySharedData: historySharedData ?? this.historySharedData,
+      isConsentManagementEnabled: isConsentManagementEnabled ?? this.isConsentManagementEnabled,
     );
   }
 }

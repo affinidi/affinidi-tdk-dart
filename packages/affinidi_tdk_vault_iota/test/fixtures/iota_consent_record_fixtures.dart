@@ -24,7 +24,7 @@ class IotaConsentRecordFixtures {
     clientId: '',
     isAutoShareEnabled: false,
     sharedVcIds: [],
-    sharedVcTypesCsv: '',
+    claimedVcTypesCsv: '',
   );
 
   static IotaConsentRecord existing() => IotaConsentRecord(
@@ -37,6 +37,6 @@ class IotaConsentRecordFixtures {
     clientId: clientId,
     isAutoShareEnabled: false,
     sharedVcIds: ['vc-1'],
-    sharedVcTypesCsv: 'SomeType',
+    claimedVcTypesCsv: 'SomeType',
   );
 }

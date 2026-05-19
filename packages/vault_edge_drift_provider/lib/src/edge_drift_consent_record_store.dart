@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
 import 'package:drift/drift.dart';
 
@@ -28,7 +30,9 @@ class DriftConsentRecordStore implements ConsentRecordStore {
             clientId: record.clientId,
             isAutoShareEnabled: record.isAutoShareEnabled,
             sharedVcIds: record.sharedVcIds.join(','),
-            sharedVcTypesCsv: record.sharedVcTypesCsv,
+            claimedVcTypesCsv: record.claimedVcTypesCsv,
+            isConsentManagementEnabled: Value(record.isConsentManagementEnabled),
+            historySharedData: Value(jsonEncode(record.historySharedData)),
           ),
         );
   }
@@ -60,7 +64,11 @@ class DriftConsentRecordStore implements ConsentRecordStore {
       clientId: row.clientId,
       isAutoShareEnabled: row.isAutoShareEnabled,
       sharedVcIds: row.sharedVcIds.isEmpty ? [] : row.sharedVcIds.split(','),
-      sharedVcTypesCsv: row.sharedVcTypesCsv,
+      claimedVcTypesCsv: row.claimedVcTypesCsv,
+      isConsentManagementEnabled: row.isConsentManagementEnabled,
+      historySharedData:
+          (jsonDecode(row.historySharedData) as Map<String, dynamic>)
+              .map((k, v) => MapEntry(k, v as String)),
     );
   }
 }

@@ -18,7 +18,7 @@ class ConsentRecordFixtures {
     String clientId = 'did:key:verifier123',
     bool isAutoShareEnabled = false,
     List<String> sharedVcIds = const ['vc-1', 'vc-2'],
-    String sharedVcTypesCsv = 'SomeType,AnotherType',
+    String claimedVcTypesCsv = 'SomeType,AnotherType',
   }) {
     return IotaConsentRecord(
       hash: hash,
@@ -32,7 +32,7 @@ class ConsentRecordFixtures {
       clientId: clientId,
       isAutoShareEnabled: isAutoShareEnabled,
       sharedVcIds: sharedVcIds,
-      sharedVcTypesCsv: sharedVcTypesCsv,
+      claimedVcTypesCsv: claimedVcTypesCsv,
     );
   }
 }

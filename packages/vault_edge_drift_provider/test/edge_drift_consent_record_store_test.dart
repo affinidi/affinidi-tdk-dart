@@ -67,7 +67,7 @@ void main() {
         expect(retrieved.clientId, record.clientId);
         expect(retrieved.isAutoShareEnabled, record.isAutoShareEnabled);
         expect(retrieved.sharedVcIds, record.sharedVcIds);
-        expect(retrieved.sharedVcTypesCsv, record.sharedVcTypesCsv);
+        expect(retrieved.claimedVcTypesCsv, record.claimedVcTypesCsv);
       });
 
       test(
