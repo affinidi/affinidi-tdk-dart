@@ -27,4 +27,3 @@ abstract interface class ConsentRecordStore {
     String did,
   );
 }
-
