@@ -1,3 +1,7 @@
+## 2.0.6
+
+ - **FIX**: update package repository urls (#122).
+
 ## 2.0.5
 
  - Update a dependency to the latest release.

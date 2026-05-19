@@ -1,3 +1,7 @@
+## 2.0.2
+
+ - **FIX**: update package repository urls (#122).
+
 ## 2.0.1
 
  - **FIX**: update package homepage url (#121).
