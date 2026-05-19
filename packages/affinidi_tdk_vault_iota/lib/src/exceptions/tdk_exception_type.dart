@@ -33,11 +33,15 @@ enum TdkExceptionType {
   unsupportedMultipleIdvTypes('unsupported_multiple_idv_types'),
 
   /// Thrown when submitting the VP to the verifier callback fails.
-  submissionFailed('submission_failed');
+  submissionFailed('submission_failed'),
+
+  /// Thrown when persisting a consent record to the consumer-provided
+  /// `ConsentRecordStore` fails.
+  failedToPersistConsentRecord('failed_to_persist_consent_record');
 
   /// Creates a new instance of [TdkExceptionType].
   const TdkExceptionType(this.code);
 
-  /// The error code associated with this exception type.
+  /// The error code string associated with this exception type.
   final String code;
 }
