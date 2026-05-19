@@ -58,7 +58,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     _logger.log(LogLevel.fine, 'Saving consent record for clientId: $clientId');
 
     try {
-      final requestHash = _computeRequestHash(
+      final requestHash = computeRequestHash(
         clientId: clientId,
         presentationDefinition: presentationDefinition,
       );
@@ -122,7 +122,8 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   /// * [presentationDefinition] - The raw PD JSON map.
   ///
   /// Returns a hex SHA-1 digest stable across repeat requests with the same PD.
-  String _computeRequestHash({
+  @override
+  String computeRequestHash({
     required String clientId,
     required Map<String, dynamic> presentationDefinition,
   }) => _cryptography.createHash(
