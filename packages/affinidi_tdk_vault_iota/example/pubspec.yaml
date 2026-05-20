@@ -1,0 +1,13 @@
+name: affinidi_tdk_vault_iota_example
+description: Vault Iota Example
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.8.0
+
+resolution: workspace
+
+dependencies:
+  affinidi_tdk_cryptography: ^3.0.0
+  affinidi_tdk_vault_iota: ^1.0.0-dev
