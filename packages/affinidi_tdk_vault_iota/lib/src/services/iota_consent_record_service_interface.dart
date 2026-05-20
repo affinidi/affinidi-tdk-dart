@@ -1,3 +1,4 @@
+import '../models/auto_share_result.dart';
 import '../models/verifier_client_metadata.dart';
 
 /// Defines the contract for persisting a consent record after a successful
@@ -34,4 +35,19 @@ abstract interface class IotaConsentRecordServiceInterface {
     Map<String, String> historySharedData = const {},
     bool isConsentManagementEnabled = false,
   });
+
+  /// Checks whether the share can proceed automatically based on the user's
+  /// consent history.
+  ///
+  /// Parameters:
+  /// * [requestHash] - Consumer-computed hash identifying the verifier+request combination.
+  ///
+  /// Returns [AutoShareEligible] when a consent record exists,
+  /// [IotaConsentRecord.isAutoShareEnabled] is `true`, and
+  /// [IotaConsentRecord.isConsentManagementEnabled] is `false`.
+  /// Returns [FullShareRequired] in all other cases.
+  ///
+  /// Throws `TdkException` with code `failed_to_check_auto_share` if the
+  /// underlying store operation fails.
+  Future<AutoShareResult> checkAutoShare({required String requestHash});
 }

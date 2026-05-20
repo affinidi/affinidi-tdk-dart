@@ -35,7 +35,7 @@ void main() {
     group('saveConsentRecord', () {
       test('persists a new record when none exists', () async {
         when(
-          () => store.findByRequestHashAndDid(any(), any()),
+          () => store.findByRequestHash(any()),
         ).thenAnswer((_) async => null);
 
         await service.saveConsentRecord(
@@ -55,14 +55,13 @@ void main() {
                 as IotaConsentRecord;
 
         expect(captured.clientId, IotaConsentRecordFixtures.clientId);
-        expect(captured.holderDid, IotaConsentRecordFixtures.did);
         expect(captured.isAutoShareEnabled, isTrue);
         expect(captured.sharedVcIds, ['vc-1']);
       });
 
       test('preserves sharedAt when updating an existing record', () async {
         when(
-          () => store.findByRequestHashAndDid(any(), any()),
+          () => store.findByRequestHash(any()),
         ).thenAnswer((_) async => IotaConsentRecordFixtures.existing());
 
         await service.saveConsentRecord(
@@ -89,7 +88,7 @@ void main() {
         'throws TdkException with failedToPersistConsentRecord when the store throws',
         () async {
           when(
-            () => store.findByRequestHashAndDid(any(), any()),
+            () => store.findByRequestHash(any()),
           ).thenAnswer((_) async => null);
 
           when(
@@ -118,6 +117,100 @@ void main() {
           );
         },
       );
+    });
+
+    group('checkAutoShare', () {
+      test('returns AutoShareEligible when record exists with auto-share enabled',
+          () async {
+        when(
+          () => store.findByRequestHash(any()),
+        ).thenAnswer((_) async => IotaConsentRecordFixtures.autoShareEnabled());
+
+        final result = await service.checkAutoShare(
+          requestHash: IotaConsentRecordFixtures.requestHash,
+        );
+
+        expect(result, isA<AutoShareEligible>());
+        expect(
+          (result as AutoShareEligible).previousConsent,
+          IotaConsentRecordFixtures.autoShareEnabled(),
+        );
+      });
+
+      test('returns FullShareRequired with noExistingConsent when no record found',
+          () async {
+        when(
+          () => store.findByRequestHash(any()),
+        ).thenAnswer((_) async => null);
+
+        final result = await service.checkAutoShare(
+          requestHash: IotaConsentRecordFixtures.requestHash,
+        );
+
+        expect(result, isA<FullShareRequired>());
+        expect(
+          (result as FullShareRequired).reason,
+          FullShareRequiredReason.noExistingConsent,
+        );
+      });
+
+      test('returns FullShareRequired with autoShareNotEnabled when opted out',
+          () async {
+        when(
+          () => store.findByRequestHash(any()),
+        ).thenAnswer((_) async => IotaConsentRecordFixtures.existing());
+
+        final result = await service.checkAutoShare(
+          requestHash: IotaConsentRecordFixtures.requestHash,
+        );
+
+        expect(result, isA<FullShareRequired>());
+        expect(
+          (result as FullShareRequired).reason,
+          FullShareRequiredReason.autoShareNotEnabled,
+        );
+      });
+
+      test(
+          'returns FullShareRequired with consentManagementEnabled when verifier requires active review',
+          () async {
+        final record = IotaConsentRecordFixtures.autoShareEnabled().copyWith(
+          isConsentManagementEnabled: true,
+        );
+        when(
+          () => store.findByRequestHash(any()),
+        ).thenAnswer((_) async => record);
+
+        final result = await service.checkAutoShare(
+          requestHash: IotaConsentRecordFixtures.requestHash,
+        );
+
+        expect(result, isA<FullShareRequired>());
+        expect(
+          (result as FullShareRequired).reason,
+          FullShareRequiredReason.consentManagementEnabled,
+        );
+      });
+
+      test('throws TdkException with failed_to_check_auto_share when store throws',
+          () async {
+        when(
+          () => store.findByRequestHash(any()),
+        ).thenThrow(Exception('db error'));
+
+        expect(
+          () => service.checkAutoShare(
+            requestHash: IotaConsentRecordFixtures.requestHash,
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.failedToCheckAutoShare.code,
+            ),
+          ),
+        );
+      });
     });
   });
 }

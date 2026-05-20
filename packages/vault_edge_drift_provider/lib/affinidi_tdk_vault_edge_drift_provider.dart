@@ -7,7 +7,6 @@ export 'package:affinidi_tdk_vault_edge_provider/affinidi_tdk_vault_edge_provide
 export 'src/database/database.dart' show Database;
 export 'src/database/database_config.dart';
 export 'src/database/database_platform.dart';
-export 'src/edge_drift_consent_record_store.dart';
 export 'src/edge_drift_credential_repository.dart';
 export 'src/edge_drift_file_repository.dart';
 export 'src/edge_drift_profile_repository.dart';
