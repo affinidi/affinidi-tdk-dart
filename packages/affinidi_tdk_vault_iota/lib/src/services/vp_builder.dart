@@ -53,7 +53,7 @@ class VpBuilder implements VpBuilderInterface {
 
     final unsigned = MutableVpDataModelV1(
       context: MutableJsonLdContext.fromJson([dmV1ContextUrl]),
-      id: Uri.parse(const Uuid().v4()),
+      id: Uri.parse('urn:uuid:${const Uuid().v4()}'),
       type: {'VerifiablePresentation'},
       holder: MutableHolder.uri(signer.did),
       verifiableCredential: credentials,
