@@ -89,10 +89,12 @@ class IotaConsentRecord {
       isAutoShareEnabled: json['isAutoShareEnabled'] as bool,
       sharedVcIds: List<String>.from(json['sharedVcIds'] as List? ?? []),
       claimedVcTypesCsv: json['claimedVcTypesCsv'] as String? ?? '',
-      historySharedData: (json['historySharedData'] as Map<String, dynamic>? ?? {}).map(
-        (k, v) => MapEntry(k, v as String),
-      ),
-      isConsentManagementEnabled: json['isConsentManagementEnabled'] as bool? ?? false,
+      historySharedData:
+          (json['historySharedData'] as Map<String, dynamic>? ?? {}).map(
+            (k, v) => MapEntry(k, v as String),
+          ),
+      isConsentManagementEnabled:
+          json['isConsentManagementEnabled'] as bool? ?? false,
     );
   }
 
@@ -145,7 +147,8 @@ class IotaConsentRecord {
       sharedVcIds: sharedVcIds ?? this.sharedVcIds,
       claimedVcTypesCsv: claimedVcTypesCsv ?? this.claimedVcTypesCsv,
       historySharedData: historySharedData ?? this.historySharedData,
-      isConsentManagementEnabled: isConsentManagementEnabled ?? this.isConsentManagementEnabled,
+      isConsentManagementEnabled:
+          isConsentManagementEnabled ?? this.isConsentManagementEnabled,
     );
   }
 }
