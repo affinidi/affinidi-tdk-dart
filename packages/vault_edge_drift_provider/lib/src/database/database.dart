@@ -5,7 +5,7 @@ import 'package:uuid/uuid.dart';
 part 'database.g.dart';
 
 @DriftDatabase(
-  tables: [Profiles, Items, FileContents, Credentials, ConsentRecords],
+  tables: [Profiles, Items, FileContents, Credentials],
 )
 /// Database class to access drift tables
 class Database extends _$Database {
@@ -14,16 +14,7 @@ class Database extends _$Database {
 
   /// Returns the current schema version
   @override
-  int get schemaVersion => 2;
-
-  @override
-  MigrationStrategy get migration => MigrationStrategy(
-    onUpgrade: (m, from, to) async {
-      if (from < 2) {
-        await m.createTable(consentRecords);
-      }
-    },
-  );
+  int get schemaVersion => 1;
 }
 
 /// Table definition to hold folders and files with a hierarchy
@@ -139,57 +130,4 @@ class Credentials extends Table {
 
   @override
   Set<Column> get primaryKey => {id};
-}
-
-/// Table definition to hold Iota OID4VP consent records.
-@DataClassName('ConsentRecord')
-class ConsentRecords extends Table {
-  /// Hash of the share request: `sha1(clientId | presentationDefinition)`.
-  ///
-  /// Stable across repeat requests from the same verifier with the same PD.
-  TextColumn get requestHash => text()();
-
-  /// The holder's DID used to sign the Verifiable Presentation.
-  TextColumn get did => text()();
-
-  /// Full fingerprint of the share event.
-  TextColumn get hash => text()();
-
-  /// URL of the verifier's logo image, if available.
-  TextColumn get logo => text().nullable()();
-
-  /// Origin (base URL) of the verifier's site, if available.
-  TextColumn get siteUrl => text().nullable()();
-
-  /// ISO 8601 timestamp of when the share was first completed.
-  TextColumn get sharedAt => text()();
-
-  /// Display name of the profile used for this share.
-  TextColumn get profileName => text()();
-
-  /// Identifier of the profile used for this share.
-  TextColumn get profileId => text()();
-
-  /// The verifier's `client_id` from the OID4VP authorization request.
-  TextColumn get clientId => text()();
-
-  /// Whether the user has enabled automatic sharing for this verifier.
-  BoolColumn get isAutoShareEnabled => boolean()();
-
-  /// Identifiers of the shared VCs, stored as a comma-separated string.
-  TextColumn get sharedVcIds => text()();
-
-  /// Comma-separated list of VC types included in the VP.
-  TextColumn get claimedVcTypesCsv => text()();
-
-  /// Whether the verifier has consent management enabled.
-  BoolColumn get isConsentManagementEnabled =>
-      boolean().withDefault(const Constant(false))();
-
-  /// Labeled data points shared in the VP, stored as a JSON object.
-  TextColumn get historySharedData =>
-      text().withDefault(const Constant('{}'))();
-
-  @override
-  Set<Column> get primaryKey => {requestHash, did};
 }

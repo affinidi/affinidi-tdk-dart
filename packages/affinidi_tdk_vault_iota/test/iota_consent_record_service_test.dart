@@ -35,7 +35,7 @@ void main() {
     group('saveConsentRecord', () {
       test('persists a new record when none exists', () async {
         when(
-          () => store.findByRequestHashAndDid(any(), any()),
+          () => store.findByRequestHash(any()),
         ).thenAnswer((_) async => null);
 
         await service.saveConsentRecord(
@@ -55,14 +55,13 @@ void main() {
                 as IotaConsentRecord;
 
         expect(captured.clientId, IotaConsentRecordFixtures.clientId);
-        expect(captured.profileDid, IotaConsentRecordFixtures.did);
         expect(captured.isAutoShareEnabled, isTrue);
         expect(captured.sharedVcIds, ['vc-1']);
       });
 
       test('preserves sharedAt when updating an existing record', () async {
         when(
-          () => store.findByRequestHashAndDid(any(), any()),
+          () => store.findByRequestHash(any()),
         ).thenAnswer((_) async => IotaConsentRecordFixtures.existing());
 
         await service.saveConsentRecord(
@@ -89,7 +88,7 @@ void main() {
         'throws TdkException with failedToPersistConsentRecord when the store throws',
         () async {
           when(
-            () => store.findByRequestHashAndDid(any(), any()),
+            () => store.findByRequestHash(any()),
           ).thenAnswer((_) async => null);
 
           when(
@@ -124,12 +123,11 @@ void main() {
       test('returns AutoShareEligible when record exists with auto-share enabled',
           () async {
         when(
-          () => store.findByRequestHashAndDid(any(), any()),
+          () => store.findByRequestHash(any()),
         ).thenAnswer((_) async => IotaConsentRecordFixtures.autoShareEnabled());
 
         final result = await service.checkAutoShare(
           requestHash: IotaConsentRecordFixtures.requestHash,
-          holderDid: IotaConsentRecordFixtures.did,
         );
 
         expect(result, isA<AutoShareEligible>());
@@ -142,12 +140,11 @@ void main() {
       test('returns FullShareRequired with noExistingConsent when no record found',
           () async {
         when(
-          () => store.findByRequestHashAndDid(any(), any()),
+          () => store.findByRequestHash(any()),
         ).thenAnswer((_) async => null);
 
         final result = await service.checkAutoShare(
           requestHash: IotaConsentRecordFixtures.requestHash,
-          holderDid: IotaConsentRecordFixtures.did,
         );
 
         expect(result, isA<FullShareRequired>());
@@ -160,12 +157,11 @@ void main() {
       test('returns FullShareRequired with autoShareNotEnabled when opted out',
           () async {
         when(
-          () => store.findByRequestHashAndDid(any(), any()),
+          () => store.findByRequestHash(any()),
         ).thenAnswer((_) async => IotaConsentRecordFixtures.existing());
 
         final result = await service.checkAutoShare(
           requestHash: IotaConsentRecordFixtures.requestHash,
-          holderDid: IotaConsentRecordFixtures.did,
         );
 
         expect(result, isA<FullShareRequired>());
@@ -182,12 +178,11 @@ void main() {
           isConsentManagementEnabled: true,
         );
         when(
-          () => store.findByRequestHashAndDid(any(), any()),
+          () => store.findByRequestHash(any()),
         ).thenAnswer((_) async => record);
 
         final result = await service.checkAutoShare(
           requestHash: IotaConsentRecordFixtures.requestHash,
-          holderDid: IotaConsentRecordFixtures.did,
         );
 
         expect(result, isA<FullShareRequired>());
@@ -200,13 +195,12 @@ void main() {
       test('throws TdkException with failed_to_check_auto_share when store throws',
           () async {
         when(
-          () => store.findByRequestHashAndDid(any(), any()),
+          () => store.findByRequestHash(any()),
         ).thenThrow(Exception('db error'));
 
         expect(
           () => service.checkAutoShare(
             requestHash: IotaConsentRecordFixtures.requestHash,
-            holderDid: IotaConsentRecordFixtures.did,
           ),
           throwsA(
             isA<TdkException>().having(

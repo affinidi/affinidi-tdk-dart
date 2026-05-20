@@ -68,14 +68,13 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
         vcFingerprint: sortedVcIds.join('|'),
       );
 
-      final existing = await _store.findByRequestHashAndDid(requestHash, did);
+      final existing = await _store.findByRequestHash(requestHash);
 
       final record = IotaConsentRecord(
         hash: hash,
         requestHash: requestHash,
         logo: verifierMetadata.logo,
         siteUrl: verifierMetadata.origin,
-        profileDid: did,
         sharedAt: existing?.sharedAt ?? DateTime.now().toIso8601String(),
         profileName: profileName,
         profileId: profileId,
@@ -135,7 +134,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   @override
   Future<AutoShareResult> checkAutoShare({
     required String requestHash,
-    required String holderDid,
   }) async {
     _logger.log(
       LogLevel.fine,
@@ -143,10 +141,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     );
 
     try {
-      final record = await _store.findByRequestHashAndDid(
-        requestHash,
-        holderDid,
-      );
+      final record = await _store.findByRequestHash(requestHash);
 
       if (record == null) {
         return const FullShareRequired(

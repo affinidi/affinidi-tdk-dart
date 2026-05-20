@@ -41,7 +41,6 @@ abstract interface class IotaConsentRecordServiceInterface {
   ///
   /// Parameters:
   /// * [requestHash] - Consumer-computed hash identifying the verifier+request combination.
-  /// * [holderDid] - The holder DID scoping the consent record lookup to a specific vault.
   ///
   /// Returns [AutoShareEligible] when a consent record exists,
   /// [IotaConsentRecord.isAutoShareEnabled] is `true`, and
@@ -50,8 +49,5 @@ abstract interface class IotaConsentRecordServiceInterface {
   ///
   /// Throws `TdkException` with code `failed_to_check_auto_share` if the
   /// underlying store operation fails.
-  Future<AutoShareResult> checkAutoShare({
-    required String requestHash,
-    required String holderDid,
-  });
+  Future<AutoShareResult> checkAutoShare({required String requestHash});
 }

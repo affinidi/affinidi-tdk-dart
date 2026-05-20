@@ -3,23 +3,18 @@ import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
 
 /// A minimal in-memory [ConsentRecordStore] for demonstration purposes.
 ///
-/// In a real application replace this with `DriftConsentRecordStore` from
-/// `package:vault_edge_drift_provider`, or your own persistence backend.
+/// In a real application replace this with your own persistence backend.
 class InMemoryConsentRecordStore implements ConsentRecordStore {
   final Map<String, IotaConsentRecord> _records = {};
 
-  String _key(String requestHash, String did) => '$requestHash|$did';
-
   @override
   Future<void> saveOrUpdate(IotaConsentRecord record) async {
-    _records[_key(record.requestHash, record.profileDid)] = record;
+    _records[record.requestHash] = record;
   }
 
   @override
-  Future<IotaConsentRecord?> findByRequestHashAndDid(
-    String requestHash,
-    String did,
-  ) async => _records[_key(requestHash, did)];
+  Future<IotaConsentRecord?> findByRequestHash(String requestHash) async =>
+      _records[requestHash];
 }
 
 /// This example demonstrates how to persist a consent record after a
@@ -80,11 +75,10 @@ Future<void> main() async {
     print('Consent record saved successfully.');
 
     // Retrieve the record to confirm persistence.
-    final saved = await store.findByRequestHashAndDid(requestHash, holderDid);
+    final saved = await store.findByRequestHash(requestHash);
     if (saved != null) {
       print('requestHash : ${saved.requestHash}');
       print('clientId    : ${saved.clientId}');
-      print('did         : ${saved.profileDid}');
       print('profileName : ${saved.profileName}');
       print('sharedAt    : ${saved.sharedAt}');
       print('vcTypes     : ${saved.claimedVcTypesCsv}');
@@ -103,7 +97,7 @@ Future<void> main() async {
       isAutoShareEnabled: true,
     );
 
-    final updated = await store.findByRequestHashAndDid(requestHash, holderDid);
+    final updated = await store.findByRequestHash(requestHash);
     if (updated != null) {
       print('\nAfter re-share:');
       print('sharedAt (unchanged) : ${updated.sharedAt}');
