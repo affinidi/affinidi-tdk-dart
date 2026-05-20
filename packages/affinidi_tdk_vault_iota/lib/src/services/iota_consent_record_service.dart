@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 
@@ -11,14 +9,15 @@ import 'iota_consent_record_service_interface.dart';
 
 /// Persists a consent record after a successful Iota OID4VP share.
 ///
-/// Computes two fingerprints and delegates storage to the consumer-provided
-/// [ConsentRecordStore]:
+/// Computes an internal fingerprint and delegates storage to the
+/// consumer-provided [ConsentRecordStore]:
 ///
-/// - `requestHash` = `sha1("$clientId|${jsonEncode(presentationDefinition)}")`
-///   — stable identifier for a verifier + PD combination.
 /// - `hash` = `sha1("$profileId|$did|$clientId|$logo|$siteUrl|$vcFingerprint")`
 ///   — full fingerprint that changes if the profile, verifier branding, or
 ///   selected credentials change.
+///
+/// The `requestHash` deduplication key is supplied by the caller — the
+/// consumer is free to use any algorithm.
 ///
 /// If a record with the same `requestHash` and `did` already exists it is
 /// updated rather than duplicated.
@@ -32,7 +31,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   /// Parameters:
   /// * [store] - Consumer-provided storage backend for consent records.
   /// * [cryptography] - Cryptography service used to compute SHA-1 hashes.
-  /// * [logger] - Optional logger; defaults to [Logger.instance].
+  /// * [logger] - Optional logger; defaults to [Logger.instance].s
   IotaConsentRecordService({
     required ConsentRecordStore store,
     required CryptographyServiceInterface cryptography,
@@ -43,8 +42,8 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
 
   @override
   Future<void> saveConsentRecord({
+    required String requestHash,
     required String clientId,
-    required Map<String, dynamic> presentationDefinition,
     required VerifierClientMetadata verifierMetadata,
     required String profileId,
     required String profileName,
@@ -58,11 +57,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     _logger.log(LogLevel.fine, 'Saving consent record for clientId: $clientId');
 
     try {
-      final requestHash = computeRequestHash(
-        clientId: clientId,
-        presentationDefinition: presentationDefinition,
-      );
-
       final sortedVcIds = List<String>.from(sharedVcIds)..sort();
       final hash = _computeConsentHash(
         profileId: profileId,
@@ -114,21 +108,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       );
     }
   }
-
-  /// Computes the request fingerprint as `sha1("$clientId|${jsonEncode(pd)}")`.
-  ///
-  /// Parameters:
-  /// * [clientId] - The verifier's client ID.
-  /// * [presentationDefinition] - The raw PD JSON map.
-  ///
-  /// Returns a hex SHA-1 digest stable across repeat requests with the same PD.
-  @override
-  String computeRequestHash({
-    required String clientId,
-    required Map<String, dynamic> presentationDefinition,
-  }) => _cryptography.createHash(
-    hashSource: '$clientId|${jsonEncode(presentationDefinition)}',
-  );
 
   /// Computes the full share fingerprint covering all share-event fields.
   ///
