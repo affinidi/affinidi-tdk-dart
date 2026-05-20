@@ -818,6 +818,27 @@ void main() {
       );
     });
 
+    test('should throw when submission_requirements has duplicate group names', () {
+      final pd = _pd(
+        [_descriptor(id: 'd1', type: 'UniversityDegree')],
+        submissionRequirements: [
+          {'from': 'A', 'count': 1},
+          {'from': 'A', 'count': 2},
+        ],
+      );
+
+      expect(
+        () => classifier.classify(pd),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
+      );
+    });
+
     test('should throw when count is less than min', () {
       final pd = _pd(
         [_descriptor(id: 'd1', type: 'UniversityDegree')],

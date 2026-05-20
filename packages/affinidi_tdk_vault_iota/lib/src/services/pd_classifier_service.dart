@@ -417,6 +417,16 @@ class PDClassifier {
       }
     }
 
-    return {for (final req in requirements) req.groupName: req};
+    final result = <String, SubmissionRequirements>{};
+    for (final req in requirements) {
+      if (result.containsKey(req.groupName)) {
+        _throw(
+          'submission_requirements contains duplicate group name "${req.groupName}".',
+          TdkExceptionType.invalidPresentationDefinition.code,
+        );
+      }
+      result[req.groupName] = req;
+    }
+    return result;
   }
 }
