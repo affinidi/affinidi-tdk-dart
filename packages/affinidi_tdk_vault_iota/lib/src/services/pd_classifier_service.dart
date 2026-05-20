@@ -126,13 +126,6 @@ class PDClassifier {
               TdkExceptionType.invalidPresentationDefinition.code,
             );
           }
-          final id = d['id'] as String;
-          if (!seenIds.add(id)) {
-            _throw(
-              'Duplicate input_descriptor id: "$id".',
-              TdkExceptionType.invalidPresentationDefinition.code,
-            );
-          }
           return _extractRequestedType(d);
         })
         .map(_computeRequiredDataPoints)
@@ -175,8 +168,15 @@ class PDClassifier {
 
     if (isZeroPartyVC) {
       result.dataPoints.addAll(requiredDataPoints.dataPoints!);
-      if (requiredDataPoints.types.isNotEmpty) {
-        result.zeroPartyVCs.add(requiredDataPoints.types.first);
+      final matchedZeroPartyType = requiredDataPoints.types
+          .where(
+            (t) =>
+                ZeroPartyVcDataPoints.byType.containsKey(t) ||
+                t == PdClassifierConstants.profileType,
+          )
+          .firstOrNull;
+      if (matchedZeroPartyType != null) {
+        result.zeroPartyVCs.add(matchedZeroPartyType);
       }
       return result;
     }
@@ -344,10 +344,12 @@ class PDClassifier {
       return tmp.copyWith(dataPoints: const <String>{});
     }
 
-    final dataPoints = ZeroPartyVcDataPoints.byType[tmp.types.first];
-    if (dataPoints == null) return tmp;
+    final matchedType = tmp.types
+        .where(ZeroPartyVcDataPoints.byType.containsKey)
+        .firstOrNull;
+    if (matchedType == null) return tmp;
 
-    return tmp.copyWith(dataPoints: dataPoints);
+    return tmp.copyWith(dataPoints: ZeroPartyVcDataPoints.byType[matchedType]!);
   }
 
   /// Returns the ZPD data paths linked to a ZPD-linked VC type (e.g. Email,
