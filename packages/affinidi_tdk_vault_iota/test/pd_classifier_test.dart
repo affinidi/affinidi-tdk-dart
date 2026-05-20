@@ -914,4 +914,31 @@ void main() {
       });
     }
   });
+
+  group('returned collections are unmodifiable', () {
+    test('all PDRequirements collections are unmodifiable', () {
+      final result = classifier.classify(
+        _pd([_descriptor(id: 'cred1', type: 'UniversityDegree')]),
+      );
+
+      expect(
+        () => (result.claimedDescriptors as List).add(result.claimedDescriptors.first),
+        throwsUnsupportedError,
+      );
+      expect(
+        () => (result.zpdLinkedDescriptors as List).add(result.claimedDescriptors.first),
+        throwsUnsupportedError,
+      );
+      expect(
+        () => (result.idvDescriptors as List).add(result.claimedDescriptors.first),
+        throwsUnsupportedError,
+      );
+      expect(() => (result.dataPoints as Set).add('x'), throwsUnsupportedError);
+      expect(() => (result.zeroPartyVCs as Set).add('x'), throwsUnsupportedError);
+      expect(
+        () => (result.submissionRequirementsByGroup as Map).clear(),
+        throwsUnsupportedError,
+      );
+    });
+  });
 }
