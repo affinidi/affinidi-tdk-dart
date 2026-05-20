@@ -6,6 +6,32 @@ For detailed change histories and complete release notes for a specific client o
 
 ---
 
+## 2026‑05‑15
+
+### Breaking Changes
+
+- `affinidi_tdk_vault_edge_drift_provider` now requires Dart SDK version `^3.11.0` or higher.
+- `affinidi_tdk_vault`, `affinidi_tdk_vault_data_manager`, `affinidi_tdk_vault_edge_provider`, and `affinidi_tdk_vault_edge_drift_provider` now expose profile creation and shared access APIs that return created or refreshed objects instead of `void`. See the package changelogs for migration steps.
+- VFS profile provisioning now uses the combined account-and-profile flow, and configuration error checks now use the corrected `profile_not_configured` code.
+
+### Added
+
+- Added targeted Vault lookup APIs for profile retrieval, shared storage lookup by owner profile id, and per-profile storage usage checks.
+- Added account patching support in Vault Data Manager so shared storage metadata can be updated without rewriting the full account payload.
+- Folder creation APIs now return the created `Folder`.
+
+### Changed
+
+- Reduced Vault and VFS latency by reusing dedicated auth, file, and public key HTTP connections. Connection and receive timeouts are now configurable via `AFFINIDI_API_TIMEOUT_MS`, and idle timeout is configurable via `AFFINIDI_API_IDLE_TIMEOUT_MS`, while preserving the existing defaults. Encryption material is initialized lazily, and download flows disable persistent connections where it improves stability.
+- Shared profile and shared item acceptance flows now return an updated `Profile`, so shared storage state is immediately available to callers.
+- VFS profile listing is more resilient: incomplete profiles are skipped with warning logs instead of failing the full listing operation.
+- Folder creation now returns the backend-created `Folder`, removing follow-up lookups that were previously needed to reconstruct folder metadata.
+
+### Migration
+
+- Upgrade to Dart `3.10.0` or newer only if you integrate `affinidi_tdk_vault_edge_drift_provider`.
+- All other TDK packages and clients remain compatible with Dart `3.8.0`.
+
 ## 2026‑02‑19
 
 ### Breaking Changes

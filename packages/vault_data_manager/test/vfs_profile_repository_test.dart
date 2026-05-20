@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:affinidi_tdk_consumer_auth_provider/affinidi_tdk_consumer_auth_provider.dart';
@@ -13,6 +14,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:ssi/ssi.dart';
 import 'package:test/test.dart';
 
+import 'fixtures/dekek_info_fixtures.dart';
 import 'fixtures/key_fixtures.dart';
 import 'fixtures/profile_fixtures.dart';
 import 'mocks/mock_iam_api_service.dart';
@@ -50,7 +52,7 @@ void main() {
     registerFallbackValue(Uint8List.fromList([1, 2, 3]));
     registerFallbackValue(
       AccountMetadata(
-        dekekInfo: DekekInfo(encryptedDekek: 'dGVzdF9rZXk='),
+        dekekInfo: DeekekInfoFixtures.general,
         sharedStorageData: [],
       ),
     );
@@ -149,25 +151,27 @@ void main() {
           ).thenAnswer((_) async => 0);
           when(
             () => mockDataManagerService.createProfile(
-              name: any(named: 'name'),
-              description: any(named: 'description'),
+              accountIndex: any(named: 'accountIndex'),
+              accountMetadata: any(named: 'accountMetadata'),
+              profileDid: any(named: 'profileDid'),
+              profileDidProof: any(named: 'profileDidProof'),
+              profileKeyPair: mockKeyPair,
+              profileName: any(named: 'profileName'),
+              profileDescription: any(named: 'profileDescription'),
+              profilePictureURI: any(named: 'profilePictureURI'),
+              cancelToken: any(named: 'cancelToken'),
             ),
           ).thenAnswer(
-            (_) async => Response<CreateNodeOK>(
-              data: CreateNodeOK(
-                (b) => b..nodeId = ProfileFixtures.testProfileId,
+            (_) async => Response<CreateAccountWithProfileOK>(
+              data: CreateAccountWithProfileOK(
+                (b) => b
+                  ..accountIndex = ProfileFixtures.testAccountIndex
+                  ..accountDid = ProfileFixtures.testDid
+                  ..profileId = ProfileFixtures.testProfileId,
               ),
               requestOptions: RequestOptions(path: ''),
             ),
           );
-          when(
-            () => mockDataManagerService.createAccount(
-              accountIndex: any(named: 'accountIndex'),
-              accountDid: any(named: 'accountDid'),
-              didProof: any(named: 'didProof'),
-              metadata: any(named: 'metadata'),
-            ),
-          ).thenAnswer((_) async {});
           when(
             () => mockVaultStore.setAccountIndex(any()),
           ).thenAnswer((_) async {});
@@ -180,10 +184,34 @@ void main() {
             description: ProfileFixtures.testProfileDescription,
           );
 
+          final expectedProfileDid = DidKey.generateDocument(
+            mockKeyPair.publicKey,
+          ).id;
+
           verify(
             () => mockDataManagerService.createProfile(
-              name: ProfileFixtures.testProfileName,
-              description: ProfileFixtures.testProfileDescription,
+              accountIndex: ProfileFixtures.testAccountIndex,
+              accountMetadata: any(
+                named: 'accountMetadata',
+                that: isA<AccountMetadata>().having(
+                  (metadata) => metadata.dekekInfo.encryptedDekek,
+                  'encryptedDekek',
+                  base64.encode(ProfileFixtures.testEncryptedData),
+                ),
+              ),
+              profileDid: expectedProfileDid,
+              profileDidProof: any(
+                named: 'profileDidProof',
+                that: predicate<String>(
+                  (proof) => proof.isNotEmpty,
+                  'non-empty did proof',
+                ),
+              ),
+              profileKeyPair: mockKeyPair,
+              profileName: ProfileFixtures.testProfileName,
+              profileDescription: ProfileFixtures.testProfileDescription,
+              profilePictureURI: null,
+              cancelToken: null,
             ),
           ).called(1);
           verify(
@@ -191,6 +219,15 @@ void main() {
               ProfileFixtures.testAccountIndex,
             ),
           ).called(1);
+          verifyNever(
+            () => mockDataManagerService.createAccount(
+              accountIndex: any(named: 'accountIndex'),
+              accountDid: any(named: 'accountDid'),
+              didProof: any(named: 'didProof'),
+              metadata: any(named: 'metadata'),
+              cancelToken: any(named: 'cancelToken'),
+            ),
+          );
         });
       });
 
@@ -208,6 +245,42 @@ void main() {
           expect(profiles.length, 1);
           expect(profiles.first.name, ProfileFixtures.testProfileName);
         });
+
+        test(
+          'should skip profiles without encryptedDekek and return the rest',
+          () async {
+            final profilesResponse = List.generate(4, (index) {
+              final profileId = 'profile_$index';
+              final hasEncryptedDekek = index != 2;
+
+              return VaultDataManagerProfile(
+                accountIndex: ProfileFixtures.testAccountIndex + index,
+                id: profileId,
+                name: 'Profile $index',
+                description: 'Description $index',
+                pictureURI: '',
+                accountMetadata: hasEncryptedDekek
+                    ? AccountMetadata(
+                        dekekInfo: DeekekInfoFixtures.general,
+                        sharedStorageData: [],
+                      )
+                    : null,
+              );
+            });
+
+            when(
+              () => mockDataManagerService.getProfiles(),
+            ).thenAnswer((_) async => profilesResponse);
+
+            final profiles = await sut.listProfiles();
+
+            expect(profiles, hasLength(3));
+            expect(
+              profiles.map((profile) => profile.id),
+              unorderedEquals(['profile_0', 'profile_1', 'profile_3']),
+            );
+          },
+        );
       });
 
       group('When updating a profile', () {
@@ -377,7 +450,7 @@ void main() {
               accountIndex: 0,
               accountDid: ProfileFixtures.testDid,
               accountMetadata: AccountMetadata(
-                dekekInfo: DekekInfo(encryptedDekek: 'dGVzdF9rZXk='),
+                dekekInfo: DeekekInfoFixtures.general,
                 sharedStorageData: [],
               ),
             ),

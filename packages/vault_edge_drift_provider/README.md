@@ -23,7 +23,7 @@ The Affinidi TDK - Vault Edge Drift Provider package implements the [Drift datab
 
 ## Requirements
 
-- Dart SDK version ^3.6.0
+- Dart SDK version ^3.11.0
 
 ## Installation
 
@@ -90,7 +90,7 @@ For more sample usage, go to the [example folder](https://github.com/affinidi/af
 The package uses drift code generation. To regenerate database classes, run:
 
 ```bash
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 ```
 
 ## Support & feedback

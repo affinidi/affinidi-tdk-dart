@@ -16,6 +16,7 @@ import 'package:test/test.dart';
 
 import 'fixtures/api_service/file_response_fixtures.dart';
 import 'fixtures/api_service/node_response_fixtures.dart';
+import 'fixtures/api_service/profiles_response_fixtures.dart';
 import 'fixtures/api_service/test_data_fixtures.dart';
 import 'mocks/mock_dio.dart';
 
@@ -25,36 +26,41 @@ void main() {
   late DioAdapter dioAdapter;
   late Dio uploadDio;
   late DioAdapter uploadDioAdapter;
+  late Dio vfsDio;
+  late DioAdapter vfsDioAdapter;
 
-  setUpAll(() {
+  setUp(() async {
     uploadDio = MockDio();
     uploadDio.options.baseUrl = '';
+    vfsDio = Dio();
+    vfsDio.options.baseUrl = '';
+    dioAdapter = DioAdapterFixtures.adapter(client);
+    uploadDioAdapter = DioAdapterFixtures.adapter(uploadDio);
+    vfsDioAdapter = DioAdapterFixtures.adapter(vfsDio);
+    client.options.baseUrl = '';
+    vfsDio.options.baseUrl = '';
+    (uploadDio as MockDio).setShouldThrowError(false);
+    (uploadDio as MockDio).setS3ErrorXml('');
     vaultDataManagerApiService = VaultDataManagerApiService(
       apiClient: AffinidiTdkVaultDataManagerClient(dio: client),
-      dio: uploadDio,
+      fileClient: uploadDio,
+      publicKeyClient: vfsDio,
     );
   });
 
-  setUp(() {
-    dioAdapter = DioAdapterFixtures.adapter(client);
-    uploadDioAdapter = DioAdapterFixtures.adapter(uploadDio);
-    client.options.baseUrl = '';
-    (uploadDio as MockDio).setShouldThrowError(false);
-    (uploadDio as MockDio).setS3ErrorXml('');
-  });
-
-  tearDown(() {
+  tearDown(() async {
     dioAdapter.reset();
     uploadDioAdapter.reset();
+    vfsDioAdapter.reset();
   });
 
   group('When retrieving list of profiles', () {
     group('and there are profiles available', () {
       test('it returns a list of profiles with correct data', () async {
         dioAdapter.mockRequestWithReply(
-          url: '/v1/nodes',
+          url: '/v1/accounts/profiles',
           statusCode: 200,
-          data: NodeResponseFixtures.profileList,
+          data: ProfilesResponseFixtures.profileList,
         );
         final profilesResponse = await vaultDataManagerApiService
             .getListOfProfiles();
@@ -64,9 +70,9 @@ void main() {
     group('and there are no profiles available', () {
       test('it returns an empty list of profiles', () async {
         dioAdapter.mockRequestWithReply(
-          url: '/v1/nodes',
+          url: '/v1/accounts/profiles',
           statusCode: 200,
-          data: NodeResponseFixtures.emptyList,
+          data: ProfilesResponseFixtures.emptyList,
         );
         final profilesResponse = await vaultDataManagerApiService
             .getListOfProfiles();
@@ -366,6 +372,63 @@ void main() {
     });
   });
 
+  group('When creating an account with profile', () {
+    test(
+      'it posts the account and profile payload and returns the response',
+      () async {
+        final accountMetadata = <String, Object>{'tier': 'gold'};
+
+        dioAdapter.onPost(
+          '/v1/accounts/profiles',
+          (server) => server.reply(200, {
+            'accountIndex': 1,
+            'accountDid': TestDataFixtures.testDid,
+            'profileId': NodeResponseFixtures.profileNodeId,
+            'accountMetadata': accountMetadata,
+          }),
+          data: {
+            'accountIndex': 1,
+            'accountDid': TestDataFixtures.testDid,
+            'didProof': TestDataFixtures.testDidProof,
+            'accountMetadata': accountMetadata,
+            'profileName': 'Test Profile',
+            'profileDescription': 'Test Description',
+            'profileMetadata': {
+              'pictureURI': 'https://example.com/profile.png',
+            },
+            'dek': base64.encode(TestDataFixtures.testDek),
+            'edekInfo': {
+              'dekekId': TestDataFixtures.testHash,
+              'edek': base64.encode(TestDataFixtures.testDek),
+            },
+          },
+          headers: {'content-type': 'application/json'},
+        );
+
+        final result = await vaultDataManagerApiService.createProfile(
+          accountIndex: 1,
+          accountMetadata: accountMetadata,
+          profileDid: TestDataFixtures.testDid,
+          profileDidProof: TestDataFixtures.testDidProof,
+          profileName: 'Test Profile',
+          profileDescription: 'Test Description',
+          profilePictureURI: 'https://example.com/profile.png',
+          dekEncryptedByVfsPublicKey: TestDataFixtures.testDek,
+          dekEncryptedByWalletCryptoMaterial: TestDataFixtures.testDek,
+          walletCryptoMaterialHash: TestDataFixtures.testHash,
+        );
+
+        expect(result.data?.accountIndex, equals(1));
+        expect(result.data?.accountDid, equals(TestDataFixtures.testDid));
+        expect(
+          result.data?.profileId,
+          equals(NodeResponseFixtures.profileNodeId),
+        );
+        expect(result.data?.accountMetadata?.value, equals(accountMetadata));
+      },
+    );
+  });
+
   group('When downloading node contents', () {
     test('it includes encryption headers in the request', () async {
       final dek = TestDataFixtures.testDek;
@@ -392,6 +455,22 @@ void main() {
       );
 
       expect(result.data, equals(Uint8List.fromList([1, 2, 3])));
+    });
+
+    test('it disables persistent connections for downloads', () async {
+      final fileClient = MockDio();
+      final service = VaultDataManagerApiService(
+        apiClient: AffinidiTdkVaultDataManagerClient(dio: client),
+        fileClient: fileClient,
+        publicKeyClient: vfsDio,
+      );
+
+      final result = await service.downloadNodeContents(
+        downloadUrl: TestDataFixtures.downloadUrl,
+        dek: Uint8List.fromList(TestDataFixtures.testDek),
+      );
+
+      expect(result.requestOptions.persistentConnection, isFalse);
     });
   });
 
@@ -529,7 +608,7 @@ void main() {
 
   group('When getting vault data manager public key', () {
     test('it returns the public key', () async {
-      uploadDioAdapter.onGet(
+      vfsDioAdapter.onGet(
         TestDataFixtures.jwksUrl,
         (server) => server.reply(200, {
           'keys': [
@@ -548,6 +627,80 @@ void main() {
           .getVaultDataManagerPublicKey();
       expect(result['kid'], equals(TestDataFixtures.testKid));
     });
+
+    test(
+      'it refetches the key on sequential lookups without validators',
+      () async {
+        var requestCount = 0;
+        final service = VaultDataManagerApiService(
+          apiClient: AffinidiTdkVaultDataManagerClient(dio: client),
+          fileClient: uploadDio,
+          publicKeyClient: vfsDio,
+        );
+
+        vfsDioAdapter.onGet(
+          TestDataFixtures.jwksUrl,
+          (server) => server.replyCallback(200, (request) {
+            requestCount++;
+            return {
+              'keys': [
+                {
+                  'kty': 'RSA',
+                  'kid': TestDataFixtures.testKid,
+                  'use': 'sig',
+                  'n': 'test-n',
+                  'e': 'AQAB',
+                },
+              ],
+            };
+          }),
+        );
+
+        final first = await service.getVaultDataManagerPublicKey();
+        final second = await service.getVaultDataManagerPublicKey();
+
+        expect(first['kid'], equals(TestDataFixtures.testKid));
+        expect(second['kid'], equals(TestDataFixtures.testKid));
+        expect(requestCount, equals(2));
+      },
+    );
+
+    test(
+      'it refetches the key on sequential lookups when validators are absent',
+      () async {
+        var requestCount = 0;
+        final service = VaultDataManagerApiService(
+          apiClient: AffinidiTdkVaultDataManagerClient(dio: client),
+          fileClient: uploadDio,
+          publicKeyClient: vfsDio,
+        );
+
+        vfsDioAdapter.onGet(
+          TestDataFixtures.jwksUrl,
+          (server) => server.replyCallback(200, (request) {
+            requestCount++;
+            return {
+              'keys': [
+                {
+                  'kty': 'RSA',
+                  'kid': 'kid-$requestCount',
+                  'use': 'sig',
+                  'n': 'test-n-$requestCount',
+                  'e': 'AQAB',
+                },
+              ],
+            };
+          }),
+        );
+
+        final first = await service.getVaultDataManagerPublicKey();
+        final second = await service.getVaultDataManagerPublicKey();
+
+        expect(first['kid'], equals('kid-1'));
+        expect(second['kid'], equals('kid-2'));
+        expect(requestCount, equals(2));
+      },
+    );
   });
 
   group('When getting root node info', () {

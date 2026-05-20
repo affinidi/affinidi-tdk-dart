@@ -1,3 +1,22 @@
+
+
+### Breaking Changes
+
+ - Requires Dart SDK version `^3.11.0` or higher.
+ - `EdgeDriftProfileRepository.createProfile(...)` now returns the generated UUID for the new profile.
+ - Upgraded the `affinidi_tdk_vault_edge_provider` dependency to version 3.
+
+### Changed
+
+ - Drift-backed profile creation now persists explicit UUID ids to satisfy the updated edge provider contract.
+
+### Migration
+
+ - Upgrade your Dart SDK to `3.11.0` or newer before upgrading to this release.
+ - This Dart SDK requirement is specific to `affinidi_tdk_vault_edge_drift_provider`; other TDK packages remain on Dart `3.8.0` unless noted otherwise.
+ - Update any direct callers, mocks, or subclasses of `EdgeDriftProfileRepository` or `EdgeProfileRepositoryInterface` to use the returned profile id.
+ - If your application depends directly on `affinidi_tdk_vault_edge_provider`, update it to version 3 before upgrading this package.
+
 ## 2.0.5
 
  - Update a dependency to the latest release.
@@ -17,8 +36,6 @@
 ## 2.0.1
 
  - **FIX**: update packages score (#41).
-
-# Change Log
 
 ## 2.0.0
 

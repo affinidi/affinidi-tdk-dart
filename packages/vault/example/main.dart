@@ -54,11 +54,14 @@ void main() async {
   // Add a new profile
   //
 
+  Profile profile;
   try {
     final profileRepository = vault.defaultProfileRepository;
     // alternatively can be accessed via profile repository identifier
     // final ProfileRepository profileRepository = vault.profileRepositories[vfsRepositoryId];
-    await profileRepository.createProfile(name: 'Test ${accountIndex + 1}');
+    profile = await profileRepository.createProfile(
+      name: 'Test ${accountIndex + 1}',
+    );
   } on TdkException catch (error) {
     print(
       [error.code, '[Demo] ${error.message}', error.originalMessage].join('\n'),
@@ -77,12 +80,6 @@ void main() async {
   //
   // Update an existing profile
   //
-  var profile = profiles.lastOrNull;
-
-  if (profile == null) {
-    throw UnsupportedError('Profile not available');
-  }
-
   print('[Demo] Amending profile name ...');
 
   // Change the profile name
@@ -158,11 +155,6 @@ void main() async {
   //
   // Delete a profile
   //
-
-  profile = profiles.lastOrNull;
-  if (profile == null) {
-    throw UnsupportedError('Profile not available');
-  }
 
   print('[Demo] Deleting profile ...');
 
