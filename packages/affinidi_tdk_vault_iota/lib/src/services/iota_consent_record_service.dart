@@ -19,7 +19,7 @@ import 'iota_consent_record_service_interface.dart';
 /// The `requestHash` deduplication key is supplied by the caller — the
 /// consumer is free to use any algorithm.
 ///
-/// If a record with the same `requestHash` and `did` already exists it is
+/// If a record with the same `requestHash` already exists it is
 /// updated rather than duplicated.
 class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   final ConsentRecordStore _store;
@@ -31,7 +31,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   /// Parameters:
   /// * [store] - Consumer-provided storage backend for consent records.
   /// * [cryptography] - Cryptography service used to compute SHA-1 hashes.
-  /// * [logger] - Optional logger; defaults to [Logger.instance].s
+  /// * [logger] - Optional logger; defaults to [Logger.instance].
   IotaConsentRecordService({
     required ConsentRecordStore store,
     required CryptographyServiceInterface cryptography,
