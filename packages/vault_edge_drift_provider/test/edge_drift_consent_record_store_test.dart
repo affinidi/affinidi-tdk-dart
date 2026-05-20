@@ -52,12 +52,12 @@ void main() {
 
         final retrieved = await store.findByRequestHashAndDid(
           record.requestHash,
-          record.did,
+          record.holderDid,
         );
 
         expect(retrieved, isNotNull);
         expect(retrieved!.requestHash, record.requestHash);
-        expect(retrieved.did, record.did);
+        expect(retrieved.holderDid, record.holderDid);
         expect(retrieved.hash, record.hash);
         expect(retrieved.logo, record.logo);
         expect(retrieved.siteUrl, record.siteUrl);
@@ -85,7 +85,7 @@ void main() {
 
           final retrieved = await store.findByRequestHashAndDid(
             updated.requestHash,
-            updated.did,
+            updated.holderDid,
           );
 
           expect(retrieved!.hash, 'updated_hash');
@@ -113,8 +113,8 @@ void main() {
           'did:key:holder_b',
         );
 
-        expect(retrievedA!.did, 'did:key:holder_a');
-        expect(retrievedB!.did, 'did:key:holder_b');
+        expect(retrievedA!.holderDid, 'did:key:holder_a');
+        expect(retrievedB!.holderDid, 'did:key:holder_b');
         expect(retrievedB.hash, 'hash_b');
       });
     });

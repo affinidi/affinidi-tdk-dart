@@ -20,7 +20,7 @@ class DriftConsentRecordStore implements ConsentRecordStore {
         .insertOnConflictUpdate(
           db.ConsentRecordsCompanion.insert(
             requestHash: record.requestHash,
-            did: record.did,
+            did: record.holderDid,
             hash: record.hash,
             logo: Value(record.logo),
             siteUrl: Value(record.siteUrl),
@@ -59,7 +59,7 @@ class DriftConsentRecordStore implements ConsentRecordStore {
       requestHash: row.requestHash,
       logo: row.logo,
       siteUrl: row.siteUrl,
-      did: row.did,
+      holderDid: row.did,
       sharedAt: row.sharedAt,
       profileName: row.profileName,
       profileId: row.profileId,
