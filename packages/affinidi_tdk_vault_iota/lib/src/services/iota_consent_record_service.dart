@@ -2,6 +2,7 @@ import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 
 import '../exceptions/tdk_exception_type.dart';
+import '../models/auto_share_result.dart';
 import '../models/iota_consent_record.dart';
 import '../models/verifier_client_metadata.dart';
 import 'consent_record_store.dart';
@@ -67,14 +68,13 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
         vcFingerprint: sortedVcIds.join('|'),
       );
 
-      final existing = await _store.findByRequestHashAndDid(requestHash, did);
+      final existing = await _store.findByRequestHash(requestHash);
 
       final record = IotaConsentRecord(
         hash: hash,
         requestHash: requestHash,
         logo: verifierMetadata.logo,
         siteUrl: verifierMetadata.origin,
-        holderDid: did,
         sharedAt: existing?.sharedAt ?? DateTime.now().toIso8601String(),
         profileName: profileName,
         profileId: profileId,
@@ -131,4 +131,50 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     hashSource:
         '$profileId|$did|$clientId|${logo ?? ''}|${siteUrl ?? ''}|$vcFingerprint',
   );
-}
+  @override
+  Future<AutoShareResult> checkAutoShare({
+    required String requestHash,
+  }) async {
+    _logger.log(
+      LogLevel.fine,
+      'Checking auto-share eligibility for requestHash: $requestHash',
+    );
+
+    try {
+      final record = await _store.findByRequestHash(requestHash);
+
+      if (record == null) {
+        return const FullShareRequired(
+          reason: FullShareRequiredReason.noExistingConsent,
+        );
+      }
+
+      if (record.isConsentManagementEnabled) {
+        return const FullShareRequired(
+          reason: FullShareRequiredReason.consentManagementEnabled,
+        );
+      }
+
+      if (!record.isAutoShareEnabled) {
+        return const FullShareRequired(
+          reason: FullShareRequiredReason.autoShareNotEnabled,
+        );
+      }
+
+      return AutoShareEligible(previousConsent: record);
+    } catch (e) {
+      if (e is TdkException) rethrow;
+
+      _logger.log(
+        LogLevel.warning,
+        'Failed to check auto-share eligibility',
+        error: e,
+      );
+
+      throw TdkException(
+        message: 'Failed to check auto-share eligibility.',
+        code: TdkExceptionType.failedToCheckAutoShare.code,
+        originalMessage: e.toString(),
+      );
+    }
+  }}
