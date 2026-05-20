@@ -1,6 +1,6 @@
 name: affinidi_tdk_claim_verifiable_credential
 description: The Affinidi TDK - Claim Verifiable Credential package the libraries for claiming credentials.
-version: 2.0.1
+version: 2.0.2
 repository: https://github.com/affinidi/affinidi-tdk-dart
 environment:
   sdk: ^3.8.0

@@ -1,3 +1,7 @@
+## 2.0.2
+
+ - **FIX**: solve static analysis issue (#127).
+
 ## 2.0.1
 
  - **FIX**: rename entry point to match package name (#120).
