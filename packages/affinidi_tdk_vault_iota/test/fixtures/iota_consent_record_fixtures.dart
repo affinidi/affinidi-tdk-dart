@@ -1,4 +1,3 @@
-import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
 
 class IotaConsentRecordFixtures {
@@ -9,16 +8,16 @@ class IotaConsentRecordFixtures {
   static const sharedAt = '2020-01-01T00:00:00.000Z';
   static const requestHash = 'req_hash_abc';
 
-  static final verifierMetadata = VerifierClientMetadata(
+  static final verifierMetadata = const VerifierClientMetadata(
     name: 'Test Verifier',
     logo: 'https://example.com/logo.png',
     origin: 'https://example.com',
   );
 
-  static IotaConsentRecord empty() => IotaConsentRecord(
+  static IotaConsentRecord empty() => const IotaConsentRecord(
     hash: '',
     requestHash: '',
-    did: '',
+    holderDid: '',
     sharedAt: '',
     profileName: '',
     profileId: '',
@@ -28,10 +27,10 @@ class IotaConsentRecordFixtures {
     claimedVcTypesCsv: '',
   );
 
-  static IotaConsentRecord existing() => IotaConsentRecord(
+  static IotaConsentRecord existing() => const IotaConsentRecord(
     hash: 'old_hash',
     requestHash: 'request_hash',
-    did: did,
+    holderDid: did,
     sharedAt: sharedAt,
     profileName: profileName,
     profileId: profileId,

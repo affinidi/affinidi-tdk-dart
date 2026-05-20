@@ -55,7 +55,7 @@ void main() {
                 as IotaConsentRecord;
 
         expect(captured.clientId, IotaConsentRecordFixtures.clientId);
-        expect(captured.did, IotaConsentRecordFixtures.did);
+        expect(captured.holderDid, IotaConsentRecordFixtures.did);
         expect(captured.isAutoShareEnabled, isTrue);
         expect(captured.sharedVcIds, ['vc-1']);
       });
