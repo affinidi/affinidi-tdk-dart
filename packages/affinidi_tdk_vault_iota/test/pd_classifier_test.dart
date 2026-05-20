@@ -818,26 +818,29 @@ void main() {
       );
     });
 
-    test('should throw when submission_requirements has duplicate group names', () {
-      final pd = _pd(
-        [_descriptor(id: 'd1', type: 'UniversityDegree')],
-        submissionRequirements: [
-          {'from': 'A', 'count': 1},
-          {'from': 'A', 'count': 2},
-        ],
-      );
+    test(
+      'should throw when submission_requirements has duplicate group names',
+      () {
+        final pd = _pd(
+          [_descriptor(id: 'd1', type: 'UniversityDegree')],
+          submissionRequirements: [
+            {'from': 'A', 'count': 1},
+            {'from': 'A', 'count': 2},
+          ],
+        );
 
-      expect(
-        () => classifier.classify(pd),
-        throwsA(
-          isA<TdkException>().having(
-            (e) => e.code,
-            'code',
-            TdkExceptionType.invalidPresentationDefinition.code,
+        expect(
+          () => classifier.classify(pd),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidPresentationDefinition.code,
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
 
     test('should throw when count is less than min', () {
       final pd = _pd(
@@ -943,19 +946,28 @@ void main() {
       );
 
       expect(
-        () => (result.claimedDescriptors as List).add(result.claimedDescriptors.first),
+        () => (result.claimedDescriptors as List).add(
+          result.claimedDescriptors.first,
+        ),
         throwsUnsupportedError,
       );
       expect(
-        () => (result.zpdLinkedDescriptors as List).add(result.claimedDescriptors.first),
+        () => (result.zpdLinkedDescriptors as List).add(
+          result.claimedDescriptors.first,
+        ),
         throwsUnsupportedError,
       );
       expect(
-        () => (result.idvDescriptors as List).add(result.claimedDescriptors.first),
+        () => (result.idvDescriptors as List).add(
+          result.claimedDescriptors.first,
+        ),
         throwsUnsupportedError,
       );
       expect(() => (result.dataPoints as Set).add('x'), throwsUnsupportedError);
-      expect(() => (result.zeroPartyVCs as Set).add('x'), throwsUnsupportedError);
+      expect(
+        () => (result.zeroPartyVCs as Set).add('x'),
+        throwsUnsupportedError,
+      );
       expect(
         () => (result.submissionRequirementsByGroup as Map).clear(),
         throwsUnsupportedError,
