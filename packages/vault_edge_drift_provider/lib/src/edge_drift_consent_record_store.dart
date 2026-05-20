@@ -31,7 +31,9 @@ class DriftConsentRecordStore implements ConsentRecordStore {
             isAutoShareEnabled: record.isAutoShareEnabled,
             sharedVcIds: record.sharedVcIds.join(','),
             claimedVcTypesCsv: record.claimedVcTypesCsv,
-            isConsentManagementEnabled: Value(record.isConsentManagementEnabled),
+            isConsentManagementEnabled: Value(
+              record.isConsentManagementEnabled,
+            ),
             historySharedData: Value(jsonEncode(record.historySharedData)),
           ),
         );
@@ -67,8 +69,9 @@ class DriftConsentRecordStore implements ConsentRecordStore {
       claimedVcTypesCsv: row.claimedVcTypesCsv,
       isConsentManagementEnabled: row.isConsentManagementEnabled,
       historySharedData:
-          (jsonDecode(row.historySharedData) as Map<String, dynamic>)
-              .map((k, v) => MapEntry(k, v as String)),
+          (jsonDecode(row.historySharedData) as Map<String, dynamic>).map(
+            (k, v) => MapEntry(k, v as String),
+          ),
     );
   }
 }
