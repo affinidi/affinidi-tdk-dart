@@ -12,7 +12,7 @@ class InMemoryConsentRecordStore implements ConsentRecordStore {
 
   @override
   Future<void> saveOrUpdate(IotaConsentRecord record) async {
-    _records[_key(record.requestHash, record.holderDid)] = record;
+    _records[_key(record.requestHash, record.profileDid)] = record;
   }
 
   @override
@@ -84,7 +84,7 @@ Future<void> main() async {
     if (saved != null) {
       print('requestHash : ${saved.requestHash}');
       print('clientId    : ${saved.clientId}');
-      print('did         : ${saved.holderDid}');
+      print('did         : ${saved.profileDid}');
       print('profileName : ${saved.profileName}');
       print('sharedAt    : ${saved.sharedAt}');
       print('vcTypes     : ${saved.claimedVcTypesCsv}');

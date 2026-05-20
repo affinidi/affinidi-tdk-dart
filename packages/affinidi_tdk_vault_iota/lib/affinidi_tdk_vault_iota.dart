@@ -1,6 +1,7 @@
 export 'package:affinidi_tdk_common/affinidi_tdk_common.dart' show TdkException;
 
 export 'src/exceptions/tdk_exception_type.dart';
+export 'src/models/auto_share_result.dart';
 export 'src/models/iota_consent_record.dart';
 export 'src/models/iota_request.dart';
 export 'src/models/pd_descriptor.dart';

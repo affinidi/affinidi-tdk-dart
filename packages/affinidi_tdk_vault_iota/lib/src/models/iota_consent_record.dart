@@ -28,7 +28,7 @@ class IotaConsentRecord {
   ///
   /// Together with [requestHash] forms the composite primary key for storage,
   /// ensuring consent records are isolated per vault.
-  final String holderDid;
+  final String profileDid;
 
   /// ISO 8601 timestamp of when the share was first completed.
   final String sharedAt;
@@ -65,7 +65,7 @@ class IotaConsentRecord {
     required this.requestHash,
     this.logo,
     this.siteUrl,
-    required this.holderDid,
+    required this.profileDid,
     required this.sharedAt,
     required this.profileName,
     required this.profileId,
@@ -84,7 +84,7 @@ class IotaConsentRecord {
       requestHash: json['requestHash'] as String? ?? '',
       logo: json['logo'] as String?,
       siteUrl: json['siteUrl'] as String?,
-      holderDid: json['did'] as String,
+      profileDid: json['did'] as String,
       sharedAt: json['sharedAt'] as String,
       profileName: json['profileName'] as String? ?? '',
       profileId: json['profileId'] as String? ?? '',
@@ -107,7 +107,7 @@ class IotaConsentRecord {
     'requestHash': requestHash,
     if (logo != null) 'logo': logo,
     if (siteUrl != null) 'siteUrl': siteUrl,
-    'did': holderDid,
+    'did': profileDid,
     'sharedAt': sharedAt,
     'profileName': profileName,
     'profileId': profileId,
@@ -141,7 +141,7 @@ class IotaConsentRecord {
       requestHash: requestHash ?? this.requestHash,
       logo: logo ?? this.logo,
       siteUrl: siteUrl ?? this.siteUrl,
-      holderDid: did ?? this.holderDid,
+      profileDid: did ?? this.profileDid,
       sharedAt: sharedAt ?? this.sharedAt,
       profileName: profileName ?? this.profileName,
       profileId: profileId ?? this.profileId,

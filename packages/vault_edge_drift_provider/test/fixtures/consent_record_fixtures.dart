@@ -25,7 +25,7 @@ class ConsentRecordFixtures {
       requestHash: requestHash,
       logo: logo,
       siteUrl: siteUrl,
-      holderDid: did,
+      profileDid: did,
       sharedAt: sharedAt,
       profileName: profileName,
       profileId: profileId,

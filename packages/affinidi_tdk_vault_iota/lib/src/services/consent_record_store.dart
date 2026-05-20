@@ -4,11 +4,11 @@ import '../models/iota_consent_record.dart';
 ///
 /// Implement this interface to persist consent history using any storage
 /// technology.  [saveOrUpdate] must upsert by the combination of
-/// [IotaConsentRecord.requestHash] and [IotaConsentRecord.holderDid] so that each
+/// [IotaConsentRecord.requestHash] and [IotaConsentRecord.profileDid] so that each
 /// vault holder's consent history is kept independent.
 abstract interface class ConsentRecordStore {
   /// Persists a consent record, replacing any existing record with the same
-  /// [IotaConsentRecord.requestHash] and [IotaConsentRecord.holderDid].
+  /// [IotaConsentRecord.requestHash] and [IotaConsentRecord.profileDid].
   ///
   /// Parameters:
   /// * [record] - The consent record to persist or update.

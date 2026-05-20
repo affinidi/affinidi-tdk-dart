@@ -37,7 +37,11 @@ enum TdkExceptionType {
 
   /// Thrown when persisting a consent record to the consumer-provided
   /// `ConsentRecordStore` fails.
-  failedToPersistConsentRecord('failed_to_persist_consent_record');
+  failedToPersistConsentRecord('failed_to_persist_consent_record'),
+
+  /// Thrown when the auto-share eligibility check against the consent store
+  /// fails due to an unexpected storage error.
+  failedToCheckAutoShare('failed_to_check_auto_share');
 
   /// Creates a new instance of [TdkExceptionType].
   const TdkExceptionType(this.code);
