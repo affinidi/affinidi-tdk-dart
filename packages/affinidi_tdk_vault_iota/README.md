@@ -75,6 +75,64 @@ and POSTs the Verifiable Presentation to the verifier's `response_uri`.
 The `jwtAssertion` field on `Oid4vpShareRequest` carries the raw JWT
 assertion needed for VP submission and IDV redirect flows.
 
+### Step 4 — Persist a consent record
+
+After a successful VP submission, call `IotaConsentRecordService.saveConsentRecord()`
+to store a history entry for the share event. The service is storage-agnostic —
+you supply the backend by implementing `ConsentRecordStore`.
+
+#### Using the built-in Flutter Secure Storage backend
+
+If your app already depends on `affinidi_tdk_vault_flutter_utils`, use the
+provided `FlutterSecureConsentRecordStore`:
+
+```dart
+import 'package:affinidi_tdk_vault_flutter_utils/vault_flutter_utils.dart';
+import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
+
+final consentService = IotaConsentRecordService(
+  store: FlutterSecureConsentRecordStore(),
+  cryptography: myCryptographyService,
+);
+
+// Call this after a successful submitPresentation:
+await consentService.saveConsentRecord(
+  requestHash: requestHash, // stable per-verifier fingerprint you compute
+  clientId: shareRequest.request.clientId,
+  verifierMetadata: verifierMetadata,
+  profileId: profileId,
+  profileName: profileName,
+  did: holderDid,
+  sharedVcIds: selectedVcIds,
+  claimedVcTypesCsv: 'EmailV1VC,PhoneNumberV1VC',
+  isAutoShareEnabled: false,
+);
+```
+
+#### Bringing your own storage backend
+
+Implement `ConsentRecordStore` with any persistence technology you prefer
+(Drift, Hive, SQLite, a remote API, etc.):
+
+```dart
+class MyConsentStore implements ConsentRecordStore {
+  @override
+  Future<void> saveOrUpdate(IotaConsentRecord record) async {
+    // upsert by record.requestHash in your database
+  }
+
+  @override
+  Future<IotaConsentRecord?> findByRequestHash(String requestHash) async {
+    // query your database and return the matching record, or null
+  }
+}
+
+final consentService = IotaConsentRecordService(
+  store: MyConsentStore(),
+  cryptography: myCryptographyService,
+);
+```
+
 ## Error handling
 
 All errors are thrown as `TdkException` with one of the following codes:
