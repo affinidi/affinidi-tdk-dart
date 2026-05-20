@@ -72,9 +72,15 @@ class IotaConsentRecord {
 
   /// Creates an [IotaConsentRecord] from a JSON map.
   factory IotaConsentRecord.fromJson(Map<String, dynamic> json) {
+    final requestHash = json['requestHash'] as String?;
+    if (requestHash == null || requestHash.isEmpty) {
+      throw const FormatException(
+        'IotaConsentRecord.fromJson: missing or empty required field "requestHash".',
+      );
+    }
     return IotaConsentRecord(
       hash: json['hash'] as String,
-      requestHash: json['requestHash'] as String? ?? '',
+      requestHash: requestHash,
       logo: json['logo'] as String?,
       siteUrl: json['siteUrl'] as String?,
       sharedAt: json['sharedAt'] as String,
