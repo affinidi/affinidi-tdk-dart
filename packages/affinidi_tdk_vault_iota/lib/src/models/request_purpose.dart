@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 
-/// Purpose metadata extracted from the presentation definition's `purpose` field.
+/// Purpose metadata extracted from the presentation definition's `purpose`
+/// field.
 ///
 /// Provides human-readable descriptions of why the verifier is requesting
 /// the credentials.
@@ -24,8 +25,8 @@ class RequestPurpose {
   /// Returns an empty [RequestPurpose] if the input cannot be parsed.
   ///
   /// Parameters:
-  /// - [json] - a JSON-encoded string or a map containing `data_collection_purpose`
-  ///   and optionally `request_description`.
+  /// - [json] - a JSON-encoded string or a map containing
+  ///   `data_collection_purpose` and optionally `request_description`.
   factory RequestPurpose.fromJson(dynamic json) {
     Map<String, dynamic>? parsedJson;
     if (json is String) {
@@ -66,6 +67,7 @@ class RequestPurpose {
     if (requestDescription != null) 'request_description': requestDescription,
   };
 
-  /// Returns `true` if this purpose contains a non-null [dataCollectionPurpose].
+  /// Returns `true` if this purpose contains a non-null
+  /// [dataCollectionPurpose].
   bool get isValid => dataCollectionPurpose != null;
 }

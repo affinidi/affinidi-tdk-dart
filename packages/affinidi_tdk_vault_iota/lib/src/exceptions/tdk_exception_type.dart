@@ -29,7 +29,8 @@ enum TdkExceptionType {
   /// Thrown when a Presentation Definition is structurally invalid.
   invalidPresentationDefinition('invalid_presentation_definition'),
 
-  /// Thrown when a single IDV input descriptor requests more than two VC types.
+  /// Thrown when a single IDV input descriptor requests more than two VC
+  /// types (i.e. more than `VerifiedIdsentityDocument` + one specific subtype).
   unsupportedMultipleIdvTypes('unsupported_multiple_idv_types'),
 
   /// Thrown when submitting the VP to the verifier callback fails.
@@ -38,6 +39,6 @@ enum TdkExceptionType {
   /// Creates a new instance of [TdkExceptionType].
   const TdkExceptionType(this.code);
 
-  /// The error code associated with this exception type.
+  /// The error code string associated with this exception type.
   final String code;
 }
