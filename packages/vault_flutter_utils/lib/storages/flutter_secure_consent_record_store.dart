@@ -7,11 +7,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 ///
 /// Each record is stored as a JSON string keyed by its [IotaConsentRecord.requestHash],
 /// prefixed with a namespace to avoid collisions with other secure storage entries.
-///
-/// Parameters:
-/// * [namespace] - Prefix applied to every storage key. Defaults to `iota_consent`.
-/// * [secureStorage] - Optional [FlutterSecureStorage] instance for testing.
 class FlutterSecureConsentRecordStore implements ConsentRecordStore {
+  /// Creates a [FlutterSecureConsentRecordStore].
+  ///
+  /// Parameters:
+  /// * [namespace] - Prefix applied to every storage key. Defaults to `iota_consent`.
+  /// * [secureStorage] - Optional [FlutterSecureStorage] instance for testing.
   FlutterSecureConsentRecordStore({
     String namespace = 'iota_consent',
     FlutterSecureStorage? secureStorage,

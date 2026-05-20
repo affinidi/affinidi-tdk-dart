@@ -6,7 +6,7 @@ enum TdkExceptionType {
 
   /// Exception thrown when an empty [clientId] is passed to the verifier
   /// metadata service.
-  invalidClientId('invalid_client_id'),
+  invalidClientId('invalid_cliedant_id'),
 
   /// Exception thrown when the JWT in the request URI is invalid or has expired.
   invalidOrExpiredJwt('invalid_or_expired_jwt'),
