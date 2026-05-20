@@ -10,6 +10,7 @@ For detailed change histories and complete release notes for a specific client o
 
 ### Breaking Changes
 
+- `affinidi_tdk_vault_edge_drift_provider` now requires Dart SDK version `^3.11.0` or higher.
 - `affinidi_tdk_vault`, `affinidi_tdk_vault_data_manager`, `affinidi_tdk_vault_edge_provider`, and `affinidi_tdk_vault_edge_drift_provider` now expose profile creation and shared access APIs that return created or refreshed objects instead of `void`. See the package changelogs for migration steps.
 - VFS profile provisioning now uses the combined account-and-profile flow, and configuration error checks now use the corrected `profile_not_configured` code.
 
@@ -25,6 +26,11 @@ For detailed change histories and complete release notes for a specific client o
 - Shared profile and shared item acceptance flows now return an updated `Profile`, so shared storage state is immediately available to callers.
 - VFS profile listing is more resilient: incomplete profiles are skipped with warning logs instead of failing the full listing operation.
 - Folder creation now returns the backend-created `Folder`, removing follow-up lookups that were previously needed to reconstruct folder metadata.
+
+### Migration
+
+- Upgrade to Dart `3.10.0` or newer only if you integrate `affinidi_tdk_vault_edge_drift_provider`.
+- All other TDK packages and clients remain compatible with Dart `3.8.0`.
 
 ## 2026‑02‑19
 

@@ -22,7 +22,8 @@ It provides various packages to implement a secure vault to manage Decentralised
 
 ## Requirements
 
-- Dart SDK version ^3.8.0 or higher.
+- Dart SDK version ^3.8.0 or higher for the general TDK packages and clients.
+- Dart SDK version ^3.11.0 or higher is required when using `affinidi_tdk_vault_edge_drift_provider`.
 
 ## Installation
 

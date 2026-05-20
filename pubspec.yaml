@@ -2,7 +2,7 @@ name: affinidi_tdk_dart
 description: Dart Packages for Affinidi TDK
 publish_to: none
 environment:
-  sdk: ^3.8.0
+  sdk: ^3.11.0
 workspace:
   - clients/didcomm/atlas_didcomm_client
   - clients/login_configuration_client
