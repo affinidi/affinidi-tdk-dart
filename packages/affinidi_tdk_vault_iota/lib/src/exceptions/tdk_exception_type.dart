@@ -32,12 +32,13 @@ enum TdkExceptionType {
   /// Thrown when a single IDV input descriptor requests more than two VC types.
   unsupportedMultipleIdvTypes('unsupported_multiple_idv_types'),
 
-  /// Thrown when submitting the VP to the verifier callback fails.
+  /// Thrown when submitting the VP to the verifier callback fails — e.g.
+  /// network error, invalid state token, or a non-2xx response.
   submissionFailed('submission_failed');
 
   /// Creates a new instance of [TdkExceptionType].
   const TdkExceptionType(this.code);
 
-  /// The error code associated with this exception type.
+  /// The error code string associated with this exception type.
   final String code;
 }
