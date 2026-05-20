@@ -246,7 +246,11 @@ void main() {
         dioAdapter.mockRequestWithReply(
           url: '/v1/nodes',
           statusCode: 200,
-          data: {'nodeId': NodeResponseFixtures.testNodeId},
+          data: {
+            'nodeId': NodeResponseFixtures.testNodeId,
+            'createdAt': '2024-01-01T00:00:00Z',
+            'modifiedAt': '2024-01-01T00:00:00Z',
+          },
           httpMethod: HttpMethod.post,
         );
 
@@ -277,6 +281,8 @@ void main() {
           statusCode: 200,
           data: {
             'nodeId': NodeResponseFixtures.testNodeId,
+            'createdAt': '2024-01-01T00:00:00Z',
+            'modifiedAt': '2024-01-01T00:00:00Z',
             'url': TestDataFixtures.uploadUrl,
             'fields': TestDataFixtures.testUploadFields,
           },
@@ -314,6 +320,8 @@ void main() {
             statusCode: 200,
             data: {
               'nodeId': NodeResponseFixtures.testNodeId,
+              'createdAt': '2024-01-01T00:00:00Z',
+              'modifiedAt': '2024-01-01T00:00:00Z',
               'url': TestDataFixtures.uploadUrl,
               'fields': TestDataFixtures.testUploadFields,
             },
@@ -538,6 +546,8 @@ void main() {
         statusCode: 200,
         data: {
           'nodeId': NodeResponseFixtures.testNodeId,
+          'createdAt': '2024-01-01T00:00:00Z',
+          'modifiedAt': '2024-01-01T00:00:00Z',
           'url': TestDataFixtures.uploadUrl,
           'fields': TestDataFixtures.testUploadFields,
         },
@@ -591,6 +601,8 @@ void main() {
         statusCode: 200,
         data: {
           'nodeId': NodeResponseFixtures.testFolderId,
+          'createdAt': '2024-01-01T00:00:00Z',
+          'modifiedAt': '2024-01-01T00:00:00Z',
           'name': 'Test Folder',
           'nodeType': 'FOLDER',
         },
