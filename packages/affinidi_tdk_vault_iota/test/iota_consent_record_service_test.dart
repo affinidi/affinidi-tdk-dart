@@ -39,8 +39,8 @@ void main() {
         ).thenAnswer((_) async => null);
 
         await service.saveConsentRecord(
+          requestHash: IotaConsentRecordFixtures.requestHash,
           clientId: IotaConsentRecordFixtures.clientId,
-          presentationDefinition: {},
           verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
           profileId: IotaConsentRecordFixtures.profileId,
           profileName: IotaConsentRecordFixtures.profileName,
@@ -66,8 +66,8 @@ void main() {
         ).thenAnswer((_) async => IotaConsentRecordFixtures.existing());
 
         await service.saveConsentRecord(
+          requestHash: IotaConsentRecordFixtures.requestHash,
           clientId: IotaConsentRecordFixtures.clientId,
-          presentationDefinition: {},
           verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
           profileId: IotaConsentRecordFixtures.profileId,
           profileName: IotaConsentRecordFixtures.profileName,
@@ -98,8 +98,8 @@ void main() {
 
           await expectLater(
             () => service.saveConsentRecord(
+              requestHash: IotaConsentRecordFixtures.requestHash,
               clientId: IotaConsentRecordFixtures.clientId,
-              presentationDefinition: {},
               verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
               profileId: IotaConsentRecordFixtures.profileId,
               profileName: IotaConsentRecordFixtures.profileName,

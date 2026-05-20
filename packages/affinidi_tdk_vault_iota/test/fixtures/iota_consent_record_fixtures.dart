@@ -7,6 +7,7 @@ class IotaConsentRecordFixtures {
   static const profileName = 'My Profile';
   static const did = 'did:key:holder456';
   static const sharedAt = '2020-01-01T00:00:00.000Z';
+  static const requestHash = 'req_hash_abc';
 
   static final verifierMetadata = VerifierClientMetadata(
     name: 'Test Verifier',
