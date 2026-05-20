@@ -42,6 +42,6 @@ enum TdkExceptionType {
   /// Creates a new instance of [TdkExceptionType].
   const TdkExceptionType(this.code);
 
-  /// The error code string associated with this exception type.
+  /// The error code associated with this exception type.
   final String code;
 }
