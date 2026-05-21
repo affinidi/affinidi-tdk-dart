@@ -1,4 +1,3 @@
-import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_iota_client/affinidi_tdk_iota_client.dart';
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
 import 'package:dio/dio.dart';
@@ -20,6 +19,7 @@ class _FakeVpBuilder implements VpBuilderInterface {
     required List<ParsedVerifiableCredential<dynamic>> credentials,
     required String nonce,
     required String domain,
+    required VpDataModel dataModel,
   }) async => result;
 }
 
@@ -95,6 +95,7 @@ void main() {
             clientId: 'did:key:test-verifier',
             definitionId: 'pd_1',
             selectedCredentials: [(descriptor: descriptor, credential: fakeVC)],
+            dataModel: VpDataModel.v1,
           ),
           completes,
         );
@@ -109,6 +110,7 @@ void main() {
           clientId: 'did:key:test-verifier',
           definitionId: 'pd_1',
           selectedCredentials: [(descriptor: descriptor, credential: fakeVC)],
+          dataModel: VpDataModel.v1,
         );
 
         verify(
@@ -142,6 +144,7 @@ void main() {
             clientId: 'did:key:test-verifier',
             definitionId: 'pd_captured',
             selectedCredentials: [(descriptor: descriptor, credential: fakeVC)],
+            dataModel: VpDataModel.v1,
           );
 
           expect(captured, isNotNull);
@@ -160,6 +163,7 @@ void main() {
           clientId: 'did:key:test-verifier',
           definitionId: 'pd_1',
           selectedCredentials: [(descriptor: descriptor, credential: fakeVC)],
+          dataModel: VpDataModel.v1,
         );
 
         expect(result, equals(Uri.parse('https://verifier.example.com/done')));
@@ -186,6 +190,7 @@ void main() {
             clientId: 'did:key:test-verifier',
             definitionId: 'pd_1',
             selectedCredentials: [(descriptor: descriptor, credential: fakeVC)],
+            dataModel: VpDataModel.v1,
           );
 
           expect(result, isNull);
@@ -212,6 +217,7 @@ void main() {
             clientId: 'did:key:test-verifier',
             definitionId: 'pd_1',
             selectedCredentials: [(descriptor: descriptor, credential: fakeVC)],
+            dataModel: VpDataModel.v1,
           ),
           throwsA(
             isA<TdkException>().having(

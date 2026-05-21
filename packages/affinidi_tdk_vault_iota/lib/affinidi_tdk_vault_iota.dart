@@ -19,6 +19,7 @@ export 'src/models/vc_unavailability_reason.dart';
 export 'src/models/vcs_group_by_type.dart';
 export 'src/models/verified_identity_document_info.dart';
 export 'src/models/verifier_client_metadata.dart';
+export 'src/models/vp_data_model.dart';
 export 'src/services/iota_share_response_service.dart';
 export 'src/services/pd_classifier_service.dart';
 export 'src/services/presentation_submission_builder.dart';

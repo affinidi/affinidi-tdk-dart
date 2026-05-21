@@ -22,6 +22,8 @@ abstract final class PresentationSubmissionBuilder {
     return PresentationSubmission(
       id: const Uuid().v4(),
       definitionId: definitionId,
+      // JSON-LD VPs only: format is always 'ldp_vc' and no path_nested is
+      // needed because each VC is embedded directly as a JSON-LD object.
       descriptorMap: [
         for (var i = 0; i < descriptors.length; i++)
           DescriptorMapEntry(
