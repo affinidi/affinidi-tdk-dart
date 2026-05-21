@@ -7,7 +7,7 @@
 class IotaConsentRecord {
   /// Full fingerprint of the share event.
   ///
-  /// Computed from: `profileId | did | clientId | clientMetadata | vcFingerprint`.
+  /// Computed from: `profileId | did | clientId | verifierName | logo | siteUrl | vcsFingerprint`.
   /// Changes whenever the user, verifier branding, or selected credentials
   /// change — even for the same verifier.
   final String hash;
