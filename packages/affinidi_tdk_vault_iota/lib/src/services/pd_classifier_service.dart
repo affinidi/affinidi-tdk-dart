@@ -192,7 +192,8 @@ class PDClassifier {
     if (isIdv) {
       if (requiredDataPoints.types.length > 2) {
         _throw(
-          'Multiple IDV types in a single descriptor are not supported.',
+          'Multiple IDV types in a single descriptor are not supported'
+          ' (descriptor id: ${requiredDataPoints.inputDescriptor['id']}).',
           TdkExceptionType.unsupportedMultipleIdvTypes.code,
         );
       }
