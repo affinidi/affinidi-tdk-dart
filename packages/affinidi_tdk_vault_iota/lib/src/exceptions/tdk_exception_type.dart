@@ -4,7 +4,7 @@ enum TdkExceptionType {
   /// or parsed.
   failedToFetchVerifierMetadata('failed_to_fetch_verifier_metadata'),
 
-  /// Exception thrown when an empty [clientId] is passed to the verifier
+  /// Exception thrown when an empty `clientId` is passed to the verifier
   /// metadata service.
   invalidClientId('invalid_client_id'),
 

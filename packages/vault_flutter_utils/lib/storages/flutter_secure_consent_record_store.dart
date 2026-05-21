@@ -40,21 +40,6 @@ class FlutterSecureConsentRecordStore implements ConsentRecordStore {
   }
 
   @override
-  Future<IotaConsentRecord?> findByHash(String hash) async {
-    final data = await _secureStorage.read(key: _key(hash));
-    if (data == null) return null;
-    try {
-      return IotaConsentRecord.fromJson(
-        jsonDecode(data) as Map<String, dynamic>,
-      );
-    } catch (e) {
-      throw FormatException(
-        'Failed to deserialize consent record for hash $hash: $e',
-      );
-    }
-  }
-
-  @override
   Future<IotaConsentRecord?> findByRequestHash(String requestHash) async {
     final all = await _secureStorage.readAll();
     final prefix = '${_namespace}_';

@@ -103,7 +103,7 @@ await consentService.saveConsentRecord(
   profileId: profileId,
   profileName: profileName,
   did: holderDid,
-  sharedVcIds: selectedVcIds,
+  sharedVcs: selectedVcs,            // List<VerifiableCredential>
   claimedVcTypesCsv: 'EmailV1VC,PhoneNumberV1VC',
   isAutoShareEnabled: false,
 );
@@ -118,7 +118,7 @@ Implement `ConsentRecordStore` with any persistence technology you prefer
 class MyConsentStore implements ConsentRecordStore {
   @override
   Future<void> saveOrUpdate(IotaConsentRecord record) async {
-    // upsert by record.requestHash in your database
+    // upsert by record.hash in your database
   }
 
   @override

@@ -16,12 +16,16 @@ class InMemoryConsentRecordStore implements ConsentRecordStore {
 
   @override
   Future<void> saveOrUpdate(IotaConsentRecord record) async {
-    _records[record.requestHash] = record;
+    _records[record.hash] = record;
   }
 
   @override
-  Future<IotaConsentRecord?> findByRequestHash(String requestHash) async =>
-      _records[requestHash];
+  Future<IotaConsentRecord?> findByRequestHash(String requestHash) async {
+    for (final record in _records.values) {
+      if (record.requestHash == requestHash) return record;
+    }
+    return null;
+  }
 }
 
 /// This example demonstrates how to persist a consent record after a
@@ -118,7 +122,8 @@ Future<void> main() async {
       print('vcTypes     : ${saved.claimedVcTypesCsv}');
     }
 
-    // Saving again preserves the original [sharedAt] timestamp (upsert).
+    // Saving again with the same VCs produces the same hash and overwrites the
+    // record; [sharedAt] is updated to reflect the most recent share time.
     await service.saveConsentRecord(
       requestHash: requestHash,
       clientId: clientId,
@@ -126,15 +131,15 @@ Future<void> main() async {
       profileId: profileId,
       profileName: profileName,
       did: holderDid,
-      sharedVcs: sharedVcs.take(1).toList(),
-      claimedVcTypesCsv: 'EmailV1VC',
+      sharedVcs: sharedVcs,
+      claimedVcTypesCsv: 'EmailV1VC,PhoneNumberV1VC',
       isAutoShareEnabled: true,
     );
 
     final updated = await store.findByRequestHash(requestHash);
     if (updated != null) {
       print('\nAfter re-share:');
-      print('sharedAt (unchanged) : ${updated.sharedAt}');
+      print('sharedAt (updated)   : ${updated.sharedAt}');
       print('autoShare            : ${updated.isAutoShareEnabled}');
     }
   } on TdkException catch (e) {
