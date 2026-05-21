@@ -646,6 +646,31 @@ void main() {
         isA<VcAvailable>(),
       );
     });
+
+    test(
+      'should skip revocation check and treat VC as available when it is not a ParsedVerifiableCredential',
+      () async {
+        final vc = MockVerifiableCredential();
+        when(vc.toJson).thenReturn({
+          'type': ['VerifiableCredential', 'UniversityDegree'],
+          'issuer': 'did:key:z6MkTest',
+          'validFrom': '2025-01-01T00:00:00Z',
+        });
+        when(() => vc.validUntil).thenReturn(null);
+        when(() => vc.validFrom).thenReturn(DateTime(2025));
+
+        final req = _requirements([
+          buildDescriptor(id: 'd1', type: 'UniversityDegree'),
+        ]);
+        final result = await matcherWithVerifier.match(req, [vc]);
+
+        verifyNever(() => verifier.verify(any()));
+        expect(
+          result.vcsGroups.values.first.matchedVCs.first,
+          isA<VcAvailable>(),
+        );
+      },
+    );
   });
 
   group('when no revocation verifier is provided', () {

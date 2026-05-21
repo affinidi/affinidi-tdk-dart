@@ -173,24 +173,33 @@ class ShareRequirementsMatcher {
       }
 
       final verifier = _revocationVerifier;
-      if (verifier != null && vc is ParsedVerifiableCredential) {
-        try {
-          final result = await verifier.verify(vc);
-          if (result.errors.isNotEmpty) {
-            revoked.add(
-              VcUnavailable(
-                reason: VcUnavailabilityReason.revoked,
-                bestMatchVc: vc,
-              ),
-            );
-            continue;
-          }
-        } catch (e, stack) {
+      if (verifier != null) {
+        if (vc is! ParsedVerifiableCredential) {
           _logger.warning(
-            'Revocation check failed for VC — treating as available: $e',
+            'Revocation check skipped: VC is ${vc.runtimeType}, '
+            'not a ParsedVerifiableCredential. '
+            'Treating as available.',
             component: _componentName,
           );
-          _logger.debug(stack.toString(), component: _componentName);
+        } else {
+          try {
+            final result = await verifier.verify(vc);
+            if (result.errors.isNotEmpty) {
+              revoked.add(
+                VcUnavailable(
+                  reason: VcUnavailabilityReason.revoked,
+                  bestMatchVc: vc,
+                ),
+              );
+              continue;
+            }
+          } catch (e, stack) {
+            _logger.warning(
+              'Revocation check failed for VC — treating as available: $e',
+              component: _componentName,
+            );
+            _logger.debug(stack.toString(), component: _componentName);
+          }
         }
       }
 
