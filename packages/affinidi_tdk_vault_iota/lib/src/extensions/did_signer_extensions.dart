@@ -12,7 +12,7 @@ extension DidSignerProofGenerator on DidSigner {
   /// * [domain] - The `client_id` from the OID4VP request; binds the proof
   ///   to the verifier.
   ///
-  /// Throws [UnimplementedError] if the signer uses [SignatureScheme.rsa_pkcs1_sha256].
+  /// Throws [UnsupportedError] if the signer uses [SignatureScheme.rsa_pkcs1_sha256].
   EmbeddedProofGenerator toProofGenerator({
     required String nonce,
     required String domain,
@@ -37,7 +37,7 @@ extension DidSignerProofGenerator on DidSigner {
       domain: [domain],
       proofPurpose: ProofPurpose.authentication,
     ),
-    SignatureScheme.rsa_pkcs1_sha256 => throw UnimplementedError(
+    SignatureScheme.rsa_pkcs1_sha256 => throw UnsupportedError(
       'RSA is not supported for VP signing',
     ),
   };
