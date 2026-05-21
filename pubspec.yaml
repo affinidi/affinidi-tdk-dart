@@ -76,9 +76,10 @@ melos:
       packageFilters:
         flutter: true
         includePrivatePackages: false
-        diff: origin/main
         ignore:
           - "*_example*"
+          - "*integration_tests*"
+          - "*_client*"
     test-dart:
       description: Run tests in each dart package
       exec: dart run coverage:test_with_coverage -- --reporter expanded
@@ -89,9 +90,10 @@ melos:
       packageFilters:
         flutter: false
         private: false
-        diff: origin/main
         ignore:
           - "*_example*"
+          - "*integration_tests*"
+          - "*_client*"
     test-integration:
       description: Run integration tests
       run: ./scripts/test-integration.sh
