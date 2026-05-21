@@ -664,7 +664,7 @@ class VfsProfileRepository
       accountMetadata: updatedAccount.accountMetadata,
     );
 
-    return profile.copyWithSharedStorages(sharedStorages);
+    return profile.refreshSharedStorages(sharedStorages);
   }
 
   Future<KeyPair> _getProfileKeyPair({required String accountIndex}) async {
@@ -716,18 +716,19 @@ class VfsProfileRepository
 }
 
 extension _ProfileSharedStorages on Profile {
-  Profile copyWithSharedStorages(Map<String, SharedStorage> sharedStorages) {
-    return Profile(
-      id: id,
-      accountIndex: accountIndex,
-      name: name,
-      did: did,
-      description: description,
-      profilePictureURI: profilePictureURI,
-      profileRepositoryId: profileRepositoryId,
-      fileStorages: fileStorages,
-      credentialStorages: credentialStorages,
-      sharedStorages: sharedStorages,
-    );
+  Profile refreshSharedStorages(Map<String, SharedStorage> sharedStorages) {
+    final existingSharedStorageIds = this.sharedStorages
+        .map((sharedStorage) => sharedStorage.id)
+        .toList();
+
+    for (final sharedStorageId in existingSharedStorageIds) {
+      removeSharedStorage(id: sharedStorageId);
+    }
+
+    for (final entry in sharedStorages.entries) {
+      addSharedStorage(id: entry.key, sharedStorage: entry.value);
+    }
+
+    return this;
   }
 }

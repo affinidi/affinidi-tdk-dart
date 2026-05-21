@@ -24,6 +24,10 @@ import 'mocks/mock_vault_store.dart';
 
 class MockWallet extends Mock implements Wallet {}
 
+class MockFileStorage extends Mock implements FileStorage {}
+
+class MockCredentialStorage extends Mock implements CredentialStorage {}
+
 class MockDidSigner extends Mock implements DidSigner {
   DidDocument get didDocument =>
       super.noSuchMethod(Invocation.getter(#didDocument)) as DidDocument;
@@ -77,6 +81,12 @@ void main() {
           ({
             required Uint8List encryptedDekek,
             required KeyPair keyPair,
+          }) async => mockDataManagerService,
+      vaultDelegatedDataManagerServiceFactory:
+          ({
+            required Uint8List encryptedDekek,
+            required KeyPair keyPair,
+            required String profileDid,
           }) async => mockDataManagerService,
     );
 
@@ -480,6 +490,72 @@ void main() {
           ),
         ).called(1);
       });
+
+      test(
+        'should preserve default storage selections when receiving item access',
+        () async {
+          final fileStorage = MockFileStorage();
+          final credentialStorage = MockCredentialStorage();
+          final profile = Profile(
+            id: ProfileFixtures.testProfileId,
+            name: ProfileFixtures.testProfileName,
+            description: ProfileFixtures.testProfileDescription,
+            did: ProfileFixtures.testDid,
+            accountIndex: ProfileFixtures.testAccountIndex,
+            profileRepositoryId: ProfileFixtures.repositoryId,
+            fileStorages: {'primary-file': fileStorage},
+            credentialStorages: {'primary-credential': credentialStorage},
+            sharedStorages: {},
+          );
+          profile.defaultFileStorageId = 'primary-file';
+          profile.defaultCredentialStorageId = 'primary-credential';
+
+          when(
+            () => mockDataManagerService.patchAccount(
+              accountIndex: any(named: 'accountIndex'),
+              didProof: any(named: 'didProof'),
+              encryptedDekek: any(named: 'encryptedDekek'),
+              ownerProfileId: any(named: 'ownerProfileId'),
+              ownerProfileDid: any(named: 'ownerProfileDid'),
+              cancelToken: any(named: 'cancelToken'),
+            ),
+          ).thenAnswer(
+            (_) async => Account(
+              accountIndex: ProfileFixtures.testAccountIndex,
+              accountDid: ProfileFixtures.testDid,
+              accountMetadata: AccountMetadata(
+                dekekInfo: DeekekInfoFixtures.general,
+                sharedStorageData: [
+                  SharedStorageData(
+                    nodePath: 'shared-node',
+                    encryptedDekek: base64.encode(
+                      ProfileFixtures.testEncryptedData,
+                    ),
+                    profileDid: 'did:test:owner',
+                  ),
+                ],
+              ),
+            ),
+          );
+
+          final updatedProfile = await sut.receiveItemAccess(
+            profile: profile,
+            ownerProfileId: 'owner-profile-id',
+            ownerProfileDid: 'did:test:owner',
+            kek: Uint8List.fromList([1, 2, 3]),
+          );
+
+          expect(updatedProfile, same(profile));
+          expect(updatedProfile.defaultFileStorage, same(fileStorage));
+          expect(
+            updatedProfile.defaultCredentialStorage,
+            same(credentialStorage),
+          );
+          expect(updatedProfile.sharedStorages.map((storage) => storage.id), [
+            'shared-node',
+          ]);
+        },
+      );
     });
   });
 }
