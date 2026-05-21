@@ -87,19 +87,23 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
 
     try {
       await _store.saveOrUpdate(record);
-    } catch (e) {
+    } catch (e, stackTrace) {
       if (e is TdkException) rethrow;
 
       _logger.log(
         LogLevel.warning,
         'Failed to persist consent record',
         error: e,
+        stackTrace: stackTrace,
       );
 
-      throw TdkException(
-        message: 'Failed to persist consent record.',
-        code: TdkExceptionType.failedToPersistConsentRecord.code,
-        originalMessage: e.toString(),
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Failed to persist consent record.',
+          code: TdkExceptionType.failedToPersistConsentRecord.code,
+          originalMessage: e.toString(),
+        ),
+        stackTrace,
       );
     }
 
