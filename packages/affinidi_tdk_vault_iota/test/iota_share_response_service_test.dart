@@ -229,6 +229,27 @@ void main() {
         );
       });
     });
+
+    group('and selectedCredentials is empty', () {
+      test('should throw ArgumentError', () async {
+        final service = IotaShareResponseService(
+          approveCallbackApi: callbackApi,
+          signer: signer,
+        );
+
+        await expectLater(
+          service.submitShareResponse(
+            state: 'state',
+            nonce: 'nonce',
+            clientId: 'did:key:test-verifier',
+            definitionId: 'pd_1',
+            selectedCredentials: [],
+            dataModel: VpDataModel.v1,
+          ),
+          throwsArgumentError,
+        );
+      });
+    });
   });
 
   group('when rejectShareResponse is called', () {
