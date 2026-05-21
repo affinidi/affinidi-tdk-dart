@@ -309,6 +309,86 @@ void main() {
       });
 
       test(
+        'uses empty string for vcsFingerprint in hash source when sharedVcs is empty',
+        () async {
+          when(
+            () => store.findByRequestHash(any()),
+          ).thenAnswer((_) async => null);
+
+          await service.saveConsentRecord(
+            requestHash: IotaConsentRecordFixtures.requestHash,
+            clientId: IotaConsentRecordFixtures.clientId,
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            profileId: IotaConsentRecordFixtures.profileId,
+            profileName: IotaConsentRecordFixtures.profileName,
+            did: IotaConsentRecordFixtures.did,
+            sharedVcs: [],
+            claimedVcTypesCsv: '',
+            isAutoShareEnabled: false,
+          );
+
+          final captured =
+              verify(
+                    () => cryptography.createHash(
+                      hashSource: captureAny(named: 'hashSource'),
+                    ),
+                  ).captured.single
+                  as String;
+
+          expect(
+            captured,
+            '${IotaConsentRecordFixtures.profileId}'
+            '|${IotaConsentRecordFixtures.did}'
+            '|${IotaConsentRecordFixtures.clientId}'
+            '|${IotaConsentRecordFixtures.verifierMetadata.name}'
+            '|${IotaConsentRecordFixtures.verifierMetadata.logo}'
+            '|${IotaConsentRecordFixtures.verifierMetadata.origin}'
+            '|',
+          );
+        },
+      );
+
+      test(
+        'encodes nested credential subject JSON correctly in the VC fingerprint',
+        () async {
+          when(
+            () => store.findByRequestHash(any()),
+          ).thenAnswer((_) async => null);
+
+          await service.saveConsentRecord(
+            requestHash: IotaConsentRecordFixtures.requestHash,
+            clientId: IotaConsentRecordFixtures.clientId,
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            profileId: IotaConsentRecordFixtures.profileId,
+            profileName: IotaConsentRecordFixtures.profileName,
+            did: IotaConsentRecordFixtures.did,
+            sharedVcs: [
+              IotaConsentRecordFixtures.makeVc(
+                credentialSubject: {
+                  'address': {'city': 'Berlin', 'zip': '10115'},
+                },
+              ),
+            ],
+            claimedVcTypesCsv: 'SomeType',
+            isAutoShareEnabled: false,
+          );
+
+          final captured =
+              verify(
+                    () => cryptography.createHash(
+                      hashSource: captureAny(named: 'hashSource'),
+                    ),
+                  ).captured.single
+                  as String;
+
+          expect(
+            captured,
+            endsWith('-{"address":{"city":"Berlin","zip":"10115"}}'),
+          );
+        },
+      );
+
+      test(
         'throws TdkException with failedToPersistConsentRecord when the store throws',
         () async {
           when(
