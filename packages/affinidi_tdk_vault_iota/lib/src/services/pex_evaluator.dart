@@ -70,11 +70,7 @@ abstract final class PexEvaluator {
           'The descriptor should have been rejected by PDClassifier.',
         );
       }
-      try {
-        return (paths: paths, schema: JsonSchema.create(rawFilter));
-      } on Exception {
-        return (paths: const <String>[], schema: null);
-      }
+      return (paths: paths, schema: JsonSchema.create(rawFilter));
     }).toList();
   }
 

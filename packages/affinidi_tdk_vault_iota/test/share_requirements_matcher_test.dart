@@ -349,6 +349,41 @@ void main() {
         await expectLater(matcher.match(req, [vc]), throwsA(isA<StateError>()));
       },
     );
+
+    test(
+      'should record the descriptor as unknown when the filter schema is invalid',
+      () async {
+        final vc = buildTestVc(type: 'UniversityDegree');
+
+        final req = PDRequirements(
+          claimedDescriptors: [
+            PDDescriptor(
+              data: {
+                'id': 'd1',
+                'constraints': {
+                  'fields': [
+                    {
+                      'path': [r'$.type'],
+                      'filter': {'type': 123},
+                    },
+                  ],
+                },
+              },
+            ),
+          ],
+          zpdLinkedDescriptors: const [],
+          idvDescriptors: const [],
+          dataPoints: const {},
+          zeroPartyVCs: const {},
+          submissionRequirementsByGroup: const {},
+        );
+        final result = await matcher.match(req, [vc]);
+
+        final first = result.vcsGroups.values.first.matchedVCs.first;
+        expect(first, isA<VcUnavailable>());
+        expect((first as VcUnavailable).reason, VcUnavailabilityReason.unknown);
+      },
+    );
   });
 
   // ── IDV descriptors ───────────────────────────────────────────────────────
