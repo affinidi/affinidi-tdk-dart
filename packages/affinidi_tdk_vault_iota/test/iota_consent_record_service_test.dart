@@ -222,8 +222,7 @@ void main() {
             '|${IotaConsentRecordFixtures.verifierMetadata.name}'
             '|${IotaConsentRecordFixtures.verifierMetadata.logo}'
             '|${IotaConsentRecordFixtures.verifierMetadata.origin}'
-            '|$expectedVcFingerprint'
-            '|',
+            '|$expectedVcFingerprint',
           );
         },
       );
@@ -271,8 +270,7 @@ void main() {
             '|${IotaConsentRecordFixtures.did}'
             '|${IotaConsentRecordFixtures.clientId}'
             '|||'
-            '|$expectedVcFingerprint'
-            '|',
+            '|$expectedVcFingerprint',
           );
         },
       );

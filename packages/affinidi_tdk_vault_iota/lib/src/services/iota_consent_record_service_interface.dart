@@ -19,7 +19,6 @@ abstract interface class IotaConsentRecordServiceInterface {
   /// * [claimedVcTypesCsv] - Comma-separated VC types included in the VP.
   /// * [isAutoShareEnabled] - Whether the user enabled automatic sharing for this verifier.
   /// * [historySharedData] - Labeled data points shared in the VP.
-  /// * [datapoints] - ZPD datapoints shared in the VP (empty for non-ZPD flows).
   /// * [isConsentManagementEnabled] - Whether the verifier has consent management enabled.
   ///
   /// Throws `TdkException` with code `failed_to_persist_consent_record` if the
@@ -35,7 +34,6 @@ abstract interface class IotaConsentRecordServiceInterface {
     required String claimedVcTypesCsv,
     required bool isAutoShareEnabled,
     Map<String, String> historySharedData = const {},
-    Map<String, dynamic> datapoints = const {},
     bool isConsentManagementEnabled = false,
   });
 }
