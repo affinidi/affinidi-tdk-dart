@@ -126,6 +126,13 @@ class PDClassifier {
               TdkExceptionType.invalidPresentationDefinition.code,
             );
           }
+          final id = d['id'] as String;
+          if (!seenIds.add(id)) {
+            _throw(
+              'Duplicate input_descriptor id: "$id".',
+              TdkExceptionType.invalidPresentationDefinition.code,
+            );
+          }
           return _extractRequestedType(d);
         })
         .map(_computeRequiredDataPoints)

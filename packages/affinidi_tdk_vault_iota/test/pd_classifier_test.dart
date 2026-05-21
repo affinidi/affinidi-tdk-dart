@@ -76,6 +76,48 @@ void main() {
       );
     });
 
+    test('should throw when two descriptors share the same id', () {
+      expect(
+        () => classifier.classify({
+          'input_descriptors': [
+            {
+              'id': 'dup',
+              'constraints': {
+                'fields': [
+                  {
+                    'path': [r'$.type'],
+                    'filter': {
+                      'contains': {'const': 'UniversityDegree'},
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              'id': 'dup',
+              'constraints': {
+                'fields': [
+                  {
+                    'path': [r'$.type'],
+                    'filter': {
+                      'contains': {'const': 'EmailCredential'},
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
+      );
+    });
+
     test(
       'should throw when a descriptor group field is not a list or string',
       () {
