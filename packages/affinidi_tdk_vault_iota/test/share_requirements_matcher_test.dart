@@ -358,7 +358,7 @@ void main() {
 
       final group = result.vcsGroups.values.first;
       expect(group.minimumVCsCountToShare, 1);
-      expect(group.maximumVCsCountToShare, 1);
+      expect(group.maximumVCsCountToShare, isNull);
     });
 
     test(

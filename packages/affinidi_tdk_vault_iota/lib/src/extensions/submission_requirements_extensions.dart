@@ -11,7 +11,6 @@ extension SubmissionRequirementsX on SubmissionRequirements {
 
   /// The maximum number of VCs that may be included from this group.
   ///
-  /// Priority: [SubmissionRequirements.count] > [SubmissionRequirements.max]
-  /// > [SubmissionRequirements.min] > 1 (default).
-  int get maximumVCsCountToShare => count ?? max ?? min ?? 1;
+  /// Priority: [SubmissionRequirements.count] > [SubmissionRequirements.max].
+  int? get maximumVCsCountToShare => count ?? max;
 }

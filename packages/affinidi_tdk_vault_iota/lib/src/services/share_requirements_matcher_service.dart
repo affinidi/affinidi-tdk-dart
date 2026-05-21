@@ -86,7 +86,7 @@ class ShareRequirementsMatcher {
         if (matchedVCs.isEmpty) {
           vcsGroups[descriptor] = VCsGroupByType(
             minimumVCsCountToShare: submissionReq?.minimumVCsCountToShare ?? 1,
-            maximumVCsCountToShare: submissionReq?.maximumVCsCountToShare ?? 1,
+            maximumVCsCountToShare: submissionReq?.maximumVCsCountToShare,
             matchedVCs: const [
               VcUnavailable(reason: VcUnavailabilityReason.missing),
             ],
@@ -103,7 +103,7 @@ class ShareRequirementsMatcher {
         );
         vcsGroups[descriptor] = VCsGroupByType(
           minimumVCsCountToShare: submissionReq?.minimumVCsCountToShare ?? 1,
-          maximumVCsCountToShare: submissionReq?.maximumVCsCountToShare ?? 1,
+          maximumVCsCountToShare: submissionReq?.maximumVCsCountToShare,
           matchedVCs: const [
             VcUnavailable(reason: VcUnavailabilityReason.unknown),
           ],
@@ -200,7 +200,7 @@ class ShareRequirementsMatcher {
     return VCsGroupByType(
       matchedVCs: [...available, ...revoked, ...expired],
       minimumVCsCountToShare: submissionReq?.minimumVCsCountToShare ?? 1,
-      maximumVCsCountToShare: submissionReq?.maximumVCsCountToShare ?? 1,
+      maximumVCsCountToShare: submissionReq?.maximumVCsCountToShare,
     );
   }
 }
