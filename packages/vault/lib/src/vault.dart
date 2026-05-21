@@ -33,6 +33,15 @@ class Vault {
   List<Profile>? _profilesCache;
   int _profilesCacheVersion = 0;
 
+  void _throwIfNotInitialized() {
+    if (!_initialized) {
+      throw TdkException(
+        message: 'Must initialize vault by calling ensureInitialized',
+        code: TdkExceptionType.vaultNotInitialized.code,
+      );
+    }
+  }
+
   void _invalidateProfilesCache() {
     _profilesCache = null;
     _profilesCacheVersion++;
@@ -58,6 +67,8 @@ class Vault {
     String profileId, {
     VaultCancelToken? cancelToken,
   }) async {
+    _throwIfNotInitialized();
+
     final cachedProfiles = _profilesCache;
     if (cachedProfiles != null) {
       final cachedProfile = _findProfileById(cachedProfiles, profileId);
@@ -88,6 +99,8 @@ class Vault {
     String ownerProfileId, {
     VaultCancelToken? cancelToken,
   }) async {
+    _throwIfNotInitialized();
+
     final cachedProfiles = _profilesCache;
     if (cachedProfiles != null) {
       final cachedStorage = _findSharedStorage(cachedProfiles, ownerProfileId);
@@ -165,15 +178,7 @@ class Vault {
   ///
   /// Throws [TdkException] if the vault is not initialized.
   Map<String, ProfileRepository> get profileRepositories {
-    if (!_initialized) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Must initialize vault by calling ensureInitialized',
-          code: TdkExceptionType.vaultNotInitialized.code,
-        ),
-        StackTrace.current,
-      );
-    }
+    _throwIfNotInitialized();
     return _profileRepositories;
   }
 
@@ -183,15 +188,7 @@ class Vault {
   ///
   /// Throws [TdkException] if the vault is not initialized.
   ProfileRepository get defaultProfileRepository {
-    if (!_initialized) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Must initialize vault by calling ensureInitialized',
-          code: TdkExceptionType.vaultNotInitialized.code,
-        ),
-        StackTrace.current,
-      );
-    }
+    _throwIfNotInitialized();
 
     if (_defaultProfileRepositoryId != null) {
       return _profileRepositories[_defaultProfileRepositoryId] ??
@@ -344,15 +341,7 @@ class Vault {
   ///
   /// [cancelToken] - Optional cancel token for the operation.
   Future<List<Profile>> listProfiles({VaultCancelToken? cancelToken}) async {
-    if (!_initialized) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Must initialize vault by calling ensureInitialized',
-          code: TdkExceptionType.vaultNotInitialized.code,
-        ),
-        StackTrace.current,
-      );
-    }
+    _throwIfNotInitialized();
 
     final version = _profilesCacheVersion;
     final profiles = await Future.wait(
@@ -689,15 +678,7 @@ class Vault {
     String? profileId,
     VaultCancelToken? cancelToken,
   }) async {
-    if (!_initialized) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Must initialize vault by calling ensureInitialized',
-          code: TdkExceptionType.vaultNotInitialized.code,
-        ),
-        StackTrace.current,
-      );
-    }
+    _throwIfNotInitialized();
 
     if (profileId != null) {
       final profileInfo = await getProfileById(

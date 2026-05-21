@@ -497,6 +497,21 @@ void main() {
       verifyNever(() => mockProfileRepository.listProfiles());
     });
 
+    test(
+      'should throw when getProfileById is called before initialization',
+      () async {
+        final uninitializedVault = await createTestVault(
+          vaultStore: mockVaultStore,
+          profileRepositories: {'test': mockProfileRepository},
+        );
+
+        expect(
+          () => uninitializedVault.getProfileById('profile-1'),
+          throwsA(isA<TdkException>()),
+        );
+      },
+    );
+
     test('should refetch profiles when getProfileById cache misses', () async {
       final cachedProfile = VaultFixtures.createTestProfile(
         id: 'cached-profile',
@@ -539,6 +554,22 @@ void main() {
 
         expect(sharedStorage, same(mockSharedStorage));
         verifyNever(() => mockProfileRepository.listProfiles());
+      },
+    );
+
+    test(
+      'should throw when getSharedStorageByOwnerId is called before initialization',
+      () async {
+        final uninitializedVault = await createTestVault(
+          vaultStore: mockVaultStore,
+          profileRepositories: {'test': mockProfileRepository},
+        );
+
+        expect(
+          () =>
+              uninitializedVault.getSharedStorageByOwnerId('owner-profile-id'),
+          throwsA(isA<TdkException>()),
+        );
       },
     );
 
