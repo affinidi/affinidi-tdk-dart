@@ -237,9 +237,6 @@ void main() {
     test('should propagate StateError for a non-object field entry', () async {
       final vc = buildTestVc(type: 'UniversityDegree');
 
-      // A non-object entry in constraints.fields triggers StateError in
-      // PexEvaluator._compileFields. With the descriptor-evaluation catch
-      // narrowed to on Exception, the StateError propagates to the caller.
       final malformedDescriptor = PDDescriptor(
         data: {
           'id': 'd1',
@@ -265,10 +262,6 @@ void main() {
       () async {
         final vc = buildTestVc(type: 'UniversityDegree');
 
-        // Bracket-notation paths such as $['@context'] cause
-        // PexEvaluator._resolveJsonPath to throw a StateError. With the
-        // descriptor-evaluation catch narrowed to on Exception, the StateError
-        // propagates out of match() to the caller.
         final bracketPathDescriptor = PDDescriptor(
           data: {
             'id': 'd1',
@@ -299,8 +292,6 @@ void main() {
       () async {
         final vc = buildTestVc(type: 'UniversityDegree');
 
-        // The StateError aborts the whole match() call regardless of whether
-        // subsequent descriptors in the loop would have succeeded.
         final malformedDescriptor = PDDescriptor(
           data: {
             'id': 'd1',

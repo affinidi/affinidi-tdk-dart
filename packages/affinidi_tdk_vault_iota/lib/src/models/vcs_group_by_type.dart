@@ -60,7 +60,9 @@ class VCsGroupByType {
   List<VcAvailable> get recommendedMaximumVCs {
     final available = allAvailableVCs;
     final cap = maximumVCsCountToShare;
-    return cap == null ? available : available.sublist(0, min(cap, available.length));
+    return cap == null
+        ? available
+        : available.sublist(0, min(cap, available.length));
   }
 
   /// All credentials from [matchedVCs] that are available to share.
