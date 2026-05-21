@@ -89,10 +89,7 @@ void main() {
           savedAt.isAfter(before.subtract(const Duration(seconds: 1))),
           isTrue,
         );
-        expect(
-          savedAt.isBefore(after.add(const Duration(seconds: 1))),
-          isTrue,
-        );
+        expect(savedAt.isBefore(after.add(const Duration(seconds: 1))), isTrue);
       });
 
       test('preserves sharedAt when updating an existing record', () async {
@@ -120,33 +117,35 @@ void main() {
         expect(captured.sharedVcIds, ['vc-1', 'vc-2']);
       });
 
-      test('updates isAutoShareEnabled when toggled on an existing record',
-          () async {
-        when(
-          () => store.findByRequestHash(any()),
-        ).thenAnswer((_) async => IotaConsentRecordFixtures.existing());
+      test(
+        'updates isAutoShareEnabled when toggled on an existing record',
+        () async {
+          when(
+            () => store.findByRequestHash(any()),
+          ).thenAnswer((_) async => IotaConsentRecordFixtures.existing());
 
-        await service.saveConsentRecord(
-          requestHash: IotaConsentRecordFixtures.requestHash,
-          clientId: IotaConsentRecordFixtures.clientId,
-          verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-          profileId: IotaConsentRecordFixtures.profileId,
-          profileName: IotaConsentRecordFixtures.profileName,
-          did: IotaConsentRecordFixtures.did,
-          sharedVcIds: ['vc-1'],
-          claimedVcTypesCsv: 'SomeType',
-          isAutoShareEnabled: true,
-        );
+          await service.saveConsentRecord(
+            requestHash: IotaConsentRecordFixtures.requestHash,
+            clientId: IotaConsentRecordFixtures.clientId,
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            profileId: IotaConsentRecordFixtures.profileId,
+            profileName: IotaConsentRecordFixtures.profileName,
+            did: IotaConsentRecordFixtures.did,
+            sharedVcIds: ['vc-1'],
+            claimedVcTypesCsv: 'SomeType',
+            isAutoShareEnabled: true,
+          );
 
-        final captured =
-            verify(() => store.saveOrUpdate(captureAny())).captured.single
-                as IotaConsentRecord;
+          final captured =
+              verify(() => store.saveOrUpdate(captureAny())).captured.single
+                  as IotaConsentRecord;
 
-        // existing() has isAutoShareEnabled=false; the new call passes true.
-        expect(captured.isAutoShareEnabled, isTrue);
-        // sharedAt must still be preserved from the existing record.
-        expect(captured.sharedAt, IotaConsentRecordFixtures.sharedAt);
-      });
+          // existing() has isAutoShareEnabled=false; the new call passes true.
+          expect(captured.isAutoShareEnabled, isTrue);
+          // sharedAt must still be preserved from the existing record.
+          expect(captured.sharedAt, IotaConsentRecordFixtures.sharedAt);
+        },
+      );
 
       test(
         'throws TdkException with failedToPersistConsentRecord when the store throws',
