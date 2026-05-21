@@ -61,6 +61,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       profileId: profileId,
       did: did,
       clientId: clientId,
+      verifierName: verifierMetadata.name,
       logo: verifierMetadata.logo,
       siteUrl: verifierMetadata.origin,
       vcFingerprint: sortedVcIds.join('|'),
@@ -107,24 +108,35 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
 
   /// Computes the full share fingerprint covering all share-event fields.
   ///
+  /// - ZPD datapoints are omitted — the TDK share flow does not track them.
+  /// - [vcFingerprint] uses sorted VC IDs rather than full VC JSON strings,
+  ///   which is sufficient to detect which credentials were shared.
+  ///
+  /// [did] is included for change detection (a DID rotation produces a new
+  /// fingerprint) but is not persisted on [IotaConsentRecord] because it is
+  /// available from the wallet at share time.
+  ///
   /// Parameters:
   /// * [profileId] - ID of the profile used for the share.
   /// * [did] - Holder DID that signed the VP.
   /// * [clientId] - Verifier's client ID.
+  /// * [verifierName] - Verifier display name; treated as empty string when absent.
   /// * [logo] - Verifier logo URL; treated as empty string when absent.
   /// * [siteUrl] - Verifier origin URL; treated as empty string when absent.
-  /// * [vcFingerprint] - Sorted, pipe-joined VC IDs; sorting ensures order does not affect the hash.
+  /// * [vcFingerprint] - Sorted, pipe-joined VC IDs.
   ///
-  /// Returns a hex SHA-1 digest that changes whenever the profile, verifier branding, or selected credentials change.
+  /// Returns a hex SHA-1 digest that changes whenever the profile, verifier
+  /// branding, or selected credentials change.
   String _computeConsentHash({
     required String profileId,
     required String did,
     required String clientId,
+    required String? verifierName,
     required String? logo,
     required String? siteUrl,
     required String vcFingerprint,
   }) => _cryptography.createHash(
     hashSource:
-        '$profileId|$did|$clientId|${logo ?? ''}|${siteUrl ?? ''}|$vcFingerprint',
+        '$profileId|$did|$clientId|${verifierName ?? ''}|${logo ?? ''}|${siteUrl ?? ''}|$vcFingerprint',
   );
 }

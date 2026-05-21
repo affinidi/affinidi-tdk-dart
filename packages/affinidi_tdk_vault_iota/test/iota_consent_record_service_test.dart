@@ -178,6 +178,118 @@ void main() {
       );
 
       test(
+        'assembles the hash source in the expected pipe-delimited format',
+        () async {
+          when(
+            () => store.findByRequestHash(any()),
+          ).thenAnswer((_) async => null);
+
+          await service.saveConsentRecord(
+            requestHash: IotaConsentRecordFixtures.requestHash,
+            clientId: IotaConsentRecordFixtures.clientId,
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            profileId: IotaConsentRecordFixtures.profileId,
+            profileName: IotaConsentRecordFixtures.profileName,
+            did: IotaConsentRecordFixtures.did,
+            sharedVcIds: ['vc-1'],
+            claimedVcTypesCsv: 'SomeType',
+            isAutoShareEnabled: false,
+          );
+
+          final captured =
+              verify(
+                    () => cryptography.createHash(
+                      hashSource: captureAny(named: 'hashSource'),
+                    ),
+                  ).captured.single
+                  as String;
+
+          expect(
+            captured,
+            '${IotaConsentRecordFixtures.profileId}'
+            '|${IotaConsentRecordFixtures.did}'
+            '|${IotaConsentRecordFixtures.clientId}'
+            '|${IotaConsentRecordFixtures.verifierMetadata.name}'
+            '|${IotaConsentRecordFixtures.verifierMetadata.logo}'
+            '|${IotaConsentRecordFixtures.verifierMetadata.origin}'
+            '|vc-1',
+          );
+        },
+      );
+
+      test(
+        'substitutes empty strings for absent verifier metadata fields',
+        () async {
+          when(
+            () => store.findByRequestHash(any()),
+          ).thenAnswer((_) async => null);
+
+          await service.saveConsentRecord(
+            requestHash: IotaConsentRecordFixtures.requestHash,
+            clientId: IotaConsentRecordFixtures.clientId,
+            verifierMetadata: const VerifierClientMetadata(
+              name: null,
+              logo: null,
+              origin: null,
+            ),
+            profileId: IotaConsentRecordFixtures.profileId,
+            profileName: IotaConsentRecordFixtures.profileName,
+            did: IotaConsentRecordFixtures.did,
+            sharedVcIds: ['vc-1'],
+            claimedVcTypesCsv: 'SomeType',
+            isAutoShareEnabled: false,
+          );
+
+          final captured =
+              verify(
+                    () => cryptography.createHash(
+                      hashSource: captureAny(named: 'hashSource'),
+                    ),
+                  ).captured.single
+                  as String;
+
+          expect(
+            captured,
+            '${IotaConsentRecordFixtures.profileId}'
+            '|${IotaConsentRecordFixtures.did}'
+            '|${IotaConsentRecordFixtures.clientId}'
+            '||||vc-1',
+          );
+        },
+      );
+
+      test(
+        'sorts sharedVcIds before joining them in the hash source',
+        () async {
+          when(
+            () => store.findByRequestHash(any()),
+          ).thenAnswer((_) async => null);
+
+          await service.saveConsentRecord(
+            requestHash: IotaConsentRecordFixtures.requestHash,
+            clientId: IotaConsentRecordFixtures.clientId,
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            profileId: IotaConsentRecordFixtures.profileId,
+            profileName: IotaConsentRecordFixtures.profileName,
+            did: IotaConsentRecordFixtures.did,
+            sharedVcIds: ['vc-3', 'vc-1', 'vc-2'],
+            claimedVcTypesCsv: 'SomeType',
+            isAutoShareEnabled: false,
+          );
+
+          final captured =
+              verify(
+                    () => cryptography.createHash(
+                      hashSource: captureAny(named: 'hashSource'),
+                    ),
+                  ).captured.single
+                  as String;
+
+          expect(captured, endsWith('|vc-1|vc-2|vc-3'));
+        },
+      );
+
+      test(
         'throws TdkException with failedToPersistConsentRecord when the store throws',
         () async {
           when(
