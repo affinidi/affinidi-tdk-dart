@@ -59,6 +59,42 @@ void main() {
         expect(captured.sharedVcIds, ['vc-1']);
       });
 
+      test('sets sharedAt to a non-empty timestamp for a new record', () async {
+        when(
+          () => store.findByRequestHash(any()),
+        ).thenAnswer((_) async => null);
+
+        final before = DateTime.now();
+
+        await service.saveConsentRecord(
+          requestHash: IotaConsentRecordFixtures.requestHash,
+          clientId: IotaConsentRecordFixtures.clientId,
+          verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+          profileId: IotaConsentRecordFixtures.profileId,
+          profileName: IotaConsentRecordFixtures.profileName,
+          did: IotaConsentRecordFixtures.did,
+          sharedVcIds: ['vc-1'],
+          claimedVcTypesCsv: 'SomeType',
+          isAutoShareEnabled: false,
+        );
+
+        final after = DateTime.now();
+
+        final captured =
+            verify(() => store.saveOrUpdate(captureAny())).captured.single
+                as IotaConsentRecord;
+
+        final savedAt = DateTime.parse(captured.sharedAt);
+        expect(
+          savedAt.isAfter(before.subtract(const Duration(seconds: 1))),
+          isTrue,
+        );
+        expect(
+          savedAt.isBefore(after.add(const Duration(seconds: 1))),
+          isTrue,
+        );
+      });
+
       test('preserves sharedAt when updating an existing record', () async {
         when(
           () => store.findByRequestHash(any()),
@@ -82,6 +118,34 @@ void main() {
 
         expect(captured.sharedAt, IotaConsentRecordFixtures.sharedAt);
         expect(captured.sharedVcIds, ['vc-1', 'vc-2']);
+      });
+
+      test('updates isAutoShareEnabled when toggled on an existing record',
+          () async {
+        when(
+          () => store.findByRequestHash(any()),
+        ).thenAnswer((_) async => IotaConsentRecordFixtures.existing());
+
+        await service.saveConsentRecord(
+          requestHash: IotaConsentRecordFixtures.requestHash,
+          clientId: IotaConsentRecordFixtures.clientId,
+          verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+          profileId: IotaConsentRecordFixtures.profileId,
+          profileName: IotaConsentRecordFixtures.profileName,
+          did: IotaConsentRecordFixtures.did,
+          sharedVcIds: ['vc-1'],
+          claimedVcTypesCsv: 'SomeType',
+          isAutoShareEnabled: true,
+        );
+
+        final captured =
+            verify(() => store.saveOrUpdate(captureAny())).captured.single
+                as IotaConsentRecord;
+
+        // existing() has isAutoShareEnabled=false; the new call passes true.
+        expect(captured.isAutoShareEnabled, isTrue);
+        // sharedAt must still be preserved from the existing record.
+        expect(captured.sharedAt, IotaConsentRecordFixtures.sharedAt);
       });
 
       test(
