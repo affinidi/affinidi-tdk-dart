@@ -234,11 +234,12 @@ void main() {
   // ── Descriptor-level evaluation failure ───────────────────────────────────
 
   group('when the descriptor itself is malformed', () {
-    test('should record the descriptor as unknown rather than throw', () async {
+    test('should propagate StateError for a non-object field entry', () async {
       final vc = buildTestVc(type: 'UniversityDegree');
 
       // A non-object entry in constraints.fields triggers StateError in
-      // PexEvaluator._compileFields, which the outer catch turns into unknown.
+      // PexEvaluator._compileFields. With the descriptor-evaluation catch
+      // narrowed to on Exception, the StateError propagates to the caller.
       final malformedDescriptor = PDDescriptor(
         data: {
           'id': 'd1',
@@ -255,21 +256,19 @@ void main() {
         zeroPartyVCs: const {},
         submissionRequirementsByGroup: const {},
       );
-      final result = await matcher.match(req, [vc]);
 
-      final first = result.vcsGroups.values.first.matchedVCs.first;
-      expect(first, isA<VcUnavailable>());
-      expect((first as VcUnavailable).reason, VcUnavailabilityReason.unknown);
+      await expectLater(matcher.match(req, [vc]), throwsA(isA<StateError>()));
     });
 
     test(
-      'should record the descriptor as unknown when a field path uses bracket notation',
+      'should propagate StateError when a field path uses bracket notation',
       () async {
         final vc = buildTestVc(type: 'UniversityDegree');
 
-        // Bracket-notation paths such as $['@context'] or $[0] are not
-        // supported by PexEvaluator._resolveJsonPath, which throws a
-        // StateError. The outer catch in the matcher turns this into unknown.
+        // Bracket-notation paths such as $['@context'] cause
+        // PexEvaluator._resolveJsonPath to throw a StateError. With the
+        // descriptor-evaluation catch narrowed to on Exception, the StateError
+        // propagates out of match() to the caller.
         final bracketPathDescriptor = PDDescriptor(
           data: {
             'id': 'd1',
@@ -290,19 +289,18 @@ void main() {
           zeroPartyVCs: const {},
           submissionRequirementsByGroup: const {},
         );
-        final result = await matcher.match(req, [vc]);
 
-        final first = result.vcsGroups.values.first.matchedVCs.first;
-        expect(first, isA<VcUnavailable>());
-        expect((first as VcUnavailable).reason, VcUnavailabilityReason.unknown);
+        await expectLater(matcher.match(req, [vc]), throwsA(isA<StateError>()));
       },
     );
 
     test(
-      'should continue matching remaining descriptors after a malformed one',
+      'should propagate StateError even when other descriptors are valid',
       () async {
         final vc = buildTestVc(type: 'UniversityDegree');
 
+        // The StateError aborts the whole match() call regardless of whether
+        // subsequent descriptors in the loop would have succeeded.
         final malformedDescriptor = PDDescriptor(
           data: {
             'id': 'd1',
@@ -324,15 +322,8 @@ void main() {
           zeroPartyVCs: const {},
           submissionRequirementsByGroup: const {},
         );
-        final result = await matcher.match(req, [vc]);
 
-        expect(result.vcsGroups, hasLength(2));
-        final groups = result.vcsGroups.values.toList();
-        expect(
-          (groups[0].matchedVCs.first as VcUnavailable).reason,
-          VcUnavailabilityReason.unknown,
-        );
-        expect(groups[1].matchedVCs.first, isA<VcAvailable>());
+        await expectLater(matcher.match(req, [vc]), throwsA(isA<StateError>()));
       },
     );
   });
