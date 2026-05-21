@@ -7,7 +7,7 @@
  - `createFolder(...)` now returns the created `Folder`.
  - `VfsProfileRepository.createProfile(...)` now returns the created `Profile`.
  - `VaultDataManagerApiServiceInterface.getListOfProfiles(...)` now returns `Response<ListProfilesOK>` instead of `Response<ListRootNodeChildrenOK>` so account and profile metadata can be read from a single response.
- - `VaultDataManagerProfile` now requires `accountIndex` and may include `accountMetadata`, so existing mocks, fixtures, and consumers must be updated for the expanded model shape.
+ - `VaultDataManagerProfile` now requires `id` and `accountIndex` and may include `accountMetadata`, so existing mocks, fixtures, and consumers must be updated for the expanded model shape.
  - Configuration error checks must use `profile_not_configured` instead of the previous misspelled value.
 
 ### Added
@@ -27,7 +27,7 @@
 
  - Update direct calls, mocks, and custom implementations of `VaultDataManagerServiceInterface.createProfile(...)` to provide account metadata and profile crypto material.
  - Update direct calls, mocks, and custom implementations of `VaultDataManagerApiServiceInterface.getListOfProfiles(...)` to expect `Response<ListProfilesOK>`.
- - Update custom mocks, fixtures, and code paths that construct `VaultDataManagerProfile` to include `accountIndex` and handle optional `accountMetadata`.
+ - Update custom mocks, fixtures, and code paths that construct `VaultDataManagerProfile` to provide `id` and `accountIndex`, and handle optional `accountMetadata`.
  - Update `createFolder(...)` call sites, mocks, and custom implementations to consume the returned `Folder` instead of a node id.
  - Rename any `profle_not_configured` checks to `profile_not_configured`.
  - If you implement or mock `VfsProfileRepository` through `ProfileRepository`, return a `Profile` from `createProfile(...)`.

@@ -12,6 +12,7 @@ For detailed change histories and complete release notes for a specific client o
 
 - `affinidi_tdk_vault`, `affinidi_tdk_vault_data_manager`, `affinidi_tdk_vault_edge_provider`, and `affinidi_tdk_vault_edge_drift_provider` now expose profile creation and shared access APIs that return created or refreshed objects instead of `void`. See the package changelogs for migration steps.
 - VFS profile provisioning now uses the combined account-and-profile flow, and configuration error checks now use the corrected `profile_not_configured` code.
+- `VaultDataManagerProfile` now requires both `id` and `accountIndex`, so custom mocks, fixtures, and direct model construction must provide both values.
 
 ### Added
 

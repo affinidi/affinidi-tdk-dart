@@ -26,8 +26,8 @@ class VaultDataManagerProfile {
 
   /// Creates a new profile instance.
   ///
-  /// The [name] parameter is required, while [description], [pictureURI], [id], [accountIndex], and [accountMetadata]
-  /// are optional. If [id] is not provided, it defaults to an empty string.
+  /// The [id], [accountIndex], and [name] parameters are required.
+  /// The [description], [pictureURI], and [accountMetadata] parameters are optional.
   VaultDataManagerProfile({
     required this.id,
     required this.accountIndex,
