@@ -1,5 +1,12 @@
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
+import 'package:ssi/ssi.dart'
+    show
+        CredentialSubject,
+        Issuer,
+        JsonLdContext,
+        VcDataModelV1,
+        VerifiableCredential;
 
 /// A minimal in-memory [ConsentRecordStore] for demonstration purposes.
 ///
@@ -54,6 +61,33 @@ Future<void> main() async {
     domainVerified: true,
   );
 
+  final sharedVcs = <VerifiableCredential>[
+    VcDataModelV1(
+      context: JsonLdContext.fromJson([
+        'https://www.w3.org/2018/credentials/v1',
+      ]),
+      id: Uri.parse('vc:uuid:vc-1'),
+      type: {'VerifiableCredential', 'EmailV1VC'},
+      issuer: Issuer(id: Uri.parse('did:key:z6MkIssuer')),
+      credentialSubject: [
+        CredentialSubject.fromJson({'email': 'user@example.com'}),
+      ],
+      issuanceDate: DateTime.utc(2024, 1, 1),
+    ),
+    VcDataModelV1(
+      context: JsonLdContext.fromJson([
+        'https://www.w3.org/2018/credentials/v1',
+      ]),
+      id: Uri.parse('vc:uuid:vc-2'),
+      type: {'VerifiableCredential', 'PhoneNumberV1VC'},
+      issuer: Issuer(id: Uri.parse('did:key:z6MkIssuer')),
+      credentialSubject: [
+        CredentialSubject.fromJson({'phoneNumber': '+1 555 000 0000'}),
+      ],
+      issuanceDate: DateTime.utc(2024, 1, 1),
+    ),
+  ];
+
   try {
     await service.saveConsentRecord(
       requestHash: requestHash,
@@ -62,7 +96,7 @@ Future<void> main() async {
       profileId: profileId,
       profileName: profileName,
       did: holderDid,
-      sharedVcIds: ['vc:uuid:vc-1', 'vc:uuid:vc-2'],
+      sharedVcs: sharedVcs,
       claimedVcTypesCsv: 'EmailV1VC,PhoneNumberV1VC',
       isAutoShareEnabled: false,
       historySharedData: {
@@ -92,7 +126,7 @@ Future<void> main() async {
       profileId: profileId,
       profileName: profileName,
       did: holderDid,
-      sharedVcIds: ['vc:uuid:vc-3'],
+      sharedVcs: sharedVcs.take(1).toList(),
       claimedVcTypesCsv: 'EmailV1VC',
       isAutoShareEnabled: true,
     );

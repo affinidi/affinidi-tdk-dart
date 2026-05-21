@@ -74,25 +74,26 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       vcsFingerprint: _stringifyVcs(sharedVcs),
     );
 
-    final existing = await _store.findByRequestHash(requestHash);
-
-    final record = IotaConsentRecord(
-      hash: hash,
-      requestHash: requestHash,
-      logo: verifierMetadata.logo,
-      siteUrl: verifierMetadata.origin,
-      sharedAt: existing?.sharedAt ?? DateTime.now().toUtc().toIso8601String(),
-      profileName: profileName,
-      profileId: profileId,
-      clientId: clientId,
-      isAutoShareEnabled: isAutoShareEnabled,
-      sharedVcIds: sharedVcIds,
-      claimedVcTypesCsv: claimedVcTypesCsv,
-      historySharedData: historySharedData,
-      isConsentManagementEnabled: isConsentManagementEnabled,
-    );
-
     try {
+      final existing = await _store.findByRequestHash(requestHash);
+
+      final record = IotaConsentRecord(
+        hash: hash,
+        requestHash: requestHash,
+        logo: verifierMetadata.logo,
+        siteUrl: verifierMetadata.origin,
+        sharedAt:
+            existing?.sharedAt ?? DateTime.now().toUtc().toIso8601String(),
+        profileName: profileName,
+        profileId: profileId,
+        clientId: clientId,
+        isAutoShareEnabled: isAutoShareEnabled,
+        sharedVcIds: sharedVcIds,
+        claimedVcTypesCsv: claimedVcTypesCsv,
+        historySharedData: historySharedData,
+        isConsentManagementEnabled: isConsentManagementEnabled,
+      );
+
       await _store.saveOrUpdate(record);
     } catch (e, stackTrace) {
       if (e is TdkException) rethrow;

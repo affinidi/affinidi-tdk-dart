@@ -151,35 +151,32 @@ void main() {
         },
       );
 
-      test(
-        'throws the original exception when findByRequestHash fails',
-        () async {
-          when(
-            () => store.findByRequestHash(any()),
-          ).thenThrow(Exception('lookup error'));
+      test('throws TdkException when findByRequestHash fails', () async {
+        when(
+          () => store.findByRequestHash(any()),
+        ).thenThrow(Exception('lookup error'));
 
-          await expectLater(
-            () => service.saveConsentRecord(
-              requestHash: IotaConsentRecordFixtures.requestHash,
-              clientId: IotaConsentRecordFixtures.clientId,
-              verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-              profileId: IotaConsentRecordFixtures.profileId,
-              profileName: IotaConsentRecordFixtures.profileName,
-              did: IotaConsentRecordFixtures.did,
-              sharedVcs: [],
-              claimedVcTypesCsv: '',
-              isAutoShareEnabled: false,
+        await expectLater(
+          () => service.saveConsentRecord(
+            requestHash: IotaConsentRecordFixtures.requestHash,
+            clientId: IotaConsentRecordFixtures.clientId,
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            profileId: IotaConsentRecordFixtures.profileId,
+            profileName: IotaConsentRecordFixtures.profileName,
+            did: IotaConsentRecordFixtures.did,
+            sharedVcs: [],
+            claimedVcTypesCsv: '',
+            isAutoShareEnabled: false,
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              equals(TdkExceptionType.failedToPersistConsentRecord.code),
             ),
-            throwsA(
-              isA<Exception>().having(
-                (e) => e is TdkException,
-                'is TdkException',
-                isFalse,
-              ),
-            ),
-          );
-        },
-      );
+          ),
+        );
+      });
 
       test(
         'assembles the hash source in the expected pipe-delimited format',
