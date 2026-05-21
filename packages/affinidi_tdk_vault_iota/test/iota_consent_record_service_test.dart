@@ -90,6 +90,7 @@ void main() {
           isTrue,
         );
         expect(savedAt.isBefore(after.add(const Duration(seconds: 1))), isTrue);
+        expect(captured.sharedAt, endsWith('Z'));
       });
 
       test('preserves sharedAt when updating an existing record', () async {

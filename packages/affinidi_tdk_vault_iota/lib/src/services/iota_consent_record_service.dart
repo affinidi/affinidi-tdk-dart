@@ -74,7 +74,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       requestHash: requestHash,
       logo: verifierMetadata.logo,
       siteUrl: verifierMetadata.origin,
-      sharedAt: existing?.sharedAt ?? DateTime.now().toIso8601String(),
+      sharedAt: existing?.sharedAt ?? DateTime.now().toUtc().toIso8601String(),
       profileName: profileName,
       profileId: profileId,
       clientId: clientId,
