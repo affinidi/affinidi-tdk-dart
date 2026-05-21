@@ -346,7 +346,7 @@ class Vault {
     final version = _profilesCacheVersion;
     final profiles = await Future.wait(
       _profileRepositories.values.map(
-        (repository) => repository.listProfiles(),
+        (repository) => repository.listProfiles(cancelToken: cancelToken),
       ),
     );
     final allProfiles = profiles.expand((profiles) => profiles).toList();
