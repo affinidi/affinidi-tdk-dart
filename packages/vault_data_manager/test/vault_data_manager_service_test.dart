@@ -5,7 +5,6 @@ import 'dart:typed_data';
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_data_manager/affinidi_tdk_vault_data_manager.dart';
 import 'package:affinidi_tdk_vault_data_manager/src/exceptions/tdk_exception_type.dart';
-import 'package:affinidi_tdk_vault_data_manager/src/model/account.dart';
 import 'package:affinidi_tdk_vault_data_manager/src/model/profile_data.dart';
 import 'package:affinidi_tdk_vault_data_manager/src/model/recognized_profile_data.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/affinidi_tdk_vault_data_manager_client.dart';

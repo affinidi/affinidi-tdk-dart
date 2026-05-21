@@ -6,7 +6,6 @@ import 'package:affinidi_tdk_consumer_iam_client/affinidi_tdk_consumer_iam_clien
     as consumer_iam;
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_data_manager/affinidi_tdk_vault_data_manager.dart';
-import 'package:affinidi_tdk_vault_data_manager/src/model/account.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/affinidi_tdk_vault_data_manager_client.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart';
