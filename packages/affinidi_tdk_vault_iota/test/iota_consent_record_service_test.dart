@@ -148,6 +148,36 @@ void main() {
       );
 
       test(
+        'throws the original exception when findByRequestHash fails',
+        () async {
+          when(
+            () => store.findByRequestHash(any()),
+          ).thenThrow(Exception('lookup error'));
+
+          await expectLater(
+            () => service.saveConsentRecord(
+              requestHash: IotaConsentRecordFixtures.requestHash,
+              clientId: IotaConsentRecordFixtures.clientId,
+              verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+              profileId: IotaConsentRecordFixtures.profileId,
+              profileName: IotaConsentRecordFixtures.profileName,
+              did: IotaConsentRecordFixtures.did,
+              sharedVcIds: [],
+              claimedVcTypesCsv: '',
+              isAutoShareEnabled: false,
+            ),
+            throwsA(
+              isA<Exception>().having(
+                (e) => e is TdkException,
+                'is TdkException',
+                isFalse,
+              ),
+            ),
+          );
+        },
+      );
+
+      test(
         'throws TdkException with failedToPersistConsentRecord when the store throws',
         () async {
           when(

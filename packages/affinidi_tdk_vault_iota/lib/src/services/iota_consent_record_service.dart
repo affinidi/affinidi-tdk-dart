@@ -56,41 +56,36 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   }) async {
     _logger.log(LogLevel.fine, 'Saving consent record for clientId: $clientId');
 
+    final sortedVcIds = List<String>.from(sharedVcIds)..sort();
+    final hash = _computeConsentHash(
+      profileId: profileId,
+      did: did,
+      clientId: clientId,
+      logo: verifierMetadata.logo,
+      siteUrl: verifierMetadata.origin,
+      vcFingerprint: sortedVcIds.join('|'),
+    );
+
+    final existing = await _store.findByRequestHash(requestHash);
+
+    final record = IotaConsentRecord(
+      hash: hash,
+      requestHash: requestHash,
+      logo: verifierMetadata.logo,
+      siteUrl: verifierMetadata.origin,
+      sharedAt: existing?.sharedAt ?? DateTime.now().toIso8601String(),
+      profileName: profileName,
+      profileId: profileId,
+      clientId: clientId,
+      isAutoShareEnabled: isAutoShareEnabled,
+      sharedVcIds: sharedVcIds,
+      claimedVcTypesCsv: claimedVcTypesCsv,
+      historySharedData: historySharedData,
+      isConsentManagementEnabled: isConsentManagementEnabled,
+    );
+
     try {
-      final sortedVcIds = List<String>.from(sharedVcIds)..sort();
-      final hash = _computeConsentHash(
-        profileId: profileId,
-        did: did,
-        clientId: clientId,
-        logo: verifierMetadata.logo,
-        siteUrl: verifierMetadata.origin,
-        vcFingerprint: sortedVcIds.join('|'),
-      );
-
-      final existing = await _store.findByRequestHash(requestHash);
-
-      final record = IotaConsentRecord(
-        hash: hash,
-        requestHash: requestHash,
-        logo: verifierMetadata.logo,
-        siteUrl: verifierMetadata.origin,
-        sharedAt: existing?.sharedAt ?? DateTime.now().toIso8601String(),
-        profileName: profileName,
-        profileId: profileId,
-        clientId: clientId,
-        isAutoShareEnabled: isAutoShareEnabled,
-        sharedVcIds: sharedVcIds,
-        claimedVcTypesCsv: claimedVcTypesCsv,
-        historySharedData: historySharedData,
-        isConsentManagementEnabled: isConsentManagementEnabled,
-      );
-
       await _store.saveOrUpdate(record);
-
-      _logger.log(
-        LogLevel.fine,
-        'Consent record saved for clientId: $clientId',
-      );
     } catch (e) {
       if (e is TdkException) rethrow;
 
@@ -106,6 +101,8 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
         originalMessage: e.toString(),
       );
     }
+
+    _logger.log(LogLevel.fine, 'Consent record saved for clientId: $clientId');
   }
 
   /// Computes the full share fingerprint covering all share-event fields.
