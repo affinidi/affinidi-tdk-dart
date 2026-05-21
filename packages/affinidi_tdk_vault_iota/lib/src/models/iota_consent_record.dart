@@ -24,7 +24,7 @@ class IotaConsentRecord {
   /// Origin (base URL) of the verifier's site, if available.
   final String? siteUrl;
 
-  /// ISO 8601 timestamp of when the share was first completed.
+  /// ISO 8601 UTC timestamp of the most recent completed share.
   final String sharedAt;
 
   /// Display name of the profile used for this share.

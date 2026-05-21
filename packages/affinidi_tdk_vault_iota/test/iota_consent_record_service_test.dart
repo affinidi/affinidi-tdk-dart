@@ -33,11 +33,7 @@ void main() {
 
   group('IotaConsentRecordService', () {
     group('saveConsentRecord', () {
-      test('persists a new record when none exists', () async {
-        when(
-          () => store.findByRequestHash(any()),
-        ).thenAnswer((_) async => null);
-
+      test('persists a record with the expected fields', () async {
         await service.saveConsentRecord(
           requestHash: IotaConsentRecordFixtures.requestHash,
           clientId: IotaConsentRecordFixtures.clientId,
@@ -59,11 +55,7 @@ void main() {
         expect(captured.sharedVcIds, [IotaConsentRecordFixtures.vcId]);
       });
 
-      test('sets sharedAt to a non-empty timestamp for a new record', () async {
-        when(
-          () => store.findByRequestHash(any()),
-        ).thenAnswer((_) async => null);
-
+      test('always sets sharedAt to the current UTC timestamp', () async {
         final before = DateTime.now();
 
         await service.saveConsentRecord(
@@ -93,98 +85,9 @@ void main() {
         expect(captured.sharedAt, endsWith('Z'));
       });
 
-      test('preserves sharedAt when updating an existing record', () async {
-        when(
-          () => store.findByRequestHash(any()),
-        ).thenAnswer((_) async => IotaConsentRecordFixtures.existing());
-
-        await service.saveConsentRecord(
-          requestHash: IotaConsentRecordFixtures.requestHash,
-          clientId: IotaConsentRecordFixtures.clientId,
-          verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-          profileId: IotaConsentRecordFixtures.profileId,
-          profileName: IotaConsentRecordFixtures.profileName,
-          did: IotaConsentRecordFixtures.did,
-          sharedVcs: [
-            IotaConsentRecordFixtures.makeVc(),
-            IotaConsentRecordFixtures.makeVc(id: 'vc-2'),
-          ],
-          claimedVcTypesCsv: 'SomeType',
-          isAutoShareEnabled: true,
-        );
-
-        final captured =
-            verify(() => store.saveOrUpdate(captureAny())).captured.single
-                as IotaConsentRecord;
-
-        expect(captured.sharedAt, IotaConsentRecordFixtures.sharedAt);
-        expect(captured.sharedVcIds, ['vc-1', 'vc-2']);
-      });
-
-      test(
-        'updates isAutoShareEnabled when toggled on an existing record',
-        () async {
-          when(
-            () => store.findByRequestHash(any()),
-          ).thenAnswer((_) async => IotaConsentRecordFixtures.existing());
-
-          await service.saveConsentRecord(
-            requestHash: IotaConsentRecordFixtures.requestHash,
-            clientId: IotaConsentRecordFixtures.clientId,
-            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-            profileId: IotaConsentRecordFixtures.profileId,
-            profileName: IotaConsentRecordFixtures.profileName,
-            did: IotaConsentRecordFixtures.did,
-            sharedVcs: [IotaConsentRecordFixtures.makeVc()],
-            claimedVcTypesCsv: 'SomeType',
-            isAutoShareEnabled: true,
-          );
-
-          final captured =
-              verify(() => store.saveOrUpdate(captureAny())).captured.single
-                  as IotaConsentRecord;
-
-          // existing() has isAutoShareEnabled=false; the new call passes true.
-          expect(captured.isAutoShareEnabled, isTrue);
-          // sharedAt must still be preserved from the existing record.
-          expect(captured.sharedAt, IotaConsentRecordFixtures.sharedAt);
-        },
-      );
-
-      test('throws TdkException when findByRequestHash fails', () async {
-        when(
-          () => store.findByRequestHash(any()),
-        ).thenThrow(Exception('lookup error'));
-
-        await expectLater(
-          () => service.saveConsentRecord(
-            requestHash: IotaConsentRecordFixtures.requestHash,
-            clientId: IotaConsentRecordFixtures.clientId,
-            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-            profileId: IotaConsentRecordFixtures.profileId,
-            profileName: IotaConsentRecordFixtures.profileName,
-            did: IotaConsentRecordFixtures.did,
-            sharedVcs: [],
-            claimedVcTypesCsv: '',
-            isAutoShareEnabled: false,
-          ),
-          throwsA(
-            isA<TdkException>().having(
-              (e) => e.code,
-              'code',
-              equals(TdkExceptionType.failedToPersistConsentRecord.code),
-            ),
-          ),
-        );
-      });
-
       test(
         'assembles the hash source in the expected pipe-delimited format',
         () async {
-          when(
-            () => store.findByRequestHash(any()),
-          ).thenAnswer((_) async => null);
-
           await service.saveConsentRecord(
             requestHash: IotaConsentRecordFixtures.requestHash,
             clientId: IotaConsentRecordFixtures.clientId,
@@ -227,10 +130,6 @@ void main() {
       test(
         'substitutes empty strings for absent verifier metadata fields',
         () async {
-          when(
-            () => store.findByRequestHash(any()),
-          ).thenAnswer((_) async => null);
-
           await service.saveConsentRecord(
             requestHash: IotaConsentRecordFixtures.requestHash,
             clientId: IotaConsentRecordFixtures.clientId,
@@ -273,10 +172,6 @@ void main() {
       );
 
       test('preserves VC presentation order in the hash source', () async {
-        when(
-          () => store.findByRequestHash(any()),
-        ).thenAnswer((_) async => null);
-
         await service.saveConsentRecord(
           requestHash: IotaConsentRecordFixtures.requestHash,
           clientId: IotaConsentRecordFixtures.clientId,
@@ -311,10 +206,6 @@ void main() {
       test(
         'uses empty string for vcsFingerprint in hash source when sharedVcs is empty',
         () async {
-          when(
-            () => store.findByRequestHash(any()),
-          ).thenAnswer((_) async => null);
-
           await service.saveConsentRecord(
             requestHash: IotaConsentRecordFixtures.requestHash,
             clientId: IotaConsentRecordFixtures.clientId,
@@ -351,10 +242,6 @@ void main() {
       test(
         'encodes nested credential subject JSON correctly in the VC fingerprint',
         () async {
-          when(
-            () => store.findByRequestHash(any()),
-          ).thenAnswer((_) async => null);
-
           await service.saveConsentRecord(
             requestHash: IotaConsentRecordFixtures.requestHash,
             clientId: IotaConsentRecordFixtures.clientId,
@@ -391,10 +278,6 @@ void main() {
       test(
         'throws TdkException with failedToPersistConsentRecord when the store throws',
         () async {
-          when(
-            () => store.findByRequestHash(any()),
-          ).thenAnswer((_) async => null);
-
           when(
             () => store.saveOrUpdate(any()),
           ).thenThrow(Exception('db error'));

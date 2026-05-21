@@ -17,17 +17,16 @@ import 'iota_consent_record_service_interface.dart';
 ///
 /// - `hash` = `sha1("$profileId|$did|$clientId|$name|$logo|$origin|$vcsFingerprint")`
 ///   — full fingerprint that changes if the profile, verifier branding,
-///   or selected credentials change.
+///   or selected credentials change. Used as the storage key, matching
+///   vault_universal_ui's `addOrUpdate` behaviour.
 ///
 /// The VC fingerprint matches vault_universal_ui's `_stringifyVCs` concept:
 /// each VC contributes `issuer-id-validFrom-credentialSubject`, joined with
 /// `|` in presentation order. ZPD datapoints are not tracked by the TDK.
 ///
-/// The `requestHash` deduplication key is supplied by the caller — the
-/// consumer is free to use any algorithm.
-///
-/// If a record with the same `requestHash` already exists it is
-/// updated rather than duplicated.
+/// [IotaConsentRecord.sharedAt] is always set to the current UTC time,
+/// so it reflects the most recent share — the same semantics as
+/// vault_universal_ui's `firstVisited` column ("Last Consent" in the UI).
 class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   final ConsentRecordStore _store;
   final CryptographyServiceInterface _cryptography;
@@ -75,15 +74,12 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     );
 
     try {
-      final existing = await _store.findByRequestHash(requestHash);
-
       final record = IotaConsentRecord(
         hash: hash,
         requestHash: requestHash,
         logo: verifierMetadata.logo,
         siteUrl: verifierMetadata.origin,
-        sharedAt:
-            existing?.sharedAt ?? DateTime.now().toUtc().toIso8601String(),
+        sharedAt: DateTime.now().toUtc().toIso8601String(),
         profileName: profileName,
         profileId: profileId,
         clientId: clientId,

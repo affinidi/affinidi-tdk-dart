@@ -14,12 +14,6 @@ abstract interface class ConsentRecordStore {
   /// Throws if the underlying storage operation fails.
   Future<void> saveOrUpdate(IotaConsentRecord record);
 
-  /// Returns the record matching [hash], or `null` if none exists.
-  ///
-  /// Parameters:
-  /// * [hash] - Full share-event fingerprint computed by [IotaConsentRecordService].
-  Future<IotaConsentRecord?> findByHash(String hash);
-
   /// Returns the most recently saved record whose [IotaConsentRecord.requestHash]
   /// matches [requestHash], or `null` if none exists.
   ///
