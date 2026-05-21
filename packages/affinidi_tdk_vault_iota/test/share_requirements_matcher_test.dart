@@ -317,6 +317,38 @@ void main() {
         await expectLater(matcher.match(req, [vc]), throwsA(isA<StateError>()));
       },
     );
+
+    test(
+      'should propagate StateError when a field filter is not a JSON object',
+      () async {
+        final vc = buildTestVc(type: 'UniversityDegree');
+
+        final req = PDRequirements(
+          claimedDescriptors: [
+            PDDescriptor(
+              data: {
+                'id': 'd1',
+                'constraints': {
+                  'fields': [
+                    {
+                      'path': [r'$.type'],
+                      'filter': 'not-an-object',
+                    },
+                  ],
+                },
+              },
+            ),
+          ],
+          zpdLinkedDescriptors: const [],
+          idvDescriptors: const [],
+          dataPoints: const {},
+          zeroPartyVCs: const {},
+          submissionRequirementsByGroup: const {},
+        );
+
+        await expectLater(matcher.match(req, [vc]), throwsA(isA<StateError>()));
+      },
+    );
   });
 
   // ── IDV descriptors ───────────────────────────────────────────────────────

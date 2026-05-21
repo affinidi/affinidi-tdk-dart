@@ -64,8 +64,11 @@ abstract final class PexEvaluator {
         return (paths: paths, schema: null);
       }
       if (rawFilter is! Map<String, dynamic>) {
-        // filter is present but not a JSON object — treat as non-matching.
-        return (paths: const <String>[], schema: null);
+        throw StateError(
+          'Malformed PD: constraints.fields[].filter is not a JSON object '
+          '(got ${rawFilter.runtimeType}: $rawFilter). '
+          'The descriptor should have been rejected by PDClassifier.',
+        );
       }
       try {
         return (paths: paths, schema: JsonSchema.create(rawFilter));
