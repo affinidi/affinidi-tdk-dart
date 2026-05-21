@@ -34,7 +34,7 @@ abstract final class PexEvaluator {
     return allVCs.where((vc) {
       try {
         return _matchesAllFields(vc, compiledFields);
-      } on Object {
+      } on Exception {
         return false;
       }
     }).toList();
@@ -69,7 +69,7 @@ abstract final class PexEvaluator {
       }
       try {
         return (paths: paths, schema: JsonSchema.create(rawFilter));
-      } on Object {
+      } on Exception {
         return (paths: const <String>[], schema: null);
       }
     }).toList();
