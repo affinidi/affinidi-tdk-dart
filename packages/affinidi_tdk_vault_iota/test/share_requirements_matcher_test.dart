@@ -263,6 +263,42 @@ void main() {
     });
 
     test(
+      'should record the descriptor as unknown when a field path uses bracket notation',
+      () async {
+        final vc = buildTestVc(type: 'UniversityDegree');
+
+        // Bracket-notation paths such as $['@context'] or $[0] are not
+        // supported by PexEvaluator._resolveJsonPath, which throws a
+        // StateError. The outer catch in the matcher turns this into unknown.
+        final bracketPathDescriptor = PDDescriptor(
+          data: {
+            'id': 'd1',
+            'constraints': {
+              'fields': [
+                {
+                  'path': [r"$['@context']"],
+                },
+              ],
+            },
+          },
+        );
+        final req = PDRequirements(
+          claimedDescriptors: [bracketPathDescriptor],
+          zpdLinkedDescriptors: const [],
+          idvDescriptors: const [],
+          dataPoints: const {},
+          zeroPartyVCs: const {},
+          submissionRequirementsByGroup: const {},
+        );
+        final result = await matcher.match(req, [vc]);
+
+        final first = result.vcsGroups.values.first.matchedVCs.first;
+        expect(first, isA<VcUnavailable>());
+        expect((first as VcUnavailable).reason, VcUnavailabilityReason.unknown);
+      },
+    );
+
+    test(
       'should continue matching remaining descriptors after a malformed one',
       () async {
         final vc = buildTestVc(type: 'UniversityDegree');

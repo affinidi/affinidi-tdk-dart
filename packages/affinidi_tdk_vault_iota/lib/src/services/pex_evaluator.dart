@@ -113,7 +113,14 @@ abstract final class PexEvaluator {
   /// Returns the resolved value, or `null` if the path cannot be traversed.
   static dynamic _resolveJsonPath(Map<String, dynamic> vcJson, String path) {
     if (path == r'$') return vcJson;
-    if (!path.startsWith(r'$.')) return null;
+    if (!path.startsWith(r'$.')) {
+      throw StateError(
+        'Unsupported JSONPath syntax: "$path". '
+        'Only dot-notation paths starting with \$. are supported '
+        '(e.g. \$.type, \$.issuer). Bracket notation such as '
+        r"$['@context'] or $[0] is not supported.",
+      );
+    }
 
     final segments = path.substring(2).split('.');
     dynamic current = vcJson;
