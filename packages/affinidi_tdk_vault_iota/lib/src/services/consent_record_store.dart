@@ -1,12 +1,12 @@
-import '../models/iota_consent_record.dart';
+import '../../affinidi_tdk_vault_iota.dart';
 
 /// Consumer-provided storage backend for Iota consent records.
 ///
 /// Implement this interface to persist consent history using any storage
-/// technology. [saveOrUpdate] must upsert by [IotaConsentRecord.requestHash].
+/// technology. [saveOrUpdate] must upsert by [IotaConsentRecord.hash].
 abstract interface class ConsentRecordStore {
   /// Persists a consent record, replacing any existing record with the same
-  /// [IotaConsentRecord.requestHash].
+  /// [IotaConsentRecord.hash].
   ///
   /// Parameters:
   /// * [record] - The consent record to persist or update.
@@ -14,9 +14,16 @@ abstract interface class ConsentRecordStore {
   /// Throws if the underlying storage operation fails.
   Future<void> saveOrUpdate(IotaConsentRecord record);
 
-  /// Returns the record matching [requestHash], or `null` if none exists.
+  /// Returns the record matching [hash], or `null` if none exists.
   ///
   /// Parameters:
-  /// * [requestHash] - Consumer-computed hash identifying the verifier+request combination.
+  /// * [hash] - Full share-event fingerprint computed by [IotaConsentRecordService].
+  Future<IotaConsentRecord?> findByHash(String hash);
+
+  /// Returns the most recently saved record whose [IotaConsentRecord.requestHash]
+  /// matches [requestHash], or `null` if none exists.
+  ///
+  /// Parameters:
+  /// * [requestHash] - Verifier+request hash supplied by the caller.
   Future<IotaConsentRecord?> findByRequestHash(String requestHash);
 }

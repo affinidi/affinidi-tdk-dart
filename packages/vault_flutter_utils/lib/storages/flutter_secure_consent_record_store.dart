@@ -5,7 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 /// Implementation of [ConsentRecordStore] backed by Flutter's secure storage.
 ///
-/// Each record is stored as a JSON string keyed by its [IotaConsentRecord.requestHash],
+/// Each record is stored as a JSON string keyed by its [IotaConsentRecord.hash],
 /// prefixed with a namespace to avoid collisions with other secure storage entries.
 class FlutterSecureConsentRecordStore implements ConsentRecordStore {
   /// Creates a [FlutterSecureConsentRecordStore].
@@ -29,20 +29,38 @@ class FlutterSecureConsentRecordStore implements ConsentRecordStore {
   final String _namespace;
   final FlutterSecureStorage _secureStorage;
 
-  String _key(String requestHash) => '${_namespace}_$requestHash';
+  String _key(String hash) => '${_namespace}_$hash';
 
   @override
   Future<void> saveOrUpdate(IotaConsentRecord record) async {
     await _secureStorage.write(
-      key: _key(record.requestHash),
+      key: _key(record.hash),
       value: jsonEncode(record.toJson()),
     );
   }
 
   @override
-  Future<IotaConsentRecord?> findByRequestHash(String requestHash) async {
-    final data = await _secureStorage.read(key: _key(requestHash));
+  Future<IotaConsentRecord?> findByHash(String hash) async {
+    final data = await _secureStorage.read(key: _key(hash));
     if (data == null) return null;
     return IotaConsentRecord.fromJson(jsonDecode(data) as Map<String, dynamic>);
+  }
+
+  @override
+  Future<IotaConsentRecord?> findByRequestHash(String requestHash) async {
+    final all = await _secureStorage.readAll();
+    final prefix = '${_namespace}_';
+    for (final entry in all.entries) {
+      if (!entry.key.startsWith(prefix)) continue;
+      try {
+        final record = IotaConsentRecord.fromJson(
+          jsonDecode(entry.value) as Map<String, dynamic>,
+        );
+        if (record.requestHash == requestHash) return record;
+      } catch (_) {
+        continue;
+      }
+    }
+    return null;
   }
 }
