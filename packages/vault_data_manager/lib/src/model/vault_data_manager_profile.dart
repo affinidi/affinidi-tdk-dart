@@ -3,7 +3,7 @@ import 'account.dart';
 /// Represents a user profile in the storage system.
 class VaultDataManagerProfile {
   /// Unique identifier for the profile
-  late String id;
+  final String id;
 
   /// Account identifier
   final int accountIndex;
