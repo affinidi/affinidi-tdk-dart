@@ -1,5 +1,8 @@
+import 'dart:convert' show jsonEncode;
+
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
+import 'package:ssi/ssi.dart' show VerifiableCredential;
 
 import '../exceptions/tdk_exception_type.dart';
 import '../models/iota_consent_record.dart';
@@ -12,9 +15,14 @@ import 'iota_consent_record_service_interface.dart';
 /// Computes an internal fingerprint and delegates storage to the
 /// consumer-provided [ConsentRecordStore]:
 ///
-/// - `hash` = `sha1("$profileId|$did|$clientId|$logo|$siteUrl|$vcFingerprint")`
-///   — full fingerprint that changes if the profile, verifier branding, or
-///   selected credentials change.
+/// - `hash` = `sha1("$profileId|$did|$clientId|$name|$logo|$origin|$vcsFingerprint|$datapointsFingerprint")`
+///   — full fingerprint that changes if the profile, verifier branding,
+///   selected credentials, or ZPD datapoints change.
+///
+/// The hash structure matches vault_universal_ui's `_generateHash` concept:
+/// VC fingerprint is `issuer-id-validFrom-credentialSubject` per VC joined
+/// with `|`, and datapoints are `key:value` pairs joined with `|`.
+/// ZPD datapoints are omitted from non-ZPD flows (pass empty map).
 ///
 /// The `requestHash` deduplication key is supplied by the caller — the
 /// consumer is free to use any algorithm.
@@ -48,15 +56,16 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     required String profileId,
     required String profileName,
     required String did,
-    required List<String> sharedVcIds,
+    required List<VerifiableCredential> sharedVcs,
     required String claimedVcTypesCsv,
     required bool isAutoShareEnabled,
     Map<String, String> historySharedData = const {},
+    Map<String, dynamic> datapoints = const {},
     bool isConsentManagementEnabled = false,
   }) async {
     _logger.log(LogLevel.fine, 'Saving consent record for clientId: $clientId');
 
-    final sortedVcIds = List<String>.from(sharedVcIds)..sort();
+    final sharedVcIds = sharedVcs.map((vc) => vc.id?.toString() ?? '').toList();
     final hash = _computeConsentHash(
       profileId: profileId,
       did: did,
@@ -64,7 +73,8 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       verifierName: verifierMetadata.name,
       logo: verifierMetadata.logo,
       siteUrl: verifierMetadata.origin,
-      vcFingerprint: sortedVcIds.join('|'),
+      vcsFingerprint: _stringifyVcs(sharedVcs),
+      datapointsFingerprint: _buildDatapointsFingerprint(datapoints),
     );
 
     final existing = await _store.findByRequestHash(requestHash);
@@ -112,9 +122,8 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
 
   /// Computes the full share fingerprint covering all share-event fields.
   ///
-  /// - ZPD datapoints are omitted — the TDK share flow does not track them.
-  /// - [vcFingerprint] uses sorted VC IDs rather than full VC JSON strings,
-  ///   which is sufficient to detect which credentials were shared.
+  /// Matches vault_universal_ui's `_generateHash` structure:
+  /// `profileId|did|clientId|name|logo|origin|vcsFingerprint|datapointsFingerprint`.
   ///
   /// [did] is included for change detection (a DID rotation produces a new
   /// fingerprint) but is not persisted on [IotaConsentRecord] because it is
@@ -127,10 +136,11 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   /// * [verifierName] - Verifier display name; treated as empty string when absent.
   /// * [logo] - Verifier logo URL; treated as empty string when absent.
   /// * [siteUrl] - Verifier origin URL; treated as empty string when absent.
-  /// * [vcFingerprint] - Sorted, pipe-joined VC IDs.
+  /// * [vcsFingerprint] - Pipe-joined per-VC strings in presentation order.
+  /// * [datapointsFingerprint] - Pipe-joined `key:value` ZPD pairs; empty for non-ZPD flows.
   ///
   /// Returns a hex SHA-1 digest that changes whenever the profile, verifier
-  /// branding, or selected credentials change.
+  /// branding, selected credentials, or ZPD datapoints change.
   String _computeConsentHash({
     required String profileId,
     required String did,
@@ -138,9 +148,32 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     required String? verifierName,
     required String? logo,
     required String? siteUrl,
-    required String vcFingerprint,
+    required String vcsFingerprint,
+    required String datapointsFingerprint,
   }) => _cryptography.createHash(
     hashSource:
-        '$profileId|$did|$clientId|${verifierName ?? ''}|${logo ?? ''}|${siteUrl ?? ''}|$vcFingerprint',
+        '$profileId|$did|$clientId|${verifierName ?? ''}|${logo ?? ''}|${siteUrl ?? ''}|$vcsFingerprint|$datapointsFingerprint',
   );
+
+  /// Builds a pipe-joined fingerprint string from a list of [VerifiableCredential]s.
+  ///
+  /// Each VC contributes one segment: `issuer-id-validFrom-credentialSubject`.
+  /// VCs are joined in the order they were presented (no sorting).
+  String _stringifyVcs(List<VerifiableCredential> vcs) {
+    return vcs
+        .map((vc) {
+          final credentialSubjectJson = vc.credentialSubject.isEmpty
+              ? '{}'
+              : jsonEncode(vc.credentialSubject.first.toJson());
+          return '${vc.issuer.id}-${vc.id}-${vc.validFrom?.toIso8601String() ?? ''}-$credentialSubjectJson';
+        })
+        .join('|');
+  }
+
+  /// Builds a pipe-joined `key:value` fingerprint from ZPD [datapoints].
+  ///
+  /// Returns an empty string when [datapoints] is empty.
+  String _buildDatapointsFingerprint(Map<String, dynamic> datapoints) {
+    return datapoints.entries.map((e) => '${e.key}:${e.value}').join('|');
+  }
 }

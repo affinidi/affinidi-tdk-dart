@@ -1,4 +1,11 @@
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
+import 'package:ssi/ssi.dart'
+    show
+        CredentialSubject,
+        Issuer,
+        JsonLdContext,
+        VcDataModelV1,
+        VerifiableCredential;
 
 class IotaConsentRecordFixtures {
   static const clientId = 'did:key:verifier123';
@@ -8,11 +15,34 @@ class IotaConsentRecordFixtures {
   static const sharedAt = '2020-01-01T00:00:00.000Z';
   static const requestHash = 'req_hash_abc';
 
+  static const vcIssuerId = 'did:key:issuer1';
+  static const vcId = 'vc-1';
+  static final vcValidFrom = DateTime.utc(2023, 1, 1);
+  static const vcCredentialSubject = <String, dynamic>{'name': 'Alice'};
+
   static final verifierMetadata = const VerifierClientMetadata(
     name: 'Test Verifier',
     logo: 'https://example.com/logo.png',
     origin: 'https://example.com',
   );
+
+  static VerifiableCredential makeVc({
+    String id = vcId,
+    String issuerId = vcIssuerId,
+    DateTime? validFrom,
+    Map<String, dynamic> credentialSubject = vcCredentialSubject,
+  }) {
+    return VcDataModelV1(
+      context: JsonLdContext.fromJson([
+        'https://www.w3.org/2018/credentials/v1',
+      ]),
+      id: Uri.parse(id),
+      type: {'VerifiableCredential'},
+      issuer: Issuer(id: Uri.parse(issuerId)),
+      credentialSubject: [CredentialSubject.fromJson(credentialSubject)],
+      issuanceDate: validFrom ?? vcValidFrom,
+    );
+  }
 
   static IotaConsentRecord empty() => const IotaConsentRecord(
     hash: '',

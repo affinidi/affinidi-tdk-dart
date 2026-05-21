@@ -45,7 +45,7 @@ void main() {
           profileId: IotaConsentRecordFixtures.profileId,
           profileName: IotaConsentRecordFixtures.profileName,
           did: IotaConsentRecordFixtures.did,
-          sharedVcIds: ['vc-1'],
+          sharedVcs: [IotaConsentRecordFixtures.makeVc()],
           claimedVcTypesCsv: 'SomeType',
           isAutoShareEnabled: true,
         );
@@ -56,7 +56,7 @@ void main() {
 
         expect(captured.clientId, IotaConsentRecordFixtures.clientId);
         expect(captured.isAutoShareEnabled, isTrue);
-        expect(captured.sharedVcIds, ['vc-1']);
+        expect(captured.sharedVcIds, [IotaConsentRecordFixtures.vcId]);
       });
 
       test('sets sharedAt to a non-empty timestamp for a new record', () async {
@@ -73,7 +73,7 @@ void main() {
           profileId: IotaConsentRecordFixtures.profileId,
           profileName: IotaConsentRecordFixtures.profileName,
           did: IotaConsentRecordFixtures.did,
-          sharedVcIds: ['vc-1'],
+          sharedVcs: [IotaConsentRecordFixtures.makeVc()],
           claimedVcTypesCsv: 'SomeType',
           isAutoShareEnabled: false,
         );
@@ -105,7 +105,10 @@ void main() {
           profileId: IotaConsentRecordFixtures.profileId,
           profileName: IotaConsentRecordFixtures.profileName,
           did: IotaConsentRecordFixtures.did,
-          sharedVcIds: ['vc-1', 'vc-2'],
+          sharedVcs: [
+            IotaConsentRecordFixtures.makeVc(),
+            IotaConsentRecordFixtures.makeVc(id: 'vc-2'),
+          ],
           claimedVcTypesCsv: 'SomeType',
           isAutoShareEnabled: true,
         );
@@ -132,7 +135,7 @@ void main() {
             profileId: IotaConsentRecordFixtures.profileId,
             profileName: IotaConsentRecordFixtures.profileName,
             did: IotaConsentRecordFixtures.did,
-            sharedVcIds: ['vc-1'],
+            sharedVcs: [IotaConsentRecordFixtures.makeVc()],
             claimedVcTypesCsv: 'SomeType',
             isAutoShareEnabled: true,
           );
@@ -163,7 +166,7 @@ void main() {
               profileId: IotaConsentRecordFixtures.profileId,
               profileName: IotaConsentRecordFixtures.profileName,
               did: IotaConsentRecordFixtures.did,
-              sharedVcIds: [],
+              sharedVcs: [],
               claimedVcTypesCsv: '',
               isAutoShareEnabled: false,
             ),
@@ -192,7 +195,7 @@ void main() {
             profileId: IotaConsentRecordFixtures.profileId,
             profileName: IotaConsentRecordFixtures.profileName,
             did: IotaConsentRecordFixtures.did,
-            sharedVcIds: ['vc-1'],
+            sharedVcs: [IotaConsentRecordFixtures.makeVc()],
             claimedVcTypesCsv: 'SomeType',
             isAutoShareEnabled: false,
           );
@@ -205,6 +208,12 @@ void main() {
                   ).captured.single
                   as String;
 
+          const expectedVcFingerprint =
+              '${IotaConsentRecordFixtures.vcIssuerId}'
+              '-${IotaConsentRecordFixtures.vcId}'
+              '-2023-01-01T00:00:00.000Z'
+              '-{"name":"Alice"}';
+
           expect(
             captured,
             '${IotaConsentRecordFixtures.profileId}'
@@ -213,7 +222,8 @@ void main() {
             '|${IotaConsentRecordFixtures.verifierMetadata.name}'
             '|${IotaConsentRecordFixtures.verifierMetadata.logo}'
             '|${IotaConsentRecordFixtures.verifierMetadata.origin}'
-            '|vc-1',
+            '|$expectedVcFingerprint'
+            '|',
           );
         },
       );
@@ -236,7 +246,7 @@ void main() {
             profileId: IotaConsentRecordFixtures.profileId,
             profileName: IotaConsentRecordFixtures.profileName,
             did: IotaConsentRecordFixtures.did,
-            sharedVcIds: ['vc-1'],
+            sharedVcs: [IotaConsentRecordFixtures.makeVc()],
             claimedVcTypesCsv: 'SomeType',
             isAutoShareEnabled: false,
           );
@@ -248,47 +258,60 @@ void main() {
                     ),
                   ).captured.single
                   as String;
+
+          const expectedVcFingerprint =
+              '${IotaConsentRecordFixtures.vcIssuerId}'
+              '-${IotaConsentRecordFixtures.vcId}'
+              '-2023-01-01T00:00:00.000Z'
+              '-{"name":"Alice"}';
 
           expect(
             captured,
             '${IotaConsentRecordFixtures.profileId}'
             '|${IotaConsentRecordFixtures.did}'
             '|${IotaConsentRecordFixtures.clientId}'
-            '||||vc-1',
+            '|||'
+            '|$expectedVcFingerprint'
+            '|',
           );
         },
       );
 
-      test(
-        'sorts sharedVcIds before joining them in the hash source',
-        () async {
-          when(
-            () => store.findByRequestHash(any()),
-          ).thenAnswer((_) async => null);
+      test('preserves VC presentation order in the hash source', () async {
+        when(
+          () => store.findByRequestHash(any()),
+        ).thenAnswer((_) async => null);
 
-          await service.saveConsentRecord(
-            requestHash: IotaConsentRecordFixtures.requestHash,
-            clientId: IotaConsentRecordFixtures.clientId,
-            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-            profileId: IotaConsentRecordFixtures.profileId,
-            profileName: IotaConsentRecordFixtures.profileName,
-            did: IotaConsentRecordFixtures.did,
-            sharedVcIds: ['vc-3', 'vc-1', 'vc-2'],
-            claimedVcTypesCsv: 'SomeType',
-            isAutoShareEnabled: false,
-          );
+        await service.saveConsentRecord(
+          requestHash: IotaConsentRecordFixtures.requestHash,
+          clientId: IotaConsentRecordFixtures.clientId,
+          verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+          profileId: IotaConsentRecordFixtures.profileId,
+          profileName: IotaConsentRecordFixtures.profileName,
+          did: IotaConsentRecordFixtures.did,
+          sharedVcs: [
+            IotaConsentRecordFixtures.makeVc(id: 'vc-3'),
+            IotaConsentRecordFixtures.makeVc(id: 'vc-1'),
+            IotaConsentRecordFixtures.makeVc(id: 'vc-2'),
+          ],
+          claimedVcTypesCsv: 'SomeType',
+          isAutoShareEnabled: false,
+        );
 
-          final captured =
-              verify(
-                    () => cryptography.createHash(
-                      hashSource: captureAny(named: 'hashSource'),
-                    ),
-                  ).captured.single
-                  as String;
+        final captured =
+            verify(
+                  () => cryptography.createHash(
+                    hashSource: captureAny(named: 'hashSource'),
+                  ),
+                ).captured.single
+                as String;
 
-          expect(captured, endsWith('|vc-1|vc-2|vc-3'));
-        },
-      );
+        expect(captured, contains('vc-3'));
+        expect(captured, contains('vc-1'));
+        expect(captured, contains('vc-2'));
+        expect(captured.indexOf('vc-3'), lessThan(captured.indexOf('vc-1')));
+        expect(captured.indexOf('vc-1'), lessThan(captured.indexOf('vc-2')));
+      });
 
       test(
         'throws TdkException with failedToPersistConsentRecord when the store throws',
@@ -309,7 +332,7 @@ void main() {
               profileId: IotaConsentRecordFixtures.profileId,
               profileName: IotaConsentRecordFixtures.profileName,
               did: IotaConsentRecordFixtures.did,
-              sharedVcIds: [],
+              sharedVcs: [],
               claimedVcTypesCsv: '',
               isAutoShareEnabled: false,
             ),

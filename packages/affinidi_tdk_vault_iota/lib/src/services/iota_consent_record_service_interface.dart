@@ -1,3 +1,5 @@
+import 'package:ssi/ssi.dart' show VerifiableCredential;
+
 import '../models/verifier_client_metadata.dart';
 
 /// Defines the contract for persisting a consent record after a successful
@@ -13,10 +15,11 @@ abstract interface class IotaConsentRecordServiceInterface {
   /// * [profileName] - Display name of the profile used for the share.
   /// * [clientId] - The verifier's `client_id` from the OID4VP request.
   /// * [did] - The holder DID that signed the VP.
-  /// * [sharedVcIds] - IDs of the VCs included in the VP.
+  /// * [sharedVcs] - The VCs included in the VP, in presentation order.
   /// * [claimedVcTypesCsv] - Comma-separated VC types included in the VP.
   /// * [isAutoShareEnabled] - Whether the user enabled automatic sharing for this verifier.
   /// * [historySharedData] - Labeled data points shared in the VP.
+  /// * [datapoints] - ZPD datapoints shared in the VP (empty for non-ZPD flows).
   /// * [isConsentManagementEnabled] - Whether the verifier has consent management enabled.
   ///
   /// Throws `TdkException` with code `failed_to_persist_consent_record` if the
@@ -28,10 +31,11 @@ abstract interface class IotaConsentRecordServiceInterface {
     required String profileId,
     required String profileName,
     required String did,
-    required List<String> sharedVcIds,
+    required List<VerifiableCredential> sharedVcs,
     required String claimedVcTypesCsv,
     required bool isAutoShareEnabled,
     Map<String, String> historySharedData = const {},
+    Map<String, dynamic> datapoints = const {},
     bool isConsentManagementEnabled = false,
   });
 }
