@@ -25,24 +25,26 @@ void main() {
   });
 
   group('saveOrUpdate', () {
-    test('writes the record as JSON under the namespaced requestHash key',
-        () async {
-      when(
-        () => mockStorage.write(
-          key: any(named: 'key'),
-          value: any(named: 'value'),
-        ),
-      ).thenAnswer((_) async {});
+    test(
+      'writes the record as JSON under the namespaced requestHash key',
+      () async {
+        when(
+          () => mockStorage.write(
+            key: any(named: 'key'),
+            value: any(named: 'value'),
+          ),
+        ).thenAnswer((_) async {});
 
-      await store.saveOrUpdate(record);
+        await store.saveOrUpdate(record);
 
-      verify(
-        () => mockStorage.write(
-          key: '${defaultNamespace}_$requestHash',
-          value: jsonEncode(record.toJson()),
-        ),
-      ).called(1);
-    });
+        verify(
+          () => mockStorage.write(
+            key: '${defaultNamespace}_$requestHash',
+            value: jsonEncode(record.toJson()),
+          ),
+        ).called(1);
+      },
+    );
 
     test('uses a custom namespace when provided', () async {
       const customNamespace = 'my_app_consent';
