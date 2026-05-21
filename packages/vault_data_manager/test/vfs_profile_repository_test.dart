@@ -45,11 +45,14 @@ class PublicKeyFake extends Fake implements PublicKey {
 void main() {
   late VfsProfileRepository sut;
   late MockVaultDataManagerService mockDataManagerService;
+  late MockVaultDataManagerService mockDelegatedDataManagerService;
   late MockWallet mockWallet;
   late MockVaultStore mockVaultStore;
   late MockDidSigner mockDidSigner;
   late MockIamApiService mockIamApiService;
   late MockKeyPair mockKeyPair;
+  late List<({Uint8List encryptedDekek, KeyPair keyPair, String profileDid})>
+  delegatedFactoryCalls;
 
   setUpAll(() {
     registerFallbackValue(Uint8List.fromList([1, 2, 3]));
@@ -65,11 +68,13 @@ void main() {
 
   setUp(() {
     mockDataManagerService = MockVaultDataManagerService();
+    mockDelegatedDataManagerService = MockVaultDataManagerService();
     mockWallet = MockWallet();
     mockVaultStore = MockVaultStore();
     mockDidSigner = MockDidSigner();
     mockIamApiService = MockIamApiService();
     mockKeyPair = MockKeyPair();
+    delegatedFactoryCalls = [];
 
     sut = VfsProfileRepository.withDependencies(
       ProfileFixtures.repositoryId,
@@ -86,7 +91,14 @@ void main() {
             required Uint8List encryptedDekek,
             required KeyPair keyPair,
             required String profileDid,
-          }) async => mockDataManagerService,
+          }) async {
+            delegatedFactoryCalls.add((
+              encryptedDekek: encryptedDekek,
+              keyPair: keyPair,
+              profileDid: profileDid,
+            ));
+            return mockDelegatedDataManagerService;
+          },
     );
 
     // Setup common mock behaviors
@@ -253,6 +265,46 @@ void main() {
 
           expect(profiles.length, 1);
           expect(profiles.first.name, ProfileFixtures.testProfileName);
+        });
+
+        test('should build shared storages from profile metadata', () async {
+          when(() => mockDataManagerService.getProfiles()).thenAnswer(
+            (_) async => [
+              VaultDataManagerProfile(
+                accountIndex: ProfileFixtures.testAccountIndex,
+                id: ProfileFixtures.testProfileId,
+                name: ProfileFixtures.testProfileName,
+                description: ProfileFixtures.testProfileDescription,
+                pictureURI: '',
+                accountMetadata: AccountMetadata(
+                  dekekInfo: DeekekInfoFixtures.general,
+                  sharedStorageData: [
+                    SharedStorageData(
+                      nodePath: 'shared-node',
+                      encryptedDekek: base64.encode(
+                        ProfileFixtures.testEncryptedData,
+                      ),
+                      profileDid: 'did:test:owner',
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+
+          final profiles = await sut.listProfiles();
+
+          expect(profiles, hasLength(1));
+          expect(profiles.first.sharedStorages.map((storage) => storage.id), [
+            'shared-node',
+          ]);
+          expect(delegatedFactoryCalls, hasLength(1));
+          expect(delegatedFactoryCalls.single.profileDid, 'did:test:owner');
+          expect(
+            delegatedFactoryCalls.single.encryptedDekek,
+            orderedEquals(ProfileFixtures.testEncryptedData),
+          );
+          expect(delegatedFactoryCalls.single.keyPair, same(mockKeyPair));
         });
 
         test(
@@ -553,6 +605,23 @@ void main() {
           expect(updatedProfile.sharedStorages.map((storage) => storage.id), [
             'shared-node',
           ]);
+          expect(delegatedFactoryCalls, hasLength(1));
+          expect(delegatedFactoryCalls.single.profileDid, 'did:test:owner');
+          expect(
+            delegatedFactoryCalls.single.encryptedDekek,
+            orderedEquals(ProfileFixtures.testEncryptedData),
+          );
+          expect(delegatedFactoryCalls.single.keyPair, same(mockKeyPair));
+          verify(
+            () => mockDataManagerService.patchAccount(
+              accountIndex: ProfileFixtures.testAccountIndex,
+              didProof: any(named: 'didProof'),
+              encryptedDekek: base64.encode(ProfileFixtures.testEncryptedData),
+              ownerProfileId: 'owner-profile-id',
+              ownerProfileDid: 'did:test:owner',
+              cancelToken: null,
+            ),
+          ).called(1);
         },
       );
     });
