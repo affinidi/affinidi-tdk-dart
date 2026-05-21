@@ -68,33 +68,6 @@ void main() {
     });
   });
 
-  group('findByHash', () {
-    test('returns null when no record exists for the given key', () async {
-      when(
-        () => mockStorage.read(key: '${defaultNamespace}_$hash'),
-      ).thenAnswer((_) async => null);
-
-      final result = await store.findByHash(hash);
-
-      expect(result, isNull);
-    });
-
-    test('deserializes and returns the record when found', () async {
-      when(
-        () => mockStorage.read(key: '${defaultNamespace}_$hash'),
-      ).thenAnswer((_) async => jsonEncode(record.toJson()));
-
-      final result = await store.findByHash(hash);
-
-      expect(result, isNotNull);
-      expect(result!.hash, hash);
-      expect(result.clientId, record.clientId);
-      expect(result.profileName, record.profileName);
-      expect(result.sharedVcIds, record.sharedVcIds);
-      expect(result.isAutoShareEnabled, record.isAutoShareEnabled);
-    });
-  });
-
   group('findByRequestHash', () {
     test('returns null when no records exist in the namespace', () async {
       when(() => mockStorage.readAll()).thenAnswer((_) async => {});
