@@ -72,22 +72,44 @@ class IotaConsentRecord {
 
   /// Creates an [IotaConsentRecord] from a JSON map.
   factory IotaConsentRecord.fromJson(Map<String, dynamic> json) {
+    final hash = json['hash'] as String?;
+    if (hash == null || hash.isEmpty) {
+      throw const FormatException(
+        'IotaConsentRecord.fromJson: missing or empty required field "hash".',
+      );
+    }
+
     final requestHash = json['requestHash'] as String?;
     if (requestHash == null || requestHash.isEmpty) {
       throw const FormatException(
         'IotaConsentRecord.fromJson: missing or empty required field "requestHash".',
       );
     }
+
+    final sharedAt = json['sharedAt'] as String?;
+    if (sharedAt == null || sharedAt.isEmpty) {
+      throw const FormatException(
+        'IotaConsentRecord.fromJson: missing or empty required field "sharedAt".',
+      );
+    }
+
+    final isAutoShareEnabled = json['isAutoShareEnabled'] as bool?;
+    if (isAutoShareEnabled == null) {
+      throw const FormatException(
+        'IotaConsentRecord.fromJson: missing required field "isAutoShareEnabled".',
+      );
+    }
+
     return IotaConsentRecord(
-      hash: json['hash'] as String,
+      hash: hash,
       requestHash: requestHash,
       logo: json['logo'] as String?,
       siteUrl: json['siteUrl'] as String?,
-      sharedAt: json['sharedAt'] as String,
+      sharedAt: sharedAt,
       profileName: json['profileName'] as String? ?? '',
       profileId: json['profileId'] as String? ?? '',
       clientId: json['clientId'] as String? ?? '',
-      isAutoShareEnabled: json['isAutoShareEnabled'] as bool,
+      isAutoShareEnabled: isAutoShareEnabled,
       sharedVcIds: List<String>.from(json['sharedVcIds'] as List? ?? []),
       claimedVcTypesCsv: json['claimedVcTypesCsv'] as String? ?? '',
       historySharedData:
