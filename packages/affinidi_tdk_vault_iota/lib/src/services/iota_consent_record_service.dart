@@ -53,7 +53,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     required VerifierClientMetadata verifierMetadata,
     required String profileId,
     required String profileName,
-    required String did,
     required List<VerifiableCredential> sharedVcs,
     required String claimedVcTypesCsv,
     required bool isAutoShareEnabled,
@@ -65,7 +64,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     final sharedVcIds = sharedVcs.map((vc) => vc.id?.toString() ?? '').toList();
     final hash = _computeConsentHash(
       profileId: profileId,
-      did: did,
       clientId: clientId,
       verifierName: verifierMetadata.name,
       logo: verifierMetadata.logo,
@@ -116,17 +114,11 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
 
   /// Computes the full share fingerprint covering all share-event fields.
   ///
-  /// Matches vault_universal_ui's `_generateHash` field ordering:
-  /// `profileId|did|clientId|name|logo|origin|vcsFingerprint`.
+  /// Field ordering: `profileId|clientId|name|logo|origin|vcsFingerprint`.
   /// ZPD datapoints are not tracked by the TDK and are omitted from the hash.
-  ///
-  /// [did] is included for change detection (a DID rotation produces a new
-  /// fingerprint) but is not persisted on [IotaConsentRecord] because it is
-  /// available from the wallet at share time.
   ///
   /// Parameters:
   /// * [profileId] - ID of the profile used for the share.
-  /// * [did] - Holder DID that signed the VP.
   /// * [clientId] - Verifier's client ID.
   /// * [verifierName] - Verifier display name; treated as empty string when absent.
   /// * [logo] - Verifier logo URL; treated as empty string when absent.
@@ -137,7 +129,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   /// branding, or selected credentials change.
   String _computeConsentHash({
     required String profileId,
-    required String did,
     required String clientId,
     required String? verifierName,
     required String? logo,
@@ -145,7 +136,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     required String vcsFingerprint,
   }) => _cryptography.createHash(
     hashSource:
-        '$profileId|$did|$clientId|${verifierName ?? ''}|${logo ?? ''}|${siteUrl ?? ''}|$vcsFingerprint',
+        '$profileId|$clientId|${verifierName ?? ''}|${logo ?? ''}|${siteUrl ?? ''}|$vcsFingerprint',
   );
 
   /// Builds a pipe-joined fingerprint string from a list of [VerifiableCredential]s.

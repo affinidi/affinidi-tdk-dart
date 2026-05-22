@@ -102,7 +102,6 @@ await consentService.saveConsentRecord(
   verifierMetadata: verifierMetadata,
   profileId: profileId,
   profileName: profileName,
-  did: holderDid,
   sharedVcs: selectedVcs,            // List<VerifiableCredential>
   claimedVcTypesCsv: 'EmailV1VC,PhoneNumberV1VC',
   isAutoShareEnabled: false,

@@ -14,7 +14,6 @@ abstract interface class IotaConsentRecordServiceInterface {
   /// * [profileId] - ID of the profile used for the share.
   /// * [profileName] - Display name of the profile used for the share.
   /// * [clientId] - The verifier's `client_id` from the OID4VP request.
-  /// * [did] - The holder DID that signed the VP.
   /// * [sharedVcs] - The VCs included in the VP, in presentation order.
   /// * [claimedVcTypesCsv] - Comma-separated VC types included in the VP.
   /// * [isAutoShareEnabled] - Whether the user enabled automatic sharing for this verifier.
@@ -29,7 +28,6 @@ abstract interface class IotaConsentRecordServiceInterface {
     required VerifierClientMetadata verifierMetadata,
     required String profileId,
     required String profileName,
-    required String did,
     required List<VerifiableCredential> sharedVcs,
     required String claimedVcTypesCsv,
     required bool isAutoShareEnabled,
