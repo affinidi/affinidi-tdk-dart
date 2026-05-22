@@ -21,6 +21,11 @@ enum TdkExceptionType {
   /// Exception thrown when trying to share profiles via a repository that does not support it.
   unsupportedProfileAccessSharing('unsupported_profile_access_sharing'),
 
+  /// Exception thrown when trying to get storage usage from a profile repository that does not support it.
+  unsupportedProfileStorageUsageReporting(
+    'unsupported_profile_storage_usage_reporting',
+  ),
+
   /// Exception thrown when the operation is not supported by the profile repository.
   unsupportedOperation('unsupported_operation'),
 

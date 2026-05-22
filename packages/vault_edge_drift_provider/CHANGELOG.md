@@ -1,3 +1,19 @@
+
+
+### Breaking Changes
+
+ - `EdgeDriftProfileRepository.createProfile(...)` now returns the generated UUID for the new profile.
+ - Upgraded the `affinidi_tdk_vault_edge_provider` dependency to version 3.
+
+### Changed
+
+ - Drift-backed profile creation now persists explicit UUID ids to satisfy the updated edge provider contract.
+
+### Migration
+
+ - Update any direct callers, mocks, or subclasses of `EdgeDriftProfileRepository` or `EdgeProfileRepositoryInterface` to use the returned profile id.
+ - If your application depends directly on `affinidi_tdk_vault_edge_provider`, update it to version 3 before upgrading this package.
+
 ## 2.0.5
 
  - Update a dependency to the latest release.
@@ -17,8 +33,6 @@
 ## 2.0.1
 
  - **FIX**: update packages score (#41).
-
-# Change Log
 
 ## 2.0.0
 

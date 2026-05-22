@@ -13,7 +13,9 @@ class ProfileMockSetup {
         accountIndex: any(named: 'accountIndex'),
         cancelToken: any(named: 'cancelToken'),
       ),
-    ).thenAnswer((_) async {});
+    ).thenAnswer((_) async {
+      return 'mock_profile_id';
+    });
 
     when(
       () => mockRepository.listProfiles(cancelToken: any(named: 'cancelToken')),
