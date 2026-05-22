@@ -11,6 +11,7 @@ class IotaConsentRecordFixtures {
   static const clientId = 'did:key:verifier123';
   static const profileId = 'profile-abc';
   static const profileName = 'My Profile';
+  static const vaultId = 'vault-holder-456';
   static const sharedAt = '2020-01-01T00:00:00.000Z';
   static const requestHash = 'req_hash_abc';
 

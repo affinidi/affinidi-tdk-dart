@@ -40,6 +40,7 @@ void main() {
           verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
           profileId: IotaConsentRecordFixtures.profileId,
           profileName: IotaConsentRecordFixtures.profileName,
+          vaultId: IotaConsentRecordFixtures.vaultId,
           sharedVcs: [IotaConsentRecordFixtures.makeVc()],
           claimedVcTypesCsv: 'SomeType',
           isAutoShareEnabled: true,
@@ -63,6 +64,7 @@ void main() {
           verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
           profileId: IotaConsentRecordFixtures.profileId,
           profileName: IotaConsentRecordFixtures.profileName,
+          vaultId: IotaConsentRecordFixtures.vaultId,
           sharedVcs: [IotaConsentRecordFixtures.makeVc()],
           claimedVcTypesCsv: 'SomeType',
           isAutoShareEnabled: false,
@@ -92,6 +94,7 @@ void main() {
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             profileId: IotaConsentRecordFixtures.profileId,
             profileName: IotaConsentRecordFixtures.profileName,
+            vaultId: IotaConsentRecordFixtures.vaultId,
             sharedVcs: [IotaConsentRecordFixtures.makeVc()],
             claimedVcTypesCsv: 'SomeType',
             isAutoShareEnabled: false,
@@ -114,6 +117,7 @@ void main() {
           expect(
             captured,
             '${IotaConsentRecordFixtures.profileId}'
+            '|${IotaConsentRecordFixtures.vaultId}'
             '|${IotaConsentRecordFixtures.clientId}'
             '|${IotaConsentRecordFixtures.verifierMetadata.name}'
             '|${IotaConsentRecordFixtures.verifierMetadata.logo}'
@@ -136,6 +140,7 @@ void main() {
             ),
             profileId: IotaConsentRecordFixtures.profileId,
             profileName: IotaConsentRecordFixtures.profileName,
+            vaultId: IotaConsentRecordFixtures.vaultId,
             sharedVcs: [IotaConsentRecordFixtures.makeVc()],
             claimedVcTypesCsv: 'SomeType',
             isAutoShareEnabled: false,
@@ -158,6 +163,7 @@ void main() {
           expect(
             captured,
             '${IotaConsentRecordFixtures.profileId}'
+            '|${IotaConsentRecordFixtures.vaultId}'
             '|${IotaConsentRecordFixtures.clientId}'
             '|||'
             '|$expectedVcFingerprint',
@@ -172,6 +178,7 @@ void main() {
           verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
           profileId: IotaConsentRecordFixtures.profileId,
           profileName: IotaConsentRecordFixtures.profileName,
+          vaultId: IotaConsentRecordFixtures.vaultId,
           sharedVcs: [
             IotaConsentRecordFixtures.makeVc(id: 'vc-3'),
             IotaConsentRecordFixtures.makeVc(id: 'vc-1'),
@@ -205,6 +212,7 @@ void main() {
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             profileId: IotaConsentRecordFixtures.profileId,
             profileName: IotaConsentRecordFixtures.profileName,
+            vaultId: IotaConsentRecordFixtures.vaultId,
             sharedVcs: [],
             claimedVcTypesCsv: '',
             isAutoShareEnabled: false,
@@ -221,6 +229,7 @@ void main() {
           expect(
             captured,
             '${IotaConsentRecordFixtures.profileId}'
+            '|${IotaConsentRecordFixtures.vaultId}'
             '|${IotaConsentRecordFixtures.clientId}'
             '|${IotaConsentRecordFixtures.verifierMetadata.name}'
             '|${IotaConsentRecordFixtures.verifierMetadata.logo}'
@@ -239,6 +248,7 @@ void main() {
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             profileId: IotaConsentRecordFixtures.profileId,
             profileName: IotaConsentRecordFixtures.profileName,
+            vaultId: IotaConsentRecordFixtures.vaultId,
             sharedVcs: [
               IotaConsentRecordFixtures.makeVc(
                 credentialSubject: {
@@ -279,6 +289,7 @@ void main() {
               verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
               profileId: IotaConsentRecordFixtures.profileId,
               profileName: IotaConsentRecordFixtures.profileName,
+              vaultId: IotaConsentRecordFixtures.vaultId,
               sharedVcs: [],
               claimedVcTypesCsv: '',
               isAutoShareEnabled: false,

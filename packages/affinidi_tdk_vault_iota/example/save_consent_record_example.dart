@@ -48,6 +48,7 @@ Future<void> main() async {
   // Values that would normally come from the validated OID4VP request and the
   // wallet / profile in use.
   const clientId = 'did:key:z6MkVerifier123';
+  const holderVaultId = 'did:key:z6MkHolder456';
   const profileId = 'profile-abc';
   const profileName = 'Personal';
 
@@ -98,6 +99,7 @@ Future<void> main() async {
       verifierMetadata: verifierMetadata,
       profileId: profileId,
       profileName: profileName,
+      vaultId: holderVaultId,
       sharedVcs: sharedVcs,
       claimedVcTypesCsv: 'EmailV1VC,PhoneNumberV1VC',
       isAutoShareEnabled: false,
@@ -128,6 +130,7 @@ Future<void> main() async {
       verifierMetadata: verifierMetadata,
       profileId: profileId,
       profileName: profileName,
+      vaultId: holderVaultId,
       sharedVcs: sharedVcs,
       claimedVcTypesCsv: 'EmailV1VC,PhoneNumberV1VC',
       isAutoShareEnabled: true,

@@ -15,7 +15,7 @@ import 'iota_consent_record_service_interface.dart';
 /// Computes an internal fingerprint and delegates storage to the
 /// consumer-provided [ConsentRecordStore]:
 ///
-/// - `hash` = `sha1("$profileId|$did|$clientId|$name|$logo|$origin|$vcsFingerprint")`
+/// - `hash` = `sha1("$profileId|$vaultId|$clientId|$name|$logo|$origin|$vcsFingerprint")`
 ///   — full fingerprint that changes if the profile, verifier branding,
 ///   or selected credentials change. Used as the storage key, matching
 ///   vault_universal_ui's `addOrUpdate` behaviour.
@@ -53,6 +53,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     required VerifierClientMetadata verifierMetadata,
     required String profileId,
     required String profileName,
+    required String vaultId,
     required List<VerifiableCredential> sharedVcs,
     required String claimedVcTypesCsv,
     required bool isAutoShareEnabled,
@@ -64,6 +65,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     final sharedVcIds = sharedVcs.map((vc) => vc.id?.toString() ?? '').toList();
     final hash = _computeConsentHash(
       profileId: profileId,
+      vaultId: vaultId,
       clientId: clientId,
       verifierName: verifierMetadata.name,
       logo: verifierMetadata.logo,
@@ -114,11 +116,17 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
 
   /// Computes the full share fingerprint covering all share-event fields.
   ///
-  /// Field ordering: `profileId|clientId|name|logo|origin|vcsFingerprint`.
+  /// Matches vault_universal_ui's `_generateHash` field ordering:
+  /// `profileId|vaultId|clientId|name|logo|origin|vcsFingerprint`.
   /// ZPD datapoints are not tracked by the TDK and are omitted from the hash.
+  ///
+  /// [vaultId] is included for change detection so that switching wallets
+  /// produces a distinct fingerprint. It is not persisted on [IotaConsentRecord]
+  /// because it is available from the wallet at share time.
   ///
   /// Parameters:
   /// * [profileId] - ID of the profile used for the share.
+  /// * [vaultId] - Opaque vault or wallet identifier (e.g. a DID or account ID).
   /// * [clientId] - Verifier's client ID.
   /// * [verifierName] - Verifier display name; treated as empty string when absent.
   /// * [logo] - Verifier logo URL; treated as empty string when absent.
@@ -129,6 +137,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   /// branding, or selected credentials change.
   String _computeConsentHash({
     required String profileId,
+    required String vaultId,
     required String clientId,
     required String? verifierName,
     required String? logo,
@@ -136,7 +145,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     required String vcsFingerprint,
   }) => _cryptography.createHash(
     hashSource:
-        '$profileId|$clientId|${verifierName ?? ''}|${logo ?? ''}|${siteUrl ?? ''}|$vcsFingerprint',
+        '$profileId|$vaultId|$clientId|${verifierName ?? ''}|${logo ?? ''}|${siteUrl ?? ''}|$vcsFingerprint',
   );
 
   /// Builds a pipe-joined fingerprint string from a list of [VerifiableCredential]s.
