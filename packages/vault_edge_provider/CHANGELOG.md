@@ -1,3 +1,9 @@
+## 3.0.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **FEAT**: adopt new optimised endpoints for profile operations (#92).
+
 
 
 ### Breaking Changes
