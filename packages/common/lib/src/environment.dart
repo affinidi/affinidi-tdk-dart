@@ -22,7 +22,10 @@ enum ElementsRegion {
   apSoutheast1('ap-southeast-1', 'apse1'),
 
   /// Asia Pacific (Mumbai) region
-  apSouth1('ap-south-1', 'aps1');
+  apSouth1('ap-south-1', 'aps1'),
+
+  /// US East (N. Virginia) region
+  usEast1('us-east-1', 'use1');
 
   /// Full AWS region name (e.g., `ap-southeast-1`)
   final String awsRegion;
