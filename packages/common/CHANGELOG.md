@@ -2,8 +2,6 @@
 
  - **FEAT**: allow configuring http connections idle timeouts (#119).
 
-# Change Log
-
 ## 2.0.0
 
 - BREAKING CHANGE: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).

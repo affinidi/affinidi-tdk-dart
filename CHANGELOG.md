@@ -6,6 +6,12 @@ For detailed change histories and complete release notes for a specific client o
 
 ---
 
+## 2026‑05‑26
+
+### Added
+
+- Added US East (N. Virginia) region support in the common environment configuration via `ElementsRegion.usEast1`.
+
 ## 2026‑02‑19
 
 ### Breaking Changes
