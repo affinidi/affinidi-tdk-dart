@@ -1,6 +1,8 @@
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
 import 'package:test/test.dart';
 
+import 'fixtures/pd_descriptor_fixtures.dart';
+
 // ── Shared test constants ────────────────────────────────────────────────────
 
 const _trustedIssuer = 'did:key:z6MkIdvIssuer';
@@ -8,51 +10,6 @@ const _untrustedIssuer = 'did:key:z6MkUntrusted';
 
 const _profileContext =
     'https://schema.affinidi.io/profile-template/context.jsonld';
-
-// Builds a minimal input descriptor with a $.type filter.
-Map<String, dynamic> _descriptor({
-  required String id,
-  required String type,
-  String? context,
-  String? issuer,
-  List<String>? group,
-  bool usePattern = false,
-}) {
-  final fields = <Map<String, dynamic>>[];
-
-  if (context != null) {
-    fields.add({
-      'path': [r'$.@context'],
-      'filter': {
-        'contains': usePattern
-            ? {'pattern': '^$context\$'}
-            : {'const': context},
-      },
-    });
-  }
-
-  fields.add({
-    'path': [r'$.type'],
-    'filter': {
-      'contains': usePattern ? {'pattern': '^$type\$'} : {'const': type},
-    },
-  });
-
-  if (issuer != null) {
-    fields.add({
-      'path': [r'$.issuer'],
-      'filter': {'type': 'string', 'const': issuer},
-    });
-  }
-
-  final descriptor = <String, dynamic>{
-    'id': id,
-    'constraints': {'fields': fields},
-  };
-
-  if (group != null) descriptor['group'] = group;
-  return descriptor;
-}
 
 // Builds a PD map with the given input descriptors.
 Map<String, dynamic> _pd(
@@ -108,6 +65,48 @@ void main() {
       expect(
         () => classifier.classify({
           'input_descriptors': ['not-a-map'],
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidPresentationDefinition.code,
+          ),
+        ),
+      );
+    });
+
+    test('should throw when two descriptors share the same id', () {
+      expect(
+        () => classifier.classify({
+          'input_descriptors': [
+            {
+              'id': 'dup',
+              'constraints': {
+                'fields': [
+                  {
+                    'path': [r'$.type'],
+                    'filter': {
+                      'contains': {'const': 'UniversityDegree'},
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              'id': 'dup',
+              'constraints': {
+                'fields': [
+                  {
+                    'path': [r'$.type'],
+                    'filter': {
+                      'contains': {'const': 'EmailCredential'},
+                    },
+                  },
+                ],
+              },
+            },
+          ],
         }),
         throwsA(
           isA<TdkException>().having(
@@ -265,13 +264,33 @@ void main() {
         ),
       );
     });
+
+    test('should throw when two descriptors share the same id', () {
+      expect(
+        () => classifier.classify({
+          'input_descriptors': [
+            {'id': 'dup'},
+            {'id': 'dup'},
+          ],
+        }),
+        throwsA(
+          isA<TdkException>()
+              .having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.invalidPresentationDefinition.code,
+              )
+              .having((e) => e.message, 'message', contains('dup')),
+        ),
+      );
+    });
   });
 
   // ── Claimed VCs ───────────────────────────────────────────────────────────
 
   group('when the descriptor requests a claimed VC', () {
     test('should route a standard VC descriptor to claimedDescriptors', () {
-      final pd = _pd([_descriptor(id: 'cred1', type: 'UniversityDegree')]);
+      final pd = _pd([buildDescriptor(id: 'cred1', type: 'UniversityDegree')]);
       final result = classifier.classify(pd);
 
       expect(result.claimedDescriptors, hasLength(1));
@@ -284,8 +303,8 @@ void main() {
 
     test('should route multiple claimed VCs to claimedDescriptors', () {
       final pd = _pd([
-        _descriptor(id: 'd1', type: 'UniversityDegree'),
-        _descriptor(id: 'd2', type: 'EmploymentCredential'),
+        buildDescriptor(id: 'd1', type: 'UniversityDegree'),
+        buildDescriptor(id: 'd2', type: 'EmploymentCredential'),
       ]);
       final result = classifier.classify(pd);
 
@@ -309,7 +328,7 @@ void main() {
     test(
       'should set claimedVCsRequested false when no claimed or IDV descriptors',
       () {
-        final pd = _pd([_descriptor(id: 'hit1', type: 'HITGivenName')]);
+        final pd = _pd([buildDescriptor(id: 'hit1', type: 'HITGivenName')]);
         final result = classifier.classify(pd);
 
         expect(result.claimedVCsRequested, isFalse);
@@ -323,7 +342,7 @@ void main() {
     test(
       'should route Email to zpdLinkedDescriptors and add its data point',
       () {
-        final pd = _pd([_descriptor(id: 'email1', type: 'Email')]);
+        final pd = _pd([buildDescriptor(id: 'email1', type: 'Email')]);
         final result = classifier.classify(pd);
 
         expect(result.zpdLinkedDescriptors, hasLength(1));
@@ -336,7 +355,7 @@ void main() {
     test(
       'should route PhoneNumber to zpdLinkedDescriptors and add its data point',
       () {
-        final pd = _pd([_descriptor(id: 'phone1', type: 'PhoneNumber')]);
+        final pd = _pd([buildDescriptor(id: 'phone1', type: 'PhoneNumber')]);
         final result = classifier.classify(pd);
 
         expect(result.zpdLinkedDescriptors, hasLength(1));
@@ -345,7 +364,7 @@ void main() {
     );
 
     test('should set zpdRequested true', () {
-      final pd = _pd([_descriptor(id: 'e1', type: 'Email')]);
+      final pd = _pd([buildDescriptor(id: 'e1', type: 'Email')]);
       final result = classifier.classify(pd);
 
       expect(result.zpdRequested, isTrue);
@@ -358,7 +377,7 @@ void main() {
     test(
       'should add HITGivenName to zeroPartyVCs with the correct data point',
       () {
-        final pd = _pd([_descriptor(id: 'h1', type: 'HITGivenName')]);
+        final pd = _pd([buildDescriptor(id: 'h1', type: 'HITGivenName')]);
         final result = classifier.classify(pd);
 
         expect(result.zeroPartyVCs, contains('HITGivenName'));
@@ -368,7 +387,7 @@ void main() {
     );
 
     test('should add HITContacts with both email and phone data points', () {
-      final pd = _pd([_descriptor(id: 'hc', type: 'HITContacts')]);
+      final pd = _pd([buildDescriptor(id: 'hc', type: 'HITContacts')]);
       final result = classifier.classify(pd);
 
       expect(result.zeroPartyVCs, contains('HITContacts'));
@@ -380,7 +399,7 @@ void main() {
       'should add ProfileTemplate when context matches and set shouldGenerateProfileVC',
       () {
         final pd = _pd([
-          _descriptor(
+          buildDescriptor(
             id: 'pt',
             type: 'ProfileTemplate',
             context: _profileContext,
@@ -398,7 +417,7 @@ void main() {
       'should route ProfileTemplate to claimedDescriptors when context does not match',
       () {
         final pd = _pd([
-          _descriptor(
+          buildDescriptor(
             id: 'pt2',
             type: 'ProfileTemplate',
             context: 'https://other.context/',
@@ -414,7 +433,7 @@ void main() {
     test(
       'should set shouldGenerateProfileVC false when ProfileTemplate is absent',
       () {
-        final pd = _pd([_descriptor(id: 'd1', type: 'HITGivenName')]);
+        final pd = _pd([buildDescriptor(id: 'd1', type: 'HITGivenName')]);
         final result = classifier.classify(pd);
 
         expect(result.shouldGenerateProfileVC, isFalse);
@@ -429,7 +448,7 @@ void main() {
       'should route VerifiedIdentityDocument from trusted issuer to idvDescriptors',
       () {
         final pd = _pd([
-          _descriptor(
+          buildDescriptor(
             id: 'idv1',
             type: 'VerifiedIdentityDocument',
             issuer: _trustedIssuer,
@@ -446,7 +465,7 @@ void main() {
 
     test('should populate idvInfo.schemaContextUrl from the context field', () {
       final pd = _pd([
-        _descriptor(
+        buildDescriptor(
           id: 'idv2',
           type: 'VerifiedIdentityDocument',
           context: 'https://schema.affinidi.io/passport/context.jsonld',
@@ -505,7 +524,7 @@ void main() {
       'should route VerifiedIdentityDocument from untrusted issuer to claimedDescriptors',
       () {
         final pd = _pd([
-          _descriptor(
+          buildDescriptor(
             id: 'untrusted',
             type: 'VerifiedIdentityDocument',
             issuer: _untrustedIssuer,
@@ -572,7 +591,7 @@ void main() {
   group('when a descriptor field filter uses a regex pattern', () {
     test(r'should strip ^ and $ anchors from a type pattern filter', () {
       final pd = _pd([
-        _descriptor(id: 'p1', type: 'HITGivenName', usePattern: true),
+        buildDescriptor(id: 'p1', type: 'HITGivenName', usePattern: true),
       ]);
       final result = classifier.classify(pd);
 
@@ -581,7 +600,7 @@ void main() {
 
     test(r'should strip ^ and $ anchors from a context pattern filter', () {
       final pd = _pd([
-        _descriptor(
+        buildDescriptor(
           id: 'pt3',
           type: 'ProfileTemplate',
           context: _profileContext,
@@ -599,7 +618,7 @@ void main() {
   group('when the PD includes a purpose field', () {
     test('should parse purpose from a map', () {
       final pd = _pd(
-        [_descriptor(id: 'd1', type: 'UniversityDegree')],
+        [buildDescriptor(id: 'd1', type: 'UniversityDegree')],
         purpose: {
           'data_collection_purpose': 'Identity verification',
           'request_description': 'We need to verify your identity.',
@@ -615,7 +634,7 @@ void main() {
     });
 
     test('should return null purpose when field is absent', () {
-      final pd = _pd([_descriptor(id: 'd1', type: 'UniversityDegree')]);
+      final pd = _pd([buildDescriptor(id: 'd1', type: 'UniversityDegree')]);
       final result = classifier.classify(pd);
 
       expect(result.purpose, isNull);
@@ -623,7 +642,7 @@ void main() {
 
     test('should return null purpose when dataCollectionPurpose is null', () {
       final pd = _pd(
-        [_descriptor(id: 'd1', type: 'UniversityDegree')],
+        [buildDescriptor(id: 'd1', type: 'UniversityDegree')],
         purpose: {'data_collection_purpose': null},
       );
       final result = classifier.classify(pd);
@@ -638,7 +657,7 @@ void main() {
     test('should parse requirements and key them by group name', () {
       final pd = _pd(
         [
-          _descriptor(id: 'd1', type: 'UniversityDegree', group: ['A']),
+          buildDescriptor(id: 'd1', type: 'UniversityDegree', group: ['A']),
         ],
         submissionRequirements: [
           {'from': 'A', 'rule': 'pick', 'count': 1},
@@ -652,7 +671,7 @@ void main() {
 
     test('should throw when count is zero', () {
       final pd = _pd(
-        [_descriptor(id: 'd1', type: 'UniversityDegree')],
+        [buildDescriptor(id: 'd1', type: 'UniversityDegree')],
         submissionRequirements: [
           {'from': 'A', 'count': 0},
         ],
@@ -672,7 +691,7 @@ void main() {
 
     test('should throw when min is zero', () {
       final pd = _pd(
-        [_descriptor(id: 'd1', type: 'UniversityDegree')],
+        [buildDescriptor(id: 'd1', type: 'UniversityDegree')],
         submissionRequirements: [
           {'from': 'A', 'min': 0},
         ],
@@ -692,7 +711,7 @@ void main() {
 
     test('should throw when the from field is missing', () {
       final pd = _pd(
-        [_descriptor(id: 'd1', type: 'UniversityDegree')],
+        [buildDescriptor(id: 'd1', type: 'UniversityDegree')],
         submissionRequirements: [
           {'count': 1},
         ],
@@ -780,7 +799,7 @@ void main() {
 
     test('should throw when min is greater than max', () {
       final pd = _pd(
-        [_descriptor(id: 'd1', type: 'UniversityDegree')],
+        [buildDescriptor(id: 'd1', type: 'UniversityDegree')],
         submissionRequirements: [
           {'from': 'A', 'min': 3, 'max': 2},
         ],
@@ -800,7 +819,7 @@ void main() {
 
     test('should throw when count is greater than max', () {
       final pd = _pd(
-        [_descriptor(id: 'd1', type: 'UniversityDegree')],
+        [buildDescriptor(id: 'd1', type: 'UniversityDegree')],
         submissionRequirements: [
           {'from': 'A', 'count': 5, 'max': 3},
         ],
@@ -822,7 +841,7 @@ void main() {
       'should throw when submission_requirements has duplicate group names',
       () {
         final pd = _pd(
-          [_descriptor(id: 'd1', type: 'UniversityDegree')],
+          [buildDescriptor(id: 'd1', type: 'UniversityDegree')],
           submissionRequirements: [
             {'from': 'A', 'count': 1},
             {'from': 'A', 'count': 2},
@@ -844,7 +863,7 @@ void main() {
 
     test('should throw when count is less than min', () {
       final pd = _pd(
-        [_descriptor(id: 'd1', type: 'UniversityDegree')],
+        [buildDescriptor(id: 'd1', type: 'UniversityDegree')],
         submissionRequirements: [
           {'from': 'A', 'count': 1, 'min': 2},
         ],
@@ -870,9 +889,9 @@ void main() {
       'should classify claimed, ZPD-linked, and zero-party descriptors correctly',
       () {
         final pd = _pd([
-          _descriptor(id: 'degree', type: 'UniversityDegree'),
-          _descriptor(id: 'email', type: 'Email'),
-          _descriptor(id: 'givenName', type: 'HITGivenName'),
+          buildDescriptor(id: 'degree', type: 'UniversityDegree'),
+          buildDescriptor(id: 'email', type: 'Email'),
+          buildDescriptor(id: 'givenName', type: 'HITGivenName'),
         ]);
         final result = classifier.classify(pd);
 
@@ -942,7 +961,7 @@ void main() {
   group('returned collections are unmodifiable', () {
     test('all PDRequirements collections are unmodifiable', () {
       final result = classifier.classify(
-        _pd([_descriptor(id: 'cred1', type: 'UniversityDegree')]),
+        _pd([buildDescriptor(id: 'cred1', type: 'UniversityDegree')]),
       );
 
       expect(
