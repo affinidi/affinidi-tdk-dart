@@ -29,7 +29,7 @@ abstract class VpBuilderInterface {
   });
 }
 
-/// Builds and signs a W3C Verifiable Presentation (Data Model V1).
+/// Builds and signs a W3C Verifiable Presentation (Data Model V1 or V2).
 class VpBuilder implements VpBuilderInterface {
   /// Creates a [VpBuilder].
   const VpBuilder();
