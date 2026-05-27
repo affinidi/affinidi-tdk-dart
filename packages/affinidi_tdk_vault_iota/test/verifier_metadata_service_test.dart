@@ -92,6 +92,125 @@ void main() {
       );
     });
 
+    group('when clientMetadataUri is provided', () {
+      const metadataUri = 'https://verifier.example.com/.well-known/metadata';
+
+      test('should GET the exact clientMetadataUri', () async {
+        Uri? capturedUri;
+        final httpClient = MockClient((request) async {
+          capturedUri = request.url;
+          return http.Response(jsonEncode(_validMetadataJson()), 200);
+        });
+
+        final service = VerifierMetadataService(
+          baseUrl: _baseUrl,
+          httpClient: httpClient,
+        );
+        addTearDown(service.dispose);
+
+        await service.fetchVerifierMetadata(
+          clientId: _clientId,
+          clientMetadataUri: metadataUri,
+        );
+
+        expect(capturedUri, Uri.parse(metadataUri));
+      });
+
+      test('should return VerifierClientMetadata on a 200 response', () async {
+        final service = VerifierMetadataService(
+          baseUrl: _baseUrl,
+          httpClient: _clientReturning(200, _validMetadataJson()),
+        );
+        addTearDown(service.dispose);
+
+        final result = await service.fetchVerifierMetadata(
+          clientId: _clientId,
+          clientMetadataUri: metadataUri,
+        );
+
+        expect(result.name, 'Test Verifier');
+        expect(result.logo, 'https://example.com/logo.png');
+        expect(result.origin, 'https://example.com');
+        expect(result.domainVerified, isTrue);
+      });
+
+      test(
+        'should throw TdkException with failed_to_fetch_verifier_metadata on non-200',
+        () async {
+          final service = VerifierMetadataService(
+            baseUrl: _baseUrl,
+            httpClient: _clientReturning(404, {'error': 'not found'}),
+          );
+          addTearDown(service.dispose);
+
+          await expectLater(
+            () => service.fetchVerifierMetadata(
+              clientId: _clientId,
+              clientMetadataUri: metadataUri,
+            ),
+            throwsA(
+              isA<TdkException>()
+                  .having(
+                    (e) => e.code,
+                    'code',
+                    TdkExceptionType.failedToFetchVerifierMetadata.code,
+                  )
+                  .having((e) => e.message, 'message', contains('404')),
+            ),
+          );
+        },
+      );
+
+      test(
+        'should take priority over Affinidi API when clientMetadata is absent',
+        () async {
+          final requestedUris = <Uri>[];
+          final httpClient = MockClient((request) async {
+            requestedUris.add(request.url);
+            return http.Response(jsonEncode(_validMetadataJson()), 200);
+          });
+
+          final service = VerifierMetadataService(
+            baseUrl: _baseUrl,
+            httpClient: httpClient,
+          );
+          addTearDown(service.dispose);
+
+          await service.fetchVerifierMetadata(
+            clientId: _clientId,
+            clientMetadataUri: metadataUri,
+          );
+
+          expect(requestedUris, hasLength(1));
+          expect(requestedUris.single, Uri.parse(metadataUri));
+        },
+      );
+
+      test(
+        'should be bypassed when clientMetadata is also provided',
+        () async {
+          final httpClient = MockClient(
+            (_) async => throw StateError('no call'),
+          );
+
+          final service = VerifierMetadataService(
+            baseUrl: _baseUrl,
+            httpClient: httpClient,
+          );
+          addTearDown(service.dispose);
+
+          // clientMetadata takes precedence — no network request expected.
+          final result = await service.fetchVerifierMetadata(
+            clientId: _clientId,
+            clientMetadataUri: metadataUri,
+            clientMetadata: _validMetadataJson(),
+          );
+
+          expect(result.name, 'Test Verifier');
+        },
+      );
+    });
+
     group('when clientMetadata is absent', () {
       test('should GET the correct URL', () async {
         Uri? capturedUri;

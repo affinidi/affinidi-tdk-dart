@@ -26,24 +26,30 @@ abstract interface class VerifierMetadataServiceInterface {
   /// Resolution priority:
   /// 1. If [clientMetadata] is provided, it is parsed directly — no
   ///    network request is made.
-  /// 2. Otherwise a `GET` request is made to
+  /// 2. If [clientMetadataUri] is provided, a `GET` request is made to that
+  ///    URI directly.
+  /// 3. Otherwise a `GET` request is made to
   ///    `/vpa/v1/login/configurations/metadata/{clientId}`.
   ///
-  /// [clientId] - the `client_id` from the OID4VP request (the verifier DID).
-  /// [clientMetadata] - optional metadata map from the `client_metadata`
-  /// JWT claim (OID4VP 1.0 final §5.1). When supplied, the network path is
-  /// skipped.
+  /// Parameters:
+  /// * [clientId] - the `client_id` from the OID4VP request (the verifier DID).
+  /// * [clientMetadataUri] - optional URI from the `client_metadata_uri` JWT
+  ///   claim (OID4VP 1.0 final §5.1). Used when the verifier provides metadata
+  ///   by reference.
+  /// * [clientMetadata] - optional inline metadata map from the `client_metadata`
+  ///   JWT claim (OID4VP 1.0 final §5.1). When supplied, the network path is
+  ///   skipped.
   ///
   /// Returns a [VerifierClientMetadata] with the verifier's name, logo, and
   /// origin.
-  ///
-  /// Throws:
-  /// - [TdkException] with code `invalid_client_id` when [clientId] is empty.
-  /// - [TdkException] with code `failed_to_fetch_verifier_metadata` when the
-  ///   verifier cannot be identified (network failure or unexpected response
-  ///   shape).
+  /// Throws [TdkException] with code `invalid_client_id` when [clientId] is
+  /// empty.
+  /// Throws [TdkException] with code `failed_to_fetch_verifier_metadata` when
+  /// the verifier cannot be identified (network failure or unexpected response
+  /// shape).
   Future<VerifierClientMetadata> fetchVerifierMetadata({
     required String clientId,
+    String? clientMetadataUri,
     Map<String, dynamic>? clientMetadata,
   });
 

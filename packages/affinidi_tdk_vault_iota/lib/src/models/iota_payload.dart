@@ -12,6 +12,12 @@ class IotaPayload {
   /// The scheme used to identify the client (e.g. `did`).
   final String clientIdScheme;
 
+  /// The URI to retrieve client metadata from, as defined in OID4VP 1.0 final §5.1.
+  ///
+  /// Optional — present when the verifier provides metadata by reference instead
+  /// of inline via [clientMetadata].
+  final String? clientMetadataUri;
+
   /// The client metadata object as defined in OID4VP 1.0 final §5.1.
   ///
   /// Optional — verifiers may omit this field.
@@ -51,7 +57,8 @@ class IotaPayload {
   /// - [state] - state value used to correlate the authorization request and response.
   /// - [clientId] - client identifier of the verifier.
   /// - [clientIdScheme] - scheme used to identify the client.
-  /// - [clientMetadata] - optional client metadata object.
+  /// - [clientMetadataUri] - optional URI to retrieve client metadata from.
+  /// - [clientMetadata] - optional inline client metadata object.
   /// - [responseUri] - URI to which the response should be sent.
   /// - [responseType] - type of the response.
   /// - [responseMode] - mode in which the response is delivered.
@@ -65,6 +72,7 @@ class IotaPayload {
     required this.state,
     required this.clientId,
     required this.clientIdScheme,
+    this.clientMetadataUri,
     this.clientMetadata,
     required this.responseUri,
     required this.responseType,
@@ -86,6 +94,7 @@ class IotaPayload {
       state: json['state'] as String,
       clientId: (json['client_id'] as String?) ?? '',
       clientIdScheme: json['client_id_scheme'] as String,
+      clientMetadataUri: json['client_metadata_uri'] as String?,
       clientMetadata: json['client_metadata'] as Map<String, dynamic>?,
       responseUri: json['response_uri'] as String,
       responseType: json['response_type'] as String,
@@ -107,6 +116,7 @@ class IotaPayload {
     'state': state,
     'client_id': clientId,
     'client_id_scheme': clientIdScheme,
+    if (clientMetadataUri != null) 'client_metadata_uri': clientMetadataUri,
     if (clientMetadata != null) 'client_metadata': clientMetadata,
     'response_uri': responseUri,
     'response_type': responseType,

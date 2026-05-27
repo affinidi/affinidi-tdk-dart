@@ -14,6 +14,7 @@ extension IotaPayloadX on IotaPayload {
     state: state,
     nonce: nonce,
     clientId: clientId,
+    clientMetadataUri: clientMetadataUri,
     clientMetadata: clientMetadata,
   );
 
