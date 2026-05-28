@@ -129,8 +129,7 @@ class VfsProfileRepository
            ((ConsumerAuthProvider provider) {
              final consumerIamClient = AffinidiTdkConsumerIamClient(
                authTokenHook: provider.fetchConsumerToken,
-               basePathOverride:
-                   '${Environment.fetchEnvironment().apiGwUrl}/cid',
+               basePathOverride: Environment.fetchConsumerAudienceUrl(),
              );
              return VaultDataManagerSharedAccessApiService(
                affinidiTdkConsumerIamClient: consumerIamClient,
