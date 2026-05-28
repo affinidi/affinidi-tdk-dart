@@ -84,14 +84,14 @@ you supply the backend by implementing `ConsentRecordStore`.
 #### Using the built-in Flutter Secure Storage backend
 
 If your app already depends on `affinidi_tdk_vault_flutter_utils`, use the
-provided `FlutterSecureConsentRecordStore`:
+provided `FlutterSecureConsentStorage`:
 
 ```dart
 import 'package:affinidi_tdk_vault_flutter_utils/vault_flutter_utils.dart';
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
 
 final consentService = IotaConsentRecordService(
-  store: FlutterSecureConsentRecordStore(),
+  store: FlutterSecureConsentStorage(),
   cryptography: myCryptographyService,
 );
 
