@@ -452,9 +452,8 @@ void main() {
         () async {
           // Stored hash matches the mock cryptography return value.
           when(() => store.findByRequestHash(any())).thenAnswer(
-            (_) async => IotaConsentRecordFixtures.autoShareEnabledWithHash(
-              'mock_hash',
-            ),
+            (_) async =>
+                IotaConsentRecordFixtures.autoShareEnabledWithHash('mock_hash'),
           );
           final vc = IotaConsentRecordFixtures.makeVc();
 
@@ -473,23 +472,20 @@ void main() {
         },
       );
 
-      test(
-        'passes the correct requestHash to the store lookup',
-        () async {
-          await service.tryAutomaticConsent(
-            requestHash: IotaConsentRecordFixtures.requestHash,
-            clientId: IotaConsentRecordFixtures.clientId,
-            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-            profileId: IotaConsentRecordFixtures.profileId,
-            vaultId: IotaConsentRecordFixtures.vaultId,
-            availableVcs: [],
-          );
+      test('passes the correct requestHash to the store lookup', () async {
+        await service.tryAutomaticConsent(
+          requestHash: IotaConsentRecordFixtures.requestHash,
+          clientId: IotaConsentRecordFixtures.clientId,
+          verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+          profileId: IotaConsentRecordFixtures.profileId,
+          vaultId: IotaConsentRecordFixtures.vaultId,
+          availableVcs: [],
+        );
 
-          verify(
-            () => store.findByRequestHash(IotaConsentRecordFixtures.requestHash),
-          ).called(1);
-        },
-      );
+        verify(
+          () => store.findByRequestHash(IotaConsentRecordFixtures.requestHash),
+        ).called(1);
+      });
 
       test(
         'returns AutoConsentDeclined when the stored record has no shared VC IDs',

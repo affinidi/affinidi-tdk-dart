@@ -103,10 +103,12 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
 
     // Verify all previously shared VC IDs are still available.
     final vcsToShare = record.sharedVcIds
-        .map((id) => availableVcs.cast<VerifiableCredential?>().firstWhere(
-              (vc) => vc?.id?.toString() == id,
-              orElse: () => null,
-            ))
+        .map(
+          (id) => availableVcs.cast<VerifiableCredential?>().firstWhere(
+            (vc) => vc?.id?.toString() == id,
+            orElse: () => null,
+          ),
+        )
         .whereType<VerifiableCredential>()
         .toList();
 
