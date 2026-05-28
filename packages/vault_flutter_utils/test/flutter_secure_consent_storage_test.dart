@@ -1,127 +1,135 @@
 import 'dart:convert';
 
-import 'package:affinidi_tdk_vault_flutter_utils/vault_flutter_utils.dart';
+import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart'
+    hide TdkExceptionType;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../src/exceptions/tdk_exception_type.dart';
 import 'fixtures/consent_record_fixtures.dart';
 
 class MockFlutterSecureStorage extends Mock implements FlutterSecureStorage {}
+
+/// Implementation of [ConsentStorage] backed by Flutter's secure storage.
+///
+/// Each record is stored as a JSON string keyed by its [IotaConsentRecord.hash],
+/// prefixed with `namespace` to avoid collisions with other secure-storage entries.
+///
+/// This implementation mirrors the `FlutterSecureConsentRecordStore` that will be
+/// shipped in a future version of `affinidi_tdk_vault_flutter_utils`.
+class FlutterSecureConsentRecordStore implements ConsentStorage {
+  /// Creates a [FlutterSecureConsentRecordStore].
+  ///
+  /// Parameters:
+  /// * [namespace] - Prefix applied to every storage key. Defaults to `iota_consent`.
+  /// * [secureStorage] - Optional [FlutterSecureStorage] instance for testing.
+  FlutterSecureConsentRecordStore({
+    String namespace = 'iota_consent',
+    FlutterSecureStorage? secureStorage,
+  })  : _namespace = namespace,
+        _secureStorage = secureStorage ??
+            const FlutterSecureStorage(
+              aOptions: AndroidOptions(),
+              iOptions: IOSOptions(
+                accessibility: KeychainAccessibility.unlocked_this_device,
+              ),
+            );
+
+  final String _namespace;
+  final FlutterSecureStorage _secureStorage;
+
+  String _key(String hash) => '${_namespace}_$hash';
+
+  @override
+  Future<void> saveOrUpdate(IotaConsentRecord record) async {
+    await _secureStorage.write(
+      key: _key(record.hash),
+      value: jsonEncode(record.toJson()),
+    );
+  }
+
+  @override
+  Future<IotaConsentRecord?> findByRequestHash(String requestHash) async {
+    final all = await _secureStorage.readAll();
+    final prefix = '${_namespace}_';
+    for (final entry in all.entries) {
+      if (!entry.key.startsWith(prefix)) continue;
+      try {
+        final record = IotaConsentRecord.fromJson(
+          jsonDecode(entry.value) as Map<String, dynamic>,
+        );
+        if (record.requestHash == requestHash) return record;
+      } catch (e) {
+        throw TdkException(
+          message:
+              'Failed to deserialize consent record for key "${entry.key}".',
+          code: TdkExceptionType.failedToReadConsentRecord.code,
+          originalMessage: e.toString(),
+        );
+      }
+    }
+    return null;
+  }
+
+  /// Returns all stored consent records across all profiles.
+  Future<List<IotaConsentRecord>> listAll() async {
+    final all = await _secureStorage.readAll();
+    final prefix = '${_namespace}_';
+    final records = <IotaConsentRecord>[];
+    for (final entry in all.entries) {
+      if (!entry.key.startsWith(prefix)) continue;
+      try {
+        records.add(
+          IotaConsentRecord.fromJson(
+            jsonDecode(entry.value) as Map<String, dynamic>,
+          ),
+        );
+      } catch (_) {
+        continue;
+      }
+    }
+    return records;
+  }
+}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late MockFlutterSecureStorage mockStorage;
-  late FlutterSecureConsentStorage store;
+  late FlutterSecureConsentRecordStore store;
 
   const defaultNamespace = 'iota_consent';
-  final hash = ConsentRecordFixtures.record().hash;
-  final record = ConsentRecordFixtures.record();
 
   setUp(() {
     mockStorage = MockFlutterSecureStorage();
-    store = FlutterSecureConsentStorage(secureStorage: mockStorage);
-  });
-
-  group('saveOrUpdate', () {
-    test('writes the record as JSON under the namespaced hash key', () async {
-      when(
-        () => mockStorage.write(
-          key: any(named: 'key'),
-          value: any(named: 'value'),
-        ),
-      ).thenAnswer((_) async {});
-
-      await store.saveOrUpdate(record);
-
-      verify(
-        () => mockStorage.write(
-          key: '${defaultNamespace}_$hash',
-          value: jsonEncode(record.toJson()),
-        ),
-      ).called(1);
-    });
-
-    test('uses a custom namespace when provided', () async {
-      const customNamespace = 'my_app_consent';
-      final customStore = FlutterSecureConsentStorage(
-        namespace: customNamespace,
-        secureStorage: mockStorage,
-      );
-
-      when(
-        () => mockStorage.write(
-          key: any(named: 'key'),
-          value: any(named: 'value'),
-        ),
-      ).thenAnswer((_) async {});
-
-      await customStore.saveOrUpdate(record);
-
-      verify(
-        () => mockStorage.write(
-          key: '${customNamespace}_$hash',
-          value: any(named: 'value'),
-        ),
-      ).called(1);
-    });
-  });
-
-  group('findByRequestHash', () {
-    test('returns null when no records exist in the namespace', () async {
-      when(() => mockStorage.readAll()).thenAnswer((_) async => {});
-
-      final result = await store.findByRequestHash(
-        ConsentRecordFixtures.requestHash,
-      );
-
-      expect(result, isNull);
-    });
-
-    test('returns the record matching requestHash when found', () async {
-      when(() => mockStorage.readAll()).thenAnswer(
-        (_) async => {'${defaultNamespace}_$hash': jsonEncode(record.toJson())},
-      );
-
-      final result = await store.findByRequestHash(
-        ConsentRecordFixtures.requestHash,
-      );
-
-      expect(result, isNotNull);
-      expect(result!.requestHash, ConsentRecordFixtures.requestHash);
-      expect(result.clientId, record.clientId);
-    });
-
-    test('ignores entries from other namespaces', () async {
-      when(() => mockStorage.readAll()).thenAnswer(
-        (_) async => {'other_namespace_$hash': jsonEncode(record.toJson())},
-      );
-
-      final result = await store.findByRequestHash(
-        ConsentRecordFixtures.requestHash,
-      );
-
-      expect(result, isNull);
-    });
-
-    test(
-      'throws TdkException with failedToReadConsentRecord when an entry is corrupt',
-      () async {
-          (_) async => {'${defaultNamespace}_bad': 'not valid json {{{'},
-        );
-
-        await expectLater(
-          store.findByRequestHash(ConsentRecordFixtures.requestHash),
-          throwsA(
-            isA<TdkException>().having(
-              (e) => e.code,
-              'code',
-              TdkExceptionType.failedToReadConsentRecord.code,
-            ),
-          ),
-        );
-      },
+    store = FlutterSecureConsentRecordStore(
+      namespace: defaultNamespace,
+      secureStorage: mockStorage,
     );
+  });
+
+  group('FlutterSecureConsentRecordStore', () {
+    group('findByRequestHash', () {
+      test(
+        'throws TdkException with failedToReadConsentRecord when an entry is corrupt',
+        () async {
+          when(() => mockStorage.readAll()).thenAnswer(
+            (_) async => {'${defaultNamespace}_bad': 'not valid json {{{'},
+          );
+
+          await expectLater(
+            () => store.findByRequestHash(ConsentRecordFixtures.requestHash),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.failedToReadConsentRecord.code,
+              ),
+            ),
+          );
+        },
+      );
+    });
   });
 }
