@@ -4,7 +4,7 @@ import '../../affinidi_tdk_vault_iota.dart';
 ///
 /// Implement this interface to persist consent history using any storage
 /// technology. [saveOrUpdate] must upsert by [IotaConsentRecord.hash].
-abstract interface class ConsentRecordStore {
+abstract interface class ConsentStorage {
   /// Persists a consent record, replacing any existing record with the same
   /// [IotaConsentRecord.hash].
   ///

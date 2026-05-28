@@ -3,11 +3,11 @@ import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
 import 'fixtures/iota_consent_record_fixtures.dart';
-import 'mocks/mock_consent_record_store.dart';
+import 'mocks/mock_consent_storage.dart';
 import 'mocks/mock_cryptography_service.dart';
 
 void main() {
-  late MockConsentRecordStore store;
+  late MockConsentStorage store;
   late MockCryptographyService cryptography;
   late IotaConsentRecordService service;
 
@@ -16,7 +16,7 @@ void main() {
   });
 
   setUp(() {
-    store = MockConsentRecordStore();
+    store = MockConsentStorage();
     cryptography = MockCryptographyService();
 
     when(

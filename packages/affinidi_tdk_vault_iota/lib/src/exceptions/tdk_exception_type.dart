@@ -41,7 +41,7 @@ enum TdkExceptionType {
   emptyCredentials('empty_credentials'),
 
   /// Thrown when persisting a consent record to the consumer-provided
-  /// `ConsentRecordStore` fails.
+  /// `ConsentStorage` fails.
   failedToPersistConsentRecord('failed_to_persist_consent_record');
 
   /// Creates a new instance of [TdkExceptionType].

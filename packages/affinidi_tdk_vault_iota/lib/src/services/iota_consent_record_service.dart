@@ -7,13 +7,13 @@ import 'package:ssi/ssi.dart' show VerifiableCredential;
 import '../exceptions/tdk_exception_type.dart';
 import '../models/iota_consent_record.dart';
 import '../models/verifier_client_metadata.dart';
-import 'consent_record_store.dart';
+import 'consent_storage.dart';
 import 'iota_consent_record_service_interface.dart';
 
 /// Persists a consent record after a successful Iota OID4VP share.
 ///
 /// Computes an internal fingerprint and delegates storage to the
-/// consumer-provided [ConsentRecordStore]:
+/// consumer-provided [ConsentStorage]:
 ///
 /// - `hash` = `sha1("$profileId|$vaultId|$clientId|$name|$logo|$origin|$vcsFingerprint")`
 ///   — full fingerprint that changes if the profile, verifier branding,
@@ -28,7 +28,7 @@ import 'iota_consent_record_service_interface.dart';
 /// so it reflects the most recent share — the same semantics as
 /// vault_universal_ui's `firstVisited` column ("Last Consent" in the UI).
 class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
-  final ConsentRecordStore _store;
+  final ConsentStorage _store;
   final CryptographyServiceInterface _cryptography;
   final Logger _logger;
 
@@ -39,7 +39,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   /// * [cryptography] - Cryptography service used to compute SHA-1 hashes.
   /// * [logger] - Optional logger; defaults to [Logger.instance].
   IotaConsentRecordService({
-    required ConsentRecordStore store,
+    required ConsentStorage store,
     required CryptographyServiceInterface cryptography,
     Logger? logger,
   }) : _store = store,

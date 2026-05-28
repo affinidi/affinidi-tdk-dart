@@ -8,10 +8,10 @@ import 'package:ssi/ssi.dart'
         VcDataModelV1,
         VerifiableCredential;
 
-/// A minimal in-memory [ConsentRecordStore] for demonstration purposes.
+/// A minimal in-memory [ConsentStorage] for demonstration purposes.
 ///
 /// In a real application replace this with your own persistence backend.
-class InMemoryConsentRecordStore implements ConsentRecordStore {
+class InMemoryConsentStorage implements ConsentStorage {
   final Map<String, IotaConsentRecord> _records = {};
 
   @override
@@ -38,7 +38,7 @@ class InMemoryConsentRecordStore implements ConsentRecordStore {
 Future<void> main() async {
   final cryptography = CryptographyService();
 
-  final store = InMemoryConsentRecordStore();
+  final store = InMemoryConsentStorage();
 
   final service = IotaConsentRecordService(
     store: store,
