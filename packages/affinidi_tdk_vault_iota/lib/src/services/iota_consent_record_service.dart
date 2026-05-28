@@ -5,6 +5,7 @@ import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'package:ssi/ssi.dart' show VerifiableCredential;
 
 import '../exceptions/tdk_exception_type.dart';
+import '../models/auto_consent_result.dart';
 import '../models/iota_consent_record.dart';
 import '../models/verifier_client_metadata.dart';
 import 'consent_storage.dart';
@@ -45,6 +46,103 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   }) : _store = store,
        _cryptography = cryptography,
        _logger = logger ?? Logger.instance;
+
+  @override
+  String computeRequestHash({
+    required String clientId,
+    required Map<String, dynamic> presentationDefinition,
+  }) => _cryptography.createHash(
+    hashSource: '$clientId|${jsonEncode(presentationDefinition)}',
+  );
+
+  @override
+  Future<AutoConsentResult> tryAutomaticConsent({
+    required String requestHash,
+    required String clientId,
+    required VerifierClientMetadata verifierMetadata,
+    required String profileId,
+    required String vaultId,
+    required List<VerifiableCredential> availableVcs,
+  }) async {
+    _logger.log(
+      LogLevel.fine,
+      'tryAutomaticConsent: checking requestHash=$requestHash',
+    );
+
+    final IotaConsentRecord? record;
+    try {
+      record = await _store.findByRequestHash(requestHash);
+    } catch (e) {
+      throw TdkException(
+        message: 'Failed to read consent record from store.',
+        code: TdkExceptionType.failedToReadConsentRecord.code,
+        originalMessage: e.toString(),
+      );
+    }
+
+    if (record == null) {
+      _logger.log(LogLevel.fine, 'tryAutomaticConsent: no record found');
+      return const AutoConsentDeclined();
+    }
+
+    if (!record.isAutoShareEnabled || record.isConsentManagementEnabled) {
+      _logger.log(
+        LogLevel.fine,
+        'tryAutomaticConsent: auto-share disabled or consent management active',
+      );
+      return const AutoConsentDeclined();
+    }
+
+    if (record.sharedVcIds.isEmpty) {
+      _logger.log(
+        LogLevel.fine,
+        'tryAutomaticConsent: stored record has no shared VC IDs',
+      );
+      return const AutoConsentDeclined();
+    }
+
+    // Verify all previously shared VC IDs are still available.
+    final vcsToShare = record.sharedVcIds
+        .map((id) => availableVcs.cast<VerifiableCredential?>().firstWhere(
+              (vc) => vc?.id?.toString() == id,
+              orElse: () => null,
+            ))
+        .whereType<VerifiableCredential>()
+        .toList();
+
+    if (vcsToShare.length != record.sharedVcIds.length) {
+      _logger.log(
+        LogLevel.fine,
+        'tryAutomaticConsent: previously shared VCs no longer all available',
+      );
+      return const AutoConsentDeclined();
+    }
+
+    // Recompute the full share fingerprint and compare it to the stored hash.
+    final recomputedHash = _computeConsentHash(
+      profileId: profileId,
+      vaultId: vaultId,
+      clientId: clientId,
+      verifierName: verifierMetadata.name,
+      logo: verifierMetadata.logo,
+      siteUrl: verifierMetadata.origin,
+      vcsFingerprint: _stringifyVcs(vcsToShare),
+    );
+
+    if (recomputedHash != record.hash) {
+      _logger.log(
+        LogLevel.fine,
+        'tryAutomaticConsent: hash mismatch — verifier branding or VC content changed',
+      );
+      return const AutoConsentDeclined();
+    }
+
+    _logger.log(
+      LogLevel.fine,
+      'tryAutomaticConsent: approved — ${vcsToShare.length} VC(s)',
+    );
+    return AutoConsentApproved(vcsToShare: vcsToShare);
+  }
 
   @override
   Future<void> saveConsentRecord({

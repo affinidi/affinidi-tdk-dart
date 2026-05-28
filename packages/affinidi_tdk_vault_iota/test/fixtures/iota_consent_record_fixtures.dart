@@ -80,4 +80,25 @@ class IotaConsentRecordFixtures {
     sharedVcIds: ['vc-1'],
     claimedVcTypesCsv: 'SomeType',
   );
+
+  /// Like [autoShareEnabled] but with a known [hash] value so tests can
+  /// control whether the recomputed hash matches.
+  static IotaConsentRecord autoShareEnabledWithHash(String hash) =>
+      IotaConsentRecord(
+        hash: hash,
+        requestHash: requestHash,
+        sharedAt: sharedAt,
+        profileName: profileName,
+        profileId: profileId,
+        clientId: clientId,
+        isAutoShareEnabled: true,
+        isConsentManagementEnabled: false,
+        sharedVcIds: ['vc-1'],
+        claimedVcTypesCsv: 'SomeType',
+      );
+
+  static const presentationDefinition = <String, dynamic>{
+    'id': 'pd-1',
+    'input_descriptors': <dynamic>[],
+  };
 }
