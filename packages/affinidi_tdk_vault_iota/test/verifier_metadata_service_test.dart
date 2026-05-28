@@ -186,29 +186,24 @@ void main() {
         },
       );
 
-      test(
-        'should be bypassed when clientMetadata is also provided',
-        () async {
-          final httpClient = MockClient(
-            (_) async => throw StateError('no call'),
-          );
+      test('should be bypassed when clientMetadata is also provided', () async {
+        final httpClient = MockClient((_) async => throw StateError('no call'));
 
-          final service = VerifierMetadataService(
-            baseUrl: _baseUrl,
-            httpClient: httpClient,
-          );
-          addTearDown(service.dispose);
+        final service = VerifierMetadataService(
+          baseUrl: _baseUrl,
+          httpClient: httpClient,
+        );
+        addTearDown(service.dispose);
 
-          // clientMetadata takes precedence — no network request expected.
-          final result = await service.fetchVerifierMetadata(
-            clientId: _clientId,
-            clientMetadataUri: metadataUri,
-            clientMetadata: _validMetadataJson(),
-          );
+        // clientMetadata takes precedence — no network request expected.
+        final result = await service.fetchVerifierMetadata(
+          clientId: _clientId,
+          clientMetadataUri: metadataUri,
+          clientMetadata: _validMetadataJson(),
+        );
 
-          expect(result.name, 'Test Verifier');
-        },
-      );
+        expect(result.name, 'Test Verifier');
+      });
     });
 
     group('when clientMetadata is absent', () {

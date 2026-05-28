@@ -1,3 +1,5 @@
+import '../../affinidi_tdk_vault_iota.dart';
+
 /// Types of exceptions that can occur in the Vault Iota share flow.
 enum TdkExceptionType {
   /// Exception thrown when the verifier's client metadata could not be fetched
@@ -35,7 +37,10 @@ enum TdkExceptionType {
 
   /// Thrown when submitting the VP to the verifier callback fails — e.g.
   /// network error, invalid state token, or a non-2xx response.
-  submissionFailed('submission_failed');
+  submissionFailed('submission_failed'),
+
+  /// Thrown when [VpBuilder.build] is called with an empty credentials list.
+  emptyCredentials('empty_credentials');
 
   /// Creates a new instance of [TdkExceptionType].
   const TdkExceptionType(this.code);

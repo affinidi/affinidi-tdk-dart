@@ -103,7 +103,7 @@ void main() {
   group('VpBuilder', () {
     group('when build is called', () {
       group('and credentials is empty', () {
-        test('should throw ArgumentError', () async {
+        test('should throw TdkException with emptyCredentials type', () async {
           await expectLater(
             builder.build(
               signer: ed25519Signer,
@@ -112,7 +112,13 @@ void main() {
               domain: domain,
               dataModel: VpDataModel.v2,
             ),
-            throwsA(isA<ArgumentError>()),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.emptyCredentials.code,
+              ),
+            ),
           );
         });
       });

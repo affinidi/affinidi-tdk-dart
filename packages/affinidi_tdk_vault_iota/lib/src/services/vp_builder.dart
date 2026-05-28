@@ -1,6 +1,8 @@
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
 
+import '../exceptions/tdk_exception_type.dart';
 import '../extensions/did_signer_extensions.dart';
 import '../models/vp_data_model.dart';
 
@@ -18,7 +20,7 @@ abstract class VpBuilderInterface {
   /// * [dataModel] - Whether to produce a DM v1 or DM v2 VP.
   ///
   /// Returns a [Future] containing the signed VP as a JSON map.
-  /// Throws [ArgumentError] if [credentials] is empty.
+  /// Throws [TdkException] with [TdkExceptionType.emptyCredentials] if [credentials] is empty.
   /// Throws [UnsupportedError] if the signer uses an unsupported key scheme.
   Future<Map<String, dynamic>> build({
     required DidSigner signer,
@@ -43,10 +45,9 @@ class VpBuilder implements VpBuilderInterface {
     required VpDataModel dataModel,
   }) async {
     if (credentials.isEmpty) {
-      throw ArgumentError.value(
-        credentials,
-        'credentials',
-        'must not be empty',
+      throw TdkException(
+        message: 'credentials must not be empty',
+        code: TdkExceptionType.emptyCredentials.code,
       );
     }
 
