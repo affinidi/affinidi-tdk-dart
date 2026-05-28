@@ -196,7 +196,7 @@ class Environment {
           elementsAuthTokenUrl:
               'https://$regionCode.dev.auth.developer.affinidi.io/auth/oauth2/token',
           iotUrl: 'a3sq1vuw0cw9an-ats.iot.ap-southeast-1.amazonaws.com',
-          elementsVaultApiUrl: 'https://dev.api.vault.affinidi.com',
+          elementsVaultApiUrl: 'https://$regionCode.dev.api.vault.affinidi.com',
           webVaultUrl: 'https://vault.dev.affinidi.com',
           consumerAudienceEndpoint:
               'https://apse1.dev.api.affinidi.io/cid/v1/consumer/oauth2/token',
@@ -211,7 +211,7 @@ class Environment {
           elementsAuthTokenUrl:
               'https://apse1.auth.developer.affinidi.io/auth/oauth2/token',
           iotUrl: 'a13pfgsvt8xhx-ats.iot.ap-southeast-1.amazonaws.com',
-          elementsVaultApiUrl: 'https://api.vault.affinidi.com',
+          elementsVaultApiUrl: 'https://$regionCode.api.vault.affinidi.com',
           webVaultUrl: 'https://vault.affinidi.com',
           consumerAudienceEndpoint:
               'https://apse1.api.affinidi.io/cid/v1/consumer/oauth2/token',
