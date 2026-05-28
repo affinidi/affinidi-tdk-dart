@@ -7,12 +7,20 @@
 class IotaConsentRecord {
   /// Full fingerprint of the share event.
   ///
+<<<<<<< HEAD
   /// Computed from: `profileId | vaultId | clientId | verifierName | logo | siteUrl | vcsFingerprint`.
+=======
+  /// Computed from: `profileId | did | clientId | clientMetadata | vcFingerprint`.
+>>>>>>> dafdb15 (feat: add IotaConsentRecord model and ConsentRecordStore interface)
   /// Changes whenever the user, verifier branding, or selected credentials
   /// change — even for the same verifier.
   final String hash;
 
+<<<<<<< HEAD
   /// Consumer-computed hash identifying the verifier+request combination.
+=======
+  /// Hash of the share request only: `sha1(clientId | presentationDefinition)`.
+>>>>>>> dafdb15 (feat: add IotaConsentRecord model and ConsentRecordStore interface)
   ///
   /// Stable across repeat requests from the same verifier with the same PD.
   /// Used as the deduplication key when persisting records.
@@ -24,7 +32,14 @@ class IotaConsentRecord {
   /// Origin (base URL) of the verifier's site, if available.
   final String? siteUrl;
 
+<<<<<<< HEAD
   /// ISO 8601 UTC timestamp of the most recent completed share.
+=======
+  /// The holder's DID used to sign the Verifiable Presentation.
+  final String did;
+
+  /// ISO 8601 timestamp of when the share was first completed.
+>>>>>>> dafdb15 (feat: add IotaConsentRecord model and ConsentRecordStore interface)
   final String sharedAt;
 
   /// Display name of the profile used for this share.
@@ -43,6 +58,7 @@ class IotaConsentRecord {
   final List<String> sharedVcIds;
 
   /// Comma-separated list of VC types included in the VP.
+<<<<<<< HEAD
   final String claimedVcTypesCsv;
 
   /// Labeled data points shared in the VP, keyed by display name.
@@ -52,6 +68,9 @@ class IotaConsentRecord {
   ///
   /// When `true`, automatic sharing is suppressed regardless of [isAutoShareEnabled].
   final bool isConsentManagementEnabled;
+=======
+  final String sharedVcTypesCsv;
+>>>>>>> dafdb15 (feat: add IotaConsentRecord model and ConsentRecordStore interface)
 
   /// Creates an [IotaConsentRecord].
   const IotaConsentRecord({
@@ -59,19 +78,28 @@ class IotaConsentRecord {
     required this.requestHash,
     this.logo,
     this.siteUrl,
+<<<<<<< HEAD
+=======
+    required this.did,
+>>>>>>> dafdb15 (feat: add IotaConsentRecord model and ConsentRecordStore interface)
     required this.sharedAt,
     required this.profileName,
     required this.profileId,
     required this.clientId,
     required this.isAutoShareEnabled,
     required this.sharedVcIds,
+<<<<<<< HEAD
     required this.claimedVcTypesCsv,
     this.historySharedData = const {},
     this.isConsentManagementEnabled = false,
+=======
+    required this.sharedVcTypesCsv,
+>>>>>>> dafdb15 (feat: add IotaConsentRecord model and ConsentRecordStore interface)
   });
 
   /// Creates an [IotaConsentRecord] from a JSON map.
   factory IotaConsentRecord.fromJson(Map<String, dynamic> json) {
+<<<<<<< HEAD
     final hash = json['hash'] as String?;
     if (hash == null || hash.isEmpty) {
       throw const FormatException(
@@ -118,6 +146,21 @@ class IotaConsentRecord {
           ),
       isConsentManagementEnabled:
           json['isConsentManagementEnabled'] as bool? ?? false,
+=======
+    return IotaConsentRecord(
+      hash: json['hash'] as String,
+      requestHash: json['requestHash'] as String? ?? '',
+      logo: json['logo'] as String?,
+      siteUrl: json['siteUrl'] as String?,
+      did: json['did'] as String,
+      sharedAt: json['sharedAt'] as String,
+      profileName: json['profileName'] as String? ?? '',
+      profileId: json['profileId'] as String? ?? '',
+      clientId: json['clientId'] as String? ?? '',
+      isAutoShareEnabled: json['isAutoShareEnabled'] as bool,
+      sharedVcIds: List<String>.from(json['sharedVcIds'] as List? ?? []),
+      sharedVcTypesCsv: json['sharedVcTypesCsv'] as String? ?? '',
+>>>>>>> dafdb15 (feat: add IotaConsentRecord model and ConsentRecordStore interface)
     );
   }
 
@@ -127,15 +170,23 @@ class IotaConsentRecord {
     'requestHash': requestHash,
     if (logo != null) 'logo': logo,
     if (siteUrl != null) 'siteUrl': siteUrl,
+<<<<<<< HEAD
+=======
+    'did': did,
+>>>>>>> dafdb15 (feat: add IotaConsentRecord model and ConsentRecordStore interface)
     'sharedAt': sharedAt,
     'profileName': profileName,
     'profileId': profileId,
     'clientId': clientId,
     'isAutoShareEnabled': isAutoShareEnabled,
     'sharedVcIds': sharedVcIds,
+<<<<<<< HEAD
     'claimedVcTypesCsv': claimedVcTypesCsv,
     'historySharedData': historySharedData,
     'isConsentManagementEnabled': isConsentManagementEnabled,
+=======
+    'sharedVcTypesCsv': sharedVcTypesCsv,
+>>>>>>> dafdb15 (feat: add IotaConsentRecord model and ConsentRecordStore interface)
   };
 
   /// Returns a copy of this record with the specified fields replaced.
@@ -144,21 +195,33 @@ class IotaConsentRecord {
     String? requestHash,
     String? logo,
     String? siteUrl,
+<<<<<<< HEAD
+=======
+    String? did,
+>>>>>>> dafdb15 (feat: add IotaConsentRecord model and ConsentRecordStore interface)
     String? sharedAt,
     String? profileName,
     String? profileId,
     String? clientId,
     bool? isAutoShareEnabled,
     List<String>? sharedVcIds,
+<<<<<<< HEAD
     String? claimedVcTypesCsv,
     Map<String, String>? historySharedData,
     bool? isConsentManagementEnabled,
+=======
+    String? sharedVcTypesCsv,
+>>>>>>> dafdb15 (feat: add IotaConsentRecord model and ConsentRecordStore interface)
   }) {
     return IotaConsentRecord(
       hash: hash ?? this.hash,
       requestHash: requestHash ?? this.requestHash,
       logo: logo ?? this.logo,
       siteUrl: siteUrl ?? this.siteUrl,
+<<<<<<< HEAD
+=======
+      did: did ?? this.did,
+>>>>>>> dafdb15 (feat: add IotaConsentRecord model and ConsentRecordStore interface)
       sharedAt: sharedAt ?? this.sharedAt,
       profileName: profileName ?? this.profileName,
       profileId: profileId ?? this.profileId,

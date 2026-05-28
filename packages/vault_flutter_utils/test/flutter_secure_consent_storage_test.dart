@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:affinidi_tdk_vault_flutter_utils/vault_flutter_utils.dart';
-import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart'
-    show TdkException;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -110,7 +108,6 @@ void main() {
     test(
       'throws TdkException with failedToReadConsentRecord when an entry is corrupt',
       () async {
-        when(() => mockStorage.readAll()).thenAnswer(
           (_) async => {'${defaultNamespace}_bad': 'not valid json {{{'},
         );
 

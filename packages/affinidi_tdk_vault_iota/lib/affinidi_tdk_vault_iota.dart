@@ -26,6 +26,7 @@ export 'src/services/consent_storage.dart';
 export 'src/services/iota_consent_record_service.dart';
 export 'src/services/iota_consent_record_service_interface.dart';
 export 'src/services/iota_share_response_service.dart';
+export 'src/services/consent_storage.dart';
 export 'src/services/iota_consent_record_service.dart';
 export 'src/services/iota_consent_record_service_interface.dart';
 export 'src/services/pd_classifier_service.dart';

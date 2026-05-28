@@ -1,11 +1,7 @@
 import 'dart:convert';
 
-import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart'
-    hide TdkExceptionType;
+import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-import '../src/exceptions/tdk_exception_type.dart';
-
 /// Implementation of [ConsentStorage] backed by Flutter's secure storage.
 ///
 /// Each record is stored as a JSON string keyed by its [IotaConsentRecord.hash],
@@ -53,13 +49,8 @@ class FlutterSecureConsentStorage implements ConsentStorage {
           jsonDecode(entry.value) as Map<String, dynamic>,
         );
         if (record.requestHash == requestHash) return record;
-      } catch (e) {
-        throw TdkException(
-          message:
-              'Failed to deserialize consent record for key "${entry.key}".',
-          code: TdkExceptionType.failedToReadConsentRecord.code,
-          originalMessage: e.toString(),
-        );
+      } catch (_) {
+        continue;
       }
     }
     return null;
