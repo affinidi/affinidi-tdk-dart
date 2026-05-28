@@ -231,7 +231,7 @@ void main() {
     });
 
     group('and selectedCredentials is empty', () {
-      test('should throw ArgumentError', () async {
+      test('should throw TdkException with emptyCredentials type', () async {
         final service = IotaShareResponseService(
           approveCallbackApi: callbackApi,
           signer: signer,
@@ -246,7 +246,13 @@ void main() {
             selectedCredentials: [],
             dataModel: VpDataModel.v1,
           ),
-          throwsArgumentError,
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.emptyCredentials.code,
+            ),
+          ),
         );
       });
     });
