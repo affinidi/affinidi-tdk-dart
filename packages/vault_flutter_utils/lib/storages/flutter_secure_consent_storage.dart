@@ -55,7 +55,8 @@ class FlutterSecureConsentStorage implements ConsentStorage {
         if (record.requestHash == requestHash) return record;
       } catch (e) {
         throw TdkException(
-          message: 'Failed to deserialize consent record for key "${entry.key}".',
+          message:
+              'Failed to deserialize consent record for key "${entry.key}".',
           code: TdkExceptionType.failedToReadConsentRecord.code,
           originalMessage: e.toString(),
         );
