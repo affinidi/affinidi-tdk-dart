@@ -35,9 +35,15 @@ class PDDescriptor {
   /// first (or only) value, or `null` when absent.
   String? get groupName {
     final raw = _data['group'];
-    if (raw is List && raw.isNotEmpty) return raw.first.toString();
-    if (raw is String && raw.isNotEmpty) return raw;
-    return null;
+    final String? value;
+    if (raw is List && raw.isNotEmpty) {
+      value = raw.first.toString();
+    } else if (raw is String) {
+      value = raw;
+    } else {
+      return null;
+    }
+    return value.isNotEmpty ? value : null;
   }
 
   /// Two [PDDescriptor]s are equal when their [id]s match.
