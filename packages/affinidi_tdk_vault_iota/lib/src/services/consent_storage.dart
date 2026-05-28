@@ -1,4 +1,4 @@
-import '../../affinidi_tdk_vault_iota.dart';
+import '../models/iota_consent_record.dart';
 
 /// Consumer-provided storage backend for Iota consent records.
 ///
