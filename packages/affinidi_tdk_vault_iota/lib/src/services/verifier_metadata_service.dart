@@ -38,6 +38,7 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
   @override
   Future<VerifierClientMetadata> fetchVerifierMetadata({
     required String clientId,
+    String? clientMetadataUri,
     Map<String, dynamic>? clientMetadata,
   }) async {
     if (clientId.isEmpty) {
@@ -49,9 +50,15 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
         return VerifierClientMetadata.fromJson(clientMetadata);
       }
 
-      final uri = Uri.parse(
-        _baseUrl,
-      ).replace(path: '$_metadataPath/${Uri.encodeComponent(clientId)}');
+      final Uri uri;
+      if (clientMetadataUri != null) {
+        uri = Uri.parse(clientMetadataUri);
+      } else {
+        uri = Uri.parse(
+          _baseUrl,
+        ).replace(path: '$_metadataPath/${Uri.encodeComponent(clientId)}');
+      }
+
       final response = await _httpClient.get(uri);
 
       if (response.statusCode != HttpStatusCode.ok) {

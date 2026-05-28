@@ -33,8 +33,12 @@ enum TdkExceptionType {
   /// types (i.e. more than `VerifiedIdsentityDocument` + one specific subtype).
   unsupportedMultipleIdvTypes('unsupported_multiple_idv_types'),
 
-  /// Thrown when submitting the VP to the verifier callback fails.
-  submissionFailed('submission_failed');
+  /// Thrown when submitting the VP to the verifier callback fails — e.g.
+  /// network error, invalid state token, or a non-2xx response.
+  submissionFailed('submission_failed'),
+
+  /// Thrown when `VpBuilder.build` is called with an empty credentials list.
+  emptyCredentials('empty_credentials');
 
   /// Creates a new instance of [TdkExceptionType].
   const TdkExceptionType(this.code);

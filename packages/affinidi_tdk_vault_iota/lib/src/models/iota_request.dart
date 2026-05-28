@@ -30,6 +30,12 @@ class IotaRequest {
   /// The client identifier of the verifier.
   final String clientId;
 
+  /// The URI to retrieve client metadata from, as defined in OID4VP 1.0 final §5.1.
+  ///
+  /// Optional — present when the verifier provides metadata by reference instead
+  /// of inline via [clientMetadata].
+  final String? clientMetadataUri;
+
   /// The client metadata object as defined in OID4VP 1.0 final §5.1.
   ///
   /// Optional — verifiers may omit this field.
@@ -46,7 +52,8 @@ class IotaRequest {
   /// - [state] - state value used to correlate the request and response.
   /// - [nonce] - nonce value to bind the presentation to the request.
   /// - [clientId] - client identifier of the verifier.
-  /// - [clientMetadata] - optional client metadata object.
+  /// - [clientMetadataUri] - optional URI to retrieve client metadata from.
+  /// - [clientMetadata] - optional inline client metadata object.
   const IotaRequest({
     required this.responseType,
     required this.responseMode,
@@ -56,6 +63,7 @@ class IotaRequest {
     required this.state,
     required this.nonce,
     required this.clientId,
+    this.clientMetadataUri,
     this.clientMetadata,
   });
 }
