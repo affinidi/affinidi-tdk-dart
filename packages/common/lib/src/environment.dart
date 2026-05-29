@@ -91,6 +91,7 @@ class Environment {
       'AFFINIDI_TDK_ENVIRONMENT_OVERRIDE';
   static const _environmentRegionOverrideVariableName =
       'AFFINIDI_TDK_ENVIRONMENT_REGION_OVERRIDE';
+  static const _consumerAudienceEndpoint = '/cid/v1/consumer/oauth2/token';
   static const _consumerCisEndpoint = '/cis';
   static const _defaultRegion = ElementsRegion.apSoutheast1;
   static final Map<String, LogLevel> _levels = {
@@ -183,8 +184,7 @@ class Environment {
           iotUrl: 'a3sq1vuw0cw9an-ats.iot.ap-southeast-1.amazonaws.com',
           elementsVaultApiUrl: 'http://localhost:3000',
           webVaultUrl: 'http://localhost:3001',
-          consumerAudienceEndpoint:
-              'https://apse1.dev.api.affinidi.io/cid/v1/consumer/oauth2/token',
+          consumerAudienceEndpoint: _consumerAudienceEndpoint,
           consumerCisEndpoint: _consumerCisEndpoint,
           vaultAccountsAudienceEndpoint:
               'https://$regionCode.dev.api.affinidi.io/vfs/v1/accounts',
@@ -198,8 +198,7 @@ class Environment {
           iotUrl: 'a3sq1vuw0cw9an-ats.iot.ap-southeast-1.amazonaws.com',
           elementsVaultApiUrl: 'https://$regionCode.dev.api.vault.affinidi.com',
           webVaultUrl: 'https://vault.dev.affinidi.com',
-          consumerAudienceEndpoint:
-              'https://apse1.dev.api.affinidi.io/cid/v1/consumer/oauth2/token',
+          consumerAudienceEndpoint: _consumerAudienceEndpoint,
           consumerCisEndpoint: _consumerCisEndpoint,
           vaultAccountsAudienceEndpoint:
               'https://$regionCode.dev.api.affinidi.io/vfs/v1/accounts',
@@ -213,8 +212,7 @@ class Environment {
           iotUrl: 'a13pfgsvt8xhx-ats.iot.ap-southeast-1.amazonaws.com',
           elementsVaultApiUrl: 'https://$regionCode.api.vault.affinidi.com',
           webVaultUrl: 'https://vault.affinidi.com',
-          consumerAudienceEndpoint:
-              'https://apse1.api.affinidi.io/cid/v1/consumer/oauth2/token',
+          consumerAudienceEndpoint: _consumerAudienceEndpoint,
           consumerCisEndpoint: _consumerCisEndpoint,
           vaultAccountsAudienceEndpoint:
               'https://$regionCode.api.affinidi.io/vfs/v1/accounts',
@@ -299,7 +297,7 @@ class Environment {
     ElementsRegion region = _defaultRegion,
   ]) {
     env ??= fetchEnvironment(envType: envType, region: region);
-    return env.consumerAudienceEndpoint;
+    return env.apiGwUrl + env.consumerAudienceEndpoint;
   }
 
   /// Fetches the Consumer CIS URL for the current environment.
