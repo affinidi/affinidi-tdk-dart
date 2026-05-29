@@ -501,7 +501,9 @@ void main() {
       test(
         'returns AutoConsentApproved with the redirect URI when all checks pass',
         () async {
-          final redirectUri = Uri.parse('https://verifier.example.com/callback');
+          final redirectUri = Uri.parse(
+            'https://verifier.example.com/callback',
+          );
 
           when(() => store.findByRequestHash(any())).thenAnswer(
             (_) async =>
@@ -579,27 +581,30 @@ void main() {
             dataModel: VpDataModel.v1,
           );
 
-          final captured = verify(
-            () => shareResponseService.submitShareResponse(
-              state: any(named: 'state'),
-              nonce: any(named: 'nonce'),
-              clientId: any(named: 'clientId'),
-              definitionId: any(named: 'definitionId'),
-              selectedCredentials: captureAny(named: 'selectedCredentials'),
-              dataModel: any(named: 'dataModel'),
-            ),
-          ).captured.single
-              as List<
-                ({
-                  PDDescriptor descriptor,
-                  ParsedVerifiableCredential<dynamic> credential,
-                })
-              >;
+          final captured =
+              verify(
+                    () => shareResponseService.submitShareResponse(
+                      state: any(named: 'state'),
+                      nonce: any(named: 'nonce'),
+                      clientId: any(named: 'clientId'),
+                      definitionId: any(named: 'definitionId'),
+                      selectedCredentials: captureAny(
+                        named: 'selectedCredentials',
+                      ),
+                      dataModel: any(named: 'dataModel'),
+                    ),
+                  ).captured.single
+                  as List<
+                    ({
+                      PDDescriptor descriptor,
+                      ParsedVerifiableCredential<dynamic> credential,
+                    })
+                  >;
 
-          expect(
-            captured.map((e) => e.credential.id?.toString()),
-            ['vc-2', 'vc-1'],
-          );
+          expect(captured.map((e) => e.credential.id?.toString()), [
+            'vc-2',
+            'vc-1',
+          ]);
         },
       );
 

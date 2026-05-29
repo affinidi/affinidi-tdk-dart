@@ -2,7 +2,8 @@ import 'dart:convert' show jsonEncode;
 
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
-import 'package:ssi/ssi.dart' show ParsedVerifiableCredential, VerifiableCredential;
+import 'package:ssi/ssi.dart'
+    show ParsedVerifiableCredential, VerifiableCredential;
 
 import '../exceptions/tdk_exception_type.dart';
 import '../models/auto_consent_result.dart';
@@ -125,8 +126,13 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   @override
   Future<AutoConsentResult> tryAutomaticConsent({
     required String requestHash,
-    required List<({PDDescriptor descriptor, ParsedVerifiableCredential<dynamic> credential})>
-        matchedCredentials,
+    required List<
+      ({
+        PDDescriptor descriptor,
+        ParsedVerifiableCredential<dynamic> credential,
+      })
+    >
+    matchedCredentials,
     required VerifierClientMetadata verifierMetadata,
     required String profileId,
     required String vaultId,
@@ -190,7 +196,12 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
               .where((e) => e.credential.id?.toString() == id)
               .firstOrNull,
         )
-        .whereType<({PDDescriptor descriptor, ParsedVerifiableCredential<dynamic> credential})>()
+        .whereType<
+          ({
+            PDDescriptor descriptor,
+            ParsedVerifiableCredential<dynamic> credential,
+          })
+        >()
         .toList();
 
     if (previouslySelected.length != record.sharedVcIds.length) {
@@ -208,7 +219,9 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       verifierName: verifierMetadata.name,
       logo: verifierMetadata.logo,
       siteUrl: verifierMetadata.origin,
-      vcsFingerprint: _stringifyVcs(previouslySelected.map((e) => e.credential).toList()),
+      vcsFingerprint: _stringifyVcs(
+        previouslySelected.map((e) => e.credential).toList(),
+      ),
     );
 
     if (record.hash != currentHash) {

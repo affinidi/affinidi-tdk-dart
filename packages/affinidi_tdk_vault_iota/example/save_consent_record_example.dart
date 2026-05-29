@@ -53,11 +53,10 @@ class _StubShareResponseService implements IotaShareResponseService {
   );
 
   @override
-  Future<Uri?> rejectShareResponse({
-    required String state,
-  }) => throw UnimplementedError(
-    'Provide a real IotaShareResponseService for VP rejection',
-  );
+  Future<Uri?> rejectShareResponse({required String state}) =>
+      throw UnimplementedError(
+        'Provide a real IotaShareResponseService for VP rejection',
+      );
 }
 
 /// This example demonstrates how to persist a consent record after a

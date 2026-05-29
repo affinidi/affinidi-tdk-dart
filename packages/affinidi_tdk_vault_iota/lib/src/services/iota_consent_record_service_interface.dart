@@ -1,4 +1,5 @@
-import 'package:ssi/ssi.dart' show ParsedVerifiableCredential, VerifiableCredential;
+import 'package:ssi/ssi.dart'
+    show ParsedVerifiableCredential, VerifiableCredential;
 
 import '../models/auto_consent_result.dart';
 import '../models/pd_descriptor.dart';
@@ -73,8 +74,13 @@ abstract interface class IotaConsentRecordServiceInterface {
   /// post fails.
   Future<AutoConsentResult> tryAutomaticConsent({
     required String requestHash,
-    required List<({PDDescriptor descriptor, ParsedVerifiableCredential<dynamic> credential})>
-        matchedCredentials,
+    required List<
+      ({
+        PDDescriptor descriptor,
+        ParsedVerifiableCredential<dynamic> credential,
+      })
+    >
+    matchedCredentials,
     required VerifierClientMetadata verifierMetadata,
     required String profileId,
     required String vaultId,
