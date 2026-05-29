@@ -5,6 +5,7 @@ import 'package:ssi/ssi.dart'
         CredentialSubject,
         Issuer,
         JsonLdContext,
+        ParsedVerifiableCredential,
         VcDataModelV1,
         VerifiableCredential;
 
@@ -28,6 +29,37 @@ class InMemoryConsentStorage implements ConsentStorage {
   }
 }
 
+/// A stub [IotaShareResponseService] for demonstration purposes.
+///
+/// In a real application, construct [IotaShareResponseService] with a real
+/// `CallbackApi` and `DidSigner` from your wallet integration.
+class _StubShareResponseService implements IotaShareResponseService {
+  @override
+  Future<Uri?> submitShareResponse({
+    required String state,
+    required String nonce,
+    required String clientId,
+    required String definitionId,
+    required List<
+      ({
+        PDDescriptor descriptor,
+        ParsedVerifiableCredential<dynamic> credential,
+      })
+    >
+    selectedCredentials,
+    required VpDataModel dataModel,
+  }) => throw UnimplementedError(
+    'Provide a real IotaShareResponseService for VP submission',
+  );
+
+  @override
+  Future<Uri?> rejectShareResponse({
+    required String state,
+  }) => throw UnimplementedError(
+    'Provide a real IotaShareResponseService for VP rejection',
+  );
+}
+
 /// This example demonstrates how to persist a consent record after a
 /// successful Iota OID4VP share.
 ///
@@ -43,6 +75,7 @@ Future<void> main() async {
   final service = IotaConsentRecordService(
     store: store,
     cryptography: cryptography,
+    shareResponseService: _StubShareResponseService(),
   );
 
   // Values that would normally come from the validated OID4VP request and the

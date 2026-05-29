@@ -1,23 +1,28 @@
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:ssi/ssi.dart' show ParsedVerifiableCredential;
 import 'package:test/test.dart';
 
 import 'fixtures/iota_consent_record_fixtures.dart';
 import 'mocks/mock_consent_storage.dart';
 import 'mocks/mock_cryptography_service.dart';
+import 'mocks/mock_iota_share_response_service.dart';
 
 void main() {
   late MockConsentStorage store;
   late MockCryptographyService cryptography;
+  late MockIotaShareResponseService shareResponseService;
   late IotaConsentRecordService service;
 
   setUpAll(() {
     registerFallbackValue(IotaConsentRecordFixtures.empty());
+    registerFallbackValue(VpDataModel.v1);
   });
 
   setUp(() {
     store = MockConsentStorage();
     cryptography = MockCryptographyService();
+    shareResponseService = MockIotaShareResponseService();
 
     when(
       () => cryptography.createHash(hashSource: any(named: 'hashSource')),
@@ -25,9 +30,21 @@ void main() {
 
     when(() => store.saveOrUpdate(any())).thenAnswer((_) async {});
 
+    when(
+      () => shareResponseService.submitShareResponse(
+        state: any(named: 'state'),
+        nonce: any(named: 'nonce'),
+        clientId: any(named: 'clientId'),
+        definitionId: any(named: 'definitionId'),
+        selectedCredentials: any(named: 'selectedCredentials'),
+        dataModel: any(named: 'dataModel'),
+      ),
+    ).thenAnswer((_) async => null);
+
     service = IotaConsentRecordService(
       store: store,
       cryptography: cryptography,
+      shareResponseService: shareResponseService,
     );
   });
 
@@ -318,15 +335,34 @@ void main() {
         () async {
           final result = await service.tryAutomaticConsent(
             requestHash: IotaConsentRecordFixtures.requestHash,
-            availableVcs: [IotaConsentRecordFixtures.makeVc()],
+            matchedCredentials: [
+              (
+                descriptor: IotaConsentRecordFixtures.pdDescriptor,
+                credential: IotaConsentRecordFixtures.makeParsedVc(),
+              ),
+            ],
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             profileId: IotaConsentRecordFixtures.profileId,
             vaultId: IotaConsentRecordFixtures.vaultId,
+            state: 'test_state',
+            nonce: 'test_nonce',
+            definitionId: 'def-1',
+            dataModel: VpDataModel.v1,
             isConsentManagementEnabled: true,
           );
 
           expect(result, isA<AutoConsentDeclined>());
           verifyNever(() => store.findByRequestHash(any()));
+          verifyNever(
+            () => shareResponseService.submitShareResponse(
+              state: any(named: 'state'),
+              nonce: any(named: 'nonce'),
+              clientId: any(named: 'clientId'),
+              definitionId: any(named: 'definitionId'),
+              selectedCredentials: any(named: 'selectedCredentials'),
+              dataModel: any(named: 'dataModel'),
+            ),
+          );
         },
       );
 
@@ -335,10 +371,19 @@ void main() {
         () async {
           final result = await service.tryAutomaticConsent(
             requestHash: IotaConsentRecordFixtures.requestHash,
-            availableVcs: [IotaConsentRecordFixtures.makeVc()],
+            matchedCredentials: [
+              (
+                descriptor: IotaConsentRecordFixtures.pdDescriptor,
+                credential: IotaConsentRecordFixtures.makeParsedVc(),
+              ),
+            ],
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             profileId: IotaConsentRecordFixtures.profileId,
             vaultId: IotaConsentRecordFixtures.vaultId,
+            state: 'test_state',
+            nonce: 'test_nonce',
+            definitionId: 'def-1',
+            dataModel: VpDataModel.v1,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -354,10 +399,19 @@ void main() {
 
           final result = await service.tryAutomaticConsent(
             requestHash: IotaConsentRecordFixtures.requestHash,
-            availableVcs: [IotaConsentRecordFixtures.makeVc()],
+            matchedCredentials: [
+              (
+                descriptor: IotaConsentRecordFixtures.pdDescriptor,
+                credential: IotaConsentRecordFixtures.makeParsedVc(),
+              ),
+            ],
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             profileId: IotaConsentRecordFixtures.profileId,
             vaultId: IotaConsentRecordFixtures.vaultId,
+            state: 'test_state',
+            nonce: 'test_nonce',
+            definitionId: 'def-1',
+            dataModel: VpDataModel.v1,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -373,10 +427,19 @@ void main() {
 
           final result = await service.tryAutomaticConsent(
             requestHash: IotaConsentRecordFixtures.requestHash,
-            availableVcs: [IotaConsentRecordFixtures.makeVc()],
+            matchedCredentials: [
+              (
+                descriptor: IotaConsentRecordFixtures.pdDescriptor,
+                credential: IotaConsentRecordFixtures.makeParsedVc(),
+              ),
+            ],
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             profileId: IotaConsentRecordFixtures.profileId,
             vaultId: IotaConsentRecordFixtures.vaultId,
+            state: 'test_state',
+            nonce: 'test_nonce',
+            definitionId: 'def-1',
+            dataModel: VpDataModel.v1,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -393,10 +456,14 @@ void main() {
 
           final result = await service.tryAutomaticConsent(
             requestHash: IotaConsentRecordFixtures.requestHash,
-            availableVcs: [],
+            matchedCredentials: [],
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             profileId: IotaConsentRecordFixtures.profileId,
             vaultId: IotaConsentRecordFixtures.vaultId,
+            state: 'test_state',
+            nonce: 'test_nonce',
+            definitionId: 'def-1',
+            dataModel: VpDataModel.v1,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -412,10 +479,19 @@ void main() {
 
           final result = await service.tryAutomaticConsent(
             requestHash: IotaConsentRecordFixtures.requestHash,
-            availableVcs: [IotaConsentRecordFixtures.makeVc()],
+            matchedCredentials: [
+              (
+                descriptor: IotaConsentRecordFixtures.pdDescriptor,
+                credential: IotaConsentRecordFixtures.makeParsedVc(),
+              ),
+            ],
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             profileId: IotaConsentRecordFixtures.profileId,
             vaultId: IotaConsentRecordFixtures.vaultId,
+            state: 'test_state',
+            nonce: 'test_nonce',
+            definitionId: 'def-1',
+            dataModel: VpDataModel.v1,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -423,32 +499,55 @@ void main() {
       );
 
       test(
-        'returns AutoConsentApproved with the previously shared VCs when all checks pass',
+        'returns AutoConsentApproved with the redirect URI when all checks pass',
         () async {
+          final redirectUri = Uri.parse('https://verifier.example.com/callback');
+
           when(() => store.findByRequestHash(any())).thenAnswer(
             (_) async =>
                 IotaConsentRecordFixtures.autoShareEnabledMatchingHash(),
           );
 
-          final vc = IotaConsentRecordFixtures.makeVc();
+          when(
+            () => shareResponseService.submitShareResponse(
+              state: any(named: 'state'),
+              nonce: any(named: 'nonce'),
+              clientId: any(named: 'clientId'),
+              definitionId: any(named: 'definitionId'),
+              selectedCredentials: any(named: 'selectedCredentials'),
+              dataModel: any(named: 'dataModel'),
+            ),
+          ).thenAnswer((_) async => redirectUri);
+
           final result = await service.tryAutomaticConsent(
             requestHash: IotaConsentRecordFixtures.requestHash,
-            availableVcs: [vc],
+            matchedCredentials: [
+              (
+                descriptor: IotaConsentRecordFixtures.pdDescriptor,
+                credential: IotaConsentRecordFixtures.makeParsedVc(),
+              ),
+            ],
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             profileId: IotaConsentRecordFixtures.profileId,
             vaultId: IotaConsentRecordFixtures.vaultId,
+            state: 'test_state',
+            nonce: 'test_nonce',
+            definitionId: 'def-1',
+            dataModel: VpDataModel.v1,
           );
 
           expect(result, isA<AutoConsentApproved>());
-          expect((result as AutoConsentApproved).vcsToShare, [vc]);
+          expect((result as AutoConsentApproved).redirectUri, redirectUri);
         },
       );
 
       test(
         'preserves the VC lookup order from the stored sharedVcIds list',
         () async {
-          final vc1 = IotaConsentRecordFixtures.makeVc(id: 'vc-1');
-          final vc2 = IotaConsentRecordFixtures.makeVc(id: 'vc-2');
+          final vc1 = IotaConsentRecordFixtures.makeParsedVc(id: 'vc-1');
+          final vc2 = IotaConsentRecordFixtures.makeParsedVc(id: 'vc-2');
+          final desc1 = PDDescriptor.fromJson({'id': 'desc-1'});
+          final desc2 = PDDescriptor.fromJson({'id': 'desc-2'});
 
           when(() => store.findByRequestHash(any())).thenAnswer(
             (_) async => const IotaConsentRecord(
@@ -465,16 +564,42 @@ void main() {
             ),
           );
 
-          final result = await service.tryAutomaticConsent(
+          await service.tryAutomaticConsent(
             requestHash: IotaConsentRecordFixtures.requestHash,
-            availableVcs: [vc1, vc2],
+            matchedCredentials: [
+              (descriptor: desc1, credential: vc1),
+              (descriptor: desc2, credential: vc2),
+            ],
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             profileId: IotaConsentRecordFixtures.profileId,
             vaultId: IotaConsentRecordFixtures.vaultId,
+            state: 'test_state',
+            nonce: 'test_nonce',
+            definitionId: 'def-1',
+            dataModel: VpDataModel.v1,
           );
 
-          expect(result, isA<AutoConsentApproved>());
-          expect((result as AutoConsentApproved).vcsToShare, [vc2, vc1]);
+          final captured = verify(
+            () => shareResponseService.submitShareResponse(
+              state: any(named: 'state'),
+              nonce: any(named: 'nonce'),
+              clientId: any(named: 'clientId'),
+              definitionId: any(named: 'definitionId'),
+              selectedCredentials: captureAny(named: 'selectedCredentials'),
+              dataModel: any(named: 'dataModel'),
+            ),
+          ).captured.single
+              as List<
+                ({
+                  PDDescriptor descriptor,
+                  ParsedVerifiableCredential<dynamic> credential,
+                })
+              >;
+
+          expect(
+            captured.map((e) => e.credential.id?.toString()),
+            ['vc-2', 'vc-1'],
+          );
         },
       );
 
@@ -488,10 +613,14 @@ void main() {
           await expectLater(
             () => service.tryAutomaticConsent(
               requestHash: IotaConsentRecordFixtures.requestHash,
-              availableVcs: [],
+              matchedCredentials: [],
               verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
               profileId: IotaConsentRecordFixtures.profileId,
               vaultId: IotaConsentRecordFixtures.vaultId,
+              state: 'test_state',
+              nonce: 'test_nonce',
+              definitionId: 'def-1',
+              dataModel: VpDataModel.v1,
             ),
             throwsA(
               isA<TdkException>().having(

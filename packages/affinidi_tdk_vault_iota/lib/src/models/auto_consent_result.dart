@@ -1,15 +1,13 @@
-import 'package:ssi/ssi.dart' show VerifiableCredential;
-
-/// Result of an automatic consent check.
+/// Result of an automatic consent check and share submission.
 ///
-/// Indicates whether a previous consent record authorises the share flow to proceed
-/// without user interaction.
+/// Indicates whether the share was completed automatically or whether user
+/// interaction is still required.
 ///
 /// Use a switch expression or pattern-matching to handle both cases:
 /// ```dart
 /// switch (result) {
-///   case AutoConsentApproved(:final vcsToShare):
-///     // submit the VP using vcsToShare
+///   case AutoConsentApproved(:final redirectUri):
+///     // VP already submitted; navigate to redirectUri if present
 ///   case AutoConsentDeclined():
 ///     // show the interactive consent screen
 /// }
@@ -18,21 +16,20 @@ sealed class AutoConsentResult {
   const AutoConsentResult();
 }
 
-/// The automatic consent check passed and the share flow may proceed without
-/// user interaction.
+/// The automatic consent check passed and the VP was submitted successfully.
 ///
-/// [vcsToShare] contains the VCs that were shared in the previous session,
-/// already verified to still be available and matching the stored fingerprint.
+/// [redirectUri] is the redirect URI returned by the verifier callback, or
+/// `null` if the verifier did not provide one.
 final class AutoConsentApproved extends AutoConsentResult {
-  /// The Verifiable Credentials to include in the VP — same set as the
-  /// previous share, preserved in presentation order.
-  final List<VerifiableCredential> vcsToShare;
+  /// The redirect [Uri] returned by the verifier after VP submission,
+  /// or `null` when the verifier did not provide a redirect.
+  final Uri? redirectUri;
 
   /// Creates an [AutoConsentApproved] result.
   ///
   /// Parameters:
-  /// * [vcsToShare] - VCs that were previously shared and are still available.
-  const AutoConsentApproved({required this.vcsToShare});
+  /// * [redirectUri] - The verifier's redirect URI, or `null`.
+  const AutoConsentApproved({required this.redirectUri});
 }
 
 /// The automatic consent check did not pass.

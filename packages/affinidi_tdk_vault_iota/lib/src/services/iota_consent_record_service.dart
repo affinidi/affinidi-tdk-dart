@@ -2,14 +2,17 @@ import 'dart:convert' show jsonEncode;
 
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
-import 'package:ssi/ssi.dart' show VerifiableCredential;
+import 'package:ssi/ssi.dart' show ParsedVerifiableCredential, VerifiableCredential;
 
 import '../exceptions/tdk_exception_type.dart';
 import '../models/auto_consent_result.dart';
 import '../models/iota_consent_record.dart';
+import '../models/pd_descriptor.dart';
 import '../models/verifier_client_metadata.dart';
+import '../models/vp_data_model.dart';
 import 'consent_storage.dart';
 import 'iota_consent_record_service_interface.dart';
+import 'iota_share_response_service.dart';
 
 /// Persists a consent record after a successful Iota OID4VP share.
 ///
@@ -31,6 +34,7 @@ import 'iota_consent_record_service_interface.dart';
 class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   final ConsentStorage _store;
   final CryptographyServiceInterface _cryptography;
+  final IotaShareResponseService _shareResponseService;
   final Logger _logger;
 
   /// Creates an [IotaConsentRecordService].
@@ -38,13 +42,16 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   /// Parameters:
   /// * [store] - Consumer-provided storage backend for consent records.
   /// * [cryptography] - Cryptography service used to compute SHA-1 hashes.
+  /// * [shareResponseService] - Service used to build and submit the VP.
   /// * [logger] - Optional logger; defaults to [Logger.instance].
   IotaConsentRecordService({
     required ConsentStorage store,
     required CryptographyServiceInterface cryptography,
+    required IotaShareResponseService shareResponseService,
     Logger? logger,
   }) : _store = store,
        _cryptography = cryptography,
+       _shareResponseService = shareResponseService,
        _logger = logger ?? Logger.instance;
 
   @override
@@ -118,10 +125,15 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   @override
   Future<AutoConsentResult> tryAutomaticConsent({
     required String requestHash,
-    required List<VerifiableCredential> availableVcs,
+    required List<({PDDescriptor descriptor, ParsedVerifiableCredential<dynamic> credential})>
+        matchedCredentials,
     required VerifierClientMetadata verifierMetadata,
     required String profileId,
     required String vaultId,
+    required String state,
+    required String nonce,
+    required String definitionId,
+    required VpDataModel dataModel,
     bool isConsentManagementEnabled = false,
   }) async {
     _logger.log(LogLevel.fine, 'tryAutomaticConsent started');
@@ -172,15 +184,16 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       return const AutoConsentDeclined();
     }
 
-    final previouslySharedVCs = record.sharedVcIds
+    final previouslySelected = record.sharedVcIds
         .map(
-          (id) =>
-              availableVcs.where((vc) => vc.id?.toString() == id).firstOrNull,
+          (id) => matchedCredentials
+              .where((e) => e.credential.id?.toString() == id)
+              .firstOrNull,
         )
-        .whereType<VerifiableCredential>()
+        .whereType<({PDDescriptor descriptor, ParsedVerifiableCredential<dynamic> credential})>()
         .toList();
 
-    if (previouslySharedVCs.length != record.sharedVcIds.length) {
+    if (previouslySelected.length != record.sharedVcIds.length) {
       _logger.log(
         LogLevel.fine,
         'tryAutomaticConsent: not all previously shared VCs are available — declining',
@@ -195,7 +208,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       verifierName: verifierMetadata.name,
       logo: verifierMetadata.logo,
       siteUrl: verifierMetadata.origin,
-      vcsFingerprint: _stringifyVcs(previouslySharedVCs),
+      vcsFingerprint: _stringifyVcs(previouslySelected.map((e) => e.credential).toList()),
     );
 
     if (record.hash != currentHash) {
@@ -206,8 +219,16 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       return const AutoConsentDeclined();
     }
 
-    _logger.log(LogLevel.fine, 'tryAutomaticConsent: approved');
-    return AutoConsentApproved(vcsToShare: previouslySharedVCs);
+    _logger.log(LogLevel.fine, 'tryAutomaticConsent: approved — submitting VP');
+    final redirectUri = await _shareResponseService.submitShareResponse(
+      state: state,
+      nonce: nonce,
+      clientId: record.clientId,
+      definitionId: definitionId,
+      selectedCredentials: previouslySelected,
+      dataModel: dataModel,
+    );
+    return AutoConsentApproved(redirectUri: redirectUri);
   }
 
   /// Computes the full share fingerprint covering all share-event fields.
