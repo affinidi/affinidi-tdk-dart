@@ -47,6 +47,7 @@ enum TdkExceptionType {
   /// Thrown when reading a consent record from the consumer-provided
   /// `ConsentStorage` fails.
   failedToReadConsentRecord('failed_to_read_consent_record');
+  failedToPersistConsentRecord('failed_to_persist_consent_record');
 
   /// Creates a new instance of [TdkExceptionType].
   const TdkExceptionType(this.code);
