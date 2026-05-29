@@ -7,12 +7,13 @@ import 'package:ssi/ssi.dart';
 import '../exceptions/tdk_exception_type.dart';
 import '../models/vp_data_model.dart';
 import '../models/pd_descriptor.dart';
+import 'iota_share_response_service_interface.dart';
 import 'presentation_submission_builder.dart';
 import 'vp_builder.dart';
 
 /// Orchestrates the OID4VP share response: builds the VP, builds the
 /// presentation submission, and posts both to the Iota callback endpoint.
-class IotaShareResponseService {
+class IotaShareResponseService implements IotaShareResponseServiceInterface {
   final CallbackApi _approveCallbackApi;
   final CallbackApi _rejectCallbackApi;
   final DidSigner _signer;

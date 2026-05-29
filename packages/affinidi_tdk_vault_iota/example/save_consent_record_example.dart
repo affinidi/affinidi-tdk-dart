@@ -29,11 +29,11 @@ class InMemoryConsentStorage implements ConsentStorage {
   }
 }
 
-/// A stub [IotaShareResponseService] for demonstration purposes.
+/// A stub [IotaShareResponseServiceInterface] for demonstration purposes.
 ///
 /// In a real application, construct [IotaShareResponseService] with a real
 /// `CallbackApi` and `DidSigner` from your wallet integration.
-class _StubShareResponseService implements IotaShareResponseService {
+class _StubShareResponseService implements IotaShareResponseServiceInterface {
   @override
   Future<Uri?> submitShareResponse({
     required String state,

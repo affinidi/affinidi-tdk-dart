@@ -13,7 +13,7 @@ import '../models/verifier_client_metadata.dart';
 import '../models/vp_data_model.dart';
 import 'consent_storage.dart';
 import 'iota_consent_record_service_interface.dart';
-import 'iota_share_response_service.dart';
+import 'iota_share_response_service_interface.dart';
 
 /// Persists a consent record after a successful Iota OID4VP share.
 ///
@@ -35,7 +35,7 @@ import 'iota_share_response_service.dart';
 class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   final ConsentStorage _store;
   final CryptographyServiceInterface _cryptography;
-  final IotaShareResponseService _shareResponseService;
+  final IotaShareResponseServiceInterface _shareResponseService;
   final Logger _logger;
 
   /// Creates an [IotaConsentRecordService].
@@ -48,7 +48,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   IotaConsentRecordService({
     required ConsentStorage store,
     required CryptographyServiceInterface cryptography,
-    required IotaShareResponseService shareResponseService,
+    required IotaShareResponseServiceInterface shareResponseService,
     Logger? logger,
   }) : _store = store,
        _cryptography = cryptography,
