@@ -156,6 +156,8 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     try {
       record = await _store.findByRequestHash(requestHash);
     } catch (e, stackTrace) {
+      if (e is TdkException) rethrow;
+
       Error.throwWithStackTrace(
         TdkException(
           message: 'Failed to read consent record.',

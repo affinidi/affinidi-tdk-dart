@@ -637,6 +637,35 @@ void main() {
           );
         },
       );
+
+      test(
+        'rethrows a TdkException from the store without wrapping',
+        () async {
+          final original = TdkException(
+            message: 'Deserialization failed: unexpected null field.',
+            code: TdkExceptionType.failedToReadConsentRecord.code,
+          );
+
+          when(
+            () => store.findByRequestHash(any()),
+          ).thenThrow(original);
+
+          await expectLater(
+            () => service.tryAutomaticConsent(
+              requestHash: IotaConsentRecordFixtures.requestHash,
+              matchedCredentials: [],
+              verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+              profileId: IotaConsentRecordFixtures.profileId,
+              vaultId: IotaConsentRecordFixtures.vaultId,
+              state: 'test_state',
+              nonce: 'test_nonce',
+              definitionId: 'def-1',
+              dataModel: VpDataModel.v1,
+            ),
+            throwsA(same(original)),
+          );
+        },
+      );
     });
   });
 }
