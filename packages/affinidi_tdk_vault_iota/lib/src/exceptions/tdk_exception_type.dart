@@ -38,11 +38,15 @@ enum TdkExceptionType {
   submissionFailed('submission_failed'),
 
   /// Thrown when `VpBuilder.build` is called with an empty credentials list.
-  emptyCredentials('empty_credentials');
+  emptyCredentials('empty_credentials'),
+
+  /// Thrown when persisting a consent record to the consumer-provided
+  /// `ConsentStorage` fails.
+  failedToPersistConsentRecord('failed_to_persist_consent_record');
 
   /// Creates a new instance of [TdkExceptionType].
   const TdkExceptionType(this.code);
 
-  /// The error code string associated with this exception type.
+  /// The error code associated with this exception type.
   final String code;
 }

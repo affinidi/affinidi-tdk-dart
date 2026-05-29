@@ -11,3 +11,4 @@ resolution: workspace
 dependencies:
   affinidi_tdk_cryptography: ^3.0.0
   affinidi_tdk_vault_iota: ^1.0.0-dev
+  ssi: ^3.9.0
