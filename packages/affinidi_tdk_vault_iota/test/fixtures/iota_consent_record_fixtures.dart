@@ -81,6 +81,7 @@ class IotaConsentRecordFixtures {
     claimedVcTypesCsv: 'SomeType',
   );
 
+  // hash matches the 'mock_hash' value returned by MockCryptographyService in setUp.
   static IotaConsentRecord autoShareEnabledMatchingHash() =>
       const IotaConsentRecord(
         hash: 'mock_hash',

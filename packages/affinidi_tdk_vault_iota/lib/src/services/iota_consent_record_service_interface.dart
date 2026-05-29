@@ -50,7 +50,9 @@ abstract interface class IotaConsentRecordServiceInterface {
   /// * [profileId] - ID of the profile attempting the share.
   /// * [vaultId] - Opaque wallet identifier used in the fingerprint check.
   /// * [isConsentManagementEnabled] - When `true`, automatic sharing is
-  ///   suppressed and [AutoConsentDeclined] is returned immediately.
+  ///   suppressed and [AutoConsentDeclined] is returned immediately. Pass
+  ///   `true` whenever the verifier has consent management enabled **or**
+  ///   the request carries a custom purpose that the user must review.
   ///
   /// Returns [AutoConsentApproved] with the VCs to share when auto-consent
   /// is valid, or [AutoConsentDeclined] when the interactive flow is required.

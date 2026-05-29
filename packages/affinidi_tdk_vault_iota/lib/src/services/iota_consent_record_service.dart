@@ -211,6 +211,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   }
 
   /// Computes the full share fingerprint covering all share-event fields.
+  ///
   /// Matches vault_universal_ui's `_generateHash` field ordering:
   /// `profileId|vaultId|clientId|name|logo|origin|vcsFingerprint`.
   /// ZPD datapoints are not tracked by the TDK and are omitted from the hash.
