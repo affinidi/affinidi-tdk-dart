@@ -1,5 +1,6 @@
 import 'package:ssi/ssi.dart' show VerifiableCredential;
 
+import '../models/auto_consent_result.dart';
 import '../models/verifier_client_metadata.dart';
 
 /// Defines the contract for persisting a consent record after a successful
@@ -34,6 +35,35 @@ abstract interface class IotaConsentRecordServiceInterface {
     required String claimedVcTypesCsv,
     required bool isAutoShareEnabled,
     Map<String, String> historySharedData = const {},
+    bool isConsentManagementEnabled = false,
+  });
+
+  /// Checks whether a previous consent record authorises this share request
+  /// to proceed without user interaction.
+  ///
+  /// Parameters:
+  /// * [requestHash] - The same hash that was passed to [saveConsentRecord]
+  ///   when the record was persisted. Used to look up the matching history entry.
+  /// * [availableVcs] - All VCs currently in the user's vault.
+  /// * [verifierMetadata] - Current verifier branding, compared against the
+  ///   stored fingerprint to detect changes.
+  /// * [profileId] - ID of the profile attempting the share.
+  /// * [vaultId] - Opaque wallet identifier used in the fingerprint check.
+  /// * [isConsentManagementEnabled] - When `true`, automatic sharing is
+  ///   suppressed and [AutoConsentDeclined] is returned immediately. Pass
+  ///   `true` whenever the verifier has consent management enabled **or**
+  ///   the request carries a custom purpose that the user must review.
+  ///
+  /// Returns [AutoConsentApproved] with the VCs to share when auto-consent
+  /// is valid, or [AutoConsentDeclined] when the interactive flow is required.
+  /// Throws `TdkException` with code `failed_to_read_consent_record` if the
+  /// underlying storage read fails.
+  Future<AutoConsentResult> tryAutomaticConsent({
+    required String requestHash,
+    required List<VerifiableCredential> availableVcs,
+    required VerifierClientMetadata verifierMetadata,
+    required String profileId,
+    required String vaultId,
     bool isConsentManagementEnabled = false,
   });
 }

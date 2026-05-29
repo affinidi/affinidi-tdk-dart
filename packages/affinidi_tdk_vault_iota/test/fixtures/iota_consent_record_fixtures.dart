@@ -80,4 +80,45 @@ class IotaConsentRecordFixtures {
     sharedVcIds: ['vc-1'],
     claimedVcTypesCsv: 'SomeType',
   );
+
+  static IotaConsentRecord autoShareEnabledMatchingHash() =>
+      const IotaConsentRecord(
+        hash: 'mock_hash',
+        requestHash: requestHash,
+        sharedAt: sharedAt,
+        profileName: profileName,
+        profileId: profileId,
+        clientId: clientId,
+        isAutoShareEnabled: true,
+        isConsentManagementEnabled: false,
+        sharedVcIds: [vcId],
+        claimedVcTypesCsv: 'SomeType',
+      );
+
+  static IotaConsentRecord autoShareDisabled() => const IotaConsentRecord(
+    hash: 'mock_hash',
+    requestHash: requestHash,
+    sharedAt: sharedAt,
+    profileName: profileName,
+    profileId: profileId,
+    clientId: clientId,
+    isAutoShareEnabled: false,
+    isConsentManagementEnabled: false,
+    sharedVcIds: [vcId],
+    claimedVcTypesCsv: 'SomeType',
+  );
+
+  static IotaConsentRecord consentManagementEnabled() =>
+      const IotaConsentRecord(
+        hash: 'mock_hash',
+        requestHash: requestHash,
+        sharedAt: sharedAt,
+        profileName: profileName,
+        profileId: profileId,
+        clientId: clientId,
+        isAutoShareEnabled: true,
+        isConsentManagementEnabled: true,
+        sharedVcIds: [vcId],
+        claimedVcTypesCsv: 'SomeType',
+      );
 }
