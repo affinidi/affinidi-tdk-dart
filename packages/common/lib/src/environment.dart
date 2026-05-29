@@ -193,8 +193,9 @@ class Environment {
         return Environment._(
           environmentName: effectiveEnvType.value,
           apiGwUrl: 'https://$regionCode.dev.api.affinidi.io',
+          // MA: should be always SG and it's not used on VFS
           elementsAuthTokenUrl:
-              'https://$regionCode.dev.auth.developer.affinidi.io/auth/oauth2/token',
+              'https://apse1.dev.auth.developer.affinidi.io/auth/oauth2/token',
           iotUrl: 'a3sq1vuw0cw9an-ats.iot.ap-southeast-1.amazonaws.com',
           elementsVaultApiUrl: 'https://$regionCode.dev.api.vault.affinidi.com',
           webVaultUrl: 'https://vault.dev.affinidi.com',
@@ -207,6 +208,7 @@ class Environment {
         return Environment._(
           environmentName: effectiveEnvType.value,
           apiGwUrl: 'https://$regionCode.api.affinidi.io',
+          // MA: should be always SG and it's not used on VFS
           elementsAuthTokenUrl:
               'https://apse1.auth.developer.affinidi.io/auth/oauth2/token',
           iotUrl: 'a13pfgsvt8xhx-ats.iot.ap-southeast-1.amazonaws.com',
