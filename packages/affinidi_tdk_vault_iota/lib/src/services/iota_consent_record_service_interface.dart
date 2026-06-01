@@ -1,10 +1,9 @@
-import 'package:ssi/ssi.dart'
-    show ParsedVerifiableCredential, VerifiableCredential;
+import 'package:ssi/ssi.dart' show VerifiableCredential;
 
 import '../models/auto_consent_result.dart';
-import '../models/pd_descriptor.dart';
+import '../models/claimed_credentials_result.dart';
+import '../models/share_requirements.dart';
 import '../models/verifier_client_metadata.dart';
-import '../models/vp_data_model.dart';
 
 /// Defines the contract for persisting a consent record after a successful
 /// Iota OID4VP share.
@@ -44,28 +43,19 @@ abstract interface class IotaConsentRecordServiceInterface {
   /// Checks whether a previous consent record authorises this share request,
   /// and if so, submits the VP automatically.
   ///
-  /// When all consent checks pass, the method builds and submits the VP using
-  /// the previously approved credential set, then returns
-  /// [AutoConsentApproved] carrying the verifier's redirect URI.
-  /// If any check fails the interactive flow is required and
-  /// [AutoConsentDeclined] is returned.
+  /// Reconstructs the previously-approved set by matching stored VC IDs
+  /// against [claimedCredentials], verifies the share fingerprint, then
+  /// builds and submits the VP.
   ///
   /// Parameters:
-  /// * [requestHash] - The same hash that was passed to [saveConsentRecord]
-  ///   when the record was persisted. Used to look up the matching history entry.
-  /// * [matchedCredentials] - Descriptor–credential pairs from the share
-  ///   requirements matcher. All credentials must satisfy
-  ///   [ParsedVerifiableCredential] so they can be signed into the VP.
+  /// * [shareRequest] - The parsed OID4VP share request. Provides the
+  ///   presentation definition, `state`, `nonce`, and `clientId`.
+  /// * [claimedCredentials] - The already-matched credentials from the share
+  ///   flow. Previously-shared VCs are looked up by ID within this result.
   /// * [verifierMetadata] - Current verifier branding, compared against the
   ///   stored fingerprint to detect changes.
-  /// * [profileId] - ID of the profile attempting the share.
-  /// * [vaultId] - Opaque wallet identifier used in the fingerprint check.
-  /// * [state] - The OID4VP `state` parameter from the authorisation request.
-  /// * [nonce] - The OID4VP `nonce` used as the VP challenge.
-  /// * [definitionId] - The Presentation Definition ID.
-  /// * [dataModel] - Signing parameters (signer, data model version).
-  /// * [isConsentManagementEnabled] - When `true`, automatic sharing is
-  ///   suppressed and [AutoConsentDeclined] is returned immediately.
+  /// * [requestHash] - The same hash that was passed to [saveConsentRecord]
+  ///   when the record was persisted. Used to look up the matching history entry.
   ///
   /// Returns [AutoConsentApproved] with the verifier's redirect URI on success,
   /// or [AutoConsentDeclined] when the interactive flow is required.
@@ -73,21 +63,9 @@ abstract interface class IotaConsentRecordServiceInterface {
   /// underlying storage read fails, or with submission-related codes if the VP
   /// post fails.
   Future<AutoConsentResult> tryAutomaticConsent({
-    required String requestHash,
-    required List<
-      ({
-        PDDescriptor descriptor,
-        ParsedVerifiableCredential<dynamic> credential,
-      })
-    >
-    matchedCredentials,
+    required Oid4vpShareRequest shareRequest,
+    required ClaimedCredentialsResult claimedCredentials,
     required VerifierClientMetadata verifierMetadata,
-    required String profileId,
-    required String vaultId,
-    required String state,
-    required String nonce,
-    required String definitionId,
-    required VpDataModel dataModel,
-    bool isConsentManagementEnabled = false,
+    required String requestHash,
   });
 }

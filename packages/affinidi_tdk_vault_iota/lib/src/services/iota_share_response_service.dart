@@ -5,7 +5,6 @@ import 'package:affinidi_tdk_iota_client/affinidi_tdk_iota_client.dart';
 import 'package:ssi/ssi.dart';
 
 import '../exceptions/tdk_exception_type.dart';
-import '../models/vp_data_model.dart';
 import '../models/pd_descriptor.dart';
 import 'iota_share_response_service_interface.dart';
 import 'presentation_submission_builder.dart';
@@ -41,6 +40,9 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
        _logger = logger ?? Logger.instance,
        _vpBuilder = vpBuilder ?? const VpBuilder();
 
+  @override
+  String get holderDid => _signer.did;
+
   /// Builds and submits a Verifiable Presentation to the Iota callback endpoint.
   ///
   /// Parameters:
@@ -50,7 +52,6 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   /// * [definitionId] - The ID of the Presentation Definition being satisfied.
   /// * [selectedCredentials] - Ordered list of `(descriptor, credential)` pairs.
   ///   Position `i` maps `descriptor` `i` to `$.verifiableCredential[i]` in the VP.
-  /// * [dataModel] - Whether to wrap the credentials in a DM v1 or DM v2 VP.
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
   /// Throws [TdkException] with code `submission_failed` if the API call fails.
@@ -66,7 +67,6 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
       })
     >
     selectedCredentials,
-    required VpDataModel dataModel,
   }) async {
     _logger.log(
       LogLevel.fine,
@@ -86,7 +86,6 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
       credentials: credentials,
       nonce: nonce,
       domain: clientId,
-      dataModel: dataModel,
     );
 
     _logger.log(LogLevel.fine, 'Submitting share response (state: $state)');

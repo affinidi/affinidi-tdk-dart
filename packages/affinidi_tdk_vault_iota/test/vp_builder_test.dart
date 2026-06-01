@@ -110,7 +110,6 @@ void main() {
               credentials: [],
               nonce: nonce,
               domain: domain,
-              dataModel: VpDataModel.v2,
             ),
             throwsA(
               isA<TdkException>().having(
@@ -123,7 +122,7 @@ void main() {
         });
       });
 
-      group('and dataModel is v1', () {
+      group('and credentials are DM v1', () {
         late Map<String, dynamic> result;
 
         setUpAll(() async {
@@ -132,7 +131,6 @@ void main() {
             credentials: [vcV1],
             nonce: nonce,
             domain: domain,
-            dataModel: VpDataModel.v1,
           );
         });
 
@@ -162,13 +160,12 @@ void main() {
             credentials: [vcV1],
             nonce: nonce,
             domain: domain,
-            dataModel: VpDataModel.v1,
           );
           expect(result['id'], isNot(equals(second['id'])));
         });
       });
 
-      group('and dataModel is v2', () {
+      group('and credentials are DM v2', () {
         late Map<String, dynamic> result;
 
         setUpAll(() async {
@@ -177,7 +174,6 @@ void main() {
             credentials: [vcV2],
             nonce: nonce,
             domain: domain,
-            dataModel: VpDataModel.v2,
           );
         });
 
@@ -207,7 +203,6 @@ void main() {
             credentials: [vcV2],
             nonce: nonce,
             domain: domain,
-            dataModel: VpDataModel.v2,
           );
           expect(result['id'], isNot(equals(second['id'])));
         });

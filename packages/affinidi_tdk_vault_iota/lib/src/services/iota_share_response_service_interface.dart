@@ -1,10 +1,12 @@
 import 'package:ssi/ssi.dart' show ParsedVerifiableCredential;
 
 import '../models/pd_descriptor.dart';
-import '../models/vp_data_model.dart';
 
 /// Defines the contract for building and submitting an OID4VP share response.
 abstract interface class IotaShareResponseServiceInterface {
+  /// The DID of the holder whose key is used to sign Verifiable Presentations.
+  String get holderDid;
+
   /// Builds and submits a Verifiable Presentation to the Iota callback endpoint.
   ///
   /// Parameters:
@@ -14,10 +16,9 @@ abstract interface class IotaShareResponseServiceInterface {
   /// * [definitionId] - The ID of the Presentation Definition being satisfied.
   /// * [selectedCredentials] - Ordered list of `(descriptor, credential)` pairs.
   ///   Position `i` maps descriptor `i` to `$.verifiableCredential[i]` in the VP.
-  /// * [dataModel] - Whether to wrap the credentials in a DM v1 or DM v2 VP.
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
-  /// Throws [TdkException] with code `submission_failed` if the API call fails.
+  /// Throws `TdkException` with code `submission_failed` if the API call fails.
   Future<Uri?> submitShareResponse({
     required String state,
     required String nonce,
@@ -30,7 +31,6 @@ abstract interface class IotaShareResponseServiceInterface {
       })
     >
     selectedCredentials,
-    required VpDataModel dataModel,
   });
 
   /// Sends a rejection to the Iota callback endpoint.
@@ -39,6 +39,6 @@ abstract interface class IotaShareResponseServiceInterface {
   /// * [state] - The `state` value from the OID4VP authorization request.
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
-  /// Throws [TdkException] with code `submission_failed` if the API call fails.
+  /// Throws `TdkException` with code `submission_failed` if the API call fails.
   Future<Uri?> rejectShareResponse({required String state});
 }

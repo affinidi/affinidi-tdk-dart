@@ -7,10 +7,11 @@ import 'package:ssi/ssi.dart'
 
 import '../exceptions/tdk_exception_type.dart';
 import '../models/auto_consent_result.dart';
+import '../models/claimed_credentials_result.dart';
 import '../models/iota_consent_record.dart';
 import '../models/pd_descriptor.dart';
+import '../models/share_requirements.dart';
 import '../models/verifier_client_metadata.dart';
-import '../models/vp_data_model.dart';
 import 'consent_storage.dart';
 import 'iota_consent_record_service_interface.dart';
 import 'iota_share_response_service_interface.dart';
@@ -125,32 +126,12 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
 
   @override
   Future<AutoConsentResult> tryAutomaticConsent({
-    required String requestHash,
-    required List<
-      ({
-        PDDescriptor descriptor,
-        ParsedVerifiableCredential<dynamic> credential,
-      })
-    >
-    matchedCredentials,
+    required Oid4vpShareRequest shareRequest,
+    required ClaimedCredentialsResult claimedCredentials,
     required VerifierClientMetadata verifierMetadata,
-    required String profileId,
-    required String vaultId,
-    required String state,
-    required String nonce,
-    required String definitionId,
-    required VpDataModel dataModel,
-    bool isConsentManagementEnabled = false,
+    required String requestHash,
   }) async {
     _logger.log(LogLevel.fine, 'tryAutomaticConsent started');
-
-    if (isConsentManagementEnabled) {
-      _logger.log(
-        LogLevel.fine,
-        'tryAutomaticConsent: consent management enabled — declining',
-      );
-      return const AutoConsentDeclined();
-    }
 
     final IotaConsentRecord? record;
     try {
@@ -192,21 +173,21 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       return const AutoConsentDeclined();
     }
 
-    final previouslySelected = record.sharedVcIds
-        .map(
-          (id) => matchedCredentials
-              .where((e) => e.credential.id?.toString() == id)
-              .firstOrNull,
-        )
-        .whereType<
-          ({
-            PDDescriptor descriptor,
-            ParsedVerifiableCredential<dynamic> credential,
-          })
-        >()
+    final allVcs = claimedCredentials.vcsGroups.values
+        .expand((group) => group.allAvailableVCs)
+        .map((a) => a.vc)
+        .whereType<ParsedVerifiableCredential<dynamic>>()
         .toList();
 
-    if (previouslySelected.length != record.sharedVcIds.length) {
+    final previouslySelectedVcs = record.sharedVcIds
+        .map(
+          (id) =>
+              allVcs.where((vc) => vc.id?.toString() == id).firstOrNull,
+        )
+        .whereType<ParsedVerifiableCredential<dynamic>>()
+        .toList();
+
+    if (previouslySelectedVcs.length != record.sharedVcIds.length) {
       _logger.log(
         LogLevel.fine,
         'tryAutomaticConsent: not all previously shared VCs are available — declining',
@@ -214,16 +195,30 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       return const AutoConsentDeclined();
     }
 
+    final rawDescriptors =
+        shareRequest.presentationDefinition['input_descriptors'];
+    final inputDescriptors = rawDescriptors is List<dynamic>
+        ? rawDescriptors
+              .map((e) => PDDescriptor.fromJson(e as Map<String, dynamic>))
+              .toList()
+        : <PDDescriptor>[];
+
+    if (inputDescriptors.length != previouslySelectedVcs.length) {
+      _logger.log(
+        LogLevel.fine,
+        'tryAutomaticConsent: PD descriptor count changed — declining',
+      );
+      return const AutoConsentDeclined();
+    }
+
     final currentHash = _computeConsentHash(
-      profileId: profileId,
-      vaultId: vaultId,
+      profileId: record.profileId,
+      vaultId: _shareResponseService.holderDid,
       clientId: record.clientId,
       verifierName: verifierMetadata.name,
       logo: verifierMetadata.logo,
       siteUrl: verifierMetadata.origin,
-      vcsFingerprint: _stringifyVcs(
-        previouslySelected.map((e) => e.credential).toList(),
-      ),
+      vcsFingerprint: _stringifyVcs(previouslySelectedVcs),
     );
 
     if (record.hash != currentHash) {
@@ -235,13 +230,30 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     }
 
     _logger.log(LogLevel.fine, 'tryAutomaticConsent: approved — submitting VP');
+
+    final previouslySelected = List.generate(
+      previouslySelectedVcs.length,
+      (i) => (
+        descriptor: inputDescriptors[i],
+        credential: previouslySelectedVcs[i],
+      ),
+    );
+
+    final definitionId = shareRequest.presentationDefinition['id'];
+    if (definitionId is! String) {
+      throw TdkException(
+        message: 'Presentation definition is missing a valid id.',
+        code: TdkExceptionType.invalidPresentationDefinition.code,
+      );
+    }
+
+    final iotaRequest = shareRequest.request;
     final redirectUri = await _shareResponseService.submitShareResponse(
-      state: state,
-      nonce: nonce,
+      state: iotaRequest.state,
+      nonce: iotaRequest.nonce,
       clientId: record.clientId,
       definitionId: definitionId,
       selectedCredentials: previouslySelected,
-      dataModel: dataModel,
     );
     return AutoConsentApproved(redirectUri: redirectUri);
   }

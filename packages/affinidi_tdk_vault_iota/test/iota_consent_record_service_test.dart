@@ -16,7 +16,6 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(IotaConsentRecordFixtures.empty());
-    registerFallbackValue(VpDataModel.v1);
   });
 
   setUp(() {
@@ -29,6 +28,9 @@ void main() {
     ).thenReturn('mock_hash');
 
     when(() => store.saveOrUpdate(any())).thenAnswer((_) async {});
+    when(
+      () => shareResponseService.holderDid,
+    ).thenReturn('did:key:holder');
 
     when(
       () => shareResponseService.submitShareResponse(
@@ -37,7 +39,6 @@ void main() {
         clientId: any(named: 'clientId'),
         definitionId: any(named: 'definitionId'),
         selectedCredentials: any(named: 'selectedCredentials'),
-        dataModel: any(named: 'dataModel'),
       ),
     ).thenAnswer((_) async => null);
 
@@ -331,59 +332,13 @@ void main() {
       });
 
       test(
-        'returns AutoConsentDeclined when isConsentManagementEnabled is true',
-        () async {
-          final result = await service.tryAutomaticConsent(
-            requestHash: IotaConsentRecordFixtures.requestHash,
-            matchedCredentials: [
-              (
-                descriptor: IotaConsentRecordFixtures.pdDescriptor,
-                credential: IotaConsentRecordFixtures.makeParsedVc(),
-              ),
-            ],
-            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-            profileId: IotaConsentRecordFixtures.profileId,
-            vaultId: IotaConsentRecordFixtures.vaultId,
-            state: 'test_state',
-            nonce: 'test_nonce',
-            definitionId: 'def-1',
-            dataModel: VpDataModel.v1,
-            isConsentManagementEnabled: true,
-          );
-
-          expect(result, isA<AutoConsentDeclined>());
-          verifyNever(() => store.findByRequestHash(any()));
-          verifyNever(
-            () => shareResponseService.submitShareResponse(
-              state: any(named: 'state'),
-              nonce: any(named: 'nonce'),
-              clientId: any(named: 'clientId'),
-              definitionId: any(named: 'definitionId'),
-              selectedCredentials: any(named: 'selectedCredentials'),
-              dataModel: any(named: 'dataModel'),
-            ),
-          );
-        },
-      );
-
-      test(
         'returns AutoConsentDeclined when no matching record exists',
         () async {
           final result = await service.tryAutomaticConsent(
-            requestHash: IotaConsentRecordFixtures.requestHash,
-            matchedCredentials: [
-              (
-                descriptor: IotaConsentRecordFixtures.pdDescriptor,
-                credential: IotaConsentRecordFixtures.makeParsedVc(),
-              ),
-            ],
+            shareRequest: IotaConsentRecordFixtures.shareRequest,
+            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-            profileId: IotaConsentRecordFixtures.profileId,
-            vaultId: IotaConsentRecordFixtures.vaultId,
-            state: 'test_state',
-            nonce: 'test_nonce',
-            definitionId: 'def-1',
-            dataModel: VpDataModel.v1,
+            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -398,20 +353,10 @@ void main() {
           );
 
           final result = await service.tryAutomaticConsent(
-            requestHash: IotaConsentRecordFixtures.requestHash,
-            matchedCredentials: [
-              (
-                descriptor: IotaConsentRecordFixtures.pdDescriptor,
-                credential: IotaConsentRecordFixtures.makeParsedVc(),
-              ),
-            ],
+            shareRequest: IotaConsentRecordFixtures.shareRequest,
+            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-            profileId: IotaConsentRecordFixtures.profileId,
-            vaultId: IotaConsentRecordFixtures.vaultId,
-            state: 'test_state',
-            nonce: 'test_nonce',
-            definitionId: 'def-1',
-            dataModel: VpDataModel.v1,
+            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -426,20 +371,10 @@ void main() {
           );
 
           final result = await service.tryAutomaticConsent(
-            requestHash: IotaConsentRecordFixtures.requestHash,
-            matchedCredentials: [
-              (
-                descriptor: IotaConsentRecordFixtures.pdDescriptor,
-                credential: IotaConsentRecordFixtures.makeParsedVc(),
-              ),
-            ],
+            shareRequest: IotaConsentRecordFixtures.shareRequest,
+            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-            profileId: IotaConsentRecordFixtures.profileId,
-            vaultId: IotaConsentRecordFixtures.vaultId,
-            state: 'test_state',
-            nonce: 'test_nonce',
-            definitionId: 'def-1',
-            dataModel: VpDataModel.v1,
+            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -454,16 +389,12 @@ void main() {
                 IotaConsentRecordFixtures.autoShareEnabledMatchingHash(),
           );
 
+          // claimedCredentials is empty — 'vc-1' cannot be found
           final result = await service.tryAutomaticConsent(
-            requestHash: IotaConsentRecordFixtures.requestHash,
-            matchedCredentials: [],
+            shareRequest: IotaConsentRecordFixtures.shareRequest,
+            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-            profileId: IotaConsentRecordFixtures.profileId,
-            vaultId: IotaConsentRecordFixtures.vaultId,
-            state: 'test_state',
-            nonce: 'test_nonce',
-            definitionId: 'def-1',
-            dataModel: VpDataModel.v1,
+            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -478,20 +409,12 @@ void main() {
           );
 
           final result = await service.tryAutomaticConsent(
-            requestHash: IotaConsentRecordFixtures.requestHash,
-            matchedCredentials: [
-              (
-                descriptor: IotaConsentRecordFixtures.pdDescriptor,
-                credential: IotaConsentRecordFixtures.makeParsedVc(),
-              ),
-            ],
+            shareRequest: IotaConsentRecordFixtures.shareRequest,
+            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+              available: [IotaConsentRecordFixtures.makeParsedVc()],
+            ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-            profileId: IotaConsentRecordFixtures.profileId,
-            vaultId: IotaConsentRecordFixtures.vaultId,
-            state: 'test_state',
-            nonce: 'test_nonce',
-            definitionId: 'def-1',
-            dataModel: VpDataModel.v1,
+            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -517,25 +440,16 @@ void main() {
               clientId: any(named: 'clientId'),
               definitionId: any(named: 'definitionId'),
               selectedCredentials: any(named: 'selectedCredentials'),
-              dataModel: any(named: 'dataModel'),
             ),
           ).thenAnswer((_) async => redirectUri);
 
           final result = await service.tryAutomaticConsent(
-            requestHash: IotaConsentRecordFixtures.requestHash,
-            matchedCredentials: [
-              (
-                descriptor: IotaConsentRecordFixtures.pdDescriptor,
-                credential: IotaConsentRecordFixtures.makeParsedVc(),
-              ),
-            ],
+            shareRequest: IotaConsentRecordFixtures.shareRequest,
+            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+              available: [IotaConsentRecordFixtures.makeParsedVc()],
+            ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-            profileId: IotaConsentRecordFixtures.profileId,
-            vaultId: IotaConsentRecordFixtures.vaultId,
-            state: 'test_state',
-            nonce: 'test_nonce',
-            definitionId: 'def-1',
-            dataModel: VpDataModel.v1,
+            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentApproved>());
@@ -548,8 +462,6 @@ void main() {
         () async {
           final vc1 = IotaConsentRecordFixtures.makeParsedVc(id: 'vc-1');
           final vc2 = IotaConsentRecordFixtures.makeParsedVc(id: 'vc-2');
-          final desc1 = PDDescriptor.fromJson({'id': 'desc-1'});
-          final desc2 = PDDescriptor.fromJson({'id': 'desc-2'});
 
           when(() => store.findByRequestHash(any())).thenAnswer(
             (_) async => const IotaConsentRecord(
@@ -566,19 +478,25 @@ void main() {
             ),
           );
 
+          final shareRequestWith2Descriptors = Oid4vpShareRequest(
+            request: IotaConsentRecordFixtures.shareRequest.request,
+            presentationDefinition: const {
+              'id': 'def-1',
+              'input_descriptors': [
+                {'id': 'desc-1'},
+                {'id': 'desc-2'},
+              ],
+            },
+            jwtAssertion: IotaConsentRecordFixtures.shareRequest.jwtAssertion,
+          );
+
           await service.tryAutomaticConsent(
-            requestHash: IotaConsentRecordFixtures.requestHash,
-            matchedCredentials: [
-              (descriptor: desc1, credential: vc1),
-              (descriptor: desc2, credential: vc2),
-            ],
+            shareRequest: shareRequestWith2Descriptors,
+            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+              available: [vc1, vc2],
+            ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-            profileId: IotaConsentRecordFixtures.profileId,
-            vaultId: IotaConsentRecordFixtures.vaultId,
-            state: 'test_state',
-            nonce: 'test_nonce',
-            definitionId: 'def-1',
-            dataModel: VpDataModel.v1,
+            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           final captured =
@@ -591,7 +509,6 @@ void main() {
                       selectedCredentials: captureAny(
                         named: 'selectedCredentials',
                       ),
-                      dataModel: any(named: 'dataModel'),
                     ),
                   ).captured.single
                   as List<
@@ -617,15 +534,10 @@ void main() {
 
           await expectLater(
             () => service.tryAutomaticConsent(
-              requestHash: IotaConsentRecordFixtures.requestHash,
-              matchedCredentials: [],
+              shareRequest: IotaConsentRecordFixtures.shareRequest,
+              claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
               verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-              profileId: IotaConsentRecordFixtures.profileId,
-              vaultId: IotaConsentRecordFixtures.vaultId,
-              state: 'test_state',
-              nonce: 'test_nonce',
-              definitionId: 'def-1',
-              dataModel: VpDataModel.v1,
+              requestHash: IotaConsentRecordFixtures.requestHash,
             ),
             throwsA(
               isA<TdkException>().having(
@@ -648,19 +560,53 @@ void main() {
 
         await expectLater(
           () => service.tryAutomaticConsent(
-            requestHash: IotaConsentRecordFixtures.requestHash,
-            matchedCredentials: [],
+            shareRequest: IotaConsentRecordFixtures.shareRequest,
+            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-            profileId: IotaConsentRecordFixtures.profileId,
-            vaultId: IotaConsentRecordFixtures.vaultId,
-            state: 'test_state',
-            nonce: 'test_nonce',
-            definitionId: 'def-1',
-            dataModel: VpDataModel.v1,
+            requestHash: IotaConsentRecordFixtures.requestHash,
           ),
           throwsA(same(original)),
         );
       });
+
+      test(
+        'throws TdkException with invalidPresentationDefinition when definition id is missing',
+        () async {
+          when(() => store.findByRequestHash(any())).thenAnswer(
+            (_) async =>
+                IotaConsentRecordFixtures.autoShareEnabledMatchingHash(),
+          );
+
+          final shareRequestWithoutId = Oid4vpShareRequest(
+            request: IotaConsentRecordFixtures.shareRequest.request,
+            presentationDefinition: const {
+              // no 'id' key — triggers the invalidPresentationDefinition guard
+              'input_descriptors': [
+                {'id': 'descriptor-0'},
+              ],
+            },
+            jwtAssertion: IotaConsentRecordFixtures.shareRequest.jwtAssertion,
+          );
+
+          await expectLater(
+            () => service.tryAutomaticConsent(
+              shareRequest: shareRequestWithoutId,
+              claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+                available: [IotaConsentRecordFixtures.makeParsedVc()],
+              ),
+              verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+              requestHash: IotaConsentRecordFixtures.requestHash,
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.invalidPresentationDefinition.code,
+              ),
+            ),
+          );
+        },
+      );
     });
   });
 }

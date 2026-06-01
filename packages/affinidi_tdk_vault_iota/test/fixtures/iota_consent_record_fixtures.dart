@@ -44,6 +44,25 @@ class IotaConsentRecordFixtures {
 
   static final pdDescriptor = PDDescriptor.fromJson({'id': 'descriptor-1'});
 
+  static final shareRequest = Oid4vpShareRequest(
+    request: const IotaRequest(
+      responseType: 'vp_token',
+      responseMode: 'direct_post',
+      acceptResponseUri: 'https://verifier.example.com/accept',
+      rejectResponseUri: 'https://verifier.example.com/reject',
+      state: 'test_state',
+      nonce: 'test_nonce',
+      clientId: clientId,
+    ),
+    presentationDefinition: const {
+      'id': 'def-1',
+      'input_descriptors': [
+        {'id': 'descriptor-1'},
+      ],
+    },
+    jwtAssertion: 'test_jwt',
+  );
+
   static final verifierMetadata = const VerifierClientMetadata(
     name: 'Test Verifier',
     logo: 'https://example.com/logo.png',
@@ -163,4 +182,21 @@ class IotaConsentRecordFixtures {
         sharedVcIds: [vcId],
         claimedVcTypesCsv: 'SomeType',
       );
+
+  /// Builds a [ClaimedCredentialsResult] containing the given [available] VCs.
+  ///
+  /// Each VC is placed in its own descriptor group. Pass an empty list (the
+  /// default) to simulate a share flow where no credentials were matched.
+  static ClaimedCredentialsResult claimedCredentials({
+    List<ParsedVerifiableCredential<dynamic>> available = const [],
+  }) {
+    if (available.isEmpty) return const ClaimedCredentialsResult(vcsGroups: {});
+    return ClaimedCredentialsResult(
+      vcsGroups: {
+        for (var i = 0; i < available.length; i++)
+          PDDescriptor.fromJson({'id': 'descriptor-$i'}):
+              VCsGroupByType(matchedVCs: [VcAvailable(vc: available[i])]),
+      },
+    );
+  }
 }

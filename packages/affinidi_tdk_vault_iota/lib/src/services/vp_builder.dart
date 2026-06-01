@@ -9,7 +9,7 @@ import '../models/vp_data_model.dart';
 /// Defines the contract for building a signed Verifiable Presentation.
 abstract class VpBuilderInterface {
   /// Builds a signed VP from the given [signer], [credentials], [nonce],
-  /// [domain], and [dataModel].
+  /// and [domain]. The data model version is inferred from the credentials.
   ///
   /// Parameters:
   /// * [signer] - The DID signer that controls the holder's key.
@@ -17,7 +17,6 @@ abstract class VpBuilderInterface {
   /// * [nonce] - The nonce from the OID4VP request; used as the proof challenge.
   /// * [domain] - The `client_id` from the OID4VP request; binds the VP to the
   ///   verifier.
-  /// * [dataModel] - Whether to produce a DM v1 or DM v2 VP.
   ///
   /// Returns a [Future] containing the signed VP as a JSON map.
   /// Throws [TdkException] with [TdkExceptionType.emptyCredentials] if [credentials] is empty.
@@ -27,7 +26,6 @@ abstract class VpBuilderInterface {
     required List<ParsedVerifiableCredential<dynamic>> credentials,
     required String nonce,
     required String domain,
-    required VpDataModel dataModel,
   });
 }
 
@@ -42,7 +40,6 @@ class VpBuilder implements VpBuilderInterface {
     required List<ParsedVerifiableCredential<dynamic>> credentials,
     required String nonce,
     required String domain,
-    required VpDataModel dataModel,
   }) async {
     if (credentials.isEmpty) {
       throw TdkException(
@@ -56,7 +53,7 @@ class VpBuilder implements VpBuilderInterface {
       domain: domain,
     );
 
-    return switch (dataModel) {
+    return switch (_resolveDataModel(credentials)) {
       VpDataModel.v1 => _buildV1(
         signer: signer,
         credentials: credentials,
@@ -68,6 +65,20 @@ class VpBuilder implements VpBuilderInterface {
         proofGenerator: proofGenerator,
       ),
     };
+  }
+
+  /// Detects the VP data model version from the credentials' JSON-LD context.
+  ///
+  /// Uses [dmV2ContextUrl] as the discriminator — if any credential's context
+  /// contains it, the VP must be DM v2. Otherwise defaults to DM v1.
+  VpDataModel _resolveDataModel(
+    List<ParsedVerifiableCredential<dynamic>> credentials,
+  ) {
+    final contextRaw = credentials.first.context.toJson();
+    final contextList = contextRaw is List ? contextRaw : [contextRaw];
+    return contextList.contains(dmV2ContextUrl)
+        ? VpDataModel.v2
+        : VpDataModel.v1;
   }
 
   Future<Map<String, dynamic>> _buildV1({
