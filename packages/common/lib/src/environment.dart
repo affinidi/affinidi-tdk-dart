@@ -179,8 +179,9 @@ class Environment {
         return Environment._(
           environmentName: effectiveEnvType.value,
           apiGwUrl: 'https://$regionCode.dev.api.affinidi.io',
+          // MA: should be always SG and it's not used on VFS
           elementsAuthTokenUrl:
-              'https://$regionCode.dev.auth.developer.affinidi.io/auth/oauth2/token',
+              'https://apse1.dev.auth.developer.affinidi.io/auth/oauth2/token',
           iotUrl: 'a3sq1vuw0cw9an-ats.iot.ap-southeast-1.amazonaws.com',
           elementsVaultApiUrl: 'http://localhost:3000',
           webVaultUrl: 'http://localhost:3001',
