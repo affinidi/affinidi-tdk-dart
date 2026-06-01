@@ -194,8 +194,9 @@ class IotaConsentRecordFixtures {
     return ClaimedCredentialsResult(
       vcsGroups: {
         for (var i = 0; i < available.length; i++)
-          PDDescriptor.fromJson({'id': 'descriptor-$i'}):
-              VCsGroupByType(matchedVCs: [VcAvailable(vc: available[i])]),
+          PDDescriptor.fromJson({'id': 'descriptor-$i'}): VCsGroupByType(
+            matchedVCs: [VcAvailable(vc: available[i])],
+          ),
       },
     );
   }

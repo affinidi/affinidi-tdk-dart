@@ -181,10 +181,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
         .toList();
 
     final previouslySelectedVcs = record.sharedVcIds
-        .map(
-          (id) =>
-              allVcs.where((vc) => vc.id?.toString() == id).firstOrNull,
-        )
+        .map((id) => allVcs.where((vc) => vc.id?.toString() == id).firstOrNull)
         .whereType<ParsedVerifiableCredential<dynamic>>()
         .toList();
 
@@ -198,16 +195,41 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
 
     final rawDescriptors =
         shareRequest.presentationDefinition['input_descriptors'];
-    final inputDescriptors = rawDescriptors is List<dynamic>
-        ? rawDescriptors
-              .map((e) => PDDescriptor.fromJson(e as Map<String, dynamic>))
-              .toList()
-        : <PDDescriptor>[];
+    if (rawDescriptors is! List<dynamic>) {
+      throw TdkException(
+        message: 'Presentation definition is missing input_descriptors.',
+        code: TdkExceptionType.invalidPresentationDefinition.code,
+      );
+    }
+
+    final List<PDDescriptor> inputDescriptors;
+    try {
+      inputDescriptors = rawDescriptors
+          .map((e) => PDDescriptor.fromJson(e as Map<String, dynamic>))
+          .toList();
+    } catch (e, stackTrace) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Malformed input_descriptors in presentation definition.',
+          code: TdkExceptionType.invalidPresentationDefinition.code,
+          originalMessage: e.toString(),
+        ),
+        stackTrace,
+      );
+    }
 
     if (inputDescriptors.length != previouslySelectedVcs.length) {
       _logger.log(
         LogLevel.fine,
         'tryAutomaticConsent: PD descriptor count changed — declining',
+      );
+      return const AutoConsentDeclined();
+    }
+
+    if (record.clientId != shareRequest.request.clientId) {
+      _logger.log(
+        LogLevel.fine,
+        'tryAutomaticConsent: clientId mismatch — declining',
       );
       return const AutoConsentDeclined();
     }
@@ -252,7 +274,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     final redirectUri = await _shareResponseService.submitShareResponse(
       state: iotaRequest.state,
       nonce: iotaRequest.nonce,
-      clientId: record.clientId,
+      clientId: iotaRequest.clientId,
       definitionId: definitionId,
       selectedCredentials: previouslySelected,
     );

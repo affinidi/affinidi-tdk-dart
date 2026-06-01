@@ -67,18 +67,19 @@ class VpBuilder implements VpBuilderInterface {
     };
   }
 
-  /// Detects the VP data model version from the credentials' JSON-LD context.
+  /// Detects the VP data model version from the credentials' JSON-LD contexts.
   ///
-  /// Uses [dmV2ContextUrl] as the discriminator — if any credential's context
-  /// contains it, the VP must be DM v2. Otherwise defaults to DM v1.
+  /// Checks every credential — if any contains [dmV2ContextUrl], the VP must
+  /// be DM v2. Otherwise defaults to DM v1.
   VpDataModel _resolveDataModel(
     List<ParsedVerifiableCredential<dynamic>> credentials,
   ) {
-    final contextRaw = credentials.first.context.toJson();
-    final contextList = contextRaw is List ? contextRaw : [contextRaw];
-    return contextList.contains(dmV2ContextUrl)
-        ? VpDataModel.v2
-        : VpDataModel.v1;
+    final isV2 = credentials.any((vc) {
+      final contextRaw = vc.context.toJson();
+      final contextList = contextRaw is List ? contextRaw : [contextRaw];
+      return contextList.contains(dmV2ContextUrl);
+    });
+    return isV2 ? VpDataModel.v2 : VpDataModel.v1;
   }
 
   Future<Map<String, dynamic>> _buildV1({

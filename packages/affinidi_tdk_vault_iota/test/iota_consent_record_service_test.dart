@@ -423,6 +423,51 @@ void main() {
       );
 
       test(
+        'returns AutoConsentDeclined when the stored clientId differs from the request',
+        () async {
+          when(() => store.findByRequestHash(any())).thenAnswer(
+            (_) async =>
+                IotaConsentRecordFixtures.autoShareEnabledMatchingHash(),
+          );
+
+          final shareRequestDifferentClient = Oid4vpShareRequest(
+            request: IotaRequest(
+              responseType:
+                  IotaConsentRecordFixtures.shareRequest.request.responseType,
+              responseMode:
+                  IotaConsentRecordFixtures.shareRequest.request.responseMode,
+              acceptResponseUri: IotaConsentRecordFixtures
+                  .shareRequest
+                  .request
+                  .acceptResponseUri,
+              rejectResponseUri: IotaConsentRecordFixtures
+                  .shareRequest
+                  .request
+                  .rejectResponseUri,
+              state: IotaConsentRecordFixtures.shareRequest.request.state,
+              nonce: IotaConsentRecordFixtures.shareRequest.request.nonce,
+              clientId: 'did:key:different-verifier',
+            ),
+            presentationDefinition:
+                IotaConsentRecordFixtures.shareRequest.presentationDefinition,
+            jwtAssertion: IotaConsentRecordFixtures.shareRequest.jwtAssertion,
+          );
+
+          final result = await service.tryAutomaticConsent(
+            shareRequest: shareRequestDifferentClient,
+            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+              available: [IotaConsentRecordFixtures.makeParsedVc()],
+            ),
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
+            requestHash: IotaConsentRecordFixtures.requestHash,
+          );
+
+          expect(result, isA<AutoConsentDeclined>());
+        },
+      );
+
+      test(
         'returns AutoConsentApproved with the redirect URI when all checks pass',
         () async {
           final redirectUri = Uri.parse(
@@ -538,7 +583,8 @@ void main() {
           await expectLater(
             () => service.tryAutomaticConsent(
               shareRequest: IotaConsentRecordFixtures.shareRequest,
-              claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
+              claimedCredentials:
+                  IotaConsentRecordFixtures.claimedCredentials(),
               verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
               vaultId: IotaConsentRecordFixtures.vaultId,
               requestHash: IotaConsentRecordFixtures.requestHash,
@@ -596,6 +642,41 @@ void main() {
           await expectLater(
             () => service.tryAutomaticConsent(
               shareRequest: shareRequestWithoutId,
+              claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+                available: [IotaConsentRecordFixtures.makeParsedVc()],
+              ),
+              verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+              vaultId: IotaConsentRecordFixtures.vaultId,
+              requestHash: IotaConsentRecordFixtures.requestHash,
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.invalidPresentationDefinition.code,
+              ),
+            ),
+          );
+        },
+      );
+
+      test(
+        'throws TdkException with invalidPresentationDefinition when input_descriptors is missing',
+        () async {
+          when(() => store.findByRequestHash(any())).thenAnswer(
+            (_) async =>
+                IotaConsentRecordFixtures.autoShareEnabledMatchingHash(),
+          );
+
+          final shareRequestWithoutDescriptors = Oid4vpShareRequest(
+            request: IotaConsentRecordFixtures.shareRequest.request,
+            presentationDefinition: const {'id': 'def-1'},
+            jwtAssertion: IotaConsentRecordFixtures.shareRequest.jwtAssertion,
+          );
+
+          await expectLater(
+            () => service.tryAutomaticConsent(
+              shareRequest: shareRequestWithoutDescriptors,
               claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
                 available: [IotaConsentRecordFixtures.makeParsedVc()],
               ),
