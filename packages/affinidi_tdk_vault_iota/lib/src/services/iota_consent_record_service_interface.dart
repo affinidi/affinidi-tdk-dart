@@ -56,6 +56,8 @@ abstract interface class IotaConsentRecordServiceInterface {
   ///   stored fingerprint to detect changes.
   /// * [requestHash] - The same hash that was passed to [saveConsentRecord]
   ///   when the record was persisted. Used to look up the matching history entry.
+  /// * [vaultId] - Opaque identifier of the vault or wallet that will sign the
+  ///   VP (e.g. a DID). Included in the fingerprint to detect wallet switches.
   ///
   /// Returns [AutoConsentApproved] with the verifier's redirect URI on success,
   /// or [AutoConsentDeclined] when the interactive flow is required.
@@ -67,5 +69,6 @@ abstract interface class IotaConsentRecordServiceInterface {
     required ClaimedCredentialsResult claimedCredentials,
     required VerifierClientMetadata verifierMetadata,
     required String requestHash,
+    required String vaultId,
   });
 }

@@ -35,9 +35,6 @@ class InMemoryConsentStorage implements ConsentStorage {
 /// `CallbackApi` and `DidSigner` from your wallet integration.
 class _StubShareResponseService implements IotaShareResponseServiceInterface {
   @override
-  String get holderDid => 'did:key:z6MkHolder456';
-
-  @override
   Future<Uri?> submitShareResponse({
     required String state,
     required String nonce,

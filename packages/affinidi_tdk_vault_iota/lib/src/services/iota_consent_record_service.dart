@@ -130,6 +130,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     required ClaimedCredentialsResult claimedCredentials,
     required VerifierClientMetadata verifierMetadata,
     required String requestHash,
+    required String vaultId,
   }) async {
     _logger.log(LogLevel.fine, 'tryAutomaticConsent started');
 
@@ -213,7 +214,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
 
     final currentHash = _computeConsentHash(
       profileId: record.profileId,
-      vaultId: _shareResponseService.holderDid,
+      vaultId: vaultId,
       clientId: record.clientId,
       verifierName: verifierMetadata.name,
       logo: verifierMetadata.logo,

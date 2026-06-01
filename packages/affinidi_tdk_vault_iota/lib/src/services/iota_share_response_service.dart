@@ -40,9 +40,6 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
        _logger = logger ?? Logger.instance,
        _vpBuilder = vpBuilder ?? const VpBuilder();
 
-  @override
-  String get holderDid => _signer.did;
-
   /// Builds and submits a Verifiable Presentation to the Iota callback endpoint.
   ///
   /// Parameters:
@@ -55,6 +52,7 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
   /// Throws [TdkException] with code `submission_failed` if the API call fails.
+  @override
   Future<Uri?> submitShareResponse({
     required String state,
     required String nonce,
@@ -108,6 +106,7 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
   /// Throws [TdkException] with code `submission_failed` if the API call fails.
+  @override
   Future<Uri?> rejectShareResponse({required String state}) async {
     _logger.log(LogLevel.fine, 'Rejecting share response (state: $state)');
 

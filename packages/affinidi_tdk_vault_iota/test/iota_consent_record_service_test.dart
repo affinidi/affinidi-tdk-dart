@@ -29,10 +29,6 @@ void main() {
 
     when(() => store.saveOrUpdate(any())).thenAnswer((_) async {});
     when(
-      () => shareResponseService.holderDid,
-    ).thenReturn('did:key:holder');
-
-    when(
       () => shareResponseService.submitShareResponse(
         state: any(named: 'state'),
         nonce: any(named: 'nonce'),
@@ -338,6 +334,7 @@ void main() {
             shareRequest: IotaConsentRecordFixtures.shareRequest,
             claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
             requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
@@ -356,6 +353,7 @@ void main() {
             shareRequest: IotaConsentRecordFixtures.shareRequest,
             claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
             requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
@@ -374,6 +372,7 @@ void main() {
             shareRequest: IotaConsentRecordFixtures.shareRequest,
             claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
             requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
@@ -394,6 +393,7 @@ void main() {
             shareRequest: IotaConsentRecordFixtures.shareRequest,
             claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
             requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
@@ -414,6 +414,7 @@ void main() {
               available: [IotaConsentRecordFixtures.makeParsedVc()],
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
             requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
@@ -449,6 +450,7 @@ void main() {
               available: [IotaConsentRecordFixtures.makeParsedVc()],
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
             requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
@@ -496,6 +498,7 @@ void main() {
               available: [vc1, vc2],
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
             requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
@@ -537,6 +540,7 @@ void main() {
               shareRequest: IotaConsentRecordFixtures.shareRequest,
               claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
               verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+              vaultId: IotaConsentRecordFixtures.vaultId,
               requestHash: IotaConsentRecordFixtures.requestHash,
             ),
             throwsA(
@@ -563,6 +567,7 @@ void main() {
             shareRequest: IotaConsentRecordFixtures.shareRequest,
             claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
             requestHash: IotaConsentRecordFixtures.requestHash,
           ),
           throwsA(same(original)),
@@ -595,6 +600,7 @@ void main() {
                 available: [IotaConsentRecordFixtures.makeParsedVc()],
               ),
               verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+              vaultId: IotaConsentRecordFixtures.vaultId,
               requestHash: IotaConsentRecordFixtures.requestHash,
             ),
             throwsA(

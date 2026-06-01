@@ -4,9 +4,6 @@ import '../models/pd_descriptor.dart';
 
 /// Defines the contract for building and submitting an OID4VP share response.
 abstract interface class IotaShareResponseServiceInterface {
-  /// The DID of the holder whose key is used to sign Verifiable Presentations.
-  String get holderDid;
-
   /// Builds and submits a Verifiable Presentation to the Iota callback endpoint.
   ///
   /// Parameters:
