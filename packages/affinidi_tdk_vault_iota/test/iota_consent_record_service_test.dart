@@ -35,6 +35,7 @@ void main() {
         clientId: any(named: 'clientId'),
         definitionId: any(named: 'definitionId'),
         selectedCredentials: any(named: 'selectedCredentials'),
+        acceptResponseUri: any(named: 'acceptResponseUri'),
       ),
     ).thenAnswer((_) async => null);
 
@@ -542,6 +543,7 @@ void main() {
               clientId: any(named: 'clientId'),
               definitionId: any(named: 'definitionId'),
               selectedCredentials: any(named: 'selectedCredentials'),
+              acceptResponseUri: any(named: 'acceptResponseUri'),
             ),
           ).thenAnswer((_) async => redirectUri);
 
@@ -615,6 +617,7 @@ void main() {
                       selectedCredentials: captureAny(
                         named: 'selectedCredentials',
                       ),
+                      acceptResponseUri: any(named: 'acceptResponseUri'),
                     ),
                   ).captured.single
                   as List<

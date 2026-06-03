@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
-import 'package:affinidi_tdk_iota_client/affinidi_tdk_iota_client.dart';
+import 'package:dio/dio.dart';
 import 'package:ssi/ssi.dart';
 
 import '../exceptions/tdk_exception_type.dart';
@@ -11,32 +11,29 @@ import 'presentation_submission_builder.dart';
 import 'vp_builder.dart';
 
 /// Orchestrates the OID4VP share response: builds the VP, builds the
-/// presentation submission, and posts both to the Iota callback endpoint.
+/// presentation submission, and POSTs both directly to the response URI
+/// supplied by the verifier in the OID4VP request.
 class IotaShareResponseService implements IotaShareResponseServiceInterface {
-  final CallbackApi _approveCallbackApi;
-  final CallbackApi _rejectCallbackApi;
   final DidSigner _signer;
   final VpBuilderInterface _vpBuilder;
+  final Dio _dio;
 
   /// Creates an [IotaShareResponseService].
   ///
   /// Parameters:
-  /// * [approveCallbackApi] - API client for the accept (share) callback endpoint.
-  /// * [rejectCallbackApi] - API client for the reject callback endpoint.
-  ///   Defaults to [approveCallbackApi] when not provided.
   /// * [signer] - The DID signer that controls the holder's key.
+  /// * [dio] - Dio client used for POSTing to the response URI. Defaults to a plain [Dio].
   /// * [vpBuilder] - Custom VP builder; defaults to [VpBuilder].
   IotaShareResponseService({
-    required CallbackApi approveCallbackApi,
-    CallbackApi? rejectCallbackApi,
     required DidSigner signer,
+    Dio? dio,
+    Logger? logger,
     VpBuilderInterface? vpBuilder,
-  }) : _approveCallbackApi = approveCallbackApi,
-       _rejectCallbackApi = rejectCallbackApi ?? approveCallbackApi,
-       _signer = signer,
+  }) : _signer = signer,
+       _dio = dio ?? Dio(),
        _vpBuilder = vpBuilder ?? const VpBuilder();
 
-  /// Builds and submits a Verifiable Presentation to the Iota callback endpoint.
+  /// Builds and submits a Verifiable Presentation to the verifier callback endpoint.
   ///
   /// Parameters:
   /// * [state] - The `state` value from the OID4VP authorization request.
@@ -45,6 +42,7 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   /// * [definitionId] - The ID of the Presentation Definition being satisfied.
   /// * [selectedCredentials] - Ordered list of `(descriptor, credential)` pairs.
   ///   Position `i` maps `descriptor` `i` to `$.verifiableCredential[i]` in the VP.
+  /// * [acceptResponseUri] - Full URL from the OID4VP request to POST the response to.
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
   /// Throws [TdkException] with code `submission_failed` if the API call fails.
@@ -61,6 +59,7 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
       })
     >
     selectedCredentials,
+    required String acceptResponseUri,
   }) async {
     final descriptors = selectedCredentials.map((r) => r.descriptor).toList();
     final credentials = selectedCredentials.map((r) => r.credential).toList();
@@ -77,40 +76,40 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
       domain: clientId,
     );
 
-    return _postCallback(
-      _approveCallbackApi,
-      CallbackInput(
-        (b) => b
-          ..state = state
-          ..presentationSubmission = jsonEncode(submission.toJson())
-          ..vpToken = jsonEncode(vp),
-      ),
-    );
+    return _postToUri(acceptResponseUri, {
+      'state': state,
+      'presentation_submission': jsonEncode(submission.toJson()),
+      'vp_token': jsonEncode(vp),
+    });
   }
 
-  /// Sends a rejection to the Iota callback endpoint.
+  /// Sends a rejection to the verifier callback endpoint.
   ///
   /// Parameters:
   /// * [state] - The `state` value from the OID4VP authorization request.
+  /// * [rejectResponseUri] - Full URL from the OID4VP request to POST the rejection to.
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
   /// Throws [TdkException] with code `submission_failed` if the API call fails.
   @override
-  Future<Uri?> rejectShareResponse({required String state}) async {
-    return _postCallback(
-      _rejectCallbackApi,
-      CallbackInput(
-        (b) => b
-          ..state = state
-          ..error = 'access_denied',
-      ),
-    );
+  Future<Uri?> rejectShareResponse({
+    required String state,
+    required String rejectResponseUri,
+  }) async {
+    return _postToUri(rejectResponseUri, {
+      'state': state,
+      'error': 'access_denied',
+    });
   }
 
-  Future<Uri?> _postCallback(CallbackApi api, CallbackInput input) async {
+  Future<Uri?> _postToUri(String uri, Map<String, String> formData) async {
     try {
-      final response = await api.iotOIDC4VPCallback(callbackInput: input);
-      final redirectUri = response.data?.redirectUri;
+      final response = await _dio.post<Map<String, dynamic>>(
+        uri,
+        data: formData,
+        options: Options(contentType: 'application/x-www-form-urlencoded'),
+      );
+      final redirectUri = response.data?['redirect_uri'] as String?;
       return redirectUri != null ? Uri.tryParse(redirectUri) : null;
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(

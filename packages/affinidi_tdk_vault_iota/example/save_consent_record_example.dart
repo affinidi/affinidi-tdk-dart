@@ -56,15 +56,18 @@ class _StubShareResponseService implements IotaShareResponseServiceInterface {
       })
     >
     selectedCredentials,
+    required String acceptResponseUri,
   }) => throw UnimplementedError(
     'Provide a real IotaShareResponseService for VP submission',
   );
 
   @override
-  Future<Uri?> rejectShareResponse({required String state}) =>
-      throw UnimplementedError(
-        'Provide a real IotaShareResponseService for VP rejection',
-      );
+  Future<Uri?> rejectShareResponse({
+    required String state,
+    required String rejectResponseUri,
+  }) => throw UnimplementedError(
+    'Provide a real IotaShareResponseService for VP rejection',
+  );
 }
 
 /// This example demonstrates how to persist a consent record after a
