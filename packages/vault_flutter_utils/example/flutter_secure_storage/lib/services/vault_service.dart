@@ -1,14 +1,11 @@
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_data_manager/affinidi_tdk_vault_data_manager.dart';
 import 'package:affinidi_tdk_vault_flutter_utils/vault_flutter_utils.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'vault_service_state.dart';
 
-part 'vault_service.g.dart';
-
-@Riverpod(keepAlive: true)
-class VaultService extends _$VaultService {
+class VaultService extends Notifier<VaultServiceState> {
   VaultService() : super();
 
   @override
@@ -47,6 +44,10 @@ class VaultService extends _$VaultService {
     }
   }
 }
+
+final vaultServiceProvider = NotifierProvider<VaultService, VaultServiceState>(
+  VaultService.new,
+);
 
 final _keyStorageProvider = Provider<FlutterSecureVaultStore>((ref) {
   const vaultId = 'unique_vault_id';
