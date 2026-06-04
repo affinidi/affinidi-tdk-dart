@@ -911,6 +911,65 @@ void main() {
           );
         },
       );
+
+      test(
+        'should return AutoConsentDeclined when the descriptor constraint was tightened since the original share',
+        () async {
+          // Record has vc-1 (type: VerifiableCredential). The descriptor id
+          // is the same ("descriptor-1"), but the verifier tightened the
+          // constraint to require PhoneCredential since the original share.
+          // The PEX loop must reject it even though the descriptor id matches.
+          when(() => store.findByRequestHash(any())).thenAnswer(
+            (_) async =>
+                IotaConsentRecordFixtures.autoShareEnabledMatchingHash(),
+          );
+
+          final shareRequestChangedConstraint = Oid4vpShareRequest(
+            request: IotaConsentRecordFixtures.shareRequest.request,
+            presentationDefinition: const {
+              'id': 'def-1',
+              'input_descriptors': [
+                {
+                  'id': 'descriptor-1',
+                  'constraints': {
+                    'fields': [
+                      {
+                        'path': [r'$.type'],
+                        'filter': {
+                          'type': 'array',
+                          'contains': {'const': 'PhoneCredential'},
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+            jwtAssertion: IotaConsentRecordFixtures.shareRequest.jwtAssertion,
+          );
+
+          final result = await service.tryAutomaticConsent(
+            shareRequest: shareRequestChangedConstraint,
+            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+              available: [IotaConsentRecordFixtures.makeParsedVc()],
+            ),
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
+            requestHash: IotaConsentRecordFixtures.requestHash,
+          );
+
+          expect(result, isA<AutoConsentDeclined>());
+          verifyNever(
+            () => shareResponseService.submitShareResponse(
+              state: any(named: 'state'),
+              nonce: any(named: 'nonce'),
+              clientId: any(named: 'clientId'),
+              definitionId: any(named: 'definitionId'),
+              selectedCredentials: any(named: 'selectedCredentials'),
+            ),
+          );
+        },
+      );
     });
   });
 }
