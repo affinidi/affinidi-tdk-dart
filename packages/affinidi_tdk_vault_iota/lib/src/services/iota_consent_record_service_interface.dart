@@ -55,9 +55,19 @@ abstract interface class IotaConsentRecordServiceInterface {
   /// * [verifierMetadata] - Current verifier branding, compared against the
   ///   stored fingerprint to detect changes.
   /// * [requestHash] - The same hash that was passed to [saveConsentRecord]
-  ///   when the record was persisted. Used to look up the matching history entry.
+  ///   when the record was persisted. Used to look up the matching history
+  ///   entry. **Security note:** the TDK does not compute or verify this
+  ///   value — it is supplied by the consumer. A buggy or malicious consumer
+  ///   could pass a hash that maps to an unrelated stored record. The
+  ///   auto-consent path therefore re-validates every security-sensitive field
+  ///   against the live [shareRequest]: the verifier `clientId`, the
+  ///   descriptor count, that each previously-shared VC still satisfies the
+  ///   current descriptor constraints (via PEX), and the full share
+  ///   fingerprint.
   /// * [vaultId] - Opaque identifier of the vault or wallet that will sign the
   ///   VP (e.g. a DID). Included in the fingerprint to detect wallet switches.
+  ///   The caller must ensure this corresponds to the wallet/profile that will
+  ///   actually sign the VP.
   ///
   /// Returns [AutoConsentApproved] with the verifier's redirect URI on success,
   /// or [AutoConsentDeclined] when the interactive flow is required.
