@@ -207,6 +207,23 @@ void main() {
           expect(result['id'], isNot(equals(second['id'])));
         });
       });
+
+      group('and credentials are both DM v2 and DM v1', () {
+        test('should produce a signed DM v2 VP containing both', () async {
+          final result = await builder.build(
+            signer: ed25519Signer,
+            credentials: [vcV1, vcV2],
+            nonce: nonce,
+            domain: domain,
+          );
+
+          final context = result['@context'] as List<dynamic>;
+          expect(context, contains(dmV2ContextUrl));
+          expect(context, isNot(contains(dmV1ContextUrl)));
+          expect(result['verifiableCredential'], hasLength(2));
+          expect(result['proof'], isNotNull);
+        });
+      });
     });
   });
 }
