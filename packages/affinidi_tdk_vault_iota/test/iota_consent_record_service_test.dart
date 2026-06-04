@@ -468,6 +468,55 @@ void main() {
       );
 
       test(
+        'returns AutoConsentDeclined when the VC no longer satisfies the descriptor constraints',
+        () async {
+          // The stored record points to 'vc-1'. The VC is still available,
+          // but the PD now requires $.type to contain 'EmailCredential' —
+          // a constraint the fixture VC (type: ['VerifiableCredential']) cannot satisfy.
+          when(() => store.findByRequestHash(any())).thenAnswer(
+            (_) async =>
+                IotaConsentRecordFixtures.autoShareEnabledMatchingHash(),
+          );
+
+          final shareRequestWithConstraint = Oid4vpShareRequest(
+            request: IotaConsentRecordFixtures.shareRequest.request,
+            presentationDefinition: const {
+              'id': 'def-1',
+              'input_descriptors': [
+                {
+                  'id': 'descriptor-1',
+                  'constraints': {
+                    'fields': [
+                      {
+                        'path': [r'$.type'],
+                        'filter': {
+                          'type': 'array',
+                          'contains': {'const': 'EmailCredential'},
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+            jwtAssertion: IotaConsentRecordFixtures.shareRequest.jwtAssertion,
+          );
+
+          final result = await service.tryAutomaticConsent(
+            shareRequest: shareRequestWithConstraint,
+            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+              available: [IotaConsentRecordFixtures.makeParsedVc()],
+            ),
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
+            requestHash: IotaConsentRecordFixtures.requestHash,
+          );
+
+          expect(result, isA<AutoConsentDeclined>());
+        },
+      );
+
+      test(
         'returns AutoConsentApproved with the redirect URI when all checks pass',
         () async {
           final redirectUri = Uri.parse(

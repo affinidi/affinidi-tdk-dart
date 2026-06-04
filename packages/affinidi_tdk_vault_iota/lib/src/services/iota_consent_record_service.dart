@@ -15,6 +15,7 @@ import '../models/verifier_client_metadata.dart';
 import 'consent_storage.dart';
 import 'iota_consent_record_service_interface.dart';
 import 'iota_share_response_service_interface.dart';
+import 'share_requirements_matcher_service.dart';
 
 /// Persists a consent record after a successful Iota OID4VP share.
 ///
@@ -224,6 +225,21 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
         'tryAutomaticConsent: PD descriptor count changed — declining',
       );
       return const AutoConsentDeclined();
+    }
+
+    for (var i = 0; i < inputDescriptors.length; i++) {
+      final matches = PexEvaluator.selectMatching(
+        inputDescriptors[i].toJson(),
+        [previouslySelectedVcs[i]],
+      );
+      if (matches.isEmpty) {
+        _logger.log(
+          LogLevel.fine,
+          'tryAutomaticConsent: VC no longer satisfies descriptor '
+          '"${inputDescriptors[i].id}" — declining',
+        );
+        return const AutoConsentDeclined();
+      }
     }
 
     if (record.clientId != shareRequest.request.clientId) {
