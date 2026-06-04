@@ -6,6 +6,33 @@ part of 'wallet_key_dto.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+const WalletKeyDtoAlgorithmEnum _$walletKeyDtoAlgorithmEnum_secp256k1 =
+    const WalletKeyDtoAlgorithmEnum._('secp256k1');
+const WalletKeyDtoAlgorithmEnum _$walletKeyDtoAlgorithmEnum_ed25519 =
+    const WalletKeyDtoAlgorithmEnum._('ed25519');
+const WalletKeyDtoAlgorithmEnum _$walletKeyDtoAlgorithmEnum_p256 =
+    const WalletKeyDtoAlgorithmEnum._('p256');
+
+WalletKeyDtoAlgorithmEnum _$walletKeyDtoAlgorithmEnumValueOf(String name) {
+  switch (name) {
+    case 'secp256k1':
+      return _$walletKeyDtoAlgorithmEnum_secp256k1;
+    case 'ed25519':
+      return _$walletKeyDtoAlgorithmEnum_ed25519;
+    case 'p256':
+      return _$walletKeyDtoAlgorithmEnum_p256;
+    default:
+      throw ArgumentError(name);
+  }
+}
+
+final BuiltSet<WalletKeyDtoAlgorithmEnum> _$walletKeyDtoAlgorithmEnumValues =
+    BuiltSet<WalletKeyDtoAlgorithmEnum>(const <WalletKeyDtoAlgorithmEnum>[
+      _$walletKeyDtoAlgorithmEnum_secp256k1,
+      _$walletKeyDtoAlgorithmEnum_ed25519,
+      _$walletKeyDtoAlgorithmEnum_p256,
+    ]);
+
 const WalletKeyDtoKeyTypeEnum _$walletKeyDtoKeyTypeEnum_secp256k1 =
     const WalletKeyDtoKeyTypeEnum._('secp256k1');
 const WalletKeyDtoKeyTypeEnum _$walletKeyDtoKeyTypeEnum_ed25519 =
@@ -33,8 +60,45 @@ final BuiltSet<WalletKeyDtoKeyTypeEnum> _$walletKeyDtoKeyTypeEnumValues =
       _$walletKeyDtoKeyTypeEnum_p256,
     ]);
 
+Serializer<WalletKeyDtoAlgorithmEnum> _$walletKeyDtoAlgorithmEnumSerializer =
+    _$WalletKeyDtoAlgorithmEnumSerializer();
 Serializer<WalletKeyDtoKeyTypeEnum> _$walletKeyDtoKeyTypeEnumSerializer =
     _$WalletKeyDtoKeyTypeEnumSerializer();
+
+class _$WalletKeyDtoAlgorithmEnumSerializer
+    implements PrimitiveSerializer<WalletKeyDtoAlgorithmEnum> {
+  static const Map<String, Object> _toWire = const <String, Object>{
+    'secp256k1': 'secp256k1',
+    'ed25519': 'ed25519',
+    'p256': 'p256',
+  };
+  static const Map<Object, String> _fromWire = const <Object, String>{
+    'secp256k1': 'secp256k1',
+    'ed25519': 'ed25519',
+    'p256': 'p256',
+  };
+
+  @override
+  final Iterable<Type> types = const <Type>[WalletKeyDtoAlgorithmEnum];
+  @override
+  final String wireName = 'WalletKeyDtoAlgorithmEnum';
+
+  @override
+  Object serialize(
+    Serializers serializers,
+    WalletKeyDtoAlgorithmEnum object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => _toWire[object.name] ?? object.name;
+
+  @override
+  WalletKeyDtoAlgorithmEnum deserialize(
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => WalletKeyDtoAlgorithmEnum.valueOf(
+    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
+  );
+}
 
 class _$WalletKeyDtoKeyTypeEnumSerializer
     implements PrimitiveSerializer<WalletKeyDtoKeyTypeEnum> {
@@ -75,6 +139,8 @@ class _$WalletKeyDto extends WalletKeyDto {
   @override
   final String? keyId;
   @override
+  final WalletKeyDtoAlgorithmEnum? algorithm;
+  @override
   final WalletKeyDtoKeyTypeEnum? keyType;
   @override
   final String? keyAri;
@@ -84,8 +150,13 @@ class _$WalletKeyDto extends WalletKeyDto {
   factory _$WalletKeyDto([void Function(WalletKeyDtoBuilder)? updates]) =>
       (WalletKeyDtoBuilder()..update(updates))._build();
 
-  _$WalletKeyDto._({this.keyId, this.keyType, this.keyAri, this.relationships})
-    : super._();
+  _$WalletKeyDto._({
+    this.keyId,
+    this.algorithm,
+    this.keyType,
+    this.keyAri,
+    this.relationships,
+  }) : super._();
   @override
   WalletKeyDto rebuild(void Function(WalletKeyDtoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -98,6 +169,7 @@ class _$WalletKeyDto extends WalletKeyDto {
     if (identical(other, this)) return true;
     return other is WalletKeyDto &&
         keyId == other.keyId &&
+        algorithm == other.algorithm &&
         keyType == other.keyType &&
         keyAri == other.keyAri &&
         relationships == other.relationships;
@@ -107,6 +179,7 @@ class _$WalletKeyDto extends WalletKeyDto {
   int get hashCode {
     var _$hash = 0;
     _$hash = $jc(_$hash, keyId.hashCode);
+    _$hash = $jc(_$hash, algorithm.hashCode);
     _$hash = $jc(_$hash, keyType.hashCode);
     _$hash = $jc(_$hash, keyAri.hashCode);
     _$hash = $jc(_$hash, relationships.hashCode);
@@ -118,6 +191,7 @@ class _$WalletKeyDto extends WalletKeyDto {
   String toString() {
     return (newBuiltValueToStringHelper(r'WalletKeyDto')
           ..add('keyId', keyId)
+          ..add('algorithm', algorithm)
           ..add('keyType', keyType)
           ..add('keyAri', keyAri)
           ..add('relationships', relationships))
@@ -132,6 +206,11 @@ class WalletKeyDtoBuilder
   String? _keyId;
   String? get keyId => _$this._keyId;
   set keyId(String? keyId) => _$this._keyId = keyId;
+
+  WalletKeyDtoAlgorithmEnum? _algorithm;
+  WalletKeyDtoAlgorithmEnum? get algorithm => _$this._algorithm;
+  set algorithm(WalletKeyDtoAlgorithmEnum? algorithm) =>
+      _$this._algorithm = algorithm;
 
   WalletKeyDtoKeyTypeEnum? _keyType;
   WalletKeyDtoKeyTypeEnum? get keyType => _$this._keyType;
@@ -155,6 +234,7 @@ class WalletKeyDtoBuilder
     final $v = _$v;
     if ($v != null) {
       _keyId = $v.keyId;
+      _algorithm = $v.algorithm;
       _keyType = $v.keyType;
       _keyAri = $v.keyAri;
       _relationships = $v.relationships?.toBuilder();
@@ -183,6 +263,7 @@ class WalletKeyDtoBuilder
           _$v ??
           _$WalletKeyDto._(
             keyId: keyId,
+            algorithm: algorithm,
             keyType: keyType,
             keyAri: keyAri,
             relationships: _relationships?.build(),
