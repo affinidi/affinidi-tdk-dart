@@ -227,19 +227,36 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       return const AutoConsentDeclined();
     }
 
-    for (var i = 0; i < inputDescriptors.length; i++) {
-      final matches = PexEvaluator.selectMatching(
-        inputDescriptors[i].toJson(),
-        [previouslySelectedVcs[i]],
-      );
-      if (matches.isEmpty) {
+    final remainingVcs = List<ParsedVerifiableCredential<dynamic>>.of(
+      previouslySelectedVcs,
+    );
+    final previouslySelected =
+        <
+          ({
+            PDDescriptor descriptor,
+            ParsedVerifiableCredential<dynamic> credential,
+          })
+        >[];
+
+    for (final descriptor in inputDescriptors) {
+      final match = remainingVcs
+          .where(
+            (vc) => PexEvaluator.selectMatching(descriptor.toJson(), [
+              vc,
+            ]).isNotEmpty,
+          )
+          .firstOrNull;
+
+      if (match == null) {
         _logger.log(
           LogLevel.fine,
-          'tryAutomaticConsent: VC no longer satisfies descriptor '
-          '"${inputDescriptors[i].id}" — declining',
+          'tryAutomaticConsent: no previously shared VC satisfies descriptor '
+          '"${descriptor.id}" — declining',
         );
         return const AutoConsentDeclined();
       }
+      previouslySelected.add((descriptor: descriptor, credential: match));
+      remainingVcs.remove(match);
     }
 
     if (record.clientId != shareRequest.request.clientId) {
@@ -269,14 +286,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     }
 
     _logger.log(LogLevel.fine, 'tryAutomaticConsent: approved — submitting VP');
-
-    final previouslySelected = List.generate(
-      previouslySelectedVcs.length,
-      (i) => (
-        descriptor: inputDescriptors[i],
-        credential: previouslySelectedVcs[i],
-      ),
-    );
 
     final definitionId = shareRequest.presentationDefinition['id'];
     if (definitionId is! String) {
