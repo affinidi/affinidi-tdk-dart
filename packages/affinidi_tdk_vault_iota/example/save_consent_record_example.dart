@@ -1,3 +1,5 @@
+import 'dart:convert' show jsonEncode;
+
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
 import 'package:ssi/ssi.dart'
@@ -83,11 +85,25 @@ Future<void> main() async {
   const profileId = 'profile-abc';
   const profileName = 'Personal';
 
-  // Compute the request fingerprint.  The consumer chooses the algorithm.
-  // Here we produce sha1("$clientId") — a simple per-verifier deduplication.
-  // You may include the serialised Presentation Definition JSON for stricter
-  // per-request deduplication.
-  final requestHash = cryptography.createHash(hashSource: clientId);
+  // The Presentation Definition (or DCQL query) from the validated share
+  // request. In a real app this comes from shareRequest.presentationDefinition
+  // (PexShareRequest) or shareRequest.dcqlQuery.toJson() (DcqlShareRequest).
+  const presentationDefinition = <String, dynamic>{
+    'id': 'pd-email-phone',
+    'input_descriptors': [
+      {'id': 'email_vc'},
+      {'id': 'phone_vc'},
+    ],
+  };
+
+  // Compute the request fingerprint: sha1("$clientId|<PD JSON>").
+  // Including the serialised query ensures two different PDs from the same
+  // verifier produce different hashes, preventing autoshare from firing on a
+  // request shape that was never approved. Mirrors vault_universal_ui's
+  // _generateRequestHash implementation.
+  final requestHash = cryptography.createHash(
+    hashSource: '$clientId|${jsonEncode(presentationDefinition)}',
+  );
 
   final verifierMetadata = const VerifierClientMetadata(
     name: 'Example Verifier',
