@@ -119,11 +119,6 @@ class ShareFlowService implements ShareFlowServiceInterface {
       );
     }
 
-    return Oid4vpShareRequest(
-      request: payload.toRequest(),
-      presentationDefinition: payload.presentationDefinition,
-      jwtAssertion: jwtToken,
-      purpose: payload.purpose,
-    );
+    return payload.toShareRequest(jwtAssertion: jwtToken);
   }
 }

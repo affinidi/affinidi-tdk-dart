@@ -1,5 +1,7 @@
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
+import 'package:affinidi_tdk_vault_iota/src/models/share_requirements.dart'
+    show PexShareRequest;
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
@@ -323,10 +325,7 @@ void main() {
 
           final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
 
-          await expectLater(
-            () => service.validateOid4vpRequest(uri),
-            completes,
-          );
+          await expectLater(service.validateOid4vpRequest(uri), completes);
         },
       );
 
@@ -344,10 +343,7 @@ void main() {
         final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
 
         await expectLater(
-          () => service.validateOid4vpRequest(
-            uri,
-            walletDid: 'did:key:myWalletDid',
-          ),
+          service.validateOid4vpRequest(uri, walletDid: 'did:key:myWalletDid'),
           completes,
         );
       });
@@ -434,9 +430,11 @@ void main() {
           ),
         ).thenReturn(_validResult());
 
-        final result = await service.validateOid4vpRequest(
-          Uri.parse('openid4vp://authorize?request=$validJwt'),
-        );
+        final result =
+            await service.validateOid4vpRequest(
+                  Uri.parse('openid4vp://authorize?request=$validJwt'),
+                )
+                as PexShareRequest;
 
         expect(result.purpose, isNull);
       });
@@ -477,9 +475,11 @@ void main() {
           ),
         ).thenReturn(_validResult());
 
-        final result = await service.validateOid4vpRequest(
-          Uri.parse('openid4vp://authorize?request=$validJwt'),
-        );
+        final result =
+            await service.validateOid4vpRequest(
+                  Uri.parse('openid4vp://authorize?request=$validJwt'),
+                )
+                as PexShareRequest;
 
         expect(result.request.nonce, 'test-nonce');
         expect(result.request.state, 'test-state');
@@ -522,9 +522,13 @@ void main() {
             ),
           ).thenReturn(_validResult());
 
-          final result = await service.validateOid4vpRequest(
-            Uri.parse('openid4vp://authorize?request=$validJwtWithPurpose'),
-          );
+          final result =
+              await service.validateOid4vpRequest(
+                    Uri.parse(
+                      'openid4vp://authorize?request=$validJwtWithPurpose',
+                    ),
+                  )
+                  as PexShareRequest;
 
           expect(result.purpose, isNotNull);
           expect(result.purpose!.dataCollectionPurpose, 'KYC verification');
@@ -555,9 +559,11 @@ void main() {
             ),
           ).thenReturn(_validResult());
 
-          final result = await service.validateOid4vpRequest(
-            Uri.parse('openid4vp://authorize?request=$validJwt'),
-          );
+          final result =
+              await service.validateOid4vpRequest(
+                    Uri.parse('openid4vp://authorize?request=$validJwt'),
+                  )
+                  as PexShareRequest;
 
           expect(result.purpose, isNull);
         },

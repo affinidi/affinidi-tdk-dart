@@ -5,6 +5,7 @@ import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
 import 'package:ssi/ssi.dart'
     show
         CredentialSubject,
+        DidSigner,
         Issuer,
         JsonLdContext,
         ParsedVerifiableCredential,
@@ -41,21 +42,12 @@ class InMemoryConsentStorage implements ConsentStorage {
 /// A stub [IotaShareResponseServiceInterface] for demonstration purposes.
 ///
 /// In a real application, construct [IotaShareResponseService] with a real
-/// `CallbackApi` and `DidSigner` from your wallet integration.
+/// [DidSigner] from your wallet integration.
 class _StubShareResponseService implements IotaShareResponseServiceInterface {
   @override
   Future<Uri?> submitShareResponse({
-    required String state,
-    required String nonce,
-    required String clientId,
-    required String definitionId,
-    required List<
-      ({
-        PDDescriptor descriptor,
-        ParsedVerifiableCredential<dynamic> credential,
-      })
-    >
-    selectedCredentials,
+    required Oid4vpShareRequest shareRequest,
+    required List<ParsedVerifiableCredential<dynamic>> selectedCredentials,
     required String acceptResponseUri,
   }) => throw UnimplementedError(
     'Provide a real IotaShareResponseService for VP submission',
@@ -63,7 +55,7 @@ class _StubShareResponseService implements IotaShareResponseServiceInterface {
 
   @override
   Future<Uri?> rejectShareResponse({
-    required String state,
+    required Oid4vpShareRequest shareRequest,
     required String rejectResponseUri,
   }) => throw UnimplementedError(
     'Provide a real IotaShareResponseService for VP rejection',

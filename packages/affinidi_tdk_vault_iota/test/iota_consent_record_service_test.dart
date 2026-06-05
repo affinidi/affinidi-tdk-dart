@@ -1,4 +1,6 @@
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
+import 'package:affinidi_tdk_vault_iota/src/models/share_requirements.dart'
+    show PexShareRequest;
 import 'package:mocktail/mocktail.dart';
 import 'package:ssi/ssi.dart' show ParsedVerifiableCredential;
 import 'package:test/test.dart';
@@ -16,6 +18,8 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(IotaConsentRecordFixtures.empty());
+    registerFallbackValue(IotaConsentRecordFixtures.shareRequest);
+    registerFallbackValue(<ParsedVerifiableCredential<dynamic>>[]);
   });
 
   setUp(() {
@@ -30,10 +34,7 @@ void main() {
     when(() => store.saveOrUpdate(any())).thenAnswer((_) async {});
     when(
       () => shareResponseService.submitShareResponse(
-        state: any(named: 'state'),
-        nonce: any(named: 'nonce'),
-        clientId: any(named: 'clientId'),
-        definitionId: any(named: 'definitionId'),
+        shareRequest: any(named: 'shareRequest'),
         selectedCredentials: any(named: 'selectedCredentials'),
         acceptResponseUri: any(named: 'acceptResponseUri'),
       ),
@@ -436,7 +437,7 @@ void main() {
             ],
           );
 
-          final shareRequestDifferentClient = Oid4vpShareRequest(
+          final shareRequestDifferentClient = PexShareRequest(
             request: IotaRequest(
               responseType:
                   IotaConsentRecordFixtures.shareRequest.request.responseType,
@@ -485,7 +486,7 @@ void main() {
             ],
           );
 
-          final shareRequestWithConstraint = Oid4vpShareRequest(
+          final shareRequestWithConstraint = PexShareRequest(
             request: IotaConsentRecordFixtures.shareRequest.request,
             presentationDefinition: const {
               'id': 'def-1',
@@ -538,10 +539,7 @@ void main() {
 
           when(
             () => shareResponseService.submitShareResponse(
-              state: any(named: 'state'),
-              nonce: any(named: 'nonce'),
-              clientId: any(named: 'clientId'),
-              definitionId: any(named: 'definitionId'),
+              shareRequest: any(named: 'shareRequest'),
               selectedCredentials: any(named: 'selectedCredentials'),
               acceptResponseUri: any(named: 'acceptResponseUri'),
             ),
@@ -585,7 +583,7 @@ void main() {
             ],
           );
 
-          final shareRequestWith2Descriptors = Oid4vpShareRequest(
+          final shareRequestWith2Descriptors = PexShareRequest(
             request: IotaConsentRecordFixtures.shareRequest.request,
             presentationDefinition: const {
               'id': 'def-1',
@@ -610,27 +608,16 @@ void main() {
           final captured =
               verify(
                     () => shareResponseService.submitShareResponse(
-                      state: any(named: 'state'),
-                      nonce: any(named: 'nonce'),
-                      clientId: any(named: 'clientId'),
-                      definitionId: any(named: 'definitionId'),
+                      shareRequest: any(named: 'shareRequest'),
                       selectedCredentials: captureAny(
                         named: 'selectedCredentials',
                       ),
                       acceptResponseUri: any(named: 'acceptResponseUri'),
                     ),
                   ).captured.single
-                  as List<
-                    ({
-                      PDDescriptor descriptor,
-                      ParsedVerifiableCredential<dynamic> credential,
-                    })
-                  >;
+                  as List<ParsedVerifiableCredential<dynamic>>;
 
-          expect(captured.map((e) => e.credential.id?.toString()), [
-            'vc-2',
-            'vc-1',
-          ]);
+          expect(captured.map((e) => e.id?.toString()), ['vc-2', 'vc-1']);
         },
       );
 
@@ -644,7 +631,7 @@ void main() {
             ],
           );
 
-          final twoDescriptorRequest = Oid4vpShareRequest(
+          final twoDescriptorRequest = PexShareRequest(
             request: IotaConsentRecordFixtures.shareRequest.request,
             presentationDefinition: const {
               'id': 'def-1',
@@ -669,10 +656,7 @@ void main() {
           expect(result, isA<AutoConsentDeclined>());
           verifyNever(
             () => shareResponseService.submitShareResponse(
-              state: any(named: 'state'),
-              nonce: any(named: 'nonce'),
-              clientId: any(named: 'clientId'),
-              definitionId: any(named: 'definitionId'),
+              shareRequest: any(named: 'shareRequest'),
               selectedCredentials: any(named: 'selectedCredentials'),
             ),
           );
@@ -716,10 +700,7 @@ void main() {
           expect(result, isA<AutoConsentDeclined>());
           verifyNever(
             () => shareResponseService.submitShareResponse(
-              state: any(named: 'state'),
-              nonce: any(named: 'nonce'),
-              clientId: any(named: 'clientId'),
-              definitionId: any(named: 'definitionId'),
+              shareRequest: any(named: 'shareRequest'),
               selectedCredentials: any(named: 'selectedCredentials'),
             ),
           );
@@ -735,7 +716,7 @@ void main() {
             ],
           );
 
-          final shareRequestMalformed = Oid4vpShareRequest(
+          final shareRequestMalformed = PexShareRequest(
             request: IotaConsentRecordFixtures.shareRequest.request,
             presentationDefinition: const {
               'id': 'def-1',
@@ -787,16 +768,16 @@ void main() {
           final captured =
               verify(
                     () => shareResponseService.submitShareResponse(
-                      state: any(named: 'state'),
-                      nonce: any(named: 'nonce'),
-                      clientId: any(named: 'clientId'),
-                      definitionId: captureAny(named: 'definitionId'),
+                      shareRequest: captureAny(named: 'shareRequest'),
                       selectedCredentials: any(named: 'selectedCredentials'),
                     ),
                   ).captured.single
-                  as String;
+                  as Oid4vpShareRequest;
 
-          expect(captured, 'def-1');
+          expect(
+            (captured as PexShareRequest).presentationDefinition['id'],
+            'def-1',
+          );
         },
       );
 
@@ -860,7 +841,7 @@ void main() {
             ],
           );
 
-          final shareRequestWithoutId = Oid4vpShareRequest(
+          final shareRequestWithoutId = PexShareRequest(
             request: IotaConsentRecordFixtures.shareRequest.request,
             presentationDefinition: const {
               // no 'id' key — triggers the invalidPresentationDefinition guard
@@ -901,7 +882,7 @@ void main() {
             ],
           );
 
-          final shareRequestWithoutDescriptors = Oid4vpShareRequest(
+          final shareRequestWithoutDescriptors = PexShareRequest(
             request: IotaConsentRecordFixtures.shareRequest.request,
             presentationDefinition: const {'id': 'def-1'},
             jwtAssertion: IotaConsentRecordFixtures.shareRequest.jwtAssertion,
@@ -941,7 +922,7 @@ void main() {
             ],
           );
 
-          final shareRequestChangedConstraint = Oid4vpShareRequest(
+          final shareRequestChangedConstraint = PexShareRequest(
             request: IotaConsentRecordFixtures.shareRequest.request,
             presentationDefinition: const {
               'id': 'def-1',
@@ -978,10 +959,7 @@ void main() {
           expect(result, isA<AutoConsentDeclined>());
           verifyNever(
             () => shareResponseService.submitShareResponse(
-              state: any(named: 'state'),
-              nonce: any(named: 'nonce'),
-              clientId: any(named: 'clientId'),
-              definitionId: any(named: 'definitionId'),
+              shareRequest: any(named: 'shareRequest'),
               selectedCredentials: any(named: 'selectedCredentials'),
             ),
           );

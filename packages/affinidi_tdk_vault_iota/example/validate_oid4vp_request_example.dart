@@ -1,5 +1,7 @@
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
+import 'package:affinidi_tdk_vault_iota/src/models/share_requirements.dart'
+    show DcqlShareRequest, PexShareRequest;
 
 /// This example demonstrates how to parse and validate an Iota OID4VP request URI.
 Future<void> main() async {
@@ -27,19 +29,25 @@ Future<void> main() async {
     // The verifier's client_id (the verifier DID)
     print('Client ID: ${shareRequest.request.clientId}');
 
-    // The Presentation Definition lists the credentials the verifier needs
-    print('Presentation Definition: ${shareRequest.presentationDefinition}');
-
-    // Optional human-readable purpose metadata
-    if (shareRequest.purpose?.isValid == true) {
-      print('Purpose: ${shareRequest.purpose!.dataCollectionPurpose}');
+    // Inspect PEX or DCQL fields depending on the query type
+    switch (shareRequest) {
+      case PexShareRequest pex:
+        print('Presentation Definition: ${pex.presentationDefinition}');
+        if (pex.purpose?.isValid == true) {
+          print('Purpose: ${pex.purpose!.dataCollectionPurpose}');
+        }
+      case DcqlShareRequest dcql:
+        print(
+          'DCQL credentials requested: ${dcql.dcqlQuery.credentials.length}',
+        );
     }
 
     // shareRequest.jwtAssertion carries the raw JWT for VP submission
     print('JWT assertion available: ${shareRequest.jwtAssertion.isNotEmpty}');
 
-    // Next step: query your credential storage with the presentationDefinition,
-    // then build and submit a Verifiable Presentation to the verifier.
+    // Next step: pass shareRequest to CredentialMatcherService.match() and
+    // IotaShareResponseService.submitShareResponse() — both handle PEX and
+    // DCQL transparently.
   } on TdkException catch (e) {
     print('OID4VP validation failed [${e.code}]: ${e.message}');
   }

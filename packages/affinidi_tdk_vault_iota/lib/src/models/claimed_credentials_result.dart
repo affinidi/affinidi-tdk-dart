@@ -1,6 +1,8 @@
 import 'package:ssi/ssi.dart';
 
+import 'matched_credentials_result.dart';
 import 'pd_descriptor.dart';
+import 'pd_requirements.dart' show PDRequirements;
 import 'vcs_group_by_type.dart';
 
 /// The result of matching a user's vault credentials against the claimed and
@@ -8,7 +10,7 @@ import 'vcs_group_by_type.dart';
 ///
 /// Each entry in [vcsGroups] maps one requested [PDDescriptor] to the
 /// credentials found in the user's vault — available, expired, or missing.
-class ClaimedCredentialsResult {
+class ClaimedCredentialsResult implements MatchedCredentialsResult {
   /// Creates a [ClaimedCredentialsResult].
   const ClaimedCredentialsResult({required this.vcsGroups});
 
@@ -17,17 +19,20 @@ class ClaimedCredentialsResult {
 
   /// Whether every requested descriptor has at least the minimum number of
   /// available credentials.
-  bool get isEnoughVCsAvailableToShare =>
+  @override
+  bool get hasEnoughVCsAvailableToShare =>
       vcsGroups.values.every((group) => group.hasEnoughVCsToShare);
 
   /// The recommended set of credentials to share — up to the maximum allowed
   /// per group, across all descriptor groups.
+  @override
   List<VerifiableCredential> get recommendedMaximumVCs => vcsGroups.values
       .expand((group) => group.recommendedMaximumVCs)
       .map((a) => a.vc)
       .toList();
 
   /// All credentials across all groups that are available to share.
+  @override
   List<VerifiableCredential> get availableCredentials => vcsGroups.values
       .expand((group) => group.allAvailableVCs)
       .map((a) => a.vc)
