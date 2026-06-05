@@ -99,8 +99,7 @@ Future<void> main() async {
   // Compute the request fingerprint: sha1("$clientId|<PD JSON>").
   // Including the serialised query ensures two different PDs from the same
   // verifier produce different hashes, preventing autoshare from firing on a
-  // request shape that was never approved. Mirrors vault_universal_ui's
-  // _generateRequestHash implementation.
+  // request shape that was never approved.
   final requestHash = cryptography.createHash(
     hashSource: '$clientId|${jsonEncode(presentationDefinition)}',
   );

@@ -24,16 +24,13 @@ import 'share_requirements_matcher_service.dart';
 ///
 /// - `hash` = `sha1("$profileId|$vaultId|$clientId|$name|$logo|$origin|$vcsFingerprint")`
 ///   — full fingerprint that changes if the profile, verifier branding,
-///   or selected credentials change. Used as the storage key, matching
-///   vault_universal_ui's `addOrUpdate` behaviour.
+///   or selected credentials change. Used as the storage key
 ///
-/// The VC fingerprint matches vault_universal_ui's `_stringifyVCs` concept:
-/// each VC contributes `issuer-id-validFrom-credentialSubject`, joined with
-/// `|` in presentation order. ZPD datapoints are not tracked by the TDK.
+/// The VC fingerprint format: each VC contributes `issuer-id-validFrom-credentialSubject`,
+/// joined with `|` in presentation order. ZPD datapoints are not tracked by the TDK.
 ///
 /// [IotaConsentRecord.sharedAt] is always set to the current UTC time,
-/// so it reflects the most recent share — the same semantics as
-/// vault_universal_ui's `firstVisited` column ("Last Consent" in the UI).
+/// so it reflects the most recent share ("Last Consent" in the UI).
 class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   final ConsentStorage _store;
   final CryptographyServiceInterface _cryptography;
@@ -308,7 +305,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
 
   /// Computes the full share fingerprint covering all share-event fields.
   ///
-  /// Matches vault_universal_ui's `_generateHash` field ordering:
+  /// Hash field ordering:
   /// `profileId|vaultId|clientId|name|logo|origin|vcsFingerprint`.
   /// ZPD datapoints are not tracked by the TDK and are omitted from the hash.
   ///
