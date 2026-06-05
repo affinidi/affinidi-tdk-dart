@@ -16,7 +16,6 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   final CallbackApi _approveCallbackApi;
   final CallbackApi _rejectCallbackApi;
   final DidSigner _signer;
-  final Logger _logger;
   final VpBuilderInterface _vpBuilder;
 
   /// Creates an [IotaShareResponseService].
@@ -26,18 +25,15 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   /// * [rejectCallbackApi] - API client for the reject callback endpoint.
   ///   Defaults to [approveCallbackApi] when not provided.
   /// * [signer] - The DID signer that controls the holder's key.
-  /// * [logger] - Optional logger; defaults to [Logger.instance].
   /// * [vpBuilder] - Custom VP builder; defaults to [VpBuilder].
   IotaShareResponseService({
     required CallbackApi approveCallbackApi,
     CallbackApi? rejectCallbackApi,
     required DidSigner signer,
-    Logger? logger,
     VpBuilderInterface? vpBuilder,
   }) : _approveCallbackApi = approveCallbackApi,
        _rejectCallbackApi = rejectCallbackApi ?? approveCallbackApi,
        _signer = signer,
-       _logger = logger ?? Logger.instance,
        _vpBuilder = vpBuilder ?? const VpBuilder();
 
   /// Builds and submits a Verifiable Presentation to the Iota callback endpoint.
@@ -66,10 +62,6 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
     >
     selectedCredentials,
   }) async {
-    _logger.log(
-      LogLevel.fine,
-      'Building VP for ${selectedCredentials.length} credential(s)',
-    );
 
     final descriptors = selectedCredentials.map((r) => r.descriptor).toList();
     final credentials = selectedCredentials.map((r) => r.credential).toList();
@@ -85,8 +77,6 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
       nonce: nonce,
       domain: clientId,
     );
-
-    _logger.log(LogLevel.fine, 'Submitting share response (state: $state)');
 
     return _postCallback(
       _approveCallbackApi,
@@ -108,8 +98,6 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   /// Throws [TdkException] with code `submission_failed` if the API call fails.
   @override
   Future<Uri?> rejectShareResponse({required String state}) async {
-    _logger.log(LogLevel.fine, 'Rejecting share response (state: $state)');
-
     return _postCallback(
       _rejectCallbackApi,
       CallbackInput(
