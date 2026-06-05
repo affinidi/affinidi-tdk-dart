@@ -69,8 +69,15 @@ abstract interface class IotaConsentRecordServiceInterface {
   ///   The caller must ensure this corresponds to the wallet/profile that will
   ///   actually sign the VP.
   ///
+  /// All stored records matching [requestHash] with auto-share enabled are
+  /// evaluated in order. Each record is skipped if any guard fails (consent
+  /// management enabled, previously shared VCs unavailable, descriptor count
+  /// changed, VC-to-descriptor matching failed, clientId mismatch, or
+  /// fingerprint mismatch). The first record that passes all guards triggers
+  /// VP submission.
+  ///
   /// Returns [AutoConsentApproved] with the verifier's redirect URI on success,
-  /// or [AutoConsentDeclined] when the interactive flow is required.
+  /// or [AutoConsentDeclined] when no stored record passes all checks.
   /// Throws `TdkException` with code `failed_to_read_consent_record` if the
   /// underlying storage read fails, or with submission-related codes if the VP
   /// post fails.

@@ -29,6 +29,13 @@ class InMemoryConsentStorage implements ConsentStorage {
     }
     return null;
   }
+
+  @override
+  Future<List<IotaConsentRecord>> findAllByRequestHash(
+    String requestHash,
+  ) async {
+    return _records.values.where((r) => r.requestHash == requestHash).toList();
+  }
 }
 
 /// A stub [IotaShareResponseServiceInterface] for demonstration purposes.

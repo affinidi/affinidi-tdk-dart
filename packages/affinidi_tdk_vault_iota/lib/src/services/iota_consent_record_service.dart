@@ -132,9 +132,9 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   }) async {
     _logger.log(LogLevel.fine, 'tryAutomaticConsent started');
 
-    final IotaConsentRecord? record;
+    final List<IotaConsentRecord> candidates;
     try {
-      record = await _store.findByRequestHash(requestHash);
+      candidates = await _store.findAllByRequestHash(requestHash);
     } catch (e, stackTrace) {
       if (e is TdkException) rethrow;
 
@@ -148,49 +148,19 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       );
     }
 
-    if (record == null) {
-      _logger.log(
-        LogLevel.fine,
-        'tryAutomaticConsent: no matching record — declining',
-      );
-      return const AutoConsentDeclined();
-    }
-
-    if (!record.isAutoShareEnabled) {
-      _logger.log(
-        LogLevel.fine,
-        'tryAutomaticConsent: auto-share not enabled on record — declining',
-      );
-      return const AutoConsentDeclined();
-    }
-
-    if (record.isConsentManagementEnabled) {
-      _logger.log(
-        LogLevel.fine,
-        'tryAutomaticConsent: consent management was enabled on record — declining',
-      );
-      return const AutoConsentDeclined();
-    }
-
-    final allVcs = claimedCredentials.vcsGroups.values
-        .expand((group) => group.allAvailableVCs)
-        .map((a) => a.vc)
-        .whereType<ParsedVerifiableCredential<dynamic>>()
+    final enabledCandidates = candidates
+        .where((r) => r.isAutoShareEnabled)
         .toList();
 
-    final previouslySelectedVcs = record.sharedVcIds
-        .map((id) => allVcs.where((vc) => vc.id?.toString() == id).firstOrNull)
-        .whereType<ParsedVerifiableCredential<dynamic>>()
-        .toList();
-
-    if (previouslySelectedVcs.length != record.sharedVcIds.length) {
+    if (enabledCandidates.isEmpty) {
       _logger.log(
         LogLevel.fine,
-        'tryAutomaticConsent: not all previously shared VCs are available — declining',
+        'tryAutomaticConsent: no auto-share enabled records — declining',
       );
       return const AutoConsentDeclined();
     }
 
+    // Parse PD fields once — they come from the request, not from any stored record.
     final rawDescriptors =
         shareRequest.presentationDefinition['input_descriptors'];
     if (rawDescriptors is! List<dynamic>) {
@@ -216,74 +186,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       );
     }
 
-    if (inputDescriptors.length != previouslySelectedVcs.length) {
-      _logger.log(
-        LogLevel.fine,
-        'tryAutomaticConsent: PD descriptor count changed — declining',
-      );
-      return const AutoConsentDeclined();
-    }
-
-    final remainingVcs = List<ParsedVerifiableCredential<dynamic>>.of(
-      previouslySelectedVcs,
-    );
-    final previouslySelected =
-        <
-          ({
-            PDDescriptor descriptor,
-            ParsedVerifiableCredential<dynamic> credential,
-          })
-        >[];
-
-    for (final descriptor in inputDescriptors) {
-      final match = remainingVcs
-          .where(
-            (vc) => PexEvaluator.selectMatching(descriptor.toJson(), [
-              vc,
-            ]).isNotEmpty,
-          )
-          .firstOrNull;
-
-      if (match == null) {
-        _logger.log(
-          LogLevel.fine,
-          'tryAutomaticConsent: no previously shared VC satisfies descriptor '
-          '"${descriptor.id}" — declining',
-        );
-        return const AutoConsentDeclined();
-      }
-      previouslySelected.add((descriptor: descriptor, credential: match));
-      remainingVcs.remove(match);
-    }
-
-    if (record.clientId != shareRequest.request.clientId) {
-      _logger.log(
-        LogLevel.fine,
-        'tryAutomaticConsent: clientId mismatch — declining',
-      );
-      return const AutoConsentDeclined();
-    }
-
-    final currentHash = _computeConsentHash(
-      profileId: record.profileId,
-      vaultId: vaultId,
-      clientId: record.clientId,
-      verifierName: verifierMetadata.name,
-      logo: verifierMetadata.logo,
-      siteUrl: verifierMetadata.origin,
-      vcsFingerprint: _stringifyVcs(previouslySelectedVcs),
-    );
-
-    if (record.hash != currentHash) {
-      _logger.log(
-        LogLevel.fine,
-        'tryAutomaticConsent: fingerprint mismatch — declining',
-      );
-      return const AutoConsentDeclined();
-    }
-
-    _logger.log(LogLevel.fine, 'tryAutomaticConsent: approved — submitting VP');
-
     final definitionId = shareRequest.presentationDefinition['id'];
     if (definitionId is! String) {
       throw TdkException(
@@ -292,15 +194,131 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       );
     }
 
-    final iotaRequest = shareRequest.request;
-    final redirectUri = await _shareResponseService.submitShareResponse(
-      state: iotaRequest.state,
-      nonce: iotaRequest.nonce,
-      clientId: iotaRequest.clientId,
-      definitionId: definitionId,
-      selectedCredentials: previouslySelected,
+    final allVcs = claimedCredentials.vcsGroups.values
+        .expand((group) => group.allAvailableVCs)
+        .map((a) => a.vc)
+        .whereType<ParsedVerifiableCredential<dynamic>>()
+        .toList();
+
+    for (final record in enabledCandidates) {
+      if (record.isConsentManagementEnabled) {
+        _logger.log(
+          LogLevel.fine,
+          'tryAutomaticConsent: consent management enabled on record '
+          '"${record.hash}" — skipping',
+        );
+        continue;
+      }
+
+      final previouslySelectedVcs = record.sharedVcIds
+          .map(
+            (id) => allVcs.where((vc) => vc.id?.toString() == id).firstOrNull,
+          )
+          .whereType<ParsedVerifiableCredential<dynamic>>()
+          .toList();
+
+      if (previouslySelectedVcs.length != record.sharedVcIds.length) {
+        _logger.log(
+          LogLevel.fine,
+          'tryAutomaticConsent: not all previously shared VCs available for '
+          'record "${record.hash}" — skipping',
+        );
+        continue;
+      }
+
+      if (inputDescriptors.length != previouslySelectedVcs.length) {
+        _logger.log(
+          LogLevel.fine,
+          'tryAutomaticConsent: PD descriptor count changed for record '
+          '"${record.hash}" — skipping',
+        );
+        continue;
+      }
+
+      final remainingVcs = List<ParsedVerifiableCredential<dynamic>>.of(
+        previouslySelectedVcs,
+      );
+      final previouslySelected =
+          <
+            ({
+              PDDescriptor descriptor,
+              ParsedVerifiableCredential<dynamic> credential,
+            })
+          >[];
+
+      var descriptorMatchFailed = false;
+      for (final descriptor in inputDescriptors) {
+        final match = remainingVcs
+            .where(
+              (vc) => PexEvaluator.selectMatching(descriptor.toJson(), [
+                vc,
+              ]).isNotEmpty,
+            )
+            .firstOrNull;
+
+        if (match == null) {
+          _logger.log(
+            LogLevel.fine,
+            'tryAutomaticConsent: no previously shared VC satisfies descriptor '
+            '"${descriptor.id}" for record "${record.hash}" — skipping',
+          );
+          descriptorMatchFailed = true;
+          break;
+        }
+        previouslySelected.add((descriptor: descriptor, credential: match));
+        remainingVcs.remove(match);
+      }
+      if (descriptorMatchFailed) continue;
+
+      if (record.clientId != shareRequest.request.clientId) {
+        _logger.log(
+          LogLevel.fine,
+          'tryAutomaticConsent: clientId mismatch for record '
+          '"${record.hash}" — skipping',
+        );
+        continue;
+      }
+
+      final currentHash = _computeConsentHash(
+        profileId: record.profileId,
+        vaultId: vaultId,
+        clientId: record.clientId,
+        verifierName: verifierMetadata.name,
+        logo: verifierMetadata.logo,
+        siteUrl: verifierMetadata.origin,
+        vcsFingerprint: _stringifyVcs(previouslySelectedVcs),
+      );
+
+      if (record.hash != currentHash) {
+        _logger.log(
+          LogLevel.fine,
+          'tryAutomaticConsent: fingerprint mismatch for record '
+          '"${record.hash}" — skipping',
+        );
+        continue;
+      }
+
+      _logger.log(
+        LogLevel.fine,
+        'tryAutomaticConsent: record "${record.hash}" approved — submitting VP',
+      );
+
+      final iotaRequest = shareRequest.request;
+      final redirectUri = await _shareResponseService.submitShareResponse(
+        state: iotaRequest.state,
+        nonce: iotaRequest.nonce,
+        clientId: iotaRequest.clientId,
+        definitionId: definitionId,
+        selectedCredentials: previouslySelected,
+      );
+      return AutoConsentApproved(redirectUri: redirectUri);
+    }
+
+    _logger.log(
+      LogLevel.fine,
+      'tryAutomaticConsent: no record passed all checks — declining',
     );
-    return AutoConsentApproved(redirectUri: redirectUri);
+    return const AutoConsentDeclined();
   }
 
   /// Computes the full share fingerprint covering all share-event fields.
