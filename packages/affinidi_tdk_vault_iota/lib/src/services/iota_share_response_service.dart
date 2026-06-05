@@ -62,7 +62,6 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
     >
     selectedCredentials,
   }) async {
-
     final descriptors = selectedCredentials.map((r) => r.descriptor).toList();
     final credentials = selectedCredentials.map((r) => r.credential).toList();
 
