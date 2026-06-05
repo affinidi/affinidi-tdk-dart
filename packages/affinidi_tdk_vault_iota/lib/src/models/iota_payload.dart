@@ -1,3 +1,4 @@
+import 'dcql_query.dart';
 import 'request_purpose.dart';
 
 /// The decoded JWT body from an Iota OID4VP `?request=` URI parameter.
@@ -50,7 +51,14 @@ class IotaPayload {
   final int iat;
 
   /// The Presentation Definition describing the required credentials.
-  final Map<String, dynamic> presentationDefinition;
+  ///
+  /// Exactly one of [presentationDefinition] or [dcqlQuery] must be non-null.
+  final Map<String, dynamic>? presentationDefinition;
+
+  /// The DCQL query describing the required credentials.
+  ///
+  /// Exactly one of [presentationDefinition] or [dcqlQuery] must be non-null.
+  final DcqlQuery? dcqlQuery;
 
   /// Creates a new [IotaPayload] instance.
   ///
@@ -68,7 +76,8 @@ class IotaPayload {
   /// - [aud] - optional audience claim of the JWT.
   /// - [exp] - expiration time of the JWT as a Unix timestamp (seconds).
   /// - [iat] - issued-at time of the JWT as a Unix timestamp (seconds).
-  /// - [presentationDefinition] - presentation definition describing the required credentials.
+  /// - [presentationDefinition] - PEX Presentation Definition.
+  /// - [dcqlQuery] - DCQL query (mutually exclusive with [presentationDefinition]).
   const IotaPayload({
     required this.nonce,
     required this.state,
@@ -83,14 +92,27 @@ class IotaPayload {
     this.aud,
     required this.exp,
     required this.iat,
-    required this.presentationDefinition,
-  });
+    this.presentationDefinition,
+    this.dcqlQuery,
+  }) : assert(
+         (presentationDefinition != null) != (dcqlQuery != null),
+         'Exactly one of presentationDefinition or dcqlQuery must be provided.',
+       );
 
   /// Creates an [IotaPayload] from a JSON map.
   ///
   /// Parameters:
   /// - [json] - JSON map representing the JWT payload, with snake_case keys.
+  ///
+  /// Throws [FormatException] if neither `presentation_definition` nor `dcql_query` is present.
   factory IotaPayload.fromJson(Map<String, dynamic> json) {
+    final rawPd = json['presentation_definition'];
+    final rawDcql = json['dcql_query'];
+    if (rawPd == null && rawDcql == null) {
+      throw const FormatException(
+        "JWT payload must contain either 'presentation_definition' or 'dcql_query'.",
+      );
+    }
     return IotaPayload(
       nonce: json['nonce'] as String,
       state: json['state'] as String,
@@ -105,8 +127,10 @@ class IotaPayload {
       aud: json['aud'] as String?,
       exp: (json['exp'] as num).toInt(),
       iat: (json['iat'] as num).toInt(),
-      presentationDefinition:
-          json['presentation_definition'] as Map<String, dynamic>,
+      presentationDefinition: rawPd as Map<String, dynamic>?,
+      dcqlQuery: rawDcql != null
+          ? DcqlQuery.fromJson(rawDcql as Map<String, dynamic>)
+          : null,
     );
   }
 
@@ -127,7 +151,9 @@ class IotaPayload {
     if (aud != null) 'aud': aud,
     'exp': exp,
     'iat': iat,
-    'presentation_definition': presentationDefinition,
+    if (presentationDefinition != null)
+      'presentation_definition': presentationDefinition,
+    if (dcqlQuery != null) 'dcql_query': dcqlQuery!.toJson(),
   };
 
   /// Extracts and validates the [RequestPurpose] from the presentation
@@ -136,7 +162,7 @@ class IotaPayload {
   /// Returns `null` if the `purpose` field is absent or does not contain a
   /// valid [RequestPurpose].
   RequestPurpose? get purpose {
-    final rawPurpose = presentationDefinition['purpose'];
+    final rawPurpose = presentationDefinition?['purpose'];
     if (rawPurpose == null) return null;
     final parsed = RequestPurpose.fromJson(rawPurpose);
     return parsed.isValid ? parsed : null;

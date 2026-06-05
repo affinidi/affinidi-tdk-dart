@@ -3,7 +3,6 @@ import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 
 import 'exceptions/tdk_exception_type.dart';
 import 'models/iota_payload.dart';
-import 'models/iota_request.dart';
 import 'models/share_requirements.dart';
 import 'share_flow_service_interface.dart';
 
@@ -119,11 +118,6 @@ class ShareFlowService implements ShareFlowServiceInterface {
       );
     }
 
-    return Oid4vpShareRequest(
-      request: IotaRequest.fromPayload(payload),
-      presentationDefinition: payload.presentationDefinition,
-      jwtAssertion: jwtToken,
-      purpose: payload.purpose,
-    );
+    return Oid4vpShareRequest.fromPayload(payload, jwtAssertion: jwtToken);
   }
 }

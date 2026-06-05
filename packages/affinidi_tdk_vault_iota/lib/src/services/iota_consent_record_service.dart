@@ -145,9 +145,18 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       return const AutoConsentDeclined();
     }
 
+    // DCQL auto-consent is not yet supported — decline gracefully.
+    final pexRequest = switch (shareRequest) {
+      PexShareRequest r => r,
+      DcqlShareRequest _ => null,
+    };
+    if (pexRequest == null) {
+      return const AutoConsentDeclined();
+    }
+
     // Parse PD fields once — they come from the request, not from any stored record.
     final rawDescriptors =
-        shareRequest.presentationDefinition['input_descriptors'];
+        pexRequest.presentationDefinition['input_descriptors'];
     if (rawDescriptors is! List<dynamic>) {
       throw TdkException(
         message: 'Presentation definition is missing input_descriptors.',
@@ -171,7 +180,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       );
     }
 
-    final definitionId = shareRequest.presentationDefinition['id'];
+    final definitionId = pexRequest.presentationDefinition['id'];
     if (definitionId is! String) {
       throw TdkException(
         message: 'Presentation definition is missing a valid id.',
@@ -253,13 +262,12 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
         continue;
       }
 
-      final iotaRequest = shareRequest.request;
       final redirectUri = await _shareResponseService.submitShareResponse(
-        state: iotaRequest.state,
-        nonce: iotaRequest.nonce,
-        clientId: iotaRequest.clientId,
-        definitionId: definitionId,
-        selectedCredentials: previouslySelected,
+        shareRequest: shareRequest,
+        selectedCredentials: previouslySelected
+            .map((e) => e.credential)
+            .toList(),
+        acceptResponseUri: shareRequest.request.acceptResponseUri,
       );
       return AutoConsentApproved(redirectUri: redirectUri);
     }

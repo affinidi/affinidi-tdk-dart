@@ -30,7 +30,10 @@ void main() {
     });
 
     test('returns null when group is an empty list', () {
-      final descriptor = PDDescriptor.fromJson({'id': 'd1', 'group': []});
+      final descriptor = PDDescriptor.fromJson({
+        'id': 'd1',
+        'group': <String>[],
+      });
       expect(descriptor.groupName, isNull);
     });
 

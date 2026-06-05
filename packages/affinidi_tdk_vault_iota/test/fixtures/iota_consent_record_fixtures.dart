@@ -1,4 +1,6 @@
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
+import 'package:affinidi_tdk_vault_iota/src/models/share_requirements.dart'
+    show PexShareRequest;
 import 'package:ssi/ssi.dart'
     show
         CredentialSubject,
@@ -44,8 +46,8 @@ class IotaConsentRecordFixtures {
 
   static final pdDescriptor = PDDescriptor.fromJson({'id': 'descriptor-1'});
 
-  static final shareRequest = Oid4vpShareRequest(
-    request: const IotaRequest(
+  static final shareRequest = const PexShareRequest(
+    request: IotaRequest(
       responseType: 'vp_token',
       responseMode: 'direct_post',
       acceptResponseUri: 'https://verifier.example.com/accept',
@@ -54,7 +56,7 @@ class IotaConsentRecordFixtures {
       nonce: 'test_nonce',
       clientId: clientId,
     ),
-    presentationDefinition: const {
+    presentationDefinition: {
       'id': 'def-1',
       'input_descriptors': [
         {'id': 'descriptor-1'},
