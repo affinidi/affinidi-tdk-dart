@@ -111,7 +111,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
         stackTrace,
       );
     }
-
   }
 
   @override
