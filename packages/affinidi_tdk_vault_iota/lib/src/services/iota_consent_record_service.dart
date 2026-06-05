@@ -1,6 +1,6 @@
 import 'dart:convert' show jsonEncode;
 
-import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart' hide LogLevel;
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'package:ssi/ssi.dart'
     show ParsedVerifiableCredential, VerifiableCredential;
@@ -68,8 +68,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     Map<String, String> historySharedData = const {},
     bool isConsentManagementEnabled = false,
   }) async {
-    _logger.log(LogLevel.fine, 'Saving consent record for clientId: $clientId');
-
     final sharedVcIds = sharedVcs.map((vc) => vc.id?.toString() ?? '').toList();
     final hash = _computeConsentHash(
       profileId: profileId,
@@ -102,12 +100,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     } catch (e, stackTrace) {
       if (e is TdkException) rethrow;
 
-      _logger.log(
-        LogLevel.warning,
-        'Failed to persist consent record',
-        error: e,
-        stackTrace: stackTrace,
-      );
+      _logger.warning('Failed to persist consent record');
 
       Error.throwWithStackTrace(
         TdkException(
@@ -119,7 +112,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       );
     }
 
-    _logger.log(LogLevel.fine, 'Consent record saved for clientId: $clientId');
   }
 
   @override
@@ -130,8 +122,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     required String requestHash,
     required String vaultId,
   }) async {
-    _logger.log(LogLevel.fine, 'tryAutomaticConsent started');
-
     final List<IotaConsentRecord> candidates;
     try {
       candidates = await _store.findAllByRequestHash(requestHash);
@@ -153,10 +143,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
         .toList();
 
     if (enabledCandidates.isEmpty) {
-      _logger.log(
-        LogLevel.fine,
-        'tryAutomaticConsent: no auto-share enabled records — declining',
-      );
       return const AutoConsentDeclined();
     }
 
@@ -202,11 +188,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
 
     for (final record in enabledCandidates) {
       if (record.isConsentManagementEnabled) {
-        _logger.log(
-          LogLevel.fine,
-          'tryAutomaticConsent: consent management enabled on record '
-          '"${record.hash}" — skipping',
-        );
         continue;
       }
 
@@ -218,20 +199,10 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
           .toList();
 
       if (previouslySelectedVcs.length != record.sharedVcIds.length) {
-        _logger.log(
-          LogLevel.fine,
-          'tryAutomaticConsent: not all previously shared VCs available for '
-          'record "${record.hash}" — skipping',
-        );
         continue;
       }
 
       if (inputDescriptors.length != previouslySelectedVcs.length) {
-        _logger.log(
-          LogLevel.fine,
-          'tryAutomaticConsent: PD descriptor count changed for record '
-          '"${record.hash}" — skipping',
-        );
         continue;
       }
 
@@ -257,11 +228,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
             .firstOrNull;
 
         if (match == null) {
-          _logger.log(
-            LogLevel.fine,
-            'tryAutomaticConsent: no previously shared VC satisfies descriptor '
-            '"${descriptor.id}" for record "${record.hash}" — skipping',
-          );
           descriptorMatchFailed = true;
           break;
         }
@@ -271,11 +237,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       if (descriptorMatchFailed) continue;
 
       if (record.clientId != shareRequest.request.clientId) {
-        _logger.log(
-          LogLevel.fine,
-          'tryAutomaticConsent: clientId mismatch for record '
-          '"${record.hash}" — skipping',
-        );
         continue;
       }
 
@@ -290,18 +251,8 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       );
 
       if (record.hash != currentHash) {
-        _logger.log(
-          LogLevel.fine,
-          'tryAutomaticConsent: fingerprint mismatch for record '
-          '"${record.hash}" — skipping',
-        );
         continue;
       }
-
-      _logger.log(
-        LogLevel.fine,
-        'tryAutomaticConsent: record "${record.hash}" approved — submitting VP',
-      );
 
       final iotaRequest = shareRequest.request;
       final redirectUri = await _shareResponseService.submitShareResponse(
@@ -314,10 +265,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       return AutoConsentApproved(redirectUri: redirectUri);
     }
 
-    _logger.log(
-      LogLevel.fine,
-      'tryAutomaticConsent: no record passed all checks — declining',
-    );
     return const AutoConsentDeclined();
   }
 
