@@ -50,10 +50,11 @@ abstract final class PexEvaluator {
   ) {
     return fields.map((field) {
       if (field is! Map<String, dynamic>) {
-        throw StateError(
-          'Malformed PD: constraints.fields[] entry is not a JSON object '
-          '(got ${field.runtimeType}: $field). '
-          'The descriptor should have been rejected by PDClassifier.',
+        throw TdkException(
+          message:
+              'Malformed PD: constraints.fields[] entry is not a JSON object '
+              '(got ${field.runtimeType}: $field).',
+          code: TdkExceptionType.invalidPresentationDefinition.code,
         );
       }
       final paths =
@@ -64,10 +65,11 @@ abstract final class PexEvaluator {
         return (paths: paths, schema: null);
       }
       if (rawFilter is! Map<String, dynamic>) {
-        throw StateError(
-          'Malformed PD: constraints.fields[].filter is not a JSON object '
-          '(got ${rawFilter.runtimeType}: $rawFilter). '
-          'The descriptor should have been rejected by PDClassifier.',
+        throw TdkException(
+          message:
+              'Malformed PD: constraints.fields[].filter is not a JSON object '
+              '(got ${rawFilter.runtimeType}: $rawFilter).',
+          code: TdkExceptionType.invalidPresentationDefinition.code,
         );
       }
       return (paths: paths, schema: JsonSchema.create(rawFilter));
