@@ -5,6 +5,7 @@ import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:json_schema/json_schema.dart';
 import 'package:ssi/ssi.dart';
 
+import '../exceptions/tdk_exception_type.dart';
 import '../models/claimed_credentials_result.dart';
 import '../models/pd_descriptor.dart';
 import '../models/pd_requirements.dart';
