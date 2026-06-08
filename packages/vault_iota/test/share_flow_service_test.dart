@@ -339,7 +339,7 @@ void main() {
       });
 
       test(
-        'should not throw when walletDid is null (aud check skipped)',
+        'should throw invalidAudience when aud is present but walletDid is null',
         () async {
           when(
             () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
@@ -353,7 +353,22 @@ void main() {
 
           final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
 
-          await expectLater(service.validateOid4vpRequest(uri), completes);
+          await expectLater(
+            () => service.validateOid4vpRequest(uri),
+            throwsA(
+              isA<TdkException>()
+                  .having(
+                    (e) => e.code,
+                    'code',
+                    TdkExceptionType.invalidAudience.code,
+                  )
+                  .having(
+                    (e) => e.message,
+                    'message',
+                    contains('walletDid must be provided'),
+                  ),
+            ),
+          );
         },
       );
 
