@@ -21,6 +21,7 @@ void main() {
     registerFallbackValue(IotaConsentRecordFixtures.shareRequest);
     registerFallbackValue(<ParsedVerifiableCredential<dynamic>>[]);
     registerFallbackValue(IotaConsentRecordFixtures.dcqlShareRequest);
+    registerFallbackValue(IotaConsentRecordFixtures.dcqlShareRequestWithSets);
   });
 
   setUp(() {
@@ -1210,6 +1211,194 @@ void main() {
               acceptResponseUri: any(named: 'acceptResponseUri'),
             ),
           );
+        },
+      );
+    });
+
+    group('tryAutomaticConsent (DCQL with credential_sets)', () {
+      test(
+        'returns AutoConsentApproved when stored VC satisfies one option of a required set',
+        () async {
+          // vc-1 matches query-1; the set has options [[query-1], [query-2]]
+          // so covering query-1 is enough.
+          when(() => store.findAllByRequestHash(any())).thenAnswer(
+            (_) async => [
+              IotaConsentRecordFixtures.dcqlWithSetsAutoShareMatchingHash(),
+            ],
+          );
+
+          final result = await service.tryAutomaticConsent(
+            shareRequest: IotaConsentRecordFixtures.dcqlShareRequestWithSets,
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+              available: [IotaConsentRecordFixtures.makeParsedVc()],
+            ),
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
+            requestHash: IotaConsentRecordFixtures.requestHash,
+          );
+
+          expect(result, isA<AutoConsentApproved>());
+        },
+      );
+
+      test(
+        'returns AutoConsentDeclined when the stored VC no longer matches any credential query',
+        () async {
+          // Both queries now require EmailV1 type; vc-1 has no such type.
+          final strictRequest = DcqlShareRequest(
+            request: IotaConsentRecordFixtures.dcqlShareRequestWithSets.request,
+            dcqlQuery: const DcqlQuery(
+              credentials: [
+                DcqlCredentialQuery(
+                  id: 'query-1',
+                  meta: DcqlCredentialMeta(
+                    typeValues: [
+                      ['EmailV1'],
+                    ],
+                  ),
+                ),
+                DcqlCredentialQuery(
+                  id: 'query-2',
+                  meta: DcqlCredentialMeta(
+                    typeValues: [
+                      ['EmailV1'],
+                    ],
+                  ),
+                ),
+              ],
+              credentialSets: [
+                DcqlCredentialSetQuery(
+                  options: [
+                    ['query-1'],
+                    ['query-2'],
+                  ],
+                ),
+              ],
+            ),
+            jwtAssertion: 'test_jwt',
+          );
+          when(() => store.findAllByRequestHash(any())).thenAnswer(
+            (_) async => [
+              IotaConsentRecordFixtures.dcqlWithSetsAutoShareMatchingHash(),
+            ],
+          );
+
+          final result = await service.tryAutomaticConsent(
+            shareRequest: strictRequest,
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+              available: [IotaConsentRecordFixtures.makeParsedVc()],
+            ),
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
+            requestHash: IotaConsentRecordFixtures.requestHash,
+          );
+
+          expect(result, isA<AutoConsentDeclined>());
+          verifyNever(
+            () => shareResponseService.submitShareResponse(
+              shareRequest: any(named: 'shareRequest'),
+              selectedCredentials: any(named: 'selectedCredentials'),
+              acceptResponseUri: any(named: 'acceptResponseUri'),
+            ),
+          );
+        },
+      );
+
+      test(
+        'returns AutoConsentDeclined when stored VCs do not satisfy any option of a required set',
+        () async {
+          // Set requires both query-1 AND query-2 together (AND-option); only
+          // vc-1 (matching query-1) is stored, so the AND option is not met.
+          final andOptionRequest = DcqlShareRequest(
+            request: IotaConsentRecordFixtures.dcqlShareRequestWithSets.request,
+            dcqlQuery: const DcqlQuery(
+              credentials: [
+                DcqlCredentialQuery(id: 'query-1'),
+                DcqlCredentialQuery(id: 'query-2'),
+              ],
+              credentialSets: [
+                DcqlCredentialSetQuery(
+                  options: [
+                    ['query-1', 'query-2'],
+                  ],
+                ),
+              ],
+            ),
+            jwtAssertion: 'test_jwt',
+          );
+          when(() => store.findAllByRequestHash(any())).thenAnswer(
+            (_) async => [
+              IotaConsentRecordFixtures.dcqlWithSetsAutoShareMatchingHash(),
+            ],
+          );
+
+          final result = await service.tryAutomaticConsent(
+            shareRequest: andOptionRequest,
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+              available: [IotaConsentRecordFixtures.makeParsedVc()],
+            ),
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
+            requestHash: IotaConsentRecordFixtures.requestHash,
+          );
+
+          expect(result, isA<AutoConsentDeclined>());
+          verifyNever(
+            () => shareResponseService.submitShareResponse(
+              shareRequest: any(named: 'shareRequest'),
+              selectedCredentials: any(named: 'selectedCredentials'),
+              acceptResponseUri: any(named: 'acceptResponseUri'),
+            ),
+          );
+        },
+      );
+
+      test(
+        'returns AutoConsentApproved when an optional set is not satisfied but the required set is',
+        () async {
+          // required set: options [[query-1], [query-2]] — vc-1 satisfies via query-1
+          // optional set: options [[query-2]] — not covered, but required:false
+          final optionalSetRequest = DcqlShareRequest(
+            request: IotaConsentRecordFixtures.dcqlShareRequestWithSets.request,
+            dcqlQuery: const DcqlQuery(
+              credentials: [
+                DcqlCredentialQuery(id: 'query-1'),
+                DcqlCredentialQuery(id: 'query-2'),
+              ],
+              credentialSets: [
+                DcqlCredentialSetQuery(
+                  options: [
+                    ['query-1'],
+                    ['query-2'],
+                  ],
+                ),
+                DcqlCredentialSetQuery(
+                  options: [
+                    ['query-2'],
+                  ],
+                  required: false,
+                ),
+              ],
+            ),
+            jwtAssertion: 'test_jwt',
+          );
+          when(() => store.findAllByRequestHash(any())).thenAnswer(
+            (_) async => [
+              IotaConsentRecordFixtures.dcqlWithSetsAutoShareMatchingHash(),
+            ],
+          );
+
+          final result = await service.tryAutomaticConsent(
+            shareRequest: optionalSetRequest,
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+              available: [IotaConsentRecordFixtures.makeParsedVc()],
+            ),
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
+            requestHash: IotaConsentRecordFixtures.requestHash,
+          );
+
+          expect(result, isA<AutoConsentApproved>());
         },
       );
     });

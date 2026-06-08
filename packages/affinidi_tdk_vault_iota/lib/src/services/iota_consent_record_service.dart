@@ -7,7 +7,8 @@ import 'package:ssi/ssi.dart'
 
 import '../exceptions/tdk_exception_type.dart';
 import '../models/auto_consent_result.dart';
-import '../models/dcql_query.dart' show DcqlCredentialQuery;
+import '../models/dcql_query.dart'
+    show DcqlCredentialQuery, DcqlCredentialSetQuery;
 import '../models/iota_consent_record.dart';
 import '../models/matched_credentials_result.dart';
 import '../models/pd_descriptor.dart';
@@ -229,6 +230,16 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     VerifierClientMetadata verifierMetadata,
     String vaultId,
   ) {
+    final credentialSets = shareRequest.dcqlQuery.credentialSets;
+    if (credentialSets != null && credentialSets.isNotEmpty) {
+      return _tryDcqlWithSetsAutoConsent(
+        shareRequest,
+        enabledCandidates,
+        allVcs,
+        verifierMetadata,
+        vaultId,
+      );
+    }
     return _matchAndSubmit<DcqlCredentialQuery>(
       shareRequest: shareRequest,
       requirements: shareRequest.dcqlQuery.credentials,
@@ -240,6 +251,100 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
           DcqlEvaluator.selectMatching(query, [vc]).isNotEmpty,
     );
   }
+
+  /// Auto-consent path for DCQL requests that include [credential_sets].
+  ///
+  /// Unlike plain DCQL, a valid share covers only the subset of credential
+  /// queries satisfying one option per required set, so the strict
+  /// requirements-count equality check used by [_matchAndSubmit] would
+  /// incorrectly decline valid stored selections.
+  Future<AutoConsentResult> _tryDcqlWithSetsAutoConsent(
+    DcqlShareRequest shareRequest,
+    List<IotaConsentRecord> enabledCandidates,
+    List<ParsedVerifiableCredential<dynamic>> allVcs,
+    VerifierClientMetadata verifierMetadata,
+    String vaultId,
+  ) async {
+    final dcqlQuery = shareRequest.dcqlQuery;
+    final credentialSets = dcqlQuery.credentialSets!;
+
+    for (final record in enabledCandidates) {
+      if (record.isConsentManagementEnabled) continue;
+
+      final previouslySelectedVcs = record.sharedVcIds
+          .map(
+            (id) => allVcs.where((vc) => vc.id?.toString() == id).firstOrNull,
+          )
+          .whereType<ParsedVerifiableCredential<dynamic>>()
+          .toList();
+
+      // Decline if any previously-stored VC has disappeared from the vault.
+      if (previouslySelectedVcs.length != record.sharedVcIds.length) continue;
+
+      // Greedily assign each stored VC to a credential query.
+      // Iterate over queries so that each query can claim at most one VC,
+      // building up the set of covered query IDs.
+      final remainingVcs = List<ParsedVerifiableCredential<dynamic>>.of(
+        previouslySelectedVcs,
+      );
+      final coveredQueryIds = <String>{};
+      for (final query in dcqlQuery.credentials) {
+        final match = remainingVcs
+            .where((vc) => DcqlEvaluator.selectMatching(query, [vc]).isNotEmpty)
+            .firstOrNull;
+        if (match != null) {
+          coveredQueryIds.add(query.id);
+          remainingVcs.remove(match);
+        }
+      }
+
+      // Every stored VC must have been matched to some query; otherwise at
+      // least one VC is no longer valid for this request.
+      if (remainingVcs.isNotEmpty) continue;
+
+      // All required credential_sets must be satisfied by the covered queries.
+      final setsSatisfied = _requiredSetsSatisfied(
+        credentialSets,
+        coveredQueryIds,
+      );
+      if (!setsSatisfied) continue;
+
+      if (record.clientId != shareRequest.request.clientId) continue;
+
+      final currentHash = _computeConsentHash(
+        profileId: record.profileId,
+        vaultId: vaultId,
+        clientId: record.clientId,
+        verifierName: verifierMetadata.name,
+        logo: verifierMetadata.logo,
+        siteUrl: verifierMetadata.origin,
+        vcsFingerprint: _stringifyVcs(previouslySelectedVcs),
+      );
+
+      if (record.hash != currentHash) continue;
+
+      final redirectUri = await _shareResponseService.submitShareResponse(
+        shareRequest: shareRequest,
+        selectedCredentials: previouslySelectedVcs,
+        acceptResponseUri: shareRequest.request.acceptResponseUri,
+      );
+      return AutoConsentApproved(redirectUri: redirectUri);
+    }
+
+    return const AutoConsentDeclined();
+  }
+
+  /// Returns `true` when every `required` set has at least one option whose
+  /// query IDs are all contained in [coveredQueryIds].
+  static bool _requiredSetsSatisfied(
+    List<DcqlCredentialSetQuery> credentialSets,
+    Set<String> coveredQueryIds,
+  ) => credentialSets
+      .where((s) => s.required)
+      .every(
+        (set) =>
+            set.options.any((option) => option.every(coveredQueryIds.contains)),
+      );
 
   /// Reconstructs the previously-approved VC set for each candidate record and
   /// submits the VP for the first record that satisfies every guard.
