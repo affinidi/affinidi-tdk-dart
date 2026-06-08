@@ -51,9 +51,17 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   }) async {
     switch (shareRequest) {
       case PexShareRequest pex:
-        return _submitPexShareResponse(pex, selectedCredentials, acceptResponseUri);
+        return _submitPexShareResponse(
+          pex,
+          selectedCredentials,
+          acceptResponseUri,
+        );
       case DcqlShareRequest dcql:
-        return _submitDcqlShareResponse(dcql, selectedCredentials, acceptResponseUri);
+        return _submitDcqlShareResponse(
+          dcql,
+          selectedCredentials,
+          acceptResponseUri,
+        );
     }
   }
 
