@@ -1,3 +1,5 @@
+import 'request_purpose.dart';
+
 /// The decoded JWT body from an Iota OID4VP `?request=` URI parameter.
 class IotaPayload {
   /// The nonce value to bind the presentation to the request.
@@ -127,4 +129,16 @@ class IotaPayload {
     'iat': iat,
     'presentation_definition': presentationDefinition,
   };
+
+  /// Extracts and validates the [RequestPurpose] from the presentation
+  /// definition's `purpose` field.
+  ///
+  /// Returns `null` if the `purpose` field is absent or does not contain a
+  /// valid [RequestPurpose].
+  RequestPurpose? get purpose {
+    final rawPurpose = presentationDefinition['purpose'];
+    if (rawPurpose == null) return null;
+    final parsed = RequestPurpose.fromJson(rawPurpose);
+    return parsed.isValid ? parsed : null;
+  }
 }

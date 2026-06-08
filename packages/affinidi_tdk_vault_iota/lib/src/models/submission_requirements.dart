@@ -77,4 +77,14 @@ class SubmissionRequirements {
       groupName: rawFrom,
     );
   }
+
+  /// The minimum number of VCs that must be included from this group.
+  ///
+  /// Priority: [count] > [min] > 1 (default).
+  int get minimumVCsCountToShare => count ?? min ?? 1;
+
+  /// The maximum number of VCs that may be included from this group.
+  ///
+  /// Priority: [count] > [max].
+  int? get maximumVCsCountToShare => count ?? max;
 }

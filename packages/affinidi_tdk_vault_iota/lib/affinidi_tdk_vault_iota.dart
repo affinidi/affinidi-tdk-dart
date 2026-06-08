@@ -5,7 +5,6 @@ library;
 export 'package:affinidi_tdk_common/affinidi_tdk_common.dart' show TdkException;
 
 export 'src/exceptions/tdk_exception_type.dart';
-export 'src/extensions/submission_requirements_extensions.dart';
 export 'src/models/auto_consent_result.dart';
 export 'src/models/claimed_credentials_result.dart';
 export 'src/models/iota_consent_record.dart';
