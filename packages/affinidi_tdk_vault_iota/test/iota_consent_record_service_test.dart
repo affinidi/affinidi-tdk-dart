@@ -1,6 +1,6 @@
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
 import 'package:affinidi_tdk_vault_iota/src/models/share_requirements.dart'
-    show PexShareRequest;
+    show DcqlShareRequest, PexShareRequest;
 import 'package:mocktail/mocktail.dart';
 import 'package:ssi/ssi.dart' show ParsedVerifiableCredential;
 import 'package:test/test.dart';
@@ -20,6 +20,7 @@ void main() {
     registerFallbackValue(IotaConsentRecordFixtures.empty());
     registerFallbackValue(IotaConsentRecordFixtures.shareRequest);
     registerFallbackValue(<ParsedVerifiableCredential<dynamic>>[]);
+    registerFallbackValue(IotaConsentRecordFixtures.dcqlShareRequest);
   });
 
   setUp(() {
@@ -337,7 +338,7 @@ void main() {
         () async {
           final result = await service.tryAutomaticConsent(
             shareRequest: IotaConsentRecordFixtures.shareRequest,
-            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
             requestHash: IotaConsentRecordFixtures.requestHash,
@@ -356,7 +357,7 @@ void main() {
 
           final result = await service.tryAutomaticConsent(
             shareRequest: IotaConsentRecordFixtures.shareRequest,
-            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
             requestHash: IotaConsentRecordFixtures.requestHash,
@@ -375,7 +376,7 @@ void main() {
 
           final result = await service.tryAutomaticConsent(
             shareRequest: IotaConsentRecordFixtures.shareRequest,
-            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
             requestHash: IotaConsentRecordFixtures.requestHash,
@@ -397,7 +398,7 @@ void main() {
           // claimedCredentials is empty — 'vc-1' cannot be found
           final result = await service.tryAutomaticConsent(
             shareRequest: IotaConsentRecordFixtures.shareRequest,
-            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
             requestHash: IotaConsentRecordFixtures.requestHash,
@@ -416,7 +417,7 @@ void main() {
 
           final result = await service.tryAutomaticConsent(
             shareRequest: IotaConsentRecordFixtures.shareRequest,
-            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
               available: [IotaConsentRecordFixtures.makeParsedVc()],
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
@@ -462,7 +463,7 @@ void main() {
 
           final result = await service.tryAutomaticConsent(
             shareRequest: shareRequestDifferentClient,
-            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
               available: [IotaConsentRecordFixtures.makeParsedVc()],
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
@@ -512,7 +513,7 @@ void main() {
 
           final result = await service.tryAutomaticConsent(
             shareRequest: shareRequestWithConstraint,
-            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
               available: [IotaConsentRecordFixtures.makeParsedVc()],
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
@@ -547,7 +548,7 @@ void main() {
 
           final result = await service.tryAutomaticConsent(
             shareRequest: IotaConsentRecordFixtures.shareRequest,
-            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
               available: [IotaConsentRecordFixtures.makeParsedVc()],
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
@@ -597,7 +598,7 @@ void main() {
 
           await service.tryAutomaticConsent(
             shareRequest: shareRequestWith2Descriptors,
-            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
               available: [vc1, vc2],
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
@@ -645,7 +646,7 @@ void main() {
 
           final result = await service.tryAutomaticConsent(
             shareRequest: twoDescriptorRequest,
-            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
               available: [IotaConsentRecordFixtures.makeParsedVc()],
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
@@ -658,6 +659,7 @@ void main() {
             () => shareResponseService.submitShareResponse(
               shareRequest: any(named: 'shareRequest'),
               selectedCredentials: any(named: 'selectedCredentials'),
+              acceptResponseUri: any(named: 'acceptResponseUri'),
             ),
           );
         },
@@ -686,7 +688,7 @@ void main() {
 
           final result = await service.tryAutomaticConsent(
             shareRequest: IotaConsentRecordFixtures.shareRequest,
-            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
               available: [
                 IotaConsentRecordFixtures.makeParsedVc(id: 'vc-1'),
                 IotaConsentRecordFixtures.makeParsedVc(id: 'vc-2'),
@@ -702,6 +704,7 @@ void main() {
             () => shareResponseService.submitShareResponse(
               shareRequest: any(named: 'shareRequest'),
               selectedCredentials: any(named: 'selectedCredentials'),
+              acceptResponseUri: any(named: 'acceptResponseUri'),
             ),
           );
         },
@@ -728,7 +731,7 @@ void main() {
           await expectLater(
             () => service.tryAutomaticConsent(
               shareRequest: shareRequestMalformed,
-              claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+              matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
                 available: [IotaConsentRecordFixtures.makeParsedVc()],
               ),
               verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
@@ -757,7 +760,7 @@ void main() {
 
           await service.tryAutomaticConsent(
             shareRequest: IotaConsentRecordFixtures.shareRequest,
-            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
               available: [IotaConsentRecordFixtures.makeParsedVc()],
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
@@ -770,6 +773,7 @@ void main() {
                     () => shareResponseService.submitShareResponse(
                       shareRequest: captureAny(named: 'shareRequest'),
                       selectedCredentials: any(named: 'selectedCredentials'),
+                      acceptResponseUri: any(named: 'acceptResponseUri'),
                     ),
                   ).captured.single
                   as Oid4vpShareRequest;
@@ -791,7 +795,7 @@ void main() {
           await expectLater(
             () => service.tryAutomaticConsent(
               shareRequest: IotaConsentRecordFixtures.shareRequest,
-              claimedCredentials:
+              matchedCredentials:
                   IotaConsentRecordFixtures.claimedCredentials(),
               verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
               vaultId: IotaConsentRecordFixtures.vaultId,
@@ -821,7 +825,7 @@ void main() {
           await expectLater(
             () => service.tryAutomaticConsent(
               shareRequest: IotaConsentRecordFixtures.shareRequest,
-              claimedCredentials:
+              matchedCredentials:
                   IotaConsentRecordFixtures.claimedCredentials(),
               verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
               vaultId: IotaConsentRecordFixtures.vaultId,
@@ -855,7 +859,7 @@ void main() {
           await expectLater(
             () => service.tryAutomaticConsent(
               shareRequest: shareRequestWithoutId,
-              claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+              matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
                 available: [IotaConsentRecordFixtures.makeParsedVc()],
               ),
               verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
@@ -891,7 +895,7 @@ void main() {
           await expectLater(
             () => service.tryAutomaticConsent(
               shareRequest: shareRequestWithoutDescriptors,
-              claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+              matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
                 available: [IotaConsentRecordFixtures.makeParsedVc()],
               ),
               verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
@@ -948,7 +952,7 @@ void main() {
 
           final result = await service.tryAutomaticConsent(
             shareRequest: shareRequestChangedConstraint,
-            claimedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
               available: [IotaConsentRecordFixtures.makeParsedVc()],
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
@@ -961,6 +965,249 @@ void main() {
             () => shareResponseService.submitShareResponse(
               shareRequest: any(named: 'shareRequest'),
               selectedCredentials: any(named: 'selectedCredentials'),
+              acceptResponseUri: any(named: 'acceptResponseUri'),
+            ),
+          );
+        },
+      );
+    });
+
+    group('tryAutomaticConsent (DCQL)', () {
+      test(
+        'returns AutoConsentDeclined when no stored records match',
+        () async {
+          when(
+            () => store.findAllByRequestHash(any()),
+          ).thenAnswer((_) async => []);
+
+          final result = await service.tryAutomaticConsent(
+            shareRequest: IotaConsentRecordFixtures.dcqlShareRequest,
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
+            requestHash: IotaConsentRecordFixtures.requestHash,
+          );
+
+          expect(result, isA<AutoConsentDeclined>());
+        },
+      );
+
+      test('returns AutoConsentApproved when all guards pass', () async {
+        when(() => store.findAllByRequestHash(any())).thenAnswer(
+          (_) async => [
+            IotaConsentRecordFixtures.dcqlAutoShareEnabledMatchingHash(),
+          ],
+        );
+
+        final result = await service.tryAutomaticConsent(
+          shareRequest: IotaConsentRecordFixtures.dcqlShareRequest,
+          matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+            available: [IotaConsentRecordFixtures.makeParsedVc()],
+          ),
+          verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+          vaultId: IotaConsentRecordFixtures.vaultId,
+          requestHash: IotaConsentRecordFixtures.requestHash,
+        );
+
+        expect(result, isA<AutoConsentApproved>());
+        verify(
+          () => shareResponseService.submitShareResponse(
+            shareRequest: any(named: 'shareRequest'),
+            selectedCredentials: any(named: 'selectedCredentials'),
+            acceptResponseUri: any(named: 'acceptResponseUri'),
+          ),
+        ).called(1);
+      });
+
+      test(
+        'returns AutoConsentDeclined when a previously shared VC is no longer in the vault',
+        () async {
+          when(() => store.findAllByRequestHash(any())).thenAnswer(
+            (_) async => [
+              IotaConsentRecordFixtures.dcqlAutoShareEnabledMatchingHash(),
+            ],
+          );
+
+          // Vault is empty — the previously shared VC is gone.
+          final result = await service.tryAutomaticConsent(
+            shareRequest: IotaConsentRecordFixtures.dcqlShareRequest,
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
+            requestHash: IotaConsentRecordFixtures.requestHash,
+          );
+
+          expect(result, isA<AutoConsentDeclined>());
+          verifyNever(
+            () => shareResponseService.submitShareResponse(
+              shareRequest: any(named: 'shareRequest'),
+              selectedCredentials: any(named: 'selectedCredentials'),
+              acceptResponseUri: any(named: 'acceptResponseUri'),
+            ),
+          );
+        },
+      );
+
+      test(
+        'returns AutoConsentDeclined when credential query count differs from stored VC count',
+        () async {
+          final twoQueryRequest = DcqlShareRequest(
+            request: IotaConsentRecordFixtures.dcqlShareRequest.request,
+            dcqlQuery: const DcqlQuery(
+              credentials: [
+                DcqlCredentialQuery(id: 'query-1'),
+                DcqlCredentialQuery(id: 'query-2'),
+              ],
+            ),
+            jwtAssertion:
+                IotaConsentRecordFixtures.dcqlShareRequest.jwtAssertion,
+          );
+          when(() => store.findAllByRequestHash(any())).thenAnswer(
+            (_) async => [
+              // Record has one VC, but the new request has two queries.
+              IotaConsentRecordFixtures.dcqlAutoShareEnabledMatchingHash(),
+            ],
+          );
+
+          final result = await service.tryAutomaticConsent(
+            shareRequest: twoQueryRequest,
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+              available: [IotaConsentRecordFixtures.makeParsedVc()],
+            ),
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
+            requestHash: IotaConsentRecordFixtures.requestHash,
+          );
+
+          expect(result, isA<AutoConsentDeclined>());
+          verifyNever(
+            () => shareResponseService.submitShareResponse(
+              shareRequest: any(named: 'shareRequest'),
+              selectedCredentials: any(named: 'selectedCredentials'),
+              acceptResponseUri: any(named: 'acceptResponseUri'),
+            ),
+          );
+        },
+      );
+
+      test(
+        'returns AutoConsentDeclined when the VC does not match the credential query',
+        () async {
+          // Query requires type EmailV1 but the vault VC has no type filter match.
+          final strictTypeRequest = DcqlShareRequest(
+            request: IotaConsentRecordFixtures.dcqlShareRequest.request,
+            dcqlQuery: const DcqlQuery(
+              credentials: [
+                DcqlCredentialQuery(
+                  id: 'query-1',
+                  meta: DcqlCredentialMeta(
+                    typeValues: [
+                      ['EmailV1'],
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            jwtAssertion:
+                IotaConsentRecordFixtures.dcqlShareRequest.jwtAssertion,
+          );
+          when(() => store.findAllByRequestHash(any())).thenAnswer(
+            (_) async => [
+              IotaConsentRecordFixtures.dcqlAutoShareEnabledMatchingHash(),
+            ],
+          );
+
+          final result = await service.tryAutomaticConsent(
+            shareRequest: strictTypeRequest,
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+              // VC has no EmailV1 type — will not match the query.
+              available: [IotaConsentRecordFixtures.makeParsedVc()],
+            ),
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
+            requestHash: IotaConsentRecordFixtures.requestHash,
+          );
+
+          expect(result, isA<AutoConsentDeclined>());
+          verifyNever(
+            () => shareResponseService.submitShareResponse(
+              shareRequest: any(named: 'shareRequest'),
+              selectedCredentials: any(named: 'selectedCredentials'),
+              acceptResponseUri: any(named: 'acceptResponseUri'),
+            ),
+          );
+        },
+      );
+
+      test('returns AutoConsentDeclined when clientId has changed', () async {
+        final differentClientRequest = DcqlShareRequest(
+          request: const IotaRequest(
+            responseType: 'vp_token',
+            responseMode: 'direct_post',
+            acceptResponseUri: 'https://verifier.example.com/accept',
+            rejectResponseUri: 'https://verifier.example.com/reject',
+            state: 'test_state',
+            nonce: 'test_nonce',
+            clientId: 'did:key:differentVerifier',
+          ),
+          dcqlQuery: IotaConsentRecordFixtures.dcqlShareRequest.dcqlQuery,
+          jwtAssertion: IotaConsentRecordFixtures.dcqlShareRequest.jwtAssertion,
+        );
+        when(() => store.findAllByRequestHash(any())).thenAnswer(
+          (_) async => [
+            IotaConsentRecordFixtures.dcqlAutoShareEnabledMatchingHash(),
+          ],
+        );
+
+        final result = await service.tryAutomaticConsent(
+          shareRequest: differentClientRequest,
+          matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+            available: [IotaConsentRecordFixtures.makeParsedVc()],
+          ),
+          verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+          vaultId: IotaConsentRecordFixtures.vaultId,
+          requestHash: IotaConsentRecordFixtures.requestHash,
+        );
+
+        expect(result, isA<AutoConsentDeclined>());
+        verifyNever(
+          () => shareResponseService.submitShareResponse(
+            shareRequest: any(named: 'shareRequest'),
+            selectedCredentials: any(named: 'selectedCredentials'),
+            acceptResponseUri: any(named: 'acceptResponseUri'),
+          ),
+        );
+      });
+
+      test(
+        'returns AutoConsentDeclined when the verifier fingerprint has changed',
+        () async {
+          when(() => store.findAllByRequestHash(any())).thenAnswer(
+            (_) async => [
+              IotaConsentRecordFixtures.dcqlAutoShareEnabledMatchingHash(),
+            ],
+          );
+          // Mock returns a hash that does not equal record.hash ('mock_hash').
+          when(
+            () => cryptography.createHash(hashSource: any(named: 'hashSource')),
+          ).thenReturn('different_hash');
+
+          final result = await service.tryAutomaticConsent(
+            shareRequest: IotaConsentRecordFixtures.dcqlShareRequest,
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+              available: [IotaConsentRecordFixtures.makeParsedVc()],
+            ),
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
+            requestHash: IotaConsentRecordFixtures.requestHash,
+          );
+
+          expect(result, isA<AutoConsentDeclined>());
+          verifyNever(
+            () => shareResponseService.submitShareResponse(
+              shareRequest: any(named: 'shareRequest'),
+              selectedCredentials: any(named: 'selectedCredentials'),
+              acceptResponseUri: any(named: 'acceptResponseUri'),
             ),
           );
         },

@@ -1,6 +1,6 @@
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
 import 'package:affinidi_tdk_vault_iota/src/models/share_requirements.dart'
-    show PexShareRequest;
+    show DcqlShareRequest, PexShareRequest;
 import 'package:ssi/ssi.dart'
     show
         CredentialSubject,
@@ -202,4 +202,36 @@ class IotaConsentRecordFixtures {
       },
     );
   }
+
+  /// A [DcqlShareRequest] with a single credential query matching any
+  /// [VerifiableCredential] (no type filter).
+  static const dcqlShareRequest = DcqlShareRequest(
+    request: IotaRequest(
+      responseType: 'vp_token',
+      responseMode: 'direct_post',
+      acceptResponseUri: 'https://verifier.example.com/accept',
+      rejectResponseUri: 'https://verifier.example.com/reject',
+      state: 'test_state',
+      nonce: 'test_nonce',
+      clientId: clientId,
+    ),
+    dcqlQuery: DcqlQuery(credentials: [DcqlCredentialQuery(id: 'query-1')]),
+    jwtAssertion: 'test_jwt',
+  );
+
+  /// A DCQL consent record with auto-share enabled and a hash matching the
+  /// mock cryptography service return value (`mock_hash`).
+  static IotaConsentRecord dcqlAutoShareEnabledMatchingHash() =>
+      const IotaConsentRecord(
+        hash: 'mock_hash',
+        requestHash: requestHash,
+        sharedAt: sharedAt,
+        profileName: profileName,
+        profileId: profileId,
+        clientId: clientId,
+        isAutoShareEnabled: true,
+        isConsentManagementEnabled: false,
+        sharedVcIds: [vcId],
+        claimedVcTypesCsv: 'SomeType',
+      );
 }
