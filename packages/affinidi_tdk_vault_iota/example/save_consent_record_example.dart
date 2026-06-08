@@ -1,3 +1,5 @@
+import 'dart:convert' show jsonEncode;
+
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
 import 'package:ssi/ssi.dart'
@@ -5,6 +7,7 @@ import 'package:ssi/ssi.dart'
         CredentialSubject,
         Issuer,
         JsonLdContext,
+        ParsedVerifiableCredential,
         VcDataModelV1,
         VerifiableCredential;
 
@@ -26,6 +29,45 @@ class InMemoryConsentStorage implements ConsentStorage {
     }
     return null;
   }
+
+  @override
+  Future<List<IotaConsentRecord>> findAllByRequestHash(
+    String requestHash,
+  ) async {
+    return _records.values.where((r) => r.requestHash == requestHash).toList();
+  }
+}
+
+/// A stub [IotaShareResponseServiceInterface] for demonstration purposes.
+///
+/// In a real application, construct [IotaShareResponseService] with a real
+/// `CallbackApi` and `DidSigner` from your wallet integration.
+class _StubShareResponseService implements IotaShareResponseServiceInterface {
+  @override
+  Future<Uri?> submitShareResponse({
+    required String state,
+    required String nonce,
+    required String clientId,
+    required String definitionId,
+    required List<
+      ({
+        PDDescriptor descriptor,
+        ParsedVerifiableCredential<dynamic> credential,
+      })
+    >
+    selectedCredentials,
+    required String acceptResponseUri,
+  }) => throw UnimplementedError(
+    'Provide a real IotaShareResponseService for VP submission',
+  );
+
+  @override
+  Future<Uri?> rejectShareResponse({
+    required String state,
+    required String rejectResponseUri,
+  }) => throw UnimplementedError(
+    'Provide a real IotaShareResponseService for VP rejection',
+  );
 }
 
 /// This example demonstrates how to persist a consent record after a
@@ -43,6 +85,7 @@ Future<void> main() async {
   final service = IotaConsentRecordService(
     store: store,
     cryptography: cryptography,
+    shareResponseService: _StubShareResponseService(),
   );
 
   // Values that would normally come from the validated OID4VP request and the
@@ -52,11 +95,24 @@ Future<void> main() async {
   const profileId = 'profile-abc';
   const profileName = 'Personal';
 
-  // Compute the request fingerprint.  The consumer chooses the algorithm.
-  // Here we produce sha1("$clientId") — a simple per-verifier deduplication.
-  // You may include the serialised Presentation Definition JSON for stricter
-  // per-request deduplication.
-  final requestHash = cryptography.createHash(hashSource: clientId);
+  // The Presentation Definition (or DCQL query) from the validated share
+  // request. In a real app this comes from shareRequest.presentationDefinition
+  // (PexShareRequest) or shareRequest.dcqlQuery.toJson() (DcqlShareRequest).
+  const presentationDefinition = <String, dynamic>{
+    'id': 'pd-email-phone',
+    'input_descriptors': [
+      {'id': 'email_vc'},
+      {'id': 'phone_vc'},
+    ],
+  };
+
+  // Compute the request fingerprint: sha1("$clientId|<PD JSON>").
+  // Including the serialised query ensures two different PDs from the same
+  // verifier produce different hashes, preventing autoshare from firing on a
+  // request shape that was never approved.
+  final requestHash = cryptography.createHash(
+    hashSource: '$clientId|${jsonEncode(presentationDefinition)}',
+  );
 
   final verifierMetadata = const VerifierClientMetadata(
     name: 'Example Verifier',

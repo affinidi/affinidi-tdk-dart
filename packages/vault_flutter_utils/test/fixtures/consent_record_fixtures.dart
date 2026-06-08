@@ -14,4 +14,18 @@ abstract final class ConsentRecordFixtures {
     sharedVcIds: ['vc-1'],
     claimedVcTypesCsv: 'EmailV1VC',
   );
+
+  /// A second record sharing the same [requestHash] but with a distinct [hash],
+  /// used to verify that `findAllByRequestHash` returns all matching entries.
+  static IotaConsentRecord secondRecord() => const IotaConsentRecord(
+    hash: 'full-hash-pqr',
+    requestHash: requestHash,
+    sharedAt: '2024-06-01T00:00:00.000Z',
+    profileName: 'Work',
+    profileId: 'profile-2',
+    clientId: 'did:key:z6MkVerifier',
+    isAutoShareEnabled: true,
+    sharedVcIds: ['vc-2'],
+    claimedVcTypesCsv: 'NationalIdV1VC',
+  );
 }

@@ -64,4 +64,30 @@ class FlutterSecureConsentStorage implements ConsentStorage {
     }
     return null;
   }
+
+  @override
+  Future<List<IotaConsentRecord>> findAllByRequestHash(
+    String requestHash,
+  ) async {
+    final all = await _secureStorage.readAll();
+    final prefix = '${_namespace}_';
+    final results = <IotaConsentRecord>[];
+    for (final entry in all.entries) {
+      if (!entry.key.startsWith(prefix)) continue;
+      try {
+        final record = IotaConsentRecord.fromJson(
+          jsonDecode(entry.value) as Map<String, dynamic>,
+        );
+        if (record.requestHash == requestHash) results.add(record);
+      } catch (e) {
+        throw TdkException(
+          message:
+              'Failed to deserialize consent record for key "${entry.key}".',
+          code: TdkExceptionType.failedToReadConsentRecord.code,
+          originalMessage: e.toString(),
+        );
+      }
+    }
+    return results;
+  }
 }

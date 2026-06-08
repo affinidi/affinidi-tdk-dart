@@ -1,14 +1,21 @@
 import 'dart:convert' show jsonEncode;
 
-import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart' hide LogLevel;
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
-import 'package:ssi/ssi.dart' show VerifiableCredential;
+import 'package:ssi/ssi.dart'
+    show ParsedVerifiableCredential, VerifiableCredential;
 
 import '../exceptions/tdk_exception_type.dart';
+import '../models/auto_consent_result.dart';
+import '../models/claimed_credentials_result.dart';
 import '../models/iota_consent_record.dart';
+import '../models/pd_descriptor.dart';
+import '../models/share_requirements.dart';
 import '../models/verifier_client_metadata.dart';
 import 'consent_storage.dart';
 import 'iota_consent_record_service_interface.dart';
+import 'iota_share_response_service_interface.dart';
+import 'share_requirements_matcher_service.dart';
 
 /// Persists a consent record after a successful Iota OID4VP share.
 ///
@@ -17,19 +24,17 @@ import 'iota_consent_record_service_interface.dart';
 ///
 /// - `hash` = `sha1("$profileId|$vaultId|$clientId|$name|$logo|$origin|$vcsFingerprint")`
 ///   — full fingerprint that changes if the profile, verifier branding,
-///   or selected credentials change. Used as the storage key, matching
-///   vault_universal_ui's `addOrUpdate` behaviour.
+///   or selected credentials change. Used as the storage key
 ///
-/// The VC fingerprint matches vault_universal_ui's `_stringifyVCs` concept:
-/// each VC contributes `issuer-id-validFrom-credentialSubject`, joined with
-/// `|` in presentation order. ZPD datapoints are not tracked by the TDK.
+/// The VC fingerprint format: each VC contributes `issuer-id-validFrom-credentialSubject`,
+/// joined with `|` in presentation order. ZPD datapoints are not tracked by the TDK.
 ///
 /// [IotaConsentRecord.sharedAt] is always set to the current UTC time,
-/// so it reflects the most recent share — the same semantics as
-/// vault_universal_ui's `firstVisited` column ("Last Consent" in the UI).
+/// so it reflects the most recent share ("Last Consent" in the UI).
 class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   final ConsentStorage _store;
   final CryptographyServiceInterface _cryptography;
+  final IotaShareResponseServiceInterface _shareResponseService;
   final Logger _logger;
 
   /// Creates an [IotaConsentRecordService].
@@ -37,13 +42,16 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   /// Parameters:
   /// * [store] - Consumer-provided storage backend for consent records.
   /// * [cryptography] - Cryptography service used to compute SHA-1 hashes.
+  /// * [shareResponseService] - Service used to build and submit the VP.
   /// * [logger] - Optional logger; defaults to [Logger.instance].
   IotaConsentRecordService({
     required ConsentStorage store,
     required CryptographyServiceInterface cryptography,
+    required IotaShareResponseServiceInterface shareResponseService,
     Logger? logger,
   }) : _store = store,
        _cryptography = cryptography,
+       _shareResponseService = shareResponseService,
        _logger = logger ?? Logger.instance;
 
   @override
@@ -60,8 +68,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     Map<String, String> historySharedData = const {},
     bool isConsentManagementEnabled = false,
   }) async {
-    _logger.log(LogLevel.fine, 'Saving consent record for clientId: $clientId');
-
     final sharedVcIds = sharedVcs.map((vc) => vc.id?.toString() ?? '').toList();
     final hash = _computeConsentHash(
       profileId: profileId,
@@ -94,12 +100,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     } catch (e, stackTrace) {
       if (e is TdkException) rethrow;
 
-      _logger.log(
-        LogLevel.warning,
-        'Failed to persist consent record',
-        error: e,
-        stackTrace: stackTrace,
-      );
+      _logger.warning('Failed to persist consent record');
 
       Error.throwWithStackTrace(
         TdkException(
@@ -110,13 +111,165 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
         stackTrace,
       );
     }
+  }
 
-    _logger.log(LogLevel.fine, 'Consent record saved for clientId: $clientId');
+  @override
+  Future<AutoConsentResult> tryAutomaticConsent({
+    required Oid4vpShareRequest shareRequest,
+    required ClaimedCredentialsResult claimedCredentials,
+    required VerifierClientMetadata verifierMetadata,
+    required String requestHash,
+    required String vaultId,
+  }) async {
+    final List<IotaConsentRecord> candidates;
+    try {
+      candidates = await _store.findAllByRequestHash(requestHash);
+    } catch (e, stackTrace) {
+      if (e is TdkException) rethrow;
+
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Failed to read consent record.',
+          code: TdkExceptionType.failedToReadConsentRecord.code,
+          originalMessage: e.toString(),
+        ),
+        stackTrace,
+      );
+    }
+
+    final enabledCandidates = candidates
+        .where((r) => r.isAutoShareEnabled)
+        .toList();
+
+    if (enabledCandidates.isEmpty) {
+      return const AutoConsentDeclined();
+    }
+
+    // Parse PD fields once — they come from the request, not from any stored record.
+    final rawDescriptors =
+        shareRequest.presentationDefinition['input_descriptors'];
+    if (rawDescriptors is! List<dynamic>) {
+      throw TdkException(
+        message: 'Presentation definition is missing input_descriptors.',
+        code: TdkExceptionType.invalidPresentationDefinition.code,
+      );
+    }
+
+    final List<PDDescriptor> inputDescriptors;
+    try {
+      inputDescriptors = rawDescriptors
+          .map((e) => PDDescriptor.fromJson(e as Map<String, dynamic>))
+          .toList();
+    } catch (e, stackTrace) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Malformed input_descriptors in presentation definition.',
+          code: TdkExceptionType.invalidPresentationDefinition.code,
+          originalMessage: e.toString(),
+        ),
+        stackTrace,
+      );
+    }
+
+    final definitionId = shareRequest.presentationDefinition['id'];
+    if (definitionId is! String) {
+      throw TdkException(
+        message: 'Presentation definition is missing a valid id.',
+        code: TdkExceptionType.invalidPresentationDefinition.code,
+      );
+    }
+
+    final allVcs = claimedCredentials.vcsGroups.values
+        .expand((group) => group.allAvailableVCs)
+        .map((a) => a.vc)
+        .whereType<ParsedVerifiableCredential<dynamic>>()
+        .toList();
+
+    for (final record in enabledCandidates) {
+      if (record.isConsentManagementEnabled) {
+        continue;
+      }
+
+      final previouslySelectedVcs = record.sharedVcIds
+          .map(
+            (id) => allVcs.where((vc) => vc.id?.toString() == id).firstOrNull,
+          )
+          .whereType<ParsedVerifiableCredential<dynamic>>()
+          .toList();
+
+      if (previouslySelectedVcs.length != record.sharedVcIds.length) {
+        continue;
+      }
+
+      if (inputDescriptors.length != previouslySelectedVcs.length) {
+        continue;
+      }
+
+      final remainingVcs = List<ParsedVerifiableCredential<dynamic>>.of(
+        previouslySelectedVcs,
+      );
+      final previouslySelected =
+          <
+            ({
+              PDDescriptor descriptor,
+              ParsedVerifiableCredential<dynamic> credential,
+            })
+          >[];
+
+      var descriptorMatchFailed = false;
+      for (final descriptor in inputDescriptors) {
+        final match = remainingVcs
+            .where(
+              (vc) => PexEvaluator.selectMatching(descriptor.toJson(), [
+                vc,
+              ]).isNotEmpty,
+            )
+            .firstOrNull;
+
+        if (match == null) {
+          descriptorMatchFailed = true;
+          break;
+        }
+        previouslySelected.add((descriptor: descriptor, credential: match));
+        remainingVcs.remove(match);
+      }
+      if (descriptorMatchFailed) continue;
+
+      if (record.clientId != shareRequest.request.clientId) {
+        continue;
+      }
+
+      final currentHash = _computeConsentHash(
+        profileId: record.profileId,
+        vaultId: vaultId,
+        clientId: record.clientId,
+        verifierName: verifierMetadata.name,
+        logo: verifierMetadata.logo,
+        siteUrl: verifierMetadata.origin,
+        vcsFingerprint: _stringifyVcs(previouslySelectedVcs),
+      );
+
+      if (record.hash != currentHash) {
+        continue;
+      }
+
+      final iotaRequest = shareRequest.request;
+      final redirectUri = await _shareResponseService.submitShareResponse(
+        state: iotaRequest.state,
+        nonce: iotaRequest.nonce,
+        clientId: iotaRequest.clientId,
+        definitionId: definitionId,
+        selectedCredentials: previouslySelected,
+      );
+      return AutoConsentApproved(redirectUri: redirectUri);
+    }
+
+    return const AutoConsentDeclined();
   }
 
   /// Computes the full share fingerprint covering all share-event fields.
   ///
-  /// Matches vault_universal_ui's `_generateHash` field ordering:
+  /// Hash field ordering:
   /// `profileId|vaultId|clientId|name|logo|origin|vcsFingerprint`.
   /// ZPD datapoints are not tracked by the TDK and are omitted from the hash.
   ///

@@ -11,7 +11,7 @@ resolution: workspace
 dependencies:
   affinidi_tdk_common: ^2.0.0
   affinidi_tdk_cryptography: ^3.0.0
-  affinidi_tdk_iota_client: ^2.0.0
+  dio: ^5.9.2
   http: ^1.1.0
   json_schema: ^5.2.0
   meta: ^1.15.0
@@ -19,6 +19,6 @@ dependencies:
   uuid: ^4.5.1
 
 dev_dependencies:
-  dio: ^5.9.2
+  affinidi_tdk_test_utilities: ^2.0.0
   mocktail: ^1.0.4
   test: ^1.25.8

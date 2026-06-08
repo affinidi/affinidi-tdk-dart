@@ -4,8 +4,30 @@ import 'package:ssi/ssi.dart'
         CredentialSubject,
         Issuer,
         JsonLdContext,
+        ParsedVerifiableCredential,
         VcDataModelV1,
         VerifiableCredential;
+
+/// A minimal [ParsedVerifiableCredential] backed by a [VcDataModelV1].
+///
+/// Used in tests that require the richer [ParsedVerifiableCredential] type
+/// (e.g. [IotaConsentRecordService.tryAutomaticConsent]). Adds only the
+/// [serialized] getter required by the interface; all other properties come
+/// from [VcDataModelV1].
+final class _TestParsedVc extends VcDataModelV1
+    implements ParsedVerifiableCredential<Map<String, dynamic>> {
+  _TestParsedVc({
+    required super.context,
+    required super.id,
+    required super.type,
+    required super.issuer,
+    required super.credentialSubject,
+    required super.issuanceDate,
+  });
+
+  @override
+  Map<String, dynamic> get serialized => toJson();
+}
 
 class IotaConsentRecordFixtures {
   static const clientId = 'did:key:verifier123';
@@ -20,6 +42,27 @@ class IotaConsentRecordFixtures {
   static final vcValidFrom = DateTime.utc(2023, 1, 1);
   static const vcCredentialSubject = <String, dynamic>{'name': 'Alice'};
 
+  static final pdDescriptor = PDDescriptor.fromJson({'id': 'descriptor-1'});
+
+  static final shareRequest = Oid4vpShareRequest(
+    request: const IotaRequest(
+      responseType: 'vp_token',
+      responseMode: 'direct_post',
+      acceptResponseUri: 'https://verifier.example.com/accept',
+      rejectResponseUri: 'https://verifier.example.com/reject',
+      state: 'test_state',
+      nonce: 'test_nonce',
+      clientId: clientId,
+    ),
+    presentationDefinition: const {
+      'id': 'def-1',
+      'input_descriptors': [
+        {'id': 'descriptor-1'},
+      ],
+    },
+    jwtAssertion: 'test_jwt',
+  );
+
   static final verifierMetadata = const VerifierClientMetadata(
     name: 'Test Verifier',
     logo: 'https://example.com/logo.png',
@@ -33,6 +76,24 @@ class IotaConsentRecordFixtures {
     Map<String, dynamic> credentialSubject = vcCredentialSubject,
   }) {
     return VcDataModelV1(
+      context: JsonLdContext.fromJson([
+        'https://www.w3.org/2018/credentials/v1',
+      ]),
+      id: Uri.parse(id),
+      type: {'VerifiableCredential'},
+      issuer: Issuer(id: Uri.parse(issuerId)),
+      credentialSubject: [CredentialSubject.fromJson(credentialSubject)],
+      issuanceDate: validFrom ?? vcValidFrom,
+    );
+  }
+
+  static ParsedVerifiableCredential<Map<String, dynamic>> makeParsedVc({
+    String id = vcId,
+    String issuerId = vcIssuerId,
+    DateTime? validFrom,
+    Map<String, dynamic> credentialSubject = vcCredentialSubject,
+  }) {
+    return _TestParsedVc(
       context: JsonLdContext.fromJson([
         'https://www.w3.org/2018/credentials/v1',
       ]),
@@ -80,4 +141,63 @@ class IotaConsentRecordFixtures {
     sharedVcIds: ['vc-1'],
     claimedVcTypesCsv: 'SomeType',
   );
+
+  static IotaConsentRecord autoShareEnabledMatchingHash() =>
+      const IotaConsentRecord(
+        hash: 'mock_hash',
+        requestHash: requestHash,
+        sharedAt: sharedAt,
+        profileName: profileName,
+        profileId: profileId,
+        clientId: clientId,
+        isAutoShareEnabled: true,
+        isConsentManagementEnabled: false,
+        sharedVcIds: [vcId],
+        claimedVcTypesCsv: 'SomeType',
+      );
+
+  static IotaConsentRecord autoShareDisabled() => const IotaConsentRecord(
+    hash: 'mock_hash',
+    requestHash: requestHash,
+    sharedAt: sharedAt,
+    profileName: profileName,
+    profileId: profileId,
+    clientId: clientId,
+    isAutoShareEnabled: false,
+    isConsentManagementEnabled: false,
+    sharedVcIds: [vcId],
+    claimedVcTypesCsv: 'SomeType',
+  );
+
+  static IotaConsentRecord consentManagementEnabled() =>
+      const IotaConsentRecord(
+        hash: 'mock_hash',
+        requestHash: requestHash,
+        sharedAt: sharedAt,
+        profileName: profileName,
+        profileId: profileId,
+        clientId: clientId,
+        isAutoShareEnabled: true,
+        isConsentManagementEnabled: true,
+        sharedVcIds: [vcId],
+        claimedVcTypesCsv: 'SomeType',
+      );
+
+  /// Builds a [ClaimedCredentialsResult] containing the given [available] VCs.
+  ///
+  /// Each VC is placed in its own descriptor group. Pass an empty list (the
+  /// default) to simulate a share flow where no credentials were matched.
+  static ClaimedCredentialsResult claimedCredentials({
+    List<ParsedVerifiableCredential<dynamic>> available = const [],
+  }) {
+    if (available.isEmpty) return const ClaimedCredentialsResult(vcsGroups: {});
+    return ClaimedCredentialsResult(
+      vcsGroups: {
+        for (var i = 0; i < available.length; i++)
+          PDDescriptor.fromJson({'id': 'descriptor-$i'}): VCsGroupByType(
+            matchedVCs: [VcAvailable(vc: available[i])],
+          ),
+      },
+    );
+  }
 }

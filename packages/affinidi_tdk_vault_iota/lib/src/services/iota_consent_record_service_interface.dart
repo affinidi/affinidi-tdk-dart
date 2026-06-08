@@ -1,5 +1,8 @@
 import 'package:ssi/ssi.dart' show VerifiableCredential;
 
+import '../models/auto_consent_result.dart';
+import '../models/claimed_credentials_result.dart';
+import '../models/share_requirements.dart';
 import '../models/verifier_client_metadata.dart';
 
 /// Defines the contract for persisting a consent record after a successful
@@ -35,5 +38,54 @@ abstract interface class IotaConsentRecordServiceInterface {
     required bool isAutoShareEnabled,
     Map<String, String> historySharedData = const {},
     bool isConsentManagementEnabled = false,
+  });
+
+  /// Checks whether a previous consent record authorises this share request,
+  /// and if so, submits the VP automatically.
+  ///
+  /// Reconstructs the previously-approved set by matching stored VC IDs
+  /// against [claimedCredentials], verifies the share fingerprint, then
+  /// builds and submits the VP.
+  ///
+  /// Parameters:
+  /// * [shareRequest] - The parsed OID4VP share request. Provides the
+  ///   presentation definition, `state`, `nonce`, and `clientId`.
+  /// * [claimedCredentials] - The already-matched credentials from the share
+  ///   flow. Previously-shared VCs are looked up by ID within this result.
+  /// * [verifierMetadata] - Current verifier branding, compared against the
+  ///   stored fingerprint to detect changes.
+  /// * [requestHash] - The same hash that was passed to [saveConsentRecord]
+  ///   when the record was persisted. Used to look up the matching history
+  ///   entry. **Security note:** the TDK does not compute or verify this
+  ///   value — it is supplied by the consumer. A buggy or malicious consumer
+  ///   could pass a hash that maps to an unrelated stored record. The
+  ///   auto-consent path therefore re-validates every security-sensitive field
+  ///   against the live [shareRequest]: the verifier `clientId`, the
+  ///   descriptor count, that each previously-shared VC still satisfies the
+  ///   current descriptor constraints (via PEX), and the full share
+  ///   fingerprint.
+  /// * [vaultId] - Opaque identifier of the vault or wallet that will sign the
+  ///   VP (e.g. a DID). Included in the fingerprint to detect wallet switches.
+  ///   The caller must ensure this corresponds to the wallet/profile that will
+  ///   actually sign the VP.
+  ///
+  /// All stored records matching [requestHash] with auto-share enabled are
+  /// evaluated in order. Each record is skipped if any guard fails (consent
+  /// management enabled, previously shared VCs unavailable, descriptor count
+  /// changed, VC-to-descriptor matching failed, clientId mismatch, or
+  /// fingerprint mismatch). The first record that passes all guards triggers
+  /// VP submission.
+  ///
+  /// Returns [AutoConsentApproved] with the verifier's redirect URI on success,
+  /// or [AutoConsentDeclined] when no stored record passes all checks.
+  /// Throws `TdkException` with code `failed_to_read_consent_record` if the
+  /// underlying storage read fails, or with submission-related codes if the VP
+  /// post fails.
+  Future<AutoConsentResult> tryAutomaticConsent({
+    required Oid4vpShareRequest shareRequest,
+    required ClaimedCredentialsResult claimedCredentials,
+    required VerifierClientMetadata verifierMetadata,
+    required String requestHash,
+    required String vaultId,
   });
 }

@@ -127,4 +127,44 @@ void main() {
       },
     );
   });
+
+  group('findAllByRequestHash', () {
+    test('returns an empty list when no records match', () async {
+      when(() => mockStorage.readAll()).thenAnswer((_) async => {});
+
+      final results = await store.findAllByRequestHash(
+        ConsentRecordFixtures.requestHash,
+      );
+
+      expect(results, isEmpty);
+    });
+
+    test(
+      'returns all records matching requestHash and ignores others',
+      () async {
+        final second = ConsentRecordFixtures.secondRecord();
+        final unrelated = ConsentRecordFixtures.record().copyWith(
+          hash: 'other-hash',
+          requestHash: 'different-request-hash',
+        );
+        when(() => mockStorage.readAll()).thenAnswer(
+          (_) async => {
+            '${defaultNamespace}_$hash': jsonEncode(record.toJson()),
+            '${defaultNamespace}_${second.hash}': jsonEncode(second.toJson()),
+            '${defaultNamespace}_other-hash': jsonEncode(unrelated.toJson()),
+          },
+        );
+
+        final results = await store.findAllByRequestHash(
+          ConsentRecordFixtures.requestHash,
+        );
+
+        expect(results, hasLength(2));
+        expect(
+          results.map((r) => r.hash),
+          containsAll([record.hash, second.hash]),
+        );
+      },
+    );
+  });
 }
