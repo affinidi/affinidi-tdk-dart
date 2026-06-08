@@ -7,12 +7,14 @@ import 'package:ssi/ssi.dart'
 
 import '../exceptions/tdk_exception_type.dart';
 import '../models/auto_consent_result.dart';
-import '../models/claimed_credentials_result.dart';
+import '../models/dcql_query.dart' show DcqlCredentialQuery;
 import '../models/iota_consent_record.dart';
+import '../models/matched_credentials_result.dart';
 import '../models/pd_descriptor.dart';
 import '../models/share_requirements.dart';
 import '../models/verifier_client_metadata.dart';
 import 'consent_storage.dart';
+import 'dcql_evaluator.dart';
 import 'iota_consent_record_service_interface.dart';
 import 'iota_share_response_service_interface.dart';
 import 'share_requirements_matcher_service.dart';
@@ -116,7 +118,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   @override
   Future<AutoConsentResult> tryAutomaticConsent({
     required Oid4vpShareRequest shareRequest,
-    required ClaimedCredentialsResult claimedCredentials,
+    required MatchedCredentialsResult matchedCredentials,
     required VerifierClientMetadata verifierMetadata,
     required String requestHash,
     required String vaultId,
@@ -145,18 +147,38 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       return const AutoConsentDeclined();
     }
 
-    // DCQL auto-consent is not yet supported — decline gracefully.
-    final pexRequest = switch (shareRequest) {
-      PexShareRequest r => r,
-      DcqlShareRequest _ => null,
-    };
-    if (pexRequest == null) {
-      return const AutoConsentDeclined();
-    }
+    final allVcs = matchedCredentials.availableCredentials
+        .whereType<ParsedVerifiableCredential<dynamic>>()
+        .toList();
 
+    return switch (shareRequest) {
+      PexShareRequest pex => _tryPexAutoConsent(
+        pex,
+        enabledCandidates,
+        allVcs,
+        verifierMetadata,
+        vaultId,
+      ),
+      DcqlShareRequest dcql => _tryDcqlAutoConsent(
+        dcql,
+        enabledCandidates,
+        allVcs,
+        verifierMetadata,
+        vaultId,
+      ),
+    };
+  }
+
+  Future<AutoConsentResult> _tryPexAutoConsent(
+    PexShareRequest shareRequest,
+    List<IotaConsentRecord> enabledCandidates,
+    List<ParsedVerifiableCredential<dynamic>> allVcs,
+    VerifierClientMetadata verifierMetadata,
+    String vaultId,
+  ) async {
     // Parse PD fields once — they come from the request, not from any stored record.
     final rawDescriptors =
-        pexRequest.presentationDefinition['input_descriptors'];
+        shareRequest.presentationDefinition['input_descriptors'];
     if (rawDescriptors is! List<dynamic>) {
       throw TdkException(
         message: 'Presentation definition is missing input_descriptors.',
@@ -180,7 +202,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       );
     }
 
-    final definitionId = pexRequest.presentationDefinition['id'];
+    final definitionId = shareRequest.presentationDefinition['id'];
     if (definitionId is! String) {
       throw TdkException(
         message: 'Presentation definition is missing a valid id.',
@@ -188,16 +210,59 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       );
     }
 
-    final allVcs = claimedCredentials.vcsGroups.values
-        .expand((group) => group.allAvailableVCs)
-        .map((a) => a.vc)
-        .whereType<ParsedVerifiableCredential<dynamic>>()
-        .toList();
+    return _matchAndSubmit<PDDescriptor>(
+      shareRequest: shareRequest,
+      requirements: inputDescriptors,
+      enabledCandidates: enabledCandidates,
+      allVcs: allVcs,
+      verifierMetadata: verifierMetadata,
+      vaultId: vaultId,
+      matches: (descriptor, vc) =>
+          PexEvaluator.selectMatching(descriptor.toJson(), [vc]).isNotEmpty,
+    );
+  }
 
+  Future<AutoConsentResult> _tryDcqlAutoConsent(
+    DcqlShareRequest shareRequest,
+    List<IotaConsentRecord> enabledCandidates,
+    List<ParsedVerifiableCredential<dynamic>> allVcs,
+    VerifierClientMetadata verifierMetadata,
+    String vaultId,
+  ) {
+    return _matchAndSubmit<DcqlCredentialQuery>(
+      shareRequest: shareRequest,
+      requirements: shareRequest.dcqlQuery.credentials,
+      enabledCandidates: enabledCandidates,
+      allVcs: allVcs,
+      verifierMetadata: verifierMetadata,
+      vaultId: vaultId,
+      matches: (query, vc) =>
+          DcqlEvaluator.selectMatching(query, [vc]).isNotEmpty,
+    );
+  }
+
+  /// Reconstructs the previously-approved VC set for each candidate record and
+  /// submits the VP for the first record that satisfies every guard.
+  ///
+  /// Parameters:
+  /// * [requirements] - The per-VC constraints from the live request
+  ///   (PD descriptors for PEX, credential queries for DCQL).
+  /// * [matches] - Predicate deciding whether a VC satisfies a requirement.
+  ///
+  /// Returns [AutoConsentApproved] for the first passing record, otherwise
+  /// [AutoConsentDeclined].
+  Future<AutoConsentResult> _matchAndSubmit<T>({
+    required Oid4vpShareRequest shareRequest,
+    required List<T> requirements,
+    required List<IotaConsentRecord> enabledCandidates,
+    required List<ParsedVerifiableCredential<dynamic>> allVcs,
+    required VerifierClientMetadata verifierMetadata,
+    required String vaultId,
+    required bool Function(T requirement, ParsedVerifiableCredential<dynamic> vc)
+    matches,
+  }) async {
     for (final record in enabledCandidates) {
-      if (record.isConsentManagementEnabled) {
-        continue;
-      }
+      if (record.isConsentManagementEnabled) continue;
 
       final previouslySelectedVcs = record.sharedVcIds
           .map(
@@ -206,47 +271,30 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
           .whereType<ParsedVerifiableCredential<dynamic>>()
           .toList();
 
-      if (previouslySelectedVcs.length != record.sharedVcIds.length) {
-        continue;
-      }
-
-      if (inputDescriptors.length != previouslySelectedVcs.length) {
-        continue;
-      }
+      if (previouslySelectedVcs.length != record.sharedVcIds.length) continue;
+      if (requirements.length != previouslySelectedVcs.length) continue;
 
       final remainingVcs = List<ParsedVerifiableCredential<dynamic>>.of(
         previouslySelectedVcs,
       );
-      final previouslySelected =
-          <
-            ({
-              PDDescriptor descriptor,
-              ParsedVerifiableCredential<dynamic> credential,
-            })
-          >[];
+      final matched = <ParsedVerifiableCredential<dynamic>>[];
 
-      var descriptorMatchFailed = false;
-      for (final descriptor in inputDescriptors) {
+      var matchFailed = false;
+      for (final requirement in requirements) {
         final match = remainingVcs
-            .where(
-              (vc) => PexEvaluator.selectMatching(descriptor.toJson(), [
-                vc,
-              ]).isNotEmpty,
-            )
+            .where((vc) => matches(requirement, vc))
             .firstOrNull;
 
         if (match == null) {
-          descriptorMatchFailed = true;
+          matchFailed = true;
           break;
         }
-        previouslySelected.add((descriptor: descriptor, credential: match));
+        matched.add(match);
         remainingVcs.remove(match);
       }
-      if (descriptorMatchFailed) continue;
+      if (matchFailed) continue;
 
-      if (record.clientId != shareRequest.request.clientId) {
-        continue;
-      }
+      if (record.clientId != shareRequest.request.clientId) continue;
 
       final currentHash = _computeConsentHash(
         profileId: record.profileId,
@@ -258,15 +306,11 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
         vcsFingerprint: _stringifyVcs(previouslySelectedVcs),
       );
 
-      if (record.hash != currentHash) {
-        continue;
-      }
+      if (record.hash != currentHash) continue;
 
       final redirectUri = await _shareResponseService.submitShareResponse(
         shareRequest: shareRequest,
-        selectedCredentials: previouslySelected
-            .map((e) => e.credential)
-            .toList(),
+        selectedCredentials: matched,
         acceptResponseUri: shareRequest.request.acceptResponseUri,
       );
       return AutoConsentApproved(redirectUri: redirectUri);
