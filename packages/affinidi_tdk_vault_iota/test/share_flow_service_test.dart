@@ -157,6 +157,32 @@ void main() {
       });
     });
 
+    group('and the JWT payload contains both presentation_definition and dcql_query', () {
+      test('should throw a TdkException with code parse_failure', () async {
+        when(
+          () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+        ).thenReturn({
+          ..._baseDecodedPayload(),
+          'dcql_query': {
+            'credentials': [<String, dynamic>{}],
+          },
+        });
+
+        final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
+
+        await expectLater(
+          () => service.validateOid4vpRequest(uri),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.parseFailure.code,
+            ),
+          ),
+        );
+      });
+    });
+
     group('and the JWT signature is invalid', () {
       test(
         'should throw a TdkException with code invalid_or_expired_jwt and set originalMessage',
