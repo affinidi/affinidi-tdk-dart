@@ -1,8 +1,6 @@
-import 'package:affinidi_tdk_common/affinidi_tdk_common.dart' show TdkException;
 import 'package:ssi/ssi.dart' show ParsedVerifiableCredential;
 
 import '../models/share_requirements.dart';
-import '../share_flow_service.dart' show ShareFlowService;
 
 /// Defines the contract for building and submitting an OID4VP share response.
 ///
@@ -13,12 +11,12 @@ abstract interface class IotaShareResponseServiceInterface {
   ///
   /// Parameters:
   /// * [shareRequest] - the parsed OID4VP request returned by
-  ///   [ShareFlowService.validateOid4vpRequest].
+  ///   `ShareFlowService.validateOid4vpRequest`.
   /// * [selectedCredentials] - the credentials to include in the VP.
   /// * [acceptResponseUri] - the URI from the OID4VP request JWT to POST the VP to.
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
-  /// Throws [TdkException] with code `submission_failed` if the call fails.
+  /// Throws `TdkException` with code `submission_failed` if the call fails.
   Future<Uri?> submitShareResponse({
     required Oid4vpShareRequest shareRequest,
     required List<ParsedVerifiableCredential<dynamic>> selectedCredentials,
@@ -32,7 +30,7 @@ abstract interface class IotaShareResponseServiceInterface {
   /// * [rejectResponseUri] - the URI from the OID4VP request JWT to POST the rejection to.
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
-  /// Throws [TdkException] with code `submission_failed` if the call fails.
+  /// Throws `TdkException` with code `submission_failed` if the call fails.
   Future<Uri?> rejectShareResponse({
     required Oid4vpShareRequest shareRequest,
     required String rejectResponseUri,

@@ -1,14 +1,10 @@
 import 'package:ssi/ssi.dart';
 
-import '../services/credential_matcher_service.dart'
-    show CredentialMatcherService;
-import 'share_requirements.dart' show DcqlShareRequest, PexShareRequest;
-
 /// The common result interface for both PEX and DCQL credential matching.
 ///
-/// Returned by [CredentialMatcherService.match] for both [PexShareRequest]
-/// and [DcqlShareRequest]. Consumers only need this interface — they never
-/// need to branch on the concrete type.
+/// Returned by `CredentialMatcherService.match` for both PEX and DCQL share
+/// requests. Consumers only need this interface — they never need to branch
+/// on the concrete type.
 abstract interface class MatchedCredentialsResult {
   /// Whether every requested credential group has at least the minimum number
   /// of available credentials to satisfy the request.

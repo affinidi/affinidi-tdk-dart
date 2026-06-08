@@ -1,5 +1,6 @@
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
+import 'package:affinidi_tdk_vault_iota/src/models/share_requirements.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 

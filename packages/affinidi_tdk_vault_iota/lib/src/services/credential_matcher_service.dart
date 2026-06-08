@@ -1,4 +1,3 @@
-import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:ssi/ssi.dart';
 
 import '../models/matched_credentials_result.dart';

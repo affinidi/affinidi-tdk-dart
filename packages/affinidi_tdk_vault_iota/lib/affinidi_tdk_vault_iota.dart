@@ -7,7 +7,6 @@ export 'package:affinidi_tdk_common/affinidi_tdk_common.dart' show TdkException;
 export 'src/exceptions/tdk_exception_type.dart';
 export 'src/models/auto_consent_result.dart';
 export 'src/models/claimed_credentials_result.dart';
-export 'src/models/dcql_query.dart';
 export 'src/models/iota_consent_record.dart';
 export 'src/models/iota_request.dart';
 export 'src/models/matched_credentials_result.dart';
@@ -15,8 +14,7 @@ export 'src/models/pd_descriptor.dart';
 export 'src/models/pd_requirements.dart';
 export 'src/models/presentation_submission.dart';
 export 'src/models/request_purpose.dart';
-export 'src/models/share_requirements.dart'
-    show Oid4vpShareRequest, PexShareRequest, DcqlShareRequest;
+export 'src/models/share_requirements.dart' show Oid4vpShareRequest;
 export 'src/models/submission_requirements.dart';
 export 'src/models/vc_availability.dart';
 export 'src/models/vc_unavailability_reason.dart';
@@ -27,8 +25,6 @@ export 'src/models/vp_data_model.dart';
 export 'src/services/consent_storage.dart';
 export 'src/services/credential_matcher_service.dart';
 export 'src/services/credential_matcher_service_interface.dart';
-export 'src/services/dcql_share_requirements_matcher_service.dart'
-    show DcqlMatchedCredentialsResult;
 export 'src/services/iota_consent_record_service.dart';
 export 'src/services/iota_consent_record_service_interface.dart';
 export 'src/services/iota_share_response_service.dart';

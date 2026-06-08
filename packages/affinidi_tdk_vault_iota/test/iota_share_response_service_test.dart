@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:affinidi_tdk_test_utilities/affinidi_tdk_test_utilities.dart';
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
+import 'package:affinidi_tdk_vault_iota/src/models/dcql_query.dart';
+import 'package:affinidi_tdk_vault_iota/src/models/share_requirements.dart';
 import 'package:dio/dio.dart';
 import 'package:ssi/ssi.dart';
 import 'package:test/test.dart';

@@ -1,4 +1,3 @@
-import '../share_flow_service.dart' show ShareFlowService;
 import 'dcql_query.dart';
 import 'iota_payload.dart';
 import 'iota_request.dart';
@@ -6,7 +5,7 @@ import 'request_purpose.dart';
 
 /// The structured result of parsing and validating an OID4VP URI.
 ///
-/// Returned by [ShareFlowService.validateOid4vpRequest] and passed to
+/// Returned by `ShareFlowService.validateOid4vpRequest` and passed to
 /// credential-matching and submission services. Consumers should treat this
 /// as an opaque handle — the TDK routes between PEX and DCQL internally.
 ///

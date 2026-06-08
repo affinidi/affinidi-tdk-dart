@@ -252,7 +252,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     );
   }
 
-  /// Auto-consent path for DCQL requests that include [credential_sets].
+  /// Auto-consent path for DCQL requests that include `credential_sets`.
   ///
   /// Unlike plain DCQL, a valid share covers only the subset of credential
   /// queries satisfying one option per required set, so the strict
