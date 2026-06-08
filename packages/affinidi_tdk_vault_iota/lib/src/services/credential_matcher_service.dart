@@ -27,12 +27,10 @@ class CredentialMatcherService implements CredentialMatcherServiceInterface {
   ///   revocation checking.
   /// * [dcqlMatcher] - optional DCQL matcher; defaults to one with no
   ///   revocation checking.
-  /// * [logger] - optional [Logger] instance; defaults to [Logger.instance].
   CredentialMatcherService({
     PDClassifier? pdClassifier,
     ShareRequirementsMatcher? pexMatcher,
     DcqlShareRequirementsMatcher? dcqlMatcher,
-    Logger? logger,
   }) : _pdClassifier = pdClassifier ?? PDClassifier(validIdvIssuers: const []),
        _pexMatcher = pexMatcher ?? ShareRequirementsMatcher(),
        _dcqlMatcher = dcqlMatcher ?? DcqlShareRequirementsMatcher();
