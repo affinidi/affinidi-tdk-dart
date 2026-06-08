@@ -377,6 +377,150 @@ void main() {
       });
     });
 
+    group('and the JWT iat is in the future', () {
+      test('throws invalidOrExpiredJwt when iat exceeds now + 60 s', () async {
+        final futureIat = DateTime.now().millisecondsSinceEpoch ~/ 1000 + 120;
+        when(
+          () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+        ).thenReturn(_baseDecodedPayload(iat: futureIat));
+        when(
+          () => mockCryptography.verifyJwt(
+            jwtToken: any(named: 'jwtToken'),
+            didKey: any(named: 'didKey'),
+          ),
+        ).thenReturn(_validResult());
+
+        final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
+
+        await expectLater(
+          () => service.validateOid4vpRequest(uri),
+          throwsA(
+            isA<TdkException>()
+                .having(
+                  (e) => e.code,
+                  'code',
+                  TdkExceptionType.invalidOrExpiredJwt.code,
+                )
+                .having(
+                  (e) => e.message,
+                  'message',
+                  contains('iat is in the future'),
+                ),
+          ),
+        );
+      });
+
+      test('accepts JWT with iat = now (within tolerance)', () async {
+        final nowIat = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+        when(
+          () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+        ).thenReturn(_baseDecodedPayload(iat: nowIat));
+        when(
+          () => mockCryptography.verifyJwt(
+            jwtToken: any(named: 'jwtToken'),
+            didKey: any(named: 'didKey'),
+          ),
+        ).thenReturn(_validResult());
+
+        final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
+
+        await expectLater(service.validateOid4vpRequest(uri), completes);
+      });
+    });
+
+    group('and the nonce is replayed', () {
+      test('second call with same nonce throws replayDetected', () async {
+        when(
+          () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+        ).thenReturn(_baseDecodedPayload(nonce: 'replay-nonce'));
+        when(
+          () => mockCryptography.verifyJwt(
+            jwtToken: any(named: 'jwtToken'),
+            didKey: any(named: 'didKey'),
+          ),
+        ).thenReturn(_validResult());
+
+        final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
+
+        // First call should succeed.
+        await expectLater(service.validateOid4vpRequest(uri), completes);
+
+        // Second call with the same nonce must throw.
+        await expectLater(
+          () => service.validateOid4vpRequest(uri),
+          throwsA(
+            isA<TdkException>()
+                .having(
+                  (e) => e.code,
+                  'code',
+                  TdkExceptionType.replayDetected.code,
+                )
+                .having(
+                  (e) => e.message,
+                  'message',
+                  contains('already been consumed'),
+                ),
+          ),
+        );
+      });
+
+      test('different nonce in second call is accepted', () async {
+        var callCount = 0;
+        when(
+          () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+        ).thenAnswer((_) {
+          callCount++;
+          return _baseDecodedPayload(
+            nonce: callCount == 1 ? 'nonce-one' : 'nonce-two',
+          );
+        });
+        when(
+          () => mockCryptography.verifyJwt(
+            jwtToken: any(named: 'jwtToken'),
+            didKey: any(named: 'didKey'),
+          ),
+        ).thenReturn(_validResult());
+
+        final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
+
+        await expectLater(service.validateOid4vpRequest(uri), completes);
+        await expectLater(service.validateOid4vpRequest(uri), completes);
+      });
+
+      test('expired nonce is purged and can be reused', () async {
+        // Use a past exp so the cache entry is immediately expired.
+        final pastExp = DateTime.now().millisecondsSinceEpoch ~/ 1000 - 1;
+        when(
+          () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+        ).thenReturn(_baseDecodedPayload(nonce: 'reuse-nonce', exp: pastExp));
+        when(
+          () => mockCryptography.verifyJwt(
+            jwtToken: any(named: 'jwtToken'),
+            didKey: any(named: 'didKey'),
+          ),
+        ).thenReturn(_validResult());
+
+        final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
+        final cache = NonceReplayCache();
+        final serviceWithCache = ShareFlowService(
+          cryptography: mockCryptography,
+          replayCache: cache,
+        );
+
+        // First call records the nonce with a past exp.
+        await expectLater(
+          serviceWithCache.validateOid4vpRequest(uri),
+          completes,
+        );
+
+        // Second call: purge runs first (pastExp < now), nonce is gone, fresh.
+        await expectLater(
+          serviceWithCache.validateOid4vpRequest(uri),
+          completes,
+        );
+      });
+    });
+
     group('and the client_id is empty', () {
       test('should throw a TdkException with code missing_client_id', () async {
         when(
