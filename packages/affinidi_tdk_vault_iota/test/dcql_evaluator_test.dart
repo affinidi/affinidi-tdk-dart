@@ -584,6 +584,23 @@ void main() {
         throwsFormatException,
       );
     });
+
+    test('defaults multiple to false when omitted', () {
+      final query = DcqlCredentialQuery.fromJson({'id': 'query-1'});
+
+      expect(query.multiple, isFalse);
+      expect(query.toJson()['multiple'], isFalse);
+    });
+
+    test('parses and serialises multiple when true', () {
+      final query = DcqlCredentialQuery.fromJson({
+        'id': 'query-1',
+        'multiple': true,
+      });
+
+      expect(query.multiple, isTrue);
+      expect(query.toJson()['multiple'], isTrue);
+    });
   });
 
   group('DcqlQuery credential_sets JSON round-trip', () {

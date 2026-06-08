@@ -2,6 +2,7 @@ import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:ssi/ssi.dart';
 
 import '../models/dcql_query.dart';
+import '../models/matched_credential_group.dart';
 import '../models/matched_credentials_result.dart';
 import '../models/vc_availability.dart';
 import '../models/vc_unavailability_reason.dart';
@@ -73,6 +74,23 @@ class DcqlMatchedCredentialsResult implements MatchedCredentialsResult {
       .map((a) => a.vc)
       .toList();
 
+  @override
+  List<MatchedCredentialGroup> get groups => vcsGroups.entries
+      .map(
+        (entry) => MatchedCredentialGroup(
+          id: entry.key.id,
+          minimumVCsCountToShare: entry.value.minimumVCsCountToShare,
+          maximumVCsCountToShare: entry.value.maximumVCsCountToShare,
+          availableCredentials: entry.value.allAvailableVCs
+              .map((a) => a.vc)
+              .toList(),
+          recommendedCredentials: entry.value.recommendedMaximumVCs
+              .map((a) => a.vc)
+              .toList(),
+        ),
+      )
+      .toList();
+
   bool _isSetSatisfied(DcqlCredentialSetQuery set) =>
       set.options.any(_isOptionSatisfied);
 
@@ -133,12 +151,18 @@ class DcqlShareRequirementsMatcher {
     final vcsGroups = <DcqlCredentialQuery, VCsGroupByType>{};
 
     for (final credentialQuery in dcqlQuery.credentials) {
+      // A query that omits `multiple` (or sets it to false) accepts exactly one
+      // Credential; `multiple: true` imposes no upper bound.
+      final maxCount = credentialQuery.multiple ? null : 1;
       try {
         final matched = DcqlEvaluator.selectMatching(credentialQuery, allVCs);
 
         if (matched.isEmpty) {
-          vcsGroups[credentialQuery] = const VCsGroupByType(
-            matchedVCs: [VcUnavailable(reason: VcUnavailabilityReason.missing)],
+          vcsGroups[credentialQuery] = VCsGroupByType(
+            maximumVCsCountToShare: maxCount,
+            matchedVCs: const [
+              VcUnavailable(reason: VcUnavailabilityReason.missing),
+            ],
           );
           continue;
         }
@@ -193,6 +217,7 @@ class DcqlShareRequirementsMatcher {
         }
 
         vcsGroups[credentialQuery] = VCsGroupByType(
+          maximumVCsCountToShare: maxCount,
           matchedVCs: [...available, ...revoked, ...expired],
         );
       } catch (e, stackTrace) {
@@ -202,8 +227,11 @@ class DcqlShareRequirementsMatcher {
           component: _componentName,
         );
         _logger.warning(stackTrace.toString(), component: _componentName);
-        vcsGroups[credentialQuery] = const VCsGroupByType(
-          matchedVCs: [VcUnavailable(reason: VcUnavailabilityReason.unknown)],
+        vcsGroups[credentialQuery] = VCsGroupByType(
+          maximumVCsCountToShare: maxCount,
+          matchedVCs: const [
+            VcUnavailable(reason: VcUnavailabilityReason.unknown),
+          ],
         );
       }
     }

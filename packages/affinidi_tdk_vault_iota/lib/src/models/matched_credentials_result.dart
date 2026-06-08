@@ -1,5 +1,7 @@
 import 'package:ssi/ssi.dart';
 
+import 'matched_credential_group.dart';
+
 /// The common result interface for both PEX and DCQL credential matching.
 ///
 /// Returned by `CredentialMatcherService.match` for both PEX and DCQL share
@@ -15,4 +17,12 @@ abstract interface class MatchedCredentialsResult {
 
   /// All credentials across all groups that are available to share.
   List<VerifiableCredential> get availableCredentials;
+
+  /// The requested credential groups, each describing how many credentials of
+  /// that group may be shared and which vault credentials satisfy it.
+  ///
+  /// Use this to enforce per-group minimum and maximum selection counts and to
+  /// tell whether a group accepts multiple credentials
+  /// ([MatchedCredentialGroup.allowsMultiple]).
+  List<MatchedCredentialGroup> get groups;
 }

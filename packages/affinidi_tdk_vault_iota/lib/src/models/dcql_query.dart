@@ -143,6 +143,14 @@ class DcqlCredentialQuery {
   /// every entry in [claims] must match.
   final List<List<String>>? claimSets;
 
+  /// Whether the verifier accepts more than one matching Credential for this
+  /// query.
+  ///
+  /// Defaults to `false` when omitted, in which case exactly one Presentation
+  /// is returned for this query id. When `true`, all matching Credentials may
+  /// be returned. See the OpenID4VP 1.0 specification, section 6.1.
+  final bool multiple;
+
   /// Creates a new [DcqlCredentialQuery] instance.
   ///
   /// Parameters:
@@ -151,12 +159,15 @@ class DcqlCredentialQuery {
   /// * [meta] - optional metadata with type constraints.
   /// * [claims] - optional list of specific claim requirements.
   /// * [claimSets] - optional OR-of-ANDs groups of claim ids.
+  /// * [multiple] - whether multiple matching Credentials are accepted;
+  ///   defaults to `false`.
   const DcqlCredentialQuery({
     required this.id,
     this.format,
     this.meta,
     this.claims,
     this.claimSets,
+    this.multiple = false,
   });
 
   /// Creates a [DcqlCredentialQuery] from a JSON map.
@@ -188,6 +199,7 @@ class DcqlCredentialQuery {
                 .map((group) => (group as List).cast<String>())
                 .toList()
           : null,
+      multiple: json['multiple'] as bool? ?? false,
     );
   }
 
@@ -198,6 +210,7 @@ class DcqlCredentialQuery {
     if (meta != null) 'meta': meta!.toJson(),
     if (claims != null) 'claims': claims!.map((c) => c.toJson()).toList(),
     if (claimSets != null) 'claim_sets': claimSets,
+    'multiple': multiple,
   };
 }
 

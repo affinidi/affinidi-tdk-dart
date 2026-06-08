@@ -225,4 +225,51 @@ void main() {
       expect(result.availableCredentials, containsAll([degree, employment]));
     });
   });
+
+  group('groups view and multiple flag', () {
+    DcqlCredentialQuery queryWithMultiple({required bool multiple}) =>
+        DcqlCredentialQuery(
+          id: 'degree',
+          multiple: multiple,
+          meta: DcqlCredentialMeta(
+            typeValues: [
+              ['UniversityDegree'],
+            ],
+          ),
+        );
+
+    test('caps the group at one and recommends one when multiple is '
+        'false', () async {
+      final query = DcqlQuery(
+        credentials: [queryWithMultiple(multiple: false)],
+      );
+
+      final result = await matcher.match(query, [
+        buildTestVc(type: 'UniversityDegree'),
+        buildTestVc(type: 'UniversityDegree'),
+      ]);
+
+      final group = result.groups.single;
+      expect(group.id, equals('degree'));
+      expect(group.maximumVCsCountToShare, equals(1));
+      expect(group.allowsMultiple, isFalse);
+      expect(group.availableCredentials, hasLength(2));
+      expect(group.recommendedCredentials, hasLength(1));
+    });
+
+    test('leaves the group unbounded and recommends all when multiple is '
+        'true', () async {
+      final query = DcqlQuery(credentials: [queryWithMultiple(multiple: true)]);
+
+      final result = await matcher.match(query, [
+        buildTestVc(type: 'UniversityDegree'),
+        buildTestVc(type: 'UniversityDegree'),
+      ]);
+
+      final group = result.groups.single;
+      expect(group.maximumVCsCountToShare, isNull);
+      expect(group.allowsMultiple, isTrue);
+      expect(group.recommendedCredentials, hasLength(2));
+    });
+  });
 }

@@ -1,5 +1,6 @@
 import 'package:ssi/ssi.dart';
 
+import 'matched_credential_group.dart';
 import 'matched_credentials_result.dart';
 import 'pd_descriptor.dart';
 import 'pd_requirements.dart' show PDRequirements;
@@ -36,5 +37,22 @@ class ClaimedCredentialsResult implements MatchedCredentialsResult {
   List<VerifiableCredential> get availableCredentials => vcsGroups.values
       .expand((group) => group.allAvailableVCs)
       .map((a) => a.vc)
+      .toList();
+
+  @override
+  List<MatchedCredentialGroup> get groups => vcsGroups.entries
+      .map(
+        (entry) => MatchedCredentialGroup(
+          id: entry.key.id,
+          minimumVCsCountToShare: entry.value.minimumVCsCountToShare,
+          maximumVCsCountToShare: entry.value.maximumVCsCountToShare,
+          availableCredentials: entry.value.allAvailableVCs
+              .map((a) => a.vc)
+              .toList(),
+          recommendedCredentials: entry.value.recommendedMaximumVCs
+              .map((a) => a.vc)
+              .toList(),
+        ),
+      )
       .toList();
 }

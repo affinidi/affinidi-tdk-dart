@@ -53,9 +53,7 @@ abstract final class PresentationDefinitionParser {
   /// Returns the definition id.
   /// Throws [TdkException] with code `invalid_presentation_definition` when
   /// `id` is absent or not a string.
-  static String parseDefinitionId(
-    Map<String, dynamic> presentationDefinition,
-  ) {
+  static String parseDefinitionId(Map<String, dynamic> presentationDefinition) {
     final definitionId = presentationDefinition['id'];
     if (definitionId is! String) {
       throw TdkException(

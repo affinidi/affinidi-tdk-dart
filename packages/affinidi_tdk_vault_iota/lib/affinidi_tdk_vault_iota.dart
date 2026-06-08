@@ -9,6 +9,7 @@ export 'src/models/auto_consent_result.dart';
 export 'src/models/claimed_credentials_result.dart';
 export 'src/models/iota_consent_record.dart';
 export 'src/models/iota_request.dart';
+export 'src/models/matched_credential_group.dart';
 export 'src/models/matched_credentials_result.dart';
 export 'src/models/pd_descriptor.dart';
 export 'src/models/pd_requirements.dart';

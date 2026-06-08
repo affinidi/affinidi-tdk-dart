@@ -181,8 +181,9 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     // Parse PD fields once — they come from the request, not from any stored
     // record. Both calls fail fast with a typed exception on a malformed PD.
     final pd = shareRequest.presentationDefinition;
-    final inputDescriptors =
-        PresentationDefinitionParser.parseInputDescriptors(pd);
+    final inputDescriptors = PresentationDefinitionParser.parseInputDescriptors(
+      pd,
+    );
     PresentationDefinitionParser.parseDefinitionId(pd);
 
     return _matchAndSubmit<PDDescriptor>(

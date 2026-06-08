@@ -253,6 +253,57 @@ void main() {
         expect(data['state'], equals(_dcqlShareRequest.request.state));
         expect(data['vp_token'], isNotNull);
         expect(data.containsKey('presentation_submission'), isFalse);
+
+        final vpToken = jsonDecode(data['vp_token'] as String) as Map;
+        expect(vpToken.keys, equals({'q1'}));
+        expect(vpToken['q1'], isA<List<dynamic>>());
+        expect((vpToken['q1'] as List).length, equals(1));
+      });
+
+      test('returns one Presentation per matching Credential when '
+          'multiple is true', () async {
+        const multipleRequest = DcqlShareRequest(
+          request: IotaRequest(
+            responseType: 'vp_token',
+            responseMode: 'direct_post',
+            acceptResponseUri: _dcqlAcceptUri,
+            rejectResponseUri: _dcqlRejectUri,
+            state: 'dcql-state',
+            nonce: 'dcql-nonce',
+            clientId: 'did:key:dcql-verifier',
+          ),
+          dcqlQuery: DcqlQuery(
+            credentials: [DcqlCredentialQuery(id: 'q1', multiple: true)],
+          ),
+          jwtAssertion: 'dcql-jwt',
+        );
+
+        RequestOptions? captured;
+        dio.interceptors.add(
+          InterceptorsWrapper(
+            onRequest: (opts, handler) {
+              captured = opts;
+              handler.next(opts);
+            },
+          ),
+        );
+        dioAdapter.mockRequestWithReply(
+          url: _dcqlAcceptUri,
+          statusCode: 200,
+          data: <String, dynamic>{},
+          httpMethod: HttpMethod.post,
+        );
+
+        await buildService().submitShareResponse(
+          shareRequest: multipleRequest,
+          selectedCredentials: [_fakeVC, _fakeVC],
+          acceptResponseUri: _dcqlAcceptUri,
+        );
+
+        final data = captured!.data as Map<String, dynamic>;
+        final vpToken = jsonDecode(data['vp_token'] as String) as Map;
+        expect(vpToken.keys, equals({'q1'}));
+        expect((vpToken['q1'] as List).length, equals(2));
       });
 
       test('returns the redirect URI from the response', () async {
