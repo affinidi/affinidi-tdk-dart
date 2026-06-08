@@ -12,28 +12,86 @@ import 'dcql_evaluator.dart';
 ///
 /// Each entry in [vcsGroups] maps one [DcqlCredentialQuery] to the
 /// credentials found in the vault — available, expired, or missing.
+///
+/// When [credentialSets] is non-empty, satisfaction follows the DCQL
+/// `credential_sets` rules: each required set is satisfied when at least one of
+/// its options (a list of credential-query ids) is fully available. When
+/// [credentialSets] is `null` or empty, every credential query is required.
 class DcqlMatchedCredentialsResult implements MatchedCredentialsResult {
   /// Creates a [DcqlMatchedCredentialsResult].
-  const DcqlMatchedCredentialsResult({required this.vcsGroups});
+  const DcqlMatchedCredentialsResult({
+    required this.vcsGroups,
+    this.credentialSets,
+  });
 
   /// Maps each credential query entry to its matched credential group.
   final Map<DcqlCredentialQuery, VCsGroupByType> vcsGroups;
 
-  @override
-  bool get hasEnoughVCsAvailableToShare =>
-      vcsGroups.values.every((group) => group.hasEnoughVCsToShare);
+  /// The `credential_sets` requirements from the DCQL query, if any.
+  ///
+  /// `null` or empty means every credential query in [vcsGroups] is required.
+  final List<DcqlCredentialSetQuery>? credentialSets;
 
   @override
-  List<VerifiableCredential> get recommendedMaximumVCs => vcsGroups.values
-      .expand((group) => group.recommendedMaximumVCs)
-      .map((a) => a.vc)
-      .toList();
+  bool get hasEnoughVCsAvailableToShare {
+    final sets = credentialSets;
+    if (sets == null || sets.isEmpty) {
+      return vcsGroups.values.every((group) => group.hasEnoughVCsToShare);
+    }
+    return sets.where((set) => set.required).every(_isSetSatisfied);
+  }
+
+  @override
+  List<VerifiableCredential> get recommendedMaximumVCs {
+    final sets = credentialSets;
+    if (sets == null || sets.isEmpty) {
+      return vcsGroups.values
+          .expand((group) => group.recommendedMaximumVCs)
+          .map((a) => a.vc)
+          .toList();
+    }
+
+    final recommended = <VerifiableCredential>[];
+    for (final set in sets) {
+      final option = _firstSatisfiedOption(set);
+      if (option == null) continue;
+      for (final id in option) {
+        for (final available
+            in _groupById(id)?.recommendedMaximumVCs ?? const <VcAvailable>[]) {
+          if (!recommended.contains(available.vc)) {
+            recommended.add(available.vc);
+          }
+        }
+      }
+    }
+    return recommended;
+  }
 
   @override
   List<VerifiableCredential> get availableCredentials => vcsGroups.values
       .expand((group) => group.allAvailableVCs)
       .map((a) => a.vc)
       .toList();
+
+  bool _isSetSatisfied(DcqlCredentialSetQuery set) =>
+      set.options.any(_isOptionSatisfied);
+
+  bool _isOptionSatisfied(List<String> option) =>
+      option.every((id) => _groupById(id)?.hasEnoughVCsToShare ?? false);
+
+  List<String>? _firstSatisfiedOption(DcqlCredentialSetQuery set) {
+    for (final option in set.options) {
+      if (_isOptionSatisfied(option)) return option;
+    }
+    return null;
+  }
+
+  VCsGroupByType? _groupById(String id) {
+    for (final entry in vcsGroups.entries) {
+      if (entry.key.id == id) return entry.value;
+    }
+    return null;
+  }
 }
 
 /// Matches a user's vault credentials against a [DcqlQuery].
@@ -150,6 +208,9 @@ class DcqlShareRequirementsMatcher {
       }
     }
 
-    return DcqlMatchedCredentialsResult(vcsGroups: vcsGroups);
+    return DcqlMatchedCredentialsResult(
+      vcsGroups: vcsGroups,
+      credentialSets: dcqlQuery.credentialSets,
+    );
   }
 }

@@ -258,7 +258,10 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     required List<ParsedVerifiableCredential<dynamic>> allVcs,
     required VerifierClientMetadata verifierMetadata,
     required String vaultId,
-    required bool Function(T requirement, ParsedVerifiableCredential<dynamic> vc)
+    required bool Function(
+      T requirement,
+      ParsedVerifiableCredential<dynamic> vc,
+    )
     matches,
   }) async {
     for (final record in enabledCandidates) {
