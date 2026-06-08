@@ -529,6 +529,23 @@ void main() {
       expect(claim.getEffectiveId(2), 'CLAIM_2');
       expect(claim.toJson().containsKey('id'), isFalse);
     });
+
+    test('throws FormatException when path is missing', () {
+      expect(
+        () => DcqlClaimDescriptor.fromJson({'id': 'email'}),
+        throwsFormatException,
+      );
+    });
+
+    test('throws FormatException when path is not a list', () {
+      expect(
+        () => DcqlClaimDescriptor.fromJson({
+          'id': 'email',
+          'path': 'credentialSubject.email',
+        }),
+        throwsFormatException,
+      );
+    });
   });
 
   group('DcqlCredentialQuery claim_sets JSON round-trip', () {
@@ -552,6 +569,20 @@ void main() {
       expect(query.toJson()['claim_sets'], [
         ['email'],
       ]);
+    });
+
+    test('throws FormatException when id is missing', () {
+      expect(
+        () => DcqlCredentialQuery.fromJson({'format': 'ldp_vc'}),
+        throwsFormatException,
+      );
+    });
+
+    test('throws FormatException when id is not a string', () {
+      expect(
+        () => DcqlCredentialQuery.fromJson({'id': 42}),
+        throwsFormatException,
+      );
     });
   });
 

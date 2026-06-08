@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:ssi/ssi.dart';
 
 import '../exceptions/tdk_exception_type.dart';
-import '../models/pd_descriptor.dart';
+import '../helpers/presentation_definition_parser.dart';
 import '../models/share_requirements.dart';
 import 'iota_share_response_service_interface.dart';
 import 'presentation_submission_builder.dart';
@@ -89,37 +89,9 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
     List<ParsedVerifiableCredential<dynamic>> selectedCredentials,
     String acceptResponseUri,
   ) async {
-    final rawDescriptors = pex.presentationDefinition['input_descriptors'];
-    if (rawDescriptors is! List) {
-      throw TdkException(
-        message: 'Presentation definition is missing input_descriptors.',
-        code: TdkExceptionType.invalidPresentationDefinition.code,
-      );
-    }
-
-    final List<PDDescriptor> descriptors;
-    try {
-      descriptors = rawDescriptors
-          .map((e) => PDDescriptor.fromJson(e as Map<String, dynamic>))
-          .toList();
-    } catch (e, stackTrace) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Malformed input_descriptors in presentation definition.',
-          code: TdkExceptionType.invalidPresentationDefinition.code,
-          originalMessage: e.toString(),
-        ),
-        stackTrace,
-      );
-    }
-
-    final definitionId = pex.presentationDefinition['id'];
-    if (definitionId is! String) {
-      throw TdkException(
-        message: 'Presentation definition is missing a valid id.',
-        code: TdkExceptionType.invalidPresentationDefinition.code,
-      );
-    }
+    final pd = pex.presentationDefinition;
+    final descriptors = PresentationDefinitionParser.parseInputDescriptors(pd);
+    final definitionId = PresentationDefinitionParser.parseDefinitionId(pd);
 
     final submission = PresentationSubmissionBuilder.build(
       definitionId: definitionId,

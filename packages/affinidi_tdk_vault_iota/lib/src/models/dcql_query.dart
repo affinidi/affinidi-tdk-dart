@@ -161,10 +161,16 @@ class DcqlCredentialQuery {
 
   /// Creates a [DcqlCredentialQuery] from a JSON map.
   factory DcqlCredentialQuery.fromJson(Map<String, dynamic> json) {
+    final id = json['id'];
+    if (id is! String) {
+      throw const FormatException(
+        'DCQL credential query is missing a string "id".',
+      );
+    }
     final rawClaims = json['claims'];
     final rawClaimSets = json['claim_sets'];
     return DcqlCredentialQuery(
-      id: json['id'] as String,
+      id: id,
       format: json['format'] as String?,
       meta: json['meta'] != null
           ? DcqlCredentialMeta.fromJson(json['meta'] as Map<String, dynamic>)
@@ -259,9 +265,15 @@ class DcqlClaimDescriptor {
 
   /// Creates a [DcqlClaimDescriptor] from a JSON map.
   factory DcqlClaimDescriptor.fromJson(Map<String, dynamic> json) {
+    final rawPath = json['path'];
+    if (rawPath is! List) {
+      throw const FormatException(
+        'DCQL claim descriptor is missing a "path" array.',
+      );
+    }
     return DcqlClaimDescriptor(
       id: json['id'] as String?,
-      path: (json['path'] as List).cast<Object?>(),
+      path: rawPath.cast<Object?>(),
       values: json['values'] != null
           ? (json['values'] as List).cast<Object?>()
           : null,

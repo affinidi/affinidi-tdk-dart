@@ -6,6 +6,7 @@ import 'package:ssi/ssi.dart'
     show ParsedVerifiableCredential, VerifiableCredential;
 
 import '../exceptions/tdk_exception_type.dart';
+import '../helpers/presentation_definition_parser.dart';
 import '../models/auto_consent_result.dart';
 import '../models/dcql_query.dart'
     show DcqlCredentialQuery, DcqlCredentialSetQuery;
@@ -177,39 +178,12 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     VerifierClientMetadata verifierMetadata,
     String vaultId,
   ) async {
-    // Parse PD fields once — they come from the request, not from any stored record.
-    final rawDescriptors =
-        shareRequest.presentationDefinition['input_descriptors'];
-    if (rawDescriptors is! List<dynamic>) {
-      throw TdkException(
-        message: 'Presentation definition is missing input_descriptors.',
-        code: TdkExceptionType.invalidPresentationDefinition.code,
-      );
-    }
-
-    final List<PDDescriptor> inputDescriptors;
-    try {
-      inputDescriptors = rawDescriptors
-          .map((e) => PDDescriptor.fromJson(e as Map<String, dynamic>))
-          .toList();
-    } catch (e, stackTrace) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Malformed input_descriptors in presentation definition.',
-          code: TdkExceptionType.invalidPresentationDefinition.code,
-          originalMessage: e.toString(),
-        ),
-        stackTrace,
-      );
-    }
-
-    final definitionId = shareRequest.presentationDefinition['id'];
-    if (definitionId is! String) {
-      throw TdkException(
-        message: 'Presentation definition is missing a valid id.',
-        code: TdkExceptionType.invalidPresentationDefinition.code,
-      );
-    }
+    // Parse PD fields once — they come from the request, not from any stored
+    // record. Both calls fail fast with a typed exception on a malformed PD.
+    final pd = shareRequest.presentationDefinition;
+    final inputDescriptors =
+        PresentationDefinitionParser.parseInputDescriptors(pd);
+    PresentationDefinitionParser.parseDefinitionId(pd);
 
     return _matchAndSubmit<PDDescriptor>(
       shareRequest: shareRequest,
