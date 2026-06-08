@@ -8,7 +8,7 @@
 /// attacker from replaying a captured JWT multiple times within its `exp`
 /// window. See https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-11.2
 ///
-/// This cache is scoped to the lifetime of the [ShareFlowService] instance.
+/// This cache is scoped to the lifetime of the `ShareFlowService` instance.
 /// For persistent cross-session replay protection, replace this with a
 /// consumer-provided persistent store.
 class NonceReplayCache {

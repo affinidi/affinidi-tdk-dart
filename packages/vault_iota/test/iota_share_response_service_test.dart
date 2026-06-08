@@ -90,10 +90,16 @@ void main() {
 
   tearDown(() => dioAdapter.reset());
 
-  IotaShareResponseService buildService() => IotaShareResponseService(
+  IotaShareResponseService buildService({
+    List<String> trustedHosts = const [
+      'verifier.example.com',
+      'dcql-verifier.example.com',
+    ],
+  }) => IotaShareResponseService(
     signer: signer,
     dio: dio,
     vpBuilder: _FakeVpBuilder(_fakeVp),
+    trustedVerifiersList: trustedHosts,
   );
 
   // ── PEX submit ──────────────────────────────────────────────────────────────
@@ -220,6 +226,416 @@ void main() {
           ),
         );
       });
+    });
+
+    group('response_uri validation (invalid_response_uri)', () {
+      for (final uri in [
+        'http://verifier.example.com/accept',
+        'file:///tmp/accept',
+        'javascript:alert(1)',
+        'intent://verifier.example.com/accept',
+      ]) {
+        test('rejects unsafe scheme: $uri', () async {
+          await expectLater(
+            buildService().submitShareResponse(
+              shareRequest: _pexShareRequest,
+              selectedCredentials: [_fakeVC],
+              acceptResponseUri: uri,
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.invalidResponseUri.code,
+              ),
+            ),
+          );
+        });
+      }
+
+      test('rejects response_uri with userinfo', () async {
+        await expectLater(
+          buildService().submitShareResponse(
+            shareRequest: _pexShareRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: 'https://user@verifier.example.com/accept',
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidResponseUri.code,
+            ),
+          ),
+        );
+      });
+
+      test('rejects response_uri with fragment', () async {
+        await expectLater(
+          buildService().submitShareResponse(
+            shareRequest: _pexShareRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: 'https://verifier.example.com/accept#fragment',
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidResponseUri.code,
+            ),
+          ),
+        );
+      });
+
+      test('rejects response_uri with IPv4 address', () async {
+        await expectLater(
+          buildService().submitShareResponse(
+            shareRequest: _pexShareRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: 'https://1.2.3.4/accept',
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidResponseUri.code,
+            ),
+          ),
+        );
+      });
+
+      test('rejects response_uri host not declared by client_id DID', () async {
+        await expectLater(
+          buildService(
+            trustedHosts: ['verifier.example.com'],
+          ).submitShareResponse(
+            shareRequest: _pexShareRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: 'https://attacker.example.com/steal',
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.untrustedResponseUri.code,
+            ),
+          ),
+        );
+      });
+
+      test(
+        'returns null for redirect_uri host not declared by client_id DID',
+        () async {
+          dioAdapter.mockRequestWithReply(
+            url: _acceptUri,
+            statusCode: 200,
+            data: {'redirect_uri': 'https://attacker.example.com/phishing'},
+            httpMethod: HttpMethod.post,
+          );
+
+          final result =
+              await buildService(
+                trustedHosts: ['verifier.example.com'],
+              ).submitShareResponse(
+                shareRequest: _pexShareRequest,
+                selectedCredentials: [_fakeVC],
+                acceptResponseUri: _acceptUri,
+              );
+
+          expect(result, isNull);
+        },
+      );
+
+      test('rejects response_uri when host is not in trusted list', () async {
+        final service = IotaShareResponseService(
+          signer: signer,
+          dio: dio,
+          vpBuilder: _FakeVpBuilder(_fakeVp),
+          trustedVerifiersList: const ['other.example.com'],
+        );
+
+        await expectLater(
+          service.submitShareResponse(
+            shareRequest: _pexShareRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: _acceptUri,
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.untrustedResponseUri.code,
+            ),
+          ),
+        );
+      });
+
+      test('accepts response_uri when host is in trusted list', () async {
+        RequestOptions? captured;
+        dio.interceptors.add(
+          InterceptorsWrapper(
+            onRequest: (opts, handler) {
+              captured = opts;
+              handler.next(opts);
+            },
+          ),
+        );
+        dioAdapter.mockRequestWithReply(
+          url: _acceptUri,
+          statusCode: 200,
+          data: <String, dynamic>{},
+          httpMethod: HttpMethod.post,
+        );
+
+        final service = IotaShareResponseService(
+          signer: signer,
+          dio: dio,
+          vpBuilder: _FakeVpBuilder(_fakeVp),
+          trustedVerifiersList: const ['verifier.example.com'],
+        );
+
+        await service.submitShareResponse(
+          shareRequest: _pexShareRequest,
+          selectedCredentials: [_fakeVC],
+          acceptResponseUri: _acceptUri,
+        );
+
+        expect(captured, isNotNull);
+        expect(captured!.path, equals(_acceptUri));
+      });
+    });
+
+    // ── trustedVerifiersList — success and attack cases ──────────────────────
+
+    group('trustedVerifiersList', () {
+      const trustedHosts = ['verifier.example.com'];
+
+      IotaShareResponseService serviceWithTrustedHosts() =>
+          IotaShareResponseService(
+            signer: signer,
+            dio: dio,
+            vpBuilder: _FakeVpBuilder(_fakeVp),
+            trustedVerifiersList: trustedHosts,
+          );
+
+      test(
+        'throws emptyTrustedVerifiersList when constructed with an empty list',
+        () {
+          expect(
+            () => IotaShareResponseService(
+              signer: signer,
+              dio: dio,
+              vpBuilder: _FakeVpBuilder(_fakeVp),
+              trustedVerifiersList: const [],
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.emptyTrustedVerifiersList.code,
+              ),
+            ),
+          );
+        },
+      );
+
+      test(
+        'throws invalidResponseUri when entry contains a scheme or path',
+        () {
+          for (final badEntry in [
+            'https://verifier.example.com',
+            'http://verifier.example.com',
+            'verifier.example.com/path',
+            'verifier.example.com:8443',
+          ]) {
+            expect(
+              () => IotaShareResponseService(
+                signer: signer,
+                vpBuilder: _FakeVpBuilder(_fakeVp),
+                trustedVerifiersList: [badEntry],
+              ),
+              throwsA(
+                isA<TdkException>().having(
+                  (e) => e.code,
+                  'code',
+                  TdkExceptionType.invalidResponseUri.code,
+                ),
+              ),
+              reason: 'bad entry: $badEntry',
+            );
+          }
+        },
+      );
+
+      test('matches trusted host case-insensitively', () async {
+        RequestOptions? captured;
+        dio.interceptors.add(
+          InterceptorsWrapper(
+            onRequest: (opts, handler) {
+              captured = opts;
+              handler.next(opts);
+            },
+          ),
+        );
+        dioAdapter.mockRequestWithReply(
+          url: _acceptUri,
+          statusCode: 200,
+          data: <String, dynamic>{},
+          httpMethod: HttpMethod.post,
+        );
+
+        final service = IotaShareResponseService(
+          signer: signer,
+          dio: dio,
+          vpBuilder: _FakeVpBuilder(_fakeVp),
+          // Mixed-case host must still match the lower-case acceptResponseUri.
+          trustedVerifiersList: const ['Verifier.Example.COM'],
+        );
+
+        await service.submitShareResponse(
+          shareRequest: _pexShareRequest,
+          selectedCredentials: [_fakeVC],
+          acceptResponseUri: _acceptUri,
+        );
+
+        expect(captured, isNotNull);
+        expect(captured!.path, equals(_acceptUri));
+      });
+
+      test(
+        'success: legitimate verifier host in list can post VP to trusted host',
+        () async {
+          RequestOptions? captured;
+          dio.interceptors.add(
+            InterceptorsWrapper(
+              onRequest: (opts, handler) {
+                captured = opts;
+                handler.next(opts);
+              },
+            ),
+          );
+          dioAdapter.mockRequestWithReply(
+            url: _acceptUri,
+            statusCode: 200,
+            data: <String, dynamic>{},
+            httpMethod: HttpMethod.post,
+          );
+
+          // _pexShareRequest has acceptResponseUri on 'verifier.example.com' — in the list.
+          await serviceWithTrustedHosts().submitShareResponse(
+            shareRequest: _pexShareRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: _acceptUri,
+          );
+
+          expect(captured, isNotNull);
+          expect(captured!.path, equals(_acceptUri));
+          final data = captured!.data as Map<String, dynamic>;
+          expect(data['vp_token'], isNotNull);
+        },
+      );
+
+      test(
+        'attack: attacker did:key with untrusted response_uri is rejected',
+        () async {
+          const attackerCallbackUri =
+              'https://attacker-controlled-host.example/steal';
+
+          final attackerShareRequest = PexShareRequest(
+            request: const IotaRequest(
+              responseType: 'vp_token',
+              responseMode: 'direct_post',
+              acceptResponseUri: attackerCallbackUri,
+              rejectResponseUri: attackerCallbackUri,
+              state: 'attacker-state',
+              nonce: 'attacker-nonce',
+              clientId: 'did:key:z6MkAttackerGeneratedKey',
+            ),
+            presentationDefinition: _pexShareRequest.presentationDefinition,
+            jwtAssertion: 'attacker-jwt',
+          );
+
+          await expectLater(
+            serviceWithTrustedHosts().submitShareResponse(
+              shareRequest: attackerShareRequest,
+              selectedCredentials: [_fakeVC],
+              // Attacker-controlled callback URL — must never receive the VP.
+              acceptResponseUri: attackerCallbackUri,
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.untrustedResponseUri.code,
+              ),
+            ),
+          );
+        },
+      );
+
+      test('attack: callback host not in trusted list is rejected', () async {
+        const attackerCallbackUri =
+            'https://attacker-controlled-host.example/steal';
+
+        final attackerShareRequest = PexShareRequest(
+          request: const IotaRequest(
+            responseType: 'vp_token',
+            responseMode: 'direct_post',
+            acceptResponseUri: attackerCallbackUri,
+            rejectResponseUri: attackerCallbackUri,
+            state: 'attacker-state',
+            nonce: 'attacker-nonce',
+            // Uses a legitimate clientId — but they cannot produce a valid
+            // JWT signature for it without controlling the private key.
+            clientId: 'did:key:verifier123',
+          ),
+          presentationDefinition: _pexShareRequest.presentationDefinition,
+          jwtAssertion: 'forged-jwt',
+        );
+
+        await expectLater(
+          serviceWithTrustedHosts().submitShareResponse(
+            shareRequest: attackerShareRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: attackerCallbackUri,
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.untrustedResponseUri.code,
+            ),
+          ),
+        );
+      });
+
+      test(
+        'attack: host not in trusted list means did:key is always blocked',
+        () async {
+          final serviceOtherHost = IotaShareResponseService(
+            signer: signer,
+            dio: dio,
+            vpBuilder: _FakeVpBuilder(_fakeVp),
+            // host not in trustedVerifiersList — TDK rejects.
+            trustedVerifiersList: ['other.example.com'],
+          );
+
+          await expectLater(
+            serviceOtherHost.submitShareResponse(
+              shareRequest: _pexShareRequest,
+              selectedCredentials: [_fakeVC],
+              acceptResponseUri: _acceptUri,
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.untrustedResponseUri.code,
+              ),
+            ),
+          );
+        },
+      );
     });
   });
 
