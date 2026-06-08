@@ -96,6 +96,7 @@ class ShareRequirementsMatcher {
 
         vcsGroups[descriptor] = await _buildVCsGroup(matchedVCs, submissionReq);
       } on Exception catch (e, stack) {
+        if (e is TdkException) rethrow;
         _logger.error(
           'Failed to evaluate descriptor "${descriptor.id}": $e',
           stackTrace: stack,

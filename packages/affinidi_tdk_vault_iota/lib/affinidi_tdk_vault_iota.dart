@@ -15,7 +15,8 @@ export 'src/models/pd_descriptor.dart';
 export 'src/models/pd_requirements.dart';
 export 'src/models/presentation_submission.dart';
 export 'src/models/request_purpose.dart';
-export 'src/models/share_requirements.dart' show Oid4vpShareRequest;
+export 'src/models/share_requirements.dart'
+    show Oid4vpShareRequest, PexShareRequest, DcqlShareRequest;
 export 'src/models/submission_requirements.dart';
 export 'src/models/vc_availability.dart';
 export 'src/models/vc_unavailability_reason.dart';

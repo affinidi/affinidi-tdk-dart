@@ -234,7 +234,7 @@ void main() {
   // ── Descriptor-level evaluation failure ───────────────────────────────────
 
   group('when the descriptor itself is malformed', () {
-    test('should propagate StateError for a non-object field entry', () async {
+    test('should throw TdkException for a non-object field entry', () async {
       final vc = buildTestVc(type: 'UniversityDegree');
 
       final malformedDescriptor = PDDescriptor(
@@ -254,7 +254,7 @@ void main() {
         submissionRequirementsByGroup: const {},
       );
 
-      await expectLater(matcher.match(req, [vc]), throwsA(isA<StateError>()));
+      await expectLater(matcher.match(req, [vc]), throwsA(isA<TdkException>()));
     });
 
     test(
@@ -288,7 +288,7 @@ void main() {
     );
 
     test(
-      'should propagate StateError even when other descriptors are valid',
+      'should throw TdkException even when other descriptors are valid',
       () async {
         final vc = buildTestVc(type: 'UniversityDegree');
 
@@ -314,12 +314,15 @@ void main() {
           submissionRequirementsByGroup: const {},
         );
 
-        await expectLater(matcher.match(req, [vc]), throwsA(isA<StateError>()));
+        await expectLater(
+          matcher.match(req, [vc]),
+          throwsA(isA<TdkException>()),
+        );
       },
     );
 
     test(
-      'should propagate StateError when a field filter is not a JSON object',
+      'should throw TdkException when a field filter is not a JSON object',
       () async {
         final vc = buildTestVc(type: 'UniversityDegree');
 
@@ -346,7 +349,10 @@ void main() {
           submissionRequirementsByGroup: const {},
         );
 
-        await expectLater(matcher.match(req, [vc]), throwsA(isA<StateError>()));
+        await expectLater(
+          matcher.match(req, [vc]),
+          throwsA(isA<TdkException>()),
+        );
       },
     );
 

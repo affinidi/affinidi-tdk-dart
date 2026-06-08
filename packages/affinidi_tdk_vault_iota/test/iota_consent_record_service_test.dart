@@ -1,6 +1,4 @@
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
-import 'package:affinidi_tdk_vault_iota/src/models/share_requirements.dart'
-    show DcqlShareRequest, PexShareRequest;
 import 'package:mocktail/mocktail.dart';
 import 'package:ssi/ssi.dart' show ParsedVerifiableCredential;
 import 'package:test/test.dart';
