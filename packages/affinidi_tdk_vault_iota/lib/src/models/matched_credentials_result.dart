@@ -1,5 +1,6 @@
 import 'package:ssi/ssi.dart';
 
+import 'credential_set_options.dart';
 import 'matched_credential_group.dart';
 
 /// The common result interface for both PEX and DCQL credential matching.
@@ -25,4 +26,16 @@ abstract interface class MatchedCredentialsResult {
   /// tell whether a group accepts multiple credentials
   /// ([MatchedCredentialGroup.allowsMultiple]).
   List<MatchedCredentialGroup> get groups;
+
+  /// The credential-set alternatives, or `null` when the underlying query does
+  /// not use credential sets (PEX, or DCQL without `credential_sets`).
+  ///
+  /// Each entry represents one `credential_set` from the DCQL query. Within
+  /// each entry, the Wallet can choose any one
+  /// [CredentialSetOptions.alternatives] to satisfy the set. Cross-reference
+  /// with [groups] using the credential-query IDs in each alternative to
+  /// retrieve the matching [MatchedCredentialGroup].
+  ///
+  /// When `null`, every entry in [groups] is independently required.
+  List<CredentialSetOptions>? get credentialSetOptions;
 }

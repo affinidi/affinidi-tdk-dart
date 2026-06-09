@@ -276,4 +276,125 @@ void main() {
       expect(group.recommendedCredentials, hasLength(2));
     });
   });
+
+  group('credentialSetOptions', () {
+    test('is null when no credential_sets are present', () async {
+      final query = DcqlCredentialQuery(
+        credentials: [_query('degree', 'UniversityDegree')],
+      );
+
+      final result = await matcher.match(query, [
+        buildTestVc(type: 'UniversityDegree'),
+      ]);
+
+      expect(result.credentialSetOptions, isNull);
+    });
+
+    test('returns one required set with the correct alternatives', () async {
+      final query = DcqlCredentialQuery(
+        credentials: [
+          _query('degree', 'UniversityDegree'),
+          _query('employment', 'EmploymentCredential'),
+        ],
+        credentialSets: [
+          DcqlCredentialSet(
+            options: [
+              ['degree'],
+              ['employment'],
+            ],
+          ),
+        ],
+      );
+
+      final result = await matcher.match(query, [
+        buildTestVc(type: 'UniversityDegree'),
+      ]);
+
+      expect(result.credentialSetOptions, hasLength(1));
+      final set = result.credentialSetOptions!.single;
+      expect(set.isRequired, isTrue);
+      expect(
+        set.alternatives,
+        equals([
+          ['degree'],
+          ['employment'],
+        ]),
+      );
+    });
+
+    test('reflects isRequired: false for optional sets', () async {
+      final query = DcqlCredentialQuery(
+        credentials: [
+          _query('degree', 'UniversityDegree'),
+          _query('employment', 'EmploymentCredential'),
+        ],
+        credentialSets: [
+          DcqlCredentialSet(
+            options: [
+              ['degree'],
+            ],
+          ),
+          DcqlCredentialSet(
+            required: false,
+            options: [
+              ['employment'],
+            ],
+          ),
+        ],
+      );
+
+      final result = await matcher.match(query, [
+        buildTestVc(type: 'UniversityDegree'),
+      ]);
+
+      expect(result.credentialSetOptions, hasLength(2));
+      expect(result.credentialSetOptions![0].isRequired, isTrue);
+      expect(result.credentialSetOptions![1].isRequired, isFalse);
+    });
+
+    test('preserves multiple credential_sets in order', () async {
+      final query = DcqlCredentialQuery(
+        credentials: [
+          _query('a', 'TypeA'),
+          _query('b', 'TypeB'),
+          _query('c', 'TypeC'),
+        ],
+        credentialSets: [
+          DcqlCredentialSet(
+            options: [
+              ['a', 'b'],
+              ['c'],
+            ],
+          ),
+          DcqlCredentialSet(
+            required: false,
+            options: [
+              ['b'],
+            ],
+          ),
+        ],
+      );
+
+      final result = await matcher.match(query, [
+        buildTestVc(type: 'TypeA'),
+        buildTestVc(type: 'TypeB'),
+      ]);
+
+      final sets = result.credentialSetOptions!;
+      expect(sets, hasLength(2));
+      expect(
+        sets[0].alternatives,
+        equals([
+          ['a', 'b'],
+          ['c'],
+        ]),
+      );
+      expect(
+        sets[1].alternatives,
+        equals([
+          ['b'],
+        ]),
+      );
+    });
+  });
 }

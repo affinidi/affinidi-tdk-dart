@@ -356,6 +356,114 @@ void main() {
         );
       });
     });
+
+    group('when require_cryptographic_holder_binding is false', () {
+      final noBindingRequest = DcqlShareRequest(
+        request: const IotaRequest(
+          responseType: 'vp_token',
+          responseMode: 'direct_post',
+          acceptResponseUri: _dcqlAcceptUri,
+          rejectResponseUri: _dcqlRejectUri,
+          state: 'dcql-state',
+          nonce: 'dcql-nonce',
+          clientId: 'did:key:dcql-verifier',
+        ),
+        dcqlQuery: DcqlCredentialQuery(
+          credentials: [
+            DcqlCredential(
+              id: 'q1',
+              format: CredentialFormat.ldpVc,
+              requireCryptographicHolderBinding: false,
+            ),
+          ],
+        ),
+        jwtAssertion: 'dcql-jwt',
+      );
+
+      test('returns raw VC JSON instead of a signed VP', () async {
+        RequestOptions? captured;
+        dio.interceptors.add(
+          InterceptorsWrapper(
+            onRequest: (opts, handler) {
+              captured = opts;
+              handler.next(opts);
+            },
+          ),
+        );
+        dioAdapter.mockRequestWithReply(
+          url: _dcqlAcceptUri,
+          statusCode: 200,
+          data: <String, dynamic>{},
+          httpMethod: HttpMethod.post,
+        );
+
+        await buildService().submitShareResponse(
+          shareRequest: noBindingRequest,
+          selectedCredentials: [_fakeVC],
+          acceptResponseUri: _dcqlAcceptUri,
+        );
+
+        final data = captured!.data as Map<String, dynamic>;
+        final vpToken = jsonDecode(data['vp_token'] as String) as Map;
+        final entry = (vpToken['q1'] as List).single as Map;
+        // The VP builder must not have been called — entry is the raw VC JSON.
+        expect(entry, isNot(equals(_fakeVp)));
+        expect(entry['id'], equals('vc-1'));
+      });
+
+      test('returns a signed VP when requireCryptographicHolderBinding '
+          'is true', () async {
+        final bindingRequest = DcqlShareRequest(
+          request: const IotaRequest(
+            responseType: 'vp_token',
+            responseMode: 'direct_post',
+            acceptResponseUri: _dcqlAcceptUri,
+            rejectResponseUri: _dcqlRejectUri,
+            state: 'dcql-state',
+            nonce: 'dcql-nonce',
+            clientId: 'did:key:dcql-verifier',
+          ),
+          dcqlQuery: DcqlCredentialQuery(
+            credentials: [
+              DcqlCredential(
+                id: 'q1',
+                format: CredentialFormat.ldpVc,
+                requireCryptographicHolderBinding: true,
+              ),
+            ],
+          ),
+          jwtAssertion: 'dcql-jwt',
+        );
+
+        RequestOptions? captured;
+        dio.interceptors.add(
+          InterceptorsWrapper(
+            onRequest: (opts, handler) {
+              captured = opts;
+              handler.next(opts);
+            },
+          ),
+        );
+        dioAdapter.mockRequestWithReply(
+          url: _dcqlAcceptUri,
+          statusCode: 200,
+          data: <String, dynamic>{},
+          httpMethod: HttpMethod.post,
+        );
+
+        await buildService().submitShareResponse(
+          shareRequest: bindingRequest,
+          selectedCredentials: [_fakeVC],
+          acceptResponseUri: _dcqlAcceptUri,
+        );
+
+        final data = captured!.data as Map<String, dynamic>;
+        final vpToken = jsonDecode(data['vp_token'] as String) as Map;
+        final entry = (vpToken['q1'] as List).single as Map;
+        // VP builder was invoked — entry must equal the fake VP.
+        expect(entry, equals(_fakeVp));
+      });
+    });
   });
 
   // ── Reject ──────────────────────────────────────────────────────────────────

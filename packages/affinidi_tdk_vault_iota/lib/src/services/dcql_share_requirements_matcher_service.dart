@@ -2,6 +2,7 @@ import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:dcql/dcql.dart';
 import 'package:ssi/ssi.dart';
 
+import '../models/credential_set_options.dart';
 import '../models/matched_credential_group.dart';
 import '../models/matched_credentials_result.dart';
 import '../models/vc_availability.dart';
@@ -70,6 +71,20 @@ class DcqlMatchedCredentialsResult implements MatchedCredentialsResult {
       .expand((group) => group.allAvailableVCs)
       .map((a) => a.vc)
       .toList();
+
+  @override
+  List<CredentialSetOptions>? get credentialSetOptions {
+    final sets = dcqlQuery.credentialSets;
+    if (sets == null || sets.isEmpty) return null;
+    return sets
+        .map(
+          (set) => CredentialSetOptions(
+            isRequired: set.required,
+            alternatives: set.options,
+          ),
+        )
+        .toList();
+  }
 
   @override
   List<MatchedCredentialGroup> get groups => vcsGroups.entries

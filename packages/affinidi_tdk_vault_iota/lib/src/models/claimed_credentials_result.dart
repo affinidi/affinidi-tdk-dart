@@ -1,5 +1,6 @@
 import 'package:ssi/ssi.dart';
 
+import 'credential_set_options.dart';
 import 'matched_credential_group.dart';
 import 'matched_credentials_result.dart';
 import 'pd_descriptor.dart';
@@ -38,6 +39,9 @@ class ClaimedCredentialsResult implements MatchedCredentialsResult {
       .expand((group) => group.allAvailableVCs)
       .map((a) => a.vc)
       .toList();
+
+  @override
+  List<CredentialSetOptions>? get credentialSetOptions => null;
 
   @override
   List<MatchedCredentialGroup> get groups => vcsGroups.entries

@@ -158,16 +158,25 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
               [matched.first],
             ];
 
-      vpToken[credential.id] = await Future.wait(
-        credentialGroups.map(
-          (credentials) => _vpBuilder.build(
-            signer: _signer,
-            credentials: credentials,
-            nonce: dcql.request.nonce,
-            domain: dcql.request.clientId,
+      // Per OID4VP spec Appendix B.1: when require_cryptographic_holder_binding
+      // is false, return each Verifiable Credential as-is without wrapping it
+      // in a VP. The default (null or true) always builds a signed VP.
+      if (credential.requireCryptographicHolderBinding == false) {
+        vpToken[credential.id] = credentialGroups
+            .map((creds) => creds.first.toJson())
+            .toList();
+      } else {
+        vpToken[credential.id] = await Future.wait(
+          credentialGroups.map(
+            (credentials) => _vpBuilder.build(
+              signer: _signer,
+              credentials: credentials,
+              nonce: dcql.request.nonce,
+              domain: dcql.request.clientId,
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
 
     return _postToUri(acceptResponseUri, {
