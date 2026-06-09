@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart' show TdkException;
 import 'package:dcql/dcql.dart'
     show
         DcqlCredential,
@@ -34,7 +34,6 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   IotaShareResponseService({
     required DidSigner signer,
     Dio? dio,
-    Logger? logger,
     VpBuilderInterface? vpBuilder,
   }) : _signer = signer,
        _dio = dio ?? Dio(),
