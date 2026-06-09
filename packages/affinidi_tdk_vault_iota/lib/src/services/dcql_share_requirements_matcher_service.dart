@@ -147,8 +147,11 @@ class DcqlShareRequirementsMatcher {
   /// * [allVCs] - the full list of credentials from the vault.
   ///
   /// Returns a [DcqlMatchedCredentialsResult] mapping each query ID to its
-  /// [VCsGroupByType]. Per-query evaluation errors are caught and recorded as
-  /// [VcUnavailabilityReason.unknown]; other queries continue normally.
+  /// [VCsGroupByType]. If the underlying DCQL evaluation throws, all groups
+  /// are marked [VcUnavailabilityReason.unknown] and the error is logged.
+  /// Per-credential classification errors within the loop are also caught
+  /// individually and recorded as [VcUnavailabilityReason.unknown]; other
+  /// queries continue normally.
   Future<DcqlMatchedCredentialsResult> match(
     DcqlCredentialQuery dcqlQuery,
     List<VerifiableCredential> allVCs,
@@ -161,7 +164,28 @@ class DcqlShareRequirementsMatcher {
       if (digital != null) digitalToVc[digital] = vc;
     }
 
-    final queryResult = dcqlQuery.query(digitalToVc.keys);
+    final DcqlQueryResult queryResult;
+    try {
+      queryResult = dcqlQuery.query(digitalToVc.keys);
+    } catch (e) {
+      _logger.error(
+        'DCQL evaluation failed — all credential groups marked unknown: $e',
+        component: _componentName,
+      );
+      final vcsGroups = <String, VCsGroupByType>{
+        for (final credential in dcqlQuery.credentials)
+          credential.id: VCsGroupByType(
+            maximumVCsCountToShare: credential.multiple ? null : 1,
+            matchedVCs: const [
+              VcUnavailable(reason: VcUnavailabilityReason.unknown),
+            ],
+          ),
+      };
+      return DcqlMatchedCredentialsResult(
+        vcsGroups: vcsGroups,
+        dcqlQuery: dcqlQuery,
+      );
+    }
 
     final vcsGroups = <String, VCsGroupByType>{};
 
