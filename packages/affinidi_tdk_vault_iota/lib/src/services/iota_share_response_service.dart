@@ -1,13 +1,18 @@
 import 'dart:convert';
 
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:dcql/dcql.dart'
+    show
+        DcqlCredential,
+        DcqlCredentialQuery,
+        DigitalCredential,
+        W3CDigitalCredential;
 import 'package:dio/dio.dart';
 import 'package:ssi/ssi.dart';
 
 import '../exceptions/tdk_exception_type.dart';
 import '../helpers/presentation_definition_parser.dart';
 import '../models/share_requirements.dart';
-import 'dcql_evaluator.dart';
 import 'iota_share_response_service_interface.dart';
 import 'presentation_submission_builder.dart';
 import 'vp_builder.dart';
@@ -139,22 +144,22 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   ) async {
     final vpToken = <String, List<Map<String, dynamic>>>{};
 
-    for (final query in dcql.dcqlQuery.credentials) {
+    for (final credential in dcql.dcqlQuery.credentials) {
       final matched = selectedCredentials
-          .where((vc) => DcqlEvaluator.selectMatching(query, [vc]).isNotEmpty)
+          .where((vc) => _vcMatchesDcqlCredential(credential, vc))
           .toList();
       if (matched.isEmpty) continue;
 
       // Per the spec: when `multiple` is `false` (the default) return exactly
       // one Presentation; when `true` return one Presentation per matching
       // Credential.
-      final credentialGroups = query.multiple
+      final credentialGroups = credential.multiple
           ? matched.map((vc) => [vc]).toList()
           : [
               [matched.first],
             ];
 
-      vpToken[query.id] = await Future.wait(
+      vpToken[credential.id] = await Future.wait(
         credentialGroups.map(
           (credentials) => _vpBuilder.build(
             signer: _signer,
@@ -170,6 +175,35 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
       'state': dcql.request.state,
       'vp_token': jsonEncode(vpToken),
     });
+  }
+
+  /// Returns `true` if [vc] matches the given DCQL [credential] query.
+  static bool _vcMatchesDcqlCredential(
+    DcqlCredential credential,
+    VerifiableCredential vc,
+  ) {
+    final wrapped = _toDigitalCredential(vc);
+    if (wrapped == null) return false;
+    final query = DcqlCredentialQuery(credentials: [credential]);
+    final result = query.query([wrapped]);
+    return result.verifiableCredentials[credential.id]?.isNotEmpty == true;
+  }
+
+  /// Wraps a [VerifiableCredential] for evaluation by the `dcql` package.
+  /// Returns `null` for unsupported formats.
+  static DigitalCredential? _toDigitalCredential(VerifiableCredential vc) {
+    final contextUri = vc.context.firstUri?.toString();
+    try {
+      if (contextUri == dmV1ContextUrl) {
+        return W3CDigitalCredential.fromLdVcDataModelV1(vc.toJson());
+      }
+      if (contextUri == dmV2ContextUrl) {
+        return W3CDigitalCredential.fromLdVcDataModelV2(vc.toJson());
+      }
+      return null;
+    } on Exception {
+      return null;
+    }
   }
 
   Future<Uri?> _postToUri(String uri, Map<String, String> formData) async {

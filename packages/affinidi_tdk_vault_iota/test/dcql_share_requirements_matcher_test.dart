@@ -1,12 +1,13 @@
-import 'package:affinidi_tdk_vault_iota/src/models/dcql_query.dart';
 import 'package:affinidi_tdk_vault_iota/src/services/dcql_share_requirements_matcher_service.dart';
+import 'package:dcql/dcql.dart';
 import 'package:test/test.dart';
 
 import 'fixtures/verifiable_credential_fixtures.dart';
 
-DcqlCredentialQuery _query(String id, String type) => DcqlCredentialQuery(
+DcqlCredential _query(String id, String type) => DcqlCredential(
   id: id,
-  meta: DcqlCredentialMeta(
+  format: CredentialFormat.ldpVc,
+  meta: DcqlMeta(
     typeValues: [
       [type],
     ],
@@ -18,7 +19,7 @@ void main() {
 
   group('without credential_sets', () {
     test('is satisfied when every credential query matches', () async {
-      final query = DcqlQuery(
+      final query = DcqlCredentialQuery(
         credentials: [
           _query('degree', 'UniversityDegree'),
           _query('employment', 'EmploymentCredential'),
@@ -34,7 +35,7 @@ void main() {
     });
 
     test('is not satisfied when one credential query is missing', () async {
-      final query = DcqlQuery(
+      final query = DcqlCredentialQuery(
         credentials: [
           _query('degree', 'UniversityDegree'),
           _query('employment', 'EmploymentCredential'),
@@ -50,13 +51,13 @@ void main() {
   });
 
   group('with credential_sets options (OR)', () {
-    final query = DcqlQuery(
+    final query = DcqlCredentialQuery(
       credentials: [
         _query('degree', 'UniversityDegree'),
         _query('employment', 'EmploymentCredential'),
       ],
       credentialSets: [
-        const DcqlCredentialSetQuery(
+        DcqlCredentialSet(
           options: [
             ['degree'],
             ['employment'],
@@ -91,13 +92,13 @@ void main() {
   });
 
   group('with an AND option', () {
-    final query = DcqlQuery(
+    final query = DcqlCredentialQuery(
       credentials: [
         _query('degree', 'UniversityDegree'),
         _query('employment', 'EmploymentCredential'),
       ],
       credentialSets: [
-        const DcqlCredentialSetQuery(
+        DcqlCredentialSet(
           options: [
             ['degree', 'employment'],
           ],
@@ -125,18 +126,18 @@ void main() {
 
   group('with an optional credential set', () {
     test('ignores an unsatisfied optional set', () async {
-      final query = DcqlQuery(
+      final query = DcqlCredentialQuery(
         credentials: [
           _query('degree', 'UniversityDegree'),
           _query('employment', 'EmploymentCredential'),
         ],
         credentialSets: [
-          const DcqlCredentialSetQuery(
+          DcqlCredentialSet(
             options: [
               ['degree'],
             ],
           ),
-          const DcqlCredentialSetQuery(
+          DcqlCredentialSet(
             required: false,
             options: [
               ['employment'],
@@ -153,18 +154,18 @@ void main() {
     });
 
     test('still fails when a required set is unsatisfied', () async {
-      final query = DcqlQuery(
+      final query = DcqlCredentialQuery(
         credentials: [
           _query('degree', 'UniversityDegree'),
           _query('employment', 'EmploymentCredential'),
         ],
         credentialSets: [
-          const DcqlCredentialSetQuery(
+          DcqlCredentialSet(
             options: [
               ['degree'],
             ],
           ),
-          const DcqlCredentialSetQuery(
+          DcqlCredentialSet(
             required: false,
             options: [
               ['employment'],
@@ -182,13 +183,13 @@ void main() {
   });
 
   group('recommendedMaximumVCs with credential_sets', () {
-    final query = DcqlQuery(
+    final query = DcqlCredentialQuery(
       credentials: [
         _query('degree', 'UniversityDegree'),
         _query('employment', 'EmploymentCredential'),
       ],
       credentialSets: [
-        const DcqlCredentialSetQuery(
+        DcqlCredentialSet(
           options: [
             ['degree'],
             ['employment'],
@@ -227,11 +228,12 @@ void main() {
   });
 
   group('groups view and multiple flag', () {
-    DcqlCredentialQuery queryWithMultiple({required bool multiple}) =>
-        DcqlCredentialQuery(
+    DcqlCredential queryWithMultiple({required bool multiple}) =>
+        DcqlCredential(
           id: 'degree',
+          format: CredentialFormat.ldpVc,
           multiple: multiple,
-          meta: DcqlCredentialMeta(
+          meta: DcqlMeta(
             typeValues: [
               ['UniversityDegree'],
             ],
@@ -240,7 +242,7 @@ void main() {
 
     test('caps the group at one and recommends one when multiple is '
         'false', () async {
-      final query = DcqlQuery(
+      final query = DcqlCredentialQuery(
         credentials: [queryWithMultiple(multiple: false)],
       );
 
@@ -259,7 +261,9 @@ void main() {
 
     test('leaves the group unbounded and recommends all when multiple is '
         'true', () async {
-      final query = DcqlQuery(credentials: [queryWithMultiple(multiple: true)]);
+      final query = DcqlCredentialQuery(
+        credentials: [queryWithMultiple(multiple: true)],
+      );
 
       final result = await matcher.match(query, [
         buildTestVc(type: 'UniversityDegree'),

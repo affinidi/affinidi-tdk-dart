@@ -1,6 +1,6 @@
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
-import 'package:affinidi_tdk_vault_iota/src/models/dcql_query.dart';
 import 'package:affinidi_tdk_vault_iota/src/models/share_requirements.dart';
+import 'package:dcql/dcql.dart';
 import 'package:ssi/ssi.dart'
     show
         CredentialSubject,
@@ -205,8 +205,8 @@ class IotaConsentRecordFixtures {
 
   /// A [DcqlShareRequest] with a single credential query matching any
   /// [VerifiableCredential] (no type filter).
-  static const dcqlShareRequest = DcqlShareRequest(
-    request: IotaRequest(
+  static DcqlShareRequest get dcqlShareRequest => DcqlShareRequest(
+    request: const IotaRequest(
       responseType: 'vp_token',
       responseMode: 'direct_post',
       acceptResponseUri: 'https://verifier.example.com/accept',
@@ -215,7 +215,11 @@ class IotaConsentRecordFixtures {
       nonce: 'test_nonce',
       clientId: clientId,
     ),
-    dcqlQuery: DcqlQuery(credentials: [DcqlCredentialQuery(id: 'query-1')]),
+    dcqlQuery: DcqlCredentialQuery(
+      credentials: [
+        DcqlCredential(id: 'query-1', format: CredentialFormat.ldpVc),
+      ],
+    ),
     jwtAssertion: 'test_jwt',
   );
 
@@ -236,10 +240,10 @@ class IotaConsentRecordFixtures {
       );
 
   /// A [DcqlShareRequest] with two credential queries and a single required
-  /// [DcqlCredentialSetQuery] whose options are `[['query-1'], ['query-2']]`
+  /// [DcqlCredentialSet] whose options are `[['query-1'], ['query-2']]`
   /// (either query alone satisfies the set).
-  static const dcqlShareRequestWithSets = DcqlShareRequest(
-    request: IotaRequest(
+  static DcqlShareRequest get dcqlShareRequestWithSets => DcqlShareRequest(
+    request: const IotaRequest(
       responseType: 'vp_token',
       responseMode: 'direct_post',
       acceptResponseUri: 'https://verifier.example.com/accept',
@@ -248,13 +252,13 @@ class IotaConsentRecordFixtures {
       nonce: 'test_nonce',
       clientId: clientId,
     ),
-    dcqlQuery: DcqlQuery(
+    dcqlQuery: DcqlCredentialQuery(
       credentials: [
-        DcqlCredentialQuery(id: 'query-1'),
-        DcqlCredentialQuery(id: 'query-2'),
+        DcqlCredential(id: 'query-1', format: CredentialFormat.ldpVc),
+        DcqlCredential(id: 'query-2', format: CredentialFormat.ldpVc),
       ],
       credentialSets: [
-        DcqlCredentialSetQuery(
+        DcqlCredentialSet(
           options: [
             ['query-1'],
             ['query-2'],

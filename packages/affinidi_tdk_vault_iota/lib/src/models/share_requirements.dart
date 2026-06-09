@@ -1,4 +1,5 @@
-import 'dcql_query.dart';
+import 'package:dcql/dcql.dart';
+
 import 'iota_payload.dart';
 import 'iota_request.dart';
 import 'request_purpose.dart';
@@ -86,7 +87,7 @@ final class PexShareRequest extends Oid4vpShareRequest {
 /// A DCQL-based [Oid4vpShareRequest] — the verifier specified a DCQL query.
 final class DcqlShareRequest extends Oid4vpShareRequest {
   /// The DCQL query describing the required credentials.
-  final DcqlQuery dcqlQuery;
+  final DcqlCredentialQuery dcqlQuery;
 
   /// Creates a new [DcqlShareRequest] instance.
   ///

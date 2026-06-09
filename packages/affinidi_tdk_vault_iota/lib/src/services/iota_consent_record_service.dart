@@ -2,21 +2,29 @@ import 'dart:convert' show jsonEncode;
 
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart' hide LogLevel;
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
+import 'package:dcql/dcql.dart'
+    show
+        DcqlCredential,
+        DcqlCredentialQuery,
+        DcqlCredentialSet,
+        DigitalCredential,
+        W3CDigitalCredential;
 import 'package:ssi/ssi.dart'
-    show ParsedVerifiableCredential, VerifiableCredential;
+    show
+        ParsedVerifiableCredential,
+        VerifiableCredential,
+        dmV1ContextUrl,
+        dmV2ContextUrl;
 
 import '../exceptions/tdk_exception_type.dart';
 import '../helpers/presentation_definition_parser.dart';
 import '../models/auto_consent_result.dart';
-import '../models/dcql_query.dart'
-    show DcqlCredentialQuery, DcqlCredentialSetQuery;
 import '../models/iota_consent_record.dart';
 import '../models/matched_credentials_result.dart';
 import '../models/pd_descriptor.dart';
 import '../models/share_requirements.dart';
 import '../models/verifier_client_metadata.dart';
 import 'consent_storage.dart';
-import 'dcql_evaluator.dart';
 import 'iota_consent_record_service_interface.dart';
 import 'iota_share_response_service_interface.dart';
 import 'share_requirements_matcher_service.dart';
@@ -215,15 +223,14 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
         vaultId,
       );
     }
-    return _matchAndSubmit<DcqlCredentialQuery>(
+    return _matchAndSubmit<DcqlCredential>(
       shareRequest: shareRequest,
-      requirements: shareRequest.dcqlQuery.credentials,
+      requirements: shareRequest.dcqlQuery.credentials.toList(),
       enabledCandidates: enabledCandidates,
       allVcs: allVcs,
       verifierMetadata: verifierMetadata,
       vaultId: vaultId,
-      matches: (query, vc) =>
-          DcqlEvaluator.selectMatching(query, [vc]).isNotEmpty,
+      matches: _vcMatchesDcqlCredential,
     );
   }
 
@@ -265,7 +272,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       final coveredQueryIds = <String>{};
       for (final query in dcqlQuery.credentials) {
         final match = remainingVcs
-            .where((vc) => DcqlEvaluator.selectMatching(query, [vc]).isNotEmpty)
+            .where((vc) => _vcMatchesDcqlCredential(query, vc))
             .firstOrNull;
         if (match != null) {
           coveredQueryIds.add(query.id);
@@ -312,7 +319,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   /// Returns `true` when every `required` set has at least one option whose
   /// query IDs are all contained in [coveredQueryIds].
   static bool _requiredSetsSatisfied(
-    List<DcqlCredentialSetQuery> credentialSets,
+    Iterable<DcqlCredentialSet> credentialSets,
     Set<String> coveredQueryIds,
   ) => credentialSets
       .where((s) => s.required)
@@ -320,6 +327,36 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
         (set) =>
             set.options.any((option) => option.every(coveredQueryIds.contains)),
       );
+
+  /// Returns `true` if [vc] matches the given DCQL [credential] query using
+  /// the `dcql` package evaluator.
+  static bool _vcMatchesDcqlCredential(
+    DcqlCredential credential,
+    VerifiableCredential vc,
+  ) {
+    final wrapped = _toDigitalCredential(vc);
+    if (wrapped == null) return false;
+    final query = DcqlCredentialQuery(credentials: [credential]);
+    final result = query.query([wrapped]);
+    return result.verifiableCredentials[credential.id]?.isNotEmpty == true;
+  }
+
+  /// Wraps a [VerifiableCredential] for evaluation by the `dcql` package.
+  /// Returns `null` for unsupported formats.
+  static DigitalCredential? _toDigitalCredential(VerifiableCredential vc) {
+    final contextUri = vc.context.firstUri?.toString();
+    try {
+      if (contextUri == dmV1ContextUrl) {
+        return W3CDigitalCredential.fromLdVcDataModelV1(vc.toJson());
+      }
+      if (contextUri == dmV2ContextUrl) {
+        return W3CDigitalCredential.fromLdVcDataModelV2(vc.toJson());
+      }
+      return null;
+    } on Exception {
+      return null;
+    }
+  }
 
   /// Reconstructs the previously-approved VC set for each candidate record and
   /// submits the VP for the first record that satisfies every guard.

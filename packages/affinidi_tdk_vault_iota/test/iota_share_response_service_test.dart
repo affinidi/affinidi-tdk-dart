@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:affinidi_tdk_test_utilities/affinidi_tdk_test_utilities.dart';
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
-import 'package:affinidi_tdk_vault_iota/src/models/dcql_query.dart';
 import 'package:affinidi_tdk_vault_iota/src/models/share_requirements.dart';
+import 'package:dcql/dcql.dart';
 import 'package:dio/dio.dart';
 import 'package:ssi/ssi.dart';
 import 'package:test/test.dart';
@@ -44,8 +44,8 @@ final _fakeVC = IotaConsentRecordFixtures.makeParsedVc();
 // Reuses the fixture so URIs, state, and nonce are consistent.
 final _pexShareRequest = IotaConsentRecordFixtures.shareRequest;
 
-final _dcqlShareRequest = const DcqlShareRequest(
-  request: IotaRequest(
+final _dcqlShareRequest = DcqlShareRequest(
+  request: const IotaRequest(
     responseType: 'vp_token',
     responseMode: 'direct_post',
     acceptResponseUri: _dcqlAcceptUri,
@@ -54,7 +54,9 @@ final _dcqlShareRequest = const DcqlShareRequest(
     nonce: 'dcql-nonce',
     clientId: 'did:key:dcql-verifier',
   ),
-  dcqlQuery: DcqlQuery(credentials: [DcqlCredentialQuery(id: 'q1')]),
+  dcqlQuery: DcqlCredentialQuery(
+    credentials: [DcqlCredential(id: 'q1', format: CredentialFormat.ldpVc)],
+  ),
   jwtAssertion: 'dcql-jwt',
 );
 
@@ -262,8 +264,8 @@ void main() {
 
       test('returns one Presentation per matching Credential when '
           'multiple is true', () async {
-        const multipleRequest = DcqlShareRequest(
-          request: IotaRequest(
+        final multipleRequest = DcqlShareRequest(
+          request: const IotaRequest(
             responseType: 'vp_token',
             responseMode: 'direct_post',
             acceptResponseUri: _dcqlAcceptUri,
@@ -272,8 +274,14 @@ void main() {
             nonce: 'dcql-nonce',
             clientId: 'did:key:dcql-verifier',
           ),
-          dcqlQuery: DcqlQuery(
-            credentials: [DcqlCredentialQuery(id: 'q1', multiple: true)],
+          dcqlQuery: DcqlCredentialQuery(
+            credentials: [
+              DcqlCredential(
+                id: 'q1',
+                format: CredentialFormat.ldpVc,
+                multiple: true,
+              ),
+            ],
           ),
           jwtAssertion: 'dcql-jwt',
         );

@@ -1,6 +1,6 @@
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
-import 'package:affinidi_tdk_vault_iota/src/models/dcql_query.dart';
 import 'package:affinidi_tdk_vault_iota/src/models/share_requirements.dart';
+import 'package:dcql/dcql.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:ssi/ssi.dart' show ParsedVerifiableCredential;
 import 'package:test/test.dart';
@@ -1054,10 +1054,10 @@ void main() {
         () async {
           final twoQueryRequest = DcqlShareRequest(
             request: IotaConsentRecordFixtures.dcqlShareRequest.request,
-            dcqlQuery: const DcqlQuery(
+            dcqlQuery: DcqlCredentialQuery(
               credentials: [
-                DcqlCredentialQuery(id: 'query-1'),
-                DcqlCredentialQuery(id: 'query-2'),
+                DcqlCredential(id: 'query-1', format: CredentialFormat.ldpVc),
+                DcqlCredential(id: 'query-2', format: CredentialFormat.ldpVc),
               ],
             ),
             jwtAssertion:
@@ -1097,11 +1097,12 @@ void main() {
           // Query requires type EmailV1 but the vault VC has no type filter match.
           final strictTypeRequest = DcqlShareRequest(
             request: IotaConsentRecordFixtures.dcqlShareRequest.request,
-            dcqlQuery: const DcqlQuery(
+            dcqlQuery: DcqlCredentialQuery(
               credentials: [
-                DcqlCredentialQuery(
+                DcqlCredential(
                   id: 'query-1',
-                  meta: DcqlCredentialMeta(
+                  format: CredentialFormat.ldpVc,
+                  meta: DcqlMeta(
                     typeValues: [
                       ['EmailV1'],
                     ],
@@ -1247,19 +1248,21 @@ void main() {
           // Both queries now require EmailV1 type; vc-1 has no such type.
           final strictRequest = DcqlShareRequest(
             request: IotaConsentRecordFixtures.dcqlShareRequestWithSets.request,
-            dcqlQuery: const DcqlQuery(
+            dcqlQuery: DcqlCredentialQuery(
               credentials: [
-                DcqlCredentialQuery(
+                DcqlCredential(
                   id: 'query-1',
-                  meta: DcqlCredentialMeta(
+                  format: CredentialFormat.ldpVc,
+                  meta: DcqlMeta(
                     typeValues: [
                       ['EmailV1'],
                     ],
                   ),
                 ),
-                DcqlCredentialQuery(
+                DcqlCredential(
                   id: 'query-2',
-                  meta: DcqlCredentialMeta(
+                  format: CredentialFormat.ldpVc,
+                  meta: DcqlMeta(
                     typeValues: [
                       ['EmailV1'],
                     ],
@@ -1267,7 +1270,7 @@ void main() {
                 ),
               ],
               credentialSets: [
-                DcqlCredentialSetQuery(
+                DcqlCredentialSet(
                   options: [
                     ['query-1'],
                     ['query-2'],
@@ -1311,13 +1314,13 @@ void main() {
           // vc-1 (matching query-1) is stored, so the AND option is not met.
           final andOptionRequest = DcqlShareRequest(
             request: IotaConsentRecordFixtures.dcqlShareRequestWithSets.request,
-            dcqlQuery: const DcqlQuery(
+            dcqlQuery: DcqlCredentialQuery(
               credentials: [
-                DcqlCredentialQuery(id: 'query-1'),
-                DcqlCredentialQuery(id: 'query-2'),
+                DcqlCredential(id: 'query-1', format: CredentialFormat.ldpVc),
+                DcqlCredential(id: 'query-2', format: CredentialFormat.ldpVc),
               ],
               credentialSets: [
-                DcqlCredentialSetQuery(
+                DcqlCredentialSet(
                   options: [
                     ['query-1', 'query-2'],
                   ],
@@ -1360,19 +1363,19 @@ void main() {
           // optional set: options [[query-2]] — not covered, but required:false
           final optionalSetRequest = DcqlShareRequest(
             request: IotaConsentRecordFixtures.dcqlShareRequestWithSets.request,
-            dcqlQuery: const DcqlQuery(
+            dcqlQuery: DcqlCredentialQuery(
               credentials: [
-                DcqlCredentialQuery(id: 'query-1'),
-                DcqlCredentialQuery(id: 'query-2'),
+                DcqlCredential(id: 'query-1', format: CredentialFormat.ldpVc),
+                DcqlCredential(id: 'query-2', format: CredentialFormat.ldpVc),
               ],
               credentialSets: [
-                DcqlCredentialSetQuery(
+                DcqlCredentialSet(
                   options: [
                     ['query-1'],
                     ['query-2'],
                   ],
                 ),
-                DcqlCredentialSetQuery(
+                DcqlCredentialSet(
                   options: [
                     ['query-2'],
                   ],

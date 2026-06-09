@@ -1,41 +1,38 @@
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:dcql/dcql.dart';
 import 'package:ssi/ssi.dart';
 
-import '../models/dcql_query.dart';
 import '../models/matched_credential_group.dart';
 import '../models/matched_credentials_result.dart';
 import '../models/vc_availability.dart';
 import '../models/vc_unavailability_reason.dart';
 import '../models/vcs_group_by_type.dart';
-import 'dcql_evaluator.dart';
 
-/// The result of matching vault credentials against a [DcqlQuery].
+/// The result of matching vault credentials against a DCQL query.
 ///
-/// Each entry in [vcsGroups] maps one [DcqlCredentialQuery] to the
+/// Each entry in [vcsGroups] maps one credential-query ID to the
 /// credentials found in the vault — available, expired, or missing.
 ///
-/// When [credentialSets] is non-empty, satisfaction follows the DCQL
-/// `credential_sets` rules: each required set is satisfied when at least one of
-/// its options (a list of credential-query ids) is fully available. When
-/// [credentialSets] is `null` or empty, every credential query is required.
+/// When the query's `credential_sets` is non-empty, satisfaction follows the
+/// DCQL `credential_sets` rules: each required set is satisfied when at least
+/// one of its options (a list of credential-query IDs) is fully available.
+/// When `credential_sets` is absent, every credential query is required.
 class DcqlMatchedCredentialsResult implements MatchedCredentialsResult {
   /// Creates a [DcqlMatchedCredentialsResult].
   const DcqlMatchedCredentialsResult({
     required this.vcsGroups,
-    this.credentialSets,
+    required this.dcqlQuery,
   });
 
-  /// Maps each credential query entry to its matched credential group.
-  final Map<DcqlCredentialQuery, VCsGroupByType> vcsGroups;
+  /// Maps each credential-query ID to its matched credential group.
+  final Map<String, VCsGroupByType> vcsGroups;
 
-  /// The `credential_sets` requirements from the DCQL query, if any.
-  ///
-  /// `null` or empty means every credential query in [vcsGroups] is required.
-  final List<DcqlCredentialSetQuery>? credentialSets;
+  /// The full DCQL query (includes `credential_sets` requirements if any).
+  final DcqlCredentialQuery dcqlQuery;
 
   @override
   bool get hasEnoughVCsAvailableToShare {
-    final sets = credentialSets;
+    final sets = dcqlQuery.credentialSets;
     if (sets == null || sets.isEmpty) {
       return vcsGroups.values.every((group) => group.hasEnoughVCsToShare);
     }
@@ -44,7 +41,7 @@ class DcqlMatchedCredentialsResult implements MatchedCredentialsResult {
 
   @override
   List<VerifiableCredential> get recommendedMaximumVCs {
-    final sets = credentialSets;
+    final sets = dcqlQuery.credentialSets;
     if (sets == null || sets.isEmpty) {
       return vcsGroups.values
           .expand((group) => group.recommendedMaximumVCs)
@@ -58,7 +55,7 @@ class DcqlMatchedCredentialsResult implements MatchedCredentialsResult {
       if (option == null) continue;
       for (final id in option) {
         for (final available
-            in _groupById(id)?.recommendedMaximumVCs ?? const <VcAvailable>[]) {
+            in vcsGroups[id]?.recommendedMaximumVCs ?? const <VcAvailable>[]) {
           if (!recommended.contains(available.vc)) {
             recommended.add(available.vc);
           }
@@ -78,7 +75,7 @@ class DcqlMatchedCredentialsResult implements MatchedCredentialsResult {
   List<MatchedCredentialGroup> get groups => vcsGroups.entries
       .map(
         (entry) => MatchedCredentialGroup(
-          id: entry.key.id,
+          id: entry.key,
           minimumVCsCountToShare: entry.value.minimumVCsCountToShare,
           maximumVCsCountToShare: entry.value.maximumVCsCountToShare,
           availableCredentials: entry.value.allAvailableVCs
@@ -91,33 +88,26 @@ class DcqlMatchedCredentialsResult implements MatchedCredentialsResult {
       )
       .toList();
 
-  bool _isSetSatisfied(DcqlCredentialSetQuery set) =>
+  bool _isSetSatisfied(DcqlCredentialSet set) =>
       set.options.any(_isOptionSatisfied);
 
   bool _isOptionSatisfied(List<String> option) =>
-      option.every((id) => _groupById(id)?.hasEnoughVCsToShare ?? false);
+      option.every((id) => vcsGroups[id]?.hasEnoughVCsToShare ?? false);
 
-  List<String>? _firstSatisfiedOption(DcqlCredentialSetQuery set) {
+  List<String>? _firstSatisfiedOption(DcqlCredentialSet set) {
     for (final option in set.options) {
       if (_isOptionSatisfied(option)) return option;
     }
     return null;
   }
-
-  VCsGroupByType? _groupById(String id) {
-    for (final entry in vcsGroups.entries) {
-      if (entry.key.id == id) return entry.value;
-    }
-    return null;
-  }
 }
 
-/// Matches a user's vault credentials against a [DcqlQuery].
+/// Matches a user's vault credentials against a DCQL query.
 ///
-/// For each [DcqlCredentialQuery] in the query, the matcher filters
-/// credentials using [DcqlEvaluator.selectMatching], then classifies each
-/// result as available, expired, or missing. The overall result is returned
-/// as a [DcqlMatchedCredentialsResult].
+/// For each [DcqlCredential] in the query, the matcher runs the DCQL
+/// evaluation using the `dcql` package, then classifies each result as
+/// available, expired, or missing. The overall result is returned as a
+/// [DcqlMatchedCredentialsResult].
 class DcqlShareRequirementsMatcher {
   final Logger _logger;
   final RevocationList2020Verifier? _revocationVerifier;
@@ -141,24 +131,35 @@ class DcqlShareRequirementsMatcher {
   /// * [dcqlQuery] - the DCQL query describing requested credentials.
   /// * [allVCs] - the full list of credentials from the vault.
   ///
-  /// Returns a [DcqlMatchedCredentialsResult] mapping each query entry to its
+  /// Returns a [DcqlMatchedCredentialsResult] mapping each query ID to its
   /// [VCsGroupByType]. Per-query evaluation errors are caught and recorded as
   /// [VcUnavailabilityReason.unknown]; other queries continue normally.
   Future<DcqlMatchedCredentialsResult> match(
-    DcqlQuery dcqlQuery,
+    DcqlCredentialQuery dcqlQuery,
     List<VerifiableCredential> allVCs,
   ) async {
-    final vcsGroups = <DcqlCredentialQuery, VCsGroupByType>{};
+    // Build a mapping from dcql-package DigitalCredential wrappers back to the
+    // original VerifiableCredential so we can classify them after evaluation.
+    final digitalToVc = <DigitalCredential, VerifiableCredential>{};
+    for (final vc in allVCs) {
+      final digital = _toDigitalCredential(vc);
+      if (digital != null) digitalToVc[digital] = vc;
+    }
 
-    for (final credentialQuery in dcqlQuery.credentials) {
-      // A query that omits `multiple` (or sets it to false) accepts exactly one
-      // Credential; `multiple: true` imposes no upper bound.
-      final maxCount = credentialQuery.multiple ? null : 1;
+    final queryResult = dcqlQuery.query(digitalToVc.keys);
+
+    final vcsGroups = <String, VCsGroupByType>{};
+
+    for (final credential in dcqlQuery.credentials) {
+      // `multiple: true` imposes no upper bound; `false` (the default) means
+      // the user must pick exactly one.
+      final maxCount = credential.multiple ? null : 1;
       try {
-        final matched = DcqlEvaluator.selectMatching(credentialQuery, allVCs);
+        final matchedDigital =
+            queryResult.verifiableCredentials[credential.id] ?? const [];
 
-        if (matched.isEmpty) {
-          vcsGroups[credentialQuery] = VCsGroupByType(
+        if (matchedDigital.isEmpty) {
+          vcsGroups[credential.id] = VCsGroupByType(
             maximumVCsCountToShare: maxCount,
             matchedVCs: const [
               VcUnavailable(reason: VcUnavailabilityReason.missing),
@@ -166,6 +167,11 @@ class DcqlShareRequirementsMatcher {
           );
           continue;
         }
+
+        final matched = matchedDigital
+            .map((d) => digitalToVc[d])
+            .whereType<VerifiableCredential>()
+            .toList();
 
         final available = <VcAvailability>[];
         final expired = <VcAvailability>[];
@@ -216,18 +222,18 @@ class DcqlShareRequirementsMatcher {
           available.add(VcAvailable(vc: vc));
         }
 
-        vcsGroups[credentialQuery] = VCsGroupByType(
+        vcsGroups[credential.id] = VCsGroupByType(
           maximumVCsCountToShare: maxCount,
           matchedVCs: [...available, ...revoked, ...expired],
         );
       } catch (e, stackTrace) {
         _logger.error(
           '$_componentName: error evaluating credential query '
-          '"${credentialQuery.id}": $e',
+          '"${credential.id}": $e',
           component: _componentName,
         );
         _logger.warning(stackTrace.toString(), component: _componentName);
-        vcsGroups[credentialQuery] = VCsGroupByType(
+        vcsGroups[credential.id] = VCsGroupByType(
           maximumVCsCountToShare: maxCount,
           matchedVCs: const [
             VcUnavailable(reason: VcUnavailabilityReason.unknown),
@@ -238,7 +244,24 @@ class DcqlShareRequirementsMatcher {
 
     return DcqlMatchedCredentialsResult(
       vcsGroups: vcsGroups,
-      credentialSets: dcqlQuery.credentialSets,
+      dcqlQuery: dcqlQuery,
     );
+  }
+
+  /// Wraps a [VerifiableCredential] in the dcql package's [DigitalCredential]
+  /// interface for evaluation. Returns `null` for unsupported VC formats.
+  static DigitalCredential? _toDigitalCredential(VerifiableCredential vc) {
+    final contextUri = vc.context.firstUri?.toString();
+    try {
+      if (contextUri == dmV1ContextUrl) {
+        return W3CDigitalCredential.fromLdVcDataModelV1(vc.toJson());
+      }
+      if (contextUri == dmV2ContextUrl) {
+        return W3CDigitalCredential.fromLdVcDataModelV2(vc.toJson());
+      }
+      return null;
+    } on Exception {
+      return null;
+    }
   }
 }

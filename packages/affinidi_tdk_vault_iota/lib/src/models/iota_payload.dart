@@ -1,4 +1,7 @@
-import 'dcql_query.dart';
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:dcql/dcql.dart';
+
+import '../exceptions/tdk_exception_type.dart';
 import 'request_purpose.dart';
 
 /// The decoded JWT body from an Iota OID4VP `?request=` URI parameter.
@@ -58,7 +61,7 @@ class IotaPayload {
   /// The DCQL query describing the required credentials.
   ///
   /// Exactly one of [presentationDefinition] or [dcqlQuery] must be non-null.
-  final DcqlQuery? dcqlQuery;
+  final DcqlCredentialQuery? dcqlQuery;
 
   /// Creates a new [IotaPayload] instance.
   ///
@@ -135,7 +138,7 @@ class IotaPayload {
       iat: (json['iat'] as num).toInt(),
       presentationDefinition: rawPd as Map<String, dynamic>?,
       dcqlQuery: rawDcql != null
-          ? DcqlQuery.fromJson(rawDcql as Map<String, dynamic>)
+          ? _parseDcqlQuery(rawDcql as Map<String, dynamic>)
           : null,
     );
   }
@@ -161,6 +164,19 @@ class IotaPayload {
       'presentation_definition': presentationDefinition,
     if (dcqlQuery != null) 'dcql_query': dcqlQuery!.toJson(),
   };
+
+  /// Parses a DCQL query from [json], wrapping [ArgumentError]s thrown by the
+  /// dcql package into a typed [TdkException].
+  static DcqlCredentialQuery _parseDcqlQuery(Map<String, dynamic> json) {
+    try {
+      return DcqlCredentialQuery.fromJson(json);
+    } catch (e) {
+      throw TdkException(
+        message: 'Invalid DCQL query: $e',
+        code: TdkExceptionType.invalidDcqlQuery.code,
+      );
+    }
+  }
 
   /// Extracts and validates the [RequestPurpose] from the presentation
   /// definition's `purpose` field.
