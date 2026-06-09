@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:affinidi_tdk_common/affinidi_tdk_common.dart' show TdkException;
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart'
+    show Logger, TdkException;
 import 'package:dcql/dcql.dart'
     show
         DcqlCredential,
@@ -24,6 +25,7 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   final DidSigner _signer;
   final VpBuilderInterface _vpBuilder;
   final Dio _dio;
+  final Logger _logger;
 
   /// Creates an [IotaShareResponseService].
   ///
@@ -31,13 +33,16 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   /// * [signer] - the DID signer that controls the holder's key.
   /// * [dio] - optional Dio client; defaults to a plain [Dio].
   /// * [vpBuilder] - custom VP builder; defaults to [VpBuilder].
+  /// * [logger] - optional logger; defaults to [Logger.instance].
   IotaShareResponseService({
     required DidSigner signer,
     Dio? dio,
     VpBuilderInterface? vpBuilder,
+    Logger? logger,
   }) : _signer = signer,
        _dio = dio ?? Dio(),
-       _vpBuilder = vpBuilder ?? const VpBuilder();
+       _vpBuilder = vpBuilder ?? const VpBuilder(),
+       _logger = logger ?? Logger.instance;
 
   /// Builds and submits a Verifiable Presentation to the verifier callback endpoint.
   ///
@@ -141,7 +146,15 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
     List<ParsedVerifiableCredential<dynamic>> selectedCredentials,
     String acceptResponseUri,
   ) async {
-    final vpToken = <String, List<Map<String, dynamic>>>{};
+    // OID4VP 1.0 requires `vp_token` (DCQL) to be a JSON object where:
+    // - key: Credential Query `id`
+    // - value: array of one or more Presentations matching that query
+    // - when `multiple` is omitted or false, the array contains exactly one
+    //   Presentation
+    // - optional Credential Queries with no matches MUST be omitted
+    // - each Presentation can be a string or object per Appendix B encoding
+    // Spec: https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-8.1
+    final vpToken = <String, dynamic>{};
 
     for (final credential in dcql.dcqlQuery.credentials) {
       final matched = selectedCredentials
@@ -149,28 +162,20 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
           .toList();
       if (matched.isEmpty) continue;
 
-      // Per the spec: when `multiple` is `false` (the default) return exactly
-      // one Presentation; when `true` return one Presentation per matching
-      // Credential.
-      final credentialGroups = credential.multiple
-          ? matched.map((vc) => [vc]).toList()
-          : [
-              [matched.first],
-            ];
+      final presentations = credential.multiple ? matched : [matched.first];
 
       // Per OID4VP spec Appendix B.1: when require_cryptographic_holder_binding
-      // is false, return each Verifiable Credential as-is without wrapping it
-      // in a VP. The default (null or true) always builds a signed VP.
+      // is false, return the Verifiable Credential as-is without wrapping it in
+      // a VP. The default (null or true) always builds a signed VP.
       if (credential.requireCryptographicHolderBinding == false) {
-        vpToken[credential.id] = credentialGroups
-            .map((creds) => creds.first.toJson())
-            .toList();
+        vpToken[credential.id] =
+            presentations.map((vc) => vc.toJson()).toList();
       } else {
         vpToken[credential.id] = await Future.wait(
-          credentialGroups.map(
-            (credentials) => _vpBuilder.build(
+          presentations.map(
+            (vc) => _vpBuilder.build(
               signer: _signer,
-              credentials: credentials,
+              credentials: [vc],
               nonce: dcql.request.nonce,
               domain: dcql.request.clientId,
             ),
@@ -225,6 +230,9 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
       return redirectUri != null ? Uri.tryParse(redirectUri) : null;
     } catch (e, stackTrace) {
       if (e is TdkException) rethrow;
+      _logger.warning(
+        'Failed to submit OID4VP response to verifier callback URI: $e',
+      );
       Error.throwWithStackTrace(
         TdkException(
           message: 'Failed to send share response.',

@@ -258,8 +258,10 @@ void main() {
 
         final vpToken = jsonDecode(data['vp_token'] as String) as Map;
         expect(vpToken.keys, equals({'q1'}));
-        expect(vpToken['q1'], isA<List<dynamic>>());
+        // multiple omitted/false → array with exactly one Presentation.
+        expect(vpToken['q1'], isA<List>());
         expect((vpToken['q1'] as List).length, equals(1));
+        expect((vpToken['q1'] as List).first, isA<Map<String, dynamic>>());
       });
 
       test('returns one Presentation per matching Credential when '
@@ -380,7 +382,7 @@ void main() {
         jwtAssertion: 'dcql-jwt',
       );
 
-      test('returns raw VC JSON instead of a signed VP', () async {
+      test('returns raw VC JSON entry inside a single-item array', () async {
         RequestOptions? captured;
         dio.interceptors.add(
           InterceptorsWrapper(
@@ -405,7 +407,10 @@ void main() {
 
         final data = captured!.data as Map<String, dynamic>;
         final vpToken = jsonDecode(data['vp_token'] as String) as Map;
-        final entry = (vpToken['q1'] as List).single as Map;
+        // requireCryptographicHolderBinding: false, multiple: false → array of one raw VC.
+        final entries = vpToken['q1'] as List;
+        expect(entries.length, equals(1));
+        final entry = entries.first as Map;
         // The VP builder must not have been called — entry is the raw VC JSON.
         expect(entry, isNot(equals(_fakeVp)));
         expect(entry['id'], equals('vc-1'));
@@ -459,9 +464,61 @@ void main() {
 
         final data = captured!.data as Map<String, dynamic>;
         final vpToken = jsonDecode(data['vp_token'] as String) as Map;
-        final entry = (vpToken['q1'] as List).single as Map;
+        // requireCryptographicHolderBinding: true, multiple: false → array of one signed VP.
+        final entries = vpToken['q1'] as List;
+        expect(entries.length, equals(1));
+        final entry = entries.first as Map;
         // VP builder was invoked — entry must equal the fake VP.
         expect(entry, equals(_fakeVp));
+      });
+
+      test('omits an unmatched optional credential query from vp_token', () async {
+        final optionalRequest = DcqlShareRequest(
+          request: const IotaRequest(
+            responseType: 'vp_token',
+            responseMode: 'direct_post',
+            acceptResponseUri: _dcqlAcceptUri,
+            rejectResponseUri: _dcqlRejectUri,
+            state: 'dcql-state',
+            nonce: 'dcql-nonce',
+            clientId: 'did:key:dcql-verifier',
+          ),
+          dcqlQuery: DcqlCredentialQuery(
+            credentials: [
+              DcqlCredential(id: 'q-match', format: CredentialFormat.ldpVc),
+              // Uses a different format, so _fakeVC (ldpVc) won't match.
+              DcqlCredential(id: 'q-optional-no-match', format: CredentialFormat.msoMdoc),
+            ],
+          ),
+          jwtAssertion: 'dcql-jwt',
+        );
+
+        RequestOptions? captured;
+        dio.interceptors.add(
+          InterceptorsWrapper(
+            onRequest: (opts, handler) {
+              captured = opts;
+              handler.next(opts);
+            },
+          ),
+        );
+        dioAdapter.mockRequestWithReply(
+          url: _dcqlAcceptUri,
+          statusCode: 200,
+          data: <String, dynamic>{},
+          httpMethod: HttpMethod.post,
+        );
+
+        await buildService().submitShareResponse(
+          shareRequest: optionalRequest,
+          selectedCredentials: [_fakeVC],
+          acceptResponseUri: _dcqlAcceptUri,
+        );
+
+        final data = captured!.data as Map<String, dynamic>;
+        final vpToken = jsonDecode(data['vp_token'] as String) as Map;
+        expect(vpToken.containsKey('q-match'), isTrue);
+        expect(vpToken.containsKey('q-optional-no-match'), isFalse);
       });
     });
   });
