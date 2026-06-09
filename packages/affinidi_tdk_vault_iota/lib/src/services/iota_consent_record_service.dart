@@ -267,11 +267,29 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       // Greedily assign each stored VC to a credential query.
       // For multiple:true queries, claim all matching VCs; for multiple:false
       // (the default), claim exactly one.
+      //
+      // Queries are processed most-constrained first (fewest matching VCs
+      // first) to reduce false negatives from greedy assignment when a single
+      // VC can satisfy more than one query. A full bipartite matching would
+      // eliminate false negatives entirely but is not warranted here: false
+      // negatives only cause a fall-through to manual confirmation, they are
+      // not a correctness or security issue.
       final remainingVcs = List<ParsedVerifiableCredential<dynamic>>.of(
         previouslySelectedVcs,
       );
+      final sortedCredentials = dcqlQuery.credentials.toList()
+        ..sort(
+          (a, b) => remainingVcs
+              .where((vc) => _vcMatchesDcqlCredential(a, vc))
+              .length
+              .compareTo(
+                remainingVcs
+                    .where((vc) => _vcMatchesDcqlCredential(b, vc))
+                    .length,
+              ),
+        );
       final coveredQueryIds = <String>{};
-      for (final query in dcqlQuery.credentials) {
+      for (final query in sortedCredentials) {
         if (query.multiple) {
           final matches = remainingVcs
               .where((vc) => _vcMatchesDcqlCredential(query, vc))
