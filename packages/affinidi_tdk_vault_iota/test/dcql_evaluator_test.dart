@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:affinidi_tdk_vault_iota/src/exceptions/tdk_exception_type.dart';
 import 'package:affinidi_tdk_vault_iota/src/models/dcql_query.dart';
 import 'package:affinidi_tdk_vault_iota/src/services/dcql_evaluator.dart';
 import 'package:ssi/ssi.dart';
@@ -530,22 +532,37 @@ void main() {
       expect(claim.toJson().containsKey('id'), isFalse);
     });
 
-    test('throws FormatException when path is missing', () {
+    test('throws TdkException with invalidDcqlQuery when path is missing', () {
       expect(
         () => DcqlClaimDescriptor.fromJson({'id': 'email'}),
-        throwsFormatException,
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidDcqlQuery.code,
+          ),
+        ),
       );
     });
 
-    test('throws FormatException when path is not a list', () {
-      expect(
-        () => DcqlClaimDescriptor.fromJson({
-          'id': 'email',
-          'path': 'credentialSubject.email',
-        }),
-        throwsFormatException,
-      );
-    });
+    test(
+      'throws TdkException with invalidDcqlQuery when path is not a list',
+      () {
+        expect(
+          () => DcqlClaimDescriptor.fromJson({
+            'id': 'email',
+            'path': 'credentialSubject.email',
+          }),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidDcqlQuery.code,
+            ),
+          ),
+        );
+      },
+    );
   });
 
   group('DcqlCredentialQuery claim_sets JSON round-trip', () {
@@ -571,19 +588,34 @@ void main() {
       ]);
     });
 
-    test('throws FormatException when id is missing', () {
+    test('throws TdkException with invalidDcqlQuery when id is missing', () {
       expect(
         () => DcqlCredentialQuery.fromJson({'format': 'ldp_vc'}),
-        throwsFormatException,
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidDcqlQuery.code,
+          ),
+        ),
       );
     });
 
-    test('throws FormatException when id is not a string', () {
-      expect(
-        () => DcqlCredentialQuery.fromJson({'id': 42}),
-        throwsFormatException,
-      );
-    });
+    test(
+      'throws TdkException with invalidDcqlQuery when id is not a string',
+      () {
+        expect(
+          () => DcqlCredentialQuery.fromJson({'id': 42}),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidDcqlQuery.code,
+            ),
+          ),
+        );
+      },
+    );
 
     test('defaults multiple to false when omitted', () {
       final query = DcqlCredentialQuery.fromJson({'id': 'query-1'});
@@ -601,6 +633,46 @@ void main() {
       expect(query.multiple, isTrue);
       expect(query.toJson()['multiple'], isTrue);
     });
+  });
+
+  group('DcqlQuery malformed input', () {
+    test('throws TdkException with invalidDcqlQuery when credentials is not a '
+        'list', () {
+      expect(
+        () => DcqlQuery.fromJson({'credentials': 'not-a-list'}),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidDcqlQuery.code,
+          ),
+        ),
+      );
+    });
+
+    test(
+      'throws TdkException with invalidDcqlQuery when credential_set options '
+      'is not a list',
+      () {
+        expect(
+          () => DcqlQuery.fromJson({
+            'credentials': [
+              {'id': 'pid'},
+            ],
+            'credential_sets': [
+              {'options': 'not-a-list'},
+            ],
+          }),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidDcqlQuery.code,
+            ),
+          ),
+        );
+      },
+    );
   });
 
   group('DcqlQuery credential_sets JSON round-trip', () {

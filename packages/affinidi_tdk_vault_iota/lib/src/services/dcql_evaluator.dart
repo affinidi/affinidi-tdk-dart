@@ -19,8 +19,9 @@ abstract final class DcqlEvaluator {
   /// `jwt_vc_json` or `ldp_vc`. A credential is kept when it satisfies both
   /// the `type_values` filter (OR-of-ANDs on its `type` array) and the
   /// `claims` filter. When `claim_sets` is absent every claim must match;
-  /// otherwise at least one claim set must be fully satisfied. VCs whose
-  /// evaluation throws are silently skipped.
+  /// otherwise at least one claim set must be fully satisfied. A VC that
+  /// raises an [Exception] during evaluation is skipped (fail-closed for that
+  /// VC); [Error]s, which indicate a malformed query, propagate to the caller.
   static List<VerifiableCredential> selectMatching(
     DcqlCredentialQuery credentialQuery,
     List<VerifiableCredential> allVCs,
@@ -45,7 +46,7 @@ abstract final class DcqlEvaluator {
           return _evaluateClaims(vc, claims, claimSets);
         }
         return true;
-      } on Object {
+      } on Exception {
         return false;
       }
     }).toList();

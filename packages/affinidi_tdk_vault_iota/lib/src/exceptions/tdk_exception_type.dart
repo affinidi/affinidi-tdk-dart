@@ -29,6 +29,10 @@ enum TdkExceptionType {
   /// Thrown when a Presentation Definition is structurally invalid.
   invalidPresentationDefinition('invalid_presentation_definition'),
 
+  /// Thrown when a DCQL query is structurally invalid — e.g. a required
+  /// field is missing or has the wrong type.
+  invalidDcqlQuery('invalid_dcql_query'),
+
   /// Thrown when a single IDV input descriptor requests more than two VC
   /// types (i.e. more than `VerifiedIdsentityDocument` + one specific subtype).
   unsupportedMultipleIdvTypes('unsupported_multiple_idv_types'),

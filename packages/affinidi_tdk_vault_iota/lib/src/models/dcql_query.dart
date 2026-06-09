@@ -1,3 +1,7 @@
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+
+import '../exceptions/tdk_exception_type.dart';
+
 /// A DCQL (Digital Credentials Query Language) query as defined in the
 /// OID4VP spec.
 ///
@@ -25,12 +29,16 @@ class DcqlQuery {
   /// Parameters:
   /// * [json] - JSON map with a `credentials` array of credential query objects.
   ///
-  /// Throws [FormatException] if `credentials` is missing or not a list.
+  /// Throws [TdkException] with [TdkExceptionType.invalidDcqlQuery] if
+  /// `credentials` is missing or not a list.
   factory DcqlQuery.fromJson(Map<String, dynamic> json) {
     final rawList = json['credentials'];
     if (rawList is! List) {
-      throw FormatException(
-        "DcqlQuery 'credentials' must be a list, got: ${rawList.runtimeType}",
+      throw TdkException(
+        message:
+            "DCQL query 'credentials' must be a list, got: "
+            '${rawList.runtimeType}.',
+        code: TdkExceptionType.invalidDcqlQuery.code,
       );
     }
     final rawSets = json['credential_sets'];
@@ -96,13 +104,16 @@ class DcqlCredentialSetQuery {
   /// * [json] - JSON map with an `options` array and optional `required` and
   ///   `purpose` fields.
   ///
-  /// Throws [FormatException] if `options` is missing or not a list.
+  /// Throws [TdkException] with [TdkExceptionType.invalidDcqlQuery] if
+  /// `options` is missing or not a list.
   factory DcqlCredentialSetQuery.fromJson(Map<String, dynamic> json) {
     final rawOptions = json['options'];
     if (rawOptions is! List) {
-      throw FormatException(
-        "DcqlCredentialSetQuery 'options' must be a list, got: "
-        '${rawOptions.runtimeType}',
+      throw TdkException(
+        message:
+            "DCQL credential set 'options' must be a list, got: "
+            '${rawOptions.runtimeType}.',
+        code: TdkExceptionType.invalidDcqlQuery.code,
       );
     }
     return DcqlCredentialSetQuery(
@@ -174,8 +185,9 @@ class DcqlCredentialQuery {
   factory DcqlCredentialQuery.fromJson(Map<String, dynamic> json) {
     final id = json['id'];
     if (id is! String) {
-      throw const FormatException(
-        'DCQL credential query is missing a string "id".',
+      throw TdkException(
+        message: 'DCQL credential query is missing a string "id".',
+        code: TdkExceptionType.invalidDcqlQuery.code,
       );
     }
     final rawClaims = json['claims'];
@@ -280,8 +292,9 @@ class DcqlClaimDescriptor {
   factory DcqlClaimDescriptor.fromJson(Map<String, dynamic> json) {
     final rawPath = json['path'];
     if (rawPath is! List) {
-      throw const FormatException(
-        'DCQL claim descriptor is missing a "path" array.',
+      throw TdkException(
+        message: 'DCQL claim descriptor is missing a "path" array.',
+        code: TdkExceptionType.invalidDcqlQuery.code,
       );
     }
     return DcqlClaimDescriptor(
