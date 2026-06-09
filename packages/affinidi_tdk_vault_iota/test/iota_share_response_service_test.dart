@@ -472,54 +472,60 @@ void main() {
         expect(entry, equals(_fakeVp));
       });
 
-      test('omits an unmatched optional credential query from vp_token', () async {
-        final optionalRequest = DcqlShareRequest(
-          request: const IotaRequest(
-            responseType: 'vp_token',
-            responseMode: 'direct_post',
+      test(
+        'omits an unmatched optional credential query from vp_token',
+        () async {
+          final optionalRequest = DcqlShareRequest(
+            request: const IotaRequest(
+              responseType: 'vp_token',
+              responseMode: 'direct_post',
+              acceptResponseUri: _dcqlAcceptUri,
+              rejectResponseUri: _dcqlRejectUri,
+              state: 'dcql-state',
+              nonce: 'dcql-nonce',
+              clientId: 'did:key:dcql-verifier',
+            ),
+            dcqlQuery: DcqlCredentialQuery(
+              credentials: [
+                DcqlCredential(id: 'q-match', format: CredentialFormat.ldpVc),
+                // Uses a different format, so _fakeVC (ldpVc) won't match.
+                DcqlCredential(
+                  id: 'q-optional-no-match',
+                  format: CredentialFormat.msoMdoc,
+                ),
+              ],
+            ),
+            jwtAssertion: 'dcql-jwt',
+          );
+
+          RequestOptions? captured;
+          dio.interceptors.add(
+            InterceptorsWrapper(
+              onRequest: (opts, handler) {
+                captured = opts;
+                handler.next(opts);
+              },
+            ),
+          );
+          dioAdapter.mockRequestWithReply(
+            url: _dcqlAcceptUri,
+            statusCode: 200,
+            data: <String, dynamic>{},
+            httpMethod: HttpMethod.post,
+          );
+
+          await buildService().submitShareResponse(
+            shareRequest: optionalRequest,
+            selectedCredentials: [_fakeVC],
             acceptResponseUri: _dcqlAcceptUri,
-            rejectResponseUri: _dcqlRejectUri,
-            state: 'dcql-state',
-            nonce: 'dcql-nonce',
-            clientId: 'did:key:dcql-verifier',
-          ),
-          dcqlQuery: DcqlCredentialQuery(
-            credentials: [
-              DcqlCredential(id: 'q-match', format: CredentialFormat.ldpVc),
-              // Uses a different format, so _fakeVC (ldpVc) won't match.
-              DcqlCredential(id: 'q-optional-no-match', format: CredentialFormat.msoMdoc),
-            ],
-          ),
-          jwtAssertion: 'dcql-jwt',
-        );
+          );
 
-        RequestOptions? captured;
-        dio.interceptors.add(
-          InterceptorsWrapper(
-            onRequest: (opts, handler) {
-              captured = opts;
-              handler.next(opts);
-            },
-          ),
-        );
-        dioAdapter.mockRequestWithReply(
-          url: _dcqlAcceptUri,
-          statusCode: 200,
-          data: <String, dynamic>{},
-          httpMethod: HttpMethod.post,
-        );
-
-        await buildService().submitShareResponse(
-          shareRequest: optionalRequest,
-          selectedCredentials: [_fakeVC],
-          acceptResponseUri: _dcqlAcceptUri,
-        );
-
-        final data = captured!.data as Map<String, dynamic>;
-        final vpToken = jsonDecode(data['vp_token'] as String) as Map;
-        expect(vpToken.containsKey('q-match'), isTrue);
-        expect(vpToken.containsKey('q-optional-no-match'), isFalse);
-      });
+          final data = captured!.data as Map<String, dynamic>;
+          final vpToken = jsonDecode(data['vp_token'] as String) as Map;
+          expect(vpToken.containsKey('q-match'), isTrue);
+          expect(vpToken.containsKey('q-optional-no-match'), isFalse);
+        },
+      );
     });
   });
 

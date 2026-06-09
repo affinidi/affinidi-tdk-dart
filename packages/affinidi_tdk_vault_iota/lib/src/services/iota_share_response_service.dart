@@ -168,8 +168,9 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
       // is false, return the Verifiable Credential as-is without wrapping it in
       // a VP. The default (null or true) always builds a signed VP.
       if (credential.requireCryptographicHolderBinding == false) {
-        vpToken[credential.id] =
-            presentations.map((vc) => vc.toJson()).toList();
+        vpToken[credential.id] = presentations
+            .map((vc) => vc.toJson())
+            .toList();
       } else {
         vpToken[credential.id] = await Future.wait(
           presentations.map(
