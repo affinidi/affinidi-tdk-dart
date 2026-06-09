@@ -231,6 +231,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       verifierMetadata: verifierMetadata,
       vaultId: vaultId,
       matches: _vcMatchesDcqlCredential,
+      isMultiple: (credential) => credential.multiple,
     );
   }
 
@@ -264,19 +265,31 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       if (previouslySelectedVcs.length != record.sharedVcIds.length) continue;
 
       // Greedily assign each stored VC to a credential query.
-      // Iterate over queries so that each query can claim at most one VC,
-      // building up the set of covered query IDs.
+      // For multiple:true queries, claim all matching VCs; for multiple:false
+      // (the default), claim exactly one.
       final remainingVcs = List<ParsedVerifiableCredential<dynamic>>.of(
         previouslySelectedVcs,
       );
       final coveredQueryIds = <String>{};
       for (final query in dcqlQuery.credentials) {
-        final match = remainingVcs
-            .where((vc) => _vcMatchesDcqlCredential(query, vc))
-            .firstOrNull;
-        if (match != null) {
-          coveredQueryIds.add(query.id);
-          remainingVcs.remove(match);
+        if (query.multiple) {
+          final matches = remainingVcs
+              .where((vc) => _vcMatchesDcqlCredential(query, vc))
+              .toList();
+          if (matches.isNotEmpty) {
+            coveredQueryIds.add(query.id);
+            for (final vc in matches) {
+              remainingVcs.remove(vc);
+            }
+          }
+        } else {
+          final match = remainingVcs
+              .where((vc) => _vcMatchesDcqlCredential(query, vc))
+              .firstOrNull;
+          if (match != null) {
+            coveredQueryIds.add(query.id);
+            remainingVcs.remove(match);
+          }
         }
       }
 
@@ -365,6 +378,9 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   /// * [requirements] - The per-VC constraints from the live request
   ///   (PD descriptors for PEX, credential queries for DCQL).
   /// * [matches] - Predicate deciding whether a VC satisfies a requirement.
+  /// * [isMultiple] - Optional predicate; when it returns `true` for a
+  ///   requirement, ALL matching VCs are claimed (DCQL `multiple: true`).
+  ///   When omitted or `false`, exactly one VC is claimed per requirement.
   ///
   /// Returns [AutoConsentApproved] for the first passing record, otherwise
   /// [AutoConsentDeclined].
@@ -380,6 +396,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       ParsedVerifiableCredential<dynamic> vc,
     )
     matches,
+    bool Function(T requirement)? isMultiple,
   }) async {
     for (final record in enabledCandidates) {
       if (record.isConsentManagementEnabled) continue;
@@ -392,7 +409,6 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
           .toList();
 
       if (previouslySelectedVcs.length != record.sharedVcIds.length) continue;
-      if (requirements.length != previouslySelectedVcs.length) continue;
 
       final remainingVcs = List<ParsedVerifiableCredential<dynamic>>.of(
         previouslySelectedVcs,
@@ -401,18 +417,36 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
 
       var matchFailed = false;
       for (final requirement in requirements) {
-        final match = remainingVcs
-            .where((vc) => matches(requirement, vc))
-            .firstOrNull;
+        if (isMultiple?.call(requirement) == true) {
+          // Claim every stored VC that satisfies this query (multiple: true).
+          final allMatches = remainingVcs
+              .where((vc) => matches(requirement, vc))
+              .toList();
+          if (allMatches.isEmpty) {
+            matchFailed = true;
+            break;
+          }
+          matched.addAll(allMatches);
+          for (final vc in allMatches) {
+            remainingVcs.remove(vc);
+          }
+        } else {
+          final match = remainingVcs
+              .where((vc) => matches(requirement, vc))
+              .firstOrNull;
 
-        if (match == null) {
-          matchFailed = true;
-          break;
+          if (match == null) {
+            matchFailed = true;
+            break;
+          }
+          matched.add(match);
+          remainingVcs.remove(match);
         }
-        matched.add(match);
-        remainingVcs.remove(match);
       }
       if (matchFailed) continue;
+      // Every stored VC must be accounted for; orphaned VCs indicate the
+      // request changed (e.g. a descriptor was removed or a query type changed).
+      if (remainingVcs.isNotEmpty) continue;
 
       if (record.clientId != shareRequest.request.clientId) continue;
 

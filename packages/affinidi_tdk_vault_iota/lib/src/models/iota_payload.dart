@@ -165,8 +165,8 @@ class IotaPayload {
     if (dcqlQuery != null) 'dcql_query': dcqlQuery!.toJson(),
   };
 
-  /// Parses a DCQL query from [json], wrapping [ArgumentError]s thrown by the
-  /// dcql package into a typed [TdkException].
+  /// Parses a DCQL query from [json], wrapping any parse failure into a typed
+  /// [TdkException].
   static DcqlCredentialQuery _parseDcqlQuery(Map<String, dynamic> json) {
     try {
       return DcqlCredentialQuery.fromJson(json);
