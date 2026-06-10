@@ -128,6 +128,7 @@ class DcqlMatchedCredentialsResult implements MatchedCredentialsResult {
 class DcqlShareRequirementsMatcher {
   final Logger _logger;
   final RevocationList2020Verifier? _revocationVerifier;
+  final DcqlVcAdapter _vcAdapter;
   static const _componentName = 'DcqlShareRequirementsMatcher';
 
   /// Creates a [DcqlShareRequirementsMatcher].
@@ -140,7 +141,8 @@ class DcqlShareRequirementsMatcher {
     RevocationList2020Verifier? revocationVerifier,
     Logger? logger,
   }) : _revocationVerifier = revocationVerifier,
-       _logger = logger ?? Logger.instance;
+       _logger = logger ?? Logger.instance,
+       _vcAdapter = DcqlVcAdapter(logger: logger);
 
   /// Matches [allVCs] against each credential query in [dcqlQuery].
   ///
@@ -162,7 +164,7 @@ class DcqlShareRequirementsMatcher {
     // original VerifiableCredential so we can classify them after evaluation.
     final digitalToVc = <DigitalCredential, VerifiableCredential>{};
     for (final vc in allVCs) {
-      final digital = DcqlVcAdapter.toDigitalCredential(vc);
+      final digital = _vcAdapter.toDigitalCredential(vc);
       if (digital != null) digitalToVc[digital] = vc;
     }
 

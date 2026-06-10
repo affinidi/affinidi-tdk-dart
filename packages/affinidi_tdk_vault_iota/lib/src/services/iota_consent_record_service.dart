@@ -39,6 +39,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   final CryptographyServiceInterface _cryptography;
   final IotaShareResponseServiceInterface _shareResponseService;
   final Logger _logger;
+  final DcqlVcAdapter _vcAdapter;
 
   /// Creates an [IotaConsentRecordService].
   ///
@@ -55,7 +56,8 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   }) : _store = store,
        _cryptography = cryptography,
        _shareResponseService = shareResponseService,
-       _logger = logger ?? Logger.instance;
+       _logger = logger ?? Logger.instance,
+       _vcAdapter = DcqlVcAdapter(logger: logger);
 
   @override
   Future<void> saveConsentRecord({
@@ -221,7 +223,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       allVcs: allVcs,
       verifierMetadata: verifierMetadata,
       vaultId: vaultId,
-      matches: DcqlVcAdapter.vcMatchesDcqlCredential,
+      matches: _vcAdapter.vcMatchesDcqlCredential,
       isMultiple: (credential) => credential.multiple,
     );
   }
@@ -271,11 +273,11 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       final sortedCredentials = dcqlQuery.credentials.toList()
         ..sort(
           (a, b) => remainingVcs
-              .where((vc) => DcqlVcAdapter.vcMatchesDcqlCredential(a, vc))
+              .where((vc) => _vcAdapter.vcMatchesDcqlCredential(a, vc))
               .length
               .compareTo(
                 remainingVcs
-                    .where((vc) => DcqlVcAdapter.vcMatchesDcqlCredential(b, vc))
+                    .where((vc) => _vcAdapter.vcMatchesDcqlCredential(b, vc))
                     .length,
               ),
         );
@@ -283,7 +285,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       for (final query in sortedCredentials) {
         if (query.multiple) {
           final matches = remainingVcs
-              .where((vc) => DcqlVcAdapter.vcMatchesDcqlCredential(query, vc))
+              .where((vc) => _vcAdapter.vcMatchesDcqlCredential(query, vc))
               .toList();
           if (matches.isNotEmpty) {
             coveredQueryIds.add(query.id);
@@ -293,7 +295,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
           }
         } else {
           final match = remainingVcs
-              .where((vc) => DcqlVcAdapter.vcMatchesDcqlCredential(query, vc))
+              .where((vc) => _vcAdapter.vcMatchesDcqlCredential(query, vc))
               .firstOrNull;
           if (match != null) {
             coveredQueryIds.add(query.id);

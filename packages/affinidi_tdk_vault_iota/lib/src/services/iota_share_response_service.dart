@@ -21,6 +21,7 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   final VpBuilderInterface _vpBuilder;
   final Dio _dio;
   final Logger _logger;
+  final DcqlVcAdapter _vcAdapter;
 
   /// Creates an [IotaShareResponseService].
   ///
@@ -37,7 +38,8 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   }) : _signer = signer,
        _dio = dio ?? Dio(),
        _vpBuilder = vpBuilder ?? const VpBuilder(),
-       _logger = logger ?? Logger.instance;
+       _logger = logger ?? Logger.instance,
+       _vcAdapter = DcqlVcAdapter(logger: logger);
 
   /// Builds and submits a Verifiable Presentation to the verifier callback endpoint.
   ///
@@ -153,7 +155,7 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
 
     for (final credential in dcql.dcqlQuery.credentials) {
       final matched = selectedCredentials
-          .where((vc) => DcqlVcAdapter.vcMatchesDcqlCredential(credential, vc))
+          .where((vc) => _vcAdapter.vcMatchesDcqlCredential(credential, vc))
           .toList();
       if (matched.isEmpty) continue;
 

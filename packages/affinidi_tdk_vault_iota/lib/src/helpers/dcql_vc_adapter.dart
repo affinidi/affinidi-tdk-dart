@@ -1,3 +1,4 @@
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart' show Logger;
 import 'package:dcql/dcql.dart'
     show
         DcqlCredential,
@@ -7,9 +8,17 @@ import 'package:dcql/dcql.dart'
 import 'package:ssi/ssi.dart'
     show VerifiableCredential, dmV1ContextUrl, dmV2ContextUrl;
 
-/// Pure-static helpers for bridging the `ssi` [VerifiableCredential] type to
-/// the `dcql` package's [DigitalCredential] interface.
-abstract final class DcqlVcAdapter {
+/// Bridges the `ssi` [VerifiableCredential] type to the `dcql` package's
+/// [DigitalCredential] interface for DCQL credential query evaluation.
+class DcqlVcAdapter {
+  final Logger _logger;
+
+  /// Creates a [DcqlVcAdapter].
+  ///
+  /// Parameters:
+  /// * [logger] - optional logger; defaults to [Logger.instance].
+  DcqlVcAdapter({Logger? logger}) : _logger = logger ?? Logger.instance;
+
   /// Wraps [vc] in the `dcql` package's [DigitalCredential] interface for
   /// query evaluation.
   ///
@@ -18,7 +27,7 @@ abstract final class DcqlVcAdapter {
   ///
   /// Returns `null` when [vc] uses an unsupported JSON-LD context or the
   /// conversion throws.
-  static DigitalCredential? toDigitalCredential(VerifiableCredential vc) {
+  DigitalCredential? toDigitalCredential(VerifiableCredential vc) {
     final contextUri = vc.context.firstUri?.toString();
     try {
       if (contextUri == dmV1ContextUrl) {
@@ -28,7 +37,8 @@ abstract final class DcqlVcAdapter {
         return W3CDigitalCredential.fromLdVcDataModelV2(vc.toJson());
       }
       return null;
-    } on Exception {
+    } on Exception catch (e) {
+      _logger.warning('Failed to wrap VC as DigitalCredential: $e');
       return null;
     }
   }
@@ -38,7 +48,7 @@ abstract final class DcqlVcAdapter {
   /// Parameters:
   /// * [credential] - a single DCQL credential query to evaluate.
   /// * [vc] - the candidate credential to test.
-  static bool vcMatchesDcqlCredential(
+  bool vcMatchesDcqlCredential(
     DcqlCredential credential,
     VerifiableCredential vc,
   ) {
