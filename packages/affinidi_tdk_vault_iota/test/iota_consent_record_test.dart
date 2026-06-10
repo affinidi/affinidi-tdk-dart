@@ -58,7 +58,13 @@ void main() {
       test('when hash is null', () {
         expect(
           () => IotaConsentRecord.fromJson({...validJson, 'hash': null}),
-          throwsA(isA<TdkException>().having((e) => e.code, 'code', TdkExceptionType.parseFailure.code)),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.parseFailure.code,
+            ),
+          ),
         );
       });
 
@@ -66,42 +72,78 @@ void main() {
         final json = Map<String, dynamic>.from(validJson)..remove('hash');
         expect(
           () => IotaConsentRecord.fromJson(json),
-          throwsA(isA<TdkException>().having((e) => e.code, 'code', TdkExceptionType.parseFailure.code)),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.parseFailure.code,
+            ),
+          ),
         );
       });
 
       test('when hash is empty', () {
         expect(
           () => IotaConsentRecord.fromJson({...validJson, 'hash': ''}),
-          throwsA(isA<TdkException>().having((e) => e.code, 'code', TdkExceptionType.parseFailure.code)),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.parseFailure.code,
+            ),
+          ),
         );
       });
 
       test('when requestHash is null', () {
         expect(
           () => IotaConsentRecord.fromJson({...validJson, 'requestHash': null}),
-          throwsA(isA<TdkException>().having((e) => e.code, 'code', TdkExceptionType.parseFailure.code)),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.parseFailure.code,
+            ),
+          ),
         );
       });
 
       test('when requestHash is empty', () {
         expect(
           () => IotaConsentRecord.fromJson({...validJson, 'requestHash': ''}),
-          throwsA(isA<TdkException>().having((e) => e.code, 'code', TdkExceptionType.parseFailure.code)),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.parseFailure.code,
+            ),
+          ),
         );
       });
 
       test('when sharedAt is null', () {
         expect(
           () => IotaConsentRecord.fromJson({...validJson, 'sharedAt': null}),
-          throwsA(isA<TdkException>().having((e) => e.code, 'code', TdkExceptionType.parseFailure.code)),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.parseFailure.code,
+            ),
+          ),
         );
       });
 
       test('when sharedAt is empty', () {
         expect(
           () => IotaConsentRecord.fromJson({...validJson, 'sharedAt': ''}),
-          throwsA(isA<TdkException>().having((e) => e.code, 'code', TdkExceptionType.parseFailure.code)),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.parseFailure.code,
+            ),
+          ),
         );
       });
 
@@ -111,7 +153,13 @@ void main() {
             ...validJson,
             'isAutoShareEnabled': null,
           }),
-          throwsA(isA<TdkException>().having((e) => e.code, 'code', TdkExceptionType.parseFailure.code)),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.parseFailure.code,
+            ),
+          ),
         );
       });
     });
