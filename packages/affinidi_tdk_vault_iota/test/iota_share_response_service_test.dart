@@ -497,7 +497,12 @@ void main() {
               // q-optional-no-match is in a non-required set so the guard
               // must not throw when it has no match.
               credentialSets: [
-                DcqlCredentialSet(required: true, options: [['q-match']]),
+                DcqlCredentialSet(
+                  required: true,
+                  options: [
+                    ['q-match'],
+                  ],
+                ),
                 DcqlCredentialSet(
                   required: false,
                   options: [
@@ -567,8 +572,18 @@ void main() {
           // q2 is optional so that submitting with only one VC (covering q1)
           // does not trigger the required-query guard.
           credentialSets: [
-            DcqlCredentialSet(required: true, options: [['q1']]),
-            DcqlCredentialSet(required: false, options: [['q2']]),
+            DcqlCredentialSet(
+              required: true,
+              options: [
+                ['q1'],
+              ],
+            ),
+            DcqlCredentialSet(
+              required: false,
+              options: [
+                ['q2'],
+              ],
+            ),
           ],
         ),
         jwtAssertion: 'dcql-jwt',
@@ -644,82 +659,76 @@ void main() {
       );
     });
 
-    group(
-      'when selected credentials do not cover required queries '
-      '(incomplete_credential_selection)',
-      () {
-        test(
-          'throws when no credential_sets and a required query has no match',
-          () async {
-            // Single required query (no credential_sets), but empty selection.
-            await expectLater(
-              buildService().submitShareResponse(
-                shareRequest: _dcqlShareRequest, // has required q1
-                selectedCredentials: const [],
-                acceptResponseUri: _dcqlAcceptUri,
+    group('when selected credentials do not cover required queries '
+        '(incomplete_credential_selection)', () {
+      test(
+        'throws when no credential_sets and a required query has no match',
+        () async {
+          // Single required query (no credential_sets), but empty selection.
+          await expectLater(
+            buildService().submitShareResponse(
+              shareRequest: _dcqlShareRequest, // has required q1
+              selectedCredentials: const [],
+              acceptResponseUri: _dcqlAcceptUri,
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.incompleteCredentialSelection.code,
               ),
-              throwsA(
-                isA<TdkException>().having(
-                  (e) => e.code,
-                  'code',
-                  TdkExceptionType.incompleteCredentialSelection.code,
-                ),
-              ),
-            );
-          },
-        );
+            ),
+          );
+        },
+      );
 
-        test(
-          'throws when a required credential_set option cannot be satisfied',
-          () async {
-            final setsRequest = DcqlShareRequest(
-              request: const IotaRequest(
-                responseType: 'vp_token',
-                responseMode: 'direct_post',
-                acceptResponseUri: _dcqlAcceptUri,
-                rejectResponseUri: _dcqlRejectUri,
-                state: 'dcql-state',
-                nonce: 'dcql-nonce',
-                clientId: 'did:key:dcql-verifier',
-              ),
-              dcqlQuery: DcqlCredentialQuery(
-                credentials: [
-                  // Uses msoMdoc — _fakeVC is ldpVc so it will not match.
-                  DcqlCredential(
-                    id: 'q-mdoc',
-                    format: CredentialFormat.msoMdoc,
-                  ),
-                ],
-                credentialSets: [
-                  DcqlCredentialSet(
-                    required: true,
-                    options: [
-                      ['q-mdoc'],
-                    ],
-                  ),
-                ],
-              ),
-              jwtAssertion: 'dcql-jwt',
-            );
-
-            await expectLater(
-              buildService().submitShareResponse(
-                shareRequest: setsRequest,
-                selectedCredentials: [_fakeVC], // ldpVc, does not satisfy q-mdoc
-                acceptResponseUri: _dcqlAcceptUri,
-              ),
-              throwsA(
-                isA<TdkException>().having(
-                  (e) => e.code,
-                  'code',
-                  TdkExceptionType.incompleteCredentialSelection.code,
+      test(
+        'throws when a required credential_set option cannot be satisfied',
+        () async {
+          final setsRequest = DcqlShareRequest(
+            request: const IotaRequest(
+              responseType: 'vp_token',
+              responseMode: 'direct_post',
+              acceptResponseUri: _dcqlAcceptUri,
+              rejectResponseUri: _dcqlRejectUri,
+              state: 'dcql-state',
+              nonce: 'dcql-nonce',
+              clientId: 'did:key:dcql-verifier',
+            ),
+            dcqlQuery: DcqlCredentialQuery(
+              credentials: [
+                // Uses msoMdoc — _fakeVC is ldpVc so it will not match.
+                DcqlCredential(id: 'q-mdoc', format: CredentialFormat.msoMdoc),
+              ],
+              credentialSets: [
+                DcqlCredentialSet(
+                  required: true,
+                  options: [
+                    ['q-mdoc'],
+                  ],
                 ),
+              ],
+            ),
+            jwtAssertion: 'dcql-jwt',
+          );
+
+          await expectLater(
+            buildService().submitShareResponse(
+              shareRequest: setsRequest,
+              selectedCredentials: [_fakeVC], // ldpVc, does not satisfy q-mdoc
+              acceptResponseUri: _dcqlAcceptUri,
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.incompleteCredentialSelection.code,
               ),
-            );
-          },
-        );
-      },
-    );
+            ),
+          );
+        },
+      );
+    });
   });
 
   // ── Reject ──────────────────────────────────────────────────────────────────

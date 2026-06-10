@@ -240,8 +240,7 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
       final allSatisfied = credentialSets
           .where((s) => s.required)
           .every(
-            (set) =>
-                set.options.any((opt) => opt.every(covered.contains)),
+            (set) => set.options.any((opt) => opt.every(covered.contains)),
           );
       if (!allSatisfied) {
         throw TdkException(
