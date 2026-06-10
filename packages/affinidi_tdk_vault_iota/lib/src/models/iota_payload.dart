@@ -40,8 +40,8 @@ class IotaPayload {
 
   /// The scope of the authorization request.
   ///
-  /// Optional per OID4VP 1.0 final §5.2 — either `scope` or `dcql_query`
-  /// must be present, but not both.
+  /// Optional per OID4VP 1.0 final §5.2 — mutually exclusive with [dcqlQuery].
+  /// Must be absent when [dcqlQuery] is present.
   final String? scope;
 
   /// Optional audience claim of the JWT.
@@ -113,8 +113,8 @@ class IotaPayload {
   /// - [json] - JSON map representing the JWT payload, with snake_case keys.
   ///
   /// Throws [TdkException] with [TdkExceptionType.parseFailure] if neither
-  /// `presentation_definition` nor `dcql_query` is present, or if both are
-  /// present simultaneously.
+  /// `presentation_definition` nor `dcql_query` is present, if both are
+  /// present simultaneously, or if `scope` and `dcql_query` are both present.
   factory IotaPayload.fromJson(Map<String, dynamic> json) {
     final rawPd = json['presentation_definition'];
     final rawDcql = json['dcql_query'];
@@ -132,6 +132,13 @@ class IotaPayload {
         code: TdkExceptionType.parseFailure.code,
       );
     }
+    final rawScope = json['scope'];
+    if (rawScope != null && rawDcql != null) {
+      throw TdkException(
+        message: "JWT payload must not contain both 'scope' and 'dcql_query'.",
+        code: TdkExceptionType.parseFailure.code,
+      );
+    }
     return IotaPayload(
       nonce: json['nonce'] as String,
       state: json['state'] as String,
@@ -142,7 +149,7 @@ class IotaPayload {
       responseUri: json['response_uri'] as String,
       responseType: json['response_type'] as String,
       responseMode: json['response_mode'] as String,
-      scope: json['scope'] as String?,
+      scope: rawScope as String?,
       aud: json['aud'] as String?,
       exp: (json['exp'] as num).toInt(),
       iat: (json['iat'] as num).toInt(),

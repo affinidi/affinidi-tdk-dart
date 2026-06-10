@@ -118,5 +118,22 @@ void main() {
         ),
       );
     });
+
+    test('throws TdkException when scope and dcql_query are both present', () {
+      expect(
+        () => IotaPayload.fromJson({
+          ...baseJson,
+          'scope': 'openid',
+          'dcql_query': dcql.toJson(),
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.parseFailure.code,
+          ),
+        ),
+      );
+    });
   });
 }
