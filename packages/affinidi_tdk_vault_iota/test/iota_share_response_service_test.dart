@@ -527,6 +527,105 @@ void main() {
         },
       );
     });
+
+    group('VC-to-query assignment (each VC populates exactly one slot)', () {
+      // Two generic ldpVc queries — any ldpVc VC matches both.
+      DcqlShareRequest twoQueryRequest() => DcqlShareRequest(
+        request: const IotaRequest(
+          responseType: 'vp_token',
+          responseMode: 'direct_post',
+          acceptResponseUri: _dcqlAcceptUri,
+          rejectResponseUri: _dcqlRejectUri,
+          state: 'dcql-state',
+          nonce: 'dcql-nonce',
+          clientId: 'did:key:dcql-verifier',
+        ),
+        dcqlQuery: DcqlCredentialQuery(
+          credentials: [
+            DcqlCredential(
+              id: 'q1',
+              format: CredentialFormat.ldpVc,
+              requireCryptographicHolderBinding: false,
+            ),
+            DcqlCredential(
+              id: 'q2',
+              format: CredentialFormat.ldpVc,
+              requireCryptographicHolderBinding: false,
+            ),
+          ],
+        ),
+        jwtAssertion: 'dcql-jwt',
+      );
+
+      Future<Map> capturedVpToken({
+        required DcqlShareRequest shareRequest,
+        required List<ParsedVerifiableCredential<dynamic>> selectedCredentials,
+      }) async {
+        RequestOptions? captured;
+        dio.interceptors.add(
+          InterceptorsWrapper(
+            onRequest: (opts, handler) {
+              captured = opts;
+              handler.next(opts);
+            },
+          ),
+        );
+        dioAdapter.mockRequestWithReply(
+          url: _dcqlAcceptUri,
+          statusCode: 200,
+          data: <String, dynamic>{},
+          httpMethod: HttpMethod.post,
+        );
+
+        await buildService().submitShareResponse(
+          shareRequest: shareRequest,
+          selectedCredentials: selectedCredentials,
+          acceptResponseUri: _dcqlAcceptUri,
+        );
+
+        final data = captured!.data as Map<String, dynamic>;
+        return jsonDecode(data['vp_token'] as String) as Map;
+      }
+
+      test(
+        'a VC that matches two queries is only assigned to the first query',
+        () async {
+          // selectedCredentials contains a single VC that matches both q1 and q2.
+          // It must only appear in q1; q2 must be omitted (no VC remains for it).
+          final vpToken = await capturedVpToken(
+            shareRequest: twoQueryRequest(),
+            selectedCredentials: [_fakeVC],
+          );
+
+          expect(
+            vpToken.keys,
+            equals({'q1'}),
+            reason: 'q2 should be omitted — the only VC was consumed by q1',
+          );
+        },
+      );
+
+      test(
+        'two VCs are each assigned to their own query slot, not shared',
+        () async {
+          final vcA = IotaConsentRecordFixtures.makeParsedVc(id: 'vc-a');
+          final vcB = IotaConsentRecordFixtures.makeParsedVc(id: 'vc-b');
+
+          // Both VCs match both queries. With correct assignment:
+          //   q1 → vcA (first in list, requireCryptographicHolderBinding: false
+          //              so raw JSON is returned — id is 'vc-a')
+          //   q2 → vcB (remainder — id is 'vc-b')
+          final vpToken = await capturedVpToken(
+            shareRequest: twoQueryRequest(),
+            selectedCredentials: [vcA, vcB],
+          );
+
+          expect(vpToken.keys, containsAll(['q1', 'q2']));
+          expect(((vpToken['q1'] as List).first as Map)['id'], equals('vc-a'));
+          expect(((vpToken['q2'] as List).first as Map)['id'], equals('vc-b'));
+        },
+      );
+    });
   });
 
   // ── Reject ──────────────────────────────────────────────────────────────────

@@ -152,14 +152,33 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
     // - each Presentation can be a string or object per Appendix B encoding
     // Spec: https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-8.1
     final vpToken = <String, dynamic>{};
+    final unassigned = List<ParsedVerifiableCredential<dynamic>>.of(
+      selectedCredentials,
+    );
 
     for (final credential in dcql.dcqlQuery.credentials) {
-      final matched = selectedCredentials
-          .where((vc) => _vcAdapter.vcMatchesDcqlCredential(credential, vc))
-          .toList();
-      if (matched.isEmpty) continue;
+      final List<ParsedVerifiableCredential<dynamic>> presentations;
 
-      final presentations = credential.multiple ? matched : [matched.first];
+      if (credential.multiple) {
+        final taken = <ParsedVerifiableCredential<dynamic>>[];
+        for (final vc in List<ParsedVerifiableCredential<dynamic>>.of(
+          unassigned,
+        )) {
+          if (_vcAdapter.vcMatchesDcqlCredential(credential, vc)) {
+            taken.add(vc);
+            unassigned.remove(vc);
+          }
+        }
+        if (taken.isEmpty) continue;
+        presentations = taken;
+      } else {
+        final match = unassigned
+            .where((vc) => _vcAdapter.vcMatchesDcqlCredential(credential, vc))
+            .firstOrNull;
+        if (match == null) continue;
+        unassigned.remove(match);
+        presentations = [match];
+      }
 
       // Per OID4VP spec Appendix B.1: when require_cryptographic_holder_binding
       // is false, return the Verifiable Credential as-is without wrapping it in
