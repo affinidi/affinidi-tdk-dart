@@ -53,7 +53,11 @@ enum TdkExceptionType {
 
   /// Thrown when reading a consent record from the consumer-provided
   /// `ConsentStorage` fails.
-  failedToReadConsentRecord('failed_to_read_consent_record');
+  failedToReadConsentRecord('failed_to_read_consent_record'),
+
+  /// Thrown when `IotaShareResponseService.submitShareResponse` is called but
+  /// the selected credentials do not cover every required DCQL credential query.
+  incompleteCredentialSelection('incomplete_credential_selection');
 
   /// Creates a new instance of [TdkExceptionType].
   const TdkExceptionType(this.code);
