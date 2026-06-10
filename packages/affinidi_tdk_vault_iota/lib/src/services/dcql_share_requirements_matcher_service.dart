@@ -2,6 +2,8 @@ import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:dcql/dcql.dart';
 import 'package:ssi/ssi.dart';
 
+import '../helpers/dcql_vc_adapter.dart';
+
 import '../models/credential_set_options.dart';
 import '../models/matched_credential_group.dart';
 import '../models/matched_credentials_result.dart';
@@ -160,7 +162,7 @@ class DcqlShareRequirementsMatcher {
     // original VerifiableCredential so we can classify them after evaluation.
     final digitalToVc = <DigitalCredential, VerifiableCredential>{};
     for (final vc in allVCs) {
-      final digital = _toDigitalCredential(vc);
+      final digital = DcqlVcAdapter.toDigitalCredential(vc);
       if (digital != null) digitalToVc[digital] = vc;
     }
 
@@ -285,22 +287,5 @@ class DcqlShareRequirementsMatcher {
       vcsGroups: vcsGroups,
       dcqlQuery: dcqlQuery,
     );
-  }
-
-  /// Wraps a [VerifiableCredential] in the dcql package's [DigitalCredential]
-  /// interface for evaluation. Returns `null` for unsupported VC formats.
-  static DigitalCredential? _toDigitalCredential(VerifiableCredential vc) {
-    final contextUri = vc.context.firstUri?.toString();
-    try {
-      if (contextUri == dmV1ContextUrl) {
-        return W3CDigitalCredential.fromLdVcDataModelV1(vc.toJson());
-      }
-      if (contextUri == dmV2ContextUrl) {
-        return W3CDigitalCredential.fromLdVcDataModelV2(vc.toJson());
-      }
-      return null;
-    } on Exception {
-      return null;
-    }
   }
 }

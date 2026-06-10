@@ -2,16 +2,11 @@ import 'dart:convert';
 
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart'
     show Logger, TdkException;
-import 'package:dcql/dcql.dart'
-    show
-        DcqlCredential,
-        DcqlCredentialQuery,
-        DigitalCredential,
-        W3CDigitalCredential;
 import 'package:dio/dio.dart';
 import 'package:ssi/ssi.dart';
 
 import '../exceptions/tdk_exception_type.dart';
+import '../helpers/dcql_vc_adapter.dart';
 import '../helpers/presentation_definition_parser.dart';
 import '../models/share_requirements.dart';
 import 'iota_share_response_service_interface.dart';
@@ -158,7 +153,7 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
 
     for (final credential in dcql.dcqlQuery.credentials) {
       final matched = selectedCredentials
-          .where((vc) => _vcMatchesDcqlCredential(credential, vc))
+          .where((vc) => DcqlVcAdapter.vcMatchesDcqlCredential(credential, vc))
           .toList();
       if (matched.isEmpty) continue;
 
@@ -189,35 +184,6 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
       'state': dcql.request.state,
       'vp_token': jsonEncode(vpToken),
     });
-  }
-
-  /// Returns `true` if [vc] matches the given DCQL [credential] query.
-  static bool _vcMatchesDcqlCredential(
-    DcqlCredential credential,
-    VerifiableCredential vc,
-  ) {
-    final wrapped = _toDigitalCredential(vc);
-    if (wrapped == null) return false;
-    final query = DcqlCredentialQuery(credentials: [credential]);
-    final result = query.query([wrapped]);
-    return result.verifiableCredentials[credential.id]?.isNotEmpty == true;
-  }
-
-  /// Wraps a [VerifiableCredential] for evaluation by the `dcql` package.
-  /// Returns `null` for unsupported formats.
-  static DigitalCredential? _toDigitalCredential(VerifiableCredential vc) {
-    final contextUri = vc.context.firstUri?.toString();
-    try {
-      if (contextUri == dmV1ContextUrl) {
-        return W3CDigitalCredential.fromLdVcDataModelV1(vc.toJson());
-      }
-      if (contextUri == dmV2ContextUrl) {
-        return W3CDigitalCredential.fromLdVcDataModelV2(vc.toJson());
-      }
-      return null;
-    } on Exception {
-      return null;
-    }
   }
 
   Future<Uri?> _postToUri(String uri, Map<String, String> formData) async {
