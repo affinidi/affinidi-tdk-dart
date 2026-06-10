@@ -12,6 +12,7 @@ class ShareFlowService implements ShareFlowServiceInterface {
   final CryptographyServiceInterface _cryptography;
 
   static const _directPost = 'direct_post';
+  static const _vpToken = 'vp_token';
   static const _didScheme = 'did';
 
   /// Throws a [TdkException] with the given [message] and [type] code.
@@ -115,6 +116,13 @@ class ShareFlowService implements ShareFlowServiceInterface {
       _throw(
         'Invalid response_mode: ${payload.responseMode}.',
         TdkExceptionType.invalidResponseMode,
+      );
+    }
+
+    if (payload.responseType != _vpToken) {
+      _throw(
+        'Invalid response_type: ${payload.responseType}.',
+        TdkExceptionType.invalidResponseType,
       );
     }
 

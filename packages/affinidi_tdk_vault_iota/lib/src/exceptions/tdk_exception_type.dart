@@ -14,6 +14,9 @@ enum TdkExceptionType {
   /// Exception thrown when the `response_mode` in the request is not `direct_post`.
   invalidResponseMode('invalid_response_mode'),
 
+  /// Exception thrown when the `response_type` in the request is not `vp_token`.
+  invalidResponseType('invalid_response_type'),
+
   /// Exception thrown when the `client_id` field is missing from the request.
   missingClientId('missing_client_id'),
 

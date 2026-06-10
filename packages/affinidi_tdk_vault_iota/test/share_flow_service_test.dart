@@ -438,6 +438,36 @@ void main() {
       );
     });
 
+    group('and the response_type is not `vp_token`', () {
+      test(
+        'should throw a TdkException with code invalid_response_type',
+        () async {
+          when(
+            () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+          ).thenReturn(_baseDecodedPayload(responseType: 'code'));
+          when(
+            () => mockCryptography.verifyJwt(
+              jwtToken: any(named: 'jwtToken'),
+              didKey: any(named: 'didKey'),
+            ),
+          ).thenReturn(_validResult());
+
+          final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
+
+          await expectLater(
+            () => service.validateOid4vpRequest(uri),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.invalidResponseType.code,
+              ),
+            ),
+          );
+        },
+      );
+    });
+
     group('and the purpose field is malformed JSON', () {
       test('should return an Oid4vpShareRequest with null purpose', () async {
         when(
