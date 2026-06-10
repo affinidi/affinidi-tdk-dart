@@ -81,7 +81,7 @@ class IotaPayload {
   /// - [iat] - issued-at time of the JWT as a Unix timestamp (seconds).
   /// - [presentationDefinition] - PEX Presentation Definition.
   /// - [dcqlQuery] - DCQL query (mutually exclusive with [presentationDefinition]).
-  const IotaPayload({
+  IotaPayload({
     required this.nonce,
     required this.state,
     required this.clientId,
@@ -97,10 +97,15 @@ class IotaPayload {
     required this.iat,
     this.presentationDefinition,
     this.dcqlQuery,
-  }) : assert(
-         (presentationDefinition != null) != (dcqlQuery != null),
-         'Exactly one of presentationDefinition or dcqlQuery must be provided.',
-       );
+  }) {
+    if ((presentationDefinition != null) == (dcqlQuery != null)) {
+      throw TdkException(
+        message:
+            'Exactly one of presentationDefinition or dcqlQuery must be provided.',
+        code: TdkExceptionType.parseFailure.code,
+      );
+    }
+  }
 
   /// Creates an [IotaPayload] from a JSON map.
   ///
