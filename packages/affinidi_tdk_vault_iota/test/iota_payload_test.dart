@@ -75,4 +75,48 @@ void main() {
       );
     });
   });
+
+  const baseJson = <String, dynamic>{
+    'nonce': 'nonce',
+    'state': 'state',
+    'client_id': 'did:key:verifier',
+    'client_id_scheme': 'did',
+    'response_uri': 'https://verifier.example.com/cb',
+    'response_type': 'vp_token',
+    'response_mode': 'direct_post',
+    'exp': 9999999999,
+    'iat': 1000000000,
+  };
+
+  group('IotaPayload.fromJson', () {
+    test('throws TdkException when neither field is present', () {
+      expect(
+        () => IotaPayload.fromJson(baseJson),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.parseFailure.code,
+          ),
+        ),
+      );
+    });
+
+    test('throws TdkException when both fields are present', () {
+      expect(
+        () => IotaPayload.fromJson({
+          ...baseJson,
+          'presentation_definition': pd,
+          'dcql_query': dcql.toJson(),
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.parseFailure.code,
+          ),
+        ),
+      );
+    });
+  });
 }

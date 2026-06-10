@@ -112,19 +112,24 @@ class IotaPayload {
   /// Parameters:
   /// - [json] - JSON map representing the JWT payload, with snake_case keys.
   ///
-  /// Throws [FormatException] if neither `presentation_definition` nor `dcql_query` is present,
-  /// or if both are present simultaneously.
+  /// Throws [TdkException] with [TdkExceptionType.parseFailure] if neither
+  /// `presentation_definition` nor `dcql_query` is present, or if both are
+  /// present simultaneously.
   factory IotaPayload.fromJson(Map<String, dynamic> json) {
     final rawPd = json['presentation_definition'];
     final rawDcql = json['dcql_query'];
     if (rawPd == null && rawDcql == null) {
-      throw const FormatException(
-        "JWT payload must contain either 'presentation_definition' or 'dcql_query'.",
+      throw TdkException(
+        message:
+            "JWT payload must contain either 'presentation_definition' or 'dcql_query'.",
+        code: TdkExceptionType.parseFailure.code,
       );
     }
     if (rawPd != null && rawDcql != null) {
-      throw const FormatException(
-        "JWT payload must not contain both 'presentation_definition' and 'dcql_query'.",
+      throw TdkException(
+        message:
+            "JWT payload must not contain both 'presentation_definition' and 'dcql_query'.",
+        code: TdkExceptionType.parseFailure.code,
       );
     }
     return IotaPayload(
