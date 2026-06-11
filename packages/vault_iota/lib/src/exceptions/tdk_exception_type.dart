@@ -17,6 +17,10 @@ enum TdkExceptionType {
   /// Exception thrown when the `response_type` in the request is not `vp_token`.
   invalidResponseType('invalid_response_type'),
 
+  /// Exception thrown when `response_uri` is malformed, unsafe, or not bound
+  /// to the verifier DID's declared service endpoints.
+  invalidResponseUri('invalid_response_uri'),
+
   /// Exception thrown when the `client_id` field is missing from the request.
   missingClientId('missing_client_id'),
 

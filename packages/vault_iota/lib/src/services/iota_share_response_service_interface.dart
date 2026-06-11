@@ -16,6 +16,8 @@ abstract interface class IotaShareResponseServiceInterface {
   /// * [acceptResponseUri] - the URI from the OID4VP request JWT to POST the VP to.
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
+  /// Throws `TdkException` with code `invalid_response_uri` if the response URI
+  /// is unsafe or not declared by the verifier DID service endpoints.
   /// Throws `TdkException` with code `submission_failed` if the call fails.
   Future<Uri?> submitShareResponse({
     required Oid4vpShareRequest shareRequest,
@@ -30,6 +32,8 @@ abstract interface class IotaShareResponseServiceInterface {
   /// * [rejectResponseUri] - the URI from the OID4VP request JWT to POST the rejection to.
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
+  /// Throws `TdkException` with code `invalid_response_uri` if the response URI
+  /// is unsafe or not declared by the verifier DID service endpoints.
   /// Throws `TdkException` with code `submission_failed` if the call fails.
   Future<Uri?> rejectShareResponse({
     required Oid4vpShareRequest shareRequest,

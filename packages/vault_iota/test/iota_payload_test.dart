@@ -135,5 +135,22 @@ void main() {
         ),
       );
     });
+
+    test('throws TdkException when direct_post includes redirect_uri', () {
+      expect(
+        () => IotaPayload.fromJson({
+          ...baseJson,
+          'presentation_definition': pd,
+          'redirect_uri': 'https://verifier.example.com/redirect',
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            TdkExceptionType.invalidResponseUri.code,
+          ),
+        ),
+      );
+    });
   });
 }

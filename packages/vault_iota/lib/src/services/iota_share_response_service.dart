@@ -8,20 +8,27 @@ import 'package:ssi/ssi.dart';
 import '../exceptions/tdk_exception_type.dart';
 import '../helpers/dcql_vc_adapter.dart';
 import '../helpers/presentation_definition_parser.dart';
+import '../models/iota_request.dart';
 import '../models/share_requirements.dart';
 import 'iota_share_response_service_interface.dart';
 import 'presentation_submission_builder.dart';
 import 'vp_builder.dart';
 
+/// Resolves a verifier DID to the DID document used for response URI binding.
+typedef DidDocumentResolver = Future<DidDocument> Function(String did);
+
 /// Orchestrates the OID4VP share response: builds the VP, builds the
 /// presentation submission (PEX only), and POSTs both directly to the
 /// response URI supplied by the verifier in the OID4VP request.
 class IotaShareResponseService implements IotaShareResponseServiceInterface {
+  static const _didKeyPrefix = 'did:key:';
+
   final DidSigner _signer;
   final VpBuilderInterface _vpBuilder;
   final Dio _dio;
   final Logger _logger;
   final DcqlVcAdapter _vcAdapter;
+  final DidDocumentResolver _didResolver;
 
   /// Creates an [IotaShareResponseService].
   ///
@@ -30,16 +37,20 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   /// * [dio] - optional Dio client; defaults to a plain [Dio].
   /// * [vpBuilder] - custom VP builder; defaults to [VpBuilder].
   /// * [logger] - optional logger; defaults to [Logger.instance].
+  /// * [didResolver] - custom DID resolver; defaults to the SSI resolver.
   IotaShareResponseService({
     required DidSigner signer,
     Dio? dio,
     VpBuilderInterface? vpBuilder,
     Logger? logger,
+    DidDocumentResolver? didResolver,
   }) : _signer = signer,
        _dio = dio ?? Dio(),
        _vpBuilder = vpBuilder ?? const VpBuilder(),
        _logger = logger ?? Logger.instance,
-       _vcAdapter = DcqlVcAdapter(logger: logger);
+       _vcAdapter = DcqlVcAdapter(logger: logger),
+       _didResolver =
+           didResolver ?? UniversalDIDResolver.defaultResolver.resolveDid;
 
   /// Builds and submits a Verifiable Presentation to the verifier callback endpoint.
   ///
@@ -49,6 +60,8 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   /// * [acceptResponseUri] - the URI from the OID4VP request JWT to POST the VP to.
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
+  /// Throws [TdkException] with code `invalid_response_uri` if the response URI
+  /// is unsafe or not declared by the verifier DID service endpoints.
   /// Throws [TdkException] with code `submission_failed` if the API call fails.
   @override
   Future<Uri?> submitShareResponse({
@@ -79,13 +92,15 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   /// * [rejectResponseUri] - the URI from the OID4VP request JWT to POST the rejection to.
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
+  /// Throws [TdkException] with code `invalid_response_uri` if the response URI
+  /// is unsafe or not declared by the verifier DID service endpoints.
   /// Throws [TdkException] with code `submission_failed` if the API call fails.
   @override
   Future<Uri?> rejectShareResponse({
     required Oid4vpShareRequest shareRequest,
     required String rejectResponseUri,
   }) async {
-    return _postToUri(rejectResponseUri, {
+    return _postToUri(shareRequest.request, rejectResponseUri, {
       'state': shareRequest.request.state,
       'error': 'access_denied',
     });
@@ -112,7 +127,7 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
       domain: pex.request.clientId,
     );
 
-    return _postToUri(acceptResponseUri, {
+    return _postToUri(pex.request, acceptResponseUri, {
       'state': pex.request.state,
       'vp_token': jsonEncode(vp),
       'presentation_submission': jsonEncode(submission.toJson()),
@@ -137,6 +152,8 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   /// * [acceptResponseUri] - the URI to POST the Authorization Response to.
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
+  /// Throws [TdkException] with code `invalid_response_uri` if the response URI
+  /// is unsafe or not declared by the verifier DID service endpoints.
   /// Throws [TdkException] with code `submission_failed` if the API call fails.
   Future<Uri?> _submitDcqlShareResponse(
     DcqlShareRequest dcql,
@@ -203,7 +220,7 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
 
     _assertRequiredQueriesCovered(dcql, vpToken);
 
-    return _postToUri(acceptResponseUri, {
+    return _postToUri(dcql.request, acceptResponseUri, {
       'state': dcql.request.state,
       'vp_token': jsonEncode(vpToken),
     });
@@ -253,15 +270,26 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
     }
   }
 
-  Future<Uri?> _postToUri(String uri, Map<String, String> formData) async {
+  Future<Uri?> _postToUri(
+    IotaRequest request,
+    String uri,
+    Map<String, String> formData,
+  ) async {
+    final responseUri = await _validateVerifierBoundUri(
+      request: request,
+      uri: uri,
+      parameterName: 'response_uri',
+    );
+
     try {
       final response = await _dio.post<Map<String, dynamic>>(
-        uri,
+        responseUri.toString(),
         data: formData,
         options: Options(contentType: 'application/x-www-form-urlencoded'),
       );
       final redirectUri = response.data?['redirect_uri'] as String?;
-      return redirectUri != null ? Uri.tryParse(redirectUri) : null;
+      if (redirectUri == null) return null;
+      return _validateRedirectUri(request, redirectUri);
     } catch (e, stackTrace) {
       if (e is TdkException) rethrow;
       _logger.warning(
@@ -275,6 +303,149 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
         ),
         stackTrace,
       );
+    }
+  }
+
+  Future<Uri?> _validateRedirectUri(
+    IotaRequest request,
+    String redirectUri,
+  ) async {
+    try {
+      return await _validateVerifierBoundUri(
+        request: request,
+        uri: redirectUri,
+        parameterName: 'redirect_uri',
+      );
+    } on TdkException catch (e) {
+      _logger.warning(
+        'Ignoring unsafe redirect_uri from verifier: ${e.message}',
+      );
+      return null;
+    }
+  }
+
+  Future<Uri> _validateVerifierBoundUri({
+    required IotaRequest request,
+    required String uri,
+    required String parameterName,
+  }) async {
+    final parsed = _parseSafeHttpsUri(uri, parameterName);
+    // OID4VP direct_post requires response_uri to be permitted by the
+    // client identifier rules, and recommends validating the response URI
+    // using the authenticated client identifier and request integrity.
+    // See: https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-8.2
+    // See: https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-14.3.1
+    final allowedHosts = await _allowedHostsForRequest(request);
+
+    if (!allowedHosts.contains(parsed.host.toLowerCase())) {
+      throw TdkException(
+        message:
+            '$parameterName host is not declared in the client_id DID serviceEndpoint.',
+        code: TdkExceptionType.invalidResponseUri.code,
+      );
+    }
+
+    return parsed;
+  }
+
+  Future<Set<String>> _allowedHostsForRequest(IotaRequest request) async {
+    final isDidKey = request.clientId.startsWith(_didKeyPrefix);
+    final didHosts = await _allowedHostsForClientId(
+      request.clientId,
+      allowEmpty: isDidKey,
+    );
+    if (didHosts.isNotEmpty) return didHosts;
+
+    if (isDidKey) {
+      throw TdkException(
+        message:
+            'did:key client_id does not declare any HTTPS serviceEndpoint for response_uri validation.',
+        code: TdkExceptionType.invalidResponseUri.code,
+      );
+    }
+
+    return didHosts;
+  }
+
+  Uri _parseSafeHttpsUri(String uri, String parameterName) {
+    final parsed = Uri.tryParse(uri);
+    if (parsed == null ||
+        parsed.scheme != 'https' ||
+        parsed.host.isEmpty ||
+        parsed.userInfo.isNotEmpty ||
+        parsed.fragment.isNotEmpty) {
+      throw TdkException(
+        message:
+            '$parameterName must be an HTTPS URI without userinfo or fragment.',
+        code: TdkExceptionType.invalidResponseUri.code,
+      );
+    }
+    return parsed;
+  }
+
+  Future<Set<String>> _allowedHostsForClientId(
+    String clientId, {
+    bool allowEmpty = false,
+  }) async {
+    try {
+      final didDocument = await _didResolver(clientId);
+      final hosts = didDocument.service
+          .expand((service) => _endpointUris(service.serviceEndpoint))
+          .map(Uri.tryParse)
+          .whereType<Uri>()
+          .where((uri) => uri.scheme == 'https' && uri.host.isNotEmpty)
+          .map((uri) => uri.host.toLowerCase())
+          .toSet();
+
+      if (hosts.isEmpty) {
+        if (allowEmpty) return hosts;
+        throw TdkException(
+          message: 'client_id DID does not declare any HTTPS serviceEndpoint.',
+          code: TdkExceptionType.invalidResponseUri.code,
+        );
+      }
+
+      return hosts;
+    } on TdkException {
+      rethrow;
+    } catch (e, stackTrace) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message:
+              'Failed to resolve client_id DID for response_uri validation.',
+          code: TdkExceptionType.invalidResponseUri.code,
+          originalMessage: e.toString(),
+        ),
+        stackTrace,
+      );
+    }
+  }
+
+  Iterable<String> _endpointUris(ServiceEndpointValue endpoint) sync* {
+    switch (endpoint) {
+      case StringEndpoint(:final url):
+        yield url;
+      case MapEndpoint(:final data):
+        yield* _nestedStringValues(data);
+      case SetEndpoint(:final endpoints):
+        for (final endpoint in endpoints) {
+          yield* _endpointUris(endpoint);
+        }
+    }
+  }
+
+  Iterable<String> _nestedStringValues(Object? value) sync* {
+    switch (value) {
+      case String stringValue:
+        yield stringValue;
+      case Iterable<Object?> iterableValue:
+        for (final item in iterableValue) {
+          yield* _nestedStringValues(item);
+        }
+      case Map<Object?, Object?> mapValue:
+        for (final item in mapValue.values) {
+          yield* _nestedStringValues(item);
+        }
     }
   }
 }

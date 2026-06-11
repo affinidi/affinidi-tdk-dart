@@ -33,6 +33,11 @@ const _acceptUri = 'https://verifier.example.com/accept';
 const _rejectUri = 'https://verifier.example.com/reject';
 const _dcqlAcceptUri = 'https://dcql-verifier.example.com/accept';
 const _dcqlRejectUri = 'https://dcql-verifier.example.com/reject';
+const _didWebClientId = 'did:web:verifier.example.com';
+const _allowedOrigins = [
+  'https://verifier.example.com',
+  'https://dcql-verifier.example.com',
+];
 
 final _fakeVp = <String, dynamic>{
   'type': 'VerifiablePresentation',
@@ -43,6 +48,20 @@ final _fakeVC = IotaConsentRecordFixtures.makeParsedVc();
 
 // Reuses the fixture so URIs, state, and nonce are consistent.
 final _pexShareRequest = IotaConsentRecordFixtures.shareRequest;
+
+final _didWebShareRequest = PexShareRequest(
+  request: const IotaRequest(
+    responseType: 'vp_token',
+    responseMode: 'direct_post',
+    acceptResponseUri: _acceptUri,
+    rejectResponseUri: _rejectUri,
+    state: 'did-web-state',
+    nonce: 'did-web-nonce',
+    clientId: _didWebClientId,
+  ),
+  presentationDefinition: _pexShareRequest.presentationDefinition,
+  jwtAssertion: 'did-web-jwt',
+);
 
 final _dcqlShareRequest = DcqlShareRequest(
   request: const IotaRequest(
@@ -74,6 +93,32 @@ Future<DidSigner> _buildTestSigner() async {
   );
 }
 
+DidDocument _didDocumentWithServiceEndpoints(
+  String did,
+  List<String> origins,
+) => DidDocument.create(
+  id: did,
+  service: [
+    for (final origin in origins)
+      ServiceEndpoint(
+        id: '$did#${Uri.parse(origin).host}',
+        type: const StringServiceType('OID4VP'),
+        serviceEndpoint: StringEndpoint(origin),
+      ),
+  ],
+);
+
+DidDocument _didWebVerifierDocumentFixture() => DidDocument.create(
+  id: _didWebClientId,
+  service: [
+    ServiceEndpoint(
+      id: '$_didWebClientId#oid4vp',
+      type: const StringServiceType('OID4VP'),
+      serviceEndpoint: const StringEndpoint('https://verifier.example.com'),
+    ),
+  ],
+);
+
 void main() {
   late Dio dio;
   late DioAdapter dioAdapter;
@@ -90,10 +135,14 @@ void main() {
 
   tearDown(() => dioAdapter.reset());
 
-  IotaShareResponseService buildService() => IotaShareResponseService(
+  IotaShareResponseService buildService({
+    List<String> allowedOrigins = _allowedOrigins,
+  }) => IotaShareResponseService(
     signer: signer,
     dio: dio,
     vpBuilder: _FakeVpBuilder(_fakeVp),
+    didResolver: (did) async =>
+        _didDocumentWithServiceEndpoints(did, allowedOrigins),
   );
 
   // ── PEX submit ──────────────────────────────────────────────────────────────
@@ -220,6 +269,208 @@ void main() {
           ),
         );
       });
+    });
+
+    group('response_uri validation (invalid_response_uri)', () {
+      for (final uri in [
+        'http://verifier.example.com/accept',
+        'file:///tmp/accept',
+        'javascript:alert(1)',
+        'intent://verifier.example.com/accept',
+      ]) {
+        test('rejects unsafe scheme: $uri', () async {
+          await expectLater(
+            buildService().submitShareResponse(
+              shareRequest: _pexShareRequest,
+              selectedCredentials: [_fakeVC],
+              acceptResponseUri: uri,
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.invalidResponseUri.code,
+              ),
+            ),
+          );
+        });
+      }
+
+      test('rejects response_uri with userinfo', () async {
+        await expectLater(
+          buildService().submitShareResponse(
+            shareRequest: _pexShareRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: 'https://user@verifier.example.com/accept',
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidResponseUri.code,
+            ),
+          ),
+        );
+      });
+
+      test('rejects response_uri with fragment', () async {
+        await expectLater(
+          buildService().submitShareResponse(
+            shareRequest: _pexShareRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: 'https://verifier.example.com/accept#fragment',
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidResponseUri.code,
+            ),
+          ),
+        );
+      });
+
+      test('rejects response_uri host not declared by client_id DID', () async {
+        await expectLater(
+          buildService(
+            allowedOrigins: ['https://verifier.example.com'],
+          ).submitShareResponse(
+            shareRequest: _pexShareRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: 'https://attacker.example.com/steal',
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidResponseUri.code,
+            ),
+          ),
+        );
+      });
+
+      test(
+        'returns null for redirect_uri host not declared by client_id DID',
+        () async {
+          dioAdapter.mockRequestWithReply(
+            url: _acceptUri,
+            statusCode: 200,
+            data: {'redirect_uri': 'https://attacker.example.com/phishing'},
+            httpMethod: HttpMethod.post,
+          );
+
+          final result =
+              await buildService(
+                allowedOrigins: ['https://verifier.example.com'],
+              ).submitShareResponse(
+                shareRequest: _pexShareRequest,
+                selectedCredentials: [_fakeVC],
+                acceptResponseUri: _acceptUri,
+              );
+
+          expect(result, isNull);
+        },
+      );
+
+      test(
+        'accepts did:web response_uri host declared by serviceEndpoint fixture',
+        () async {
+          var didResolved = false;
+          RequestOptions? captured;
+          dio.interceptors.add(
+            InterceptorsWrapper(
+              onRequest: (opts, handler) {
+                captured = opts;
+                handler.next(opts);
+              },
+            ),
+          );
+          dioAdapter.mockRequestWithReply(
+            url: _acceptUri,
+            statusCode: 200,
+            data: <String, dynamic>{},
+            httpMethod: HttpMethod.post,
+          );
+
+          final service = IotaShareResponseService(
+            signer: signer,
+            dio: dio,
+            vpBuilder: _FakeVpBuilder(_fakeVp),
+            didResolver: (did) async {
+              expect(did, equals(_didWebClientId));
+              didResolved = true;
+              return _didWebVerifierDocumentFixture();
+            },
+          );
+
+          await service.submitShareResponse(
+            shareRequest: _didWebShareRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: _acceptUri,
+          );
+
+          expect(didResolved, isTrue);
+          expect(captured, isNotNull);
+          expect(captured!.path, equals(_acceptUri));
+        },
+      );
+
+      test(
+        'rejects did:key response_uri when no serviceEndpoint is declared',
+        () async {
+          final service = IotaShareResponseService(
+            signer: signer,
+            dio: dio,
+            vpBuilder: _FakeVpBuilder(_fakeVp),
+            didResolver: (did) async => DidDocument.create(id: did),
+          );
+
+          await expectLater(
+            service.submitShareResponse(
+              shareRequest: _pexShareRequest,
+              selectedCredentials: [_fakeVC],
+              acceptResponseUri: _acceptUri,
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.invalidResponseUri.code,
+              ),
+            ),
+          );
+        },
+      );
+
+      test(
+        'accepts did:key response_uri when resolver declares serviceEndpoint',
+        () async {
+          RequestOptions? captured;
+          dio.interceptors.add(
+            InterceptorsWrapper(
+              onRequest: (opts, handler) {
+                captured = opts;
+                handler.next(opts);
+              },
+            ),
+          );
+          dioAdapter.mockRequestWithReply(
+            url: _acceptUri,
+            statusCode: 200,
+            data: <String, dynamic>{},
+            httpMethod: HttpMethod.post,
+          );
+
+          await buildService().submitShareResponse(
+            shareRequest: _pexShareRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: _acceptUri,
+          );
+
+          expect(captured, isNotNull);
+          expect(captured!.path, equals(_acceptUri));
+        },
+      );
     });
   });
 
