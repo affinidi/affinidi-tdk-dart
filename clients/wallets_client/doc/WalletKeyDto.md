@@ -9,7 +9,8 @@ import 'package:affinidi_tdk_wallets_client/api.dart';
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **keyId** | **String** | wallet-scoped key identifier (e.g., \"key-1\") | [optional] 
-**keyType** | **String** | cryptographic algorithm used by this key | [optional] 
+**algorithm** | **String** | cryptographic algorithm used by this key | [optional] 
+**keyType** | **String** | Deprecated alias of `algorithm`. Always equal to `algorithm` and included for backward compatibility. | [optional] 
 **keyAri** | **String** | ARI identifier for the key (e.g., \"ari:key:...\") | [optional] 
 **relationships** | [**BuiltList&lt;VerificationRelationship&gt;**](VerificationRelationship.md) | verification relationships this key supports | [optional] 
 
