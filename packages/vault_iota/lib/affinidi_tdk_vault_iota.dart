@@ -5,6 +5,8 @@ library;
 export 'package:affinidi_tdk_common/affinidi_tdk_common.dart' show TdkException;
 
 export 'src/exceptions/tdk_exception_type.dart';
+export 'src/helpers/did_document_resolver.dart';
+export 'src/helpers/response_uri_trust_validator.dart';
 export 'src/models/auto_consent_result.dart';
 export 'src/models/claimed_credentials_result.dart';
 export 'src/models/credential_set_options.dart';

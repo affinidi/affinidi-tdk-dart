@@ -7,15 +7,14 @@ import 'package:ssi/ssi.dart';
 
 import '../exceptions/tdk_exception_type.dart';
 import '../helpers/dcql_vc_adapter.dart';
+import '../helpers/did_document_resolver.dart';
 import '../helpers/presentation_definition_parser.dart';
+import '../helpers/response_uri_trust_validator.dart';
 import '../models/iota_request.dart';
 import '../models/share_requirements.dart';
 import 'iota_share_response_service_interface.dart';
 import 'presentation_submission_builder.dart';
 import 'vp_builder.dart';
-
-/// Resolves a verifier DID to the DID document used for response URI binding.
-typedef DidDocumentResolver = Future<DidDocument> Function(String did);
 
 /// Orchestrates the OID4VP share response: builds the VP, builds the
 /// presentation submission (PEX only), and POSTs both directly to the
@@ -29,6 +28,7 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   final Logger _logger;
   final DcqlVcAdapter _vcAdapter;
   final DidDocumentResolver _didResolver;
+  final ResponseUriTrustValidator? _responseUriTrustValidator;
 
   /// Creates an [IotaShareResponseService].
   ///
@@ -38,19 +38,23 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   /// * [vpBuilder] - custom VP builder; defaults to [VpBuilder].
   /// * [logger] - optional logger; defaults to [Logger.instance].
   /// * [didResolver] - custom DID resolver; defaults to the SSI resolver.
+  /// * [responseUriTrustValidator] - optional policy hook for response URI
+  ///   approval when the verifier DID document does not bind the URI host.
   IotaShareResponseService({
     required DidSigner signer,
     Dio? dio,
     VpBuilderInterface? vpBuilder,
     Logger? logger,
     DidDocumentResolver? didResolver,
+    ResponseUriTrustValidator? responseUriTrustValidator,
   }) : _signer = signer,
        _dio = dio ?? Dio(),
        _vpBuilder = vpBuilder ?? const VpBuilder(),
        _logger = logger ?? Logger.instance,
        _vcAdapter = DcqlVcAdapter(logger: logger),
        _didResolver =
-           didResolver ?? UniversalDIDResolver.defaultResolver.resolveDid;
+           didResolver ?? UniversalDIDResolver.defaultResolver.resolveDid,
+       _responseUriTrustValidator = responseUriTrustValidator;
 
   /// Builds and submits a Verifiable Presentation to the verifier callback endpoint.
   ///
@@ -338,34 +342,61 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
     final allowedHosts = await _allowedHostsForRequest(request);
 
     if (!allowedHosts.contains(parsed.host.toLowerCase())) {
-      throw TdkException(
-        message:
-            '$parameterName host is not declared in the client_id DID serviceEndpoint.',
-        code: TdkExceptionType.invalidResponseUri.code,
-      );
+      if (await _isExplicitlyTrustedUri(
+        request: request,
+        uri: parsed,
+        parameterName: parameterName,
+      )) {
+        return parsed;
+      }
+
+      _throwUnboundResponseUri(request: request, parameterName: parameterName);
     }
 
     return parsed;
   }
 
   Future<Set<String>> _allowedHostsForRequest(IotaRequest request) async {
-    final isDidKey = request.clientId.startsWith(_didKeyPrefix);
-    final didHosts = await _allowedHostsForClientId(
-      request.clientId,
-      allowEmpty: isDidKey,
-    );
-    if (didHosts.isNotEmpty) return didHosts;
+    return _allowedHostsForClientId(request.clientId);
+  }
 
-    if (isDidKey) {
-      throw TdkException(
-        message:
-            'did:key client_id does not declare any HTTPS serviceEndpoint for response_uri validation.',
-        code: TdkExceptionType.invalidResponseUri.code,
+  Future<bool> _isExplicitlyTrustedUri({
+    required IotaRequest request,
+    required Uri uri,
+    required String parameterName,
+  }) async {
+    final validator = _responseUriTrustValidator;
+    if (validator == null) return false;
+
+    try {
+      return validator(
+        request: request,
+        uri: uri,
+        parameterName: parameterName,
+      );
+    } catch (e, stackTrace) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Response URI trust validator failed.',
+          code: TdkExceptionType.invalidResponseUri.code,
+          originalMessage: e.toString(),
+        ),
+        stackTrace,
       );
     }
-
-    return didHosts;
   }
+
+  Never _throwUnboundResponseUri({
+    required IotaRequest request,
+    required String parameterName,
+  }) => throw TdkException(
+    message: request.clientId.startsWith(_didKeyPrefix)
+        ? '$parameterName host cannot be verified from did:key client_id. '
+              'Provide a responseUriTrustValidator to explicitly approve '
+              'trusted verifier callback hosts.'
+        : '$parameterName host is not declared in the client_id DID serviceEndpoint.',
+    code: TdkExceptionType.invalidResponseUri.code,
+  );
 
   Uri _parseSafeHttpsUri(String uri, String parameterName) {
     final parsed = Uri.tryParse(uri);
@@ -383,10 +414,7 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
     return parsed;
   }
 
-  Future<Set<String>> _allowedHostsForClientId(
-    String clientId, {
-    bool allowEmpty = false,
-  }) async {
+  Future<Set<String>> _allowedHostsForClientId(String clientId) async {
     try {
       final didDocument = await _didResolver(clientId);
       final hosts = didDocument.service
@@ -396,14 +424,6 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
           .where((uri) => uri.scheme == 'https' && uri.host.isNotEmpty)
           .map((uri) => uri.host.toLowerCase())
           .toSet();
-
-      if (hosts.isEmpty) {
-        if (allowEmpty) return hosts;
-        throw TdkException(
-          message: 'client_id DID does not declare any HTTPS serviceEndpoint.',
-          code: TdkExceptionType.invalidResponseUri.code,
-        );
-      }
 
       return hosts;
     } on TdkException {

@@ -432,6 +432,91 @@ void main() {
               acceptResponseUri: _acceptUri,
             ),
             throwsA(
+              isA<TdkException>()
+                  .having(
+                    (e) => e.code,
+                    'code',
+                    TdkExceptionType.invalidResponseUri.code,
+                  )
+                  .having(
+                    (e) => e.message,
+                    'message',
+                    contains('responseUriTrustValidator'),
+                  ),
+            ),
+          );
+        },
+      );
+
+      test(
+        'accepts did:key response_uri when trust validator approves host',
+        () async {
+          RequestOptions? captured;
+          dio.interceptors.add(
+            InterceptorsWrapper(
+              onRequest: (opts, handler) {
+                captured = opts;
+                handler.next(opts);
+              },
+            ),
+          );
+          dioAdapter.mockRequestWithReply(
+            url: _acceptUri,
+            statusCode: 200,
+            data: <String, dynamic>{},
+            httpMethod: HttpMethod.post,
+          );
+
+          final service = IotaShareResponseService(
+            signer: signer,
+            dio: dio,
+            vpBuilder: _FakeVpBuilder(_fakeVp),
+            didResolver: (did) async => DidDocument.create(id: did),
+            responseUriTrustValidator:
+                ({
+                  required request,
+                  required uri,
+                  required parameterName,
+                }) async =>
+                    request.clientId == _pexShareRequest.request.clientId &&
+                    uri.host == 'verifier.example.com' &&
+                    parameterName == 'response_uri',
+          );
+
+          await service.submitShareResponse(
+            shareRequest: _pexShareRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: _acceptUri,
+          );
+
+          expect(captured, isNotNull);
+          expect(captured!.path, equals(_acceptUri));
+        },
+      );
+
+      test(
+        'rejects did:key response_uri when trust validator rejects host',
+        () async {
+          final service = IotaShareResponseService(
+            signer: signer,
+            dio: dio,
+            vpBuilder: _FakeVpBuilder(_fakeVp),
+            didResolver: (did) async => DidDocument.create(id: did),
+            responseUriTrustValidator:
+                ({
+                  required request,
+                  required uri,
+                  required parameterName,
+                }) async => false,
+          );
+
+          await expectLater(
+            service.submitShareResponse(
+              shareRequest: _pexShareRequest,
+              selectedCredentials: [_fakeVC],
+              acceptResponseUri: _acceptUri,
+            ),
+            throwsA(
               isA<TdkException>().having(
                 (e) => e.code,
                 'code',
@@ -469,6 +554,182 @@ void main() {
 
           expect(captured, isNotNull);
           expect(captured!.path, equals(_acceptUri));
+        },
+      );
+    });
+
+    // ── responseUriTrustValidator — success and attack cases ─────────────────
+
+    group('responseUriTrustValidator', () {
+      // Simulates a consumer using a hardcoded allowlist of trusted verifiers.
+      // In production this would be a backend registry call instead.
+      const trustedVerifierClientIds = {'did:key:verifier123'};
+      const trustedCallbackHosts = {'verifier.example.com'};
+
+      ResponseUriTrustValidator allowlistValidator() =>
+          ({required request, required uri, required parameterName}) async =>
+              trustedVerifierClientIds.contains(request.clientId) &&
+              trustedCallbackHosts.contains(uri.host);
+
+      IotaShareResponseService serviceWithAllowlist() =>
+          IotaShareResponseService(
+            signer: signer,
+            dio: dio,
+            vpBuilder: _FakeVpBuilder(_fakeVp),
+            // did:key has no serviceEndpoint, so the allowlist validator is the
+            // only trust source.
+            didResolver: (did) async => DidDocument.create(id: did),
+            responseUriTrustValidator: allowlistValidator(),
+          );
+
+      test(
+        'success: legitimate verifier in allowlist can post VP to trusted host',
+        () async {
+          RequestOptions? captured;
+          dio.interceptors.add(
+            InterceptorsWrapper(
+              onRequest: (opts, handler) {
+                captured = opts;
+                handler.next(opts);
+              },
+            ),
+          );
+          dioAdapter.mockRequestWithReply(
+            url: _acceptUri,
+            statusCode: 200,
+            data: <String, dynamic>{},
+            httpMethod: HttpMethod.post,
+          );
+
+          // _pexShareRequest uses clientId 'did:key:verifier123' and
+          // _acceptUri host 'verifier.example.com' — both in the allowlist.
+          await serviceWithAllowlist().submitShareResponse(
+            shareRequest: _pexShareRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: _acceptUri,
+          );
+
+          expect(captured, isNotNull);
+          expect(captured!.path, equals(_acceptUri));
+          final data = captured!.data as Map<String, dynamic>;
+          expect(data['vp_token'], isNotNull);
+        },
+      );
+
+      test(
+        'attack: attacker did:key with forged response_uri is rejected by allowlist',
+        () async {
+          // Attacker generates their own did:key and signs a valid JWT, but
+          // their clientId is not in the trusted registry and they point
+          // response_uri at an attacker-controlled server.
+          const attackerClientId = 'did:key:z6MkAttackerGeneratedKey';
+          const attackerCallbackUri =
+              'https://attacker-controlled-host.example/steal';
+
+          final attackerShareRequest = PexShareRequest(
+            request: const IotaRequest(
+              responseType: 'vp_token',
+              responseMode: 'direct_post',
+              acceptResponseUri: attackerCallbackUri,
+              rejectResponseUri: attackerCallbackUri,
+              state: 'attacker-state',
+              nonce: 'attacker-nonce',
+              clientId: attackerClientId,
+            ),
+            presentationDefinition: _pexShareRequest.presentationDefinition,
+            jwtAssertion: 'attacker-jwt',
+          );
+
+          await expectLater(
+            serviceWithAllowlist().submitShareResponse(
+              shareRequest: attackerShareRequest,
+              selectedCredentials: [_fakeVC],
+              // Attacker-controlled callback URL — must never receive the VP.
+              acceptResponseUri: attackerCallbackUri,
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.invalidResponseUri.code,
+              ),
+            ),
+          );
+        },
+      );
+
+      test(
+        'attack: attacker uses known clientId but different callback host is rejected',
+        () async {
+          // Attacker knows the legitimate clientId but cannot redirect the VP
+          // to their own server because the callback host is also checked.
+          const attackerCallbackUri =
+              'https://attacker-controlled-host.example/steal';
+
+          final attackerShareRequest = PexShareRequest(
+            request: const IotaRequest(
+              responseType: 'vp_token',
+              responseMode: 'direct_post',
+              acceptResponseUri: attackerCallbackUri,
+              rejectResponseUri: attackerCallbackUri,
+              state: 'attacker-state',
+              nonce: 'attacker-nonce',
+              // Uses a legitimate clientId — but they cannot produce a valid
+              // JWT signature for it without controlling the private key.
+              clientId: 'did:key:verifier123',
+            ),
+            presentationDefinition: _pexShareRequest.presentationDefinition,
+            jwtAssertion: 'forged-jwt',
+          );
+
+          await expectLater(
+            serviceWithAllowlist().submitShareResponse(
+              shareRequest: attackerShareRequest,
+              selectedCredentials: [_fakeVC],
+              acceptResponseUri: attackerCallbackUri,
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.invalidResponseUri.code,
+              ),
+            ),
+          );
+        },
+      );
+
+      test(
+        'attack: no validator provided means did:key is always blocked',
+        () async {
+          final serviceNoValidator = IotaShareResponseService(
+            signer: signer,
+            dio: dio,
+            vpBuilder: _FakeVpBuilder(_fakeVp),
+            didResolver: (did) async => DidDocument.create(id: did),
+            // No responseUriTrustValidator — TDK fails closed.
+          );
+
+          await expectLater(
+            serviceNoValidator.submitShareResponse(
+              shareRequest: _pexShareRequest,
+              selectedCredentials: [_fakeVC],
+              acceptResponseUri: _acceptUri,
+            ),
+            throwsA(
+              isA<TdkException>()
+                  .having(
+                    (e) => e.code,
+                    'code',
+                    TdkExceptionType.invalidResponseUri.code,
+                  )
+                  .having(
+                    (e) => e.message,
+                    'message',
+                    contains('responseUriTrustValidator'),
+                  ),
+            ),
+          );
         },
       );
     });
