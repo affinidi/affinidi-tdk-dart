@@ -105,11 +105,20 @@ class ShareFlowService implements ShareFlowServiceInterface {
         TdkExceptionType.invalidClientIdScheme,
       );
     }
-    if (payload.aud != null && walletDid != null && payload.aud != walletDid) {
-      _throw(
-        'JWT aud does not match the wallet DID.',
-        TdkExceptionType.invalidAudience,
-      );
+    if (payload.aud != null) {
+      if (walletDid == null) {
+        _throw(
+          'JWT contains an aud claim but walletDid was not provided. '
+          'Pass walletDid to validateOid4vpRequest to prevent cross-wallet JWT replay.',
+          TdkExceptionType.invalidAudience,
+        );
+      }
+      if (payload.aud != walletDid) {
+        _throw(
+          'JWT aud does not match the wallet DID.',
+          TdkExceptionType.invalidAudience,
+        );
+      }
     }
 
     if (payload.responseMode != _directPost) {

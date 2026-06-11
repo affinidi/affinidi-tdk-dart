@@ -63,7 +63,10 @@ void main() {
         );
 
         await expectLater(
-          () => service.validateOid4vpRequest(uri),
+          () => service.validateOid4vpRequest(
+            uri,
+            walletDid: 'did:key:myWalletDid',
+          ),
           throwsA(
             isA<TdkException>()
                 .having(
@@ -87,7 +90,10 @@ void main() {
         final uri = Uri.parse('openid4vp://authorize?state=abc');
 
         await expectLater(
-          () => service.validateOid4vpRequest(uri),
+          () => service.validateOid4vpRequest(
+            uri,
+            walletDid: 'did:key:myWalletDid',
+          ),
           throwsA(
             isA<TdkException>().having(
               (e) => e.code,
@@ -110,7 +116,10 @@ void main() {
           final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
 
           await expectLater(
-            () => service.validateOid4vpRequest(uri),
+            () => service.validateOid4vpRequest(
+              uri,
+              walletDid: 'did:key:myWalletDid',
+            ),
             throwsA(
               isA<TdkException>()
                   .having(
@@ -138,7 +147,10 @@ void main() {
         final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
 
         await expectLater(
-          () => service.validateOid4vpRequest(uri),
+          () => service.validateOid4vpRequest(
+            uri,
+            walletDid: 'did:key:myWalletDid',
+          ),
           throwsA(
             isA<TdkException>()
                 .having(
@@ -172,7 +184,10 @@ void main() {
           final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
 
           await expectLater(
-            () => service.validateOid4vpRequest(uri),
+            () => service.validateOid4vpRequest(
+              uri,
+              walletDid: 'did:key:myWalletDid',
+            ),
             throwsA(
               isA<TdkException>().having(
                 (e) => e.code,
@@ -209,7 +224,10 @@ void main() {
           final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
 
           await expectLater(
-            () => service.validateOid4vpRequest(uri),
+            () => service.validateOid4vpRequest(
+              uri,
+              walletDid: 'did:key:myWalletDid',
+            ),
             throwsA(
               isA<TdkException>()
                   .having(
@@ -252,7 +270,10 @@ void main() {
           final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
 
           await expectLater(
-            () => service.validateOid4vpRequest(uri),
+            () => service.validateOid4vpRequest(
+              uri,
+              walletDid: 'did:key:myWalletDid',
+            ),
             throwsA(
               isA<TdkException>().having(
                 (e) => e.code,
@@ -284,7 +305,10 @@ void main() {
           );
 
           await expectLater(
-            () => service.validateOid4vpRequest(uri),
+            () => service.validateOid4vpRequest(
+              uri,
+              walletDid: 'did:key:myWalletDid',
+            ),
             throwsA(
               isA<TdkException>()
                   .having(
@@ -339,7 +363,7 @@ void main() {
       });
 
       test(
-        'should not throw when walletDid is null (aud check skipped)',
+        'should throw when aud is present but walletDid is null (replay protection)',
         () async {
           when(
             () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
@@ -353,7 +377,21 @@ void main() {
 
           final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
 
-          await expectLater(service.validateOid4vpRequest(uri), completes);
+          await expectLater(
+            () => service.validateOid4vpRequest(
+              uri,
+              walletDid: 'did:key:myWalletDid',
+            ),
+            throwsA(
+              isA<TdkException>()
+                  .having(
+                    (e) => e.code,
+                    'code',
+                    TdkExceptionType.invalidAudience.code,
+                  )
+                  .having((e) => e.message, 'message', contains('walletDid')),
+            ),
+          );
         },
       );
 
@@ -361,6 +399,44 @@ void main() {
         when(
           () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
         ).thenReturn(_baseDecodedPayload());
+        when(
+          () => mockCryptography.verifyJwt(
+            jwtToken: any(named: 'jwtToken'),
+            didKey: any(named: 'didKey'),
+          ),
+        ).thenReturn(_validResult());
+
+        final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
+
+        await expectLater(
+          service.validateOid4vpRequest(uri, walletDid: 'did:key:myWalletDid'),
+          completes,
+        );
+      });
+
+      test(
+        'should not throw when aud is absent and walletDid is null',
+        () async {
+          when(
+            () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+          ).thenReturn(_baseDecodedPayload());
+          when(
+            () => mockCryptography.verifyJwt(
+              jwtToken: any(named: 'jwtToken'),
+              didKey: any(named: 'didKey'),
+            ),
+          ).thenReturn(_validResult());
+
+          final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
+
+          await expectLater(service.validateOid4vpRequest(uri), completes);
+        },
+      );
+
+      test('should not throw when aud matches walletDid exactly', () async {
+        when(
+          () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+        ).thenReturn(_baseDecodedPayload(aud: 'did:key:myWalletDid'));
         when(
           () => mockCryptography.verifyJwt(
             jwtToken: any(named: 'jwtToken'),
@@ -394,7 +470,10 @@ void main() {
         );
 
         await expectLater(
-          () => service.validateOid4vpRequest(uri),
+          () => service.validateOid4vpRequest(
+            uri,
+            walletDid: 'did:key:myWalletDid',
+          ),
           throwsA(
             isA<TdkException>().having(
               (e) => e.code,
@@ -425,7 +504,10 @@ void main() {
           );
 
           await expectLater(
-            () => service.validateOid4vpRequest(uri),
+            () => service.validateOid4vpRequest(
+              uri,
+              walletDid: 'did:key:myWalletDid',
+            ),
             throwsA(
               isA<TdkException>().having(
                 (e) => e.code,
@@ -455,7 +537,10 @@ void main() {
           final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
 
           await expectLater(
-            () => service.validateOid4vpRequest(uri),
+            () => service.validateOid4vpRequest(
+              uri,
+              walletDid: 'did:key:myWalletDid',
+            ),
             throwsA(
               isA<TdkException>().having(
                 (e) => e.code,
