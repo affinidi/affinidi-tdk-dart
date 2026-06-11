@@ -63,13 +63,13 @@ void main() {
       );
     });
 
-    test('should report isEnoughVCsAvailableToShare as true', () async {
+    test('should report hasEnoughVCsAvailableToShare as true', () async {
       final req = _requirements([
         buildDescriptor(id: 'd1', type: 'UniversityDegree'),
       ]);
       final result = await matcher.match(req, [vc]);
 
-      expect(result.isEnoughVCsAvailableToShare, isTrue);
+      expect(result.hasEnoughVCsAvailableToShare, isTrue);
     });
 
     test('should include the VC in availableCredentials', () async {
@@ -97,13 +97,13 @@ void main() {
       expect((first as VcUnavailable).reason, VcUnavailabilityReason.missing);
     });
 
-    test('should report isEnoughVCsAvailableToShare as false', () async {
+    test('should report hasEnoughVCsAvailableToShare as false', () async {
       final req = _requirements([
         buildDescriptor(id: 'd1', type: 'EmploymentCredential'),
       ]);
       final result = await matcher.match(req, []);
 
-      expect(result.isEnoughVCsAvailableToShare, isFalse);
+      expect(result.hasEnoughVCsAvailableToShare, isFalse);
     });
   });
 
@@ -234,7 +234,7 @@ void main() {
   // ── Descriptor-level evaluation failure ───────────────────────────────────
 
   group('when the descriptor itself is malformed', () {
-    test('should propagate StateError for a non-object field entry', () async {
+    test('should throw TdkException for a non-object field entry', () async {
       final vc = buildTestVc(type: 'UniversityDegree');
 
       final malformedDescriptor = PDDescriptor(
@@ -254,7 +254,7 @@ void main() {
         submissionRequirementsByGroup: const {},
       );
 
-      await expectLater(matcher.match(req, [vc]), throwsA(isA<StateError>()));
+      await expectLater(matcher.match(req, [vc]), throwsA(isA<TdkException>()));
     });
 
     test(
@@ -288,7 +288,7 @@ void main() {
     );
 
     test(
-      'should propagate StateError even when other descriptors are valid',
+      'should throw TdkException even when other descriptors are valid',
       () async {
         final vc = buildTestVc(type: 'UniversityDegree');
 
@@ -314,12 +314,15 @@ void main() {
           submissionRequirementsByGroup: const {},
         );
 
-        await expectLater(matcher.match(req, [vc]), throwsA(isA<StateError>()));
+        await expectLater(
+          matcher.match(req, [vc]),
+          throwsA(isA<TdkException>()),
+        );
       },
     );
 
     test(
-      'should propagate StateError when a field filter is not a JSON object',
+      'should throw TdkException when a field filter is not a JSON object',
       () async {
         final vc = buildTestVc(type: 'UniversityDegree');
 
@@ -346,7 +349,10 @@ void main() {
           submissionRequirementsByGroup: const {},
         );
 
-        await expectLater(matcher.match(req, [vc]), throwsA(isA<StateError>()));
+        await expectLater(
+          matcher.match(req, [vc]),
+          throwsA(isA<TdkException>()),
+        );
       },
     );
 
@@ -409,7 +415,7 @@ void main() {
       final result = await matcher.match(req, [degreeVc, idvVc]);
 
       expect(result.vcsGroups, hasLength(2));
-      expect(result.isEnoughVCsAvailableToShare, isTrue);
+      expect(result.hasEnoughVCsAvailableToShare, isTrue);
     });
   });
 
@@ -485,7 +491,7 @@ void main() {
       final result = await matcher.match(req, [degreeVc, employVc]);
 
       expect(result.vcsGroups, hasLength(2));
-      expect(result.isEnoughVCsAvailableToShare, isTrue);
+      expect(result.hasEnoughVCsAvailableToShare, isTrue);
     });
 
     test('should only match each VC to its respective descriptor', () async {
@@ -509,7 +515,7 @@ void main() {
       final result = await matcher.match(_requirements([]), []);
 
       expect(result.vcsGroups, isEmpty);
-      expect(result.isEnoughVCsAvailableToShare, isTrue);
+      expect(result.hasEnoughVCsAvailableToShare, isTrue);
     });
   });
 

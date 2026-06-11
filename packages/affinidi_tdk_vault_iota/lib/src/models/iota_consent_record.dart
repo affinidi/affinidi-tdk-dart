@@ -1,3 +1,7 @@
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+
+import '../exceptions/tdk_exception_type.dart';
+
 /// A record of a completed Iota OID4VP share event.
 ///
 /// Mirrors the shape of the `LoginHistoryItem` stored by the Vault app so that
@@ -71,32 +75,43 @@ class IotaConsentRecord {
   });
 
   /// Creates an [IotaConsentRecord] from a JSON map.
+  ///
+  /// Throws [TdkException] with [TdkExceptionType.parseFailure] if any
+  /// required field is missing or empty.
   factory IotaConsentRecord.fromJson(Map<String, dynamic> json) {
     final hash = json['hash'] as String?;
     if (hash == null || hash.isEmpty) {
-      throw const FormatException(
-        'IotaConsentRecord.fromJson: missing or empty required field "hash".',
+      throw TdkException(
+        message:
+            'IotaConsentRecord.fromJson: missing or empty required field "hash".',
+        code: TdkExceptionType.parseFailure.code,
       );
     }
 
     final requestHash = json['requestHash'] as String?;
     if (requestHash == null || requestHash.isEmpty) {
-      throw const FormatException(
-        'IotaConsentRecord.fromJson: missing or empty required field "requestHash".',
+      throw TdkException(
+        message:
+            'IotaConsentRecord.fromJson: missing or empty required field "requestHash".',
+        code: TdkExceptionType.parseFailure.code,
       );
     }
 
     final sharedAt = json['sharedAt'] as String?;
     if (sharedAt == null || sharedAt.isEmpty) {
-      throw const FormatException(
-        'IotaConsentRecord.fromJson: missing or empty required field "sharedAt".',
+      throw TdkException(
+        message:
+            'IotaConsentRecord.fromJson: missing or empty required field "sharedAt".',
+        code: TdkExceptionType.parseFailure.code,
       );
     }
 
     final isAutoShareEnabled = json['isAutoShareEnabled'] as bool?;
     if (isAutoShareEnabled == null) {
-      throw const FormatException(
-        'IotaConsentRecord.fromJson: missing required field "isAutoShareEnabled".',
+      throw TdkException(
+        message:
+            'IotaConsentRecord.fromJson: missing required field "isAutoShareEnabled".',
+        code: TdkExceptionType.parseFailure.code,
       );
     }
 

@@ -3,7 +3,6 @@ import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 
 import 'exceptions/tdk_exception_type.dart';
 import 'models/iota_payload.dart';
-import 'models/iota_request.dart';
 import 'models/share_requirements.dart';
 import 'share_flow_service_interface.dart';
 
@@ -13,6 +12,7 @@ class ShareFlowService implements ShareFlowServiceInterface {
   final CryptographyServiceInterface _cryptography;
 
   static const _directPost = 'direct_post';
+  static const _vpToken = 'vp_token';
   static const _didScheme = 'did';
 
   /// Throws a [TdkException] with the given [message] and [type] code.
@@ -119,11 +119,13 @@ class ShareFlowService implements ShareFlowServiceInterface {
       );
     }
 
-    return Oid4vpShareRequest(
-      request: IotaRequest.fromPayload(payload),
-      presentationDefinition: payload.presentationDefinition,
-      jwtAssertion: jwtToken,
-      purpose: payload.purpose,
-    );
+    if (payload.responseType != _vpToken) {
+      _throw(
+        'Invalid response_type: ${payload.responseType}.',
+        TdkExceptionType.invalidResponseType,
+      );
+    }
+
+    return Oid4vpShareRequest.fromPayload(payload, jwtAssertion: jwtToken);
   }
 }

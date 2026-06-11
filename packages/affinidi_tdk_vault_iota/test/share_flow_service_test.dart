@@ -1,5 +1,6 @@
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
+import 'package:affinidi_tdk_vault_iota/src/models/share_requirements.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
@@ -154,6 +155,35 @@ void main() {
         );
       });
     });
+
+    group(
+      'and the JWT payload contains both presentation_definition and dcql_query',
+      () {
+        test('should throw a TdkException with code parse_failure', () async {
+          when(
+            () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+          ).thenReturn({
+            ..._baseDecodedPayload(),
+            'dcql_query': {
+              'credentials': [<String, dynamic>{}],
+            },
+          });
+
+          final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
+
+          await expectLater(
+            () => service.validateOid4vpRequest(uri),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.parseFailure.code,
+              ),
+            ),
+          );
+        });
+      },
+    );
 
     group('and the JWT signature is invalid', () {
       test(
@@ -323,10 +353,7 @@ void main() {
 
           final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
 
-          await expectLater(
-            () => service.validateOid4vpRequest(uri),
-            completes,
-          );
+          await expectLater(service.validateOid4vpRequest(uri), completes);
         },
       );
 
@@ -344,10 +371,7 @@ void main() {
         final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
 
         await expectLater(
-          () => service.validateOid4vpRequest(
-            uri,
-            walletDid: 'did:key:myWalletDid',
-          ),
+          service.validateOid4vpRequest(uri, walletDid: 'did:key:myWalletDid'),
           completes,
         );
       });
@@ -414,6 +438,36 @@ void main() {
       );
     });
 
+    group('and the response_type is not `vp_token`', () {
+      test(
+        'should throw a TdkException with code invalid_response_type',
+        () async {
+          when(
+            () => mockCryptography.decodeJwtToken(token: any(named: 'token')),
+          ).thenReturn(_baseDecodedPayload(responseType: 'code'));
+          when(
+            () => mockCryptography.verifyJwt(
+              jwtToken: any(named: 'jwtToken'),
+              didKey: any(named: 'didKey'),
+            ),
+          ).thenReturn(_validResult());
+
+          final uri = Uri.parse('openid4vp://authorize?request=$validJwt');
+
+          await expectLater(
+            () => service.validateOid4vpRequest(uri),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.invalidResponseType.code,
+              ),
+            ),
+          );
+        },
+      );
+    });
+
     group('and the purpose field is malformed JSON', () {
       test('should return an Oid4vpShareRequest with null purpose', () async {
         when(
@@ -434,9 +488,11 @@ void main() {
           ),
         ).thenReturn(_validResult());
 
-        final result = await service.validateOid4vpRequest(
-          Uri.parse('openid4vp://authorize?request=$validJwt'),
-        );
+        final result =
+            await service.validateOid4vpRequest(
+                  Uri.parse('openid4vp://authorize?request=$validJwt'),
+                )
+                as PexShareRequest;
 
         expect(result.purpose, isNull);
       });
@@ -477,9 +533,11 @@ void main() {
           ),
         ).thenReturn(_validResult());
 
-        final result = await service.validateOid4vpRequest(
-          Uri.parse('openid4vp://authorize?request=$validJwt'),
-        );
+        final result =
+            await service.validateOid4vpRequest(
+                  Uri.parse('openid4vp://authorize?request=$validJwt'),
+                )
+                as PexShareRequest;
 
         expect(result.request.nonce, 'test-nonce');
         expect(result.request.state, 'test-state');
@@ -522,9 +580,13 @@ void main() {
             ),
           ).thenReturn(_validResult());
 
-          final result = await service.validateOid4vpRequest(
-            Uri.parse('openid4vp://authorize?request=$validJwtWithPurpose'),
-          );
+          final result =
+              await service.validateOid4vpRequest(
+                    Uri.parse(
+                      'openid4vp://authorize?request=$validJwtWithPurpose',
+                    ),
+                  )
+                  as PexShareRequest;
 
           expect(result.purpose, isNotNull);
           expect(result.purpose!.dataCollectionPurpose, 'KYC verification');
@@ -555,9 +617,11 @@ void main() {
             ),
           ).thenReturn(_validResult());
 
-          final result = await service.validateOid4vpRequest(
-            Uri.parse('openid4vp://authorize?request=$validJwt'),
-          );
+          final result =
+              await service.validateOid4vpRequest(
+                    Uri.parse('openid4vp://authorize?request=$validJwt'),
+                  )
+                  as PexShareRequest;
 
           expect(result.purpose, isNull);
         },

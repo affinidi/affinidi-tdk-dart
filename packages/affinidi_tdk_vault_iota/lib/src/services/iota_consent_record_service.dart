@@ -2,13 +2,16 @@ import 'dart:convert' show jsonEncode;
 
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart' hide LogLevel;
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
+import 'package:dcql/dcql.dart' show DcqlCredential, DcqlCredentialSet;
 import 'package:ssi/ssi.dart'
     show ParsedVerifiableCredential, VerifiableCredential;
 
 import '../exceptions/tdk_exception_type.dart';
+import '../helpers/dcql_vc_adapter.dart';
+import '../helpers/presentation_definition_parser.dart';
 import '../models/auto_consent_result.dart';
-import '../models/claimed_credentials_result.dart';
 import '../models/iota_consent_record.dart';
+import '../models/matched_credentials_result.dart';
 import '../models/pd_descriptor.dart';
 import '../models/share_requirements.dart';
 import '../models/verifier_client_metadata.dart';
@@ -36,6 +39,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   final CryptographyServiceInterface _cryptography;
   final IotaShareResponseServiceInterface _shareResponseService;
   final Logger _logger;
+  final DcqlVcAdapter _vcAdapter;
 
   /// Creates an [IotaConsentRecordService].
   ///
@@ -52,7 +56,8 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   }) : _store = store,
        _cryptography = cryptography,
        _shareResponseService = shareResponseService,
-       _logger = logger ?? Logger.instance;
+       _logger = logger ?? Logger.instance,
+       _vcAdapter = DcqlVcAdapter(logger: logger);
 
   @override
   Future<void> saveConsentRecord({
@@ -116,7 +121,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   @override
   Future<AutoConsentResult> tryAutomaticConsent({
     required Oid4vpShareRequest shareRequest,
-    required ClaimedCredentialsResult claimedCredentials,
+    required MatchedCredentialsResult matchedCredentials,
     required VerifierClientMetadata verifierMetadata,
     required String requestHash,
     required String vaultId,
@@ -145,50 +150,102 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       return const AutoConsentDeclined();
     }
 
-    // Parse PD fields once — they come from the request, not from any stored record.
-    final rawDescriptors =
-        shareRequest.presentationDefinition['input_descriptors'];
-    if (rawDescriptors is! List<dynamic>) {
-      throw TdkException(
-        message: 'Presentation definition is missing input_descriptors.',
-        code: TdkExceptionType.invalidPresentationDefinition.code,
-      );
-    }
-
-    final List<PDDescriptor> inputDescriptors;
-    try {
-      inputDescriptors = rawDescriptors
-          .map((e) => PDDescriptor.fromJson(e as Map<String, dynamic>))
-          .toList();
-    } catch (e, stackTrace) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Malformed input_descriptors in presentation definition.',
-          code: TdkExceptionType.invalidPresentationDefinition.code,
-          originalMessage: e.toString(),
-        ),
-        stackTrace,
-      );
-    }
-
-    final definitionId = shareRequest.presentationDefinition['id'];
-    if (definitionId is! String) {
-      throw TdkException(
-        message: 'Presentation definition is missing a valid id.',
-        code: TdkExceptionType.invalidPresentationDefinition.code,
-      );
-    }
-
-    final allVcs = claimedCredentials.vcsGroups.values
-        .expand((group) => group.allAvailableVCs)
-        .map((a) => a.vc)
+    final allVcs = matchedCredentials.availableCredentials
         .whereType<ParsedVerifiableCredential<dynamic>>()
         .toList();
 
+    return switch (shareRequest) {
+      PexShareRequest pex => _tryPexAutoConsent(
+        pex,
+        enabledCandidates,
+        allVcs,
+        verifierMetadata,
+        vaultId,
+      ),
+      DcqlShareRequest dcql => _tryDcqlAutoConsent(
+        dcql,
+        enabledCandidates,
+        allVcs,
+        verifierMetadata,
+        vaultId,
+      ),
+    };
+  }
+
+  Future<AutoConsentResult> _tryPexAutoConsent(
+    PexShareRequest shareRequest,
+    List<IotaConsentRecord> enabledCandidates,
+    List<ParsedVerifiableCredential<dynamic>> allVcs,
+    VerifierClientMetadata verifierMetadata,
+    String vaultId,
+  ) async {
+    // Parse PD fields once — they come from the request, not from any stored
+    // record. Both calls fail fast with a typed exception on a malformed PD.
+    final pd = shareRequest.presentationDefinition;
+    final inputDescriptors = PresentationDefinitionParser.parseInputDescriptors(
+      pd,
+    );
+    PresentationDefinitionParser.parseDefinitionId(pd);
+
+    return _matchAndSubmit<PDDescriptor>(
+      shareRequest: shareRequest,
+      requirements: inputDescriptors,
+      enabledCandidates: enabledCandidates,
+      allVcs: allVcs,
+      verifierMetadata: verifierMetadata,
+      vaultId: vaultId,
+      matches: (descriptor, vc) =>
+          PexEvaluator.selectMatching(descriptor.toJson(), [vc]).isNotEmpty,
+    );
+  }
+
+  Future<AutoConsentResult> _tryDcqlAutoConsent(
+    DcqlShareRequest shareRequest,
+    List<IotaConsentRecord> enabledCandidates,
+    List<ParsedVerifiableCredential<dynamic>> allVcs,
+    VerifierClientMetadata verifierMetadata,
+    String vaultId,
+  ) {
+    final credentialSets = shareRequest.dcqlQuery.credentialSets;
+    if (credentialSets != null && credentialSets.isNotEmpty) {
+      return _tryDcqlWithSetsAutoConsent(
+        shareRequest,
+        enabledCandidates,
+        allVcs,
+        verifierMetadata,
+        vaultId,
+      );
+    }
+    return _matchAndSubmit<DcqlCredential>(
+      shareRequest: shareRequest,
+      requirements: shareRequest.dcqlQuery.credentials.toList(),
+      enabledCandidates: enabledCandidates,
+      allVcs: allVcs,
+      verifierMetadata: verifierMetadata,
+      vaultId: vaultId,
+      matches: _vcAdapter.vcMatchesDcqlCredential,
+      isMultiple: (credential) => credential.multiple,
+    );
+  }
+
+  /// Auto-consent path for DCQL requests that include `credential_sets`.
+  ///
+  /// Unlike plain DCQL, a valid share covers only the subset of credential
+  /// queries satisfying one option per required set, so the strict
+  /// requirements-count equality check used by [_matchAndSubmit] would
+  /// incorrectly decline valid stored selections.
+  Future<AutoConsentResult> _tryDcqlWithSetsAutoConsent(
+    DcqlShareRequest shareRequest,
+    List<IotaConsentRecord> enabledCandidates,
+    List<ParsedVerifiableCredential<dynamic>> allVcs,
+    VerifierClientMetadata verifierMetadata,
+    String vaultId,
+  ) async {
+    final dcqlQuery = shareRequest.dcqlQuery;
+    final credentialSets = dcqlQuery.credentialSets!;
+
     for (final record in enabledCandidates) {
-      if (record.isConsentManagementEnabled) {
-        continue;
-      }
+      if (record.isConsentManagementEnabled) continue;
 
       final previouslySelectedVcs = record.sharedVcIds
           .map(
@@ -197,47 +254,68 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
           .whereType<ParsedVerifiableCredential<dynamic>>()
           .toList();
 
-      if (previouslySelectedVcs.length != record.sharedVcIds.length) {
-        continue;
-      }
+      // Decline if any previously-stored VC has disappeared from the vault.
+      if (previouslySelectedVcs.length != record.sharedVcIds.length) continue;
 
-      if (inputDescriptors.length != previouslySelectedVcs.length) {
-        continue;
-      }
-
+      // Greedily assign each stored VC to a credential query.
+      // For multiple:true queries, claim all matching VCs; for multiple:false
+      // (the default), claim exactly one.
+      //
+      // Queries are processed most-constrained first (fewest matching VCs
+      // first) to reduce false negatives from greedy assignment when a single
+      // VC can satisfy more than one query. A full bipartite matching would
+      // eliminate false negatives entirely but is not warranted here: false
+      // negatives only cause a fall-through to manual confirmation, they are
+      // not a correctness or security issue.
       final remainingVcs = List<ParsedVerifiableCredential<dynamic>>.of(
         previouslySelectedVcs,
       );
-      final previouslySelected =
-          <
-            ({
-              PDDescriptor descriptor,
-              ParsedVerifiableCredential<dynamic> credential,
-            })
-          >[];
-
-      var descriptorMatchFailed = false;
-      for (final descriptor in inputDescriptors) {
-        final match = remainingVcs
-            .where(
-              (vc) => PexEvaluator.selectMatching(descriptor.toJson(), [
-                vc,
-              ]).isNotEmpty,
-            )
-            .firstOrNull;
-
-        if (match == null) {
-          descriptorMatchFailed = true;
-          break;
+      final sortedCredentials = dcqlQuery.credentials.toList()
+        ..sort(
+          (a, b) => remainingVcs
+              .where((vc) => _vcAdapter.vcMatchesDcqlCredential(a, vc))
+              .length
+              .compareTo(
+                remainingVcs
+                    .where((vc) => _vcAdapter.vcMatchesDcqlCredential(b, vc))
+                    .length,
+              ),
+        );
+      final coveredQueryIds = <String>{};
+      for (final query in sortedCredentials) {
+        if (query.multiple) {
+          final matches = remainingVcs
+              .where((vc) => _vcAdapter.vcMatchesDcqlCredential(query, vc))
+              .toList();
+          if (matches.isNotEmpty) {
+            coveredQueryIds.add(query.id);
+            for (final vc in matches) {
+              remainingVcs.remove(vc);
+            }
+          }
+        } else {
+          final match = remainingVcs
+              .where((vc) => _vcAdapter.vcMatchesDcqlCredential(query, vc))
+              .firstOrNull;
+          if (match != null) {
+            coveredQueryIds.add(query.id);
+            remainingVcs.remove(match);
+          }
         }
-        previouslySelected.add((descriptor: descriptor, credential: match));
-        remainingVcs.remove(match);
       }
-      if (descriptorMatchFailed) continue;
 
-      if (record.clientId != shareRequest.request.clientId) {
-        continue;
-      }
+      // Every stored VC must have been matched to some query; otherwise at
+      // least one VC is no longer valid for this request.
+      if (remainingVcs.isNotEmpty) continue;
+
+      // All required credential_sets must be satisfied by the covered queries.
+      final setsSatisfied = _requiredSetsSatisfied(
+        credentialSets,
+        coveredQueryIds,
+      );
+      if (!setsSatisfied) continue;
+
+      if (record.clientId != shareRequest.request.clientId) continue;
 
       final currentHash = _computeConsentHash(
         profileId: record.profileId,
@@ -249,17 +327,126 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
         vcsFingerprint: _stringifyVcs(previouslySelectedVcs),
       );
 
-      if (record.hash != currentHash) {
-        continue;
-      }
+      if (record.hash != currentHash) continue;
 
-      final iotaRequest = shareRequest.request;
       final redirectUri = await _shareResponseService.submitShareResponse(
-        state: iotaRequest.state,
-        nonce: iotaRequest.nonce,
-        clientId: iotaRequest.clientId,
-        definitionId: definitionId,
-        selectedCredentials: previouslySelected,
+        shareRequest: shareRequest,
+        selectedCredentials: previouslySelectedVcs,
+        acceptResponseUri: shareRequest.request.acceptResponseUri,
+      );
+      return AutoConsentApproved(redirectUri: redirectUri);
+    }
+
+    return const AutoConsentDeclined();
+  }
+
+  /// Returns `true` when every `required` set has at least one option whose
+  /// query IDs are all contained in [coveredQueryIds].
+  static bool _requiredSetsSatisfied(
+    Iterable<DcqlCredentialSet> credentialSets,
+    Set<String> coveredQueryIds,
+  ) => credentialSets
+      .where((s) => s.required)
+      .every(
+        (set) =>
+            set.options.any((option) => option.every(coveredQueryIds.contains)),
+      );
+
+  /// Reconstructs the previously-approved VC set for each candidate record and
+  /// submits the VP for the first record that satisfies every guard.
+  ///
+  /// Parameters:
+  /// * [requirements] - The per-VC constraints from the live request
+  ///   (PD descriptors for PEX, credential queries for DCQL).
+  /// * [matches] - Predicate deciding whether a VC satisfies a requirement.
+  /// * [isMultiple] - Optional predicate; when it returns `true` for a
+  ///   requirement, ALL matching VCs are claimed (DCQL `multiple: true`).
+  ///   When omitted or `false`, exactly one VC is claimed per requirement.
+  ///
+  /// Returns [AutoConsentApproved] for the first passing record, otherwise
+  /// [AutoConsentDeclined].
+  Future<AutoConsentResult> _matchAndSubmit<T>({
+    required Oid4vpShareRequest shareRequest,
+    required List<T> requirements,
+    required List<IotaConsentRecord> enabledCandidates,
+    required List<ParsedVerifiableCredential<dynamic>> allVcs,
+    required VerifierClientMetadata verifierMetadata,
+    required String vaultId,
+    required bool Function(
+      T requirement,
+      ParsedVerifiableCredential<dynamic> vc,
+    )
+    matches,
+    bool Function(T requirement)? isMultiple,
+  }) async {
+    for (final record in enabledCandidates) {
+      if (record.isConsentManagementEnabled) continue;
+
+      final previouslySelectedVcs = record.sharedVcIds
+          .map(
+            (id) => allVcs.where((vc) => vc.id?.toString() == id).firstOrNull,
+          )
+          .whereType<ParsedVerifiableCredential<dynamic>>()
+          .toList();
+
+      if (previouslySelectedVcs.length != record.sharedVcIds.length) continue;
+
+      final remainingVcs = List<ParsedVerifiableCredential<dynamic>>.of(
+        previouslySelectedVcs,
+      );
+      final matched = <ParsedVerifiableCredential<dynamic>>[];
+
+      var matchFailed = false;
+      for (final requirement in requirements) {
+        if (isMultiple?.call(requirement) == true) {
+          // Claim every stored VC that satisfies this query (multiple: true).
+          final allMatches = remainingVcs
+              .where((vc) => matches(requirement, vc))
+              .toList();
+          if (allMatches.isEmpty) {
+            matchFailed = true;
+            break;
+          }
+          matched.addAll(allMatches);
+          for (final vc in allMatches) {
+            remainingVcs.remove(vc);
+          }
+        } else {
+          final match = remainingVcs
+              .where((vc) => matches(requirement, vc))
+              .firstOrNull;
+
+          if (match == null) {
+            matchFailed = true;
+            break;
+          }
+          matched.add(match);
+          remainingVcs.remove(match);
+        }
+      }
+      if (matchFailed) continue;
+      // Every stored VC must be accounted for; orphaned VCs indicate the
+      // request changed (e.g. a descriptor was removed or a query type changed).
+      if (remainingVcs.isNotEmpty) continue;
+
+      if (record.clientId != shareRequest.request.clientId) continue;
+
+      final currentHash = _computeConsentHash(
+        profileId: record.profileId,
+        vaultId: vaultId,
+        clientId: record.clientId,
+        verifierName: verifierMetadata.name,
+        logo: verifierMetadata.logo,
+        siteUrl: verifierMetadata.origin,
+        vcsFingerprint: _stringifyVcs(previouslySelectedVcs),
+      );
+
+      if (record.hash != currentHash) continue;
+
+      final redirectUri = await _shareResponseService.submitShareResponse(
+        shareRequest: shareRequest,
+        selectedCredentials: matched,
+        acceptResponseUri: shareRequest.request.acceptResponseUri,
       );
       return AutoConsentApproved(redirectUri: redirectUri);
     }

@@ -36,6 +36,7 @@ abstract interface class ShareFlowServiceInterface {
   ///   - `invalid_or_expired_jwt`: when the JWT signature is invalid, the token has expired, the `client_id_scheme` is not `did`, or the `aud` does not match [walletDid].
   ///   - `missing_client_id`: when the `client_id` field is absent from the payload.
   ///   - `invalid_response_mode`: when `response_mode` is not `direct_post`.
+  ///   - `invalid_response_type`: when `response_type` is not `vp_token`.
   ///
   /// Example:
   /// ```dart

@@ -14,6 +14,9 @@ enum TdkExceptionType {
   /// Exception thrown when the `response_mode` in the request is not `direct_post`.
   invalidResponseMode('invalid_response_mode'),
 
+  /// Exception thrown when the `response_type` in the request is not `vp_token`.
+  invalidResponseType('invalid_response_type'),
+
   /// Exception thrown when the `client_id` field is missing from the request.
   missingClientId('missing_client_id'),
 
@@ -28,6 +31,10 @@ enum TdkExceptionType {
 
   /// Thrown when a Presentation Definition is structurally invalid.
   invalidPresentationDefinition('invalid_presentation_definition'),
+
+  /// Thrown when a DCQL query is structurally invalid — e.g. a required
+  /// field is missing or has the wrong type.
+  invalidDcqlQuery('invalid_dcql_query'),
 
   /// Thrown when a single IDV input descriptor requests more than two VC
   /// types (i.e. more than `VerifiedIdsentityDocument` + one specific subtype).
@@ -46,7 +53,11 @@ enum TdkExceptionType {
 
   /// Thrown when reading a consent record from the consumer-provided
   /// `ConsentStorage` fails.
-  failedToReadConsentRecord('failed_to_read_consent_record');
+  failedToReadConsentRecord('failed_to_read_consent_record'),
+
+  /// Thrown when `IotaShareResponseService.submitShareResponse` is called but
+  /// the selected credentials do not cover every required DCQL credential query.
+  incompleteCredentialSelection('incomplete_credential_selection');
 
   /// Creates a new instance of [TdkExceptionType].
   const TdkExceptionType(this.code);

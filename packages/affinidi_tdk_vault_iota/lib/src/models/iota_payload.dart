@@ -1,3 +1,7 @@
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:dcql/dcql.dart';
+
+import '../exceptions/tdk_exception_type.dart';
 import 'request_purpose.dart';
 
 /// The decoded JWT body from an Iota OID4VP `?request=` URI parameter.
@@ -36,8 +40,8 @@ class IotaPayload {
 
   /// The scope of the authorization request.
   ///
-  /// Optional per OID4VP 1.0 final §5.2 — either `scope` or `dcql_query`
-  /// must be present, but not both.
+  /// Optional per OID4VP 1.0 final §5.2 — mutually exclusive with [dcqlQuery].
+  /// Must be absent when [dcqlQuery] is present.
   final String? scope;
 
   /// Optional audience claim of the JWT.
@@ -50,7 +54,14 @@ class IotaPayload {
   final int iat;
 
   /// The Presentation Definition describing the required credentials.
-  final Map<String, dynamic> presentationDefinition;
+  ///
+  /// Exactly one of [presentationDefinition] or [dcqlQuery] must be non-null.
+  final Map<String, dynamic>? presentationDefinition;
+
+  /// The DCQL query describing the required credentials.
+  ///
+  /// Exactly one of [presentationDefinition] or [dcqlQuery] must be non-null.
+  final DcqlCredentialQuery? dcqlQuery;
 
   /// Creates a new [IotaPayload] instance.
   ///
@@ -68,8 +79,9 @@ class IotaPayload {
   /// - [aud] - optional audience claim of the JWT.
   /// - [exp] - expiration time of the JWT as a Unix timestamp (seconds).
   /// - [iat] - issued-at time of the JWT as a Unix timestamp (seconds).
-  /// - [presentationDefinition] - presentation definition describing the required credentials.
-  const IotaPayload({
+  /// - [presentationDefinition] - PEX Presentation Definition.
+  /// - [dcqlQuery] - DCQL query (mutually exclusive with [presentationDefinition]).
+  IotaPayload({
     required this.nonce,
     required this.state,
     required this.clientId,
@@ -83,14 +95,50 @@ class IotaPayload {
     this.aud,
     required this.exp,
     required this.iat,
-    required this.presentationDefinition,
-  });
+    this.presentationDefinition,
+    this.dcqlQuery,
+  }) {
+    if ((presentationDefinition != null) == (dcqlQuery != null)) {
+      throw TdkException(
+        message:
+            'Exactly one of presentationDefinition or dcqlQuery must be provided.',
+        code: TdkExceptionType.parseFailure.code,
+      );
+    }
+  }
 
   /// Creates an [IotaPayload] from a JSON map.
   ///
   /// Parameters:
   /// - [json] - JSON map representing the JWT payload, with snake_case keys.
+  ///
+  /// Throws [TdkException] with [TdkExceptionType.parseFailure] if neither
+  /// `presentation_definition` nor `dcql_query` is present, if both are
+  /// present simultaneously, or if `scope` and `dcql_query` are both present.
   factory IotaPayload.fromJson(Map<String, dynamic> json) {
+    final rawPd = json['presentation_definition'];
+    final rawDcql = json['dcql_query'];
+    if (rawPd == null && rawDcql == null) {
+      throw TdkException(
+        message:
+            "JWT payload must contain either 'presentation_definition' or 'dcql_query'.",
+        code: TdkExceptionType.parseFailure.code,
+      );
+    }
+    if (rawPd != null && rawDcql != null) {
+      throw TdkException(
+        message:
+            "JWT payload must not contain both 'presentation_definition' and 'dcql_query'.",
+        code: TdkExceptionType.parseFailure.code,
+      );
+    }
+    final rawScope = json['scope'];
+    if (rawScope != null && rawDcql != null) {
+      throw TdkException(
+        message: "JWT payload must not contain both 'scope' and 'dcql_query'.",
+        code: TdkExceptionType.parseFailure.code,
+      );
+    }
     return IotaPayload(
       nonce: json['nonce'] as String,
       state: json['state'] as String,
@@ -101,12 +149,14 @@ class IotaPayload {
       responseUri: json['response_uri'] as String,
       responseType: json['response_type'] as String,
       responseMode: json['response_mode'] as String,
-      scope: json['scope'] as String?,
+      scope: rawScope as String?,
       aud: json['aud'] as String?,
       exp: (json['exp'] as num).toInt(),
       iat: (json['iat'] as num).toInt(),
-      presentationDefinition:
-          json['presentation_definition'] as Map<String, dynamic>,
+      presentationDefinition: rawPd as Map<String, dynamic>?,
+      dcqlQuery: rawDcql != null
+          ? _parseDcqlQuery(rawDcql as Map<String, dynamic>)
+          : null,
     );
   }
 
@@ -127,8 +177,23 @@ class IotaPayload {
     if (aud != null) 'aud': aud,
     'exp': exp,
     'iat': iat,
-    'presentation_definition': presentationDefinition,
+    if (presentationDefinition != null)
+      'presentation_definition': presentationDefinition,
+    if (dcqlQuery != null) 'dcql_query': dcqlQuery!.toJson(),
   };
+
+  /// Parses a DCQL query from [json], wrapping any parse failure into a typed
+  /// [TdkException].
+  static DcqlCredentialQuery _parseDcqlQuery(Map<String, dynamic> json) {
+    try {
+      return DcqlCredentialQuery.fromJson(json);
+    } catch (e) {
+      throw TdkException(
+        message: 'Invalid DCQL query: $e',
+        code: TdkExceptionType.invalidDcqlQuery.code,
+      );
+    }
+  }
 
   /// Extracts and validates the [RequestPurpose] from the presentation
   /// definition's `purpose` field.
@@ -136,7 +201,7 @@ class IotaPayload {
   /// Returns `null` if the `purpose` field is absent or does not contain a
   /// valid [RequestPurpose].
   RequestPurpose? get purpose {
-    final rawPurpose = presentationDefinition['purpose'];
+    final rawPurpose = presentationDefinition?['purpose'];
     if (rawPurpose == null) return null;
     final parsed = RequestPurpose.fromJson(rawPurpose);
     return parsed.isValid ? parsed : null;

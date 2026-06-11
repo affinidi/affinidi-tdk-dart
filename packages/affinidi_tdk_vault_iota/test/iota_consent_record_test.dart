@@ -54,11 +54,17 @@ void main() {
       expect(record.isConsentManagementEnabled, isFalse);
     });
 
-    group('throws FormatException for missing required fields', () {
+    group('throws TdkException for missing required fields', () {
       test('when hash is null', () {
         expect(
           () => IotaConsentRecord.fromJson({...validJson, 'hash': null}),
-          throwsA(isA<FormatException>()),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.parseFailure.code,
+            ),
+          ),
         );
       });
 
@@ -66,42 +72,78 @@ void main() {
         final json = Map<String, dynamic>.from(validJson)..remove('hash');
         expect(
           () => IotaConsentRecord.fromJson(json),
-          throwsA(isA<FormatException>()),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.parseFailure.code,
+            ),
+          ),
         );
       });
 
       test('when hash is empty', () {
         expect(
           () => IotaConsentRecord.fromJson({...validJson, 'hash': ''}),
-          throwsA(isA<FormatException>()),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.parseFailure.code,
+            ),
+          ),
         );
       });
 
       test('when requestHash is null', () {
         expect(
           () => IotaConsentRecord.fromJson({...validJson, 'requestHash': null}),
-          throwsA(isA<FormatException>()),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.parseFailure.code,
+            ),
+          ),
         );
       });
 
       test('when requestHash is empty', () {
         expect(
           () => IotaConsentRecord.fromJson({...validJson, 'requestHash': ''}),
-          throwsA(isA<FormatException>()),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.parseFailure.code,
+            ),
+          ),
         );
       });
 
       test('when sharedAt is null', () {
         expect(
           () => IotaConsentRecord.fromJson({...validJson, 'sharedAt': null}),
-          throwsA(isA<FormatException>()),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.parseFailure.code,
+            ),
+          ),
         );
       });
 
       test('when sharedAt is empty', () {
         expect(
           () => IotaConsentRecord.fromJson({...validJson, 'sharedAt': ''}),
-          throwsA(isA<FormatException>()),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.parseFailure.code,
+            ),
+          ),
         );
       });
 
@@ -111,7 +153,13 @@ void main() {
             ...validJson,
             'isAutoShareEnabled': null,
           }),
-          throwsA(isA<FormatException>()),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.parseFailure.code,
+            ),
+          ),
         );
       });
     });

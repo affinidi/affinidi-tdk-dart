@@ -1,4 +1,6 @@
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
+import 'package:affinidi_tdk_vault_iota/src/models/share_requirements.dart';
+import 'package:dcql/dcql.dart';
 import 'package:ssi/ssi.dart'
     show
         CredentialSubject,
@@ -44,8 +46,8 @@ class IotaConsentRecordFixtures {
 
   static final pdDescriptor = PDDescriptor.fromJson({'id': 'descriptor-1'});
 
-  static final shareRequest = Oid4vpShareRequest(
-    request: const IotaRequest(
+  static final shareRequest = const PexShareRequest(
+    request: IotaRequest(
       responseType: 'vp_token',
       responseMode: 'direct_post',
       acceptResponseUri: 'https://verifier.example.com/accept',
@@ -54,7 +56,7 @@ class IotaConsentRecordFixtures {
       nonce: 'test_nonce',
       clientId: clientId,
     ),
-    presentationDefinition: const {
+    presentationDefinition: {
       'id': 'def-1',
       'input_descriptors': [
         {'id': 'descriptor-1'},
@@ -200,4 +202,86 @@ class IotaConsentRecordFixtures {
       },
     );
   }
+
+  /// A [DcqlShareRequest] with a single credential query matching any
+  /// [VerifiableCredential] (no type filter).
+  static DcqlShareRequest get dcqlShareRequest => DcqlShareRequest(
+    request: const IotaRequest(
+      responseType: 'vp_token',
+      responseMode: 'direct_post',
+      acceptResponseUri: 'https://verifier.example.com/accept',
+      rejectResponseUri: 'https://verifier.example.com/reject',
+      state: 'test_state',
+      nonce: 'test_nonce',
+      clientId: clientId,
+    ),
+    dcqlQuery: DcqlCredentialQuery(
+      credentials: [
+        DcqlCredential(id: 'query-1', format: CredentialFormat.ldpVc),
+      ],
+    ),
+    jwtAssertion: 'test_jwt',
+  );
+
+  /// A DCQL consent record with auto-share enabled and a hash matching the
+  /// mock cryptography service return value (`mock_hash`).
+  static IotaConsentRecord dcqlAutoShareEnabledMatchingHash() =>
+      const IotaConsentRecord(
+        hash: 'mock_hash',
+        requestHash: requestHash,
+        sharedAt: sharedAt,
+        profileName: profileName,
+        profileId: profileId,
+        clientId: clientId,
+        isAutoShareEnabled: true,
+        isConsentManagementEnabled: false,
+        sharedVcIds: [vcId],
+        claimedVcTypesCsv: 'SomeType',
+      );
+
+  /// A [DcqlShareRequest] with two credential queries and a single required
+  /// [DcqlCredentialSet] whose options are `[['query-1'], ['query-2']]`
+  /// (either query alone satisfies the set).
+  static DcqlShareRequest get dcqlShareRequestWithSets => DcqlShareRequest(
+    request: const IotaRequest(
+      responseType: 'vp_token',
+      responseMode: 'direct_post',
+      acceptResponseUri: 'https://verifier.example.com/accept',
+      rejectResponseUri: 'https://verifier.example.com/reject',
+      state: 'test_state',
+      nonce: 'test_nonce',
+      clientId: clientId,
+    ),
+    dcqlQuery: DcqlCredentialQuery(
+      credentials: [
+        DcqlCredential(id: 'query-1', format: CredentialFormat.ldpVc),
+        DcqlCredential(id: 'query-2', format: CredentialFormat.ldpVc),
+      ],
+      credentialSets: [
+        DcqlCredentialSet(
+          options: [
+            ['query-1'],
+            ['query-2'],
+          ],
+        ),
+      ],
+    ),
+    jwtAssertion: 'test_jwt',
+  );
+
+  /// A consent record storing only [vcId], intended for use with
+  /// [dcqlShareRequestWithSets].
+  static IotaConsentRecord dcqlWithSetsAutoShareMatchingHash() =>
+      const IotaConsentRecord(
+        hash: 'mock_hash',
+        requestHash: requestHash,
+        sharedAt: sharedAt,
+        profileName: profileName,
+        profileId: profileId,
+        clientId: clientId,
+        isAutoShareEnabled: true,
+        isConsentManagementEnabled: false,
+        sharedVcIds: [vcId],
+        claimedVcTypesCsv: 'SomeType',
+      );
 }
