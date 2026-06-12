@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
@@ -72,7 +73,8 @@ void main() {
 
     test('should initialize successfully with valid configuration', () async {
       await vault.ensureInitialized();
-      expect(vault.profileRepositories['test'], equals(mockProfileRepository));
+      expect(vault.profileRepositories['test'], isNotNull);
+      expect(vault.profileRepositories['test'], isA<ProfileRepository>());
     });
 
     test('should throw when accessing repositories before initialization', () {
@@ -161,7 +163,7 @@ void main() {
         );
 
         await vault.ensureInitialized();
-        expect(vault.defaultProfileRepository, equals(mockRepo1));
+        verify(mockRepo1.isConfigured).called(1);
       },
     );
 
@@ -181,7 +183,7 @@ void main() {
 
       await vault.ensureInitialized();
       vault.defaultProfileRepositoryId = 'repo2';
-      expect(vault.defaultProfileRepository, equals(mockRepo2));
+      verify(mockRepo2.isConfigured).called(1);
     });
 
     test('should throw when setting invalid default repository', () async {
@@ -191,6 +193,129 @@ void main() {
         throwsA(isA<TdkException>()),
       );
     });
+
+    test(
+      'should return storage usage from the default profile repository',
+      () async {
+        final mockStorageInfoRepository =
+            MockProfileRepositoryWithStorageInfo();
+        const expectedUsage = VaultStorageUsage(usedBytes: 2048);
+
+        when(
+          mockStorageInfoRepository.isConfigured,
+        ).thenAnswer((_) async => false);
+        when(
+          () => mockStorageInfoRepository.configure(any()),
+        ).thenAnswer((_) async {});
+        when(
+          mockStorageInfoRepository.getStorageUsage,
+        ).thenAnswer((_) async => expectedUsage);
+
+        final vaultWithStorageInfo = await createTestVault(
+          vaultStore: mockVaultStore,
+          profileRepositories: {'storage': mockStorageInfoRepository},
+          defaultProfileRepositoryId: 'storage',
+        );
+
+        await vaultWithStorageInfo.ensureInitialized();
+
+        final usage = await vaultWithStorageInfo.getStorageUsage();
+
+        expect(usage.usedBytes, equals(expectedUsage.usedBytes));
+        verify(mockStorageInfoRepository.getStorageUsage).called(1);
+      },
+    );
+
+    test(
+      'should throw when default repository does not support storage usage',
+      () async {
+        await vault.ensureInitialized();
+
+        expect(
+          () => vault.getStorageUsage(),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              'unsupported_profile_storage_usage_reporting',
+            ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'should return storage usage from the profile repository when profileId is provided',
+      () async {
+        final mockStorageInfoRepository =
+            MockProfileRepositoryWithStorageInfo();
+        const expectedUsage = VaultStorageUsage(usedBytes: 4096);
+        final profile = VaultFixtures.createTestProfile(
+          id: 'storage-profile',
+          profileRepositoryId: 'storage',
+        );
+
+        when(
+          () => mockProfileRepository.listProfiles(),
+        ).thenAnswer((_) async => []);
+        when(
+          mockStorageInfoRepository.isConfigured,
+        ).thenAnswer((_) async => false);
+        when(
+          () => mockStorageInfoRepository.configure(any()),
+        ).thenAnswer((_) async {});
+        when(
+          mockStorageInfoRepository.listProfiles,
+        ).thenAnswer((_) async => [profile]);
+        when(
+          mockStorageInfoRepository.getStorageUsage,
+        ).thenAnswer((_) async => expectedUsage);
+
+        final vaultWithStorageInfo = await createTestVault(
+          vaultStore: mockVaultStore,
+          profileRepositories: {
+            'default': mockProfileRepository,
+            'storage': mockStorageInfoRepository,
+          },
+          defaultProfileRepositoryId: 'default',
+        );
+
+        await vaultWithStorageInfo.ensureInitialized();
+
+        final usage = await vaultWithStorageInfo.getStorageUsage(
+          profileId: profile.id,
+        );
+
+        expect(usage.usedBytes, equals(expectedUsage.usedBytes));
+        verify(mockStorageInfoRepository.getStorageUsage).called(1);
+      },
+    );
+
+    test(
+      'should throw when profile repository does not support storage usage',
+      () async {
+        final profile = VaultFixtures.createTestProfile(
+          id: 'profile-no-storage',
+        );
+
+        when(
+          () => mockProfileRepository.listProfiles(),
+        ).thenAnswer((_) async => [profile]);
+
+        await vault.ensureInitialized();
+
+        expect(
+          () => vault.getStorageUsage(profileId: profile.id),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              'unsupported_profile_storage_usage_reporting',
+            ),
+          ),
+        );
+      },
+    );
   });
 
   group('Profile Operations', () {
@@ -252,6 +377,235 @@ void main() {
       expect(profiles.length, equals(2));
       expect(profiles.map((p) => p.id), containsAll(['profile1', 'profile2']));
     });
+  });
+
+  group('Profiles Cache', () {
+    late Profile testProfile;
+    late Profile updatedProfile;
+
+    setUp(() async {
+      await vault.ensureInitialized();
+
+      testProfile = VaultFixtures.createTestProfile(id: 'profile-1');
+      updatedProfile = VaultFixtures.createTestProfile(
+        id: 'profile-1',
+        name: 'Updated Profile',
+      );
+    });
+
+    test(
+      'should always update cache with latest data from listProfiles',
+      () async {
+        when(
+          () => mockProfileRepository.listProfiles(),
+        ).thenAnswer((_) async => [testProfile]);
+        await vault.listProfiles();
+
+        when(
+          () => mockProfileRepository.listProfiles(),
+        ).thenAnswer((_) async => [updatedProfile]);
+        final profiles = await vault.listProfiles();
+
+        expect(profiles.first.name, equals('Updated Profile'));
+      },
+    );
+
+    test(
+      'should refetch profiles after invalidation during an in-flight fetch',
+      () async {
+        final fetchCompleter = Completer<List<Profile>>();
+        final staleProfile = VaultFixtures.createTestProfile(
+          id: 'profile-1',
+          accountIndex: 0,
+        );
+        final deletedProfile = VaultFixtures.createTestProfile(id: 'profile-2');
+        final freshProfile = VaultFixtures.createTestProfile(
+          id: 'profile-1',
+          accountIndex: 1,
+        );
+
+        // The first listProfiles stays in flight until we resolve the completer.
+        when(
+          () => mockProfileRepository.listProfiles(),
+        ).thenAnswer((_) => fetchCompleter.future);
+        when(
+          () => mockProfileRepository.deleteProfile(deletedProfile),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockProfileRepository.grantItemAccessMultiple(
+            accountIndex: 0,
+            granteeDid: 'did:test:123',
+            permissionGroups: any(named: 'permissionGroups'),
+            cancelToken: any(named: 'cancelToken'),
+          ),
+        ).thenThrow(StateError('stale cached profile was used'));
+        when(
+          () => mockProfileRepository.grantItemAccessMultiple(
+            accountIndex: 1,
+            granteeDid: 'did:test:123',
+            permissionGroups: any(named: 'permissionGroups'),
+            cancelToken: any(named: 'cancelToken'),
+          ),
+        ).thenAnswer((_) async => Uint8List.fromList([1, 2, 3]));
+
+        // Start listProfiles but don't await; the fetch is now in flight.
+        final listFuture = vault.listProfiles();
+
+        // A concurrent deletion invalidates the cache while the fetch is active.
+        await vault.defaultProfileRepository.deleteProfile(deletedProfile);
+
+        // Complete the in-flight fetch with data that is now stale.
+        fetchCompleter.complete([staleProfile, deletedProfile]);
+        await listFuture;
+
+        // If the stale cache survived, shareProfile would reuse accountIndex 0.
+        // Instead it should refetch and use the fresh profile with accountIndex 1.
+        when(
+          () => mockProfileRepository.listProfiles(),
+        ).thenAnswer((_) async => [freshProfile]);
+
+        final sharedProfile = await vault.shareProfile(
+          profileId: 'profile-1',
+          toDid: 'did:test:123',
+          permissions: Permissions.read,
+        );
+
+        verify(() => mockProfileRepository.listProfiles()).called(2);
+        verify(
+          () => mockProfileRepository.grantItemAccessMultiple(
+            accountIndex: 1,
+            granteeDid: 'did:test:123',
+            permissionGroups: any(named: 'permissionGroups'),
+            cancelToken: any(named: 'cancelToken'),
+          ),
+        ).called(1);
+        expect(sharedProfile.profileId, equals('profile-1'));
+      },
+    );
+
+    test('should return cached profile from getProfileById', () async {
+      when(
+        () => mockProfileRepository.listProfiles(),
+      ).thenAnswer((_) async => [testProfile]);
+
+      await vault.listProfiles();
+      clearInteractions(mockProfileRepository);
+
+      final profile = await vault.getProfileById('profile-1');
+
+      expect(profile, same(testProfile));
+      verifyNever(() => mockProfileRepository.listProfiles());
+    });
+
+    test(
+      'should throw when getProfileById is called before initialization',
+      () async {
+        final uninitializedVault = await createTestVault(
+          vaultStore: mockVaultStore,
+          profileRepositories: {'test': mockProfileRepository},
+        );
+
+        expect(
+          () => uninitializedVault.getProfileById('profile-1'),
+          throwsA(isA<TdkException>()),
+        );
+      },
+    );
+
+    test('should refetch profiles when getProfileById cache misses', () async {
+      final cachedProfile = VaultFixtures.createTestProfile(
+        id: 'cached-profile',
+      );
+
+      var listProfilesCount = 0;
+      when(() => mockProfileRepository.listProfiles()).thenAnswer((_) async {
+        listProfilesCount++;
+        return listProfilesCount == 1 ? [cachedProfile] : [testProfile];
+      });
+
+      await vault.listProfiles();
+      clearInteractions(mockProfileRepository);
+
+      final profile = await vault.getProfileById('profile-1');
+
+      expect(profile, same(testProfile));
+      verify(() => mockProfileRepository.listProfiles()).called(1);
+    });
+
+    test(
+      'should return cached shared storage from getSharedStorageByOwnerId',
+      () async {
+        final profileWithSharedStorage = VaultFixtures.createTestProfile(
+          id: 'profile-with-shared-storage',
+          sharedStorages: {'test': mockSharedStorage},
+        );
+
+        when(() => mockSharedStorage.id).thenReturn('owner-profile-id');
+        when(
+          () => mockProfileRepository.listProfiles(),
+        ).thenAnswer((_) async => [profileWithSharedStorage]);
+
+        await vault.listProfiles();
+        clearInteractions(mockProfileRepository);
+
+        final sharedStorage = await vault.getSharedStorageByOwnerId(
+          'owner-profile-id',
+        );
+
+        expect(sharedStorage, same(mockSharedStorage));
+        verifyNever(() => mockProfileRepository.listProfiles());
+      },
+    );
+
+    test(
+      'should throw when getSharedStorageByOwnerId is called before initialization',
+      () async {
+        final uninitializedVault = await createTestVault(
+          vaultStore: mockVaultStore,
+          profileRepositories: {'test': mockProfileRepository},
+        );
+
+        expect(
+          () =>
+              uninitializedVault.getSharedStorageByOwnerId('owner-profile-id'),
+          throwsA(isA<TdkException>()),
+        );
+      },
+    );
+
+    test(
+      'should refetch profiles when getSharedStorageByOwnerId cache misses',
+      () async {
+        final wrongSharedStorage = MockSharedStorage();
+        final cachedProfile = VaultFixtures.createTestProfile(
+          id: 'cached-profile',
+          sharedStorages: {'wrong': wrongSharedStorage},
+        );
+        final refreshedProfile = VaultFixtures.createTestProfile(
+          id: 'refreshed-profile',
+          sharedStorages: {'test': mockSharedStorage},
+        );
+
+        when(() => wrongSharedStorage.id).thenReturn('different-owner-id');
+        when(() => mockSharedStorage.id).thenReturn('owner-profile-id');
+
+        var listProfilesCount = 0;
+        when(() => mockProfileRepository.listProfiles()).thenAnswer((_) async {
+          listProfilesCount++;
+          return listProfilesCount == 1 ? [cachedProfile] : [refreshedProfile];
+        });
+
+        await vault.listProfiles();
+        clearInteractions(mockProfileRepository);
+
+        final sharedStorage = await vault.getSharedStorageByOwnerId(
+          'owner-profile-id',
+        );
+
+        expect(sharedStorage, same(mockSharedStorage));
+        verify(() => mockProfileRepository.listProfiles()).called(1);
+      },
+    );
   });
 
   group('Profile Sharing', () {
@@ -840,21 +1194,23 @@ void main() {
         ).thenAnswer((_) async => [testProfile]);
         when(
           () => mockProfileRepository.receiveItemAccess(
-            accountIndex: 0,
+            profile: testProfile,
             ownerProfileId: 'owner-profile-id',
             kek: Uint8List.fromList([1, 2, 3, 4]),
             ownerProfileDid: 'did:key:owner-did',
           ),
-        ).thenAnswer((_) async {});
+        ).thenAnswer((_) async => testProfile);
 
-        await vault.acceptSharedItems(
+        final updatedProfile = await vault.acceptSharedItems(
           profileId: 'test-id',
           sharedItems: sharedItem,
         );
 
+        expect(updatedProfile, same(testProfile));
+
         verify(
           () => mockProfileRepository.receiveItemAccess(
-            accountIndex: 0,
+            profile: testProfile,
             ownerProfileId: 'owner-profile-id',
             kek: Uint8List.fromList([1, 2, 3, 4]),
             ownerProfileDid: 'did:key:owner-did',
@@ -862,6 +1218,80 @@ void main() {
         ).called(1);
         verify(() => mockProfileRepository.listProfiles()).called(1);
       });
+
+      test(
+        'should invalidate cached profiles after acceptSharedItems',
+        () async {
+          final cachedProfile = VaultFixtures.createTestProfile(
+            id: 'cached-profile',
+            fileStorages: {'test': mockFileStorage},
+            credentialStorages: {'test': mockCredentialStorage},
+            sharedStorages: {'test': mockSharedStorage},
+          );
+
+          final refreshedProfile = VaultFixtures.createTestProfile(
+            id: 'refreshed-profile',
+            fileStorages: {'test': mockFileStorage},
+            credentialStorages: {'test': mockCredentialStorage},
+            sharedStorages: {'test': mockSharedStorage},
+          );
+
+          final sharedItem = SharedItemsDto(
+            kek: Uint8List.fromList([1, 2, 3, 4]),
+            ownerProfileId: 'owner-profile-id',
+            ownerProfileDID: 'did:key:owner-did',
+            itemIds: ['item-1', 'item-2'],
+          );
+          final expectedContent = Uint8List.fromList([6, 7, 8]);
+
+          when(() => mockSharedStorage.id).thenReturn('owner-profile-id');
+          when(
+            () => mockSharedStorage.getFileContent(fileId: 'item-123'),
+          ).thenAnswer((_) async => expectedContent);
+          when(
+            () => mockProfileRepository.receiveItemAccess(
+              profile: cachedProfile,
+              ownerProfileId: 'owner-profile-id',
+              kek: Uint8List.fromList([1, 2, 3, 4]),
+              ownerProfileDid: 'did:key:owner-did',
+            ),
+          ).thenAnswer((_) async => refreshedProfile);
+
+          var listProfilesCount = 0;
+          when(() => mockProfileRepository.listProfiles()).thenAnswer((
+            _,
+          ) async {
+            listProfilesCount++;
+            return listProfilesCount == 1
+                ? [cachedProfile]
+                : [refreshedProfile];
+          });
+
+          await vault.listProfiles();
+          clearInteractions(mockProfileRepository);
+
+          await vault.acceptSharedItems(
+            profileId: 'cached-profile',
+            sharedItems: sharedItem,
+          );
+
+          final content = await vault.readSharedItem(
+            ownerProfileId: 'owner-profile-id',
+            itemId: 'item-123',
+          );
+
+          expect(content, equals(expectedContent));
+          verify(
+            () => mockProfileRepository.receiveItemAccess(
+              profile: cachedProfile,
+              ownerProfileId: 'owner-profile-id',
+              kek: Uint8List.fromList([1, 2, 3, 4]),
+              ownerProfileDid: 'did:key:owner-did',
+            ),
+          ).called(1);
+          verify(() => mockProfileRepository.listProfiles()).called(1);
+        },
+      );
 
       test(
         'should throw when accepting shared item for non-existent profile',
@@ -947,6 +1377,449 @@ void main() {
           () => mockSharedStorage.getFileContent(fileId: 'item-123'),
         ).called(1);
       });
+
+      test(
+        'should read shared item without listing profiles when cached',
+        () async {
+          final testProfile = VaultFixtures.createTestProfile(
+            fileStorages: {'test': mockFileStorage},
+            credentialStorages: {'test': mockCredentialStorage},
+            sharedStorages: {'test': mockSharedStorage},
+          );
+
+          final expectedContent = Uint8List.fromList([9, 8, 7]);
+
+          when(
+            () => mockProfileRepository.listProfiles(),
+          ).thenAnswer((_) async => [testProfile]);
+          when(() => mockSharedStorage.id).thenReturn('owner-profile-id');
+          when(
+            () => mockSharedStorage.getFileContent(fileId: 'item-123'),
+          ).thenAnswer((_) async => expectedContent);
+
+          await vault.listProfiles();
+          clearInteractions(mockProfileRepository);
+
+          final content = await vault.readSharedItem(
+            ownerProfileId: 'owner-profile-id',
+            itemId: 'item-123',
+          );
+
+          expect(content, equals(expectedContent));
+          verifyNever(() => mockProfileRepository.listProfiles());
+          verify(
+            () => mockSharedStorage.getFileContent(fileId: 'item-123'),
+          ).called(1);
+        },
+      );
+
+      test(
+        'should refresh profiles when shared storage not found in cache',
+        () async {
+          final wrongSharedStorage = MockSharedStorage();
+          when(() => wrongSharedStorage.id).thenReturn('different-profile-id');
+
+          final cachedProfile = VaultFixtures.createTestProfile(
+            id: 'cached-profile',
+            fileStorages: {'test': mockFileStorage},
+            credentialStorages: {'test': mockCredentialStorage},
+            sharedStorages: {'wrong': wrongSharedStorage},
+          );
+
+          final refreshedProfile = VaultFixtures.createTestProfile(
+            id: 'refreshed-profile',
+            fileStorages: {'test': mockFileStorage},
+            credentialStorages: {'test': mockCredentialStorage},
+            sharedStorages: {'test': mockSharedStorage},
+          );
+
+          final expectedContent = Uint8List.fromList([1, 1, 2, 3]);
+          when(() => mockSharedStorage.id).thenReturn('owner-profile-id');
+          when(
+            () => mockSharedStorage.getFileContent(fileId: 'item-123'),
+          ).thenAnswer((_) async => expectedContent);
+
+          var callCount = 0;
+          when(() => mockProfileRepository.listProfiles()).thenAnswer((
+            _,
+          ) async {
+            callCount++;
+            return callCount == 1 ? [cachedProfile] : [refreshedProfile];
+          });
+
+          await vault.listProfiles();
+
+          final content = await vault.readSharedItem(
+            ownerProfileId: 'owner-profile-id',
+            itemId: 'item-123',
+          );
+
+          expect(content, equals(expectedContent));
+          verify(() => mockProfileRepository.listProfiles()).called(2);
+          verify(
+            () => mockSharedStorage.getFileContent(fileId: 'item-123'),
+          ).called(1);
+        },
+      );
+
+      test('should invalidate cached profiles after createProfile', () async {
+        final cachedProfile = VaultFixtures.createTestProfile(
+          id: 'cached-profile',
+          fileStorages: {'test': mockFileStorage},
+          credentialStorages: {'test': mockCredentialStorage},
+          sharedStorages: {'test': mockSharedStorage},
+        );
+
+        final refreshedProfile = VaultFixtures.createTestProfile(
+          id: 'refreshed-profile',
+          fileStorages: {'test': mockFileStorage},
+          credentialStorages: {'test': mockCredentialStorage},
+          sharedStorages: {'test': mockSharedStorage},
+        );
+
+        final expectedContent = Uint8List.fromList([4, 5, 6]);
+
+        when(() => mockSharedStorage.id).thenReturn('owner-profile-id');
+        when(
+          () => mockSharedStorage.getFileContent(fileId: 'item-123'),
+        ).thenAnswer((_) async => expectedContent);
+        when(
+          () => mockProfileRepository.createProfile(
+            name: 'New Profile',
+            description: 'Created after cache warmup',
+          ),
+        ).thenAnswer((_) async {
+          return VaultFixtures.createTestProfile(
+            id: 'new-profile',
+            fileStorages: {'test': mockFileStorage},
+            credentialStorages: {'test': mockCredentialStorage},
+            sharedStorages: {'test': mockSharedStorage},
+          );
+        });
+
+        var listProfilesCount = 0;
+        when(() => mockProfileRepository.listProfiles()).thenAnswer((_) async {
+          listProfilesCount++;
+          return listProfilesCount == 1 ? [cachedProfile] : [refreshedProfile];
+        });
+
+        await vault.listProfiles();
+        clearInteractions(mockProfileRepository);
+
+        await vault.profileRepositories['test']!.createProfile(
+          name: 'New Profile',
+          description: 'Created after cache warmup',
+        );
+
+        final content = await vault.readSharedItem(
+          ownerProfileId: 'owner-profile-id',
+          itemId: 'item-123',
+        );
+
+        expect(content, equals(expectedContent));
+        verify(
+          () => mockProfileRepository.createProfile(
+            name: 'New Profile',
+            description: 'Created after cache warmup',
+          ),
+        ).called(1);
+        verify(() => mockProfileRepository.listProfiles()).called(1);
+      });
+
+      test(
+        'should invalidate cached profiles after defaultProfileRepository.createProfile',
+        () async {
+          final cachedProfile = VaultFixtures.createTestProfile(
+            id: 'cached-profile',
+            fileStorages: {'test': mockFileStorage},
+            credentialStorages: {'test': mockCredentialStorage},
+            sharedStorages: {'test': mockSharedStorage},
+          );
+
+          final refreshedProfile = VaultFixtures.createTestProfile(
+            id: 'refreshed-profile',
+            fileStorages: {'test': mockFileStorage},
+            credentialStorages: {'test': mockCredentialStorage},
+            sharedStorages: {'test': mockSharedStorage},
+          );
+
+          final expectedContent = Uint8List.fromList([4, 5, 7]);
+
+          when(() => mockSharedStorage.id).thenReturn('owner-profile-id');
+          when(
+            () => mockSharedStorage.getFileContent(fileId: 'item-123'),
+          ).thenAnswer((_) async => expectedContent);
+          when(
+            () => mockProfileRepository.createProfile(
+              name: 'New Profile',
+              description: 'Created via default repository',
+            ),
+          ).thenAnswer((_) async {
+            return VaultFixtures.createTestProfile(
+              id: 'new-profile',
+              fileStorages: {'test': mockFileStorage},
+              credentialStorages: {'test': mockCredentialStorage},
+              sharedStorages: {'test': mockSharedStorage},
+            );
+          });
+
+          var listProfilesCount = 0;
+          when(() => mockProfileRepository.listProfiles()).thenAnswer((
+            _,
+          ) async {
+            listProfilesCount++;
+            return listProfilesCount == 1
+                ? [cachedProfile]
+                : [refreshedProfile];
+          });
+
+          await vault.listProfiles();
+          clearInteractions(mockProfileRepository);
+
+          await vault.defaultProfileRepository.createProfile(
+            name: 'New Profile',
+            description: 'Created via default repository',
+          );
+
+          final content = await vault.readSharedItem(
+            ownerProfileId: 'owner-profile-id',
+            itemId: 'item-123',
+          );
+
+          expect(content, equals(expectedContent));
+          verify(
+            () => mockProfileRepository.createProfile(
+              name: 'New Profile',
+              description: 'Created via default repository',
+            ),
+          ).called(1);
+          verify(() => mockProfileRepository.listProfiles()).called(1);
+        },
+      );
+
+      test(
+        'should invalidate cached profiles after defaultProfileRepository.updateProfile',
+        () async {
+          final cachedProfile = VaultFixtures.createTestProfile(
+            id: 'cached-profile',
+            name: 'Cached Profile',
+            fileStorages: {'test': mockFileStorage},
+            credentialStorages: {'test': mockCredentialStorage},
+            sharedStorages: {'test': mockSharedStorage},
+          );
+
+          final updatedProfile = VaultFixtures.createTestProfile(
+            id: 'cached-profile',
+            name: 'Updated Profile',
+            fileStorages: {'test': mockFileStorage},
+            credentialStorages: {'test': mockCredentialStorage},
+            sharedStorages: {'test': mockSharedStorage},
+          );
+
+          final refreshedProfile = VaultFixtures.createTestProfile(
+            id: 'refreshed-profile',
+            fileStorages: {'test': mockFileStorage},
+            credentialStorages: {'test': mockCredentialStorage},
+            sharedStorages: {'test': mockSharedStorage},
+          );
+
+          final expectedContent = Uint8List.fromList([2, 4, 6]);
+
+          when(() => mockSharedStorage.id).thenReturn('owner-profile-id');
+          when(
+            () => mockSharedStorage.getFileContent(fileId: 'item-123'),
+          ).thenAnswer((_) async => expectedContent);
+          when(
+            () => mockProfileRepository.updateProfile(updatedProfile),
+          ).thenAnswer((_) async {});
+
+          var listProfilesCount = 0;
+          when(() => mockProfileRepository.listProfiles()).thenAnswer((
+            _,
+          ) async {
+            listProfilesCount++;
+            return listProfilesCount == 1
+                ? [cachedProfile]
+                : [refreshedProfile];
+          });
+
+          await vault.listProfiles();
+          clearInteractions(mockProfileRepository);
+
+          await vault.defaultProfileRepository.updateProfile(updatedProfile);
+
+          final content = await vault.readSharedItem(
+            ownerProfileId: 'owner-profile-id',
+            itemId: 'item-123',
+          );
+
+          expect(content, equals(expectedContent));
+          verify(
+            () => mockProfileRepository.updateProfile(updatedProfile),
+          ).called(1);
+          verify(() => mockProfileRepository.listProfiles()).called(1);
+        },
+      );
+
+      test('should invalidate cached profiles after updateProfile', () async {
+        final cachedProfile = VaultFixtures.createTestProfile(
+          id: 'cached-profile',
+          name: 'Cached Profile',
+          fileStorages: {'test': mockFileStorage},
+          credentialStorages: {'test': mockCredentialStorage},
+          sharedStorages: {'test': mockSharedStorage},
+        );
+
+        final updatedProfile = VaultFixtures.createTestProfile(
+          id: 'cached-profile',
+          name: 'Updated Profile',
+          fileStorages: {'test': mockFileStorage},
+          credentialStorages: {'test': mockCredentialStorage},
+          sharedStorages: {'test': mockSharedStorage},
+        );
+
+        final refreshedProfile = VaultFixtures.createTestProfile(
+          id: 'refreshed-profile',
+          fileStorages: {'test': mockFileStorage},
+          credentialStorages: {'test': mockCredentialStorage},
+          sharedStorages: {'test': mockSharedStorage},
+        );
+
+        final expectedContent = Uint8List.fromList([2, 3, 5]);
+
+        when(() => mockSharedStorage.id).thenReturn('owner-profile-id');
+        when(
+          () => mockSharedStorage.getFileContent(fileId: 'item-123'),
+        ).thenAnswer((_) async => expectedContent);
+        when(
+          () => mockProfileRepository.updateProfile(updatedProfile),
+        ).thenAnswer((_) async {});
+
+        var listProfilesCount = 0;
+        when(() => mockProfileRepository.listProfiles()).thenAnswer((_) async {
+          listProfilesCount++;
+          return listProfilesCount == 1 ? [cachedProfile] : [refreshedProfile];
+        });
+
+        await vault.listProfiles();
+        clearInteractions(mockProfileRepository);
+
+        await vault.profileRepositories['test']!.updateProfile(updatedProfile);
+
+        final content = await vault.readSharedItem(
+          ownerProfileId: 'owner-profile-id',
+          itemId: 'item-123',
+        );
+
+        expect(content, equals(expectedContent));
+        verify(
+          () => mockProfileRepository.updateProfile(updatedProfile),
+        ).called(1);
+        verify(() => mockProfileRepository.listProfiles()).called(1);
+      });
+
+      test('should invalidate cached profiles after deleteProfile', () async {
+        final deletedProfile = VaultFixtures.createTestProfile(
+          id: 'deleted-profile',
+          fileStorages: {'test': mockFileStorage},
+          credentialStorages: {'test': mockCredentialStorage},
+          sharedStorages: {'test': mockSharedStorage},
+        );
+
+        final refreshedProfile = VaultFixtures.createTestProfile(
+          id: 'remaining-profile',
+          fileStorages: {'test': mockFileStorage},
+          credentialStorages: {'test': mockCredentialStorage},
+          sharedStorages: {'test': mockSharedStorage},
+        );
+
+        final expectedContent = Uint8List.fromList([7, 8, 9]);
+
+        when(() => mockSharedStorage.id).thenReturn('owner-profile-id');
+        when(
+          () => mockSharedStorage.getFileContent(fileId: 'item-123'),
+        ).thenAnswer((_) async => expectedContent);
+        when(
+          () => mockProfileRepository.deleteProfile(deletedProfile),
+        ).thenAnswer((_) async {});
+
+        var listProfilesCount = 0;
+        when(() => mockProfileRepository.listProfiles()).thenAnswer((_) async {
+          listProfilesCount++;
+          return listProfilesCount == 1 ? [deletedProfile] : [refreshedProfile];
+        });
+
+        await vault.listProfiles();
+        clearInteractions(mockProfileRepository);
+
+        await vault.profileRepositories['test']!.deleteProfile(deletedProfile);
+
+        final content = await vault.readSharedItem(
+          ownerProfileId: 'owner-profile-id',
+          itemId: 'item-123',
+        );
+
+        expect(content, equals(expectedContent));
+        verify(
+          () => mockProfileRepository.deleteProfile(deletedProfile),
+        ).called(1);
+        verify(() => mockProfileRepository.listProfiles()).called(1);
+      });
+
+      test(
+        'should invalidate cached profiles after defaultProfileRepository.deleteProfile',
+        () async {
+          final deletedProfile = VaultFixtures.createTestProfile(
+            id: 'deleted-profile',
+            fileStorages: {'test': mockFileStorage},
+            credentialStorages: {'test': mockCredentialStorage},
+            sharedStorages: {'test': mockSharedStorage},
+          );
+
+          final refreshedProfile = VaultFixtures.createTestProfile(
+            id: 'remaining-profile',
+            fileStorages: {'test': mockFileStorage},
+            credentialStorages: {'test': mockCredentialStorage},
+            sharedStorages: {'test': mockSharedStorage},
+          );
+
+          final expectedContent = Uint8List.fromList([7, 9, 11]);
+
+          when(() => mockSharedStorage.id).thenReturn('owner-profile-id');
+          when(
+            () => mockSharedStorage.getFileContent(fileId: 'item-123'),
+          ).thenAnswer((_) async => expectedContent);
+          when(
+            () => mockProfileRepository.deleteProfile(deletedProfile),
+          ).thenAnswer((_) async {});
+
+          var listProfilesCount = 0;
+          when(() => mockProfileRepository.listProfiles()).thenAnswer((
+            _,
+          ) async {
+            listProfilesCount++;
+            return listProfilesCount == 1
+                ? [deletedProfile]
+                : [refreshedProfile];
+          });
+
+          await vault.listProfiles();
+          clearInteractions(mockProfileRepository);
+
+          await vault.defaultProfileRepository.deleteProfile(deletedProfile);
+
+          final content = await vault.readSharedItem(
+            ownerProfileId: 'owner-profile-id',
+            itemId: 'item-123',
+          );
+
+          expect(content, equals(expectedContent));
+          verify(
+            () => mockProfileRepository.deleteProfile(deletedProfile),
+          ).called(1);
+          verify(() => mockProfileRepository.listProfiles()).called(1);
+        },
+      );
 
       test('should throw when reading shared item with no profiles', () async {
         when(

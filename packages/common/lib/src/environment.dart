@@ -1,3 +1,5 @@
+import 'exceptions/tdk_exception.dart';
+import 'exceptions/tdk_exception_type.dart';
 import 'logger/log_level.dart';
 
 /// Enum to represent different types of environments.
@@ -22,7 +24,10 @@ enum ElementsRegion {
   apSoutheast1('ap-southeast-1', 'apse1'),
 
   /// Asia Pacific (Mumbai) region
-  apSouth1('ap-south-1', 'aps1');
+  apSouth1('ap-south-1', 'aps1'),
+
+  /// US East (N. Virginia) region
+  usEast1('us-east-1', 'use1');
 
   /// Full AWS region name (e.g., `ap-southeast-1`)
   final String awsRegion;
@@ -82,7 +87,11 @@ class Environment {
 
   /// The name of the environment variable that holds the current environment type.
   static const enviromentVariableName = 'AFFINIDI_TDK_ENVIRONMENT';
-  static const _consumerAudienceEndpoint = '/iam/v1/consumer/oauth2/token';
+  static const _environmentOverrideVariableName =
+      'AFFINIDI_TDK_ENVIRONMENT_OVERRIDE';
+  static const _environmentRegionOverrideVariableName =
+      'AFFINIDI_TDK_ENVIRONMENT_REGION_OVERRIDE';
+  static const _consumerAudienceEndpoint = '/cid/v1/consumer/oauth2/token';
   static const _consumerCisEndpoint = '/cis';
   static const _defaultRegion = ElementsRegion.apSoutheast1;
   static final Map<String, LogLevel> _levels = {
@@ -117,19 +126,62 @@ class Environment {
       _levels[const String.fromEnvironment('AFFINIDI_TDK_LOG_LEVEL')] ??
       LogLevel.off;
 
+  static EnvironmentType? _getEnvironmentTypeOverride() {
+    final envOverride = const String.fromEnvironment(
+      _environmentOverrideVariableName,
+      defaultValue: '',
+    );
+    if (envOverride.isEmpty) {
+      return null;
+    }
+
+    return EnvironmentType.values.firstWhere(
+      (e) => e.value == envOverride,
+      orElse: () => throw TdkException(
+        message:
+            'Unsupported environment override for $_environmentOverrideVariableName',
+        code: TdkExceptionType.invalidEnvironmentOverride.code,
+        originalMessage: envOverride,
+      ),
+    );
+  }
+
+  static ElementsRegion? _getRegionOverride() {
+    final regionOverride = const String.fromEnvironment(
+      _environmentRegionOverrideVariableName,
+      defaultValue: '',
+    );
+    if (regionOverride.isEmpty) {
+      return null;
+    }
+
+    return ElementsRegion.values.firstWhere(
+      (e) => e.awsRegion == regionOverride,
+      orElse: () => throw TdkException(
+        message:
+            'Unsupported environment region override for $_environmentRegionOverrideVariableName',
+        code: TdkExceptionType.invalidEnvironmentRegionOverride.code,
+        originalMessage: regionOverride,
+      ),
+    );
+  }
+
   /// The list of available environments with their respective configurations.
   static Environment getEnvironmentConfig(
     EnvironmentType envType, [
     ElementsRegion region = _defaultRegion,
   ]) {
-    final regionCode = region.regionCode;
-    switch (envType) {
+    final effectiveEnvType = _getEnvironmentTypeOverride() ?? envType;
+    final effectiveRegion = _getRegionOverride() ?? region;
+    final regionCode = effectiveRegion.regionCode;
+    switch (effectiveEnvType) {
       case EnvironmentType.local:
         return Environment._(
-          environmentName: envType.value,
+          environmentName: effectiveEnvType.value,
           apiGwUrl: 'https://$regionCode.dev.api.affinidi.io',
+          // MA: should be always SG and it's not used on VFS
           elementsAuthTokenUrl:
-              'https://$regionCode.dev.auth.developer.affinidi.io/auth/oauth2/token',
+              'https://apse1.dev.auth.developer.affinidi.io/auth/oauth2/token',
           iotUrl: 'a3sq1vuw0cw9an-ats.iot.ap-southeast-1.amazonaws.com',
           elementsVaultApiUrl: 'http://localhost:3000',
           webVaultUrl: 'http://localhost:3001',
@@ -140,12 +192,13 @@ class Environment {
         );
       case EnvironmentType.dev:
         return Environment._(
-          environmentName: envType.value,
+          environmentName: effectiveEnvType.value,
           apiGwUrl: 'https://$regionCode.dev.api.affinidi.io',
+          // MA: should be always SG and it's not used on VFS
           elementsAuthTokenUrl:
-              'https://$regionCode.dev.auth.developer.affinidi.io/auth/oauth2/token',
+              'https://apse1.dev.auth.developer.affinidi.io/auth/oauth2/token',
           iotUrl: 'a3sq1vuw0cw9an-ats.iot.ap-southeast-1.amazonaws.com',
-          elementsVaultApiUrl: 'https://dev.api.vault.affinidi.com',
+          elementsVaultApiUrl: 'https://$regionCode.dev.api.vault.affinidi.com',
           webVaultUrl: 'https://vault.dev.affinidi.com',
           consumerAudienceEndpoint: _consumerAudienceEndpoint,
           consumerCisEndpoint: _consumerCisEndpoint,
@@ -154,12 +207,13 @@ class Environment {
         );
       case EnvironmentType.prod:
         return Environment._(
-          environmentName: envType.value,
+          environmentName: effectiveEnvType.value,
           apiGwUrl: 'https://$regionCode.api.affinidi.io',
+          // MA: should be always SG and it's not used on VFS
           elementsAuthTokenUrl:
-              'https://$regionCode.auth.developer.affinidi.io/auth/oauth2/token',
+              'https://apse1.auth.developer.affinidi.io/auth/oauth2/token',
           iotUrl: 'a13pfgsvt8xhx-ats.iot.ap-southeast-1.amazonaws.com',
-          elementsVaultApiUrl: 'https://api.vault.affinidi.com',
+          elementsVaultApiUrl: 'https://$regionCode.api.vault.affinidi.com',
           webVaultUrl: 'https://vault.affinidi.com',
           consumerAudienceEndpoint: _consumerAudienceEndpoint,
           consumerCisEndpoint: _consumerCisEndpoint,

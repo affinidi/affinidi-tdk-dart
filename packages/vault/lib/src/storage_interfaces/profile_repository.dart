@@ -14,7 +14,7 @@ abstract class ProfileRepository {
   /// [name] - The name of the new profile.
   /// [description] - Optional description of the profile.
   /// [cancelToken] - Optional cancel token for API requests.
-  Future<void> createProfile({
+  Future<Profile> createProfile({
     required String name,
     String? description,
     VaultCancelToken? cancelToken,

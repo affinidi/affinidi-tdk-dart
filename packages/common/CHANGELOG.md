@@ -1,8 +1,10 @@
+## 2.2.0
+
+ - **FEAT**: add US East (N. Virginia) region support (#135).
+
 ## 2.1.0
 
  - **FEAT**: allow configuring http connections idle timeouts (#119).
-
-# Change Log
 
 ## 2.0.0
 

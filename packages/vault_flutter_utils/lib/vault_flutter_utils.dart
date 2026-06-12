@@ -1,1 +1,1 @@
-export 'storages/flutter_secure_vault_store.dart';
+export 'affinidi_tdk_vault_flutter_utils.dart';

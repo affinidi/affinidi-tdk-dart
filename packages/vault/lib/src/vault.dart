@@ -12,10 +12,12 @@ import 'item_permission.dart';
 import 'item_permissions_policy.dart';
 import 'permissions.dart';
 import 'profile.dart';
+import 'profile_repository_handle.dart';
 import 'storage_interfaces/profile_access_sharing.dart';
 import 'storage_interfaces/profile_repository.dart';
 import 'storage_interfaces/profile_storage_info.dart';
 import 'storage_interfaces/repository_configuration.dart';
+import 'storage_interfaces/shared_storage.dart';
 import 'storage_interfaces/vault_store.dart';
 import 'vault_storage_usage.dart';
 
@@ -26,22 +28,157 @@ class Vault {
   bool _initialized = false;
   Future<void>? _initializing;
 
-  final Map<String, ProfileRepository> _profileRepositories;
-  var _profileInfoCache = <String, _ProfileRepositoryDetails>{};
+  late final Map<String, ProfileRepositoryHandle> _profileRepositoryHandles;
+  late final Map<String, ProfileRepository> _profileRepositories;
+  List<Profile>? _profilesCache;
+  int _profilesCacheVersion = 0;
+
+  void _throwIfNotInitialized() {
+    if (!_initialized) {
+      throw TdkException(
+        message: 'Must initialize vault by calling ensureInitialized',
+        code: TdkExceptionType.vaultNotInitialized.code,
+      );
+    }
+  }
+
+  void _invalidateProfilesCache() {
+    _profilesCache = null;
+    _profilesCacheVersion++;
+  }
+
+  void _setProfilesCache(List<Profile> profiles, int version) {
+    if (version == _profilesCacheVersion) {
+      _profilesCache = List.unmodifiable(profiles);
+    }
+  }
+
+  Profile? _findProfileById(List<Profile> profiles, String profileId) {
+    return profiles.where((p) => p.id == profileId).firstOrNull;
+  }
+
+  /// Retrieves a profile by its ID.
+  ///
+  /// [profileId] - The ID of the profile to retrieve.
+  /// [cancelToken] - Optional cancel token for the operation.
+  ///
+  /// Throws [TdkException] if the profile is not found or the vault is not initialized.
+  Future<Profile> getProfileById(
+    String profileId, {
+    VaultCancelToken? cancelToken,
+  }) async {
+    _throwIfNotInitialized();
+
+    final cachedProfiles = _profilesCache;
+    if (cachedProfiles != null) {
+      final cachedProfile = _findProfileById(cachedProfiles, profileId);
+      if (cachedProfile != null) {
+        return cachedProfile;
+      }
+    }
+
+    final refreshedProfiles = await listProfiles(cancelToken: cancelToken);
+    final profileInfo = _findProfileById(refreshedProfiles, profileId);
+
+    if (profileInfo == null) {
+      throw TdkException(
+        message: 'Cannot find profile with id: $profileId',
+        code: TdkExceptionType.invalidProfileIdentifier.code,
+      );
+    }
+
+    return profileInfo;
+  }
+
+  /// Retrieves a shared storage by the owner profile ID.
+  ///
+  /// [ownerProfileId] - The ID of the owner profile whose shared storage to retrieve.
+  ///
+  /// Returns the [SharedStorage] if found, or null if not found.
+  Future<SharedStorage?> getSharedStorageByOwnerId(
+    String ownerProfileId, {
+    VaultCancelToken? cancelToken,
+  }) async {
+    _throwIfNotInitialized();
+
+    final cachedProfiles = _profilesCache;
+    if (cachedProfiles != null) {
+      final cachedStorage = _findSharedStorage(cachedProfiles, ownerProfileId);
+      if (cachedStorage != null) {
+        return cachedStorage;
+      }
+    }
+
+    final refreshedProfiles = await listProfiles(cancelToken: cancelToken);
+    return _findSharedStorage(refreshedProfiles, ownerProfileId);
+  }
+
+  SharedStorage? _findSharedStorage(
+    List<Profile> profiles,
+    String ownerProfileId,
+  ) {
+    return profiles
+        .expand((profile) => profile.sharedStorages)
+        .where((storage) => storage.id == ownerProfileId)
+        .firstOrNull;
+  }
+
+  ProfileRepositoryHandle _getProfileRepositoryHandle(String repositoryId) {
+    final repositoryHandle = _profileRepositoryHandles[repositoryId];
+    if (repositoryHandle == null) {
+      throw TdkException(
+        message: 'Cannot find the profile repository with id: $repositoryId',
+        code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
+      );
+    }
+
+    return repositoryHandle;
+  }
+
+  ProfileAccessSharing _getProfileAccessSharing(
+    String repositoryId, {
+    required String unsupportedMessage,
+  }) {
+    final repositoryHandle = _getProfileRepositoryHandle(repositoryId);
+
+    final accessSharing = repositoryHandle.accessSharing;
+    if (accessSharing == null) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: unsupportedMessage,
+          code: TdkExceptionType.unsupportedProfileAccessSharing.code,
+        ),
+        StackTrace.current,
+      );
+    }
+
+    return accessSharing;
+  }
+
+  ProfileStorageInfo _getProfileStorageInfo(
+    String repositoryId, {
+    required String unsupportedMessage,
+    required TdkExceptionType unsupportedExceptionType,
+  }) {
+    final storageInfo = _getProfileRepositoryHandle(repositoryId).storageInfo;
+    if (storageInfo == null) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: unsupportedMessage,
+          code: unsupportedExceptionType.code,
+        ),
+        StackTrace.current,
+      );
+    }
+
+    return storageInfo;
+  }
 
   /// Retrieves the map of profile repositories.
   ///
   /// Throws [TdkException] if the vault is not initialized.
   Map<String, ProfileRepository> get profileRepositories {
-    if (!_initialized) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Must initialize vault by calling ensureInitialized',
-          code: TdkExceptionType.vaultNotInitialized.code,
-        ),
-        StackTrace.current,
-      );
-    }
+    _throwIfNotInitialized();
     return _profileRepositories;
   }
 
@@ -51,15 +188,7 @@ class Vault {
   ///
   /// Throws [TdkException] if the vault is not initialized.
   ProfileRepository get defaultProfileRepository {
-    if (!_initialized) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Must initialize vault by calling ensureInitialized',
-          code: TdkExceptionType.vaultNotInitialized.code,
-        ),
-        StackTrace.current,
-      );
-    }
+    _throwIfNotInitialized();
 
     if (_defaultProfileRepositoryId != null) {
       return _profileRepositories[_defaultProfileRepositoryId] ??
@@ -85,8 +214,19 @@ class Vault {
     required Map<String, ProfileRepository> profileRepositories,
     String? defaultProfileRepositoryId,
   }) : _wallet = wallet,
-       _vaultStore = vaultStore,
-       _profileRepositories = Map.unmodifiable(profileRepositories) {
+       _vaultStore = vaultStore {
+    _profileRepositoryHandles = Map.unmodifiable({
+      for (final entry in profileRepositories.entries)
+        entry.key: ProfileRepositoryHandle.fromRepository(
+          entry.value,
+          onProfilesMutated: _invalidateProfilesCache,
+        ),
+    });
+    _profileRepositories = Map.unmodifiable({
+      for (final entry in _profileRepositoryHandles.entries)
+        entry.key: entry.value.repository,
+    });
+
     if (_profileRepositories.entries.isEmpty) {
       Error.throwWithStackTrace(
         TdkException(
@@ -201,27 +341,17 @@ class Vault {
   ///
   /// [cancelToken] - Optional cancel token for the operation.
   Future<List<Profile>> listProfiles({VaultCancelToken? cancelToken}) async {
-    if (!_initialized) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Must initialize vault by calling ensureInitialized',
-          code: TdkExceptionType.vaultNotInitialized.code,
-        ),
-        StackTrace.current,
-      );
-    }
+    _throwIfNotInitialized();
 
+    final version = _profilesCacheVersion;
     final profiles = await Future.wait(
       _profileRepositories.values.map(
-        (repository) => repository.listProfiles(),
+        (repository) => repository.listProfiles(cancelToken: cancelToken),
       ),
     );
     final allProfiles = profiles.expand((profiles) => profiles).toList();
 
-    _profileInfoCache = {
-      for (var profile in allProfiles)
-        profile.id: _ProfileRepositoryDetails(profile: profile),
-    };
+    _setProfilesCache(allProfiles, version);
 
     return allProfiles;
   }
@@ -244,45 +374,16 @@ class Vault {
     DateTime? expiresAt,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileInfo(profileId);
+    final profileInfo = await getProfileById(
+      profileId,
+      cancelToken: cancelToken,
+    );
 
-    if (profileInfo == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Can not find profile with id $profileId',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileRepository =
-        _profileRepositories[profileInfo.profileRepositoryId];
-
-    if (profileRepository == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Can not find profile repository ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    if (profileRepository is! ProfileAccessSharing) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Sharing profiles is not supported on ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.unsupportedProfileAccessSharing.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileSharedAccessRepository =
-        profileRepository as ProfileAccessSharing;
+    final profileSharedAccessRepository = _getProfileAccessSharing(
+      profileInfo.profileRepositoryId,
+      unsupportedMessage:
+          'Sharing profiles is not supported on ${profileInfo.profileRepositoryId}',
+    );
 
     // Use item-level access method since profile is a node
     final kek = await profileSharedAccessRepository.grantItemAccessMultiple(
@@ -307,54 +408,25 @@ class Vault {
   /// [profileId] - Identifier of the profile to which add a shared storage
   /// [sharedProfile] - Shared profile info including kek and id
   /// [cancelToken] - Optional cancel token for the operation.
-  Future<void> addSharedProfile({
+  Future<Profile> addSharedProfile({
     required String profileId,
     required SharedProfileDto sharedProfile,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileInfo(profileId);
+    final profileInfo = await getProfileById(
+      profileId,
+      cancelToken: cancelToken,
+    );
 
-    if (profileInfo == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Can not find profile $profileId',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileRepository =
-        _profileRepositories[profileInfo.profileRepositoryId];
-
-    if (profileRepository == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Can not find profile repository ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    if (profileRepository is! ProfileAccessSharing) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Sharing profiles is not supported on ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.unsupportedProfileAccessSharing.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileSharedAccessRepository =
-        profileRepository as ProfileAccessSharing;
+    final profileSharedAccessRepository = _getProfileAccessSharing(
+      profileInfo.profileRepositoryId,
+      unsupportedMessage:
+          'Sharing profiles is not supported on ${profileInfo.profileRepositoryId}',
+    );
 
     // Use item-level access method since profile is a node
-    await profileSharedAccessRepository.receiveItemAccess(
-      accountIndex: profileInfo.accountIndex,
+    return await profileSharedAccessRepository.receiveItemAccess(
+      profile: profileInfo,
       ownerProfileId: sharedProfile.profileId,
       kek: sharedProfile.kek,
       ownerProfileDid: sharedProfile.profileDID,
@@ -366,53 +438,24 @@ class Vault {
   /// [profileId] - Identifier of the profile to which add the shared item
   /// [sharedItems] - Shared item info including KEK, owner profile id, and item ids.
   /// [cancelToken] - Optional cancel token for the operation.
-  Future<void> acceptSharedItems({
+  Future<Profile> acceptSharedItems({
     required String profileId,
     required SharedItemsDto sharedItems,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileInfo(profileId);
+    final profileInfo = await getProfileById(
+      profileId,
+      cancelToken: cancelToken,
+    );
 
-    if (profileInfo == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Can not find profile $profileId',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
+    final profileSharedAccessRepository = _getProfileAccessSharing(
+      profileInfo.profileRepositoryId,
+      unsupportedMessage:
+          'Sharing nodes is not supported on ${profileInfo.profileRepositoryId}',
+    );
 
-    final profileRepository =
-        _profileRepositories[profileInfo.profileRepositoryId];
-
-    if (profileRepository == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Can not find profile repository ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    if (profileRepository is! ProfileAccessSharing) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Sharing nodes is not supported on ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.unsupportedProfileAccessSharing.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileSharedAccessRepository =
-        profileRepository as ProfileAccessSharing;
-
-    await profileSharedAccessRepository.receiveItemAccess(
-      accountIndex: profileInfo.accountIndex,
+    return await profileSharedAccessRepository.receiveItemAccess(
+      profile: profileInfo,
       ownerProfileId: sharedItems.ownerProfileId,
       kek: sharedItems.kek,
       ownerProfileDid: sharedItems.ownerProfileDID,
@@ -434,45 +477,16 @@ class Vault {
     required String granteeDid,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileInfo(profileId);
+    final profileInfo = await getProfileById(
+      profileId,
+      cancelToken: cancelToken,
+    );
 
-    if (profileInfo == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Can not find profile $profileId',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileRepository =
-        _profileRepositories[profileInfo.profileRepositoryId];
-
-    if (profileRepository == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Can not find profile repository ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    if (profileRepository is! ProfileAccessSharing) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Sharing profiles is not supported on ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.unsupportedProfileAccessSharing.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileSharedAccessRepository =
-        profileRepository as ProfileAccessSharing;
+    final profileSharedAccessRepository = _getProfileAccessSharing(
+      profileInfo.profileRepositoryId,
+      unsupportedMessage:
+          'Sharing profiles is not supported on ${profileInfo.profileRepositoryId}',
+    );
 
     // Use item-level access method since profile is a node
     await profileSharedAccessRepository.revokeItemAccess(
@@ -498,45 +512,16 @@ class Vault {
     required String granteeDid,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileInfo(profileId);
+    final profileInfo = await getProfileById(
+      profileId,
+      cancelToken: cancelToken,
+    );
 
-    if (profileInfo == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Can not find profile with id $profileId',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileRepository =
-        _profileRepositories[profileInfo.profileRepositoryId];
-
-    if (profileRepository == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Can not find profile repository ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    if (profileRepository is! ProfileAccessSharing) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Getting item access is not supported on ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.unsupportedProfileAccessSharing.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileSharedAccessRepository =
-        profileRepository as ProfileAccessSharing;
+    final profileSharedAccessRepository = _getProfileAccessSharing(
+      profileInfo.profileRepositoryId,
+      unsupportedMessage:
+          'Getting item access is not supported on ${profileInfo.profileRepositoryId}',
+    );
 
     final result = await profileSharedAccessRepository.getItemAccess(
       accountIndex: profileInfo.accountIndex,
@@ -552,16 +537,6 @@ class Vault {
     return permissionsList
         .map((perm) => ItemPermission.fromMap(perm as Map<String, dynamic>))
         .toList();
-  }
-
-  Future<_ProfileRepositoryDetails?> _getProfileInfo(String profileId) async {
-    if (_profileInfoCache.containsKey(profileId)) {
-      return _profileInfoCache[profileId];
-    }
-
-    await listProfiles();
-
-    return _profileInfoCache[profileId];
   }
 
   /// Reads a shared item
@@ -582,21 +557,25 @@ class Vault {
     VaultCancelToken? cancelToken,
     VaultProgressCallback? onReceiveProgress,
   }) async {
-    final currentUserProfiles = await listProfiles();
-    if (currentUserProfiles.isEmpty) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'No profiles found for current user',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
+    final cachedProfiles = _profilesCache;
+    var sharedStorage = cachedProfiles == null || cachedProfiles.isEmpty
+        ? null
+        : _findSharedStorage(cachedProfiles, ownerProfileId);
 
-    final sharedStorage = currentUserProfiles
-        .expand((profile) => profile.sharedStorages)
-        .where((storage) => storage.id == ownerProfileId)
-        .firstOrNull;
+    if (sharedStorage == null) {
+      final currentUserProfiles = await listProfiles(cancelToken: cancelToken);
+      if (currentUserProfiles.isEmpty) {
+        Error.throwWithStackTrace(
+          TdkException(
+            message: 'No profiles found for current user',
+            code: TdkExceptionType.invalidProfileIdentifier.code,
+          ),
+          StackTrace.current,
+        );
+      }
+
+      sharedStorage = _findSharedStorage(currentUserProfiles, ownerProfileId);
+    }
 
     if (sharedStorage == null) {
       Error.throwWithStackTrace(
@@ -626,45 +605,16 @@ class Vault {
     required String granteeDid,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileInfo(profileId);
+    final profileInfo = await getProfileById(
+      profileId,
+      cancelToken: cancelToken,
+    );
 
-    if (profileInfo == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Can not find profile with id $profileId',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileRepository =
-        _profileRepositories[profileInfo.profileRepositoryId];
-
-    if (profileRepository == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Can not find profile repository ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    if (profileRepository is! ProfileAccessSharing) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Getting item permissions editor is not supported on ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.unsupportedProfileAccessSharing.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileSharedAccessRepository =
-        profileRepository as ProfileAccessSharing;
+    final profileSharedAccessRepository = _getProfileAccessSharing(
+      profileInfo.profileRepositoryId,
+      unsupportedMessage:
+          'Getting item permissions editor is not supported on ${profileInfo.profileRepositoryId}',
+    );
 
     final access = await profileSharedAccessRepository.getItemAccess(
       accountIndex: profileInfo.accountIndex,
@@ -693,45 +643,16 @@ class Vault {
     required ItemPermissionsPolicy policy,
     VaultCancelToken? cancelToken,
   }) async {
-    final profileInfo = await _getProfileInfo(profileId);
+    final profileInfo = await getProfileById(
+      profileId,
+      cancelToken: cancelToken,
+    );
 
-    if (profileInfo == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Can not find profile with id $profileId',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileRepository =
-        _profileRepositories[profileInfo.profileRepositoryId];
-
-    if (profileRepository == null) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Can not find profile repository ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    if (profileRepository is! ProfileAccessSharing) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Setting item permissions is not supported on ${profileInfo.profileRepositoryId}',
-          code: TdkExceptionType.unsupportedProfileAccessSharing.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final profileSharedAccessRepository =
-        profileRepository as ProfileAccessSharing;
+    final profileSharedAccessRepository = _getProfileAccessSharing(
+      profileInfo.profileRepositoryId,
+      unsupportedMessage:
+          'Setting item permissions is not supported on ${profileInfo.profileRepositoryId}',
+    );
 
     final permissionGroups = policy.buildPermissionGroups();
 
@@ -754,40 +675,39 @@ class Vault {
   /// print('Used: ${usage.usedMB.toStringAsFixed(2)} MB');
   /// ```
   Future<VaultStorageUsage> getStorageUsage({
+    String? profileId,
     VaultCancelToken? cancelToken,
   }) async {
-    if (!_initialized) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Must initialize vault by calling ensureInitialized',
-          code: TdkExceptionType.vaultNotInitialized.code,
-        ),
-        StackTrace.current,
+    _throwIfNotInitialized();
+
+    if (profileId != null) {
+      final profileInfo = await getProfileById(
+        profileId,
+        cancelToken: cancelToken,
       );
-    }
-    if (defaultProfileRepository is! ProfileStorageInfo) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'The default profile repository does not support storage usage reporting',
-          code: TdkExceptionType.unsupportedOperation.code,
-        ),
-        StackTrace.current,
+
+      final storageInfo = _getProfileStorageInfo(
+        profileInfo.profileRepositoryId,
+        unsupportedMessage:
+            'The profile repository for profile $profileId does not support storage usage reporting',
+        unsupportedExceptionType:
+            TdkExceptionType.unsupportedProfileStorageUsageReporting,
       );
+
+      return storageInfo.getStorageUsage(cancelToken: cancelToken);
     }
-    return (defaultProfileRepository as ProfileStorageInfo).getStorageUsage(
-      cancelToken: cancelToken,
+
+    final defaultProfileRepositoryId =
+        _defaultProfileRepositoryId ??
+        _profileRepositoryHandles.entries.first.key;
+    final defaultStorageInfo = _getProfileStorageInfo(
+      defaultProfileRepositoryId,
+      unsupportedMessage:
+          'The default profile repository does not support storage usage reporting',
+      unsupportedExceptionType:
+          TdkExceptionType.unsupportedProfileStorageUsageReporting,
     );
+
+    return defaultStorageInfo.getStorageUsage(cancelToken: cancelToken);
   }
-}
-
-class _ProfileRepositoryDetails {
-  _ProfileRepositoryDetails({required Profile profile})
-    : profileRepositoryId = profile.profileRepositoryId,
-      accountIndex = profile.accountIndex,
-      did = profile.did;
-
-  final String profileRepositoryId;
-  final int accountIndex;
-  final String did;
 }

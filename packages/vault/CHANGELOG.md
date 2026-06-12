@@ -1,3 +1,39 @@
+## 3.0.1
+
+ - Update a dependency to the latest release.
+
+## 3.0.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **FEAT**: adopt new optimised endpoints for profile operations (#92).
+
+
+
+### Breaking Changes
+
+ - `ProfileRepository.createProfile(...)` now returns the created `Profile`.
+ - `ProfileAccessSharing.receiveItemAccess(...)` now accepts the receiving `profile` instead of `accountIndex` and returns the updated `Profile`.
+ - `Vault.addSharedProfile(...)` now returns the updated `Profile` with refreshed `sharedStorages`.
+ - `Vault.acceptSharedItems(...)` now returns the updated `Profile` with refreshed `sharedStorages`.
+
+### Added
+
+ - Added `Vault.getProfileById(...)` for targeted profile lookup.
+ - Added `Vault.getSharedStorageByOwnerId(...)` for direct shared storage lookup by owner profile id.
+ - Added `Vault.getStorageUsage(profileId: ...)` for per-profile repository usage checks.
+ - Added `unsupported_profile_storage_usage_reporting` for repositories that do not support profile-scoped usage reporting.
+
+### Changed
+
+ - `Vault.listProfiles()` now caches profile lists and invalidates that cache on repository mutations, reducing repeated lookups in sharing and shared item read flows.
+
+### Migration
+
+ - If you implement `ProfileRepository`, return a fully initialized `Profile` from `createProfile(...)`.
+ - If you implement `ProfileAccessSharing`, update `receiveItemAccess(...)` to accept a `Profile` and return the refreshed `Profile`.
+ - Update shared profile and shared item acceptance calls to use the returned `Profile` instead of reloading state separately.
+
 ## 2.1.3
 
  - Update a dependency to the latest release.
@@ -13,8 +49,6 @@
 ## 2.1.0
 
  - **FEAT**: cache and reuse profile details in share flow (#61).
-
-# Change Log
 
 ## 2.0.0
 
