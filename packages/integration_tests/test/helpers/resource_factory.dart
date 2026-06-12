@@ -109,11 +109,11 @@ class ResourceFactory {
       basePathOverride: cisBasePathOverride,
     );
     final configApi = cisClient.getConfigurationApi();
-    
+
     final config = (await configApi.getIssuanceConfigById(
       configurationId: configurationId,
     )).data;
-    
+
     final issuerWalletId = config?.issuerWalletId;
     if (issuerWalletId != null && issuerWalletId.isNotEmpty) {
       final foundWallet = await getWalletById(issuerWalletId);
@@ -201,7 +201,9 @@ class ResourceFactory {
         );
         final configApi = cisClient.getConfigurationApi();
         final configList = (await configApi.getIssuanceConfigList()).data;
-        if (configList != null && configList.configurations != null && configList.configurations.isNotEmpty) {
+        if (configList != null &&
+            configList.configurations != null &&
+            configList.configurations.isNotEmpty) {
           protectedWalletId = configList.configurations.first.issuerWalletId;
         }
       } catch (e) {
