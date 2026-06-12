@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:affinidi_tdk_auth_provider/affinidi_tdk_auth_provider.dart';
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:affinidi_tdk_credential_issuance_client/affinidi_tdk_credential_issuance_client.dart';
 import 'package:affinidi_tdk_credential_verification_client/affinidi_tdk_credential_verification_client.dart';
 import 'package:affinidi_tdk_wallets_client/affinidi_tdk_wallets_client.dart';
 import 'package:built_collection/built_collection.dart';
@@ -98,6 +99,36 @@ class ResourceFactory {
     await walletApi.deleteWallet(walletId: walletId);
   }
 
+  static Future<void> ensureConfigWalletExists(String configurationId) async {
+    final cisBasePathOverride = replaceBaseDomain(
+      AffinidiTdkCredentialIssuanceClient.basePath,
+      apiGwUrl,
+    );
+    final cisClient = AffinidiTdkCredentialIssuanceClient(
+      authTokenHook: ResourceFactory.getAuthTokenHook(),
+      basePathOverride: cisBasePathOverride,
+    );
+    final configApi = cisClient.getConfigurationApi();
+
+    final config = (await configApi.getIssuanceConfigById(
+      configurationId: configurationId,
+    )).data;
+
+    final issuerWalletId = config?.issuerWalletId;
+    if (issuerWalletId != null && issuerWalletId.isNotEmpty) {
+      final foundWallet = await getWalletById(issuerWalletId);
+      if (foundWallet == null) {
+        final newWallet = await createWallet();
+        final updateIssuanceConfigInput = UpdateIssuanceConfigInputBuilder()
+          ..issuerWalletId = newWallet.id;
+        await configApi.updateIssuanceConfigById(
+          configurationId: configurationId,
+          updateIssuanceConfigInput: updateIssuanceConfigInput.build(),
+        );
+      }
+    }
+  }
+
   static String randomString({int length = 8}) {
     const letters = 'abcdefghijklmnopqrstuvwxyz';
     final rand = Random();
@@ -157,8 +188,33 @@ class ResourceFactory {
     if (walletsCount > walletsLimitThreshold) {
       print('❗️Number of wallets reaching the limit (10). Deleting wallets.');
 
+      // Get protected wallet ID from issuance configuration
+      String? protectedWalletId;
+      try {
+        final cisBasePathOverride = replaceBaseDomain(
+          AffinidiTdkCredentialIssuanceClient.basePath,
+          apiGwUrl,
+        );
+        final cisClient = AffinidiTdkCredentialIssuanceClient(
+          authTokenHook: ResourceFactory.getAuthTokenHook(),
+          basePathOverride: cisBasePathOverride,
+        );
+        final configApi = cisClient.getConfigurationApi();
+        final configList = (await configApi.getIssuanceConfigList()).data;
+        if (configList != null &&
+            configList.configurations != null &&
+            configList.configurations.isNotEmpty) {
+          protectedWalletId = configList.configurations.first.issuerWalletId;
+        }
+      } catch (e) {
+        // Proceed without protection if config unavailable
+      }
+
       for (final wallet in result.wallets!) {
-        await deleteWallet(wallet.id as String);
+        // Skip deleting the wallet used by the issuance configuration
+        if (wallet.id != protectedWalletId) {
+          await deleteWallet(wallet.id as String);
+        }
       }
     }
   }

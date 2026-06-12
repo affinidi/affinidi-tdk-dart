@@ -56,7 +56,13 @@ void main() {
     });
 
     tearDownAll(() async {
-      await ResourceFactory.deleteWallet(walletId);
+      // Check if walletId is used by the configuration before deleting
+      final config = await configurationApi.getIssuanceConfigById(
+        configurationId: configurationId,
+      );
+      if (config.data?.issuerWalletId != walletId) {
+        await ResourceFactory.deleteWallet(walletId);
+      }
     });
 
     group('issuance config', () {
@@ -131,6 +137,9 @@ void main() {
       late String issuanceId;
 
       test('Start issuance', () async {
+        // Ensure the configuration's wallet exists before starting issuance
+        await ResourceFactory.ensureConfigWalletExists(configurationId);
+
         // Update the credentialData MapBuilder to properly create JsonObject values
         final credentialData = MapBuilder<String, built_value.JsonObject?>({
           'studentID': built_value.JsonObject('1234'),
