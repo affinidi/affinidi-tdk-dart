@@ -191,10 +191,10 @@ await vault.setItemAccess(
 
 **Note**: Profile and item sharing require the profile repository to implement the `ProfileAccessSharing` interface. The `VfsProfileRepository` from `affinidi_tdk_vault_data_manager` supports both profile and item-level sharing.
 
-For more sample usage, go to the [example folder](https://github.com/affinidi/affinidi-tdk/tree/main/libs/dart/vault/example), including:
-- [shared_profiles.dart](https://github.com/affinidi/affinidi-tdk/tree/main/libs/dart/vault/example/shared_profiles.dart) - Profile sharing examples
-- [shared_items.dart](https://github.com/affinidi/affinidi-tdk/tree/main/libs/dart/vault/example/shared_items.dart) - Item-level sharing examples
-- [time_bound_sharing.dart](https://github.com/affinidi/affinidi-tdk/tree/main/libs/dart/vault/example/time_bound_sharing.dart) - Time-bound sharing examples
+For more sample usage, go to the [example folder](https://github.com/affinidi/affinidi-tdk-dart/tree/main/packages/vault/example), including:
+- [shared_profiles.dart](https://github.com/affinidi/affinidi-tdk-dart/blob/main/packages/vault/example/shared_profiles.dart) - Profile sharing examples
+- [shared_items.dart](https://github.com/affinidi/affinidi-tdk-dart/blob/main/packages/vault/example/shared_items.dart) - Item-level sharing examples
+- [time_bound_sharing.dart](https://github.com/affinidi/affinidi-tdk-dart/blob/main/packages/vault/example/time_bound_sharing.dart) - Time-bound sharing examples
 
 
 ## Support & feedback
