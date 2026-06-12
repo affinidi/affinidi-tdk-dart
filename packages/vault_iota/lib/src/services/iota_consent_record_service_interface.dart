@@ -11,8 +11,14 @@ abstract interface class IotaConsentRecordServiceInterface {
   /// Persists or updates the consent record for a completed share event.
   ///
   /// Parameters:
-  /// * [requestHash] - Pre-computed hash identifying the verifier+request combination.
-  ///   Used as the deduplication key. The consumer controls the algorithm.
+  /// * [requestHash] - Consumer-computed hash identifying the verifier+request
+  ///   combination. Used as the deduplication / lookup key. The TDK treats
+  ///   this as an opaque string — it does not compute or verify it.
+  ///   The value must be **stable** (same verifier + same PD → same hash) and
+  ///   **identical** between this call and the matching
+  ///   [tryAutomaticConsent] call — a mismatch means the record is never
+  ///   found. A typical algorithm is `sha1(clientId + jsonEncode(pd))`.
+  ///   See [IotaConsentRecord.requestHash] for multi-vault scoping guidance.
   /// * [verifierMetadata] - Resolved branding of the verifier (logo, siteUrl).
   /// * [profileId] - ID of the profile used for the share.
   /// * [profileName] - Display name of the profile used for the share.

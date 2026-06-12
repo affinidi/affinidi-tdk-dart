@@ -1,6 +1,7 @@
 name: affinidi_tdk_vault_iota
 description: The Affinidi TDK Vault Iota package provides OID4VP share flow support — parsing Iota request URIs and submitting Verifiable Presentations.
 version: 1.0.0-dev
+homepage: https://github.com/affinidi/affinidi-tdk
 repository: https://github.com/affinidi/affinidi-tdk-dart
 
 environment:
