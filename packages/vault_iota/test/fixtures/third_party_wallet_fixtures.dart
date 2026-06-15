@@ -13,22 +13,22 @@ import 'package:ssi/ssi.dart';
 /// for any non-Affinidi wallet SDK that can expose its key material through the
 /// `ssi` [KeyPair] interface. Used to prove that `affinidi_tdk_vault_iota`
 /// works with OID4VP wallets that were not built by Affinidi.
-class ThirdPartyKeyPair extends KeyPair {
+class ForeignEd25519KeyPair extends KeyPair {
   final crypto.SimpleKeyPairData _keyPairData;
   final Uint8List _publicKeyBytes;
 
-  ThirdPartyKeyPair._(this._keyPairData, this._publicKeyBytes);
+  ForeignEd25519KeyPair._(this._keyPairData, this._publicKeyBytes);
 
   /// Generates a new Ed25519 key pair using the `cryptography` package.
   ///
-  /// Returns a [ThirdPartyKeyPair] whose private key never leaves the
+  /// Returns a [ForeignEd25519KeyPair] whose private key never leaves the
   /// `cryptography` package implementation.
-  static Future<ThirdPartyKeyPair> generateEd25519() async {
+  static Future<ForeignEd25519KeyPair> generateEd25519() async {
     final algorithm = crypto.Ed25519();
     final kp = await algorithm.newKeyPair();
     final pub = await kp.extractPublicKey();
     final extracted = await kp.extract();
-    return ThirdPartyKeyPair._(extracted, Uint8List.fromList(pub.bytes));
+    return ForeignEd25519KeyPair._(extracted, Uint8List.fromList(pub.bytes));
   }
 
   @override
@@ -80,12 +80,12 @@ class ThirdPartyKeyPair extends KeyPair {
       throw UnsupportedError('Ed25519 does not support ECDH');
 }
 
-/// Builds a [DidSigner] backed by a genuinely non-Affinidi [ThirdPartyKeyPair].
+/// Builds a [DidSigner] backed by a genuinely non-Affinidi [ForeignEd25519KeyPair].
 ///
 /// Returns a [DidSigner] whose `did:key` DID is derived from the third-party
 /// public key and whose signing is delegated to the `cryptography` package.
 Future<DidSigner> buildThirdPartyEd25519Signer() async {
-  final keyPair = await ThirdPartyKeyPair.generateEd25519();
+  final keyPair = await ForeignEd25519KeyPair.generateEd25519();
   final doc = DidKey.generateDocument(keyPair.publicKey);
   return DidSigner(
     did: doc.id,
@@ -107,7 +107,7 @@ Future<DidSigner> buildThirdPartyEd25519Signer() async {
 /// Signatures are returned as 64-byte compact `r || s`, low-S normalized — the
 /// exact format the `ssi` ECDSA verifiers expect. Public keys are returned as
 /// 33-byte compressed points, matching `ssi`'s did:key derivation.
-class PointyCastleKeyPair extends KeyPair {
+class ForeignEcdsaKeyPair extends KeyPair {
   final pc.ECPrivateKey _privateKey;
   final pc.ECPublicKey _publicKey;
   final pc.ECDomainParameters _domain;
@@ -116,7 +116,7 @@ class PointyCastleKeyPair extends KeyPair {
   final pc.SecureRandom _random;
   final String _id;
 
-  PointyCastleKeyPair._(
+  ForeignEcdsaKeyPair._(
     this._privateKey,
     this._publicKey,
     this._domain,
@@ -130,9 +130,9 @@ class PointyCastleKeyPair extends KeyPair {
   ///
   /// [keyType] must be [KeyType.secp256k1] or [KeyType.p256].
   ///
-  /// Returns a [PointyCastleKeyPair] whose private key never leaves the
+  /// Returns a [ForeignEcdsaKeyPair] whose private key never leaves the
   /// `pointycastle` implementation.
-  static PointyCastleKeyPair generate({required KeyType keyType}) {
+  static ForeignEcdsaKeyPair generate({required KeyType keyType}) {
     final (domainName, scheme) = switch (keyType) {
       KeyType.secp256k1 => (
         'secp256k1',
@@ -150,7 +150,7 @@ class PointyCastleKeyPair extends KeyPair {
       );
     final pair = generator.generateKeyPair();
 
-    return PointyCastleKeyPair._(
+    return ForeignEcdsaKeyPair._(
       pair.privateKey,
       pair.publicKey,
       domain,
@@ -210,8 +210,13 @@ class PointyCastleKeyPair extends KeyPair {
     Uint8List signature,
     SignatureScheme signatureScheme,
   ) async {
-    final r = _bytesToBigInt(signature.sublist(0, 32));
-    final s = _bytesToBigInt(signature.sublist(32, 64));
+    const fieldSize = 32;
+    assert(
+      signature.length == fieldSize * 2,
+      'Expected ${fieldSize * 2}-byte compact r||s, got ${signature.length}',
+    );
+    final r = _bytesToBigInt(signature.sublist(0, fieldSize));
+    final s = _bytesToBigInt(signature.sublist(fieldSize, fieldSize * 2));
     final verifier = pc.ECDSASigner(pc.SHA256Digest())
       ..init(false, pc.PublicKeyParameter<pc.ECPublicKey>(_publicKey));
     return verifier.verifySignature(data, pc.ECSignature(r, s));
@@ -240,12 +245,11 @@ class PointyCastleKeyPair extends KeyPair {
   }
 
   static Uint8List _bigIntTo32Bytes(BigInt value) {
-    var hex = value.toRadixString(16);
-    if (hex.length.isOdd) hex = '0$hex';
-    hex = hex.padLeft(64, '0');
     final result = Uint8List(32);
-    for (var i = 0; i < 32; i++) {
-      result[i] = int.parse(hex.substring(i * 2, i * 2 + 2), radix: 16);
+    var remaining = value;
+    for (var i = 31; i >= 0; i--) {
+      result[i] = (remaining & BigInt.from(0xff)).toInt();
+      remaining >>= 8;
     }
     return result;
   }
@@ -259,14 +263,14 @@ class PointyCastleKeyPair extends KeyPair {
   }
 }
 
-/// Builds a [DidSigner] backed by a genuinely non-Affinidi [PointyCastleKeyPair].
+/// Builds a [DidSigner] backed by a genuinely non-Affinidi [ForeignEcdsaKeyPair].
 ///
 /// [keyType] must be [KeyType.secp256k1] or [KeyType.p256].
 ///
 /// Returns a [DidSigner] whose `did:key` DID is derived from the third-party
 /// public key and whose signing is delegated to the `pointycastle` package.
 DidSigner buildThirdPartyEcdsaSigner({required KeyType keyType}) {
-  final keyPair = PointyCastleKeyPair.generate(keyType: keyType);
+  final keyPair = ForeignEcdsaKeyPair.generate(keyType: keyType);
   final doc = DidKey.generateDocument(keyPair.publicKey);
   return DidSigner(
     did: doc.id,

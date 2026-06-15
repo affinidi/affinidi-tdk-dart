@@ -231,6 +231,38 @@ void main() {
           },
         );
 
+        test(
+          'a tampered VP signature is rejected (verifier is not a no-op)',
+          () async {
+            final data = capturedRequest.data as Map<String, dynamic>;
+            final vp =
+                jsonDecode(data['vp_token'] as String) as Map<String, dynamic>;
+
+            // Flip the last byte of proofValue/jws to corrupt the signature.
+            final proof = Map<String, dynamic>.from(vp['proof'] as Map);
+            final proofValueKey = proof.containsKey('proofValue')
+                ? 'proofValue'
+                : 'jws';
+            final original = proof[proofValueKey] as String;
+            proof[proofValueKey] =
+                '${original.substring(0, original.length - 1)}X';
+
+            final tamperedVp = jsonEncode({...vp, 'proof': proof});
+            final parsedTampered = UniversalPresentationParser.parse(
+              tamperedVp,
+            );
+            final result = await UniversalPresentationVerifier().verify(
+              parsedTampered,
+            );
+
+            expect(
+              result.isValid,
+              isFalse,
+              reason: 'Verifier accepted a tampered signature — it is a no-op',
+            );
+          },
+        );
+
         // ── Check 3: the response follows the OID4VP standard ──────────────
 
         test(
