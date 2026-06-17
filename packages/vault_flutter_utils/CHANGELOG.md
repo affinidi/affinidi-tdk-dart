@@ -1,3 +1,7 @@
+## 2.0.9
+
+ - **FIX**: Rename entry point for package affinidi_tdk_vault_flutter_utils (#163).
+
 ## 2.0.8
 
  - Update a dependency to the latest release.
