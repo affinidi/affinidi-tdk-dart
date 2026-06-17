@@ -21,15 +21,18 @@ void main() {
       expect(second, isFalse);
     });
 
-    test('treats a nonce as fresh again after its stored expiry has passed', () {
-      final cache = NonceReplayCache();
+    test(
+      'treats a nonce as fresh again after its stored expiry has passed',
+      () {
+        final cache = NonceReplayCache();
 
-      final first = cache.record('nonce-1', 0);
-      final second = cache.record('nonce-1', 9999999999);
+        final first = cache.record('nonce-1', 0);
+        final second = cache.record('nonce-1', 9999999999);
 
-      expect(first, isTrue);
-      expect(second, isTrue);
-    });
+        expect(first, isTrue);
+        expect(second, isTrue);
+      },
+    );
 
     test('does not purge non-expired entries', () {
       final cache = NonceReplayCache();
