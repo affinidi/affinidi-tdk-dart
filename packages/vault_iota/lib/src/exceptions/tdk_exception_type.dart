@@ -57,7 +57,12 @@ enum TdkExceptionType {
 
   /// Thrown when `IotaShareResponseService.submitShareResponse` is called but
   /// the selected credentials do not cover every required DCQL credential query.
-  incompleteCredentialSelection('incomplete_credential_selection');
+  incompleteCredentialSelection('incomplete_credential_selection'),
+
+  /// Thrown when an OID4VP request nonce has already been consumed by a
+  /// previous call to `validateOid4vpRequest` within the same session.
+  /// Indicates a JWT replay attempt within the token's expiry window.
+  replayDetected('replay_detected');
 
   /// Creates a new instance of [TdkExceptionType].
   const TdkExceptionType(this.code);
