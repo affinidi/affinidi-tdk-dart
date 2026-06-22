@@ -16,10 +16,10 @@ abstract interface class IotaShareResponseServiceInterface {
   /// * [acceptResponseUri] - the URI from the OID4VP request JWT to POST the VP to.
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
-  /// Throws `TdkException` with code `invalid_response_uri` if the response URI
-  /// is malformed or unsafe.
+  /// Throws `TdkException` with code `invalid_response_uri` if the URI is
+  /// malformed, not HTTPS, or contains an IP address.
   /// Throws `TdkException` with code `untrusted_response_uri` if the callback
-  /// host is not declared by the verifier DID and not in the trusted list.
+  /// host is not in the `trustedVerifiersList`.
   /// Throws `TdkException` with code `submission_failed` if the call fails.
   Future<Uri?> submitShareResponse({
     required Oid4vpShareRequest shareRequest,
@@ -34,10 +34,10 @@ abstract interface class IotaShareResponseServiceInterface {
   /// * [rejectResponseUri] - the URI from the OID4VP request JWT to POST the rejection to.
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
-  /// Throws `TdkException` with code `invalid_response_uri` if the response URI
-  /// is malformed or unsafe.
+  /// Throws `TdkException` with code `invalid_response_uri` if the URI is
+  /// malformed, not HTTPS, or contains an IP address.
   /// Throws `TdkException` with code `untrusted_response_uri` if the callback
-  /// host is not declared by the verifier DID and not in the trusted list.
+  /// host is not in the `trustedVerifiersList`.
   /// Throws `TdkException` with code `submission_failed` if the call fails.
   Future<Uri?> rejectShareResponse({
     required Oid4vpShareRequest shareRequest,

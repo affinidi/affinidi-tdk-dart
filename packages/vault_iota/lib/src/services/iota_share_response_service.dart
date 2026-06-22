@@ -171,8 +171,6 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   /// * [acceptResponseUri] - the URI to POST the Authorization Response to.
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
-  /// Throws [TdkException] with code `invalid_response_uri` if the response URI
-  /// is unsafe or not declared by the verifier DID service endpoints.
   /// Throws [TdkException] with code `submission_failed` if the API call fails.
   Future<Uri?> _submitDcqlShareResponse(
     DcqlShareRequest dcql,
