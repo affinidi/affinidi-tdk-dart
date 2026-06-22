@@ -304,6 +304,40 @@ void main() {
         );
       });
 
+      test('rejects response_uri with IPv6 loopback', () async {
+        await expectLater(
+          buildService().submitShareResponse(
+            shareRequest: _pexShareRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: 'https://[::1]/accept',
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidResponseUri.code,
+            ),
+          ),
+        );
+      });
+
+      test('rejects response_uri with IPv4-mapped IPv6 address', () async {
+        await expectLater(
+          buildService().submitShareResponse(
+            shareRequest: _pexShareRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: 'https://[::ffff:1.2.3.4]/accept',
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidResponseUri.code,
+            ),
+          ),
+        );
+      });
+
       test('rejects response_uri host not declared by client_id DID', () async {
         await expectLater(
           buildService(

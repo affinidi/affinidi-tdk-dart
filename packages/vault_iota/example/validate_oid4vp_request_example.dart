@@ -67,11 +67,9 @@ Future<void> main() async {
     // wallet integration. The response service handles PEX and DCQL
     // transparently and POSTs the VP to the request's acceptResponseUri.
     //
-    // trustedVerifiersList is the list of callback host names your app
-    // explicitly trusts (e.g. fetched from your backend or stored in app
-    // config). The TDK uses it as a fallback when the verifier DID document
-    // does not declare the callback host as a service endpoint (common with
-    // did:key verifiers). Must contain at least one entry.
+    // trustedVerifiersList is the sole trust check: only callback hosts in
+    // this list are permitted to receive the VP. Populate it from your
+    // backend config or environment. Must contain at least one entry.
     final responseService = IotaShareResponseService(
       signer: await _signer(),
       trustedVerifiersList: const ['verifier.example.com'],

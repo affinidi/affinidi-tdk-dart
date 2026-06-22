@@ -34,27 +34,20 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   /// * [trustedVerifiersList] - list of trusted callback host names (e.g.
   ///   `['verifier.example.com']`) the VP may be posted to. Must contain at
   ///   least one entry. Entries must be plain host names with no scheme or path.
-  IotaShareResponseService({
+  factory IotaShareResponseService({
     required DidSigner signer,
     required List<String> trustedVerifiersList,
     Dio? dio,
     VpBuilderInterface? vpBuilder,
     Logger? logger,
-  }) : _signer = signer,
-       _dio = dio ?? Dio(),
-       _vpBuilder = vpBuilder ?? const VpBuilder(),
-       _logger = logger ?? Logger.instance,
-       _vcAdapter = DcqlVcAdapter(logger: logger),
-       _trustedVerifierHosts = _buildTrustedHosts(trustedVerifiersList);
-
-  static List<String> _buildTrustedHosts(List<String> hosts) {
-    if (hosts.isEmpty) {
+  }) {
+    if (trustedVerifiersList.isEmpty) {
       throw TdkException(
         message: 'trustedVerifiersList must not be empty.',
         code: TdkExceptionType.emptyTrustedVerifiersList.code,
       );
     }
-    for (final host in hosts) {
+    for (final host in trustedVerifiersList) {
       if (host.isEmpty || host.contains(RegExp(r'[/:@#?]'))) {
         throw TdkException(
           message:
@@ -64,8 +57,30 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
         );
       }
     }
-    return List.unmodifiable(hosts.map((h) => h.toLowerCase()));
+    final trustedHosts = List<String>.unmodifiable(
+      trustedVerifiersList.map((h) => h.toLowerCase()),
+    );
+    return IotaShareResponseService._(
+      signer: signer,
+      trustedVerifierHosts: trustedHosts,
+      dio: dio ?? Dio(),
+      vpBuilder: vpBuilder ?? const VpBuilder(),
+      logger: logger ?? Logger.instance,
+    );
   }
+
+  IotaShareResponseService._({
+    required DidSigner signer,
+    required List<String> trustedVerifierHosts,
+    required Dio dio,
+    required VpBuilderInterface vpBuilder,
+    required Logger logger,
+  }) : _signer = signer,
+       _trustedVerifierHosts = trustedVerifierHosts,
+       _dio = dio,
+       _vpBuilder = vpBuilder,
+       _logger = logger,
+       _vcAdapter = DcqlVcAdapter(logger: logger);
 
   /// Builds and submits a Verifiable Presentation to the verifier callback endpoint.
   ///
@@ -375,6 +390,5 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   }
 
   static bool _isIpAddress(String host) =>
-      RegExp(r'^\d{1,3}(\.\d{1,3}){3}$').hasMatch(host) ||
-      (host.startsWith('[') && host.endsWith(']'));
+      RegExp(r'^\d{1,3}(\.\d{1,3}){3}$').hasMatch(host) || host.contains(':');
 }
