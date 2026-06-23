@@ -17,6 +17,14 @@ enum TdkExceptionType {
   /// Exception thrown when the `response_type` in the request is not `vp_token`.
   invalidResponseType('invalid_response_type'),
 
+  /// Exception thrown when `response_uri` is malformed, not HTTPS, or
+  /// contains an IP address or invalid hostname.
+  invalidResponseUri('invalid_response_uri'),
+
+  /// Exception thrown when the `response_uri` or `redirect_uri` host is not
+  /// present in the caller-supplied `trustedVerifiersList`.
+  untrustedResponseUri('untrusted_response_uri'),
+
   /// Exception thrown when the `client_id` field is missing from the request.
   missingClientId('missing_client_id'),
 
@@ -46,6 +54,10 @@ enum TdkExceptionType {
 
   /// Thrown when `VpBuilder.build` is called with an empty credentials list.
   emptyCredentials('empty_credentials'),
+
+  /// Thrown when `IotaShareResponseService` is constructed with an empty
+  /// `trustedVerifiersList`.
+  emptyTrustedVerifiersList('empty_trusted_verifiers_list'),
 
   /// Thrown when persisting a consent record to the consumer-provided
   /// `ConsentStorage` fails.

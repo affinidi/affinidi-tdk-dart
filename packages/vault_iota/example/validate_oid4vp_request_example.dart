@@ -66,7 +66,14 @@ Future<void> main() async {
     // controls the holder's key; in a real application it comes from your
     // wallet integration. The response service handles PEX and DCQL
     // transparently and POSTs the VP to the request's acceptResponseUri.
-    final responseService = IotaShareResponseService(signer: await _signer());
+    //
+    // trustedVerifiersList is the sole trust check: only callback hosts in
+    // this list are permitted to receive the VP. Populate it from your
+    // backend config or environment. Must contain at least one entry.
+    final responseService = IotaShareResponseService(
+      signer: await _signer(),
+      trustedVerifiersList: const ['verifier.example.com'],
+    );
     final redirectUri = await responseService.submitShareResponse(
       shareRequest: shareRequest,
       selectedCredentials: selectedCredentials,

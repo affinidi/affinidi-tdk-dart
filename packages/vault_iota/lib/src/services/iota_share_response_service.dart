@@ -22,6 +22,7 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   final Dio _dio;
   final Logger _logger;
   final DcqlVcAdapter _vcAdapter;
+  final List<String> _trustedVerifierHosts;
 
   /// Creates an [IotaShareResponseService].
   ///
@@ -30,15 +31,55 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   /// * [dio] - optional Dio client; defaults to a plain [Dio].
   /// * [vpBuilder] - custom VP builder; defaults to [VpBuilder].
   /// * [logger] - optional logger; defaults to [Logger.instance].
-  IotaShareResponseService({
+  /// * [trustedVerifiersList] - list of trusted callback host names (e.g.
+  ///   `['verifier.example.com']`) the VP may be posted to. Must contain at
+  ///   least one entry. Entries must be plain host names with no scheme or path.
+  factory IotaShareResponseService({
     required DidSigner signer,
+    required List<String> trustedVerifiersList,
     Dio? dio,
     VpBuilderInterface? vpBuilder,
     Logger? logger,
+  }) {
+    if (trustedVerifiersList.isEmpty) {
+      throw TdkException(
+        message: 'trustedVerifiersList must not be empty.',
+        code: TdkExceptionType.emptyTrustedVerifiersList.code,
+      );
+    }
+    for (final host in trustedVerifiersList) {
+      if (host.isEmpty || host.contains(RegExp(r'[/:@#?]'))) {
+        throw TdkException(
+          message:
+              'trustedVerifiersList entry "$host" must be a plain host name '
+              'with no scheme, port, path, or query.',
+          code: TdkExceptionType.invalidResponseUri.code,
+        );
+      }
+    }
+    final trustedHosts = List<String>.unmodifiable(
+      trustedVerifiersList.map((h) => h.toLowerCase()),
+    );
+    return IotaShareResponseService._(
+      signer: signer,
+      trustedVerifierHosts: trustedHosts,
+      dio: dio ?? Dio(),
+      vpBuilder: vpBuilder ?? const VpBuilder(),
+      logger: logger ?? Logger.instance,
+    );
+  }
+
+  IotaShareResponseService._({
+    required DidSigner signer,
+    required List<String> trustedVerifierHosts,
+    required Dio dio,
+    required VpBuilderInterface vpBuilder,
+    required Logger logger,
   }) : _signer = signer,
-       _dio = dio ?? Dio(),
-       _vpBuilder = vpBuilder ?? const VpBuilder(),
-       _logger = logger ?? Logger.instance,
+       _trustedVerifierHosts = trustedVerifierHosts,
+       _dio = dio,
+       _vpBuilder = vpBuilder,
+       _logger = logger,
        _vcAdapter = DcqlVcAdapter(logger: logger);
 
   /// Builds and submits a Verifiable Presentation to the verifier callback endpoint.
@@ -49,6 +90,10 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   /// * [acceptResponseUri] - the URI from the OID4VP request JWT to POST the VP to.
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
+  /// Throws [TdkException] with code `invalid_response_uri` if the URI is
+  /// malformed, not HTTPS, or contains an IP address.
+  /// Throws [TdkException] with code `untrusted_response_uri` if the callback
+  /// host is not in the trusted verifiers list.
   /// Throws [TdkException] with code `submission_failed` if the API call fails.
   @override
   Future<Uri?> submitShareResponse({
@@ -79,6 +124,10 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   /// * [rejectResponseUri] - the URI from the OID4VP request JWT to POST the rejection to.
   ///
   /// Returns the redirect [Uri] provided by the endpoint, or `null`.
+  /// Throws [TdkException] with code `invalid_response_uri` if the URI is
+  /// malformed, not HTTPS, or contains an IP address.
+  /// Throws [TdkException] with code `untrusted_response_uri` if the callback
+  /// host is not in the trusted verifiers list.
   /// Throws [TdkException] with code `submission_failed` if the API call fails.
   @override
   Future<Uri?> rejectShareResponse({
@@ -254,14 +303,20 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   }
 
   Future<Uri?> _postToUri(String uri, Map<String, String> formData) async {
+    final responseUri = _validateVerifierBoundUri(
+      uri: uri,
+      parameterName: 'response_uri',
+    );
+
     try {
       final response = await _dio.post<Map<String, dynamic>>(
-        uri,
+        responseUri.toString(),
         data: formData,
         options: Options(contentType: 'application/x-www-form-urlencoded'),
       );
       final redirectUri = response.data?['redirect_uri'] as String?;
-      return redirectUri != null ? Uri.tryParse(redirectUri) : null;
+      if (redirectUri == null) return null;
+      return _validateRedirectUri(redirectUri);
     } catch (e, stackTrace) {
       if (e is TdkException) rethrow;
       _logger.warning(
@@ -277,4 +332,63 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
       );
     }
   }
+
+  Uri? _validateRedirectUri(String redirectUri) {
+    try {
+      return _validateVerifierBoundUri(
+        uri: redirectUri,
+        parameterName: 'redirect_uri',
+      );
+    } on TdkException catch (e) {
+      _logger.warning(
+        'Ignoring unsafe redirect_uri from verifier: ${e.message}',
+      );
+      return null;
+    }
+  }
+
+  Uri _validateVerifierBoundUri({
+    required String uri,
+    required String parameterName,
+  }) {
+    final parsed = _parseSafeHttpsUri(uri, parameterName);
+    if (!_isTrustedHost(parsed)) {
+      _throwUnboundResponseUri(parameterName: parameterName);
+    }
+    return parsed;
+  }
+
+  bool _isTrustedHost(Uri uri) =>
+      _trustedVerifierHosts.contains(uri.host.toLowerCase());
+
+  Never _throwUnboundResponseUri({required String parameterName}) =>
+      throw TdkException(
+        message: '$parameterName host is not in the trusted verifiers list.',
+        code: TdkExceptionType.untrustedResponseUri.code,
+      );
+
+  Uri _parseSafeHttpsUri(String uri, String parameterName) {
+    final parsed = Uri.tryParse(uri);
+    if (parsed == null ||
+        parsed.scheme != 'https' ||
+        parsed.host.isEmpty ||
+        parsed.userInfo.isNotEmpty ||
+        parsed.fragment.isNotEmpty) {
+      throw TdkException(
+        message:
+            '$parameterName must be an HTTPS URI without userinfo or fragment.',
+        code: TdkExceptionType.invalidResponseUri.code,
+      );
+    }
+    if (_isIpAddress(parsed.host)) {
+      throw TdkException(
+        message: '$parameterName must use a domain name, not an IP address.',
+        code: TdkExceptionType.invalidResponseUri.code,
+      );
+    }
+    return parsed;
+  }
+
+  static bool _isIpAddress(String host) =>
+      RegExp(r'^\d{1,3}(\.\d{1,3}){3}$').hasMatch(host) || host.contains(':');
 }

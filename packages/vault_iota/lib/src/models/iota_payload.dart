@@ -139,6 +139,14 @@ class IotaPayload {
         code: TdkExceptionType.parseFailure.code,
       );
     }
+    if (json['response_mode'] == 'direct_post' &&
+        json['redirect_uri'] != null) {
+      throw TdkException(
+        message:
+            "JWT payload must not contain 'redirect_uri' when response_mode is 'direct_post'.",
+        code: TdkExceptionType.invalidResponseUri.code,
+      );
+    }
     return IotaPayload(
       nonce: json['nonce'] as String,
       state: json['state'] as String,
