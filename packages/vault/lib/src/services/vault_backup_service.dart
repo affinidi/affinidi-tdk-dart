@@ -16,8 +16,8 @@ class VaultBackupService implements VaultBackupServiceInterface {
   /// Parameters:
   /// * [restorables] - the list of components to include in every backup and
   ///   restore cycle.
-  const VaultBackupService({required List<Restorable> restorables})
-    : _restorables = restorables;
+  VaultBackupService({required List<Restorable> restorables})
+      : _restorables = List.unmodifiable(restorables);
 
   /// Exports the state of all [Restorable] components into a single merged map.
   ///
@@ -38,8 +38,9 @@ class VaultBackupService implements VaultBackupServiceInterface {
   /// * [data] - the map returned by a prior [createBackup] call.
   @override
   Future<void> restoreFromBackup(Map<String, dynamic> data) async {
+    final snapshot = Map<String, dynamic>.unmodifiable(data);
     for (final restorable in _restorables) {
-      await restorable.import(data);
+      await restorable.import(snapshot);
     }
   }
 }
