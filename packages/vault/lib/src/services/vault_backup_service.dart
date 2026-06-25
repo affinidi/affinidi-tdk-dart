@@ -9,6 +9,8 @@ import 'vault_backup_service_interface.dart';
 /// by [createBackup]; the same map is passed to every component's
 /// [Restorable.import] during [restoreFromBackup].
 class VaultBackupService implements VaultBackupServiceInterface {
+  // TODO(Khoa): used by the backup/restore logic added in another PR.
+  // ignore: unused_field
   final List<Restorable> _restorables;
 
   /// Creates a [VaultBackupService].
@@ -25,11 +27,8 @@ class VaultBackupService implements VaultBackupServiceInterface {
   /// components overwrite entries from earlier components on key collision.
   @override
   Future<Map<String, dynamic>> createBackup() async {
-    final backup = <String, dynamic>{};
-    for (final restorable in _restorables) {
-      backup.addAll(await restorable.export());
-    }
-    return backup;
+    // TODO(Khoa): the logic for this method will be added in another PR.
+    throw UnimplementedError();
   }
 
   /// Passes [data] to every registered [Restorable] component for restoration.
@@ -38,9 +37,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
   /// * [data] - the map returned by a prior [createBackup] call.
   @override
   Future<void> restoreFromBackup(Map<String, dynamic> data) async {
-    final snapshot = Map<String, dynamic>.unmodifiable(data);
-    for (final restorable in _restorables) {
-      await restorable.import(snapshot);
-    }
+    // TODO(Khoa): the logic for this method will be added in another PR.
+    throw UnimplementedError();
   }
 }
