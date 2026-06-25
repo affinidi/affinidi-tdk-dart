@@ -17,7 +17,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
   /// * [restorables] - the list of components to include in every backup and
   ///   restore cycle.
   VaultBackupService({required List<Restorable> restorables})
-      : _restorables = List.unmodifiable(restorables);
+    : _restorables = List.unmodifiable(restorables);
 
   /// Exports the state of all [Restorable] components into a single merged map.
   ///
