@@ -6,6 +6,8 @@ export 'package:affinidi_tdk_common/affinidi_tdk_common.dart'
 export 'package:ssi/ssi.dart'
     show KeyStore, StoredKey, UniversalParser, VerifiableCredential;
 
+export 'src/backup.dart';
+export 'src/backup_data.dart';
 export 'src/digital_credential.dart';
 export 'src/dto/shared_item_dto.dart';
 export 'src/dto/shared_profile_dto.dart';
