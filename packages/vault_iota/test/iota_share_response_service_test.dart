@@ -1041,7 +1041,7 @@ void main() {
 
       Future<Map> capturedVpToken({
         required DcqlShareRequest shareRequest,
-        required List<ParsedVerifiableCredential<dynamic>> selectedCredentials,
+        required List<VerifiableCredential> selectedCredentials,
       }) async {
         RequestOptions? captured;
         dio.interceptors.add(

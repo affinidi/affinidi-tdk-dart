@@ -2,7 +2,7 @@ import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
 import 'package:affinidi_tdk_vault_iota/src/models/share_requirements.dart';
 import 'package:dcql/dcql.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:ssi/ssi.dart' show ParsedVerifiableCredential;
+import 'package:ssi/ssi.dart' show VerifiableCredential;
 import 'package:test/test.dart';
 
 import 'fixtures/iota_consent_record_fixtures.dart';
@@ -19,7 +19,7 @@ void main() {
   setUpAll(() {
     registerFallbackValue(IotaConsentRecordFixtures.empty());
     registerFallbackValue(IotaConsentRecordFixtures.shareRequest);
-    registerFallbackValue(<ParsedVerifiableCredential<dynamic>>[]);
+    registerFallbackValue(<VerifiableCredential>[]);
     registerFallbackValue(IotaConsentRecordFixtures.dcqlShareRequest);
     registerFallbackValue(IotaConsentRecordFixtures.dcqlShareRequestWithSets);
   });
@@ -617,7 +617,7 @@ void main() {
                       acceptResponseUri: any(named: 'acceptResponseUri'),
                     ),
                   ).captured.single
-                  as List<ParsedVerifiableCredential<dynamic>>;
+                  as List<VerifiableCredential>;
 
           expect(captured.map((e) => e.id?.toString()), ['vc-2', 'vc-1']);
         },

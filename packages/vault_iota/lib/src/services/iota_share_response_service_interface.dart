@@ -1,4 +1,4 @@
-import 'package:ssi/ssi.dart' show ParsedVerifiableCredential;
+import 'package:ssi/ssi.dart' show VerifiableCredential;
 
 import '../models/share_requirements.dart';
 
@@ -23,7 +23,7 @@ abstract interface class IotaShareResponseServiceInterface {
   /// Throws `TdkException` with code `submission_failed` if the call fails.
   Future<Uri?> submitShareResponse({
     required Oid4vpShareRequest shareRequest,
-    required List<ParsedVerifiableCredential<dynamic>> selectedCredentials,
+    required List<VerifiableCredential> selectedCredentials,
     required String acceptResponseUri,
   });
 

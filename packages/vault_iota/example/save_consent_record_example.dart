@@ -8,7 +8,6 @@ import 'package:ssi/ssi.dart'
         DidSigner,
         Issuer,
         JsonLdContext,
-        ParsedVerifiableCredential,
         VcDataModelV1,
         VerifiableCredential;
 
@@ -47,7 +46,7 @@ class _StubShareResponseService implements IotaShareResponseServiceInterface {
   @override
   Future<Uri?> submitShareResponse({
     required Oid4vpShareRequest shareRequest,
-    required List<ParsedVerifiableCredential<dynamic>> selectedCredentials,
+    required List<VerifiableCredential> selectedCredentials,
     required String acceptResponseUri,
   }) => throw UnimplementedError(
     'Provide a real IotaShareResponseService for VP submission',

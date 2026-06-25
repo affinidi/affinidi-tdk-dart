@@ -98,22 +98,15 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   @override
   Future<Uri?> submitShareResponse({
     required Oid4vpShareRequest shareRequest,
-    required List<ParsedVerifiableCredential<dynamic>> selectedCredentials,
+    required List<VerifiableCredential> selectedCredentials,
     required String acceptResponseUri,
   }) async {
+    final parsed = selectedCredentials.map(_toParsedCredential).toList();
     switch (shareRequest) {
       case PexShareRequest pex:
-        return _submitPexShareResponse(
-          pex,
-          selectedCredentials,
-          acceptResponseUri,
-        );
+        return _submitPexShareResponse(pex, parsed, acceptResponseUri);
       case DcqlShareRequest dcql:
-        return _submitDcqlShareResponse(
-          dcql,
-          selectedCredentials,
-          acceptResponseUri,
-        );
+        return _submitDcqlShareResponse(dcql, parsed, acceptResponseUri);
     }
   }
 
@@ -391,4 +384,19 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
 
   static bool _isIpAddress(String host) =>
       RegExp(r'^\d{1,3}(\.\d{1,3}){3}$').hasMatch(host) || host.contains(':');
+
+  ParsedVerifiableCredential<dynamic> _toParsedCredential(
+    VerifiableCredential vc,
+  ) {
+    if (vc is ParsedVerifiableCredential<dynamic>) return vc;
+    final serialized = jsonEncode(vc.toJson());
+    final v1 = LdVcDm1Suite().tryParse(serialized);
+    if (v1 != null) return v1;
+    final v2 = LdVcDm2Suite().tryParse(serialized);
+    if (v2 != null) return v2;
+    throw TdkException(
+      message: 'Credential ${vc.id} could not be parsed as a linked-data VC.',
+      code: TdkExceptionType.parseFailure.code,
+    );
+  }
 }
