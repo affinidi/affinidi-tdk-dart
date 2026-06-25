@@ -52,7 +52,12 @@ Future<void> main() async {
     signatureScheme: SignatureScheme.ed25519,
   );
 
-  final responseService = IotaShareResponseService(signer: signer);
+  final responseService = IotaShareResponseService(
+    signer: signer,
+    // Only hosts listed here are allowed as VP submission targets.
+    // Replace with the actual verifier host(s) from your Iota configuration.
+    trustedVerifiersList: ['verifier.example.com'],
+  );
 
   try {
     // On user approval — build and submit the VP.

@@ -114,7 +114,10 @@ final signer = await didManager.getSigner(
 Then submit (or reject) the presentation:
 
 ```dart
-final responseService = IotaShareResponseService(signer: signer);
+final responseService = IotaShareResponseService(
+  signer: signer,
+  trustedVerifiersList: ['verifier.example.com'],
+);
 
 // On user approval — build and submit the VP.
 final redirectUri = await responseService.submitShareResponse(
@@ -220,6 +223,58 @@ final consentService = IotaConsentRecordService(
 );
 ```
 
+## Security considerations
+
+### Nonce replay protection
+
+`ShareFlowService` enforces OID4VP §11.2 nonce uniqueness: calling
+`validateOid4vpRequest` with the same JWT nonce a second time (while the JWT
+is still within its `exp` window) throws a `TdkException` with code
+`replay_detected`.
+
+By default, nonces are tracked in an **in-memory cache** scoped to the
+`ShareFlowService` instance. This means replay protection does not survive a
+process restart. For persistent cross-session protection, subclass
+`NonceReplayCache` and override `record()` to back it with durable storage,
+then inject it via the `replayCache` parameter:
+
+```dart
+class MyPersistentNonceCache extends NonceReplayCache {
+  @override
+  bool record(String nonce, int expEpochSeconds) {
+    // Check and store in your database; return false if already seen.
+    return myDb.recordNonce(nonce, expEpochSeconds);
+  }
+}
+
+final service = ShareFlowService(
+  cryptography: myCryptographyService,
+  replayCache: MyPersistentNonceCache(),
+);
+```
+
+### Trusted verifiers list
+
+`IotaShareResponseService` requires a non-empty `trustedVerifiersList` of
+plain host names. Before posting the Verifiable Presentation, it checks that
+the `response_uri` from the OID4VP request belongs to one of those hosts —
+preventing a compromised or malicious request from redirecting your VP to an
+attacker-controlled server.
+
+```dart
+final responseService = IotaShareResponseService(
+  signer: mySigner,
+  trustedVerifiersList: ['verifier.example.com', 'other-verifier.example.com'],
+);
+```
+
+Rules for entries in `trustedVerifiersList`:
+
+- Must be plain host names — no scheme (`https://`), no path, no port, no query string.
+- The check is case-insensitive.
+- Passing an empty list throws `empty_trusted_verifiers_list` immediately at construction time.
+- A response URI whose host is not in the list throws `untrusted_response_uri` before any network call is made.
+
 ## Error handling
 
 All errors are thrown as `TdkException` with one of the following codes:
@@ -234,6 +289,9 @@ All errors are thrown as `TdkException` with one of the following codes:
 | `invalid_client_id` | An empty `clientId` was passed to the verifier metadata service. |
 | `invalid_response_mode` | `response_mode` is not `direct_post`. |
 | `invalid_response_type` | `response_type` is not `vp_token`. |
+| `invalid_response_uri` | The response URI is malformed, not HTTPS, or contains an IP address or invalid hostname. |
+| `untrusted_response_uri` | The response URI host is not in the `trustedVerifiersList` passed to `IotaShareResponseService`. |
+| `empty_trusted_verifiers_list` | `IotaShareResponseService` was constructed with an empty `trustedVerifiersList`. |
 | `invalid_presentation_definition` | The Presentation Definition is structurally invalid. |
 | `invalid_dcql_query` | The DCQL query is structurally invalid. |
 | `unsupported_multiple_idv_types` | An IDV input descriptor requests more than two VC types. |
