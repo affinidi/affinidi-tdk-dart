@@ -7,6 +7,7 @@ environment:
 resolution: workspace
 dependencies:
   affinidi_tdk_common: ^2.2.0
+  affinidi_tdk_cryptography: ^3.0.0
   ssi: ^3.3.0
 dev_dependencies:
   mocktail: ^1.0.4
