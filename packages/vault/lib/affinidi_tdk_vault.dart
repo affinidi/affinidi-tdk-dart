@@ -21,6 +21,7 @@ export 'src/permissions.dart';
 export 'src/profile.dart';
 export 'src/services/vault_backup_service.dart';
 export 'src/services/vault_backup_service_interface.dart';
+export 'src/services/vault_store_backup_source.dart';
 export 'src/storage_interfaces/credential_storage.dart';
 export 'src/storage_interfaces/file_storage.dart';
 export 'src/storage_interfaces/item.dart';
