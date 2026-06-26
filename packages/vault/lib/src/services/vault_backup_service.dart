@@ -63,8 +63,6 @@ class VaultBackupService implements VaultBackupServiceInterface {
         Uint8List.fromList(utf8.encode(plaintext)),
       );
 
-      _logger.info('Created encrypted vault backup.');
-
       return BackupData(
         encryptedBackup: encryptedBackup,
         encryptionKey: Uint8List.fromList(key),
@@ -127,7 +125,6 @@ class VaultBackupService implements VaultBackupServiceInterface {
     }
 
     await _importSections(backup.data);
-    _logger.info('Restored vault backup (version ${backup.version}).');
   }
 
   Future<Map<String, dynamic>> _exportSections() async {
