@@ -1,15 +1,15 @@
 # Affinidi TDK - Vault Iota
 
-The Affinidi TDK - Vault Iota package provides the libraries to handle the OID4VP (OpenID for Verifiable Presentations) share flow with Affinidi Iota Framework. It takes a verifier's request from URL ingestion through to Verifiable Presentation submission, matching the requested credentials against the ones held in the user's Vault.
+The Affinidi TDK - Vault Iota package provides libraries to implement the OID4VP (OpenID for Verifiable Presentations) sharing flow using the Affinidi Iota Framework. It handles the end-to-end presentation exchange, from verifier request ingestion to Verifiable Presentation submission, matching requested credentials against those stored in the user's Vault.
 
 ## Key Features
 
 - Parse and validate Iota OID4VP request URIs.
-- Classify what a verifier is requesting and extract the requested credentials and purpose metadata.
-- Match the requested credentials against the credentials held in the user's Vault.
+- Classify the verifier's request and extract the requested credentials and purpose metadata.
+- Match the requested credentials against credentials stored in the user's Vault.
 - Build and submit a signed Verifiable Presentation in response to the verifier's request.
 - Manage consent records and support automatic consent for trusted verifiers.
-- Storage-agnostic — the package has no opinion on where your credentials or consent records live.
+- Storage-agnostic, with no dependency on a specific credential or consent record store.
 
 ## Requirements
 
@@ -65,9 +65,9 @@ services regardless of which query protocol the verifier used.
 
 ### Step 2 — Find matching credentials
 
-Pass the `shareRequest` and the credentials held in the user's Vault to
+Pass the `shareRequest` and the credentials stored in the user's Vault to
 `CredentialMatcherService.match()`. The service routes to PEX or DCQL
-internally and returns a protocol-agnostic `MatchedCredentialsResult`.
+internally and returns a `MatchedCredentialsResult`.
 
 ```dart
 final matcher = CredentialMatcherService();
@@ -87,7 +87,7 @@ final selectedVcs = result.recommendedMaximumVCs;
 own storage. Use `result.groups` to enforce per-group minimum and maximum
 selection counts when building a selection UI.
 
-### Step 3 — Submit (or reject) the Verifiable Presentation
+### Step 3 — Submit (or reject) the Verifiable Presentation (VP)
 
 Use `IotaShareResponseService` to build a signed VP from the selected
 credentials and POST it to the verifier. It handles both PEX and DCQL
@@ -176,7 +176,7 @@ await consentService.saveConsentRecord(
 
 #### Computing `requestHash`
 
-`requestHash` is **consumer-defined** — the TDK treats it as an opaque string.
+`requestHash` is **consumer-defined**, the TDK treats it as an opaque string.
 The rules are:
 
 - **Stable** — the same verifier making the same request must always produce
@@ -225,9 +225,9 @@ final consentService = IotaConsentRecordService(
 
 ## Security considerations
 
-### Nonce replay protection
+### Replay attack protection
 
-`ShareFlowService` enforces OID4VP §11.2 nonce uniqueness: calling
+`ShareFlowService` enforces nonce uniqueness based on OID4VP spec, calling
 `validateOid4vpRequest` with the same JWT nonce a second time (while the JWT
 is still within its `exp` window) throws a `TdkException` with code
 `replay_detected`.

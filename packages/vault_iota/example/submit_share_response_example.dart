@@ -4,15 +4,16 @@ import 'package:ssi/ssi.dart';
 
 /// This example demonstrates how to match credentials against an OID4VP request
 /// and submit (or reject) a Verifiable Presentation to the verifier.
-///
-/// It assumes you have already parsed the request using [ShareFlowService] and
-/// loaded the credentials from your vault. See validate_oid4vp_request_example.dart
-/// for the previous step.
 Future<void> main() async {
   final cryptography = CryptographyService();
 
   final service = ShareFlowService(cryptography: cryptography);
 
+  // --- Step 1: Parse and validate the OID4VP request ---
+
+  // The URI arrives as a deep link (Android intent / iOS universal link / web
+  // query parameter). Replace the placeholder JWT with the real value from
+  // your app's incoming link handler.
   final uri = Uri.parse('openid4vp://authorize?request=<your-request-jwt>');
   final shareRequest = await service.validateOid4vpRequest(
     uri,

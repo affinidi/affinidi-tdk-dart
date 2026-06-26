@@ -9,8 +9,7 @@ Shows how to parse and validate an Iota OID4VP request URI, including extracting
 
 ## 2. Match Credentials and Submit a Share Response
 
-Demonstrates how to match vault credentials against a verifier's request and build and submit a signed Verifiable Presentation.
-[View Example](https://github.com/affinidi/affinidi-tdk/tree/main/libs/dart/vault_iota/example/submit_share_response_example.dart)
+Demonstrates how to match vault credentials against a verifier's request and build and submit a signed Verifiable Presentation (VP).[View Example](https://github.com/affinidi/affinidi-tdk/tree/main/libs/dart/vault_iota/example/submit_share_response_example.dart)
 
 ## 3. Save Consent Record and Auto-Submit
 
