@@ -113,8 +113,8 @@ class IotaPayload {
   /// - [json] - JSON map representing the JWT payload, with snake_case keys.
   ///
   /// Throws [TdkException] with [TdkExceptionType.parseFailure] if neither
-  /// `presentation_definition` nor `dcql_query` is present, if both are
-  /// present simultaneously, or if `scope` and `dcql_query` are both present.
+  /// `presentation_definition` nor `dcql_query` is present, or if both are
+  /// present simultaneously.
   factory IotaPayload.fromJson(Map<String, dynamic> json) {
     final rawPd = json['presentation_definition'];
     final rawDcql = json['dcql_query'];
@@ -129,13 +129,6 @@ class IotaPayload {
       throw TdkException(
         message:
             "JWT payload must not contain both 'presentation_definition' and 'dcql_query'.",
-        code: TdkExceptionType.parseFailure.code,
-      );
-    }
-    final rawScope = json['scope'];
-    if (rawScope != null && rawDcql != null) {
-      throw TdkException(
-        message: "JWT payload must not contain both 'scope' and 'dcql_query'.",
         code: TdkExceptionType.parseFailure.code,
       );
     }
@@ -157,7 +150,6 @@ class IotaPayload {
       responseUri: json['response_uri'] as String,
       responseType: json['response_type'] as String,
       responseMode: json['response_mode'] as String,
-      scope: rawScope as String?,
       aud: json['aud'] as String?,
       exp: (json['exp'] as num).toInt(),
       iat: (json['iat'] as num).toInt(),

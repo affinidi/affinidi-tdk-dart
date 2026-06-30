@@ -6,8 +6,8 @@ import 'package:dio/dio.dart';
 import 'package:ssi/ssi.dart';
 
 import '../exceptions/tdk_exception_type.dart';
-import '../helpers/dcql_vc_adapter.dart';
 import '../helpers/presentation_definition_parser.dart';
+import '../models/pd_descriptor.dart';
 import '../models/share_requirements.dart';
 import 'iota_share_response_service_interface.dart';
 import 'presentation_submission_builder.dart';
@@ -21,7 +21,6 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   final VpBuilderInterface _vpBuilder;
   final Dio _dio;
   final Logger _logger;
-  final DcqlVcAdapter _vcAdapter;
   final List<String> _trustedVerifierHosts;
 
   /// Creates an [IotaShareResponseService].
@@ -79,8 +78,7 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
        _trustedVerifierHosts = trustedVerifierHosts,
        _dio = dio,
        _vpBuilder = vpBuilder,
-       _logger = logger,
-       _vcAdapter = DcqlVcAdapter(logger: logger);
+       _logger = logger;
 
   /// Builds and submits a Verifiable Presentation to the verifier callback endpoint.
   ///
@@ -185,114 +183,27 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
     List<ParsedVerifiableCredential<dynamic>> selectedCredentials,
     String acceptResponseUri,
   ) async {
-    // OID4VP 1.0 requires `vp_token` (DCQL) to be a JSON object where:
-    // - key: Credential Query `id`
-    // - value: array of one or more Presentations matching that query
-    // - when `multiple` is omitted or false, the array contains exactly one
-    //   Presentation
-    // - optional Credential Queries with no matches MUST be omitted
-    // - each Presentation can be a string or object per Appendix B encoding
-    // Spec: https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-8.1
-    final vpToken = <String, dynamic>{};
-    final unassigned = List<ParsedVerifiableCredential<dynamic>>.of(
-      selectedCredentials,
+    final descriptors = dcql.dcqlQuery.credentials
+        .map((c) => PDDescriptor.fromJson({'id': c.id}))
+        .toList();
+
+    final submission = PresentationSubmissionBuilder.build(
+      definitionId: 'dcql',
+      descriptors: descriptors,
     );
 
-    for (final credential in dcql.dcqlQuery.credentials) {
-      final List<ParsedVerifiableCredential<dynamic>> presentations;
-
-      if (credential.multiple) {
-        final taken = <ParsedVerifiableCredential<dynamic>>[];
-        for (final vc in List<ParsedVerifiableCredential<dynamic>>.of(
-          unassigned,
-        )) {
-          if (_vcAdapter.vcMatchesDcqlCredential(credential, vc)) {
-            taken.add(vc);
-            unassigned.remove(vc);
-          }
-        }
-        if (taken.isEmpty) continue;
-        presentations = taken;
-      } else {
-        final match = unassigned
-            .where((vc) => _vcAdapter.vcMatchesDcqlCredential(credential, vc))
-            .firstOrNull;
-        if (match == null) continue;
-        unassigned.remove(match);
-        presentations = [match];
-      }
-
-      // Per OID4VP spec Appendix B.1: when require_cryptographic_holder_binding
-      // is false, return the Verifiable Credential as-is without wrapping it in
-      // a VP. The default (null or true) always builds a signed VP.
-      if (credential.requireCryptographicHolderBinding == false) {
-        vpToken[credential.id] = presentations
-            .map((vc) => vc.toJson())
-            .toList();
-      } else {
-        vpToken[credential.id] = await Future.wait(
-          presentations.map(
-            (vc) => _vpBuilder.build(
-              signer: _signer,
-              credentials: [vc],
-              nonce: dcql.request.nonce,
-              domain: dcql.request.clientId,
-            ),
-          ),
-        );
-      }
-    }
-
-    _assertRequiredQueriesCovered(dcql, vpToken);
+    final vp = await _vpBuilder.build(
+      signer: _signer,
+      credentials: selectedCredentials,
+      nonce: dcql.request.nonce,
+      domain: dcql.request.clientId,
+    );
 
     return _postToUri(acceptResponseUri, {
       'state': dcql.request.state,
-      'vp_token': jsonEncode(vpToken),
+      'vp_token': jsonEncode(vp),
+      'presentation_submission': jsonEncode(submission.toJson()),
     });
-  }
-
-  /// Throws [TdkException] with [TdkExceptionType.incompleteCredentialSelection]
-  /// if the built `vpToken` does not satisfy every required credential query.
-  ///
-  /// When `DcqlCredentialQuery.credentialSets` is absent or empty every query
-  /// is required. When credential sets are present every set whose `required`
-  /// flag is `true` must have at least one option where all query IDs appear in
-  /// `vpToken`.
-  void _assertRequiredQueriesCovered(
-    DcqlShareRequest dcql,
-    Map<String, dynamic> vpToken,
-  ) {
-    final covered = vpToken.keys.toSet();
-    final credentialSets = dcql.dcqlQuery.credentialSets;
-
-    if (credentialSets == null || credentialSets.isEmpty) {
-      final missing = dcql.dcqlQuery.credentials
-          .where((c) => !covered.contains(c.id))
-          .map((c) => c.id)
-          .toList();
-      if (missing.isNotEmpty) {
-        throw TdkException(
-          message:
-              'Required DCQL credential queries have no matching credentials: '
-              '${missing.join(', ')}.',
-          code: TdkExceptionType.incompleteCredentialSelection.code,
-        );
-      }
-    } else {
-      final allSatisfied = credentialSets
-          .where((s) => s.required)
-          .every(
-            (set) => set.options.any((opt) => opt.every(covered.contains)),
-          );
-      if (!allSatisfied) {
-        throw TdkException(
-          message:
-              'Required DCQL credential set cannot be satisfied with the '
-              'selected credentials.',
-          code: TdkExceptionType.incompleteCredentialSelection.code,
-        );
-      }
-    }
   }
 
   Future<Uri?> _postToUri(String uri, Map<String, String> formData) async {
