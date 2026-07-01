@@ -18,8 +18,24 @@ class IotaConsentRecord {
 
   /// Consumer-computed hash identifying the verifier+request combination.
   ///
-  /// Stable across repeat requests from the same verifier with the same PD.
-  /// Used as the deduplication key when persisting records.
+  /// The TDK treats this as an opaque string — it does not compute or verify
+  /// it. The consumer is responsible for:
+  ///
+  /// 1. **Stability** — the hash must be identical across repeat requests
+  ///    from the same verifier with the same Presentation Definition or DCQL
+  ///    query. A common approach is
+  ///    `sha1(clientId + jsonEncode(presentationDefinition))`.
+  /// 2. **Consistency** — the exact same value must be passed to both
+  ///    `IotaConsentRecordService.saveConsentRecord` and
+  ///    `IotaConsentRecordService.tryAutomaticConsent`. A mismatch means
+  ///    the record will never be found during auto-share lookup.
+  /// 3. **Scope for multi-vault apps** — if the hash does *not* include a
+  ///    vault or profile identifier, all profiles' records for the same
+  ///    verifier share one lookup bucket. The TDK's multi-record loop then
+  ///    selects the best matching record across profiles (recommended —
+  ///    matches the behaviour of the Affinidi Vault app). If the hash *does*
+  ///    include a vault or profile ID, each profile gets its own isolated
+  ///    bucket and the loop only ever sees one candidate at a time.
   final String requestHash;
 
   /// URL of the verifier's logo image, if available.
