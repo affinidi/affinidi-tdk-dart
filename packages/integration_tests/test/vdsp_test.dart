@@ -80,6 +80,7 @@ Future<void> main() async {
       );
 
       await verifierDidManager.addVerificationMethod(verifierKeyId);
+      final verifierDidDocument = await verifierDidManager.getDidDocument();
 
       final holderKeyStore = InMemoryKeyStore();
       final holderWallet = PersistentWallet(holderKeyStore);
@@ -113,6 +114,12 @@ Future<void> main() async {
         mediatorDidDocument: mediatorDidDocument,
         didManager: verifierDidManager,
         theirDids: [holderSigner.did],
+      );
+
+      await config.configureAcl(
+        mediatorDidDocument: mediatorDidDocument,
+        didManager: holderDidManager,
+        theirDids: [verifierDidDocument.id],
       );
 
       holderVerifiableCredentials = await Future.wait(
