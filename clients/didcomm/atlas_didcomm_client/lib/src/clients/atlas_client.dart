@@ -49,7 +49,7 @@ class DidcommAtlasClient extends DidcommServiceClient {
   /// If not set, defaults to `did:web:did.affinidi.io:ama`.
   static final atlasDid = const String.fromEnvironment(
     'AFFINIDI_ATLAS_DID',
-    defaultValue: 'did:web:did.affinidi.io:ama',
+    defaultValue: 'did:web:did.dev.affinidi.io:ama',
   );
 
   /// Creates a [DidcommAtlasClient] instance.

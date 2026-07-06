@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediator_client.dart';
 import 'package:affinidi_tdk_iota_client/affinidi_tdk_iota_client.dart';
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_data_manager/affinidi_tdk_vault_data_manager.dart';
+import 'package:affinidi_tdk_vdsp/affinidi_tdk_vdsp.dart';
 import 'package:ssi/ssi.dart';
 import 'package:uuid/uuid.dart';
 
@@ -42,7 +44,33 @@ void main() async {
   final holderCompleted = Completer<void>();
 
   vault.listenForVdspRequests(
-    onDataRequest: (message) async {
+    onDataRequest: (message1) async {
+      // TODO: remove once backned is updated with proper serrialization
+
+      // "operation,dataQueryLang,responseFormat,comment,query,proofOfContext,mediatorDid"
+
+      final properMessageBody = <String, dynamic>{
+        'operation': message1.body!['operation'],
+        'data_query_lang': message1.body!['dataQueryLang'],
+        'response_format': message1.body!['responseFormat'],
+        'comment': message1.body!['comment'],
+        // TODO: fix how query is contructed on IOTA on Bridge
+        'query':
+            jsonDecode(message1.body!['query']['dcqlQuery'] as String)
+                as Map<String, dynamic>,
+        'proof_context': message1.body!['proofOfContext'],
+      };
+
+      final message = VdspQueryDataMessage(
+        id: message1.id,
+        body: properMessageBody,
+        from: message1.from,
+        to: message1.to,
+        threadId: message1.threadId,
+        expiresTime: message1.expiresTime,
+        createdTime: message1.createdTime,
+      );
+
       if (defaultProfile.defaultCredentialStorage == null) {
         throw Exception(
           'Default Credential Storage was not configured in the vault',
@@ -269,6 +297,7 @@ Future<_InitiateResult> _triggerIotaVdspRequest({
             ..nonce = nonce
             ..redirectUri = 'https://cis-qc-1.vercel.app/iota-callback'
             ..mode = InitiateDataSharingRequestInputModeEnum.didcomm
+            ..tokenMaxAge = 5000
             ..userDid = holderDid)
           .build();
 

@@ -48,6 +48,7 @@ class AffinidiTdkWalletsClient {
           try {
             // Retrieve the auth token asynchronously, and set it in headers
             final token = await authTokenHook();
+            print('-> Project token $token');
             options.headers['Authorization'] = 'Bearer $token';
           } catch (e) {
             print("Error retrieving auth token: $e");

@@ -208,6 +208,107 @@ void main() {
           expect(profiles.length, 1);
           expect(profiles.first.name, ProfileFixtures.testProfileName);
         });
+
+        test(
+          'each profile should use a unique key pair derived from its own account index, ensuring DID isolation across profiles',
+          () async {
+            // Arrange: a second key pair with distinct public key bytes to simulate
+            // the HD wallet returning different keys for different derivation paths.
+            final mockKeyPairProfile2 = MockKeyPair();
+            final publicKeyProfile2 = _AltPublicKeyFake();
+            when(
+              () => mockKeyPairProfile2.publicKey,
+            ).thenReturn(publicKeyProfile2);
+            when(
+              () => mockKeyPairProfile2.encrypt(any()),
+            ).thenAnswer(
+              (_) async => ProfileFixtures.testEncryptedData,
+            );
+            when(
+              () => mockKeyPairProfile2.decrypt(any()),
+            ).thenAnswer(
+              (_) async => ProfileFixtures.testDecryptedData,
+            );
+
+            // Wallet returns a different key pair for account index 2.
+            when(
+              () => mockWallet.generateKey(keyId: "m/44'/60'/2'/0'/0'"),
+            ).thenAnswer((_) async => mockKeyPairProfile2);
+
+            // Track which key pairs the service factory is invoked with.
+            final factoryKeyPairs = <KeyPair>[];
+            final isolationSut = VfsProfileRepository.withDependencies(
+              ProfileFixtures.repositoryId,
+              consumerAuthProviderFactory:
+                  (didSigner, {client}) =>
+                      ConsumerAuthProvider(signer: didSigner, client: client),
+              iamApiServiceFactory: (provider) => mockIamApiService,
+              vaultDataManagerServiceFactory: ({
+                required Uint8List encryptedDekek,
+                required KeyPair keyPair,
+              }) async {
+                factoryKeyPairs.add(keyPair);
+                return mockDataManagerService;
+              },
+            );
+            await isolationSut.configure(
+              RepositoryConfiguration(
+                wallet: mockWallet,
+                keyStorage: mockVaultStore,
+              ),
+            );
+
+            final account2 = Account(
+              accountIndex: 2,
+              accountDid: 'did:test:456',
+              accountMetadata: AccountMetadata(
+                dekekInfo: DekekInfo(
+                  encryptedDekek: 'dGVzdF9rZXk=',
+                ),
+                sharedStorageData: [],
+              ),
+            );
+
+            when(
+              () => mockDataManagerService.getAccounts(),
+            ).thenAnswer(
+              (_) async => [ProfileFixtures.testAccount, account2],
+            );
+            when(() => mockDataManagerService.getProfiles()).thenAnswer(
+              (_) async => [ProfileFixtures.testVaultDataManagerProfile],
+            );
+
+            // Act
+            final profiles = await isolationSut.listProfiles();
+
+            // Assert: two profiles returned
+            expect(profiles.length, 2);
+
+            // The factory must have been called with different key pairs for
+            // the two profile accounts (indices 1 and 2).
+            expect(
+              factoryKeyPairs,
+              contains(mockKeyPair),
+              reason:
+                  'profile at accountIndex=1 must use the default key pair',
+            );
+            expect(
+              factoryKeyPairs,
+              contains(mockKeyPairProfile2),
+              reason:
+                  'profile at accountIndex=2 must use its own distinct key pair',
+            );
+
+            // The DIDs exposed on the profiles must differ because they are
+            // derived from different public keys.
+            expect(
+              profiles[0].did,
+              isNot(equals(profiles[1].did)),
+              reason:
+                  'each profile must have a unique DID derived from its own key pair',
+            );
+          },
+        );
       });
 
       group('When updating a profile', () {
@@ -409,4 +510,48 @@ void main() {
       });
     });
   });
+}
+
+/// A second public-key fake with byte values distinct from [PublicKeyFake]
+/// so that [DidKey.getDid] produces a different DID for profile 2.
+class _AltPublicKeyFake extends Fake implements PublicKey {
+  @override
+  Uint8List get bytes => Uint8List.fromList([
+    2,
+    100,
+    200,
+    50,
+    75,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+    30,
+  ]);
+
+  @override
+  KeyType get type => KeyType.secp256k1;
 }

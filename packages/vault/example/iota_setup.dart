@@ -33,6 +33,7 @@ AuthProvider _loadEnv() {
     throw Exception('Missing DEV_PRIVATE_KEY in $_envPath');
   }
   final envConfig = Environment.getEnvironmentConfig(EnvironmentType.dev);
+  print('-> token endpoint: ${envConfig.elementsAuthTokenUrl}');
   return AuthProvider.withEnv(
     projectId: projectId,
     tokenId: tokenId,

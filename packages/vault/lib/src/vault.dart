@@ -870,7 +870,11 @@ class Vault {
       id: const Uuid().v4(),
       from: _messagingDidDocument.id,
       to: [_mediatorDidDocument.id],
-      theirDids: businessDids,
+      theirDids: [
+        ...businessDids,
+        'did:web:did.dev.affinidi.io:amb',
+        'did:web:did.dev.affinidi.io:ama',
+      ],
       expiresTime: DateTime.now().add(
         _vdspHolder.mediatorClient.clientOptions.messageExpiration,
       ),
