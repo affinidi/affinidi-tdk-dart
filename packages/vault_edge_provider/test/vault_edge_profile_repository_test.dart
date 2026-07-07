@@ -47,7 +47,7 @@ void main() {
             isA<TdkException>().having(
               (error) => error.code,
               'code',
-              TdkExceptionType.profleNotConfigured.code,
+              TdkExceptionType.profileNotConfigured.code,
             ),
           ),
         );
@@ -62,7 +62,7 @@ void main() {
             isA<TdkException>().having(
               (error) => error.code,
               'code',
-              TdkExceptionType.profleNotConfigured.code,
+              TdkExceptionType.profileNotConfigured.code,
             ),
           ),
         );
@@ -77,7 +77,7 @@ void main() {
             isA<TdkException>().having(
               (error) => error.code,
               'code',
-              TdkExceptionType.profleNotConfigured.code,
+              TdkExceptionType.profileNotConfigured.code,
             ),
           ),
         );
@@ -92,7 +92,7 @@ void main() {
             isA<TdkException>().having(
               (error) => error.code,
               'code',
-              TdkExceptionType.profleNotConfigured.code,
+              TdkExceptionType.profileNotConfigured.code,
             ),
           ),
         );

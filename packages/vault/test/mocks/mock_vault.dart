@@ -11,6 +11,9 @@ class MockVaultStore extends Mock implements VaultStore {}
 class MockProfileRepository extends Mock
     implements ProfileRepository, ProfileAccessSharing {}
 
+class MockProfileRepositoryWithStorageInfo extends Mock
+    implements ProfileRepository, ProfileStorageInfo {}
+
 class MockProfileRepositoryOnly extends Mock implements ProfileRepository {}
 
 class MockFileStorage extends Mock implements FileStorage {}

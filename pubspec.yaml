@@ -53,7 +53,6 @@ melos:
       noSelect: true
       packageFilters:
         includePrivatePackages: false
-        diff: origin/feat/iota-share-flow
     analyze:
       exec: dart analyze .
       concurrency: 4
@@ -62,7 +61,6 @@ melos:
       packageFilters:
         flutter: true
         includePrivatePackages: false
-        diff: origin/feat/iota-share-flow
     test:
       run: |
         melos run test-flutter
@@ -70,7 +68,7 @@ melos:
         melos run coverage-report
     test-flutter:
       description: Run tests in each flutter package
-      exec: flutter test --coverage
+      exec: flutter test --coverage --reporter expanded
       dirExists: test
       concurrency: 4
       failFast: true
@@ -78,12 +76,13 @@ melos:
       packageFilters:
         flutter: true
         includePrivatePackages: false
-        diff: origin/feat/iota-share-flow
         ignore:
           - "*_example*"
+          - "*integration_tests*"
+          - "*_client*"
     test-dart:
       description: Run tests in each dart package
-      exec: dart run coverage:test_with_coverage
+      exec: dart run coverage:test_with_coverage -- --reporter expanded
       dirExists: test
       concurrency: 4
       failFast: true
@@ -91,9 +90,10 @@ melos:
       packageFilters:
         flutter: false
         private: false
-        diff: origin/feat/iota-share-flow
         ignore:
           - "*_example*"
+          - "*integration_tests*"
+          - "*_client*"
     test-integration:
       description: Run integration tests
       run: ./scripts/test-integration.sh

@@ -32,20 +32,24 @@ class VaultDataManagerApiService
   static final int? _apiTimeOutInMilliseconds =
       Environment.apiTimeOutInMilliseconds;
 
-  final Dio _dio;
+  final Dio _fileClient;
+  final Dio _publicKeyClient;
   final FilesApi _filesApi;
   final NodesApi _nodesApi;
   final ConfigurationApi _configApi;
   final ProfileDataApi _profileDataApi;
   final AccountsApi _accountsApi;
   final CryptographyService _cryptographyService = CryptographyService();
+  final String Function() _publicKeyBaseUrlResolver;
 
   /// Creates an instance of [VaultDataManagerApiService].
   VaultDataManagerApiService({
     required AffinidiTdkVaultDataManagerClient apiClient,
-    Dio? dio,
-  }) : _dio =
-           dio ??
+    Dio? fileClient,
+    Dio? publicKeyClient,
+    String Function()? publicKeyBaseUrlResolver,
+  }) : _fileClient =
+           fileClient ??
            ((_apiTimeOutInMilliseconds != null)
                ? Dio(
                    BaseOptions(
@@ -58,6 +62,9 @@ class VaultDataManagerApiService
                    ),
                  )
                : Dio()),
+       _publicKeyClient = publicKeyClient ?? Dio(),
+       _publicKeyBaseUrlResolver =
+           publicKeyBaseUrlResolver ?? VaultUtils.fetchElementsVaultApiUrl,
        _filesApi = apiClient.getFilesApi(),
        _nodesApi = apiClient.getNodesApi(),
        _configApi = apiClient.getConfigurationApi(),
@@ -102,11 +109,11 @@ class VaultDataManagerApiService
       );
     }
 
-    final hasPropertiesForForFileUpload =
+    final hasPropertiesForFileUpload =
         createNodeResponse.data?.url != null &&
         createNodeResponse.data?.fields != null;
 
-    if (!hasPropertiesForForFileUpload) {
+    if (!hasPropertiesForFileUpload) {
       Error.throwWithStackTrace(
         TdkException(
           message: 'Unable to retrieve properties to upload the file.',
@@ -171,11 +178,11 @@ class VaultDataManagerApiService
       );
     }
 
-    final hasPropertiesForForFileUpload =
+    final hasPropertiesForFileUpload =
         createNodeResponse.data?.url != null &&
         createNodeResponse.data?.fields != null;
 
-    if (!hasPropertiesForForFileUpload) {
+    if (!hasPropertiesForFileUpload) {
       Error.throwWithStackTrace(
         TdkException(
           message:
@@ -256,7 +263,7 @@ class VaultDataManagerApiService
     VaultProgressCallback? onSendProgress,
   }) async {
     try {
-      return await _dio.post(
+      return await _fileClient.post(
         uploadUrl,
         data: data,
         onSendProgress: onSendProgress?.toProgressCallback(),
@@ -464,11 +471,11 @@ class VaultDataManagerApiService
   }
 
   @override
-  Future<Response<ListRootNodeChildrenOK>> getListOfProfiles({
+  Future<Response<ListProfilesOK>> getListOfProfiles({
     CancelToken? cancelToken,
   }) async {
     try {
-      return _nodesApi.listRootNodeChildren(cancelToken: cancelToken);
+      return _accountsApi.listProfiles(cancelToken: cancelToken);
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
         TdkException(
@@ -482,7 +489,11 @@ class VaultDataManagerApiService
   }
 
   @override
-  Future<Response<CreateNodeOK>> createProfile({
+  Future<Response<CreateAccountWithProfileOK>> createProfile({
+    required int accountIndex,
+    Map<String, Object>? accountMetadata,
+    required String profileDid,
+    required String profileDidProof,
     required String profileName,
     required List<int> dekEncryptedByVfsPublicKey,
     required List<int> dekEncryptedByWalletCryptoMaterial,
@@ -495,17 +506,21 @@ class VaultDataManagerApiService
       ..edek = base64.encode(dekEncryptedByWalletCryptoMaterial)
       ..dekekId = walletCryptoMaterialHash;
 
-    final createNodeInput = CreateNodeInputBuilder()
-      ..name = profileName
-      ..description = profileDescription
-      ..type = NodeType.PROFILE
-      ..parentNodeId = rootNodeIdBase64Encoded
+    final createAccountWithProfileInput = CreateAccountWithProfileInputBuilder()
+      ..accountIndex = accountIndex
+      ..accountDid = profileDid
+      ..didProof = profileDidProof
+      ..accountMetadata = accountMetadata != null
+          ? JsonObject(accountMetadata)
+          : null
+      ..profileName = profileName
+      ..profileDescription = profileDescription
+      ..profileMetadata = JsonObject({'pictureURI': profilePictureURI})
       ..dek = base64.encode(dekEncryptedByVfsPublicKey)
-      ..metadata = jsonEncode({'pictureURI': profilePictureURI})
       ..edekInfo = edekInfo;
 
-    return _createNode(
-      createNodeInput: createNodeInput.build(),
+    return _accountsApi.createAccountWithProfile(
+      createAccountWithProfileInput: createAccountWithProfileInput.build(),
       cancelToken: cancelToken,
     );
   }
@@ -568,7 +583,7 @@ class VaultDataManagerApiService
   @override
   Future<Response> getProfileTemplate({CancelToken? cancelToken}) async {
     try {
-      return _dio.get(profileTemplateUrl, cancelToken: cancelToken);
+      return _fileClient.get(profileTemplateUrl, cancelToken: cancelToken);
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
         TdkException(
@@ -603,14 +618,20 @@ class VaultDataManagerApiService
   @override
   Future<Map<String, dynamic>> getVaultDataManagerPublicKey() async {
     try {
-      final vautlUrl = VaultUtils.fetchElementsVaultApiUrl();
-      final absoluteUrl = '$vautlUrl/vfs/.well-known/jwks.json';
-
-      final response = await _dio.get<dynamic>(absoluteUrl);
+      final vaultUrl = _publicKeyBaseUrlResolver();
+      final absoluteUrl = '$vaultUrl/vfs/.well-known/jwks.json';
+      final response = await _publicKeyClient.get<dynamic>(
+        absoluteUrl,
+        options: Options(
+          validateStatus: (status) =>
+              status != null &&
+              ((status >= 200 && status < 300) || status == 304),
+        ),
+      );
 
       final data = response.data as Map<String, dynamic>;
       final jwks = (data['keys'] as List).first;
-      return jwks as Map<String, dynamic>;
+      return Map<String, dynamic>.from(jwks as Map);
     } catch (e, stackTrace) {
       Error.throwWithStackTrace(
         TdkException(
@@ -672,11 +693,12 @@ class VaultDataManagerApiService
     VaultProgressCallback? onReceiveProgress,
   }) async {
     try {
-      return _dio.fetch(
+      return _fileClient.fetch(
         RequestOptions(
           method: 'GET',
           baseUrl: downloadUrl,
           responseType: ResponseType.bytes,
+          persistentConnection: false,
           cancelToken: cancelToken,
           onReceiveProgress: onReceiveProgress?.toProgressCallback(),
           headers: {
@@ -876,6 +898,40 @@ class VaultDataManagerApiService
         TdkException(
           message: 'Unable to update account.',
           code: TdkExceptionType.unableToUpdateAccount.code,
+        ),
+        stackTrace,
+      );
+    }
+  }
+
+  @override
+  Future<Response<UpdateAccountDto>> patchAccount({
+    required int accountIndex,
+    required String didProof,
+    required String encryptedDekek,
+    required String ownerProfileId,
+    required String ownerProfileDid,
+    CancelToken? cancelToken,
+  }) async {
+    try {
+      final patchAccountInput = PatchAccountInputBuilder()
+        ..didProof = didProof
+        ..encryptedDekek = encryptedDekek
+        ..ownerProfileId = ownerProfileId
+        ..ownerProfileDid = ownerProfileDid;
+
+      final response = await _accountsApi.patchAccount(
+        accountIndex: accountIndex,
+        patchAccountInput: patchAccountInput.build(),
+        cancelToken: cancelToken,
+      );
+
+      return response;
+    } catch (e, stackTrace) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Unable to patch account.',
+          code: TdkExceptionType.unableToPatchAccount.code,
         ),
         stackTrace,
       );

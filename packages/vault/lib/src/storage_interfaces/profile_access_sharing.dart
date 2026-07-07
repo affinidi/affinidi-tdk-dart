@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import '../helpers/vault_cancel_token.dart';
 import '../permissions.dart';
+import '../profile.dart';
 
 /// Interface for managing user profiles access permissions.
 abstract interface class ProfileAccessSharing {
@@ -52,13 +53,14 @@ abstract interface class ProfileAccessSharing {
 
   /// Receives access to nodes that were granted by another user.
   ///
-  /// [accountIndex] - The index of the account.
+  /// [profile] - The profile receiving the shared nodes.
   /// [ownerProfileId] - The ID of the profile that owns the nodes.
   /// [kek] - The key encryption key for accessing the nodes.
   /// [ownerProfileDid] - The DID of the profile that owns the nodes.
   /// [cancelToken] - Optional cancel token for API requests.
-  Future<void> receiveItemAccess({
-    required int accountIndex,
+  /// Returns the updated receiving profile with refreshed shared storages.
+  Future<Profile> receiveItemAccess({
+    required Profile profile,
     required String ownerProfileId,
     required Uint8List kek,
     required String ownerProfileDid,

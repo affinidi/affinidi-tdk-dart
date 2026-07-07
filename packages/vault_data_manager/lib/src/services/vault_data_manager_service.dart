@@ -13,6 +13,8 @@ import 'package:ssi/ssi.dart';
 
 import '../exceptions/tdk_exception_type.dart';
 import '../helpers/dio_cancel_token_adapter.dart';
+import '../helpers/http_client_connection_settings_stub.dart'
+    if (dart.library.io) '../helpers/http_client_connection_settings_io.dart';
 import '../model/account.dart';
 import '../model/node.dart';
 import '../model/node_status.dart';
@@ -32,8 +34,11 @@ import 'vault_data_manager_service_interface.dart';
 /// operations using vault data manager services.
 class VaultDataManagerService implements VaultDataManagerServiceInterface {
   /// Service for handling encryption operations
-  late final VaultDataManagerEncryptionServiceInterface
+  VaultDataManagerEncryptionServiceInterface?
   _vaultDataManagerEncryptionService;
+
+  final Future<VaultDataManagerEncryptionServiceInterface> Function()?
+  _vaultDataManagerEncryptionServiceFactory;
 
   /// Service for API operations with the vault
   late final VaultDataManagerApiServiceInterface _vaultDataManagerApiService;
@@ -45,12 +50,18 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   final KeyPair _keyPair;
 
   VaultDataManagerService._(
-    this._vaultDataManagerEncryptionService,
+    VaultDataManagerEncryptionServiceInterface?
+    vaultDataManagerEncryptionService,
     this._vaultDataManagerApiService, {
+    Future<VaultDataManagerEncryptionServiceInterface> Function()?
+    vaultDataManagerEncryptionServiceFactory,
     Logger? logger,
     required Uint8List encryptedDekek,
     required KeyPair keyPair,
   }) : _logger = logger ?? Logger.instance,
+       _vaultDataManagerEncryptionService = vaultDataManagerEncryptionService,
+       _vaultDataManagerEncryptionServiceFactory =
+           vaultDataManagerEncryptionServiceFactory,
        _encryptedKey = encryptedDekek,
        _keyPair = keyPair;
 
@@ -70,6 +81,30 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
          keyPair: keyPair,
        );
 
+  /// Creates a new instance of [VaultDataManagerService] with lazy encryption
+  /// service initialization for testing purposes.
+  @visibleForTesting
+  VaultDataManagerService.lazy(
+    VaultDataManagerApiServiceInterface vaultDataManagerApiService, {
+    required Future<VaultDataManagerEncryptionServiceInterface> Function()
+    vaultDataManagerEncryptionServiceFactory,
+    Logger? logger,
+    required Uint8List encryptedKey,
+    required KeyPair keyPair,
+  }) : this._(
+         null,
+         vaultDataManagerApiService,
+         vaultDataManagerEncryptionServiceFactory:
+             vaultDataManagerEncryptionServiceFactory,
+         logger: logger,
+         encryptedDekek: encryptedKey,
+         keyPair: keyPair,
+       );
+
+  static final _publicKeyClient = _makeConfiguredDio();
+  static final _fileClient = _makeConfiguredDio();
+  static final _authClient = _makeConfiguredDio();
+
   /// Creates a new vault file system service instance with encryption.
   ///
   /// - [encryptedDekek] - encrypted kek of delegated profile
@@ -80,6 +115,7 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   }) async {
     final consumerAuthProvider = ConsumerAuthProvider(
       signer: keyPair.didSigner(),
+      client: _authClient,
     );
     return _create(
       encryptedDekek: encryptedDekek,
@@ -100,6 +136,7 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   }) async {
     final consumerAuthProvider = ConsumerAuthProvider(
       signer: keyPair.didSigner(),
+      client: _authClient,
     );
     return _create(
       encryptedDekek: encryptedDekek,
@@ -114,31 +151,69 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     required KeyPair keyPair,
     required Future<String?> Function() authTokenHook,
   }) async {
-    final elementsVaultApiUrl =
-        Environment.fetchEnvironment().elementsVaultApiUrl;
+    final elementsVaultApiUrl = VaultUtils.fetchElementsVaultApiUrl();
+    final vfsClient = _makeConfiguredDio(baseUrl: '$elementsVaultApiUrl/vfs');
     final vaultDataManagerApiService = VaultDataManagerApiService(
       apiClient: AffinidiTdkVaultDataManagerClient(
+        dio: vfsClient,
         authTokenHook: authTokenHook,
-        basePathOverride: '$elementsVaultApiUrl/vfs',
       ),
-    );
-
-    final vfsPublicKey = await vaultDataManagerApiService
-        .getVaultDataManagerPublicKey();
-
-    final vaultDataManagerEncryptionService = VaultDataManagerEncryptionService(
-      cryptographyService: CryptographyService(),
-      jwk: vfsPublicKey,
+      fileClient: _fileClient,
+      publicKeyClient: _publicKeyClient,
     );
 
     final instance = VaultDataManagerService._(
-      vaultDataManagerEncryptionService,
+      null,
       vaultDataManagerApiService,
+      vaultDataManagerEncryptionServiceFactory: () async {
+        final vfsPublicKey = await vaultDataManagerApiService
+            .getVaultDataManagerPublicKey();
+
+        return VaultDataManagerEncryptionService(
+          cryptographyService: CryptographyService(),
+          jwk: vfsPublicKey,
+        );
+      },
       encryptedDekek: encryptedDekek,
       keyPair: keyPair,
     );
 
     return instance;
+  }
+
+  static Dio _makeConfiguredDio({String? baseUrl}) {
+    final apiConnectionTimeout = Duration(
+      milliseconds: Environment.apiTimeOutInMilliseconds ?? 15000,
+    );
+    final apiIdleTimeout = Duration(
+      milliseconds: Environment.apiIdleTimeoutInMilliseconds ?? 30000,
+    );
+
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: baseUrl ?? '',
+        connectTimeout: apiConnectionTimeout,
+        receiveTimeout: apiConnectionTimeout,
+      ),
+    );
+    configureHttpClientConnectionSettings(dio, idleTimeout: apiIdleTimeout);
+    return dio;
+  }
+
+  Future<VaultDataManagerEncryptionServiceInterface>
+  _getVaultDataManagerEncryptionService() {
+    final encryptionService = _vaultDataManagerEncryptionService;
+    if (encryptionService != null &&
+        _vaultDataManagerEncryptionServiceFactory == null) {
+      return Future.value(encryptionService);
+    }
+
+    final encryptionServiceFactory = _vaultDataManagerEncryptionServiceFactory;
+    if (encryptionServiceFactory == null) {
+      throw StateError('Vault data manager encryption service is unavailable.');
+    }
+
+    return encryptionServiceFactory();
   }
 
   @override
@@ -150,7 +225,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     final verifiableCredentialBlob = utf8.encode(
       jsonEncode(verifiableCredential),
     );
-    final dekGenerateModel = await _vaultDataManagerEncryptionService
+    final encryptionService = await _getVaultDataManagerEncryptionService();
+    final dekGenerateModel = await encryptionService
         .generateDataEncryptionMaterial(
           encryptionKey: await _keyPair.decrypt(_encryptedKey),
         );
@@ -180,7 +256,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     VaultCancelToken? cancelToken,
     VaultProgressCallback? onSendProgress,
   }) async {
-    final dekGenerateModel = await _vaultDataManagerEncryptionService
+    final encryptionService = await _getVaultDataManagerEncryptionService();
+    final dekGenerateModel = await encryptionService
         .generateDataEncryptionMaterial(
           encryptionKey: await _keyPair.decrypt(_encryptedKey),
         );
@@ -201,35 +278,79 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
   }
 
   @override
-  Future<void> createFolder({
+  Future<Folder> createFolder({
     required String folderName,
     required String parentNodeId,
     VaultCancelToken? cancelToken,
   }) async {
-    await _vaultDataManagerApiService.createFolder(
+    final response = await _vaultDataManagerApiService.createFolder(
       name: folderName,
       parentNodeId: parentNodeId,
       cancelToken: cancelToken != null
           ? DioCancelTokenAdapter.from(cancelToken)
           : null,
     );
+
+    final nodeId = response.data?.nodeId;
+    if (nodeId == null || nodeId.isEmpty) {
+      throw TdkException(
+        message: 'Created folder is missing node id',
+        code: TdkExceptionType.unableToCreateNode.code,
+      );
+    }
+
+    final createdAt = response.data?.createdAt;
+    if (createdAt == null || createdAt.isEmpty) {
+      throw TdkException(
+        message: 'Created folder is missing createdAt',
+        code: TdkExceptionType.unableToCreateNode.code,
+      );
+    }
+
+    final modifiedAt = response.data?.modifiedAt;
+    if (modifiedAt == null || modifiedAt.isEmpty) {
+      throw TdkException(
+        message: 'Created folder is missing modifiedAt',
+        code: TdkExceptionType.unableToCreateNode.code,
+      );
+    }
+
+    return Folder(
+      id: nodeId,
+      name: folderName,
+      createdAt: DateTime.parse(createdAt),
+      modifiedAt: DateTime.parse(modifiedAt),
+      parentId: parentNodeId,
+    );
   }
 
   @override
-  Future<Response<CreateNodeOK>> createProfile({
-    required String name,
-    String? description,
+  Future<Response<CreateAccountWithProfileOK>> createProfile({
+    required int accountIndex,
+    required AccountMetadata accountMetadata,
+    required String profileDid,
+    required String profileDidProof,
+    required KeyPair profileKeyPair,
+    required String profileName,
+    String? profileDescription,
     String? profilePictureURI,
     VaultCancelToken? cancelToken,
   }) async {
-    final dekGenerateModel = await _vaultDataManagerEncryptionService
+    final encryptionService = await _getVaultDataManagerEncryptionService();
+    final dekGenerateModel = await encryptionService
         .generateDataEncryptionMaterial(
-          encryptionKey: await _keyPair.decrypt(_encryptedKey),
+          encryptionKey: await profileKeyPair.decrypt(
+            base64.decode(accountMetadata.dekekInfo.encryptedDekek),
+          ),
         );
 
     return await _vaultDataManagerApiService.createProfile(
-      profileName: name,
-      profileDescription: description,
+      accountIndex: accountIndex,
+      profileDid: profileDid,
+      profileDidProof: profileDidProof,
+      accountMetadata: accountMetadata.toJson(),
+      profileName: profileName,
+      profileDescription: profileDescription,
       profilePictureURI: profilePictureURI,
       dekEncryptedByVfsPublicKey: dekGenerateModel.dekEncryptedByApiPublicKey,
       dekEncryptedByWalletCryptoMaterial:
@@ -431,7 +552,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
 
     final encryptedDekBase64 = nodeInfoResponse.data?.edekInfo?.edek;
 
-    final dekEncryptedByVfsPublicKey = await _vaultDataManagerEncryptionService
+    final encryptionService = await _getVaultDataManagerEncryptionService();
+    final dekEncryptedByVfsPublicKey = await encryptionService
         .getDekEncryptedByApiPublicKey(
           encryptedDekBase64: encryptedDekBase64!,
           encryptionKey: await _keyPair.decrypt(_encryptedKey),
@@ -465,22 +587,28 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
 
     final profileNodes = profilesResponse.data?.nodes?.toList() ?? [];
 
-    final profiles = profileNodes
+    return profileNodes
         .map<VaultDataManagerProfile>(
           (nodeResponse) => VaultDataManagerProfile(
-            id: nodeResponse.nodeId,
+            id: nodeResponse.id,
+            accountIndex: nodeResponse.accountIndex,
             name: nodeResponse.name,
             description: nodeResponse.description,
-            pictureURI: nodeResponse.metadata != null
+            pictureURI: nodeResponse.profileMetadata != null
                 ? Metadata.fromJson(
-                    jsonDecode(nodeResponse.metadata!) as Map<String, dynamic>,
+                    jsonDecode(nodeResponse.profileMetadata!)
+                        as Map<String, dynamic>,
                   ).pictureURI
                 : '',
+            accountMetadata: nodeResponse.accountMetadata != null
+                ? AccountMetadata.fromJson(
+                    jsonDecode(nodeResponse.accountMetadata!)
+                        as Map<String, dynamic>,
+                  )
+                : null,
           ),
         )
         .toList();
-
-    return profiles;
   }
 
   @override
@@ -598,7 +726,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     );
 
     final encryptedDekBase64 = nodeInfo.data?.edekInfo?.edek;
-    final dekEncryptedByVfsPublicKey = await _vaultDataManagerEncryptionService
+    final encryptionService = await _getVaultDataManagerEncryptionService();
+    final dekEncryptedByVfsPublicKey = await encryptionService
         .getDekEncryptedByApiPublicKey(
           encryptedDekBase64: encryptedDekBase64!,
           encryptionKey: await _keyPair.decrypt(_encryptedKey),
@@ -619,7 +748,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     required ProfileData profileData,
     VaultCancelToken? cancelToken,
   }) async {
-    final dekGenerateModel = await _vaultDataManagerEncryptionService
+    final encryptionService = await _getVaultDataManagerEncryptionService();
+    final dekGenerateModel = await encryptionService
         .generateDataEncryptionMaterial(
           encryptionKey: await _keyPair.decrypt(_encryptedKey),
         );
@@ -677,7 +807,8 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
       );
     }
 
-    final dekEncryptedByVfsPublicKey = await _vaultDataManagerEncryptionService
+    final encryptionService = await _getVaultDataManagerEncryptionService();
+    final dekEncryptedByVfsPublicKey = await encryptionService
         .getDekEncryptedByApiPublicKey(
           encryptedDekBase64: commonNodeEdek,
           encryptionKey: await _keyPair.decrypt(_encryptedKey),
@@ -725,7 +856,7 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
     }
     final encryptedDekBase64 = nodeInfo.edekInfo!.edek;
 
-    final dek = await _vaultDataManagerEncryptionService.decryptDek(
+    final dek = await encryptionService.decryptDek(
       encryptedDek: base64.decode(encryptedDekBase64),
       encryptionKey: await _keyPair.decrypt(_encryptedKey),
     );
@@ -968,9 +1099,11 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
           (record) => Account(
             accountIndex: record.accountIndex,
             accountDid: record.accountDid,
-            accountMetadata: AccountMetadata.fromJson(
-              record.metadata!.asMap as Map<String, dynamic>,
-            ),
+            accountMetadata: record.metadata != null
+                ? AccountMetadata.fromJson(
+                    record.metadata!.asMap as Map<String, dynamic>,
+                  )
+                : null,
           ),
         )
         .toList();
@@ -993,6 +1126,48 @@ class VaultDataManagerService implements VaultDataManagerServiceInterface {
       metadata: metadata.toJson(),
       cancelToken: cancelToken != null
           ? DioCancelTokenAdapter.from(cancelToken)
+          : null,
+    );
+  }
+
+  @override
+  Future<Account> patchAccount({
+    required int accountIndex,
+    required String didProof,
+    required String encryptedDekek,
+    required String ownerProfileId,
+    required String ownerProfileDid,
+    VaultCancelToken? cancelToken,
+  }) async {
+    final response = await _vaultDataManagerApiService.patchAccount(
+      accountIndex: accountIndex,
+      didProof: didProof,
+      encryptedDekek: encryptedDekek,
+      ownerProfileId: ownerProfileId,
+      ownerProfileDid: ownerProfileDid,
+      cancelToken: cancelToken != null
+          ? DioCancelTokenAdapter.from(cancelToken)
+          : null,
+    );
+
+    final updatedAccount = response.data;
+    if (updatedAccount == null) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Unable to patch account.',
+          code: TdkExceptionType.unableToPatchAccount.code,
+        ),
+        StackTrace.current,
+      );
+    }
+
+    return Account(
+      accountIndex: updatedAccount.accountIndex,
+      accountDid: updatedAccount.accountDid,
+      accountMetadata: updatedAccount.metadata != null
+          ? AccountMetadata.fromJson(
+              updatedAccount.metadata!.asMap as Map<String, dynamic>,
+            )
           : null,
     );
   }

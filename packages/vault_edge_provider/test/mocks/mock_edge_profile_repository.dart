@@ -12,7 +12,7 @@ class MockEdgeProfileRepository implements EdgeProfileRepositoryInterface {
   String? lastCalledHasAnyContentProfileId;
 
   @override
-  Future<void> createProfile({
+  Future<String> createProfile({
     required String name,
     String? description,
     required int accountIndex,
@@ -21,6 +21,7 @@ class MockEdgeProfileRepository implements EdgeProfileRepositoryInterface {
     lastCalledCreateProfileName = name;
     lastCalledCreateProfileDescription = description;
     lastCalledCreateProfileAccountIndex = accountIndex;
+    return 'mock_profile_id';
   }
 
   @override

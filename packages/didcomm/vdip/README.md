@@ -722,7 +722,7 @@ onProblemReport: (message) {
 
 ## Complete Example
 
-See [example/basic_example.dart](https://github.com/affinidi/affinidi-tdk/blob/main/libs/dart/didcomm/vdip/example/basic_example.dart) for a complete runnable example that demonstrates:
+See [example/main.dart](https://github.com/affinidi/affinidi-tdk-dart/blob/main/packages/didcomm/vdip/example/main.dart) for a complete runnable example that demonstrates:
 
 - Feature discovery between holder and issuer
 - Credential request workflows with and without holder-bound assertions
@@ -738,11 +738,11 @@ If you face any issues or have suggestions, please don't hesitate to contact us 
 
 If you have a technical issue with the DIDComm's codebase, you can also create an issue directly in GitHub.
 
-1. Ensure the bug was not already reported by searching on GitHub under [Issues](https://github.com/affinidi/affinidi-tdk/issues).
-2. If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/affinidi/affinidi-tdk/issues/new). Be sure to include a title and clear description, as much relevant information as possible, and a code sample or an executable test case demonstrating the expected behaviour that is not occurring.
+1. Ensure the bug was not already reported by searching on GitHub under [Issues](https://github.com/affinidi/affinidi-tdk-dart/issues).
+2. If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/affinidi/affinidi-tdk-dart/issues/new). Be sure to include a title and clear description, as much relevant information as possible, and a code sample or an executable test case demonstrating the expected behaviour that is not occurring.
 
 ## Contributing
 
 Want to contribute?
 
-Head over to our [CONTRIBUTING](https://github.com/affinidi/affinidi-tdk/blob/main/CONTRIBUTING.md) guidelines.
+Head over to our [CONTRIBUTING](https://github.com/affinidi/affinidi-tdk-dart/blob/main/CONTRIBUTING.md) guidelines.

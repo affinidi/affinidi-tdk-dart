@@ -14,7 +14,7 @@ Affinidi TDK dart client for Affinidi VAULT DATA MANAGER
 To use the package from [pub.dev](https://pub.dev), please include the following in pubspec.yaml
 ```yaml
 dependencies:
-  affinidi_tdk_vault_data_manager_client: ^2.1.0
+  affinidi_tdk_vault_data_manager_client: ^2.2.0
 ```
 
 ### Github

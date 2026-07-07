@@ -5,6 +5,7 @@ import 'package:affinidi_tdk_vault_data_manager/src/model/node_status.dart';
 import 'package:affinidi_tdk_vault_data_manager/src/model/node_type.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../fixtures/dekek_info_fixtures.dart';
 import 'mock_deterministic_wallet.dart';
 import 'mock_digital_crendential.dart';
 import 'mock_key_pair.dart';
@@ -20,7 +21,7 @@ class FakeAccountMetadata extends Fake implements AccountMetadata {
   final List<SharedStorageData> sharedStorageData;
 
   FakeAccountMetadata()
-    : dekekInfo = DekekInfo(encryptedDekek: 'test-encrypted-dekek'),
+    : dekekInfo = DeekekInfoFixtures.general,
       sharedStorageData = [];
 }
 

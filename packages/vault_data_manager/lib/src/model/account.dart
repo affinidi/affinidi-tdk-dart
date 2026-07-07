@@ -116,9 +116,9 @@ class Account {
   Account.fromJson(Map<String, dynamic> json)
     : accountIndex = json['accountIndex'] as int,
       accountDid = json['accountDid'] as String,
-      accountMetadata = AccountMetadata.fromJson(
-        json['metadata'] as Map<String, dynamic>,
-      );
+      accountMetadata = json['metadata'] != null
+          ? AccountMetadata.fromJson(json['metadata'] as Map<String, dynamic>)
+          : null;
 
   /// Converts this [Account] to a JSON map.
   Map<String, dynamic> toJson() {

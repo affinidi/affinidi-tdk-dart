@@ -6,6 +6,8 @@ import 'package:affinidi_tdk_vault_data_manager/src/model/vault_data_manager_pro
 import 'package:mocktail/mocktail.dart';
 import 'package:ssi/ssi.dart';
 
+import 'dekek_info_fixtures.dart';
+
 class ProfileFixtures {
   static const String repositoryId = 'test_repository';
   static const String testProfileId = 'test_profile_id';
@@ -46,17 +48,22 @@ class ProfileFixtures {
     accountIndex: testAccountIndex,
     accountDid: testDid,
     accountMetadata: AccountMetadata(
-      dekekInfo: DekekInfo(encryptedDekek: 'dGVzdF9rZXk='),
+      dekekInfo: DeekekInfoFixtures.general,
       sharedStorageData: [],
     ),
   );
 
   static VaultDataManagerProfile get testVaultDataManagerProfile =>
       VaultDataManagerProfile(
+        accountIndex: testAccountIndex,
         id: testProfileId,
         name: testProfileName,
         description: testProfileDescription,
         pictureURI: '',
+        accountMetadata: AccountMetadata(
+          dekekInfo: DeekekInfoFixtures.general,
+          sharedStorageData: [],
+        ),
       );
 
   static DidDocument get testDidDocument {

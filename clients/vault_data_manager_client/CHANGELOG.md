@@ -1,3 +1,7 @@
+## 2.3.0
+
+ - **FEAT**: update vfs client (#118).
+
 ## 2.2.0
 
  - **FEAT**: update vfs client (#99).

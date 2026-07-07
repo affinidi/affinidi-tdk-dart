@@ -34,16 +34,17 @@ void main() {
       group('and creating a folder', () {
         test('it should create a folder successfully', () async {
           when(
-            () => mockService.getChildNodes(
-              nodeId: FileFixtures.testParentId,
-              limit: any(named: 'limit'),
-              exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
-              cancelToken: any(named: 'cancelToken'),
+            () => mockService.createFolder(
+              parentNodeId: any(named: 'parentNodeId'),
+              folderName: any(named: 'folderName'),
             ),
           ).thenAnswer(
-            (_) async => PaginatedList<Node>(
-              items: [FileFixtures.mockFolderNode],
-              lastEvaluatedItemId: null,
+            (_) async => Folder(
+              id: FileFixtures.testFolderId,
+              name: FileFixtures.testFolderName,
+              createdAt: DateTime.parse('2024-01-01T00:00:00Z'),
+              modifiedAt: DateTime.parse('2024-01-01T00:00:00Z'),
+              parentId: FileFixtures.testParentId,
             ),
           );
 
@@ -60,36 +61,6 @@ void main() {
               folderName: FileFixtures.testFolderName,
             ),
           ).called(1);
-          verify(
-            () => mockService.getChildNodes(
-              nodeId: FileFixtures.testParentId,
-              limit: 2147483647,
-              exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
-              cancelToken: any(named: 'cancelToken'),
-            ),
-          ).called(1);
-        });
-
-        test('it should throw if folder not found after creation', () async {
-          when(
-            () => mockService.getChildNodes(
-              nodeId: FileFixtures.testParentId,
-              limit: any(named: 'limit'),
-              exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
-              cancelToken: any(named: 'cancelToken'),
-            ),
-          ).thenAnswer(
-            (_) async =>
-                PaginatedList<Node>(items: [], lastEvaluatedItemId: null),
-          );
-
-          expect(
-            () => vfsFileStorage.createFolder(
-              folderName: 'missing-folder',
-              parentFolderId: FileFixtures.testParentId,
-            ),
-            throwsA(isA<TdkException>()),
-          );
         });
       });
 

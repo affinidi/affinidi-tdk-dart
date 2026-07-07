@@ -7,8 +7,6 @@ import '../model/node_status.dart';
 import '../model/node_type.dart';
 import '../services/vault_data_manager_service_interface.dart';
 
-const _maxint = 2147483647;
-
 /// A VFS based implementation of [FileStorage] for managing files and folders.
 class VFSFileStorage implements FileStorage {
   /// Creates a new instance of [VFSFileStorage].
@@ -94,33 +92,13 @@ class VFSFileStorage implements FileStorage {
     required String parentFolderId,
     VaultCancelToken? cancelToken,
   }) async {
-    await _vaultDataManagerService.createFolder(
+    final folder = await _vaultDataManagerService.createFolder(
       folderName: folderName,
       parentNodeId: parentFolderId,
       cancelToken: cancelToken,
     );
-    final response = await _vaultDataManagerService.getChildNodes(
-      nodeId: parentFolderId,
-      limit: _maxint,
-      cancelToken: cancelToken,
-    );
-    final folder = response.items.firstWhere(
-      (node) => node.name == folderName && node.type == NodeType.FOLDER,
-      orElse: () => Error.throwWithStackTrace(
-        TdkException(
-          message: 'Created folder not found',
-          code: TdkExceptionType.folderNotFound.code,
-        ),
-        StackTrace.current,
-      ),
-    );
 
-    return Folder(
-      id: folder.nodeId,
-      name: folder.name,
-      createdAt: DateTime.parse(folder.createdAt),
-      modifiedAt: DateTime.parse(folder.modifiedAt),
-    );
+    return folder;
   }
 
   @override

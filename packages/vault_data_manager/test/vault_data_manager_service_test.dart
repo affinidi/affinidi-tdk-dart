@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
@@ -5,7 +7,6 @@ import 'package:affinidi_tdk_vault_data_manager/affinidi_tdk_vault_data_manager.
 import 'package:affinidi_tdk_vault_data_manager/src/exceptions/tdk_exception_type.dart';
 import 'package:affinidi_tdk_vault_data_manager/src/model/profile_data.dart';
 import 'package:affinidi_tdk_vault_data_manager/src/model/recognized_profile_data.dart';
-import 'package:affinidi_tdk_vault_data_manager/src/model/vault_data_manager_profile.dart';
 import 'package:affinidi_tdk_vault_data_manager_client/affinidi_tdk_vault_data_manager_client.dart';
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
@@ -22,11 +23,13 @@ import 'fixtures/get_root_node_info_ok.dart';
 import 'fixtures/get_scanned_file_info_ok.dart';
 import 'fixtures/list_node_children_profile_ok.dart';
 import 'fixtures/list_node_children_vc_ok.dart';
+import 'fixtures/list_profile_ok.dart';
 import 'fixtures/list_scanned_files_ok.dart';
 import 'fixtures/node.dart';
 import 'fixtures/profile.dart';
 import 'fixtures/profile_data.dart';
 import 'fixtures/verifiable_credential.dart';
+import 'mocks/mock_key_pair.dart';
 import 'mocks/mocks.dart';
 import 'mocks/vault_data_manager_api_service_mocks.dart';
 import 'mocks/vault_data_manager_encryption_service_mocks.dart';
@@ -106,6 +109,132 @@ void main() {
         );
       });
     });
+  });
+
+  group('When encryption service initialization is lazy', () {
+    test('it does not initialize for non-encryption operations', () async {
+      var initializationCount = 0;
+      final keyPair = await getRootKeyPair();
+      final lazyService = VaultDataManagerService.lazy(
+        mockVaultDataManagerApiService,
+        vaultDataManagerEncryptionServiceFactory: () async {
+          initializationCount += 1;
+          return mockVaultDataManagerEncryptionService;
+        },
+        keyPair: keyPair,
+        encryptedKey: await keyPair.encrypt(Uint8List(2)),
+      );
+
+      when(vaultDataManagerApiServiceMocks.createFolder).thenAnswer(
+        (_) async => Response<CreateNodeOK>(
+          requestOptions: RequestOptions(path: ''),
+          data: CreateNodeOK(
+            (b) => b
+              ..nodeId = 'created-folder-id'
+              ..createdAt = '2024-01-01T00:00:00Z'
+              ..modifiedAt = '2024-01-01T00:00:00Z',
+          ),
+        ),
+      );
+
+      await lazyService.createFolder(
+        folderName: 'folder_name',
+        parentNodeId: 'parent_node_id',
+      );
+
+      expect(initializationCount, 0);
+      verify(vaultDataManagerApiServiceMocks.createFolder).called(1);
+      verifyNever(
+        vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
+      );
+    });
+
+    test('it initializes the encryption service for each operation', () async {
+      var initializationCount = 0;
+      final keyPair = await getRootKeyPair();
+      final lazyService = VaultDataManagerService.lazy(
+        mockVaultDataManagerApiService,
+        vaultDataManagerEncryptionServiceFactory: () async {
+          initializationCount += 1;
+          return mockVaultDataManagerEncryptionService;
+        },
+        keyPair: keyPair,
+        encryptedKey: await keyPair.encrypt(Uint8List(2)),
+      );
+
+      when(
+        vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
+      ).thenAnswer((_) async => dataEncryptionMaterial);
+      when(vaultDataManagerApiServiceMocks.createFile).thenAnswer(
+        (_) async =>
+            Response<CreateNodeOK>(requestOptions: RequestOptions(path: '')),
+      );
+
+      await lazyService.createFile(
+        fileName: 'file_name.pdf',
+        parentFolderNodeId: 'parent_node_id',
+        data: Uint8List(5),
+      );
+      await lazyService.createFile(
+        fileName: 'file_name_2.pdf',
+        parentFolderNodeId: 'parent_node_id',
+        data: Uint8List(5),
+      );
+
+      expect(initializationCount, 2);
+      verify(
+        vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
+      ).called(2);
+      verify(vaultDataManagerApiServiceMocks.createFile).called(2);
+    });
+
+    test(
+      'it initializes the encryption service per concurrent operation',
+      () async {
+        final initializationCompleter =
+            Completer<VaultDataManagerEncryptionServiceInterface>();
+        var initializationCount = 0;
+        final keyPair = await getRootKeyPair();
+        final lazyService = VaultDataManagerService.lazy(
+          mockVaultDataManagerApiService,
+          vaultDataManagerEncryptionServiceFactory: () {
+            initializationCount += 1;
+            return initializationCompleter.future;
+          },
+          keyPair: keyPair,
+          encryptedKey: await keyPair.encrypt(Uint8List(2)),
+        );
+
+        when(
+          vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
+        ).thenAnswer((_) async => dataEncryptionMaterial);
+        when(vaultDataManagerApiServiceMocks.createFile).thenAnswer(
+          (_) async =>
+              Response<CreateNodeOK>(requestOptions: RequestOptions(path: '')),
+        );
+
+        final firstCreate = lazyService.createFile(
+          fileName: 'file_name.pdf',
+          parentFolderNodeId: 'parent_node_id',
+          data: Uint8List(5),
+        );
+        final secondCreate = lazyService.createFile(
+          fileName: 'file_name_2.pdf',
+          parentFolderNodeId: 'parent_node_id',
+          data: Uint8List(5),
+        );
+
+        initializationCompleter.complete(mockVaultDataManagerEncryptionService);
+
+        await Future.wait([firstCreate, secondCreate]);
+
+        expect(initializationCount, 2);
+        verify(
+          vaultDataManagerEncryptionServiceMocks.generateDataEncryptionMaterial,
+        ).called(2);
+        verify(vaultDataManagerApiServiceMocks.createFile).called(2);
+      },
+    );
   });
 
   group('When adding verifiable credential to profile', () {
@@ -203,15 +332,27 @@ void main() {
     group('and it is created successfully,', () {
       test('it calls vault data manager api service method once', () async {
         when(vaultDataManagerApiServiceMocks.createFolder).thenAnswer(
-          (_) async =>
-              Response<CreateNodeOK>(requestOptions: RequestOptions(path: '')),
+          (_) async => Response<CreateNodeOK>(
+            requestOptions: RequestOptions(path: ''),
+            data: CreateNodeOK(
+              (b) => b
+                ..nodeId = 'created-folder-id'
+                ..createdAt = '2024-01-01T00:00:00Z'
+                ..modifiedAt = '2024-01-01T00:00:00Z',
+            ),
+          ),
         );
 
-        await vaultDataManagerService.createFolder(
+        final folder = await vaultDataManagerService.createFolder(
           folderName: 'folder_name',
           parentNodeId: 'parent_node_id',
         );
 
+        expect(folder.id, 'created-folder-id');
+        expect(folder.name, 'folder_name');
+        expect(folder.parentId, 'parent_node_id');
+        expect(folder.createdAt, DateTime.parse('2024-01-01T00:00:00Z'));
+        expect(folder.modifiedAt, DateTime.parse('2024-01-01T00:00:00Z'));
         verify(vaultDataManagerApiServiceMocks.createFolder).called(1);
       });
     });
@@ -222,9 +363,21 @@ void main() {
       test(
         'it calls vault data manager api and encryption services methods once',
         () async {
+          final profileKeyPair = MockKeyPair();
+          final encryptedDekek = Uint8List.fromList([9, 8, 7]);
+          final decryptedDekek = Uint8List.fromList([7, 8, 9]);
+          const profilePictureUrl = 'https://example.com/profile.png';
+          final accountMetadata = AccountMetadata(
+            dekekInfo: DekekInfo(encryptedDekek: base64.encode(encryptedDekek)),
+            sharedStorageData: <SharedStorageData>[],
+          );
+
           when(
             () => mockVaultDataManagerApiService.getListOfProfiles(),
           ).thenAnswer((_) async => Response(requestOptions: RequestOptions()));
+          when(
+            () => profileKeyPair.decrypt(encryptedDekek),
+          ).thenAnswer((_) async => decryptedDekek);
 
           when(
             vaultDataManagerEncryptionServiceMocks
@@ -232,18 +385,50 @@ void main() {
           ).thenAnswer((_) async => dataEncryptionMaterial);
 
           when(vaultDataManagerApiServiceMocks.createProfile).thenAnswer(
-            (_) async => Response<CreateNodeOK>(
+            (_) async => Response<CreateAccountWithProfileOK>(
+              data: CreateAccountWithProfileOK(
+                (b) => b
+                  ..accountIndex = 1
+                  ..accountDid = 'did:test:123'
+                  ..profileId = profileId,
+              ),
               requestOptions: RequestOptions(path: ''),
             ),
           );
 
-          await vaultDataManagerService.createProfile(name: profileName);
+          await vaultDataManagerService.createProfile(
+            accountIndex: 1,
+            accountMetadata: accountMetadata,
+            profileDid: 'did:test:123',
+            profileDidProof: 'proof',
+            profileKeyPair: profileKeyPair,
+            profileName: profileName,
+            profilePictureURI: profilePictureUrl,
+          );
 
+          verify(() => profileKeyPair.decrypt(encryptedDekek)).called(1);
           verify(
             vaultDataManagerEncryptionServiceMocks
                 .generateDataEncryptionMaterial,
           ).called(1);
-          verify(vaultDataManagerApiServiceMocks.createProfile).called(1);
+          verify(
+            () => mockVaultDataManagerApiService.createProfile(
+              accountIndex: 1,
+              accountMetadata: accountMetadata.toJson(),
+              profileDid: 'did:test:123',
+              profileDidProof: 'proof',
+              profileName: profileName,
+              profileDescription: null,
+              profilePictureURI: profilePictureUrl,
+              dekEncryptedByVfsPublicKey:
+                  dataEncryptionMaterial.dekEncryptedByApiPublicKey,
+              dekEncryptedByWalletCryptoMaterial:
+                  dataEncryptionMaterial.dekEncryptedByWalletCryptoMaterial,
+              walletCryptoMaterialHash:
+                  dataEncryptionMaterial.walletCryptoMaterialHash,
+              cancelToken: null,
+            ),
+          ).called(1);
         },
       );
     });
@@ -509,7 +694,7 @@ void main() {
           ).thenAnswer(
             (_) async => Response(
               requestOptions: RequestOptions(),
-              data: listRootNodeChildrenOK,
+              data: listProfilesOK,
             ),
           );
 

@@ -1,9 +1,17 @@
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'vault_service_state.freezed.dart';
+class VaultServiceState {
+  const VaultServiceState({this.error, this.vault});
 
-@Freezed(fromJson: false, toJson: false)
-class VaultServiceState with _$VaultServiceState {
-  factory VaultServiceState({String? error, Vault? vault}) = _VaultServiceState;
+  final String? error;
+  final Vault? vault;
+
+  static const _unset = Object();
+
+  VaultServiceState copyWith({Object? error = _unset, Object? vault = _unset}) {
+    return VaultServiceState(
+      error: identical(error, _unset) ? this.error : error as String?,
+      vault: identical(vault, _unset) ? this.vault : vault as Vault?,
+    );
+  }
 }

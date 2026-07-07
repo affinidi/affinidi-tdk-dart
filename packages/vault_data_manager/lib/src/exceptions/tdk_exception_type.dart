@@ -13,6 +13,7 @@
 /// - [invalidConfiguration] - Indicates the provided configuration is invalid.
 /// - [invalidNodeType] - Indicates the node type is invalid.
 /// - [invalidRepositoryConfigurationType] - Indicates the repository configuration type is invalid.
+/// - [missingEncryptedDekek] - Indicates the encrypted data encryption key is missing.
 /// - [missingFileEdek] - Indicates the file info is not providing an edek
 /// - [missingPropertiesForFileUpload] - Indicates missing properties required for file upload.
 /// - [missingVaultStore] - Indicates the vault store is missing.
@@ -20,7 +21,7 @@
 /// - [nullConsumedFileStorage] - Indicates the vault file consumption value is null.
 /// - [other] - Represents an unknown or unspecified error.
 /// - [profileIdNotSet] - Indicates the profile ID is not set.
-/// - [profleNotConfigured] - Indicates the profile repository is not configured.
+/// - [profileNotConfigured] - Indicates the profile repository is not configured.
 /// - [unableToCreateAccount] - Indicates a failure in creating an account.
 /// - [unableToCreateNode] - Indicates a failure in creating a node.
 /// - [unableToDeleteAccount] - Indicates a failure in deleting an account.
@@ -45,6 +46,7 @@
 /// - [unableToUpdateProfileData] - Indicates a failure in updating profile data.
 /// - [storageLimitExceeded] - Indicates that the vault storage limit has been exceeded.
 /// - [unableToUploadFile] - Indicates a failure in uploading a file.
+/// - [unableToPatchAccount] - Indicates a failure in patching an account.
 /// - [unableToUpdateAccount] - Indicates a failure in updating an account.
 enum TdkExceptionType {
   ///Indicates that an account already exists.
@@ -99,6 +101,9 @@ enum TdkExceptionType {
   /// Exception thrown when the file info is not providing an edek
   missingFileEdek(code: 'missing_file_edek'),
 
+  /// Exception thrown when the encrypted data encryption key is missing.
+  missingEncryptedDekek(code: 'missing_encrypted_dekek'),
+
   /// Indicates missing properties required for file upload.
   missingPropertiesForFileUpload(code: 'missing_properties_for_file_upload'),
 
@@ -118,7 +123,7 @@ enum TdkExceptionType {
   profileIdNotSet(code: 'profile_id_not_set'),
 
   /// Exception thrown when the profile repository is not configured.
-  profleNotConfigured(code: 'profile_not_configured'),
+  profileNotConfigured(code: 'profile_not_configured'),
 
   /// Indicates a failure in creating an account.
   unableToCreateAccount(code: 'unable_to_create_account'),
@@ -195,6 +200,9 @@ enum TdkExceptionType {
 
   /// Indicates a failure in updating an account.
   unableToUpdateAccount(code: 'unable_to_update_account'),
+
+  /// Indicates a failure in patching an account.
+  unableToPatchAccount(code: 'unable_to_patch_account'),
 
   /// Exception thrown when access cannot be granted.
   unableToGrantAccess(code: 'unable_to_grant_access'),

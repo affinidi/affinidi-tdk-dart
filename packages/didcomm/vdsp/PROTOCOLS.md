@@ -553,4 +553,4 @@ For more information, visit the [Problem Reports](https://identity.foundation/di
 
 ## Implementation
 
-To learn more about the Verifiable Data Sharing Protocol, refer to the [VDSP for Dart](https://github.com/affinidi/affinidi-tdk/tree/main/libs/dart/didcomm/vdsp) implementation.
+To learn more about the Verifiable Data Sharing Protocol, refer to the [VDSP for Dart](https://github.com/affinidi/affinidi-tdk-dart/tree/main/packages/didcomm/vdsp) implementation.

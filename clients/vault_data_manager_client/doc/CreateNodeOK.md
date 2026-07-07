@@ -9,6 +9,8 @@ import 'package:affinidi_tdk_vault_data_manager_client/api.dart';
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **nodeId** | **String** |  | 
+**createdAt** | **String** | creation date/time | 
+**modifiedAt** | **String** | modification date/time | 
 **url** | **String** |  | [optional] 
 **link** | **String** |  | [optional] 
 **fields** | [**BuiltMap&lt;String, JsonObject&gt;**](JsonObject.md) |  | [optional] 

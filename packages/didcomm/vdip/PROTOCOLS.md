@@ -519,4 +519,4 @@ A training institution (Issuer) issues a course completion credential while requ
 
 ## Implementation
 
-To learn more about the Verifiable Data Issuance Protocol, refer to the [VDIP for Dart](https://github.com/affinidi/affinidi-tdk/tree/main/libs/dart/didcomm/vdip) implementation.
+To learn more about the Verifiable Data Issuance Protocol, refer to the [VDIP for Dart](https://github.com/affinidi/affinidi-tdk-dart/tree/main/packages/didcomm/vdip) implementation.

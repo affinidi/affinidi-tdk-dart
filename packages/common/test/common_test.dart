@@ -1,7 +1,53 @@
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:affinidi_tdk_common/src/exceptions/tdk_exception_type.dart';
 import 'package:test/test.dart';
 
+const _environmentOverride = String.fromEnvironment(
+  'AFFINIDI_TDK_ENVIRONMENT_OVERRIDE',
+  defaultValue: '',
+);
+const _regionOverride = String.fromEnvironment(
+  'AFFINIDI_TDK_ENVIRONMENT_REGION_OVERRIDE',
+  defaultValue: '',
+);
+
+EnvironmentType? _parseEnvironmentOverride(String raw) {
+  if (raw.isEmpty) {
+    return null;
+  }
+
+  for (final envType in EnvironmentType.values) {
+    if (envType.value == raw) {
+      return envType;
+    }
+  }
+
+  return null;
+}
+
+ElementsRegion? _parseRegionOverride(String raw) {
+  if (raw.isEmpty) {
+    return null;
+  }
+
+  for (final region in ElementsRegion.values) {
+    if (region.awsRegion == raw) {
+      return region;
+    }
+  }
+
+  return null;
+}
+
 void main() {
+  final parsedEnvironmentOverride = _parseEnvironmentOverride(
+    _environmentOverride,
+  );
+  final parsedRegionOverride = _parseRegionOverride(_regionOverride);
+  final hasEnvironmentOverride = _environmentOverride.isNotEmpty;
+  final hasRegionOverride = _regionOverride.isNotEmpty;
+  final hasAnyOverride = hasEnvironmentOverride || hasRegionOverride;
+
   final mumbaiRegion = ElementsRegion.apSouth1;
   final envTypeLocal = EnvironmentType.local;
   final envTypeDev = EnvironmentType.dev;
@@ -11,6 +57,172 @@ void main() {
   final prod = Environment.getEnvironmentConfig(envTypeProd);
 
   group('Environment Tests', () {
+    test(
+      'getEnvironmentConfig falls back to provided inputs when no overrides are set',
+      () {
+        final config = Environment.getEnvironmentConfig(
+          EnvironmentType.local,
+          ElementsRegion.usEast1,
+        );
+        expect(config.environmentName, equals(EnvironmentType.local.value));
+        expect(config.apiGwUrl, equals('https://use1.dev.api.affinidi.io'));
+      },
+      skip: hasAnyOverride
+          ? 'Compile-time overrides are set; fallback behavior test is skipped.'
+          : false,
+    );
+
+    test('getEnvironmentConfig applies environment override when provided', () {
+      if (parsedEnvironmentOverride != null) {
+        final config = Environment.getEnvironmentConfig(
+          EnvironmentType.local,
+          ElementsRegion.apSoutheast1,
+        );
+        expect(config.environmentName, equals(parsedEnvironmentOverride.value));
+      } else if (hasEnvironmentOverride) {
+        expect(
+          () => Environment.getEnvironmentConfig(
+            EnvironmentType.local,
+            ElementsRegion.apSoutheast1,
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidEnvironmentOverride.code,
+            ),
+          ),
+        );
+      } else {
+        final config = Environment.getEnvironmentConfig(
+          EnvironmentType.local,
+          ElementsRegion.apSoutheast1,
+        );
+        expect(config.environmentName, equals(EnvironmentType.local.value));
+      }
+    });
+
+    test('getEnvironmentConfig applies region override when provided', () {
+      if (hasEnvironmentOverride && parsedEnvironmentOverride == null) {
+        expect(
+          () => Environment.getEnvironmentConfig(
+            EnvironmentType.dev,
+            ElementsRegion.apSoutheast1,
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidEnvironmentOverride.code,
+            ),
+          ),
+        );
+        return;
+      }
+
+      if (parsedRegionOverride != null) {
+        final config = Environment.getEnvironmentConfig(
+          EnvironmentType.dev,
+          ElementsRegion.apSoutheast1,
+        );
+        expect(
+          config.apiGwUrl,
+          equals(
+            'https://${parsedRegionOverride.regionCode}.dev.api.affinidi.io',
+          ),
+        );
+      } else if (hasRegionOverride) {
+        expect(
+          () => Environment.getEnvironmentConfig(
+            EnvironmentType.dev,
+            ElementsRegion.apSoutheast1,
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidEnvironmentRegionOverride.code,
+            ),
+          ),
+        );
+      } else {
+        final config = Environment.getEnvironmentConfig(
+          EnvironmentType.dev,
+          ElementsRegion.apSoutheast1,
+        );
+        expect(config.apiGwUrl, equals('https://apse1.dev.api.affinidi.io'));
+      }
+    });
+
+    test('invalid environment override throws', () {
+      if (hasEnvironmentOverride && parsedEnvironmentOverride == null) {
+        expect(
+          () => Environment.getEnvironmentConfig(
+            EnvironmentType.prod,
+            ElementsRegion.apSoutheast1,
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidEnvironmentOverride.code,
+            ),
+          ),
+        );
+      } else {
+        expect(
+          () => Environment.getEnvironmentConfig(
+            EnvironmentType.prod,
+            ElementsRegion.apSoutheast1,
+          ),
+          returnsNormally,
+        );
+      }
+    });
+
+    test('invalid region override throws', () {
+      if (hasEnvironmentOverride && parsedEnvironmentOverride == null) {
+        expect(
+          () => Environment.getEnvironmentConfig(
+            EnvironmentType.prod,
+            ElementsRegion.apSoutheast1,
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidEnvironmentOverride.code,
+            ),
+          ),
+        );
+        return;
+      }
+
+      if (hasRegionOverride && parsedRegionOverride == null) {
+        expect(
+          () => Environment.getEnvironmentConfig(
+            EnvironmentType.prod,
+            ElementsRegion.apSoutheast1,
+          ),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidEnvironmentRegionOverride.code,
+            ),
+          ),
+        );
+      } else {
+        expect(
+          () => Environment.getEnvironmentConfig(
+            EnvironmentType.prod,
+            ElementsRegion.apSoutheast1,
+          ),
+          returnsNormally,
+        );
+      }
+    });
+
     test('fetchEnvironment returns prod by default', () {
       expect(
         Environment.fetchEnvironment().environmentName,

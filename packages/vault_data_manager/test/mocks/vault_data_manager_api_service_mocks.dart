@@ -39,14 +39,21 @@ class VaultDataManagerApiServiceMocks {
         parentNodeId: 'parent_node_id',
       );
 
-  Future<Response<CreateNodeOK>> createProfile() =>
+  Future<Response<CreateAccountWithProfileOK>> createProfile() =>
       mockVaultDataManagerApiService.createProfile(
+        accountIndex: any(named: 'accountIndex'),
+        accountMetadata: any(named: 'accountMetadata'),
+        profileDid: any(named: 'profileDid'),
+        profileDidProof: any(named: 'profileDidProof'),
         profileName: any(named: 'profileName'),
+        profileDescription: any(named: 'profileDescription'),
+        profilePictureURI: any(named: 'profilePictureURI'),
         dekEncryptedByVfsPublicKey: any(named: 'dekEncryptedByVfsPublicKey'),
         dekEncryptedByWalletCryptoMaterial: any(
           named: 'dekEncryptedByWalletCryptoMaterial',
         ),
         walletCryptoMaterialHash: any(named: 'walletCryptoMaterialHash'),
+        cancelToken: any(named: 'cancelToken'),
       );
 
   Future<Response<DeleteNodeDto>> deleteNodeById() =>

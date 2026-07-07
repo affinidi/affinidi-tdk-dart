@@ -1,3 +1,7 @@
-export 'src/exceptions/tdk_exception_type.dart';
-export 'storages/flutter_secure_consent_storage.dart';
-export 'storages/flutter_secure_vault_store.dart';
+/// Legacy compatibility entrypoint.
+///
+/// Prefer importing
+/// `package:affinidi_tdk_vault_flutter_utils/affinidi_tdk_vault_flutter_utils.dart`.
+library;
+
+export 'affinidi_tdk_vault_flutter_utils.dart';

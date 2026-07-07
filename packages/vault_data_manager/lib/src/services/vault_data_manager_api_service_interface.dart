@@ -99,7 +99,7 @@ abstract interface class VaultDataManagerApiServiceInterface {
   });
 
   /// Gets the list of all profiles
-  Future<Response<ListRootNodeChildrenOK>> getListOfProfiles({
+  Future<Response<ListProfilesOK>> getListOfProfiles({
     CancelToken? cancelToken,
   });
 
@@ -123,7 +123,11 @@ abstract interface class VaultDataManagerApiServiceInterface {
   /// profileDescription: 'New profile description',
   /// profilePictureURI: 'https://www.hosting.net/yourImage.jpg',
   /// );
-  Future<Response<CreateNodeOK>> createProfile({
+  Future<Response<CreateAccountWithProfileOK>> createProfile({
+    required int accountIndex,
+    Map<String, Object>? accountMetadata,
+    required String profileDid,
+    required String profileDidProof,
     required String profileName,
     required List<int> dekEncryptedByVfsPublicKey,
     required List<int> dekEncryptedByWalletCryptoMaterial,
@@ -227,6 +231,22 @@ abstract interface class VaultDataManagerApiServiceInterface {
     ValidateStatus? validateStatus,
     VaultProgressCallback? onSendProgress,
     VaultProgressCallback? onReceiveProgress,
+  });
+
+  /// Patches an account for a given [accountIndex].
+  /// [accountIndex] - positive integer used to identify account.
+  /// [didProof] - JWT that proves ownership of profile DID.
+  /// [encryptedDekek] - A base64 encoded data encryption key.
+  /// [ownerProfileId] - Unique profile identifier.
+  /// [ownerProfileDid] - DID associated with the profile.
+  /// [cancelToken] - A [CancelToken] that can be used to cancel the operation.
+  Future<Response<UpdateAccountDto>> patchAccount({
+    required int accountIndex,
+    required String didProof,
+    required String encryptedDekek,
+    required String ownerProfileId,
+    required String ownerProfileDid,
+    CancelToken? cancelToken,
   });
 
   /// Updates an account for a given [accountIndex].

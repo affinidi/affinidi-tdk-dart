@@ -96,30 +96,14 @@ void main() async {
   print('[Demo] Adding new profiles ...');
 
   // Create Alice
-  accountIndexAlice = await _createProfile(
+  final aliceProfile = await _createProfile(
     vaultAlice,
     'Alice522',
     accountIndexAlice,
   );
-  final aliceAccountIndex = accountIndexAlice;
 
   // Create Bob
-  accountIndexBob = await _createProfile(vaultBob, 'Bob410', accountIndexBob);
-  final bobAccountIndex = accountIndexBob;
-
-  // Get Alice and Bob profiles
-  var profilesAfterAccountsAlice = await vaultAlice.listProfiles();
-  var profilesAfterAccountsBob = await vaultBob.listProfiles();
-  final aliceProfile = profilesAfterAccountsAlice
-      .where((profile) => profile.accountIndex == aliceAccountIndex)
-      .firstOrNull;
-  var bobProfile = profilesAfterAccountsBob
-      .where((profile) => profile.accountIndex == bobAccountIndex)
-      .firstOrNull;
-
-  if (aliceProfile == null || bobProfile == null) {
-    throw UnsupportedError('Both Alice and Bob should have a profile');
-  }
+  var bobProfile = await _createProfile(vaultBob, 'Bob410', accountIndexBob);
 
   // Alice creates a file
   print('[Demo] Alice is adding a file ...');
@@ -194,16 +178,12 @@ void main() async {
 
   // Bob to accept shared profile
   print('[Demo] Bob is accepting a shared profile ...');
-  await vaultBob.addSharedProfile(
+  bobProfile = await vaultBob.addSharedProfile(
     profileId: bobProfile.id,
     sharedProfile: sharedProfile,
   );
 
-  profilesBob = await vaultBob.listProfiles();
-  var bobProfileWithSharedStorage = profilesBob
-      .where((profile) => profile.id == bobProfile.id)
-      .firstOrNull;
-  final bobSharedStorages = bobProfileWithSharedStorage!.sharedStorages;
+  final bobSharedStorages = bobProfile.sharedStorages;
 
   print(
     '[Demo] Bob available shared storages ${bobSharedStorages.map((storage) => storage.id).join(', ')}',
@@ -339,10 +319,14 @@ Future<void> _deleteFolder({
   }
 }
 
-Future<int> _createProfile(Vault vault, String name, int accountIndex) async {
+Future<Profile> _createProfile(
+  Vault vault,
+  String name,
+  int accountIndex,
+) async {
   final newAccountIndex = accountIndex + 1;
   final existingProfiles = await vault.listProfiles();
-  final existingProfile = existingProfiles
+  var existingProfile = existingProfiles
       .where((profile) => profile.accountIndex == newAccountIndex)
       .firstOrNull;
 
@@ -350,7 +334,9 @@ Future<int> _createProfile(Vault vault, String name, int accountIndex) async {
     print('[Demo] Creating profile for $name ...');
     try {
       final profileRepository = vault.defaultProfileRepository;
-      await profileRepository.createProfile(name: '$name $newAccountIndex');
+      existingProfile = await profileRepository.createProfile(
+        name: '$name $newAccountIndex',
+      );
     } on TdkException catch (error) {
       print(
         [
@@ -365,7 +351,7 @@ Future<int> _createProfile(Vault vault, String name, int accountIndex) async {
 
   final profiles = await vault.listProfiles();
   _listProfileNames(profiles, label: 'Names after adding $name profile');
-  return newAccountIndex;
+  return existingProfile;
 }
 
 Future<void> _addFileToProfile(

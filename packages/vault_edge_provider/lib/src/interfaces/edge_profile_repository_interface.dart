@@ -8,7 +8,7 @@ abstract interface class EdgeProfileRepositoryInterface {
   Future<List<EdgeProfile>> listProfiles({VaultCancelToken? cancelToken});
 
   /// Creates a new local profile
-  Future<void> createProfile({
+  Future<String> createProfile({
     required String name,
     String? description,
     required int accountIndex,
