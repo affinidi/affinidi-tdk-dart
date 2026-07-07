@@ -110,17 +110,18 @@ Future<void> main() async {
         holderDidManager.assertionMethod.first,
       );
 
-      await config.configureAcl(
-        mediatorDidDocument: mediatorDidDocument,
-        didManager: verifierDidManager,
-        theirDids: [holderSigner.did],
-      );
-
-      await config.configureAcl(
-        mediatorDidDocument: mediatorDidDocument,
-        didManager: holderDidManager,
-        theirDids: [verifierDidDocument.id],
-      );
+      await Future.wait([
+        config.configureAcl(
+          mediatorDidDocument: mediatorDidDocument,
+          didManager: verifierDidManager,
+          theirDids: [holderSigner.did],
+        ),
+        config.configureAcl(
+          mediatorDidDocument: mediatorDidDocument,
+          didManager: holderDidManager,
+          theirDids: [verifierDidDocument.id],
+        ),
+      ]);
 
       holderVerifiableCredentials = await Future.wait(
         [
