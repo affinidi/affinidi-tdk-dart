@@ -1,3 +1,7 @@
+## 3.0.2
+
+ - **FIX**: Remove dependency on flutter_test (#182).
+
 ## 3.0.1
 
  - Update a dependency to the latest release.
