@@ -11,7 +11,7 @@ resolution: workspace
 
 dependencies:
   crypto: ^3.0.6
-  didcomm: ^2.3.2
+  didcomm: ^2.3.4
   dio: ^5.9.0
   json_annotation: ^4.9.0
   selective_disclosure_jwt: ^1.1.1
