@@ -151,6 +151,7 @@ class DefaultApi {
   /// Parameters:
   /// * [projectId] - Affinidi project id
   /// * [configurationId] - The id of the issuance configuration
+  /// * [issuanceId] - Optional filter to retrieve records for a specific issuance ID
   /// * [limit] - Maximum number of records to fetch in a list
   /// * [exclusiveStartKey] - exclusiveStartKey for retrieving the next batch of data.
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -165,6 +166,7 @@ class DefaultApi {
   Future<Response<ListIssuanceRecordResponse>> listIssuanceDataRecords({
     required String projectId,
     required String configurationId,
+    String? issuanceId,
     int? limit = 10,
     String? exclusiveStartKey,
     CancelToken? cancelToken,
@@ -214,6 +216,12 @@ class DefaultApi {
     );
 
     final _queryParameters = <String, dynamic>{
+      if (issuanceId != null)
+        r'issuanceId': encodeQueryParameter(
+          _serializers,
+          issuanceId,
+          const FullType(String),
+        ),
       if (limit != null)
         r'limit': encodeQueryParameter(
           _serializers,
