@@ -46,13 +46,20 @@ class FlutterSecureConsentStorage implements ConsentStorage {
   Future<IotaConsentRecord?> findByRequestHash(String requestHash) async {
     final all = await _secureStorage.readAll();
     final prefix = '${_namespace}_';
+    IotaConsentRecord? bestMatch;
+
     for (final entry in all.entries) {
       if (!entry.key.startsWith(prefix)) continue;
       try {
         final record = IotaConsentRecord.fromJson(
           jsonDecode(entry.value) as Map<String, dynamic>,
         );
-        if (record.requestHash == requestHash) return record;
+        if (record.requestHash != requestHash) continue;
+
+        if (bestMatch == null ||
+            record.sharedAt.compareTo(bestMatch.sharedAt) > 0) {
+          bestMatch = record;
+        }
       } catch (e) {
         throw TdkException(
           message:
@@ -62,7 +69,8 @@ class FlutterSecureConsentStorage implements ConsentStorage {
         );
       }
     }
-    return null;
+
+    return bestMatch;
   }
 
   @override

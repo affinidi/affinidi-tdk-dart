@@ -31,12 +31,12 @@ abstract interface class ShareFlowServiceInterface {
   /// presentation definition, and optional purpose metadata.
   ///
   /// Throws:
-  /// - [TdkException] if the URI cannot be parsed or a required field is missing.
-  ///   - `parse_failure`: when the `request` query parameter is absent, malformed, or the JWT payload cannot be decoded.
-  ///   - `invalid_or_expired_jwt`: when the JWT signature is invalid, the token has expired, the `client_id_scheme` is not `did`, or the `aud` does not match [walletDid].
-  ///   - `missing_client_id`: when the `client_id` field is absent from the payload.
-  ///   - `invalid_response_mode`: when `response_mode` is not `direct_post`.
-  ///   - `invalid_response_type`: when `response_type` is not `vp_token`.
+  /// - [TdkException] if the URI cannot be parsed or validation fails.
+  ///   - `parse_failure`: when the `request` query parameter is absent/malformed or the JWT payload cannot be decoded.
+  ///   - `invalid_or_expired_jwt`: when signature verification fails, the token is expired, or the `iat` claim is in the future.
+  ///   - `invalid_client_id_scheme`: when `client_id_scheme` is not `did`.
+  ///   - `invalid_audience`: when the `aud` claim is present but does not match [walletDid] (or [walletDid] was omitted).
+  ///   - `missing_client_id`, `invalid_response_mode`, `invalid_response_type`, `replay_detected`: when the corresponding request parameters fail validation.
   ///
   /// Example:
   /// ```dart

@@ -45,7 +45,7 @@ enum TdkExceptionType {
   invalidDcqlQuery('invalid_dcql_query'),
 
   /// Thrown when a single IDV input descriptor requests more than two VC
-  /// types (i.e. more than `VerifiedIdsentityDocument` + one specific subtype).
+  /// types (i.e. more than `VerifiedIdentityDocument` + one specific subtype).
   unsupportedMultipleIdvTypes('unsupported_multiple_idv_types'),
 
   /// Thrown when submitting the VP to the verifier callback fails — e.g.

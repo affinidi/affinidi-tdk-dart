@@ -132,6 +132,20 @@ class IotaPayload {
         code: TdkExceptionType.parseFailure.code,
       );
     }
+    final rawScope = json['scope'];
+    if (rawScope != null && rawScope is! String) {
+      throw TdkException(
+        message: "JWT payload 'scope' must be a string.",
+        code: TdkExceptionType.parseFailure.code,
+      );
+    }
+    if (rawDcql != null && rawScope != null) {
+      throw TdkException(
+        message:
+            "JWT payload must not contain 'scope' when 'dcql_query' is present.",
+        code: TdkExceptionType.parseFailure.code,
+      );
+    }
     if (json['response_mode'] == 'direct_post' &&
         json['redirect_uri'] != null) {
       throw TdkException(
@@ -150,6 +164,7 @@ class IotaPayload {
       responseUri: json['response_uri'] as String,
       responseType: json['response_type'] as String,
       responseMode: json['response_mode'] as String,
+      scope: rawScope as String?,
       aud: json['aud'] as String?,
       exp: (json['exp'] as num).toInt(),
       iat: (json['iat'] as num).toInt(),

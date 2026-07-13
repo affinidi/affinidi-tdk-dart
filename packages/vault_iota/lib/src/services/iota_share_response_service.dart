@@ -171,6 +171,11 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
   ///
   /// See https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-8.1
   ///
+  /// TODO: The current implementation sends a single VP string with presentation_submission
+  /// (PEX format) to maintain compatibility with the iota-service backend, which does not
+  /// yet support DCQL response processing. Once backend DCQL support is added, update this
+  /// to send the proper DCQL format (object with query IDs as keys mapping to VP arrays).
+  ///
   /// Parameters:
   /// * [dcql] - the parsed DCQL share request.
   /// * [selectedCredentials] - the credentials the user agreed to share.
