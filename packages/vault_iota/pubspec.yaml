@@ -14,7 +14,6 @@ dependencies:
   affinidi_tdk_cryptography: ^3.0.0
   dcql: ^1.2.0
   dio: ^5.9.2
-  http: ^1.1.0
   json_schema: ^5.2.0
   meta: ^1.15.0
   ssi: ^3.3.0

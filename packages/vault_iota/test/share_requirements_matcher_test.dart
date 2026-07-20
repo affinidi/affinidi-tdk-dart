@@ -258,7 +258,7 @@ void main() {
     });
 
     test(
-      'should propagate StateError when a field path uses bracket notation',
+      'should throw TdkException when a field path uses bracket notation',
       () async {
         final vc = buildTestVc(type: 'UniversityDegree');
 
@@ -283,7 +283,16 @@ void main() {
           submissionRequirementsByGroup: const {},
         );
 
-        await expectLater(matcher.match(req, [vc]), throwsA(isA<StateError>()));
+        await expectLater(
+          matcher.match(req, [vc]),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidPresentationDefinition.code,
+            ),
+          ),
+        );
       },
     );
 

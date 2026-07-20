@@ -129,17 +129,14 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     final List<IotaConsentRecord> candidates;
     try {
       candidates = await _store.findAllByRequestHash(requestHash);
-    } catch (e, stackTrace) {
-      if (e is TdkException) rethrow;
-
-      Error.throwWithStackTrace(
-        TdkException(
-          message: 'Failed to read consent record.',
-          code: TdkExceptionType.failedToReadConsentRecord.code,
-          originalMessage: e.toString(),
-        ),
-        stackTrace,
+    } catch (e) {
+      // A failure to read prior consent must not block the user — they can
+      // still consent manually. Decline automatic consent instead of throwing
+      // so the caller falls back to the interactive share flow.
+      _logger.warning(
+        'Failed to read consent record; declining automatic consent. $e',
       );
+      return const AutoConsentDeclined();
     }
 
     final enabledCandidates = candidates

@@ -48,6 +48,22 @@ class VpBuilder implements VpBuilderInterface {
       );
     }
 
+    // This builder produces a JSON-LD Verifiable Presentation, so every
+    // credential must be JSON-LD. Reject JWT-VC / SD-JWT-VC up front with a
+    // clear error instead of letting the LD suite fail with an opaque message.
+    for (final vc in credentials) {
+      if (vc is! LdVcDataModelV1 && vc is! LdVcDataModelV2) {
+        throw TdkException(
+          message:
+              'Unsupported credential format for VP building: ${vc.runtimeType}. '
+              'This builder produces JSON-LD presentations and supports only '
+              'JSON-LD credentials (LdVcDataModelV1 / LdVcDataModelV2). '
+              'JWT-VC and SD-JWT-VC credentials are not supported.',
+          code: TdkExceptionType.unsupportedCredentialFormat.code,
+        );
+      }
+    }
+
     final proofGenerator = signer.toProofGenerator(
       nonce: nonce,
       domain: domain,

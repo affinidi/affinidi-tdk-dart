@@ -787,34 +787,26 @@ void main() {
       );
 
       test(
-        'should throw TdkException with failedToReadConsentRecord when the store throws',
+        'should decline automatic consent when the store throws',
         () async {
           when(
             () => store.findAllByRequestHash(any()),
           ).thenThrow(Exception('storage error'));
 
-          await expectLater(
-            () => service.tryAutomaticConsent(
-              shareRequest: IotaConsentRecordFixtures.shareRequest,
-              matchedCredentials:
-                  IotaConsentRecordFixtures.claimedCredentials(),
-              verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-              vaultId: IotaConsentRecordFixtures.vaultId,
-              requestHash: IotaConsentRecordFixtures.requestHash,
-            ),
-            throwsA(
-              isA<TdkException>().having(
-                (e) => e.code,
-                'code',
-                TdkExceptionType.failedToReadConsentRecord.code,
-              ),
-            ),
+          final result = await service.tryAutomaticConsent(
+            shareRequest: IotaConsentRecordFixtures.shareRequest,
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
+            requestHash: IotaConsentRecordFixtures.requestHash,
           );
+
+          expect(result, isA<AutoConsentDeclined>());
         },
       );
 
       test(
-        'should rethrow a TdkException from the store without wrapping',
+        'should decline automatic consent when the store throws a TdkException',
         () async {
           final original = TdkException(
             message: 'Deserialization failed: unexpected null field.',
@@ -823,17 +815,15 @@ void main() {
 
           when(() => store.findAllByRequestHash(any())).thenThrow(original);
 
-          await expectLater(
-            () => service.tryAutomaticConsent(
-              shareRequest: IotaConsentRecordFixtures.shareRequest,
-              matchedCredentials:
-                  IotaConsentRecordFixtures.claimedCredentials(),
-              verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-              vaultId: IotaConsentRecordFixtures.vaultId,
-              requestHash: IotaConsentRecordFixtures.requestHash,
-            ),
-            throwsA(same(original)),
+          final result = await service.tryAutomaticConsent(
+            shareRequest: IotaConsentRecordFixtures.shareRequest,
+            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
+            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+            vaultId: IotaConsentRecordFixtures.vaultId,
+            requestHash: IotaConsentRecordFixtures.requestHash,
           );
+
+          expect(result, isA<AutoConsentDeclined>());
         },
       );
 

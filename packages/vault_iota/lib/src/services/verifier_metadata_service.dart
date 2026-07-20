@@ -1,7 +1,5 @@
-import 'dart:convert';
-
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 import '../exceptions/tdk_exception_type.dart';
 import '../http_status_code.dart';
@@ -13,7 +11,7 @@ import 'verifier_metadata_service_interface.dart';
 /// the Affinidi login configuration API.
 class VerifierMetadataService implements VerifierMetadataServiceInterface {
   final String _baseUrl;
-  final http.Client _httpClient;
+  final Dio _dio;
 
   static const _metadataPath = '/vpa/v1/login/configurations/metadata';
 
@@ -30,10 +28,10 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
   /// Creates a new [VerifierMetadataService].
   ///
   /// [baseUrl] - the base URL of the Affinidi API.
-  /// [httpClient] - optional HTTP client; defaults to a new [http.Client].
-  VerifierMetadataService({required String baseUrl, http.Client? httpClient})
+  /// [dio] - optional Dio client; defaults to a new [Dio].
+  VerifierMetadataService({required String baseUrl, Dio? dio})
     : _baseUrl = baseUrl,
-      _httpClient = httpClient ?? http.Client();
+      _dio = dio ?? Dio();
 
   @override
   Future<VerifierClientMetadata> fetchVerifierMetadata({
@@ -59,7 +57,10 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
         ).replace(path: '$_metadataPath/${Uri.encodeComponent(clientId)}');
       }
 
-      final response = await _httpClient.get(uri);
+      final response = await _dio.getUri<dynamic>(
+        uri,
+        options: Options(validateStatus: (_) => true),
+      );
 
       if (response.statusCode != HttpStatusCode.ok) {
         _throw(
@@ -68,7 +69,13 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
         );
       }
 
-      final json = jsonDecode(response.body) as Map<String, dynamic>;
+      final json = response.data;
+      if (json is! Map<String, dynamic>) {
+        _throw(
+          'Verifier metadata response was not a JSON object.',
+          TdkExceptionType.failedToFetchVerifierMetadata,
+        );
+      }
       return VerifierClientMetadata.fromJson(json);
     } on TdkException {
       rethrow;
@@ -86,6 +93,6 @@ class VerifierMetadataService implements VerifierMetadataServiceInterface {
   /// Call this when the service is no longer needed.
   @override
   void dispose() {
-    _httpClient.close();
+    _dio.close();
   }
 }

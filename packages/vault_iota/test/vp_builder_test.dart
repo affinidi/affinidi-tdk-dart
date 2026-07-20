@@ -3,6 +3,8 @@ import 'package:ssi/ssi.dart';
 import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 
+import 'fixtures/iota_consent_record_fixtures.dart';
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 Future<DidSigner> _buildSigner({
@@ -116,6 +118,29 @@ void main() {
                 (e) => e.code,
                 'code',
                 TdkExceptionType.emptyCredentials.code,
+              ),
+            ),
+          );
+        });
+      });
+
+      group('and a credential is not JSON-LD', () {
+        test('should throw TdkException with unsupportedCredentialFormat type',
+            () async {
+          await expectLater(
+            builder.build(
+              signer: ed25519Signer,
+              credentials: <ParsedVerifiableCredential<dynamic>>[
+                IotaConsentRecordFixtures.makeParsedVc(),
+              ],
+              nonce: nonce,
+              domain: domain,
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.unsupportedCredentialFormat.code,
               ),
             ),
           );

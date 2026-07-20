@@ -55,6 +55,11 @@ enum TdkExceptionType {
   /// Thrown when `VpBuilder.build` is called with an empty credentials list.
   emptyCredentials('empty_credentials'),
 
+  /// Thrown when `VpBuilder.build` receives a credential whose format is not
+  /// JSON-LD (e.g. JWT-VC or SD-JWT-VC). The LD VP builder can only embed
+  /// JSON-LD credentials.
+  unsupportedCredentialFormat('unsupported_credential_format'),
+
   /// Thrown when `IotaShareResponseService` is constructed with an empty
   /// `trustedVerifiersList`.
   emptyTrustedVerifiersList('empty_trusted_verifiers_list'),

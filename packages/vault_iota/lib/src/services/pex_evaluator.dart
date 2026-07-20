@@ -60,6 +60,21 @@ abstract final class PexEvaluator {
       final paths =
           (field['path'] as List?)?.whereType<String>().toList() ??
           const <String>[];
+      // Validate JSONPath syntax up front (before the per-VC loop) so an
+      // unsupported path surfaces as a typed exception to the caller, rather
+      // than being swallowed by the `on Exception` guard in `selectMatching`.
+      for (final path in paths) {
+        if (path != r'$' && !path.startsWith(r'$.')) {
+          throw TdkException(
+            message:
+                'Malformed PD: unsupported JSONPath syntax "$path". '
+                'Only dot-notation paths starting with \$. are supported '
+                '(e.g. \$.type, \$.issuer). Bracket notation such as '
+                r"$['@context'] or $[0] is not supported.",
+            code: TdkExceptionType.invalidPresentationDefinition.code,
+          );
+        }
+      }
       final rawFilter = field['filter'];
       if (rawFilter == null) {
         return (paths: paths, schema: null);
@@ -115,11 +130,16 @@ abstract final class PexEvaluator {
   static dynamic _resolveJsonPath(Map<String, dynamic> vcJson, String path) {
     if (path == r'$') return vcJson;
     if (!path.startsWith(r'$.')) {
-      throw StateError(
-        'Unsupported JSONPath syntax: "$path". '
-        'Only dot-notation paths starting with \$. are supported '
-        '(e.g. \$.type, \$.issuer). Bracket notation such as '
-        r"$['@context'] or $[0] is not supported.",
+      // Throw a TdkException (an Exception) rather than a StateError (an Error)
+      // so it is handled consistently by the `on Exception` guard at the call
+      // site in `selectMatching` / ShareRequirementsMatcher.
+      throw TdkException(
+        message:
+            'Unsupported JSONPath syntax: "$path". '
+            'Only dot-notation paths starting with \$. are supported '
+            '(e.g. \$.type, \$.issuer). Bracket notation such as '
+            r"$['@context'] or $[0] is not supported.",
+        code: TdkExceptionType.invalidPresentationDefinition.code,
       );
     }
 
