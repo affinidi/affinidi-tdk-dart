@@ -125,26 +125,28 @@ void main() {
       });
 
       group('and a credential is not JSON-LD', () {
-        test('should throw TdkException with unsupportedCredentialFormat type',
-            () async {
-          await expectLater(
-            builder.build(
-              signer: ed25519Signer,
-              credentials: <ParsedVerifiableCredential<dynamic>>[
-                IotaConsentRecordFixtures.makeParsedVc(),
-              ],
-              nonce: nonce,
-              domain: domain,
-            ),
-            throwsA(
-              isA<TdkException>().having(
-                (e) => e.code,
-                'code',
-                TdkExceptionType.unsupportedCredentialFormat.code,
+        test(
+          'should throw TdkException with unsupportedCredentialFormat type',
+          () async {
+            await expectLater(
+              builder.build(
+                signer: ed25519Signer,
+                credentials: <ParsedVerifiableCredential<dynamic>>[
+                  IotaConsentRecordFixtures.makeParsedVc(),
+                ],
+                nonce: nonce,
+                domain: domain,
               ),
-            ),
-          );
-        });
+              throwsA(
+                isA<TdkException>().having(
+                  (e) => e.code,
+                  'code',
+                  TdkExceptionType.unsupportedCredentialFormat.code,
+                ),
+              ),
+            );
+          },
+        );
       });
 
       group('and credentials are DM v1', () {

@@ -105,23 +105,26 @@ void main() {
   // ── response_uri parse-failure paths ─────────────────────────────────────────
 
   group('response_uri validation (parse failure)', () {
-    test('throws invalidResponseUri for a non-HTTPS acceptResponseUri', () async {
-      final service = buildService();
-      await expectLater(
-        () => service.submitShareResponse(
-          shareRequest: _pexShareRequest,
-          selectedCredentials: [_fakeVC],
-          acceptResponseUri: 'http://verifier.example.com/accept',
-        ),
-        throwsA(
-          isA<TdkException>().having(
-            (e) => e.code,
-            'code',
-            TdkExceptionType.invalidResponseUri.code,
+    test(
+      'throws invalidResponseUri for a non-HTTPS acceptResponseUri',
+      () async {
+        final service = buildService();
+        await expectLater(
+          () => service.submitShareResponse(
+            shareRequest: _pexShareRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: 'http://verifier.example.com/accept',
           ),
-        ),
-      );
-    });
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidResponseUri.code,
+            ),
+          ),
+        );
+      },
+    );
 
     test('throws invalidResponseUri for an IP-address host', () async {
       final service = buildService();
@@ -141,23 +144,26 @@ void main() {
       );
     });
 
-    test('throws invalidResponseUri for a URI with userinfo or fragment', () async {
-      final service = buildService();
-      await expectLater(
-        () => service.submitShareResponse(
-          shareRequest: _pexShareRequest,
-          selectedCredentials: [_fakeVC],
-          acceptResponseUri: 'https://user@verifier.example.com/accept#frag',
-        ),
-        throwsA(
-          isA<TdkException>().having(
-            (e) => e.code,
-            'code',
-            TdkExceptionType.invalidResponseUri.code,
+    test(
+      'throws invalidResponseUri for a URI with userinfo or fragment',
+      () async {
+        final service = buildService();
+        await expectLater(
+          () => service.submitShareResponse(
+            shareRequest: _pexShareRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: 'https://user@verifier.example.com/accept#frag',
           ),
-        ),
-      );
-    });
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              TdkExceptionType.invalidResponseUri.code,
+            ),
+          ),
+        );
+      },
+    );
   });
 
   // ── PEX submit ──────────────────────────────────────────────────────────────

@@ -786,24 +786,21 @@ void main() {
         },
       );
 
-      test(
-        'should decline automatic consent when the store throws',
-        () async {
-          when(
-            () => store.findAllByRequestHash(any()),
-          ).thenThrow(Exception('storage error'));
+      test('should decline automatic consent when the store throws', () async {
+        when(
+          () => store.findAllByRequestHash(any()),
+        ).thenThrow(Exception('storage error'));
 
-          final result = await service.tryAutomaticConsent(
-            shareRequest: IotaConsentRecordFixtures.shareRequest,
-            matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
-            verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
-            vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
-          );
+        final result = await service.tryAutomaticConsent(
+          shareRequest: IotaConsentRecordFixtures.shareRequest,
+          matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
+          verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+          vaultId: IotaConsentRecordFixtures.vaultId,
+          requestHash: IotaConsentRecordFixtures.requestHash,
+        );
 
-          expect(result, isA<AutoConsentDeclined>());
-        },
-      );
+        expect(result, isA<AutoConsentDeclined>());
+      });
 
       test(
         'should decline automatic consent when the store throws a TdkException',

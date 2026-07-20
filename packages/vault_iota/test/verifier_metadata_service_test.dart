@@ -56,37 +56,42 @@ void main() {
     });
 
     group('when clientMetadata is provided', () {
-      test('should parse it directly without making a network request', () async {
-        // No mocked route — any network call would throw and fail the test.
-        final service = buildService();
-        addTearDown(service.dispose);
+      test(
+        'should parse it directly without making a network request',
+        () async {
+          // No mocked route — any network call would throw and fail the test.
+          final service = buildService();
+          addTearDown(service.dispose);
 
-        final result = await service.fetchVerifierMetadata(
-          clientId: _clientId,
-          clientMetadata: _validMetadataJson(),
-        );
+          final result = await service.fetchVerifierMetadata(
+            clientId: _clientId,
+            clientMetadata: _validMetadataJson(),
+          );
 
-        expect(result.name, 'Test Verifier');
-        expect(result.logo, 'https://example.com/logo.png');
-        expect(result.origin, 'https://example.com');
-        expect(result.domainVerified, isTrue);
-      });
+          expect(result.name, 'Test Verifier');
+          expect(result.logo, 'https://example.com/logo.png');
+          expect(result.origin, 'https://example.com');
+          expect(result.domainVerified, isTrue);
+        },
+      );
 
-      test('should return null fields when clientMetadata has no recognised keys',
-          () async {
-        final service = buildService();
-        addTearDown(service.dispose);
+      test(
+        'should return null fields when clientMetadata has no recognised keys',
+        () async {
+          final service = buildService();
+          addTearDown(service.dispose);
 
-        final result = await service.fetchVerifierMetadata(
-          clientId: _clientId,
-          clientMetadata: {'unexpected_field': 42},
-        );
+          final result = await service.fetchVerifierMetadata(
+            clientId: _clientId,
+            clientMetadata: {'unexpected_field': 42},
+          );
 
-        expect(result.name, isNull);
-        expect(result.logo, isNull);
-        expect(result.origin, isNull);
-        expect(result.domainVerified, isNull);
-      });
+          expect(result.name, isNull);
+          expect(result.logo, isNull);
+          expect(result.origin, isNull);
+          expect(result.domainVerified, isNull);
+        },
+      );
     });
 
     group('when clientMetadataUri is provided', () {
@@ -141,34 +146,35 @@ void main() {
       });
 
       test(
-          'should throw TdkException with failed_to_fetch_verifier_metadata on non-200',
-          () async {
-        dioAdapter.mockRequestWithReply(
-          url: _metadataUri,
-          statusCode: 404,
-          data: {'error': 'not found'},
-          httpMethod: HttpMethod.get,
-        );
+        'should throw TdkException with failed_to_fetch_verifier_metadata on non-200',
+        () async {
+          dioAdapter.mockRequestWithReply(
+            url: _metadataUri,
+            statusCode: 404,
+            data: {'error': 'not found'},
+            httpMethod: HttpMethod.get,
+          );
 
-        final service = buildService();
-        addTearDown(service.dispose);
+          final service = buildService();
+          addTearDown(service.dispose);
 
-        await expectLater(
-          () => service.fetchVerifierMetadata(
-            clientId: _clientId,
-            clientMetadataUri: _metadataUri,
-          ),
-          throwsA(
-            isA<TdkException>()
-                .having(
-                  (e) => e.code,
-                  'code',
-                  TdkExceptionType.failedToFetchVerifierMetadata.code,
-                )
-                .having((e) => e.message, 'message', contains('404')),
-          ),
-        );
-      });
+          await expectLater(
+            () => service.fetchVerifierMetadata(
+              clientId: _clientId,
+              clientMetadataUri: _metadataUri,
+            ),
+            throwsA(
+              isA<TdkException>()
+                  .having(
+                    (e) => e.code,
+                    'code',
+                    TdkExceptionType.failedToFetchVerifierMetadata.code,
+                  )
+                  .having((e) => e.message, 'message', contains('404')),
+            ),
+          );
+        },
+      );
 
       test('should be bypassed when clientMetadata is also provided', () async {
         // No mocked route — clientMetadata takes precedence, no network call.
@@ -231,111 +237,118 @@ void main() {
       });
 
       test(
-          'should return VerifierClientMetadata with null domainVerified when absent',
-          () async {
-        dioAdapter.mockRequestWithReply(
-          url: _defaultMetadataUrl,
-          statusCode: 200,
-          data: {
-            'name': 'Test Verifier',
-            'logo': 'https://example.com/logo.png',
-            'origin': 'https://example.com',
-          },
-          httpMethod: HttpMethod.get,
-        );
+        'should return VerifierClientMetadata with null domainVerified when absent',
+        () async {
+          dioAdapter.mockRequestWithReply(
+            url: _defaultMetadataUrl,
+            statusCode: 200,
+            data: {
+              'name': 'Test Verifier',
+              'logo': 'https://example.com/logo.png',
+              'origin': 'https://example.com',
+            },
+            httpMethod: HttpMethod.get,
+          );
 
-        final service = buildService();
-        addTearDown(service.dispose);
+          final service = buildService();
+          addTearDown(service.dispose);
 
-        final result = await service.fetchVerifierMetadata(clientId: _clientId);
+          final result = await service.fetchVerifierMetadata(
+            clientId: _clientId,
+          );
 
-        expect(result.domainVerified, isNull);
-      });
-
-      test(
-          'should throw TdkException with failed_to_fetch_verifier_metadata on non-200',
-          () async {
-        dioAdapter.mockRequestWithReply(
-          url: _defaultMetadataUrl,
-          statusCode: 404,
-          data: {'error': 'not found'},
-          httpMethod: HttpMethod.get,
-        );
-
-        final service = buildService();
-        addTearDown(service.dispose);
-
-        await expectLater(
-          () => service.fetchVerifierMetadata(clientId: _clientId),
-          throwsA(
-            isA<TdkException>()
-                .having(
-                  (e) => e.code,
-                  'code',
-                  TdkExceptionType.failedToFetchVerifierMetadata.code,
-                )
-                .having((e) => e.message, 'message', contains('404')),
-          ),
-        );
-      });
+          expect(result.domainVerified, isNull);
+        },
+      );
 
       test(
-          'should throw TdkException with failed_to_fetch_verifier_metadata on network error',
-          () async {
-        dioAdapter.mockRequestWithException(
-          url: _defaultMetadataUrl,
-          httpMethod: HttpMethod.get,
-          exception: DioException(
-            requestOptions: RequestOptions(path: _defaultMetadataUrl),
-            type: DioExceptionType.connectionError,
-            error: 'connection refused',
-          ),
-        );
+        'should throw TdkException with failed_to_fetch_verifier_metadata on non-200',
+        () async {
+          dioAdapter.mockRequestWithReply(
+            url: _defaultMetadataUrl,
+            statusCode: 404,
+            data: {'error': 'not found'},
+            httpMethod: HttpMethod.get,
+          );
 
-        final service = buildService();
-        addTearDown(service.dispose);
+          final service = buildService();
+          addTearDown(service.dispose);
 
-        await expectLater(
-          () => service.fetchVerifierMetadata(clientId: _clientId),
-          throwsA(
-            isA<TdkException>()
-                .having(
-                  (e) => e.code,
-                  'code',
-                  TdkExceptionType.failedToFetchVerifierMetadata.code,
-                )
-                .having(
-                  (e) => e.originalMessage,
-                  'originalMessage',
-                  contains('connection refused'),
-                ),
-          ),
-        );
-      });
-
-      test('should throw TdkException when response body is a JSON array, not an object',
-          () async {
-        dioAdapter.mockRequestWithReply(
-          url: _defaultMetadataUrl,
-          statusCode: 200,
-          data: [_validMetadataJson()],
-          httpMethod: HttpMethod.get,
-        );
-
-        final service = buildService();
-        addTearDown(service.dispose);
-
-        await expectLater(
-          () => service.fetchVerifierMetadata(clientId: _clientId),
-          throwsA(
-            isA<TdkException>().having(
-              (e) => e.code,
-              'code',
-              TdkExceptionType.failedToFetchVerifierMetadata.code,
+          await expectLater(
+            () => service.fetchVerifierMetadata(clientId: _clientId),
+            throwsA(
+              isA<TdkException>()
+                  .having(
+                    (e) => e.code,
+                    'code',
+                    TdkExceptionType.failedToFetchVerifierMetadata.code,
+                  )
+                  .having((e) => e.message, 'message', contains('404')),
             ),
-          ),
-        );
-      });
+          );
+        },
+      );
+
+      test(
+        'should throw TdkException with failed_to_fetch_verifier_metadata on network error',
+        () async {
+          dioAdapter.mockRequestWithException(
+            url: _defaultMetadataUrl,
+            httpMethod: HttpMethod.get,
+            exception: DioException(
+              requestOptions: RequestOptions(path: _defaultMetadataUrl),
+              type: DioExceptionType.connectionError,
+              error: 'connection refused',
+            ),
+          );
+
+          final service = buildService();
+          addTearDown(service.dispose);
+
+          await expectLater(
+            () => service.fetchVerifierMetadata(clientId: _clientId),
+            throwsA(
+              isA<TdkException>()
+                  .having(
+                    (e) => e.code,
+                    'code',
+                    TdkExceptionType.failedToFetchVerifierMetadata.code,
+                  )
+                  .having(
+                    (e) => e.originalMessage,
+                    'originalMessage',
+                    contains('connection refused'),
+                  ),
+            ),
+          );
+        },
+      );
+
+      test(
+        'should throw TdkException when response body is a JSON array, not an object',
+        () async {
+          dioAdapter.mockRequestWithReply(
+            url: _defaultMetadataUrl,
+            statusCode: 200,
+            data: [_validMetadataJson()],
+            httpMethod: HttpMethod.get,
+          );
+
+          final service = buildService();
+          addTearDown(service.dispose);
+
+          await expectLater(
+            () => service.fetchVerifierMetadata(clientId: _clientId),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.failedToFetchVerifierMetadata.code,
+              ),
+            ),
+          );
+        },
+      );
     });
   });
 }
