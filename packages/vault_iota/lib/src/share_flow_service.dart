@@ -4,6 +4,7 @@ import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'exceptions/tdk_exception_type.dart';
 import 'models/iota_payload.dart';
 import 'models/share_requirements.dart';
+import 'services/nonce_replay_store.dart';
 import 'share_flow_service_interface.dart';
 import 'utils/nonce_replay_cache.dart';
 
@@ -11,7 +12,7 @@ import 'utils/nonce_replay_cache.dart';
 /// OID4VP request URIs.
 class ShareFlowService implements ShareFlowServiceInterface {
   final CryptographyServiceInterface _cryptography;
-  final NonceReplayCache _replayCache;
+  final NonceReplayStore _replayCache;
 
   static const _directPost = 'direct_post';
   static const _vpToken = 'vp_token';
@@ -36,11 +37,13 @@ class ShareFlowService implements ShareFlowServiceInterface {
   /// Creates a new [ShareFlowService] instance.
   ///
   /// Parameters:
-  /// * [replayCache] - optional nonce replay cache; defaults to a new in-memory
-  ///   cache. Inject a custom instance to share state across service instances.
+  /// * [replayCache] - optional nonce replay store; defaults to an in-memory
+  ///   [NonceReplayCache] scoped to this instance. Inject a persistent
+  ///   [NonceReplayStore] implementation for replay protection that survives
+  ///   app restarts, or to share state across service instances.
   ShareFlowService({
     required CryptographyServiceInterface cryptography,
-    NonceReplayCache? replayCache,
+    NonceReplayStore? replayCache,
   }) : _cryptography = cryptography,
        _replayCache = replayCache ?? NonceReplayCache();
 
@@ -143,7 +146,7 @@ class ShareFlowService implements ShareFlowServiceInterface {
     // OID4VP §11.2: enforce nonce uniqueness to prevent replay within the
     // JWT exp window.
     // See: https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-11.2
-    if (!_replayCache.record(payload.nonce, payload.exp)) {
+    if (!await _replayCache.record(payload.nonce, payload.exp)) {
       _throw(
         'Request nonce has already been consumed. Possible JWT replay attack.',
         TdkExceptionType.replayDetected,

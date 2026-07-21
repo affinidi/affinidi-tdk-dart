@@ -1,3 +1,5 @@
+import '../services/nonce_replay_store.dart';
+
 /// An in-memory cache that detects replayed OID4VP request nonces.
 ///
 /// Each nonce is stored alongside the expiry epoch of its originating JWT.
@@ -8,10 +10,12 @@
 /// attacker from replaying a captured JWT multiple times within its `exp`
 /// window. See https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-11.2
 ///
-/// This cache is scoped to the lifetime of the `ShareFlowService` instance.
-/// For persistent cross-session replay protection, replace this with a
-/// consumer-provided persistent store.
-class NonceReplayCache {
+/// This is the default [NonceReplayStore] used by `ShareFlowService`. It is
+/// scoped to the lifetime of the `ShareFlowService` instance, so replay
+/// protection resets on every app restart. For persistent cross-session replay
+/// protection, provide a [NonceReplayStore] backed by a persistent store (the
+/// same approach as `ConsentStorage`).
+class NonceReplayCache implements NonceReplayStore {
   final Map<String, int> _seen = {};
 
   /// Records [nonce] and returns `true` if it is fresh, `false` if replayed.
@@ -19,7 +23,8 @@ class NonceReplayCache {
   /// Parameters:
   /// * [nonce] - the nonce from the OID4VP JWT payload.
   /// * [expEpochSeconds] - the `exp` claim from the same JWT (Unix seconds).
-  bool record(String nonce, int expEpochSeconds) {
+  @override
+  Future<bool> record(String nonce, int expEpochSeconds) async {
     _purgeExpired();
     if (_seen.containsKey(nonce)) return false;
     _seen[nonce] = expEpochSeconds;

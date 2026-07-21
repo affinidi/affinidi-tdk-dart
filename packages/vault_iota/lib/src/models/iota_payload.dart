@@ -40,8 +40,9 @@ class IotaPayload {
 
   /// The scope of the authorization request.
   ///
-  /// Optional per OID4VP 1.0 final §5.2 — mutually exclusive with [dcqlQuery].
-  /// Must be absent when [dcqlQuery] is present.
+  /// Optional per OID4VP 1.0 final §5.2. May be present alongside [dcqlQuery]
+  /// (e.g. the standard `openid` scope), so it is not treated as mutually
+  /// exclusive with the query.
   final String? scope;
 
   /// Optional audience claim of the JWT.
@@ -136,13 +137,6 @@ class IotaPayload {
     if (rawScope != null && rawScope is! String) {
       throw TdkException(
         message: "JWT payload 'scope' must be a string.",
-        code: TdkExceptionType.parseFailure.code,
-      );
-    }
-    if (rawDcql != null && rawScope != null) {
-      throw TdkException(
-        message:
-            "JWT payload must not contain 'scope' when 'dcql_query' is present.",
         code: TdkExceptionType.parseFailure.code,
       );
     }

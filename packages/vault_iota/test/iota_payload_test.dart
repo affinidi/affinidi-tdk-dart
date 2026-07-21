@@ -119,21 +119,18 @@ void main() {
       );
     });
 
-    test('throws TdkException when scope and dcql_query are both present', () {
-      expect(
-        () => IotaPayload.fromJson({
-          ...baseJson,
-          'scope': 'openid',
-          'dcql_query': dcql.toJson(),
-        }),
-        throwsA(
-          isA<TdkException>().having(
-            (e) => e.code,
-            'code',
-            TdkExceptionType.parseFailure.code,
-          ),
-        ),
-      );
+    test('parses successfully when scope and dcql_query are both present', () {
+      // The backend issues DCQL requests with the standard `openid` scope, so
+      // scope is not mutually exclusive with dcql_query.
+      final payload = IotaPayload.fromJson({
+        ...baseJson,
+        'scope': 'openid',
+        'dcql_query': dcql.toJson(),
+      });
+
+      expect(payload.scope, 'openid');
+      expect(payload.dcqlQuery, isNotNull);
+      expect(payload.presentationDefinition, isNull);
     });
 
     test('throws TdkException when direct_post includes redirect_uri', () {
