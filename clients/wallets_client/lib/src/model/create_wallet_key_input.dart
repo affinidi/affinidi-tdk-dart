@@ -13,14 +13,21 @@ part 'create_wallet_key_input.g.dart';
 /// Input for adding a new key to a wallet. Only supported for did:web ATM.
 ///
 /// Properties:
-/// * [keyType] - cryptographic algorithm for the new key
+/// * [algorithm] - cryptographic algorithm for the new key
+/// * [keyType] - Deprecated alias of `algorithm`. Accepted for backward compatibility; prefer `algorithm`. If both are sent, `algorithm` takes precedence.
 /// * [relationships] - verification relationships for the key.
 @BuiltValue()
 abstract class CreateWalletKeyInput
     implements Built<CreateWalletKeyInput, CreateWalletKeyInputBuilder> {
   /// cryptographic algorithm for the new key
+  @BuiltValueField(wireName: r'algorithm')
+  CreateWalletKeyInputAlgorithmEnum? get algorithm;
+  // enum algorithmEnum {  secp256k1,  ed25519,  p256,  };
+
+  /// Deprecated alias of `algorithm`. Accepted for backward compatibility; prefer `algorithm`. If both are sent, `algorithm` takes precedence.
+  @Deprecated('keyType has been deprecated')
   @BuiltValueField(wireName: r'keyType')
-  CreateWalletKeyInputKeyTypeEnum get keyType;
+  CreateWalletKeyInputKeyTypeEnum? get keyType;
   // enum keyTypeEnum {  secp256k1,  ed25519,  p256,  };
 
   /// verification relationships for the key.
@@ -56,11 +63,20 @@ class _$CreateWalletKeyInputSerializer
     CreateWalletKeyInput object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    yield r'keyType';
-    yield serializers.serialize(
-      object.keyType,
-      specifiedType: const FullType(CreateWalletKeyInputKeyTypeEnum),
-    );
+    if (object.algorithm != null) {
+      yield r'algorithm';
+      yield serializers.serialize(
+        object.algorithm,
+        specifiedType: const FullType(CreateWalletKeyInputAlgorithmEnum),
+      );
+    }
+    if (object.keyType != null) {
+      yield r'keyType';
+      yield serializers.serialize(
+        object.keyType,
+        specifiedType: const FullType(CreateWalletKeyInputKeyTypeEnum),
+      );
+    }
     yield r'relationships';
     yield serializers.serialize(
       object.relationships,
@@ -95,6 +111,17 @@ class _$CreateWalletKeyInputSerializer
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
+        case r'algorithm':
+          final valueDes =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(
+                      CreateWalletKeyInputAlgorithmEnum,
+                    ),
+                  )
+                  as CreateWalletKeyInputAlgorithmEnum;
+          result.algorithm = valueDes;
+          break;
         case r'keyType':
           final valueDes =
               serializers.deserialize(
@@ -146,18 +173,45 @@ class _$CreateWalletKeyInputSerializer
   }
 }
 
-class CreateWalletKeyInputKeyTypeEnum extends EnumClass {
+class CreateWalletKeyInputAlgorithmEnum extends EnumClass {
   /// cryptographic algorithm for the new key
+  @BuiltValueEnumConst(wireName: r'secp256k1')
+  static const CreateWalletKeyInputAlgorithmEnum secp256k1 =
+      _$createWalletKeyInputAlgorithmEnum_secp256k1;
+
+  /// cryptographic algorithm for the new key
+  @BuiltValueEnumConst(wireName: r'ed25519')
+  static const CreateWalletKeyInputAlgorithmEnum ed25519 =
+      _$createWalletKeyInputAlgorithmEnum_ed25519;
+
+  /// cryptographic algorithm for the new key
+  @BuiltValueEnumConst(wireName: r'p256')
+  static const CreateWalletKeyInputAlgorithmEnum p256 =
+      _$createWalletKeyInputAlgorithmEnum_p256;
+
+  static Serializer<CreateWalletKeyInputAlgorithmEnum> get serializer =>
+      _$createWalletKeyInputAlgorithmEnumSerializer;
+
+  const CreateWalletKeyInputAlgorithmEnum._(String name) : super(name);
+
+  static BuiltSet<CreateWalletKeyInputAlgorithmEnum> get values =>
+      _$createWalletKeyInputAlgorithmEnumValues;
+  static CreateWalletKeyInputAlgorithmEnum valueOf(String name) =>
+      _$createWalletKeyInputAlgorithmEnumValueOf(name);
+}
+
+class CreateWalletKeyInputKeyTypeEnum extends EnumClass {
+  /// Deprecated alias of `algorithm`. Accepted for backward compatibility; prefer `algorithm`. If both are sent, `algorithm` takes precedence.
   @BuiltValueEnumConst(wireName: r'secp256k1')
   static const CreateWalletKeyInputKeyTypeEnum secp256k1 =
       _$createWalletKeyInputKeyTypeEnum_secp256k1;
 
-  /// cryptographic algorithm for the new key
+  /// Deprecated alias of `algorithm`. Accepted for backward compatibility; prefer `algorithm`. If both are sent, `algorithm` takes precedence.
   @BuiltValueEnumConst(wireName: r'ed25519')
   static const CreateWalletKeyInputKeyTypeEnum ed25519 =
       _$createWalletKeyInputKeyTypeEnum_ed25519;
 
-  /// cryptographic algorithm for the new key
+  /// Deprecated alias of `algorithm`. Accepted for backward compatibility; prefer `algorithm`. If both are sent, `algorithm` takes precedence.
   @BuiltValueEnumConst(wireName: r'p256')
   static const CreateWalletKeyInputKeyTypeEnum p256 =
       _$createWalletKeyInputKeyTypeEnum_p256;
