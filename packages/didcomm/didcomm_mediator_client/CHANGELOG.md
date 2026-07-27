@@ -1,3 +1,7 @@
+## 2.0.3
+
+ - **FIX**: new mediator migration.
+
 ## 2.0.2
 
  - **FIX**: update package repository urls (#122).
