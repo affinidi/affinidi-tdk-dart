@@ -11,7 +11,7 @@ The Affinidi TDK - Vault Iota package provides libraries to implement the OID4VP
 - Manage consent records and support automatic consent for trusted verifiers.
 - Storage-agnostic, with no dependency on a specific credential or consent record store.
 
-> **Note:** For the websocket data sharing flow, we recommend authenticating
+> **Note:** For the WebSocket data-sharing flow, we recommend authenticating
 > the user before starting the flow, so responses are tied to a known holder.
 
 ## Requirements
