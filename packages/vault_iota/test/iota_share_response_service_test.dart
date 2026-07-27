@@ -741,8 +741,8 @@ void main() {
 
   group('submitShareResponse (DCQL)', () {
     group('when the POST succeeds', () {
-      test('POSTs to acceptResponseUri with state, vp_token, and '
-          'presentation_submission', () async {
+      test('POSTs to acceptResponseUri with state and DCQL-shaped vp_token '
+          '(no presentation_submission)', () async {
         RequestOptions? captured;
         dio.interceptors.add(
           InterceptorsWrapper(
@@ -769,42 +769,59 @@ void main() {
         final data = captured!.data as Map<String, dynamic>;
         expect(data['state'], equals(_dcqlShareRequest.request.state));
         expect(data['vp_token'], isNotNull);
-        expect(data['presentation_submission'], isNotNull);
+        expect(data.containsKey('presentation_submission'), isFalse);
 
+        // OID4VP 1.0 §8.1: vp_token is a JSON object keyed by credential-query id.
         final vpToken =
             jsonDecode(data['vp_token'] as String) as Map<String, dynamic>;
-        expect(vpToken, equals(_fakeVp));
+        expect(vpToken.keys, equals({'q1'}));
+        expect(vpToken['q1'], equals(_fakeVp));
       });
 
-      test('presentation_submission contains definitionId "dcql"', () async {
-        RequestOptions? captured;
-        dio.interceptors.add(
-          InterceptorsWrapper(
-            onRequest: (opts, handler) {
-              captured = opts;
-              handler.next(opts);
-            },
-          ),
-        );
-        dioAdapter.mockRequestWithReply(
-          url: _dcqlAcceptUri,
-          statusCode: 200,
-          data: <String, dynamic>{},
-          httpMethod: HttpMethod.post,
-        );
+      test(
+        'maps every requested credential query id to the presentation',
+        () async {
+          RequestOptions? captured;
+          dio.interceptors.add(
+            InterceptorsWrapper(
+              onRequest: (opts, handler) {
+                captured = opts;
+                handler.next(opts);
+              },
+            ),
+          );
+          dioAdapter.mockRequestWithReply(
+            url: _dcqlAcceptUri,
+            statusCode: 200,
+            data: <String, dynamic>{},
+            httpMethod: HttpMethod.post,
+          );
 
-        await buildService().submitShareResponse(
-          shareRequest: _dcqlShareRequest,
-          selectedCredentials: [_fakeVC],
-          acceptResponseUri: _dcqlAcceptUri,
-        );
+          final multiQueryRequest = DcqlShareRequest(
+            request: _dcqlShareRequest.request,
+            dcqlQuery: DcqlCredentialQuery(
+              credentials: [
+                DcqlCredential(id: 'q1', format: CredentialFormat.ldpVc),
+                DcqlCredential(id: 'q2', format: CredentialFormat.ldpVc),
+              ],
+            ),
+            jwtAssertion: _dcqlShareRequest.jwtAssertion,
+          );
 
-        final data = captured!.data as Map<String, dynamic>;
-        final submission =
-            jsonDecode(data['presentation_submission'] as String)
-                as Map<String, dynamic>;
-        expect(submission['definition_id'], equals('dcql'));
-      });
+          await buildService().submitShareResponse(
+            shareRequest: multiQueryRequest,
+            selectedCredentials: [_fakeVC],
+            acceptResponseUri: _dcqlAcceptUri,
+          );
+
+          final data = captured!.data as Map<String, dynamic>;
+          final vpToken =
+              jsonDecode(data['vp_token'] as String) as Map<String, dynamic>;
+          expect(vpToken.keys, equals({'q1', 'q2'}));
+          expect(vpToken['q1'], equals(_fakeVp));
+          expect(vpToken['q2'], equals(_fakeVp));
+        },
+      );
 
       test('returns the redirect URI from the response', () async {
         dioAdapter.mockRequestWithReply(

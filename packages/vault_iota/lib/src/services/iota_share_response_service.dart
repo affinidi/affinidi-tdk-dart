@@ -7,7 +7,6 @@ import 'package:ssi/ssi.dart';
 
 import '../exceptions/tdk_exception_type.dart';
 import '../helpers/presentation_definition_parser.dart';
-import '../models/pd_descriptor.dart';
 import '../models/share_requirements.dart';
 import 'iota_share_response_service_interface.dart';
 import 'presentation_submission_builder.dart';
@@ -161,20 +160,17 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
 
   /// Builds and submits the DCQL Authorization Response.
   ///
-  /// Per the OpenID4VP 1.0 specification (section 8.1, "Response Parameters"),
-  /// the `vp_token` for a DCQL request MUST be a JSON object whose keys are the
-  /// `id` of each Credential Query in the request and whose values are arrays of
-  /// the Presentations that satisfy the respective query. With `multiple`
-  /// omitted or `false` (the default), the array contains exactly one
-  /// Presentation. Credential Queries with no matching Credentials are omitted.
-  /// Unlike PEX, there is no `presentation_submission`.
+  /// Per OpenID4VP 1.0 §8.1 ("Response Parameters"), the `vp_token` for a DCQL
+  /// request is a JSON object whose keys are the `id` of each Credential Query
+  /// in the request and whose values are the Presentation(s) that satisfy the
+  /// respective query. With `multiple` omitted or `false` (the default), each
+  /// value is a single Presentation. Unlike PEX, there is no
+  /// `presentation_submission`.
+  ///
+  /// This wallet builds one Presentation carrying the shared credentials and
+  /// maps every requested Credential Query id to it.
   ///
   /// See https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-8.1
-  ///
-  /// TODO: The current implementation sends a single VP string with presentation_submission
-  /// (PEX format) to maintain compatibility with the iota-service backend, which does not
-  /// yet support DCQL response processing. Once backend DCQL support is added, update this
-  /// to send the proper DCQL format (object with query IDs as keys mapping to VP arrays).
   ///
   /// Parameters:
   /// * [dcql] - the parsed DCQL share request.
@@ -188,15 +184,6 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
     List<ParsedVerifiableCredential<dynamic>> selectedCredentials,
     String acceptResponseUri,
   ) async {
-    final descriptors = dcql.dcqlQuery.credentials
-        .map((c) => PDDescriptor.fromJson({'id': c.id}))
-        .toList();
-
-    final submission = PresentationSubmissionBuilder.build(
-      definitionId: 'dcql',
-      descriptors: descriptors,
-    );
-
     final vp = await _vpBuilder.build(
       signer: _signer,
       credentials: selectedCredentials,
@@ -204,10 +191,13 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
       domain: dcql.request.clientId,
     );
 
+    final vpToken = <String, dynamic>{
+      for (final credential in dcql.dcqlQuery.credentials) credential.id: vp,
+    };
+
     return _postToUri(acceptResponseUri, {
       'state': dcql.request.state,
-      'vp_token': jsonEncode(vp),
-      'presentation_submission': jsonEncode(submission.toJson()),
+      'vp_token': jsonEncode(vpToken),
     });
   }
 
