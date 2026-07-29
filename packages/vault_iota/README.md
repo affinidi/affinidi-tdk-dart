@@ -165,8 +165,7 @@ final consentService = IotaConsentRecordService(
 
 // Call this after a successful submitShareResponse:
 await consentService.saveConsentRecord(
-  requestHash: requestHash, // see note below on computing this value
-  clientId: shareRequest.request.clientId,
+  shareRequest: shareRequest,
   verifierMetadata: verifierMetadata,
   profileId: profileId,
   profileName: profileName,
@@ -177,24 +176,14 @@ await consentService.saveConsentRecord(
 );
 ```
 
-#### Computing `requestHash`
+#### Request fingerprint (computed by the SDK)
 
-`requestHash` is **consumer-defined**, the TDK treats it as an opaque string.
-The rules are:
-
-- **Stable** — the same verifier making the same request must always produce
-  the same hash. A reliable algorithm is `sha1(clientId + jsonEncode(presentationDefinition))`,
-  which is what the Affinidi Vault app uses.
-- **Consistent** — pass the exact same value to both `saveConsentRecord` and
-  `tryAutomaticConsent`. A mismatch means the record is never found during
-  auto-share lookup.
-- **Scope for multi-vault / multi-profile apps** — if your hash does *not*
-  include a vault or profile identifier, all profiles' records for the same
-  verifier share one lookup bucket. The TDK will evaluate every matching
-  record and pick the first one that passes all guards (recommended — this
-  matches the Affinidi Vault app behaviour). If you *do* include `vaultId` or
-  `profileId` in the hash, each profile gets its own isolated bucket and only
-  one candidate is ever evaluated per lookup.
+You no longer compute a `requestHash`. The SDK derives an internal request
+fingerprint from the `shareRequest` (the verifier `client_id` plus the sorted
+credential-group ids — PEX input-descriptor ids or DCQL credential-query ids)
+and the `vaultId`, and uses the **same** derivation for both `saveConsentRecord`
+and `tryAutomaticConsent`. Because the SDK owns this computation, an auto-consent
+lookup can never silently miss due to a mismatched, caller-computed hash.
 
 #### Bringing your own storage backend
 

@@ -771,15 +771,16 @@ void main() {
         expect(data['vp_token'], isNotNull);
         expect(data.containsKey('presentation_submission'), isFalse);
 
-        // OID4VP 1.0 §8.1: vp_token is a JSON object keyed by credential-query id.
+        // OID4VP 1.0 §8.1: vp_token is a JSON object keyed by credential-query
+        // id whose values are arrays of the satisfying presentations.
         final vpToken =
             jsonDecode(data['vp_token'] as String) as Map<String, dynamic>;
         expect(vpToken.keys, equals({'q1'}));
-        expect(vpToken['q1'], equals(_fakeVp));
+        expect(vpToken['q1'], equals([_fakeVp]));
       });
 
       test(
-        'maps every requested credential query id to the presentation',
+        'builds a per-query presentation and omits unsatisfied queries',
         () async {
           RequestOptions? captured;
           dio.interceptors.add(
@@ -797,12 +798,15 @@ void main() {
             httpMethod: HttpMethod.post,
           );
 
+          // q1 accepts ldp_vc (satisfied by the shared W3C VC); q2 requires a
+          // different format, so it has no matching credential and must be
+          // omitted from the vp_token.
           final multiQueryRequest = DcqlShareRequest(
             request: _dcqlShareRequest.request,
             dcqlQuery: DcqlCredentialQuery(
               credentials: [
                 DcqlCredential(id: 'q1', format: CredentialFormat.ldpVc),
-                DcqlCredential(id: 'q2', format: CredentialFormat.ldpVc),
+                DcqlCredential(id: 'q2', format: CredentialFormat.jwtVcJson),
               ],
             ),
             jwtAssertion: _dcqlShareRequest.jwtAssertion,
@@ -817,9 +821,8 @@ void main() {
           final data = captured!.data as Map<String, dynamic>;
           final vpToken =
               jsonDecode(data['vp_token'] as String) as Map<String, dynamic>;
-          expect(vpToken.keys, equals({'q1', 'q2'}));
-          expect(vpToken['q1'], equals(_fakeVp));
-          expect(vpToken['q2'], equals(_fakeVp));
+          expect(vpToken.keys, equals({'q1'}));
+          expect(vpToken['q1'], equals([_fakeVp]));
         },
       );
 

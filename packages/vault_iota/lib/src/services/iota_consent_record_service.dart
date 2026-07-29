@@ -61,8 +61,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
 
   @override
   Future<void> saveConsentRecord({
-    required String requestHash,
-    required String clientId,
+    required Oid4vpShareRequest shareRequest,
     required VerifierClientMetadata verifierMetadata,
     required String profileId,
     required String profileName,
@@ -73,6 +72,8 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     Map<String, String> historySharedData = const {},
     bool isConsentManagementEnabled = false,
   }) async {
+    final clientId = shareRequest.request.clientId;
+    final requestHash = _computeRequestHash(shareRequest, vaultId);
     final sharedVcIds = sharedVcs.map((vc) => vc.id?.toString() ?? '').toList();
     final hash = _computeConsentHash(
       profileId: profileId,
@@ -123,9 +124,9 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     required Oid4vpShareRequest shareRequest,
     required MatchedCredentialsResult matchedCredentials,
     required VerifierClientMetadata verifierMetadata,
-    required String requestHash,
     required String vaultId,
   }) async {
+    final requestHash = _computeRequestHash(shareRequest, vaultId);
     final List<IotaConsentRecord> candidates;
     try {
       candidates = await _store.findAllByRequestHash(requestHash);
@@ -449,6 +450,29 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     }
 
     return const AutoConsentDeclined();
+  }
+
+  /// Computes the request fingerprint used to look up prior consent records.
+  ///
+  /// Derived from the verifier `client_id`, the [vaultId], and the sorted
+  /// credential-group ids of the request (PEX input-descriptor ids or DCQL
+  /// credential-query ids). Computing this inside the SDK guarantees the save
+  /// and lookup paths always agree, so auto-consent can never silently miss
+  /// because a caller hashed the request differently.
+  String _computeRequestHash(Oid4vpShareRequest shareRequest, String vaultId) {
+    final groupIds = switch (shareRequest) {
+      PexShareRequest pex => PresentationDefinitionParser.parseInputDescriptors(
+        pex.presentationDefinition,
+      ).map((descriptor) => descriptor.id).toList(),
+      DcqlShareRequest dcql => dcql.dcqlQuery.credentials
+          .map((credential) => credential.id)
+          .toList(),
+    };
+    final sortedIds = [...groupIds]..sort();
+    return _cryptography.createHash(
+      hashSource:
+          '${shareRequest.request.clientId}|$vaultId|${sortedIds.join(',')}',
+    );
   }
 
   /// Computes the full share fingerprint covering all share-event fields.

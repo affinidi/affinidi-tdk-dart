@@ -1,5 +1,3 @@
-import 'dart:convert' show jsonEncode;
-
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
 import 'package:ssi/ssi.dart'
@@ -85,41 +83,18 @@ Future<void> main() async {
 
   // Values that would normally come from the validated OID4VP request and the
   // wallet / profile in use.
-  const clientId = 'did:key:z6MkVerifier123';
   const holderVaultId = 'did:key:z6MkHolder456';
   const profileId = 'profile-abc';
   const profileName = 'Personal';
 
-  // The Presentation Definition from the validated share request.
-  const presentationDefinition = <String, dynamic>{
-    'id': 'pd-email-phone',
-    'input_descriptors': [
-      {'id': 'email_vc'},
-      {'id': 'phone_vc'},
-    ],
-  };
-
-  // Compute the request hash — this value is CONSUMER-DEFINED.
-  // The TDK treats it as an opaque string and never computes or verifies it.
-  //
-  // Rules:
-  // 1. STABLE — the same verifier + same PD must always produce the same hash.
-  //    The recommended algorithm is sha1("$clientId|<PD JSON>"), which is what
-  //    the Affinidi Vault app uses. Including the serialised PD ensures two
-  //    different requests from the same verifier produce different hashes.
-  //
-  // 2. CONSISTENT — pass the exact same value to both saveConsentRecord() and
-  //    tryAutomaticConsent(). A mismatch means the record is never found during
-  //    auto-share lookup.
-  //
-  // 3. MULTI-VAULT SCOPING — if you do NOT include a vault or profile ID in
-  //    the hash, all profiles' records for this verifier share one lookup
-  //    bucket. The TDK evaluates every matching record and picks the first one
-  //    that passes all guards (recommended — matches Affinidi Vault behaviour).
-  //    If you DO include a vault/profile ID, each profile gets its own isolated
-  //    bucket and the loop sees only one candidate per lookup.
-  final requestHash = cryptography.createHash(
-    hashSource: '$clientId|${jsonEncode(presentationDefinition)}',
+  // The validated OID4VP share request — normally obtained from
+  // ShareFlowService.validateOid4vpRequest(). The SDK derives the internal
+  // request fingerprint (used to look up prior consent) and the verifier
+  // client_id from it, so the consumer no longer computes any hash.
+  final shareFlowService = ShareFlowService(cryptography: cryptography);
+  final shareRequest = await shareFlowService.validateOid4vpRequest(
+    Uri.parse('openid4vp://authorize?request=<your-request-jwt>'),
+    walletDid: holderVaultId,
   );
 
   final verifierMetadata = const VerifierClientMetadata(
@@ -160,8 +135,7 @@ Future<void> main() async {
     // --- Save a consent record after the user approves a share ---
 
     await service.saveConsentRecord(
-      requestHash: requestHash,
-      clientId: clientId,
+      shareRequest: shareRequest,
       verifierMetadata: verifierMetadata,
       profileId: profileId,
       profileName: profileName,
@@ -176,36 +150,20 @@ Future<void> main() async {
     );
 
     print('Consent record saved.');
-    final saved = await store.findByRequestHash(requestHash);
-    if (saved != null) {
-      print('clientId    : ${saved.clientId}');
-      print('profileName : ${saved.profileName}');
-      print('autoShare   : ${saved.isAutoShareEnabled}');
-    }
 
     // --- Try automatic consent on the next request from the same verifier ---
     //
     // On a subsequent share request from the same verifier with the same
-    // Presentation Definition, call tryAutomaticConsent before showing any UI.
-    // If the user previously enabled auto-share for this verifier+PD
-    // combination, the VP is submitted automatically without prompting.
-
-    // Simulate loading vault credentials for the matcher.
-    final cryptography2 = CryptographyService();
-    final service2 = ShareFlowService(cryptography: cryptography2);
-    final nextShareRequest = await service2.validateOid4vpRequest(
-      Uri.parse('openid4vp://authorize?request=<your-request-jwt>'),
-      walletDid: holderVaultId,
-    );
-
+    // credential requirements, call tryAutomaticConsent before showing any UI.
+    // The SDK re-derives the request fingerprint from shareRequest + vaultId,
+    // so it matches the record saved above.
     final matcher = CredentialMatcherService();
-    final matchResult = await matcher.match(nextShareRequest, sharedVcs);
+    final matchResult = await matcher.match(shareRequest, sharedVcs);
 
     final autoResult = await service.tryAutomaticConsent(
-      shareRequest: nextShareRequest,
+      shareRequest: shareRequest,
       matchedCredentials: matchResult,
       verifierMetadata: verifierMetadata,
-      requestHash: requestHash,
       vaultId: holderVaultId,
     );
 

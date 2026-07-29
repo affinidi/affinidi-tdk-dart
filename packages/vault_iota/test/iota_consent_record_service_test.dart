@@ -53,8 +53,7 @@ void main() {
     group('saveConsentRecord', () {
       test('should persist a record with the expected fields', () async {
         await service.saveConsentRecord(
-          requestHash: IotaConsentRecordFixtures.requestHash,
-          clientId: IotaConsentRecordFixtures.clientId,
+          shareRequest: IotaConsentRecordFixtures.shareRequest,
           verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
           profileId: IotaConsentRecordFixtures.profileId,
           profileName: IotaConsentRecordFixtures.profileName,
@@ -77,8 +76,7 @@ void main() {
         final before = DateTime.now();
 
         await service.saveConsentRecord(
-          requestHash: IotaConsentRecordFixtures.requestHash,
-          clientId: IotaConsentRecordFixtures.clientId,
+          shareRequest: IotaConsentRecordFixtures.shareRequest,
           verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
           profileId: IotaConsentRecordFixtures.profileId,
           profileName: IotaConsentRecordFixtures.profileName,
@@ -107,8 +105,7 @@ void main() {
         'should assemble the hash source in the expected pipe-delimited format',
         () async {
           await service.saveConsentRecord(
-            requestHash: IotaConsentRecordFixtures.requestHash,
-            clientId: IotaConsentRecordFixtures.clientId,
+            shareRequest: IotaConsentRecordFixtures.shareRequest,
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             profileId: IotaConsentRecordFixtures.profileId,
             profileName: IotaConsentRecordFixtures.profileName,
@@ -123,7 +120,7 @@ void main() {
                     () => cryptography.createHash(
                       hashSource: captureAny(named: 'hashSource'),
                     ),
-                  ).captured.single
+                  ).captured.last
                   as String;
 
           const expectedVcFingerprint =
@@ -149,8 +146,7 @@ void main() {
         'should substitute empty strings for absent verifier metadata fields',
         () async {
           await service.saveConsentRecord(
-            requestHash: IotaConsentRecordFixtures.requestHash,
-            clientId: IotaConsentRecordFixtures.clientId,
+            shareRequest: IotaConsentRecordFixtures.shareRequest,
             verifierMetadata: const VerifierClientMetadata(
               name: null,
               logo: null,
@@ -169,7 +165,7 @@ void main() {
                     () => cryptography.createHash(
                       hashSource: captureAny(named: 'hashSource'),
                     ),
-                  ).captured.single
+                  ).captured.last
                   as String;
 
           const expectedVcFingerprint =
@@ -193,8 +189,7 @@ void main() {
         'should preserve VC presentation order in the hash source',
         () async {
           await service.saveConsentRecord(
-            requestHash: IotaConsentRecordFixtures.requestHash,
-            clientId: IotaConsentRecordFixtures.clientId,
+            shareRequest: IotaConsentRecordFixtures.shareRequest,
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             profileId: IotaConsentRecordFixtures.profileId,
             profileName: IotaConsentRecordFixtures.profileName,
@@ -213,7 +208,7 @@ void main() {
                     () => cryptography.createHash(
                       hashSource: captureAny(named: 'hashSource'),
                     ),
-                  ).captured.single
+                  ).captured.last
                   as String;
 
           expect(captured, contains('vc-3'));
@@ -228,8 +223,7 @@ void main() {
         'should use empty string for vcsFingerprint in hash source when sharedVcs is empty',
         () async {
           await service.saveConsentRecord(
-            requestHash: IotaConsentRecordFixtures.requestHash,
-            clientId: IotaConsentRecordFixtures.clientId,
+            shareRequest: IotaConsentRecordFixtures.shareRequest,
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             profileId: IotaConsentRecordFixtures.profileId,
             profileName: IotaConsentRecordFixtures.profileName,
@@ -244,7 +238,7 @@ void main() {
                     () => cryptography.createHash(
                       hashSource: captureAny(named: 'hashSource'),
                     ),
-                  ).captured.single
+                  ).captured.last
                   as String;
 
           expect(
@@ -264,8 +258,7 @@ void main() {
         'should encode nested credential subject JSON correctly in the VC fingerprint',
         () async {
           await service.saveConsentRecord(
-            requestHash: IotaConsentRecordFixtures.requestHash,
-            clientId: IotaConsentRecordFixtures.clientId,
+            shareRequest: IotaConsentRecordFixtures.shareRequest,
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             profileId: IotaConsentRecordFixtures.profileId,
             profileName: IotaConsentRecordFixtures.profileName,
@@ -286,7 +279,7 @@ void main() {
                     () => cryptography.createHash(
                       hashSource: captureAny(named: 'hashSource'),
                     ),
-                  ).captured.single
+                  ).captured.last
                   as String;
 
           expect(
@@ -305,8 +298,7 @@ void main() {
 
           await expectLater(
             () => service.saveConsentRecord(
-              requestHash: IotaConsentRecordFixtures.requestHash,
-              clientId: IotaConsentRecordFixtures.clientId,
+              shareRequest: IotaConsentRecordFixtures.shareRequest,
               verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
               profileId: IotaConsentRecordFixtures.profileId,
               profileName: IotaConsentRecordFixtures.profileName,
@@ -342,7 +334,6 @@ void main() {
             matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -361,7 +352,6 @@ void main() {
             matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -380,7 +370,6 @@ void main() {
             matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -402,7 +391,6 @@ void main() {
             matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -423,7 +411,6 @@ void main() {
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -469,7 +456,6 @@ void main() {
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -519,7 +505,6 @@ void main() {
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -554,7 +539,6 @@ void main() {
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentApproved>());
@@ -604,7 +588,6 @@ void main() {
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           final captured =
@@ -652,7 +635,6 @@ void main() {
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -697,7 +679,6 @@ void main() {
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -737,7 +718,6 @@ void main() {
               ),
               verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
               vaultId: IotaConsentRecordFixtures.vaultId,
-              requestHash: IotaConsentRecordFixtures.requestHash,
             ),
             throwsA(
               isA<TdkException>().having(
@@ -766,7 +746,6 @@ void main() {
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           final captured =
@@ -796,7 +775,6 @@ void main() {
           matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
           verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
           vaultId: IotaConsentRecordFixtures.vaultId,
-          requestHash: IotaConsentRecordFixtures.requestHash,
         );
 
         expect(result, isA<AutoConsentDeclined>());
@@ -817,7 +795,6 @@ void main() {
             matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -852,7 +829,6 @@ void main() {
               ),
               verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
               vaultId: IotaConsentRecordFixtures.vaultId,
-              requestHash: IotaConsentRecordFixtures.requestHash,
             ),
             throwsA(
               isA<TdkException>().having(
@@ -888,7 +864,6 @@ void main() {
               ),
               verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
               vaultId: IotaConsentRecordFixtures.vaultId,
-              requestHash: IotaConsentRecordFixtures.requestHash,
             ),
             throwsA(
               isA<TdkException>().having(
@@ -945,7 +920,6 @@ void main() {
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -973,7 +947,6 @@ void main() {
             matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -994,7 +967,6 @@ void main() {
           ),
           verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
           vaultId: IotaConsentRecordFixtures.vaultId,
-          requestHash: IotaConsentRecordFixtures.requestHash,
         );
 
         expect(result, isA<AutoConsentApproved>());
@@ -1022,7 +994,6 @@ void main() {
             matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -1064,7 +1035,6 @@ void main() {
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -1114,7 +1084,6 @@ void main() {
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -1155,7 +1124,6 @@ void main() {
           ),
           verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
           vaultId: IotaConsentRecordFixtures.vaultId,
-          requestHash: IotaConsentRecordFixtures.requestHash,
         );
 
         expect(result, isA<AutoConsentDeclined>());
@@ -1188,7 +1156,6 @@ void main() {
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -1222,7 +1189,6 @@ void main() {
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentApproved>());
@@ -1280,7 +1246,6 @@ void main() {
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -1329,7 +1294,6 @@ void main() {
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentDeclined>());
@@ -1385,7 +1349,6 @@ void main() {
             ),
             verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
             vaultId: IotaConsentRecordFixtures.vaultId,
-            requestHash: IotaConsentRecordFixtures.requestHash,
           );
 
           expect(result, isA<AutoConsentApproved>());
