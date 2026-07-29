@@ -464,9 +464,8 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
       PexShareRequest pex => PresentationDefinitionParser.parseInputDescriptors(
         pex.presentationDefinition,
       ).map((descriptor) => descriptor.id).toList(),
-      DcqlShareRequest dcql => dcql.dcqlQuery.credentials
-          .map((credential) => credential.id)
-          .toList(),
+      DcqlShareRequest dcql =>
+        dcql.dcqlQuery.credentials.map((credential) => credential.id).toList(),
     };
     final sortedIds = [...groupIds]..sort();
     return _cryptography.createHash(
