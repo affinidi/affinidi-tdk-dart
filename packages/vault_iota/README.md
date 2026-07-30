@@ -226,14 +226,14 @@ is still within its `exp` window) throws a `TdkException` with code
 
 By default, nonces are tracked in an **in-memory cache** scoped to the
 `ShareFlowService` instance. This means replay protection does not survive a
-process restart. For persistent cross-session protection, subclass
-`NonceReplayCache` and override `record()` to back it with durable storage,
-then inject it via the `replayCache` parameter:
+process restart. For persistent cross-session protection, implement the
+`NonceReplayStore` interface to back it with durable storage, then inject it
+via the `replayCache` parameter:
 
 ```dart
-class MyPersistentNonceCache extends NonceReplayCache {
+class MyPersistentNonceStore implements NonceReplayStore {
   @override
-  bool record(String nonce, int expEpochSeconds) {
+  Future<bool> record(String nonce, int expEpochSeconds) async {
     // Check and store in your database; return false if already seen.
     return myDb.recordNonce(nonce, expEpochSeconds);
   }
@@ -241,7 +241,7 @@ class MyPersistentNonceCache extends NonceReplayCache {
 
 final service = ShareFlowService(
   cryptography: myCryptographyService,
-  replayCache: MyPersistentNonceCache(),
+  replayCache: MyPersistentNonceStore(),
 );
 ```
 
