@@ -142,9 +142,13 @@ class IotaShareResponseService implements IotaShareResponseServiceInterface {
     final descriptors = PresentationDefinitionParser.parseInputDescriptors(pd);
     final definitionId = PresentationDefinitionParser.parseDefinitionId(pd);
 
+    // Build the submission from the exact credential list that populates the
+    // VP so each descriptor_map path references the credential that actually
+    // satisfies it, regardless of the order the caller supplied credentials in.
     final submission = PresentationSubmissionBuilder.build(
       definitionId: definitionId,
       descriptors: descriptors,
+      credentials: selectedCredentials,
     );
 
     final vp = await _vpBuilder.build(

@@ -9,6 +9,8 @@ import 'package:ssi/ssi.dart';
 import 'package:test/test.dart';
 
 import 'fixtures/iota_consent_record_fixtures.dart';
+import 'fixtures/pd_descriptor_fixtures.dart';
+import 'fixtures/verifiable_credential_fixtures.dart';
 
 // ── Fakes ─────────────────────────────────────────────────────────────────────
 
@@ -264,6 +266,68 @@ void main() {
             jsonDecode(data['presentation_submission'] as String)
                 as Map<String, dynamic>;
         expect(submission['definition_id'], equals('def-1'));
+      });
+    });
+
+    group('when credentials are supplied out of descriptor order', () {
+      test('descriptor_map paths reference the matching credential, not the '
+          'positional index', () async {
+        // The presentation definition lists the degree descriptor first,
+        // but the caller supplies the credentials in the reverse order.
+        // Each descriptor_map entry must point at the credential that
+        // actually satisfies it inside the VP.
+        final reorderedRequest = PexShareRequest(
+          request: _pexShareRequest.request,
+          jwtAssertion: 'test_jwt',
+          presentationDefinition: {
+            'id': 'def-reordered',
+            'input_descriptors': [
+              buildDescriptor(id: 'desc_degree', type: 'UniversityDegree'),
+              buildDescriptor(
+                id: 'desc_employment',
+                type: 'EmploymentCredential',
+              ),
+            ],
+          },
+        );
+
+        RequestOptions? captured;
+        dio.interceptors.add(
+          InterceptorsWrapper(
+            onRequest: (opts, handler) {
+              captured = opts;
+              handler.next(opts);
+            },
+          ),
+        );
+        dioAdapter.mockRequestWithReply(
+          url: _acceptUri,
+          statusCode: 200,
+          data: <String, dynamic>{},
+          httpMethod: HttpMethod.post,
+        );
+
+        await buildService().submitShareResponse(
+          shareRequest: reorderedRequest,
+          selectedCredentials: [
+            buildTestVc(type: 'EmploymentCredential'), // index 0
+            buildTestVc(type: 'UniversityDegree'), // index 1
+          ],
+          acceptResponseUri: _acceptUri,
+        );
+
+        final data = captured!.data as Map<String, dynamic>;
+        final submission =
+            jsonDecode(data['presentation_submission'] as String)
+                as Map<String, dynamic>;
+        final map = (submission['descriptor_map'] as List)
+            .cast<Map<String, dynamic>>();
+
+        final degree = map.firstWhere((e) => e['id'] == 'desc_degree');
+        final employment = map.firstWhere((e) => e['id'] == 'desc_employment');
+
+        expect(degree['path'], equals(r'$.verifiableCredential[1]'));
+        expect(employment['path'], equals(r'$.verifiableCredential[0]'));
       });
     });
 
