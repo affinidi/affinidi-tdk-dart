@@ -281,17 +281,12 @@ void main() async {
                     message: message,
                     recipientDidManager: bobDidManager,
                     validateAddressingConsistency: true,
-                    expectedMessageWrappingTypes: [
-                      MessageWrappingType.authcryptPlaintext,
-                      MessageWrappingType.authcryptSignPlaintext,
-                      MessageWrappingType.anoncryptSignPlaintext,
-                      MessageWrappingType.anoncryptAuthcryptPlaintext,
-                    ],
-                    expectedSigners: [
-                      isMediatorTelemetryMessage
-                          ? bobMediatorDocument.assertionMethod.first.didKeyId
-                          : aliceDidDocument.assertionMethod.first.didKeyId,
-                    ],
+                    expectedMessageWrappingTypes: isMediatorTelemetryMessage
+                        ? [MessageWrappingType.authcryptPlaintext]
+                        : [MessageWrappingType.anoncryptSignPlaintext],
+                    expectedSigners: isMediatorTelemetryMessage
+                        ? null
+                        : [aliceDidDocument.assertionMethod.first.didKeyId],
                   );
 
               if (isMediatorTelemetryMessage) {
