@@ -185,16 +185,18 @@ void main() {
       ).called(1);
     });
 
-    test('returns false and does not delete when the record is missing',
-        () async {
-      when(
-        () => mockStorage.containsKey(key: any(named: 'key')),
-      ).thenAnswer((_) async => false);
+    test(
+      'returns false and does not delete when the record is missing',
+      () async {
+        when(
+          () => mockStorage.containsKey(key: any(named: 'key')),
+        ).thenAnswer((_) async => false);
 
-      final result = await store.deleteByHash(hash);
+        final result = await store.deleteByHash(hash);
 
-      expect(result, isFalse);
-      verifyNever(() => mockStorage.delete(key: any(named: 'key')));
-    });
+        expect(result, isFalse);
+        verifyNever(() => mockStorage.delete(key: any(named: 'key')));
+      },
+    );
   });
 }
