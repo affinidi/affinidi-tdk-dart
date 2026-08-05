@@ -36,7 +36,10 @@ enum TdkExceptionType {
   requestCancelled('request_cancelled'),
 
   /// Exception thrown when the provided time frame is invalid.
-  invalidTimeFrame('invalid_time_frame');
+  invalidTimeFrame('invalid_time_frame'),
+
+  /// Exception thrown when a backup cannot be parsed because it is malformed.
+  invalidBackupFormat('invalid_backup_format');
 
   /// Creates a new instance of [TdkExceptionType].
   ///
