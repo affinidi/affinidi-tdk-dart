@@ -319,6 +319,54 @@ void main() {
       );
     });
 
+    group('deleteConsentRecord', () {
+      test('should delete the record identified by hash', () async {
+        when(() => store.deleteByHash(any())).thenAnswer((_) async => true);
+
+        await service.deleteConsentRecord(hash: 'some-hash');
+
+        verify(() => store.deleteByHash('some-hash')).called(1);
+      });
+
+      test(
+        'should throw TdkException with consentRecordNotFound when the record does not exist',
+        () async {
+          when(() => store.deleteByHash(any())).thenAnswer((_) async => false);
+
+          await expectLater(
+            () => service.deleteConsentRecord(hash: 'missing-hash'),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.consentRecordNotFound.code,
+              ),
+            ),
+          );
+        },
+      );
+
+      test(
+        'should throw TdkException with failedToDeleteConsentRecord when the store throws',
+        () async {
+          when(
+            () => store.deleteByHash(any()),
+          ).thenThrow(Exception('db error'));
+
+          await expectLater(
+            () => service.deleteConsentRecord(hash: 'some-hash'),
+            throwsA(
+              isA<TdkException>().having(
+                (e) => e.code,
+                'code',
+                TdkExceptionType.failedToDeleteConsentRecord.code,
+              ),
+            ),
+          );
+        },
+      );
+    });
+
     group('tryAutomaticConsent', () {
       setUp(() {
         when(

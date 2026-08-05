@@ -120,6 +120,32 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
   }
 
   @override
+  Future<void> deleteConsentRecord({required String hash}) async {
+    try {
+      final existed = await _store.deleteByHash(hash);
+      if (!existed) {
+        throw TdkException(
+          message: 'Consent record not found for hash "$hash".',
+          code: TdkExceptionType.consentRecordNotFound.code,
+        );
+      }
+    } catch (e, stackTrace) {
+      if (e is TdkException) rethrow;
+
+      _logger.warning('Failed to delete consent record');
+
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'Failed to delete consent record.',
+          code: TdkExceptionType.failedToDeleteConsentRecord.code,
+          originalMessage: e.toString(),
+        ),
+        stackTrace,
+      );
+    }
+  }
+
+  @override
   Future<AutoConsentResult> tryAutomaticConsent({
     required Oid4vpShareRequest shareRequest,
     required MatchedCredentialsResult matchedCredentials,

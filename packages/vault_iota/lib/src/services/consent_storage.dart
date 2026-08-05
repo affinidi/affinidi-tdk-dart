@@ -27,4 +27,15 @@ abstract interface class ConsentStorage {
   /// Parameters:
   /// * [requestHash] - Verifier+request hash supplied by the caller.
   Future<List<IotaConsentRecord>> findAllByRequestHash(String requestHash);
+
+  /// Deletes the record identified by [hash].
+  ///
+  /// Returns `true` if a record existed and was removed, or `false` if no
+  /// record matched [hash].
+  ///
+  /// Parameters:
+  /// * [hash] - The [IotaConsentRecord.hash] of the record to delete.
+  ///
+  /// Throws if the underlying storage operation fails.
+  Future<bool> deleteByHash(String hash);
 }
