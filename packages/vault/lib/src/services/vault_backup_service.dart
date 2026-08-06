@@ -46,7 +46,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
     DateTime Function()? now,
   }) : _restorables = List.unmodifiable(restorables),
        _cryptographyService = cryptographyService,
-       _nonce = nonce,
+       _nonce = List<int>.unmodifiable(nonce),
        _logger = logger ?? Logger.instance,
        _now = now ?? DateTime.now {
     if (_nonce.length < _minNonceLength) {
