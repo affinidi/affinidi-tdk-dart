@@ -132,7 +132,7 @@ class IotaConsentRecordService implements IotaConsentRecordServiceInterface {
     } catch (e, stackTrace) {
       if (e is TdkException) rethrow;
 
-      _logger.warning('Failed to delete consent record');
+      _logger.warning('Failed to delete consent record: $e');
 
       Error.throwWithStackTrace(
         TdkException(
