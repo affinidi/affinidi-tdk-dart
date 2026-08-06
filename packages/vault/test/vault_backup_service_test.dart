@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:mocktail/mocktail.dart';
@@ -14,7 +13,9 @@ void main() {
     late MockRestorable restorableB;
     late FakeCryptographyService cryptographyService;
 
-    final nonce = utf8.encode('test-nonce');
+    final nonce = utf8.encode('test-nonce-16bytes');
+    const passphrase = 'correct-horse-staple';
+    const wrongPassphrase = 'incorrect-passphrase';
 
     VaultBackupService buildService(List<Restorable> restorables) =>
         VaultBackupService(
@@ -34,11 +35,25 @@ void main() {
       test('produces BackupData with the injected timestamp', () async {
         final service = buildService(const []);
 
-        final backup = await service.createBackup(passphrase: 'pw');
+        final backup = await service.createBackup(passphrase: passphrase);
 
         expect(backup.encryptedBackup, isNotEmpty);
-        expect(backup.encryptionKey, isNotEmpty);
         expect(backup.timestamp, equals('2024-01-02T03:04:05.000Z'));
+      });
+
+      test('rejects a passphrase shorter than the minimum length', () async {
+        final service = buildService(const []);
+
+        await expectLater(
+          service.createBackup(passphrase: 'short'),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              equals('weak_passphrase'),
+            ),
+          ),
+        );
       });
 
       test('exports every registered restorable', () async {
@@ -46,7 +61,7 @@ void main() {
         when(() => restorableB.export()).thenAnswer((_) async => {'b': 2});
 
         final service = buildService([restorableA, restorableB]);
-        await service.createBackup(passphrase: 'pw');
+        await service.createBackup(passphrase: passphrase);
 
         verify(() => restorableA.export()).called(1);
         verify(() => restorableB.export()).called(1);
@@ -58,12 +73,12 @@ void main() {
         final service = buildService([restorableA]);
 
         await expectLater(
-          service.createBackup(passphrase: 'pw'),
+          service.createBackup(passphrase: passphrase),
           throwsA(
             isA<TdkException>().having(
               (e) => e.code,
               'code',
-              equals('invalid_backup_format'),
+              equals('backup_creation_failed'),
             ),
           ),
         );
@@ -81,7 +96,7 @@ void main() {
           final service = buildService([restorableA]);
 
           await expectLater(
-            service.createBackup(passphrase: 'pw'),
+            service.createBackup(passphrase: passphrase),
             throwsA(
               isA<TdkException>().having(
                 (e) => e.code,
@@ -94,6 +109,19 @@ void main() {
       );
     });
 
+    group('constructor', () {
+      test('rejects a nonce shorter than the minimum length', () {
+        expect(
+          () => VaultBackupService(
+            restorables: const [],
+            cryptographyService: cryptographyService,
+            nonce: utf8.encode('short'),
+          ),
+          throwsArgumentError,
+        );
+      });
+    });
+
     group('restoreFromBackup', () {
       test('round-trips merged sections back to every restorable', () async {
         when(() => restorableA.export()).thenAnswer((_) async => {'a': 1});
@@ -102,8 +130,11 @@ void main() {
         when(() => restorableB.import(any())).thenAnswer((_) async {});
 
         final service = buildService([restorableA, restorableB]);
-        final backup = await service.createBackup(passphrase: 'pw');
-        await service.restoreFromBackup(backupData: backup, passphrase: 'pw');
+        final backup = await service.createBackup(passphrase: passphrase);
+        await service.restoreFromBackup(
+          backupData: backup,
+          passphrase: passphrase,
+        );
 
         final capturedA = verify(
           () => restorableA.import(captureAny()),
@@ -117,10 +148,10 @@ void main() {
 
       test('does not call import when no restorables are registered', () async {
         final service = buildService(const []);
-        final backup = await service.createBackup(passphrase: 'pw');
+        final backup = await service.createBackup(passphrase: passphrase);
 
         await expectLater(
-          service.restoreFromBackup(backupData: backup, passphrase: 'pw'),
+          service.restoreFromBackup(backupData: backup, passphrase: passphrase),
           completes,
         );
       });
@@ -129,10 +160,13 @@ void main() {
         when(() => restorableA.export()).thenAnswer((_) async => {'a': 1});
 
         final service = buildService([restorableA]);
-        final backup = await service.createBackup(passphrase: 'right');
+        final backup = await service.createBackup(passphrase: passphrase);
 
         await expectLater(
-          service.restoreFromBackup(backupData: backup, passphrase: 'wrong'),
+          service.restoreFromBackup(
+            backupData: backup,
+            passphrase: wrongPassphrase,
+          ),
           throwsA(isA<TdkException>()),
         );
         verifyNever(() => restorableA.import(any()));
@@ -142,22 +176,24 @@ void main() {
         'throws TdkException when the decrypted payload is not a backup',
         () async {
           final key = await cryptographyService.Pbkdf2(
-            password: 'pw',
+            password: passphrase,
             nonce: nonce,
           );
           final malformed = BackupData(
-            encryptedBackup: cryptographyService.encryptToHex(
-              Uint8List.fromList(key),
-              Uint8List.fromList(utf8.encode(jsonEncode({'unexpected': true}))),
+            encryptedBackup: await cryptographyService.Aes256EncryptStringToHex(
+              key: key,
+              data: jsonEncode({'unexpected': true}),
             ),
-            encryptionKey: Uint8List.fromList(key),
             timestamp: '2024-01-02T03:04:05.000Z',
           );
 
           final service = buildService([restorableA]);
 
           await expectLater(
-            service.restoreFromBackup(backupData: malformed, passphrase: 'pw'),
+            service.restoreFromBackup(
+              backupData: malformed,
+              passphrase: passphrase,
+            ),
             throwsA(
               isA<TdkException>().having(
                 (e) => e.code,
@@ -171,16 +207,18 @@ void main() {
       );
 
       test('throws TdkException when the ciphertext is malformed', () async {
-        final malformed = BackupData(
+        final malformed = const BackupData(
           encryptedBackup: '!!!not-decodable!!!',
-          encryptionKey: Uint8List.fromList(utf8.encode('key')),
           timestamp: '2024-01-02T03:04:05.000Z',
         );
 
         final service = buildService([restorableA]);
 
         await expectLater(
-          service.restoreFromBackup(backupData: malformed, passphrase: 'pw'),
+          service.restoreFromBackup(
+            backupData: malformed,
+            passphrase: passphrase,
+          ),
           throwsA(
             isA<TdkException>().having(
               (e) => e.code,
@@ -196,15 +234,14 @@ void main() {
         'throws TdkException when the decrypted payload is not an object',
         () async {
           final key = await cryptographyService.Pbkdf2(
-            password: 'pw',
+            password: passphrase,
             nonce: nonce,
           );
           final notAnObject = BackupData(
-            encryptedBackup: cryptographyService.encryptToHex(
-              Uint8List.fromList(key),
-              Uint8List.fromList(utf8.encode(jsonEncode([1, 2, 3]))),
+            encryptedBackup: await cryptographyService.Aes256EncryptStringToHex(
+              key: key,
+              data: jsonEncode([1, 2, 3]),
             ),
-            encryptionKey: Uint8List.fromList(key),
             timestamp: '2024-01-02T03:04:05.000Z',
           );
 
@@ -213,7 +250,7 @@ void main() {
           await expectLater(
             service.restoreFromBackup(
               backupData: notAnObject,
-              passphrase: 'pw',
+              passphrase: passphrase,
             ),
             throwsA(isA<TdkException>()),
           );
@@ -234,8 +271,11 @@ void main() {
           when(() => restorableB.import(any())).thenAnswer((_) async {});
 
           final service = buildService([restorableA, restorableB]);
-          final backup = await service.createBackup(passphrase: 'pw');
-          await service.restoreFromBackup(backupData: backup, passphrase: 'pw');
+          final backup = await service.createBackup(passphrase: passphrase);
+          await service.restoreFromBackup(
+            backupData: backup,
+            passphrase: passphrase,
+          );
 
           final captured =
               verify(() => restorableB.import(captureAny())).captured.single
@@ -251,8 +291,11 @@ void main() {
         when(() => restorableA.import(any())).thenAnswer((_) async {});
 
         final service = buildService([restorableA]);
-        final backup = await service.createBackup(passphrase: 'pw');
-        await service.restoreFromBackup(backupData: backup, passphrase: 'pw');
+        final backup = await service.createBackup(passphrase: passphrase);
+        await service.restoreFromBackup(
+          backupData: backup,
+          passphrase: passphrase,
+        );
 
         final captured =
             verify(() => restorableA.import(captureAny())).captured.single

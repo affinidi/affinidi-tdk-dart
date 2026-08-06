@@ -39,7 +39,14 @@ enum TdkExceptionType {
   invalidTimeFrame('invalid_time_frame'),
 
   /// Exception thrown when a backup cannot be parsed because it is malformed.
-  invalidBackupFormat('invalid_backup_format');
+  invalidBackupFormat('invalid_backup_format'),
+
+  /// Exception thrown when creating a backup fails.
+  backupCreationFailed('backup_creation_failed'),
+
+  /// Exception thrown when the backup passphrase is shorter than the minimum
+  /// required length.
+  weakPassphrase('weak_passphrase');
 
   /// Creates a new instance of [TdkExceptionType].
   ///

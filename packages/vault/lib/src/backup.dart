@@ -13,6 +13,9 @@ class Backup {
   /// The current backup format version produced by this package.
   static const currentVersion = '1.0.0';
 
+  /// The backup format versions this package is able to restore.
+  static const supportedVersions = {currentVersion};
+
   /// Creates a [Backup].
   ///
   /// Parameters:
@@ -41,6 +44,12 @@ class Backup {
     if (version is! String) {
       throw TdkException(
         message: 'Backup is missing a valid "version" field.',
+        code: TdkExceptionType.invalidBackupFormat.code,
+      );
+    }
+    if (!supportedVersions.contains(version)) {
+      throw TdkException(
+        message: 'Unsupported backup version: $version.',
         code: TdkExceptionType.invalidBackupFormat.code,
       );
     }

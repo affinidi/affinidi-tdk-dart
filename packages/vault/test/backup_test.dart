@@ -4,12 +4,26 @@ import 'package:test/test.dart';
 void main() {
   group('Backup', () {
     test('toJson and fromJson round-trip preserves version and data', () {
-      final backup = Backup(version: '2.0.0', data: {'edge': 1});
+      final backup = Backup(version: Backup.currentVersion, data: {'edge': 1});
 
       final restored = Backup.fromJson(backup.toJson());
 
-      expect(restored.version, equals('2.0.0'));
+      expect(restored.version, equals(Backup.currentVersion));
       expect(restored.data, equals({'edge': 1}));
+    });
+
+    test('fromJson throws TdkException when version is unsupported', () {
+      expect(
+        () =>
+            Backup.fromJson({'version': '99.0.0', 'data': <String, dynamic>{}}),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            equals('invalid_backup_format'),
+          ),
+        ),
+      );
     });
 
     test('defaults version to currentVersion', () {

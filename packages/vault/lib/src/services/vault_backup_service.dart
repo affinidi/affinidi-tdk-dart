@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
@@ -13,19 +12,29 @@ import 'vault_backup_service_interface.dart';
 ///
 /// Each registered [Restorable] component contributes a namespaced section to a
 /// versioned [Backup] envelope, which is JSON-encoded and encrypted with a
-/// passphrase-derived key (PBKDF2 + AES-CBC). Only the encrypted [BackupData]
-/// ever leaves this service; the plaintext envelope is never exposed.
+/// passphrase-derived key (PBKDF2 + AES-CBC authenticated with HMAC-SHA256).
+/// Any tampering with the ciphertext fails authentication before the plaintext
+/// is used. Only the encrypted [BackupData] ever leaves this service; the
+/// plaintext envelope and the derived key are never exposed.
 class VaultBackupService implements VaultBackupServiceInterface {
+  /// Minimum number of characters required for a backup passphrase.
+  static const int _minPassphraseLength = 12;
+
+  /// Minimum length, in bytes, required for the PBKDF2 salt.
+  static const int _minNonceLength = 16;
+
   /// Creates a [VaultBackupService].
   ///
   /// Parameters:
   /// * [restorables] - The components to include in every backup and restore
   ///   cycle.
-  /// * [cryptographyService] - Provides PBKDF2 key derivation and AES-CBC.
+  /// * [cryptographyService] - Provides PBKDF2 key derivation and authenticated
+  ///   AES-CBC (HMAC-SHA256) encryption.
   /// * [nonce] - The PBKDF2 salt used to derive the backup key. The consumer
-  ///   owns this value: supply your own salt and persist it wherever you like.
-  ///   The same salt must be provided at backup and restore time, otherwise the
-  ///   key cannot be re-derived and the backup cannot be decrypted.
+  ///   owns this value: supply your own cryptographically random salt of at
+  ///   least [_minNonceLength] bytes and persist it wherever you like. The same
+  ///   salt must be provided at backup and restore time, otherwise the key
+  ///   cannot be re-derived and the backup cannot be decrypted.
   /// * [logger] - Optional logger; defaults to [Logger.instance].
   /// * [now] - Optional clock used for the backup timestamp; defaults to
   ///   [DateTime.now]. Injectable for deterministic tests.
@@ -39,7 +48,15 @@ class VaultBackupService implements VaultBackupServiceInterface {
        _cryptographyService = cryptographyService,
        _nonce = nonce,
        _logger = logger ?? Logger.instance,
-       _now = now ?? DateTime.now;
+       _now = now ?? DateTime.now {
+    if (_nonce.length < _minNonceLength) {
+      throw ArgumentError.value(
+        nonce,
+        'nonce',
+        'must be at least $_minNonceLength bytes',
+      );
+    }
+  }
 
   final List<Restorable> _restorables;
   final CryptographyServiceInterface _cryptographyService;
@@ -49,6 +66,13 @@ class VaultBackupService implements VaultBackupServiceInterface {
 
   @override
   Future<BackupData> createBackup({required String passphrase}) async {
+    if (passphrase.length < _minPassphraseLength) {
+      throw TdkException(
+        message:
+            'Passphrase must be at least $_minPassphraseLength characters long.',
+        code: TdkExceptionType.weakPassphrase.code,
+      );
+    }
     try {
       final backup = Backup(data: await _exportSections());
       final plaintext = jsonEncode(backup.toJson());
@@ -58,24 +82,24 @@ class VaultBackupService implements VaultBackupServiceInterface {
         nonce: _nonce,
       );
 
-      final encryptedBackup = _cryptographyService.encryptToHex(
-        Uint8List.fromList(key),
-        Uint8List.fromList(utf8.encode(plaintext)),
-      );
+      final encryptedBackup =
+          await _cryptographyService.Aes256EncryptStringToHex(
+            key: key,
+            data: plaintext,
+          );
 
       return BackupData(
         encryptedBackup: encryptedBackup,
-        encryptionKey: Uint8List.fromList(key),
         timestamp: _now().toUtc().toIso8601String(),
       );
     } on TdkException {
       rethrow;
     } catch (error, stackTrace) {
-      _logger.error('Failed to create vault backup: $error');
+      _logger.error('Failed to create vault backup (${error.runtimeType})');
       Error.throwWithStackTrace(
         TdkException(
           message: 'Failed to create vault backup.',
-          code: TdkExceptionType.invalidBackupFormat.code,
+          code: TdkExceptionType.backupCreationFailed.code,
         ),
         stackTrace,
       );
@@ -94,25 +118,29 @@ class VaultBackupService implements VaultBackupServiceInterface {
         nonce: _nonce,
       );
 
-      final decrypted = _cryptographyService.decryptFromHex(
-        Uint8List.fromList(key),
-        backupData.encryptedBackup,
+      final decrypted = await _cryptographyService.Aes256DecryptStringFromHex(
+        key: key,
+        encryptedData: backupData.encryptedBackup,
       );
 
       if (decrypted == null) {
-        _logger.warning('Failed to decrypt backup; likely wrong passphrase.');
+        _logger.warning(
+          'Failed to decrypt backup; wrong passphrase or tampered data.',
+        );
         throw TdkException(
-          message: 'Failed to decrypt backup; the passphrase may be incorrect.',
+          message:
+              'Failed to decrypt backup; the passphrase may be incorrect or '
+              'the backup has been tampered with.',
           code: TdkExceptionType.invalidBackupFormat.code,
         );
       }
 
-      final json = jsonDecode(utf8.decode(decrypted)) as Map<String, dynamic>;
+      final json = jsonDecode(decrypted) as Map<String, dynamic>;
       backup = Backup.fromJson(json);
     } on TdkException {
       rethrow;
     } catch (error, stackTrace) {
-      _logger.error('Failed to read backup: $error');
+      _logger.error('Failed to read backup (${error.runtimeType})');
       Error.throwWithStackTrace(
         TdkException(
           message:
