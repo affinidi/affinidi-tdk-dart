@@ -17,6 +17,9 @@ _$signCredentialsLdpInputDtoSignatureSchemeEnum_ecdsaP256Sha256 =
 const SignCredentialsLdpInputDtoSignatureSchemeEnum
 _$signCredentialsLdpInputDtoSignatureSchemeEnum_ed25519 =
     const SignCredentialsLdpInputDtoSignatureSchemeEnum._('ed25519');
+const SignCredentialsLdpInputDtoSignatureSchemeEnum
+_$signCredentialsLdpInputDtoSignatureSchemeEnum_mldsa44 =
+    const SignCredentialsLdpInputDtoSignatureSchemeEnum._('mldsa44');
 
 SignCredentialsLdpInputDtoSignatureSchemeEnum
 _$signCredentialsLdpInputDtoSignatureSchemeEnumValueOf(String name) {
@@ -27,6 +30,8 @@ _$signCredentialsLdpInputDtoSignatureSchemeEnumValueOf(String name) {
       return _$signCredentialsLdpInputDtoSignatureSchemeEnum_ecdsaP256Sha256;
     case 'ed25519':
       return _$signCredentialsLdpInputDtoSignatureSchemeEnum_ed25519;
+    case 'mldsa44':
+      return _$signCredentialsLdpInputDtoSignatureSchemeEnum_mldsa44;
     default:
       throw ArgumentError(name);
   }
@@ -39,6 +44,7 @@ _$signCredentialsLdpInputDtoSignatureSchemeEnumValues =
         _$signCredentialsLdpInputDtoSignatureSchemeEnum_ecdsaSecp256k1Sha256,
         _$signCredentialsLdpInputDtoSignatureSchemeEnum_ecdsaP256Sha256,
         _$signCredentialsLdpInputDtoSignatureSchemeEnum_ed25519,
+        _$signCredentialsLdpInputDtoSignatureSchemeEnum_mldsa44,
       ],
     );
 
@@ -59,6 +65,12 @@ _$signCredentialsLdpInputDtoSignatureSuiteEnum_ecdsaSecp256k1Signature2019 =
     const SignCredentialsLdpInputDtoSignatureSuiteEnum._(
       'ecdsaSecp256k1Signature2019',
     );
+const SignCredentialsLdpInputDtoSignatureSuiteEnum
+_$signCredentialsLdpInputDtoSignatureSuiteEnum_mldsa44Jcs2024 =
+    const SignCredentialsLdpInputDtoSignatureSuiteEnum._('mldsa44Jcs2024');
+const SignCredentialsLdpInputDtoSignatureSuiteEnum
+_$signCredentialsLdpInputDtoSignatureSuiteEnum_mldsa44Rdfc2024 =
+    const SignCredentialsLdpInputDtoSignatureSuiteEnum._('mldsa44Rdfc2024');
 
 SignCredentialsLdpInputDtoSignatureSuiteEnum
 _$signCredentialsLdpInputDtoSignatureSuiteEnumValueOf(String name) {
@@ -73,6 +85,10 @@ _$signCredentialsLdpInputDtoSignatureSuiteEnumValueOf(String name) {
       return _$signCredentialsLdpInputDtoSignatureSuiteEnum_eddsaRdfc2022;
     case 'ecdsaSecp256k1Signature2019':
       return _$signCredentialsLdpInputDtoSignatureSuiteEnum_ecdsaSecp256k1Signature2019;
+    case 'mldsa44Jcs2024':
+      return _$signCredentialsLdpInputDtoSignatureSuiteEnum_mldsa44Jcs2024;
+    case 'mldsa44Rdfc2024':
+      return _$signCredentialsLdpInputDtoSignatureSuiteEnum_mldsa44Rdfc2024;
     default:
       throw ArgumentError(name);
   }
@@ -88,6 +104,8 @@ _$signCredentialsLdpInputDtoSignatureSuiteEnumValues =
       _$signCredentialsLdpInputDtoSignatureSuiteEnum_eddsaJcs2022,
       _$signCredentialsLdpInputDtoSignatureSuiteEnum_eddsaRdfc2022,
       _$signCredentialsLdpInputDtoSignatureSuiteEnum_ecdsaSecp256k1Signature2019,
+      _$signCredentialsLdpInputDtoSignatureSuiteEnum_mldsa44Jcs2024,
+      _$signCredentialsLdpInputDtoSignatureSuiteEnum_mldsa44Rdfc2024,
     ]);
 
 Serializer<SignCredentialsLdpInputDtoSignatureSchemeEnum>
@@ -104,11 +122,13 @@ class _$SignCredentialsLdpInputDtoSignatureSchemeEnumSerializer
     'ecdsaSecp256k1Sha256': 'ecdsa_secp256k1_sha256',
     'ecdsaP256Sha256': 'ecdsa_p256_sha256',
     'ed25519': 'ed25519',
+    'mldsa44': 'mldsa44',
   };
   static const Map<Object, String> _fromWire = const <Object, String>{
     'ecdsa_secp256k1_sha256': 'ecdsaSecp256k1Sha256',
     'ecdsa_p256_sha256': 'ecdsaP256Sha256',
     'ed25519': 'ed25519',
+    'mldsa44': 'mldsa44',
   };
 
   @override
@@ -144,6 +164,8 @@ class _$SignCredentialsLdpInputDtoSignatureSuiteEnumSerializer
     'eddsaJcs2022': 'eddsa-jcs-2022',
     'eddsaRdfc2022': 'eddsa-rdfc-2022',
     'ecdsaSecp256k1Signature2019': 'EcdsaSecp256k1Signature2019',
+    'mldsa44Jcs2024': 'mldsa44-jcs-2024',
+    'mldsa44Rdfc2024': 'mldsa44-rdfc-2024',
   };
   static const Map<Object, String> _fromWire = const <Object, String>{
     'ecdsa-jcs-2019': 'ecdsaJcs2019',
@@ -151,6 +173,8 @@ class _$SignCredentialsLdpInputDtoSignatureSuiteEnumSerializer
     'eddsa-jcs-2022': 'eddsaJcs2022',
     'eddsa-rdfc-2022': 'eddsaRdfc2022',
     'EcdsaSecp256k1Signature2019': 'ecdsaSecp256k1Signature2019',
+    'mldsa44-jcs-2024': 'mldsa44Jcs2024',
+    'mldsa44-rdfc-2024': 'mldsa44Rdfc2024',
   };
 
   @override
