@@ -21,7 +21,6 @@ void main() {
         VaultBackupService(
           restorables: restorables,
           cryptographyService: cryptographyService,
-          nonce: nonce,
           now: () => DateTime.utc(2024, 1, 2, 3, 4, 5),
         );
 
@@ -38,6 +37,7 @@ void main() {
         final backup = await service.createBackup(passphrase: passphrase);
 
         expect(backup.encryptedBackup, isNotEmpty);
+        expect(backup.salt, isNotEmpty);
         expect(backup.timestamp, equals('2024-01-02T03:04:05.000Z'));
       });
 
@@ -109,19 +109,6 @@ void main() {
       );
     });
 
-    group('constructor', () {
-      test('rejects a nonce shorter than the minimum length', () {
-        expect(
-          () => VaultBackupService(
-            restorables: const [],
-            cryptographyService: cryptographyService,
-            nonce: utf8.encode('short'),
-          ),
-          throwsArgumentError,
-        );
-      });
-    });
-
     group('restoreFromBackup', () {
       test('round-trips merged sections back to every restorable', () async {
         when(() => restorableA.export()).thenAnswer((_) async => {'a': 1});
@@ -184,6 +171,7 @@ void main() {
               key: key,
               data: jsonEncode({'unexpected': true}),
             ),
+            salt: base64Encode(nonce),
             timestamp: '2024-01-02T03:04:05.000Z',
           );
 
@@ -207,8 +195,9 @@ void main() {
       );
 
       test('throws TdkException when the ciphertext is malformed', () async {
-        final malformed = const BackupData(
+        final malformed = BackupData(
           encryptedBackup: '!!!not-decodable!!!',
+          salt: base64Encode(nonce),
           timestamp: '2024-01-02T03:04:05.000Z',
         );
 
@@ -242,6 +231,7 @@ void main() {
               key: key,
               data: jsonEncode([1, 2, 3]),
             ),
+            salt: base64Encode(nonce),
             timestamp: '2024-01-02T03:04:05.000Z',
           );
 

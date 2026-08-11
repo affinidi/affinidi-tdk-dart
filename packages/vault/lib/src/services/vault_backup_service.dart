@@ -20,8 +20,12 @@ class VaultBackupService implements VaultBackupServiceInterface {
   /// Minimum number of characters required for a backup passphrase.
   static const int _minPassphraseLength = 12;
 
-  /// Minimum length, in bytes, required for the PBKDF2 salt.
-  static const int _minNonceLength = 16;
+  /// Length, in bytes, of the per-backup PBKDF2 salt generated internally.
+  static const int _saltLength = 16;
+
+  /// Upper bound, in bytes, on the JSON-encoded backup envelope. Guards against
+  /// a misbehaving [Restorable] exhausting memory during encoding/encryption.
+  static const int _maxBackupSizeBytes = 25 * 1024 * 1024;
 
   /// Creates a [VaultBackupService].
   ///
@@ -30,37 +34,21 @@ class VaultBackupService implements VaultBackupServiceInterface {
   ///   cycle.
   /// * [cryptographyService] - Provides PBKDF2 key derivation and authenticated
   ///   AES-CBC (HMAC-SHA256) encryption.
-  /// * [nonce] - The PBKDF2 salt used to derive the backup key. The consumer
-  ///   owns this value: supply your own cryptographically random salt of at
-  ///   least [_minNonceLength] bytes and persist it wherever you like. The same
-  ///   salt must be provided at backup and restore time, otherwise the key
-  ///   cannot be re-derived and the backup cannot be decrypted.
   /// * [logger] - Optional logger; defaults to [Logger.instance].
   /// * [now] - Optional clock used for the backup timestamp; defaults to
   ///   [DateTime.now]. Injectable for deterministic tests.
   VaultBackupService({
     required List<Restorable> restorables,
     required CryptographyServiceInterface cryptographyService,
-    required List<int> nonce,
     Logger? logger,
     DateTime Function()? now,
   }) : _restorables = List.unmodifiable(restorables),
        _cryptographyService = cryptographyService,
-       _nonce = List<int>.unmodifiable(nonce),
        _logger = logger ?? Logger.instance,
-       _now = now ?? DateTime.now {
-    if (_nonce.length < _minNonceLength) {
-      throw ArgumentError.value(
-        nonce,
-        'nonce',
-        'must be at least $_minNonceLength bytes',
-      );
-    }
-  }
+       _now = now ?? DateTime.now;
 
   final List<Restorable> _restorables;
   final CryptographyServiceInterface _cryptographyService;
-  final List<int> _nonce;
   final Logger _logger;
   final DateTime Function() _now;
 
@@ -77,19 +65,32 @@ class VaultBackupService implements VaultBackupServiceInterface {
       final backup = Backup(data: await _exportSections());
       final plaintext = jsonEncode(backup.toJson());
 
+      if (plaintext.length > _maxBackupSizeBytes) {
+        throw TdkException(
+          message: 'Backup exceeds the maximum allowed size.',
+          code: TdkExceptionType.backupCreationFailed.code,
+        );
+      }
+
+      final salt = _cryptographyService.getRandomBytes(_saltLength);
       final key = await _cryptographyService.Pbkdf2(
         password: passphrase,
-        nonce: _nonce,
+        nonce: salt,
       );
 
-      final encryptedBackup =
-          await _cryptographyService.Aes256EncryptStringToHex(
-            key: key,
-            data: plaintext,
-          );
+      final String encryptedBackup;
+      try {
+        encryptedBackup = await _cryptographyService.Aes256EncryptStringToHex(
+          key: key,
+          data: plaintext,
+        );
+      } finally {
+        _wipe(key);
+      }
 
       return BackupData(
         encryptedBackup: encryptedBackup,
+        salt: base64Encode(salt),
         timestamp: _now().toUtc().toIso8601String(),
       );
     } on TdkException {
@@ -113,15 +114,21 @@ class VaultBackupService implements VaultBackupServiceInterface {
   }) async {
     final Backup backup;
     try {
+      final salt = base64Decode(backupData.salt);
       final key = await _cryptographyService.Pbkdf2(
         password: passphrase,
-        nonce: _nonce,
+        nonce: salt,
       );
 
-      final decrypted = await _cryptographyService.Aes256DecryptStringFromHex(
-        key: key,
-        encryptedData: backupData.encryptedBackup,
-      );
+      final String? decrypted;
+      try {
+        decrypted = await _cryptographyService.Aes256DecryptStringFromHex(
+          key: key,
+          encryptedData: backupData.encryptedBackup,
+        );
+      } finally {
+        _wipe(key);
+      }
 
       if (decrypted == null) {
         _logger.warning(
@@ -167,6 +174,15 @@ class VaultBackupService implements VaultBackupServiceInterface {
     final snapshot = Map<String, dynamic>.unmodifiable(data);
     for (final restorable in _restorables) {
       await restorable.import(snapshot);
+    }
+  }
+
+  /// Overwrite of a derived-key buffer to shorten its lifetime.
+  void _wipe(List<int> bytes) {
+    try {
+      bytes.fillRange(0, bytes.length, 0);
+    } on UnsupportedError {
+      // The buffer is not mutable; nothing more we can do.
     }
   }
 }

@@ -11,6 +11,9 @@ import 'package:mocktail/mocktail.dart';
 class FakeCryptographyService extends Fake
     implements CryptographyServiceInterface {
   @override
+  List<int> getRandomBytes(int length) => List<int>.filled(length, 7);
+
+  @override
   // ignore: non_constant_identifier_names
   Future<List<int>> Pbkdf2({
     required String password,
