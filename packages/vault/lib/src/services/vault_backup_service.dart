@@ -23,10 +23,6 @@ class VaultBackupService implements VaultBackupServiceInterface {
   /// Length, in bytes, of the per-backup PBKDF2 salt generated internally.
   static const int _saltLength = 16;
 
-  /// Upper bound, in bytes, on the JSON-encoded backup envelope. Guards against
-  /// a misbehaving [Restorable] exhausting memory during encoding/encryption.
-  static const int _maxBackupSizeBytes = 25 * 1024 * 1024;
-
   /// Creates a [VaultBackupService].
   ///
   /// Parameters:
@@ -64,13 +60,6 @@ class VaultBackupService implements VaultBackupServiceInterface {
     try {
       final backup = Backup(data: await _exportSections());
       final plaintext = jsonEncode(backup.toJson());
-
-      if (plaintext.length > _maxBackupSizeBytes) {
-        throw TdkException(
-          message: 'Backup exceeds the maximum allowed size.',
-          code: TdkExceptionType.backupCreationFailed.code,
-        );
-      }
 
       final salt = _cryptographyService.getRandomBytes(_saltLength);
       final key = await _cryptographyService.Pbkdf2(
