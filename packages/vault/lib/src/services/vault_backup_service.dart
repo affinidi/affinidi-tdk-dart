@@ -154,7 +154,18 @@ class VaultBackupService implements VaultBackupServiceInterface {
   Future<Map<String, dynamic>> _exportSections() async {
     final sections = <String, dynamic>{};
     for (final restorable in _restorables) {
-      sections.addAll(await restorable.export());
+      final section = await restorable.export();
+      for (final key in section.keys) {
+        if (sections.containsKey(key)) {
+          throw TdkException(
+            message:
+                'Duplicate backup section "$key": each source must own a '
+                'unique namespace.',
+            code: TdkExceptionType.backupCreationFailed.code,
+          );
+        }
+      }
+      sections.addAll(section);
     }
     return sections;
   }

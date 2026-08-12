@@ -78,4 +78,58 @@ void main() {
       );
     });
   });
+
+  group('BackupData', () {
+    test('toJson and fromJson round-trip preserves all fields', () {
+      const backup = BackupData(
+        encryptedBackup: 'deadbeef',
+        salt: 'c2FsdA==',
+        timestamp: '2024-01-02T03:04:05.000Z',
+      );
+
+      final restored = BackupData.fromJson(backup.toJson());
+
+      expect(restored.encryptedBackup, equals('deadbeef'));
+      expect(restored.salt, equals('c2FsdA=='));
+      expect(restored.timestamp, equals('2024-01-02T03:04:05.000Z'));
+    });
+
+    test('fromJson throws TdkException when a field is missing', () {
+      expect(
+        () => BackupData.fromJson({
+          'encryptedBackup': 'deadbeef',
+          'salt': 'c2FsdA==',
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (e) => e.code,
+            'code',
+            equals('invalid_backup_format'),
+          ),
+        ),
+      );
+    });
+
+    test('fromJson throws TdkException when a field has the wrong type', () {
+      expect(
+        () => BackupData.fromJson({
+          'encryptedBackup': 'deadbeef',
+          'salt': 123,
+          'timestamp': '2024-01-02T03:04:05.000Z',
+        }),
+        throwsA(isA<TdkException>()),
+      );
+    });
+
+    test('toString redacts the encrypted payload', () {
+      const backup = BackupData(
+        encryptedBackup: 'deadbeef',
+        salt: 'c2FsdA==',
+        timestamp: '2024-01-02T03:04:05.000Z',
+      );
+
+      expect(backup.toString(), isNot(contains('deadbeef')));
+      expect(backup.toString(), contains('[REDACTED]'));
+    });
+  });
 }

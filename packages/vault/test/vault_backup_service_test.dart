@@ -248,33 +248,27 @@ void main() {
         },
       );
 
-      test(
-        'later restorable overwrites earlier sections on key collision',
-        () async {
-          when(
-            () => restorableA.export(),
-          ).thenAnswer((_) async => {'shared': 'from-a', 'only-a': true});
-          when(
-            () => restorableB.export(),
-          ).thenAnswer((_) async => {'shared': 'from-b', 'only-b': true});
-          when(() => restorableA.import(any())).thenAnswer((_) async {});
-          when(() => restorableB.import(any())).thenAnswer((_) async {});
+      test('throws when two restorables export the same section key', () async {
+        when(
+          () => restorableA.export(),
+        ).thenAnswer((_) async => {'shared': 'from-a', 'only-a': true});
+        when(
+          () => restorableB.export(),
+        ).thenAnswer((_) async => {'shared': 'from-b', 'only-b': true});
 
-          final service = buildService([restorableA, restorableB]);
-          final backup = await service.createBackup(passphrase: passphrase);
-          await service.restoreFromBackup(
-            backupData: backup,
-            passphrase: passphrase,
-          );
+        final service = buildService([restorableA, restorableB]);
 
-          final captured =
-              verify(() => restorableB.import(captureAny())).captured.single
-                  as Map<String, dynamic>;
-          expect(captured['shared'], equals('from-b'));
-          expect(captured['only-a'], isTrue);
-          expect(captured['only-b'], isTrue);
-        },
-      );
+        await expectLater(
+          service.createBackup(passphrase: passphrase),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              equals('backup_creation_failed'),
+            ),
+          ),
+        );
+      });
 
       test('passes an unmodifiable snapshot to each restorable', () async {
         when(() => restorableA.export()).thenAnswer((_) async => {'a': 1});
