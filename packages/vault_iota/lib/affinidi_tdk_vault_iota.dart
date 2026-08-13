@@ -2,8 +2,8 @@
 /// classifying what a verifier is requesting, and resolving verifier identity.
 library;
 
-export 'package:affinidi_tdk_common/affinidi_tdk_common.dart' show TdkException;
-
+export 'package:affinidi_tdk_common/affinidi_tdk_common.dart'
+    show Restorable, TdkException;
 export 'src/exceptions/tdk_exception_type.dart';
 export 'src/models/auto_consent_result.dart';
 export 'src/models/claimed_credentials_result.dart';
@@ -27,6 +27,8 @@ export 'src/models/vp_data_model.dart';
 export 'src/services/consent_storage.dart';
 export 'src/services/credential_matcher_service.dart';
 export 'src/services/credential_matcher_service_interface.dart';
+export 'src/services/enumerable_consent_storage.dart';
+export 'src/services/iota_consent_history_backup_source.dart';
 export 'src/services/iota_consent_record_service.dart';
 export 'src/services/iota_consent_record_service_interface.dart';
 export 'src/services/iota_share_response_service.dart';
