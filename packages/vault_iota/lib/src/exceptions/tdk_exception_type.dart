@@ -79,7 +79,10 @@ enum TdkExceptionType {
   /// Thrown when an OID4VP request nonce has already been consumed by a
   /// previous call to `validateOid4vpRequest` within the same session.
   /// Indicates a JWT replay attempt within the token's expiry window.
-  replayDetected('replay_detected');
+  replayDetected('replay_detected'),
+
+  /// Thrown when a consent-history backup section is missing or malformed.
+  invalidBackupFormat('invalid_backup_format');
 
   /// Creates a new instance of [TdkExceptionType].
   const TdkExceptionType(this.code);
