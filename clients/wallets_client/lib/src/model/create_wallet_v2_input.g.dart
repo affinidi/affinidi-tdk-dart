@@ -53,6 +53,9 @@ _$createWalletV2InputAlgorithmEnum_ed25519 =
     const CreateWalletV2InputAlgorithmEnum._('ed25519');
 const CreateWalletV2InputAlgorithmEnum _$createWalletV2InputAlgorithmEnum_p256 =
     const CreateWalletV2InputAlgorithmEnum._('p256');
+const CreateWalletV2InputAlgorithmEnum
+_$createWalletV2InputAlgorithmEnum_mldsa44 =
+    const CreateWalletV2InputAlgorithmEnum._('mldsa44');
 
 CreateWalletV2InputAlgorithmEnum _$createWalletV2InputAlgorithmEnumValueOf(
   String name,
@@ -64,6 +67,8 @@ CreateWalletV2InputAlgorithmEnum _$createWalletV2InputAlgorithmEnumValueOf(
       return _$createWalletV2InputAlgorithmEnum_ed25519;
     case 'p256':
       return _$createWalletV2InputAlgorithmEnum_p256;
+    case 'mldsa44':
+      return _$createWalletV2InputAlgorithmEnum_mldsa44;
     default:
       throw ArgumentError(name);
   }
@@ -76,6 +81,7 @@ _$createWalletV2InputAlgorithmEnumValues =
         _$createWalletV2InputAlgorithmEnum_secp256k1,
         _$createWalletV2InputAlgorithmEnum_ed25519,
         _$createWalletV2InputAlgorithmEnum_p256,
+        _$createWalletV2InputAlgorithmEnum_mldsa44,
       ],
     );
 
@@ -129,11 +135,13 @@ class _$CreateWalletV2InputAlgorithmEnumSerializer
     'secp256k1': 'secp256k1',
     'ed25519': 'ed25519',
     'p256': 'p256',
+    'mldsa44': 'mldsa44',
   };
   static const Map<Object, String> _fromWire = const <Object, String>{
     'secp256k1': 'secp256k1',
     'ed25519': 'ed25519',
     'p256': 'p256',
+    'mldsa44': 'mldsa44',
   };
 
   @override
