@@ -9,11 +9,12 @@ import '../storage_interfaces/vault_store.dart';
 /// A [Restorable] that backs up and restores the wallet keys held by a
 /// [VaultStore].
 ///
-/// The exported section contains the raw `seed`, the content encryption
-/// `contentKey`, and the root `accountIndex`, namespaced under the `wallet`
-/// key of the merged backup envelope. The raw seed is protected by the outer
-/// encrypted backup envelope produced by the backup service, so it is never
-/// exposed in plaintext outside that envelope.
+/// The exported section contains the raw `seed`, the root `accountIndex`, and
+/// the content encryption `contentKey` when one exists. The content key is
+/// created lazily by the vault, so a freshly created vault may not have one
+/// yet; in that case it is simply omitted from the backup. The raw seed is
+/// protected by the outer encrypted backup envelope produced by the backup
+/// service, so it is never exposed in plaintext outside that envelope.
 class VaultStoreBackupSource implements Restorable {
   /// Creates a [VaultStoreBackupSource].
   ///
@@ -35,33 +36,29 @@ class VaultStoreBackupSource implements Restorable {
   /// Serialises the wallet keys for backup.
   ///
   /// Returns a [Future] containing a [Map] with a single `wallet` section
-  /// holding the base64-encoded seed and content key and the integer account
-  /// index.
-  /// Throws [TdkException] with code `invalid_backup_format` if the seed or
-  /// content key is not set.
+  /// holding the base64-encoded seed, the integer account index, and the
+  /// base64-encoded content key when the vault has one.
+  /// Throws [TdkException] with code `invalid_backup_format` if the seed is not
+  /// set.
   @override
   Future<Map<String, dynamic>> export() async {
     final seed = await _vaultStore.getSeed();
-    final contentKey = await _vaultStore.getContentKey();
-
-    if (seed == null || contentKey == null) {
-      _logger.warning(
-        'Cannot export wallet backup: seed or content key is missing.',
-      );
+    if (seed == null) {
+      _logger.warning('Cannot export wallet backup: seed is missing.');
       throw TdkException(
-        message:
-            'Cannot export wallet backup: the vault seed and content key '
-            'must both be set.',
+        message: 'Cannot export wallet backup: the vault seed must be set.',
         code: TdkExceptionType.invalidBackupFormat.code,
       );
     }
 
+    final contentKey = await _vaultStore.getContentKey();
     final accountIndex = await _vaultStore.getAccountIndex();
 
     return {
       _sectionKey: {
         _seedKey: base64Encode(seed),
-        _contentKeyKey: base64Encode(contentKey),
+        // Content key is created lazily; omit it when the vault has none yet.
+        if (contentKey != null) _contentKeyKey: base64Encode(contentKey),
         _accountIndexKey: accountIndex,
       },
     };
@@ -90,8 +87,8 @@ class VaultStoreBackupSource implements Restorable {
     final accountIndex = section[_accountIndexKey];
 
     if (seedB64 is! String ||
-        contentKeyB64 is! String ||
-        accountIndex is! int) {
+        accountIndex is! int ||
+        (contentKeyB64 != null && contentKeyB64 is! String)) {
       _logger.warning('The "$_sectionKey" backup section is malformed.');
       throw TdkException(
         message: 'The "$_sectionKey" backup section is malformed.',
@@ -100,10 +97,12 @@ class VaultStoreBackupSource implements Restorable {
     }
 
     final Uint8List seed;
-    final Uint8List contentKey;
+    Uint8List? contentKey;
     try {
       seed = base64Decode(seedB64);
-      contentKey = base64Decode(contentKeyB64);
+      if (contentKeyB64 is String) {
+        contentKey = base64Decode(contentKeyB64);
+      }
     } on FormatException catch (error, stackTrace) {
       _logger.warning('Failed to decode wallet backup section: $error');
       Error.throwWithStackTrace(
@@ -116,7 +115,9 @@ class VaultStoreBackupSource implements Restorable {
     }
 
     await _vaultStore.setSeed(seed);
-    await _vaultStore.setContentKey(contentKey);
+    if (contentKey != null) {
+      await _vaultStore.setContentKey(contentKey);
+    }
     await _vaultStore.setAccountIndex(accountIndex);
   }
 }

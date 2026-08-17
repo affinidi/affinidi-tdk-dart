@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 
 import '../exceptions/tdk_exception_type.dart';
+import '../profile.dart';
 import '../storage_interfaces/file_storage.dart';
 import '../storage_interfaces/item.dart';
 import '../storage_interfaces/profile_repository.dart';
+import '../storage_interfaces/restorable_profile_repository.dart';
 
 /// A [Restorable] that backs up and restores the files and folders stored under
-/// every profile of a [ProfileRepository].
+/// every profile of one or more [ProfileRepository] instances.
 ///
 /// Items are grouped by the owning profile's `did` and stored as a flat list
 /// with parent references. A root-level item stores a `null` parent so it can
@@ -20,19 +22,19 @@ class VaultFilesBackupSource implements Restorable {
   /// Creates a [VaultFilesBackupSource].
   ///
   /// Parameters:
-  /// * [profileRepository] - The repository whose profiles' files are backed
-  ///   up and restored.
+  /// * [profileRepositories] - The repositories whose profiles' files are
+  ///   backed up and restored.
   /// * [pageSize] - Page size used when enumerating folder contents.
   /// * [logger] - Optional logger; defaults to [Logger.instance].
   VaultFilesBackupSource({
-    required ProfileRepository profileRepository,
+    required List<ProfileRepository> profileRepositories,
     int pageSize = 50,
     Logger? logger,
-  }) : _profileRepository = profileRepository,
+  }) : _profileRepositories = profileRepositories,
        _pageSize = pageSize,
        _logger = logger ?? Logger.instance;
 
-  final ProfileRepository _profileRepository;
+  final List<ProfileRepository> _profileRepositories;
   final int _pageSize;
   final Logger _logger;
 
@@ -45,10 +47,18 @@ class VaultFilesBackupSource implements Restorable {
   static const String _folderType = 'folder';
   static const String _fileType = 'file';
 
+  Future<List<Profile>> _allProfiles() async {
+    final all = <Profile>[];
+    for (final repository in _profileRepositories) {
+      all.addAll(await repository.listProfiles());
+    }
+    return all;
+  }
+
   @override
   Future<Map<String, dynamic>> export() async {
     final byDid = <String, List<dynamic>>{};
-    for (final profile in await _profileRepository.listProfiles()) {
+    for (final profile in await _allProfiles()) {
       final storage = profile.defaultFileStorage;
       if (storage == null) {
         continue;
@@ -112,10 +122,16 @@ class VaultFilesBackupSource implements Restorable {
       );
     }
 
-    final profilesByDid = {
-      for (final profile in await _profileRepository.listProfiles())
-        profile.did: profile,
-    };
+    // Only local profiles are restored; cloud files return with the wallet
+    // seed, so writing them again would duplicate the data.
+    final profilesByDid = <String, Profile>{};
+    for (final repository in _profileRepositories.where(
+      (repository) => repository is RestorableProfileRepository,
+    )) {
+      for (final profile in await repository.listProfiles()) {
+        profilesByDid[profile.did] = profile;
+      }
+    }
 
     for (final entry in section.entries) {
       final profile = profilesByDid[entry.key];

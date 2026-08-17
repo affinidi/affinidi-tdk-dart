@@ -4,12 +4,14 @@ import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:ssi/ssi.dart';
 
 import '../exceptions/tdk_exception_type.dart';
+import '../profile.dart';
 import '../storage_interfaces/credential_storage.dart';
 import '../storage_interfaces/profile_repository.dart';
+import '../storage_interfaces/restorable_profile_repository.dart';
 import 'vault_profiles_backup_source.dart';
 
 /// A [Restorable] that backs up and restores the verifiable credentials stored
-/// under every profile of a [ProfileRepository].
+/// under every profile of one or more [ProfileRepository] instances.
 ///
 /// Credentials are grouped by the owning profile's `did` (see
 /// [VaultProfilesBackupSource.didKey]) so they can be reattached after the
@@ -19,28 +21,36 @@ class VaultCredentialsBackupSource implements Restorable {
   /// Creates a [VaultCredentialsBackupSource].
   ///
   /// Parameters:
-  /// * [profileRepository] - The repository whose profiles' credentials are
+  /// * [profileRepositories] - The repositories whose profiles' credentials are
   ///   backed up and restored.
   /// * [pageSize] - Page size used when enumerating credentials.
   /// * [logger] - Optional logger; defaults to [Logger.instance].
   VaultCredentialsBackupSource({
-    required ProfileRepository profileRepository,
+    required List<ProfileRepository> profileRepositories,
     int pageSize = 50,
     Logger? logger,
-  }) : _profileRepository = profileRepository,
+  }) : _profileRepositories = profileRepositories,
        _pageSize = pageSize,
        _logger = logger ?? Logger.instance;
 
-  final ProfileRepository _profileRepository;
+  final List<ProfileRepository> _profileRepositories;
   final int _pageSize;
   final Logger _logger;
 
   static const String _sectionKey = 'credentials';
 
+  Future<List<Profile>> _allProfiles() async {
+    final all = <Profile>[];
+    for (final repository in _profileRepositories) {
+      all.addAll(await repository.listProfiles());
+    }
+    return all;
+  }
+
   @override
   Future<Map<String, dynamic>> export() async {
     final byDid = <String, List<dynamic>>{};
-    for (final profile in await _profileRepository.listProfiles()) {
+    for (final profile in await _allProfiles()) {
       final storage = profile.defaultCredentialStorage;
       if (storage == null) {
         continue;
@@ -77,10 +87,16 @@ class VaultCredentialsBackupSource implements Restorable {
       );
     }
 
-    final profilesByDid = {
-      for (final profile in await _profileRepository.listProfiles())
-        profile.did: profile,
-    };
+    // Only local profiles are restored; cloud credentials return with the
+    // wallet seed, so writing them again would duplicate the data.
+    final profilesByDid = <String, Profile>{};
+    for (final repository in _profileRepositories.where(
+      (repository) => repository is RestorableProfileRepository,
+    )) {
+      for (final profile in await repository.listProfiles()) {
+        profilesByDid[profile.did] = profile;
+      }
+    }
 
     for (final entry in section.entries) {
       final did = entry.key;

@@ -16,12 +16,13 @@ class MockEdgeProfileRepository implements EdgeProfileRepositoryInterface {
     required String name,
     String? description,
     required int accountIndex,
+    String? id,
     VaultCancelToken? cancelToken,
   }) async {
     lastCalledCreateProfileName = name;
     lastCalledCreateProfileDescription = description;
     lastCalledCreateProfileAccountIndex = accountIndex;
-    return 'mock_profile_id';
+    return id ?? 'mock_profile_id';
   }
 
   @override

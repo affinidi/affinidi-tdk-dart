@@ -10,7 +10,8 @@ import 'edge_file_storage.dart';
 
 /// A Vault implementation of [ProfileRepository] for locally managing
 /// user profiles.
-class EdgeProfileRepository implements ProfileRepository {
+class EdgeProfileRepository
+    implements ProfileRepository, RestorableProfileRepository {
   /// Creates a new instance of [EdgeProfileRepository].
   ///
   /// The [_id] parameter is used to identify this repository instance.
@@ -139,6 +140,73 @@ Profile repository must be configured using a RepositoryConfiguration''',
     );
   }
 
+  @override
+  Future<Profile> restoreProfile({
+    required int accountIndex,
+    required String name,
+    String? id,
+    String? description,
+    VaultCancelToken? cancelToken,
+  }) async {
+    if (!_configured) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: '''
+Profile repository must be configured using a RepositoryConfiguration''',
+          code: TdkExceptionType.profileNotConfigured.code,
+        ),
+        StackTrace.current,
+      );
+    }
+
+    final newId = await _repository.createProfile(
+      name: name,
+      description: description,
+      cancelToken: cancelToken,
+      accountIndex: accountIndex,
+      id: id,
+    );
+
+    // Keep the counter ahead of every restored index so later creates don't
+    // reuse an account index.
+    if (accountIndex > await _vaultStore.getAccountIndex()) {
+      await _vaultStore.setAccountIndex(accountIndex);
+    }
+
+    final profileKeyPair = await _memoizedKeyPair(
+      accountIndex: accountIndex.toString(),
+    );
+    final profileDid = DidKey.getDid(profileKeyPair.publicKey);
+
+    return Profile(
+      id: newId,
+      name: name,
+      description: description,
+      did: profileDid,
+      accountIndex: accountIndex,
+      profileRepositoryId: _id,
+      fileStorages: {
+        _id: EdgeFileStorage(
+          repository: _repositoryFactory.createFileRepository(profileId: newId),
+          id: _id,
+          profileId: newId.toString(),
+          encryptionService: _encryptionService,
+        ),
+      },
+      credentialStorages: {
+        _id: EdgeCredentialStorage(
+          repository: _repositoryFactory.createCredentialRepository(
+            profileId: newId,
+          ),
+          id: _id,
+          profileId: newId.toString(),
+          encryptionService: _encryptionService,
+        ),
+      },
+      sharedStorages: {},
+    );
+  }
+
   /// Deleted an existing local profile
   ///
   /// The [profile] to delete
@@ -207,6 +275,7 @@ Profile repository must be configured using a RepositoryConfiguration''',
           id: item.id.toString(),
           accountIndex: item.accountIndex,
           name: item.name,
+          description: item.description,
           did: did,
           profileRepositoryId: _id,
           fileStorages: {

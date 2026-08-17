@@ -14,7 +14,7 @@ void main() {
     late FakeCryptographyService cryptographyService;
 
     final nonce = utf8.encode('test-nonce-16bytes');
-    const passphrase = 'correct-horse-staple';
+    const passphrase = 'Correct-horse-staple1';
     const wrongPassphrase = 'incorrect-passphrase';
 
     VaultBackupService buildService(List<Restorable> restorables) =>

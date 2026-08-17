@@ -3,6 +3,9 @@ import 'package:mocktail/mocktail.dart';
 
 class MockProfileRepository extends Mock implements ProfileRepository {}
 
+class MockRestorableProfileRepository extends Mock
+    implements ProfileRepository, RestorableProfileRepository {}
+
 /// Builds a real [Profile] for tests, optionally wiring credential and file
 /// storages so the default-storage getters resolve to injected mocks.
 Profile buildTestProfile({

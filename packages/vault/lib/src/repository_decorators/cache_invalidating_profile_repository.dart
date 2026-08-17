@@ -1,6 +1,7 @@
 import '../helpers/vault_cancel_token.dart';
 import '../profile.dart';
 import '../storage_interfaces/profile_repository.dart';
+import '../storage_interfaces/restorable_profile_repository.dart';
 
 /// A decorator for [ProfileRepository] that invalidates cache on profile mutations.
 class CacheInvalidatingProfileRepository implements ProfileRepository {
@@ -13,6 +14,10 @@ class CacheInvalidatingProfileRepository implements ProfileRepository {
 
   final ProfileRepository _repository;
   final void Function() _onProfilesMutated;
+
+  /// Invalidates the cached profiles. Exposed for subclasses that add extra
+  /// mutating operations.
+  void invalidateProfilesCache() => _onProfilesMutated();
 
   @override
   String get id => _repository.id;
@@ -63,5 +68,39 @@ class CacheInvalidatingProfileRepository implements ProfileRepository {
   @override
   Future<bool> isConfigured() {
     return _repository.isConfigured();
+  }
+}
+
+/// A [CacheInvalidatingProfileRepository] that also forwards the
+/// [RestorableProfileRepository] capability of the wrapped repository.
+class CacheInvalidatingRestorableProfileRepository
+    extends CacheInvalidatingProfileRepository
+    implements RestorableProfileRepository {
+  /// Creates a [CacheInvalidatingRestorableProfileRepository].
+  CacheInvalidatingRestorableProfileRepository(
+    RestorableProfileRepository repository, {
+    required super.onProfilesMutated,
+  }) : _restorable = repository,
+       super(repository as ProfileRepository);
+
+  final RestorableProfileRepository _restorable;
+
+  @override
+  Future<Profile> restoreProfile({
+    required int accountIndex,
+    required String name,
+    String? id,
+    String? description,
+    VaultCancelToken? cancelToken,
+  }) async {
+    final profile = await _restorable.restoreProfile(
+      accountIndex: accountIndex,
+      name: name,
+      id: id,
+      description: description,
+      cancelToken: cancelToken,
+    );
+    invalidateProfilesCache();
+    return profile;
   }
 }

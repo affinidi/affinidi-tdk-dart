@@ -8,7 +8,7 @@ import 'mocks/mock_profile_repository.dart';
 
 void main() {
   group('VaultCredentialsBackupSource', () {
-    late MockProfileRepository repository;
+    late MockRestorableProfileRepository repository;
     late MockCredentialStorage credentialStorage;
 
     final invalidBackupFormat = isA<TdkException>().having(
@@ -22,12 +22,12 @@ void main() {
     });
 
     setUp(() {
-      repository = MockProfileRepository();
+      repository = MockRestorableProfileRepository();
       credentialStorage = MockCredentialStorage();
     });
 
     VaultCredentialsBackupSource buildSource() =>
-        VaultCredentialsBackupSource(profileRepository: repository);
+        VaultCredentialsBackupSource(profileRepositories: [repository]);
 
     test('exports credentials grouped by profile did', () async {
       final vc = MockVerifiableCredential();

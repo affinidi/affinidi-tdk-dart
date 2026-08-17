@@ -6,6 +6,7 @@ import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import '../backup.dart';
 import '../backup_data.dart';
 import '../exceptions/tdk_exception_type.dart';
+import '../passphrase_policy.dart';
 import 'vault_backup_service_interface.dart';
 
 /// Creates and restores encrypted Vault backups.
@@ -17,9 +18,6 @@ import 'vault_backup_service_interface.dart';
 /// is used. Only the encrypted [BackupData] ever leaves this service; the
 /// plaintext envelope and the derived key are never exposed.
 class VaultBackupService implements VaultBackupServiceInterface {
-  /// Minimum number of characters required for a backup passphrase.
-  static const int _minPassphraseLength = 12;
-
   /// Length, in bytes, of the per-backup PBKDF2 salt generated internally.
   static const int _saltLength = 16;
 
@@ -50,10 +48,10 @@ class VaultBackupService implements VaultBackupServiceInterface {
 
   @override
   Future<BackupData> createBackup({required String passphrase}) async {
-    if (passphrase.length < _minPassphraseLength) {
+    final policyViolation = PassphrasePolicy.standard.validate(passphrase);
+    if (policyViolation != null) {
       throw TdkException(
-        message:
-            'Passphrase must be at least $_minPassphraseLength characters long.',
+        message: policyViolation,
         code: TdkExceptionType.weakPassphrase.code,
       );
     }
