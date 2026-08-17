@@ -17,18 +17,19 @@ class EdgeDriftProfileRepository implements EdgeProfileRepositoryInterface {
     required String name,
     String? description,
     required int accountIndex,
+    String? id,
     VaultCancelToken? cancelToken,
   }) async {
-    final id = const Uuid().v4();
+    final profileId = id ?? const Uuid().v4();
     final entry = ProfilesCompanion.insert(
-      id: Value(id),
+      id: Value(profileId),
       name: name,
       description: Value(description),
       accountIndex: accountIndex,
     );
 
     await _database.into(_database.profiles).insert(entry);
-    return id;
+    return profileId;
   }
 
   @override

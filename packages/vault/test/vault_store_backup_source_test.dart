@@ -59,12 +59,20 @@ void main() {
       });
 
       group('and the content key is missing', () {
-        test('should throw a TdkException', () async {
+        test('should export without the content key', () async {
           final store = InMemoryVaultStore();
           await store.setSeed(seed);
+          await store.setAccountIndex(accountIndex);
           final source = VaultStoreBackupSource(vaultStore: store);
 
-          await expectLater(source.export(), throwsA(invalidBackupFormat));
+          final exported = await source.export();
+
+          expect(exported, {
+            'wallet': {
+              'seed': base64Encode(seed),
+              'accountIndex': accountIndex,
+            },
+          });
         });
       });
     });

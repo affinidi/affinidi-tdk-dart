@@ -12,7 +12,7 @@ import 'mocks/mock_profile_repository.dart';
 
 void main() {
   group('VaultFilesBackupSource', () {
-    late MockProfileRepository repository;
+    late MockRestorableProfileRepository repository;
     late MockFileStorage fileStorage;
 
     const rootId = 'id-did-1';
@@ -28,7 +28,7 @@ void main() {
     });
 
     setUp(() {
-      repository = MockProfileRepository();
+      repository = MockRestorableProfileRepository();
       fileStorage = MockFileStorage();
       when(() => repository.listProfiles()).thenAnswer(
         (_) async => [
@@ -42,7 +42,7 @@ void main() {
     });
 
     VaultFilesBackupSource buildSource() =>
-        VaultFilesBackupSource(profileRepository: repository);
+        VaultFilesBackupSource(profileRepositories: [repository]);
 
     test(
       'exports the folder tree and file content, root parent nulled',

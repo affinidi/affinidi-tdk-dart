@@ -6,7 +6,7 @@ import 'mocks/mock_profile_repository.dart';
 
 void main() {
   group('VaultProfilesBackupSource', () {
-    late MockProfileRepository repository;
+    late MockRestorableProfileRepository repository;
 
     final invalidBackupFormat = isA<TdkException>().having(
       (e) => e.code,
@@ -19,11 +19,11 @@ void main() {
     });
 
     setUp(() {
-      repository = MockProfileRepository();
+      repository = MockRestorableProfileRepository();
     });
 
     VaultProfilesBackupSource buildSource() =>
-        VaultProfilesBackupSource(profileRepository: repository);
+        VaultProfilesBackupSource(profileRepositories: [repository]);
 
     group('export', () {
       test('serialises each profile keyed by did', () async {
@@ -44,11 +44,13 @@ void main() {
         expect(exported, {
           'profiles': [
             {
+              'id': 'id-did-1',
               'accountIndex': 1,
               'name': 'Alice',
               'did': 'did-1',
               'description': 'first',
               'profilePictureURI': 'pic',
+              'isLocal': true,
             },
           ],
         });
@@ -56,30 +58,32 @@ void main() {
     });
 
     group('import', () {
-      test('creates missing profiles in account-index order', () async {
+      test('restores local profiles in account-index order', () async {
         when(() => repository.listProfiles()).thenAnswer((_) async => const []);
         when(
-          () => repository.createProfile(
+          () => repository.restoreProfile(
+            accountIndex: any(named: 'accountIndex'),
             name: any(named: 'name'),
             description: any(named: 'description'),
           ),
         ).thenAnswer(
           (invocation) async => buildTestProfile(
             did: 'created',
-            accountIndex: 1,
+            accountIndex: invocation.namedArguments[#accountIndex] as int,
             name: invocation.namedArguments[#name] as String,
           ),
         );
 
         await buildSource().import({
           'profiles': [
-            {'accountIndex': 2, 'name': 'B', 'did': 'did-2'},
-            {'accountIndex': 1, 'name': 'A', 'did': 'did-1'},
+            {'accountIndex': 2, 'name': 'B', 'did': 'did-2', 'isLocal': true},
+            {'accountIndex': 1, 'name': 'A', 'did': 'did-1', 'isLocal': true},
           ],
         });
 
         final created = verify(
-          () => repository.createProfile(
+          () => repository.restoreProfile(
+            accountIndex: any(named: 'accountIndex'),
             name: captureAny(named: 'name'),
             description: any(named: 'description'),
           ),
@@ -90,7 +94,8 @@ void main() {
       test('updates the profile picture when present', () async {
         when(() => repository.listProfiles()).thenAnswer((_) async => const []);
         when(
-          () => repository.createProfile(
+          () => repository.restoreProfile(
+            accountIndex: any(named: 'accountIndex'),
             name: any(named: 'name'),
             description: any(named: 'description'),
           ),
@@ -105,6 +110,7 @@ void main() {
               'accountIndex': 1,
               'name': 'A',
               'did': 'did-1',
+              'isLocal': true,
               'profilePictureURI': 'pic',
             },
           ],
@@ -123,17 +129,99 @@ void main() {
 
         await buildSource().import({
           'profiles': [
-            {'accountIndex': 1, 'name': 'A', 'did': 'did-1'},
+            {'accountIndex': 1, 'name': 'A', 'did': 'did-1', 'isLocal': true},
           ],
         });
 
         verifyNever(
-          () => repository.createProfile(
+          () => repository.restoreProfile(
+            accountIndex: any(named: 'accountIndex'),
             name: any(named: 'name'),
             description: any(named: 'description'),
           ),
         );
       });
+
+      test('skips cloud (non-local) profiles', () async {
+        when(() => repository.listProfiles()).thenAnswer((_) async => const []);
+
+        await buildSource().import({
+          'profiles': [
+            {'accountIndex': 1, 'name': 'A', 'did': 'did-1', 'isLocal': false},
+          ],
+        });
+
+        verifyNever(
+          () => repository.restoreProfile(
+            accountIndex: any(named: 'accountIndex'),
+            name: any(named: 'name'),
+            description: any(named: 'description'),
+          ),
+        );
+      });
+
+      test('does nothing without a local repository', () async {
+        final cloudOnly = MockProfileRepository();
+        when(() => cloudOnly.listProfiles()).thenAnswer((_) async => const []);
+
+        final source = VaultProfilesBackupSource(
+          profileRepositories: [cloudOnly],
+        );
+        await source.import({
+          'profiles': [
+            {'accountIndex': 1, 'name': 'A', 'did': 'did-1', 'isLocal': true},
+          ],
+        });
+
+        verifyNever(
+          () => cloudOnly.createProfile(
+            name: any(named: 'name'),
+            description: any(named: 'description'),
+          ),
+        );
+      });
+
+      test(
+        'recreates via restoreProfile when the repository supports it',
+        () async {
+          final restorable = MockRestorableProfileRepository();
+          when(
+            () => restorable.listProfiles(),
+          ).thenAnswer((_) async => const []);
+          when(
+            () => restorable.restoreProfile(
+              accountIndex: any(named: 'accountIndex'),
+              name: any(named: 'name'),
+              description: any(named: 'description'),
+            ),
+          ).thenAnswer(
+            (_) async => buildTestProfile(did: 'did-1', accountIndex: 7),
+          );
+
+          final source = VaultProfilesBackupSource(
+            profileRepositories: [restorable],
+          );
+          await source.import({
+            'profiles': [
+              {'accountIndex': 7, 'name': 'A', 'did': 'did-1', 'isLocal': true},
+            ],
+          });
+
+          verify(
+            () => restorable.restoreProfile(
+              accountIndex: 7,
+              name: 'A',
+              description: any(named: 'description'),
+            ),
+          ).called(1);
+          verifyNever(
+            () => restorable.createProfile(
+              name: any(named: 'name'),
+              description: any(named: 'description'),
+            ),
+          );
+        },
+      );
 
       test('throws when the section is missing', () async {
         await expectLater(
