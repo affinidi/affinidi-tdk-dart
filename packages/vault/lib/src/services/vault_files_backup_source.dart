@@ -184,11 +184,19 @@ class VaultFilesBackupSource implements Restorable {
         if (parentId == null) {
           continue;
         }
+        final name = folder[_nameKey];
+        final oldId = folder[_idKey];
+        if (name is! String || oldId is! String) {
+          throw TdkException(
+            message: 'The "$_sectionKey" backup section is malformed.',
+            code: TdkExceptionType.invalidBackupFormat.code,
+          );
+        }
         final newFolder = await storage.createFolder(
-          folderName: folder[_nameKey] as String,
+          folderName: name,
           parentFolderId: parentId,
         );
-        oldToNewFolderId[folder[_idKey] as String] = newFolder.id;
+        oldToNewFolderId[oldId] = newFolder.id;
         created.add(folder);
       }
       if (created.isEmpty) {
@@ -208,9 +216,17 @@ class VaultFilesBackupSource implements Restorable {
         _logger.warning('Skipping file with an unresolved parent folder.');
         continue;
       }
+      final name = file[_nameKey];
+      final content = file[_contentKey];
+      if (name is! String || content is! String) {
+        throw TdkException(
+          message: 'The "$_sectionKey" backup section is malformed.',
+          code: TdkExceptionType.invalidBackupFormat.code,
+        );
+      }
       await storage.createFile(
-        fileName: file[_nameKey] as String,
-        data: base64Decode(file[_contentKey] as String),
+        fileName: name,
+        data: base64Decode(content),
         parentFolderId: parentId,
       );
     }

@@ -78,10 +78,10 @@ class CacheInvalidatingRestorableProfileRepository
     implements RestorableProfileRepository {
   /// Creates a [CacheInvalidatingRestorableProfileRepository].
   CacheInvalidatingRestorableProfileRepository(
-    RestorableProfileRepository repository, {
+    ProfileRepository repository, {
     required super.onProfilesMutated,
-  }) : _restorable = repository,
-       super(repository as ProfileRepository);
+  }) : _restorable = repository as RestorableProfileRepository,
+       super(repository);
 
   final RestorableProfileRepository _restorable;
 
