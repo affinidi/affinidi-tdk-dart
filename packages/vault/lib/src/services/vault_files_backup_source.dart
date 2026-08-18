@@ -10,7 +10,7 @@ import '../storage_interfaces/profile_repository.dart';
 import '../storage_interfaces/restorable_profile_repository.dart';
 
 /// A [Restorable] that backs up and restores the files and folders stored under
-/// every profile of one or more [ProfileRepository] instances.
+/// every local (edge) profile of one or more [ProfileRepository] instances.
 ///
 /// Items are grouped by the owning profile's `did` and stored as a flat list
 /// with parent references. A root-level item stores a `null` parent so it can
@@ -47,9 +47,12 @@ class VaultFilesBackupSource implements Restorable {
   static const String _folderType = 'folder';
   static const String _fileType = 'file';
 
-  Future<List<Profile>> _allProfiles() async {
+  Future<List<Profile>> _localProfiles() async {
     final all = <Profile>[];
-    for (final repository in _profileRepositories) {
+    // Back up local (edge) profiles only.
+    for (final repository in _profileRepositories.where(
+      (repository) => repository is RestorableProfileRepository,
+    )) {
       all.addAll(await repository.listProfiles());
     }
     return all;
@@ -58,7 +61,7 @@ class VaultFilesBackupSource implements Restorable {
   @override
   Future<Map<String, dynamic>> export() async {
     final byDid = <String, List<dynamic>>{};
-    for (final profile in await _allProfiles()) {
+    for (final profile in await _localProfiles()) {
       final storage = profile.defaultFileStorage;
       if (storage == null) {
         continue;

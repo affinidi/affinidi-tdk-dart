@@ -17,12 +17,10 @@ import '../storage_interfaces/restorable_profile_repository.dart';
 /// This source must be registered before any per-profile source so that the
 /// profiles exist before their credentials or files are imported.
 ///
-/// Only profiles held in a repository that supports
-/// [RestorableProfileRepository] (local, on-device storage) are recreated on
-/// restore, with their original account index so the derived identity is
-/// preserved. Cloud profiles are exported for completeness but not recreated,
-/// because a cloud backend recovers them from the restored wallet seed;
-/// recreating them would duplicate the data.
+/// Only local (on-device) profiles held in a repository that supports
+/// [RestorableProfileRepository] are backed up, and they are recreated on
+/// restore with their original account index so the derived identity is
+/// preserved.
 class VaultProfilesBackupSource implements Restorable {
   /// Creates a [VaultProfilesBackupSource].
   ///
@@ -72,7 +70,8 @@ class VaultProfilesBackupSource implements Restorable {
   @override
   Future<Map<String, dynamic>> export() async {
     final profiles = <Map<String, dynamic>>[];
-    for (final repository in _profileRepositories) {
+    // Back up local (edge) profiles only.
+    for (final repository in _restorableRepositories()) {
       final isLocal = repository is RestorableProfileRepository;
       for (final profile in await repository.listProfiles()) {
         profiles.add({
