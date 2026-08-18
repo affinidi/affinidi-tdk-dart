@@ -24,6 +24,15 @@ void main() {
     setUp(() {
       repository = MockRestorableProfileRepository();
       credentialStorage = MockCredentialStorage();
+      // By default the target storage is empty, so imports create everything.
+      when(
+        () => credentialStorage.listCredentials(
+          limit: any(named: 'limit'),
+          exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+        ),
+      ).thenAnswer(
+        (_) async => PaginatedList<DigitalCredential>(items: const []),
+      );
     });
 
     VaultCredentialsBackupSource buildSource() =>
