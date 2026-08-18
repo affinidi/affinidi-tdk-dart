@@ -116,13 +116,43 @@ class VaultCredentialsBackupSource implements Restorable {
         continue;
       }
 
+      // Skip credentials already present so restoring into a vault that
+      // already holds them does not create duplicates.
+      final existingIds = await _existingCredentialIds(storage);
+
       for (final raw in credentials) {
         final verifiableCredential = _parseCredential(raw);
+        final id = verifiableCredential.id?.toString();
+        if (id != null && id.isNotEmpty && existingIds.contains(id)) {
+          continue;
+        }
         await storage.saveCredential(
           verifiableCredential: verifiableCredential,
         );
+        if (id != null && id.isNotEmpty) {
+          existingIds.add(id);
+        }
       }
     }
+  }
+
+  Future<Set<String>> _existingCredentialIds(CredentialStorage storage) async {
+    final ids = <String>{};
+    String? cursor;
+    do {
+      final page = await storage.listCredentials(
+        limit: _pageSize,
+        exclusiveStartItemId: cursor,
+      );
+      for (final credential in page.items) {
+        final id = credential.verifiableCredential.id?.toString();
+        if (id != null && id.isNotEmpty) {
+          ids.add(id);
+        }
+      }
+      cursor = page.lastEvaluatedItemId;
+    } while (cursor != null);
+    return ids;
   }
 
   VerifiableCredential _parseCredential(dynamic raw) {

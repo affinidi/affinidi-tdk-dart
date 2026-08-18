@@ -170,6 +170,38 @@ class VaultFilesBackupSource implements Restorable {
     final folders = typed.where((i) => i[_typeKey] == _folderType).toList();
     final files = typed.where((i) => i[_typeKey] == _fileType).toList();
 
+    // Existing children per parent, so restoring into a vault that already
+    // holds these items reuses folders and skips duplicate files instead of
+    // creating copies. The maps are updated as items are created so siblings
+    // within this backup are de-duplicated too.
+    final existingFoldersByParent = <String, Map<String, String>>{};
+    final existingFileNamesByParent = <String, Set<String>>{};
+    Future<void> ensureChildrenLoaded(String parentId) async {
+      if (existingFoldersByParent.containsKey(parentId)) {
+        return;
+      }
+      final folderIds = <String, String>{};
+      final fileNames = <String>{};
+      String? cursor;
+      do {
+        final page = await storage.getFolder(
+          folderId: parentId,
+          limit: _pageSize,
+          exclusiveStartItemId: cursor,
+        );
+        for (final item in page.items) {
+          if (item is Folder) {
+            folderIds[item.name] = item.id;
+          } else if (item is File) {
+            fileNames.add(item.name);
+          }
+        }
+        cursor = page.lastEvaluatedItemId;
+      } while (cursor != null);
+      existingFoldersByParent[parentId] = folderIds;
+      existingFileNamesByParent[parentId] = fileNames;
+    }
+
     // Recreate folders parent-before-child, remapping old ids to new ones.
     final oldToNewFolderId = <String, String>{};
     var remaining = List<Map<String, dynamic>>.of(folders);
@@ -192,11 +224,21 @@ class VaultFilesBackupSource implements Restorable {
             code: TdkExceptionType.invalidBackupFormat.code,
           );
         }
-        final newFolder = await storage.createFolder(
-          folderName: name,
-          parentFolderId: parentId,
-        );
-        oldToNewFolderId[oldId] = newFolder.id;
+        await ensureChildrenLoaded(parentId);
+        final siblingFolders = existingFoldersByParent[parentId]!;
+        final existingFolderId = siblingFolders[name];
+        final String newFolderId;
+        if (existingFolderId != null) {
+          newFolderId = existingFolderId;
+        } else {
+          final createdFolder = await storage.createFolder(
+            folderName: name,
+            parentFolderId: parentId,
+          );
+          newFolderId = createdFolder.id;
+          siblingFolders[name] = newFolderId;
+        }
+        oldToNewFolderId[oldId] = newFolderId;
         created.add(folder);
       }
       if (created.isEmpty) {
@@ -224,11 +266,17 @@ class VaultFilesBackupSource implements Restorable {
           code: TdkExceptionType.invalidBackupFormat.code,
         );
       }
+      await ensureChildrenLoaded(parentId);
+      final siblingFiles = existingFileNamesByParent[parentId]!;
+      if (siblingFiles.contains(name)) {
+        continue;
+      }
       await storage.createFile(
         fileName: name,
         data: base64Decode(content),
         parentFolderId: parentId,
       );
+      siblingFiles.add(name);
     }
   }
 

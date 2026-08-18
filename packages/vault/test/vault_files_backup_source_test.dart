@@ -39,6 +39,14 @@ void main() {
           ),
         ],
       );
+      // By default the target storage is empty, so imports create everything.
+      when(
+        () => fileStorage.getFolder(
+          folderId: any(named: 'folderId'),
+          limit: any(named: 'limit'),
+          exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+        ),
+      ).thenAnswer((_) async => PaginatedList<Item>(items: const []));
     });
 
     VaultFilesBackupSource buildSource() =>
@@ -135,6 +143,64 @@ void main() {
           parentFolderId: 'new-fold',
         ),
       ).called(1);
+    });
+
+    test('reuses an existing folder and skips an existing file', () async {
+      final existingFolder = FolderFixtures.createFolder(
+        id: 'existing-fold',
+        name: 'F',
+        parentId: rootId,
+      );
+      final existingFile = FileFixtures.createFile(
+        id: 'existing-file',
+        name: 'a.txt',
+        parentId: 'existing-fold',
+      );
+      when(
+        () => fileStorage.getFolder(
+          folderId: any(named: 'folderId'),
+          limit: any(named: 'limit'),
+          exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+        ),
+      ).thenAnswer((invocation) async {
+        final folderId = invocation.namedArguments[#folderId] as String?;
+        if (folderId == rootId) {
+          return PaginatedList<Item>(items: [existingFolder]);
+        }
+        if (folderId == 'existing-fold') {
+          return PaginatedList<Item>(items: [existingFile]);
+        }
+        return PaginatedList<Item>(items: const []);
+      });
+
+      await buildSource().import({
+        'files': {
+          'did-1': [
+            {'id': 'fold1', 'name': 'F', 'parentId': null, 'type': 'folder'},
+            {
+              'id': 'f1',
+              'name': 'a.txt',
+              'parentId': 'fold1',
+              'type': 'file',
+              'content': base64Encode([1, 2, 3]),
+            },
+          ],
+        },
+      });
+
+      verifyNever(
+        () => fileStorage.createFolder(
+          folderName: any(named: 'folderName'),
+          parentFolderId: any(named: 'parentFolderId'),
+        ),
+      );
+      verifyNever(
+        () => fileStorage.createFile(
+          fileName: any(named: 'fileName'),
+          data: any(named: 'data'),
+          parentFolderId: any(named: 'parentFolderId'),
+        ),
+      );
     });
 
     test('throws when the section is missing', () async {
