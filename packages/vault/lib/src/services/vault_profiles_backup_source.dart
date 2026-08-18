@@ -8,11 +8,11 @@ import '../storage_interfaces/restorable_profile_repository.dart';
 /// more [ProfileRepository] instances.
 ///
 /// Each profile is keyed by its decentralised identifier (`did`), which is
-/// derived deterministically from the wallet seed and account index. The
-/// server-assigned profile `id` is intentionally not persisted because it is
-/// not stable across a restore into a fresh vault; other per-profile sources
-/// (credentials, files) therefore reattach their data by `did` rather than by
-/// `id`.
+/// derived deterministically from the wallet seed and account index. For local
+/// (on-device) repositories, the profile `id` is also exported so it can be
+/// reused during restore (e.g. to reattach consent history keyed by profile
+/// id). Per-profile sources (credentials, files) still reattach their data by
+/// `did` rather than by `id`.
 ///
 /// This source must be registered before any per-profile source so that the
 /// profiles exist before their credentials or files are imported.

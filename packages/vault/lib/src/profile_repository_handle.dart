@@ -31,7 +31,7 @@ final class ProfileRepositoryHandle {
     // Preserve the restore capability through the decorator when present.
     final wrapped = repository is RestorableProfileRepository
         ? CacheInvalidatingRestorableProfileRepository(
-            repository as RestorableProfileRepository,
+            repository,
             onProfilesMutated: onProfilesMutated,
           )
         : CacheInvalidatingProfileRepository(
