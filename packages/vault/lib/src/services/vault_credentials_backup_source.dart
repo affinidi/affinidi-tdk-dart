@@ -11,7 +11,8 @@ import '../storage_interfaces/restorable_profile_repository.dart';
 import 'vault_profiles_backup_source.dart';
 
 /// A [Restorable] that backs up and restores the verifiable credentials stored
-/// under every profile of one or more [ProfileRepository] instances.
+/// under every local (edge) profile of one or more [ProfileRepository]
+/// instances.
 ///
 /// Credentials are grouped by the owning profile's `did` (see
 /// [VaultProfilesBackupSource.didKey]) so they can be reattached after the
@@ -39,9 +40,12 @@ class VaultCredentialsBackupSource implements Restorable {
 
   static const String _sectionKey = 'credentials';
 
-  Future<List<Profile>> _allProfiles() async {
+  Future<List<Profile>> _localProfiles() async {
     final all = <Profile>[];
-    for (final repository in _profileRepositories) {
+    // Back up local (edge) profiles only.
+    for (final repository in _profileRepositories.where(
+      (repository) => repository is RestorableProfileRepository,
+    )) {
       all.addAll(await repository.listProfiles());
     }
     return all;
@@ -50,7 +54,7 @@ class VaultCredentialsBackupSource implements Restorable {
   @override
   Future<Map<String, dynamic>> export() async {
     final byDid = <String, List<dynamic>>{};
-    for (final profile in await _allProfiles()) {
+    for (final profile in await _localProfiles()) {
       final storage = profile.defaultCredentialStorage;
       if (storage == null) {
         continue;

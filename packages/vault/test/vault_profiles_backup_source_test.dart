@@ -55,6 +55,25 @@ void main() {
           ],
         });
       });
+
+      test('does not back up cloud (non-restorable) profiles', () async {
+        final cloudRepository = MockProfileRepository();
+        when(() => cloudRepository.listProfiles()).thenAnswer(
+          (_) async => [buildTestProfile(did: 'cloud-did', accountIndex: 9)],
+        );
+        when(() => repository.listProfiles()).thenAnswer(
+          (_) async => [buildTestProfile(did: 'did-1', accountIndex: 1)],
+        );
+
+        final source = VaultProfilesBackupSource(
+          profileRepositories: [cloudRepository, repository],
+        );
+        final exported = await source.export();
+
+        final profiles = (exported['profiles'] as List)
+            .cast<Map<String, dynamic>>();
+        expect(profiles.map((p) => p['did']), ['did-1']);
+      });
     });
 
     group('import', () {
