@@ -1,5 +1,6 @@
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:ssi/ssi.dart';
+import 'package:synchronized/synchronized.dart';
 
 import '../exceptions/tdk_exception_type.dart';
 import '../interfaces/edge_repository_factory_interface.dart';
@@ -10,6 +11,10 @@ import 'edge_file_storage.dart';
 
 /// A Vault implementation of [ProfileRepository] for locally managing
 /// user profiles.
+///
+/// Profile operations and operations on storages created by this repository
+/// share one in-process reentrant lock. This provides a coherent snapshot for
+/// [export] and serializes [import] with SDK mutations on the same object graph.
 class EdgeProfileRepository implements ProfileRepository, Restorable {
   /// Creates a new instance of [EdgeProfileRepository].
   ///
@@ -26,6 +31,7 @@ class EdgeProfileRepository implements ProfileRepository, Restorable {
   final EdgeRepositoryFactoryInterface _repositoryFactory;
   final EdgeEncryptionServiceInterface _encryptionService;
   final _keyPairs = <String, KeyPair>{};
+  final _lock = Lock(reentrant: true);
 
   static const _backupVersion = '1.0.0';
   static const _invalidBackupFormatCode = 'invalid_backup_format';
@@ -39,7 +45,7 @@ class EdgeProfileRepository implements ProfileRepository, Restorable {
   late final _repository = _repositoryFactory.createProfileRepository();
 
   @override
-  Future<void> configure(Object configuration) async {
+  Future<void> configure(Object configuration) => _lock.synchronized(() async {
     if (configuration is! RepositoryConfiguration) {
       Error.throwWithStackTrace(
         TdkException(
@@ -67,13 +73,13 @@ class EdgeProfileRepository implements ProfileRepository, Restorable {
     _vaultStore = configuration.keyStorage!;
 
     _configured = true;
-  }
+  });
 
   /// Returns true if the repository has been configured
   @override
-  Future<bool> isConfigured() async {
+  Future<bool> isConfigured() => _lock.synchronized(() async {
     return _configured;
-  }
+  });
 
   /// Creates a local profile
   ///
@@ -85,7 +91,7 @@ class EdgeProfileRepository implements ProfileRepository, Restorable {
     required String name,
     String? description,
     VaultCancelToken? cancelToken,
-  }) async {
+  }) => _lock.synchronized(() async {
     if (!_configured) {
       Error.throwWithStackTrace(
         TdkException(
@@ -126,6 +132,7 @@ Profile repository must be configured using a RepositoryConfiguration''',
           id: _id,
           profileId: newId.toString(),
           encryptionService: _encryptionService,
+          lock: _lock,
         ),
       },
       credentialStorages: {
@@ -136,11 +143,12 @@ Profile repository must be configured using a RepositoryConfiguration''',
           id: _id,
           profileId: newId.toString(),
           encryptionService: _encryptionService,
+          lock: _lock,
         ),
       },
       sharedStorages: {},
     );
-  }
+  });
 
   Future<Profile> _restoreProfile({
     required int accountIndex,
@@ -192,6 +200,7 @@ Profile repository must be configured using a RepositoryConfiguration''',
           id: _id,
           profileId: newId.toString(),
           encryptionService: _encryptionService,
+          lock: _lock,
         ),
       },
       credentialStorages: {
@@ -202,6 +211,7 @@ Profile repository must be configured using a RepositoryConfiguration''',
           id: _id,
           profileId: newId.toString(),
           encryptionService: _encryptionService,
+          lock: _lock,
         ),
       },
       sharedStorages: {},
@@ -216,7 +226,7 @@ Profile repository must be configured using a RepositoryConfiguration''',
   Future<void> deleteProfile(
     Profile profile, {
     VaultCancelToken? cancelToken,
-  }) async {
+  }) => _lock.synchronized(() async {
     if (!_configured) {
       Error.throwWithStackTrace(
         TdkException(
@@ -243,69 +253,72 @@ Profile repository must be configured using a RepositoryConfiguration''',
       profileId: profile.id,
       cancelToken: cancelToken,
     );
-  }
+  });
 
   /// Returns the list of local profiles
   ///
   /// The [cancelToken] to cancel the operation in progress.
   @override
-  Future<List<Profile>> listProfiles({VaultCancelToken? cancelToken}) async {
-    if (!_configured) {
-      Error.throwWithStackTrace(
-        TdkException(
-          message: '''
+  Future<List<Profile>> listProfiles({VaultCancelToken? cancelToken}) =>
+      _lock.synchronized(() async {
+        if (!_configured) {
+          Error.throwWithStackTrace(
+            TdkException(
+              message: '''
 Profile repository must be configured using a RepositoryConfiguration''',
-          code: TdkExceptionType.profileNotConfigured.code,
-        ),
-        StackTrace.current,
-      );
-    }
-
-    final items = await _repository.listProfiles(cancelToken: cancelToken);
-
-    final profiles = <Profile>[];
-
-    for (final item in items) {
-      final profileKeyPair = await _memoizedKeyPair(
-        accountIndex: item.accountIndex.toString(),
-      );
-      final did = DidKey.getDid(profileKeyPair.publicKey);
-
-      profiles.add(
-        Profile(
-          id: item.id.toString(),
-          accountIndex: item.accountIndex,
-          name: item.name,
-          description: item.description,
-          did: did,
-          profileRepositoryId: _id,
-          fileStorages: {
-            _id: EdgeFileStorage(
-              repository: _repositoryFactory.createFileRepository(
-                profileId: item.id,
-              ),
-              id: _id,
-              profileId: item.id.toString(),
-              encryptionService: _encryptionService,
+              code: TdkExceptionType.profileNotConfigured.code,
             ),
-          },
-          credentialStorages: {
-            _id: EdgeCredentialStorage(
-              repository: _repositoryFactory.createCredentialRepository(
-                profileId: item.id,
-              ),
-              id: _id,
-              profileId: item.id.toString(),
-              encryptionService: _encryptionService,
-            ),
-          },
-          sharedStorages: {},
-        ),
-      );
-    }
+            StackTrace.current,
+          );
+        }
 
-    return profiles;
-  }
+        final items = await _repository.listProfiles(cancelToken: cancelToken);
+
+        final profiles = <Profile>[];
+
+        for (final item in items) {
+          final profileKeyPair = await _memoizedKeyPair(
+            accountIndex: item.accountIndex.toString(),
+          );
+          final did = DidKey.getDid(profileKeyPair.publicKey);
+
+          profiles.add(
+            Profile(
+              id: item.id.toString(),
+              accountIndex: item.accountIndex,
+              name: item.name,
+              description: item.description,
+              did: did,
+              profileRepositoryId: _id,
+              fileStorages: {
+                _id: EdgeFileStorage(
+                  repository: _repositoryFactory.createFileRepository(
+                    profileId: item.id,
+                  ),
+                  id: _id,
+                  profileId: item.id.toString(),
+                  encryptionService: _encryptionService,
+                  lock: _lock,
+                ),
+              },
+              credentialStorages: {
+                _id: EdgeCredentialStorage(
+                  repository: _repositoryFactory.createCredentialRepository(
+                    profileId: item.id,
+                  ),
+                  id: _id,
+                  profileId: item.id.toString(),
+                  encryptionService: _encryptionService,
+                  lock: _lock,
+                ),
+              },
+              sharedStorages: {},
+            ),
+          );
+        }
+
+        return profiles;
+      });
 
   /// Updates an existing local profile
   ///
@@ -315,7 +328,7 @@ Profile repository must be configured using a RepositoryConfiguration''',
   Future<void> updateProfile(
     Profile profile, {
     VaultCancelToken? cancelToken,
-  }) async {
+  }) => _lock.synchronized(() async {
     if (!_configured) {
       Error.throwWithStackTrace(
         TdkException(
@@ -332,10 +345,10 @@ Profile repository must be configured using a RepositoryConfiguration''',
       profile: edgeProfile,
       cancelToken: cancelToken,
     );
-  }
+  });
 
   @override
-  Future<Map<String, dynamic>> export() async {
+  Future<Map<String, dynamic>> export() => _lock.synchronized(() async {
     final profiles = <Map<String, dynamic>>[];
     for (final profile in await listProfiles()) {
       profiles.add({
@@ -350,7 +363,7 @@ Profile repository must be configured using a RepositoryConfiguration''',
       });
     }
     return {'version': _backupVersion, 'profiles': profiles};
-  }
+  });
 
   Future<Map<String, dynamic>> _exportStorages(
     Map<String, Object> storages,
@@ -378,68 +391,75 @@ Profile repository must be configured using a RepositoryConfiguration''',
   }
 
   @override
-  Future<void> validateImport(Map<String, dynamic> data) async {
-    final profiles = await _parseBackup(data);
+  Future<void> validateImport(Map<String, dynamic> data) =>
+      _lock.synchronized(() async {
+        final profiles = await _parseBackup(data);
 
-    for (final backupProfile in profiles) {
-      final fileStorages = <String, Object>{
-        _id: EdgeFileStorage(
-          repository: _repositoryFactory.createFileRepository(
-            profileId: backupProfile.id,
-          ),
-          id: _id,
-          profileId: backupProfile.id,
-          encryptionService: _encryptionService,
-        ),
-      };
-      final credentialStorages = <String, Object>{
-        _id: EdgeCredentialStorage(
-          repository: _repositoryFactory.createCredentialRepository(
-            profileId: backupProfile.id,
-          ),
-          id: _id,
-          profileId: backupProfile.id,
-          encryptionService: _encryptionService,
-        ),
-      };
-      await _validateStorages(fileStorages, backupProfile.fileStorages);
-      await _validateStorages(
-        credentialStorages,
-        backupProfile.credentialStorages,
-      );
-      await _validateStorages(const {}, backupProfile.sharedStorages);
-    }
-  }
+        for (final backupProfile in profiles) {
+          final fileStorages = <String, Object>{
+            _id: EdgeFileStorage(
+              repository: _repositoryFactory.createFileRepository(
+                profileId: backupProfile.id,
+              ),
+              id: _id,
+              profileId: backupProfile.id,
+              encryptionService: _encryptionService,
+              lock: _lock,
+            ),
+          };
+          final credentialStorages = <String, Object>{
+            _id: EdgeCredentialStorage(
+              repository: _repositoryFactory.createCredentialRepository(
+                profileId: backupProfile.id,
+              ),
+              id: _id,
+              profileId: backupProfile.id,
+              encryptionService: _encryptionService,
+              lock: _lock,
+            ),
+          };
+          await _validateStorages(fileStorages, backupProfile.fileStorages);
+          await _validateStorages(
+            credentialStorages,
+            backupProfile.credentialStorages,
+          );
+          await _validateStorages(const {}, backupProfile.sharedStorages);
+        }
+      });
 
   @override
-  Future<bool> isEmpty() async => (await _repository.listProfiles()).isEmpty;
+  Future<bool> isEmpty() => _lock.synchronized(
+    () async => (await _repository.listProfiles()).isEmpty,
+  );
 
   @override
-  Future<void> import(Map<String, dynamic> data) async {
-    await validateImport(data);
-    if (!await isEmpty()) {
-      throw _restoreDestinationNotEmpty();
-    }
-    final profiles = await _parseBackup(data);
+  Future<void> import(Map<String, dynamic> data) => _lock.synchronized(
+    () async {
+      await validateImport(data);
+      if (!await isEmpty()) {
+        throw _restoreDestinationNotEmpty();
+      }
+      final profiles = await _parseBackup(data);
 
-    for (final backupProfile in profiles) {
-      final profile = await _restoreProfile(
-        accountIndex: backupProfile.accountIndex,
-        name: backupProfile.name,
-        id: backupProfile.id,
-        description: backupProfile.description,
-      );
-      await _importStorages(profile.fileStorages, backupProfile.fileStorages);
-      await _importStorages(
-        profile.credentialStorages,
-        backupProfile.credentialStorages,
-      );
-      await _importSharedStorages(
-        profile.sharedStorages,
-        backupProfile.sharedStorages,
-      );
-    }
-  }
+      for (final backupProfile in profiles) {
+        final profile = await _restoreProfile(
+          accountIndex: backupProfile.accountIndex,
+          name: backupProfile.name,
+          id: backupProfile.id,
+          description: backupProfile.description,
+        );
+        await _importStorages(profile.fileStorages, backupProfile.fileStorages);
+        await _importStorages(
+          profile.credentialStorages,
+          backupProfile.credentialStorages,
+        );
+        await _importSharedStorages(
+          profile.sharedStorages,
+          backupProfile.sharedStorages,
+        );
+      }
+    },
+  );
 
   Future<List<_BackupProfile>> _parseBackup(Map<String, dynamic> data) async {
     const allowedKeys = {'version', 'profiles'};
