@@ -7,6 +7,7 @@ import '../profile.dart';
 import '../storage_interfaces/file_storage.dart';
 import '../storage_interfaces/item.dart';
 import '../storage_interfaces/profile_repository.dart';
+import '../storage_interfaces/restorable.dart';
 import '../storage_interfaces/restorable_profile_repository.dart';
 
 /// A [Restorable] that backs up and restores the files and folders stored under

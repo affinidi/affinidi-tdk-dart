@@ -7,6 +7,7 @@ import '../backup.dart';
 import '../backup_data.dart';
 import '../exceptions/tdk_exception_type.dart';
 import '../passphrase_policy.dart';
+import '../storage_interfaces/restorable.dart';
 import 'vault_backup_service_interface.dart';
 
 /// Creates and restores encrypted Vault backups.

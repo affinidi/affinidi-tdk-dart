@@ -1,8 +1,7 @@
 /// This library allows managing Vault instances and their profiles
 library;
 
-export 'package:affinidi_tdk_common/affinidi_tdk_common.dart'
-    show Restorable, TdkException;
+export 'package:affinidi_tdk_common/affinidi_tdk_common.dart' show TdkException;
 export 'package:ssi/ssi.dart'
     show KeyStore, StoredKey, UniversalParser, VerifiableCredential;
 
@@ -34,6 +33,7 @@ export 'src/storage_interfaces/profile_access_sharing.dart';
 export 'src/storage_interfaces/profile_repository.dart';
 export 'src/storage_interfaces/profile_storage_info.dart';
 export 'src/storage_interfaces/repository_configuration.dart';
+export 'src/storage_interfaces/restorable.dart';
 export 'src/storage_interfaces/restorable_profile_repository.dart';
 export 'src/storage_interfaces/shared_storage.dart';
 export 'src/storage_interfaces/vault_store.dart';

@@ -7,6 +7,7 @@ import '../exceptions/tdk_exception_type.dart';
 import '../profile.dart';
 import '../storage_interfaces/credential_storage.dart';
 import '../storage_interfaces/profile_repository.dart';
+import '../storage_interfaces/restorable.dart';
 import '../storage_interfaces/restorable_profile_repository.dart';
 import 'vault_profiles_backup_source.dart';
 
