@@ -10,7 +10,8 @@ import '../vault.dart';
 typedef VaultStoreFactory = FutureOr<VaultStore> Function();
 
 /// Creates a profile repository for restoration.
-typedef ProfileRepositoryFactory = FutureOr<ProfileRepository> Function();
+typedef ProfileRepositoryFactory =
+    FutureOr<ProfileRepository> Function(VaultStore vaultStore);
 
 /// Creates a named restorable component for restoration.
 typedef RestorableFactory = FutureOr<Restorable> Function();
