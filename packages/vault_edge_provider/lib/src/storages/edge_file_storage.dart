@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
@@ -9,7 +10,7 @@ import '../services/edge_encryption_service_interface.dart';
 
 /// An Edge based implementation of [FileStorage] for storing and managing
 /// files and folders.
-class EdgeFileStorage implements FileStorage {
+class EdgeFileStorage implements FileStorage, Restorable {
   /// Creates a new instance of [EdgeFileStorage].
   EdgeFileStorage({
     required EdgeFileRepositoryInterface repository,
@@ -33,6 +34,10 @@ class EdgeFileStorage implements FileStorage {
   final EdgeEncryptionServiceInterface _encryptionService;
   final int _maxFileSize;
   final List<String> _allowedExtensions;
+
+  static const _backupVersion = '1.0.0';
+  static const _pageSize = 50;
+  static const _invalidBackupFormatCode = 'invalid_backup_format';
 
   @override
   String get id => _id;
@@ -286,4 +291,243 @@ class EdgeFileStorage implements FileStorage {
       );
     }
   }
+
+  @override
+  Future<Map<String, dynamic>> export() async {
+    final items = <Map<String, dynamic>>[];
+    final pendingFolders = <String?>[null];
+    while (pendingFolders.isNotEmpty) {
+      final folderId = pendingFolders.removeLast();
+      String? cursor;
+      do {
+        final page = await getFolder(
+          folderId: folderId,
+          limit: _pageSize,
+          exclusiveStartItemId: cursor,
+        );
+        for (final item in page.items) {
+          final parentId = _convertToRootFolderIfNeeded(item.parentId);
+          if (item is Folder) {
+            pendingFolders.add(item.id);
+            items.add({
+              'id': item.id,
+              'name': item.name,
+              'parentId': parentId,
+              'type': 'folder',
+            });
+          } else if (item is File) {
+            items.add({
+              'id': item.id,
+              'name': item.name,
+              'parentId': parentId,
+              'type': 'file',
+              'content': base64Encode(await getFileContent(fileId: item.id)),
+            });
+          }
+        }
+        cursor = page.lastEvaluatedItemId;
+      } while (cursor != null);
+    }
+
+    return {'version': _backupVersion, 'items': items};
+  }
+
+  @override
+  Future<void> import(Map<String, dynamic> data) async {
+    final (folders, files) = _parseBackup(data);
+    final existingFoldersByParent = <String, Map<String, String>>{};
+    final existingFileNamesByParent = <String, Set<String>>{};
+
+    Future<void> ensureChildrenLoaded(String parentId) async {
+      if (existingFoldersByParent.containsKey(parentId)) {
+        return;
+      }
+      final foldersByName = <String, String>{};
+      final fileNames = <String>{};
+      String? cursor;
+      do {
+        final page = await getFolder(
+          folderId: parentId,
+          limit: _pageSize,
+          exclusiveStartItemId: cursor,
+        );
+        for (final item in page.items) {
+          if (item is Folder) {
+            foldersByName[item.name] = item.id;
+          } else if (item is File) {
+            fileNames.add(item.name);
+          }
+        }
+        cursor = page.lastEvaluatedItemId;
+      } while (cursor != null);
+      existingFoldersByParent[parentId] = foldersByName;
+      existingFileNamesByParent[parentId] = fileNames;
+    }
+
+    final restoredFolderIds = <String, String>{};
+    final remainingFolders = List<_BackupFolder>.of(folders);
+    while (remainingFolders.isNotEmpty) {
+      final restored = <_BackupFolder>[];
+      for (final folder in remainingFolders) {
+        final parentId = folder.parentId == null
+            ? _profileId
+            : restoredFolderIds[folder.parentId];
+        if (parentId == null) {
+          continue;
+        }
+        await ensureChildrenLoaded(parentId);
+        final siblings = existingFoldersByParent[parentId]!;
+        var restoredId = siblings[folder.name];
+        if (restoredId == null) {
+          restoredId = (await createFolder(
+            folderName: folder.name,
+            parentFolderId: parentId,
+          )).id;
+          siblings[folder.name] = restoredId;
+        }
+        restoredFolderIds[folder.id] = restoredId;
+        restored.add(folder);
+      }
+      if (restored.isEmpty) {
+        throw _invalidBackupFormat();
+      }
+      remainingFolders.removeWhere(restored.contains);
+    }
+
+    for (final file in files) {
+      final parentId = file.parentId == null
+          ? _profileId
+          : restoredFolderIds[file.parentId]!;
+      await ensureChildrenLoaded(parentId);
+      final siblingNames = existingFileNamesByParent[parentId]!;
+      if (!siblingNames.add(file.name)) {
+        continue;
+      }
+      await createFile(
+        fileName: file.name,
+        data: file.content,
+        parentFolderId: parentId,
+      );
+    }
+  }
+
+  (List<_BackupFolder>, List<_BackupFile>) _parseBackup(
+    Map<String, dynamic> data,
+  ) {
+    const allowedKeys = {'version', 'items'};
+    final rawItems = data['items'];
+    if (data.keys.any((key) => !allowedKeys.contains(key)) ||
+        data['version'] != _backupVersion ||
+        rawItems is! List) {
+      throw _invalidBackupFormat();
+    }
+
+    final folders = <_BackupFolder>[];
+    final files = <_BackupFile>[];
+    final itemIds = <String>{};
+    for (final rawItem in rawItems) {
+      if (rawItem is! Map<String, dynamic>) {
+        throw _invalidBackupFormat();
+      }
+      final id = rawItem['id'];
+      final name = rawItem['name'];
+      final parentId = rawItem['parentId'];
+      final type = rawItem['type'];
+      if (id is! String ||
+          id.isEmpty ||
+          !itemIds.add(id) ||
+          name is! String ||
+          name.isEmpty ||
+          (parentId != null && parentId is! String)) {
+        throw _invalidBackupFormat();
+      }
+      final parsedParentId = parentId is String ? parentId : null;
+
+      if (type == 'folder' &&
+          rawItem.length == 4 &&
+          !rawItem.containsKey('content')) {
+        folders.add(
+          _BackupFolder(id: id, name: name, parentId: parsedParentId),
+        );
+      } else if (type == 'file' &&
+          rawItem.length == 5 &&
+          rawItem['content'] is String) {
+        final Uint8List content;
+        try {
+          content = base64Decode(rawItem['content'] as String);
+        } on FormatException catch (error) {
+          throw _invalidBackupFormat(originalMessage: error.toString());
+        }
+        if (!FileUtils.isFileSizeValid(content.length, _maxFileSize) ||
+            !FileUtils.isFileExtensionAllowed(name, _allowedExtensions)) {
+          throw _invalidBackupFormat();
+        }
+        files.add(
+          _BackupFile(
+            id: id,
+            name: name,
+            parentId: parsedParentId,
+            content: content,
+          ),
+        );
+      } else {
+        throw _invalidBackupFormat();
+      }
+    }
+
+    final foldersById = {for (final folder in folders) folder.id: folder};
+    for (final folder in folders) {
+      final visited = <String>{folder.id};
+      var parentId = folder.parentId;
+      while (parentId != null) {
+        if (!visited.add(parentId)) {
+          throw _invalidBackupFormat();
+        }
+        final parent = foldersById[parentId];
+        if (parent == null) {
+          throw _invalidBackupFormat();
+        }
+        parentId = parent.parentId;
+      }
+    }
+    for (final file in files) {
+      if (file.parentId != null && !foldersById.containsKey(file.parentId)) {
+        throw _invalidBackupFormat();
+      }
+    }
+
+    return (folders, files);
+  }
+
+  TdkException _invalidBackupFormat({String? originalMessage}) => TdkException(
+    message: 'The file storage backup payload is malformed.',
+    code: _invalidBackupFormatCode,
+    originalMessage: originalMessage,
+  );
+}
+
+class _BackupFolder {
+  const _BackupFolder({
+    required this.id,
+    required this.name,
+    required this.parentId,
+  });
+
+  final String id;
+  final String name;
+  final String? parentId;
+}
+
+class _BackupFile {
+  const _BackupFile({
+    required this.id,
+    required this.name,
+    required this.parentId,
+    required this.content,
+  });
+
+  final String id;
+  final String name;
+  final String? parentId;
+  final Uint8List content;
 }

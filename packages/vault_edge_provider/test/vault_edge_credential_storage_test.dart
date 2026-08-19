@@ -272,4 +272,150 @@ void main() {
       });
     });
   });
+
+  group('When backing up credentials', () {
+    final invalidBackupFormat = isA<TdkException>().having(
+      (error) => error.code,
+      'code',
+      'invalid_backup_format',
+    );
+
+    test('it exports all credentials across pages', () async {
+      when(
+        () => mockRepository.listCredentialData(
+          profileId: CredentialFixtures.profileId,
+          limit: 50,
+          exclusiveStartItemId: null,
+          cancelToken: null,
+        ),
+      ).thenAnswer(
+        (_) async => PaginatedList(
+          items: [CredentialFixtures.mockCredentialData],
+          lastEvaluatedItemId: CredentialFixtures.credentialId,
+        ),
+      );
+      when(
+        () => mockRepository.listCredentialData(
+          profileId: CredentialFixtures.profileId,
+          limit: 50,
+          exclusiveStartItemId: CredentialFixtures.credentialId,
+          cancelToken: null,
+        ),
+      ).thenAnswer(
+        (_) async => PaginatedList(
+          items: [CredentialFixtures.drivingLicenseCredentialData],
+          lastEvaluatedItemId: null,
+        ),
+      );
+
+      final exported = await storage.export();
+
+      expect(exported['version'], '1.0.0');
+      expect(exported['credentials'], [
+        {
+          'id': CredentialFixtures.credentialId,
+          'verifiableCredential': CredentialFixtures.mockVerifiableCredential
+              .toJson(),
+        },
+        {
+          'id': 'test-credential-id-2',
+          'verifiableCredential': CredentialFixtures
+              .drivingLicenseVerifiableCredential
+              .toJson(),
+        },
+      ]);
+    });
+
+    test('it imports credentials with their original storage ids', () async {
+      CredentialMockSetup.setupEmptyCredentialListMocks(mockRepository);
+
+      await storage.import({
+        'version': '1.0.0',
+        'credentials': [
+          {
+            'id': CredentialFixtures.credentialId,
+            'verifiableCredential':
+                CredentialFixtures.universityDegreeCredentialJson,
+          },
+        ],
+      });
+
+      verify(
+        () => mockRepository.saveCredentialData(
+          profileId: CredentialFixtures.profileId,
+          credentialId: CredentialFixtures.credentialId,
+          credentialName: 'UniversityDegree',
+          credentialContent: any(named: 'credentialContent'),
+          cancelToken: null,
+        ),
+      ).called(1);
+    });
+
+    test('it skips credentials already stored with the same id', () async {
+      when(
+        () => mockRepository.listCredentialData(
+          profileId: CredentialFixtures.profileId,
+          limit: 50,
+          exclusiveStartItemId: null,
+          cancelToken: null,
+        ),
+      ).thenAnswer(
+        (_) async => PaginatedList(
+          items: [CredentialFixtures.mockCredentialData],
+          lastEvaluatedItemId: null,
+        ),
+      );
+
+      await storage.import({
+        'version': '1.0.0',
+        'credentials': [
+          {
+            'id': CredentialFixtures.credentialId,
+            'verifiableCredential':
+                CredentialFixtures.universityDegreeCredentialJson,
+          },
+        ],
+      });
+
+      verifyNever(
+        () => mockRepository.saveCredentialData(
+          profileId: any(named: 'profileId'),
+          credentialId: any(named: 'credentialId'),
+          credentialName: any(named: 'credentialName'),
+          credentialContent: any(named: 'credentialContent'),
+          cancelToken: any(named: 'cancelToken'),
+        ),
+      );
+    });
+
+    test('it rejects malformed credentials before repository access', () async {
+      await expectLater(
+        storage.import(const {
+          'version': '1.0.0',
+          'credentials': [
+            {'id': 'credential-id', 'verifiableCredential': 42},
+          ],
+        }),
+        throwsA(invalidBackupFormat),
+      );
+
+      verifyNever(
+        () => mockRepository.listCredentialData(
+          profileId: any(named: 'profileId'),
+          limit: any(named: 'limit'),
+          exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+          cancelToken: any(named: 'cancelToken'),
+        ),
+      );
+      verifyNever(
+        () => mockRepository.saveCredentialData(
+          profileId: any(named: 'profileId'),
+          credentialId: any(named: 'credentialId'),
+          credentialName: any(named: 'credentialName'),
+          credentialContent: any(named: 'credentialContent'),
+          cancelToken: any(named: 'cancelToken'),
+        ),
+      );
+    });
+  });
 }
