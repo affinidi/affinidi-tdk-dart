@@ -45,6 +45,12 @@ class Backup {
     return Backup(data: _sortMap(data));
   }
 
+  /// Parses and validates repository-scoped Vault backup data.
+  factory Backup.fromVaultData(Map<String, dynamic> data) {
+    _validateVaultData(data);
+    return Backup(data: _sortMap(data));
+  }
+
   /// The backup format version.
   final String version;
 
