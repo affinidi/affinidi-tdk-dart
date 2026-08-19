@@ -336,6 +336,8 @@ class Vault implements Restorable {
       vaultStore: await _vaultStore.export(),
       repositoryManifest: manifest,
       repositoryData: repositoryData,
+      defaultRepositoryId:
+          _defaultProfileRepositoryId ?? _profileRepositories.keys.first,
       namedComponents: namedData,
     ).data;
   }
