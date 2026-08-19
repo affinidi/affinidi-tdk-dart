@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart' show Restorable;
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart'
     hide TdkExceptionType;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -10,7 +11,7 @@ import '../src/exceptions/tdk_exception_type.dart';
 ///
 /// Each record is stored as a JSON string keyed by its [IotaConsentRecord.hash],
 /// prefixed with a namespace to avoid collisions with other secure storage entries.
-class FlutterSecureConsentStorage implements ConsentStorage {
+class FlutterSecureConsentStorage implements ConsentStorage, Restorable {
   /// Creates a [FlutterSecureConsentStorage].
   ///
   /// Parameters:
@@ -32,6 +33,8 @@ class FlutterSecureConsentStorage implements ConsentStorage {
   final String _namespace;
   final FlutterSecureStorage _secureStorage;
 
+  static const _backupVersion = '1.0.0';
+
   String _key(String hash) => '${_namespace}_$hash';
 
   @override
@@ -44,29 +47,13 @@ class FlutterSecureConsentStorage implements ConsentStorage {
 
   @override
   Future<IotaConsentRecord?> findByRequestHash(String requestHash) async {
-    final all = await _secureStorage.readAll();
-    final prefix = '${_namespace}_';
     IotaConsentRecord? bestMatch;
 
-    for (final entry in all.entries) {
-      if (!entry.key.startsWith(prefix)) continue;
-      try {
-        final record = IotaConsentRecord.fromJson(
-          jsonDecode(entry.value) as Map<String, dynamic>,
-        );
-        if (record.requestHash != requestHash) continue;
-
-        if (bestMatch == null ||
-            record.sharedAt.compareTo(bestMatch.sharedAt) > 0) {
-          bestMatch = record;
-        }
-      } catch (e) {
-        throw TdkException(
-          message:
-              'Failed to deserialize consent record for key "${entry.key}".',
-          code: TdkExceptionType.failedToReadConsentRecord.code,
-          originalMessage: e.toString(),
-        );
+    for (final record in await _readAllRecords()) {
+      if (record.requestHash != requestHash) continue;
+      if (bestMatch == null ||
+          record.sharedAt.compareTo(bestMatch.sharedAt) > 0) {
+        bestMatch = record;
       }
     }
 
@@ -77,25 +64,71 @@ class FlutterSecureConsentStorage implements ConsentStorage {
   Future<List<IotaConsentRecord>> findAllByRequestHash(
     String requestHash,
   ) async {
+    return (await _readAllRecords())
+        .where((record) => record.requestHash == requestHash)
+        .toList();
+  }
+
+  @override
+  Future<Map<String, dynamic>> export() async => {
+    'version': _backupVersion,
+    'records': [for (final record in await _readAllRecords()) record.toJson()],
+  };
+
+  @override
+  Future<void> import(Map<String, dynamic> data) async {
+    const allowedKeys = {'version', 'records'};
+    final rawRecords = data['records'];
+    if (data.keys.any((key) => !allowedKeys.contains(key)) ||
+        data['version'] != _backupVersion ||
+        rawRecords is! List) {
+      throw _invalidBackupFormat();
+    }
+
+    final records = <IotaConsentRecord>[];
+    try {
+      for (final rawRecord in rawRecords) {
+        if (rawRecord is! Map<String, dynamic>) {
+          throw const FormatException('Consent record must be an object.');
+        }
+        records.add(IotaConsentRecord.fromJson(rawRecord));
+      }
+    } catch (error) {
+      throw _invalidBackupFormat(originalMessage: error.toString());
+    }
+
+    for (final record in records) {
+      await saveOrUpdate(record);
+    }
+  }
+
+  Future<List<IotaConsentRecord>> _readAllRecords() async {
     final all = await _secureStorage.readAll();
     final prefix = '${_namespace}_';
-    final results = <IotaConsentRecord>[];
+    final records = <IotaConsentRecord>[];
     for (final entry in all.entries) {
       if (!entry.key.startsWith(prefix)) continue;
       try {
-        final record = IotaConsentRecord.fromJson(
-          jsonDecode(entry.value) as Map<String, dynamic>,
+        records.add(
+          IotaConsentRecord.fromJson(
+            jsonDecode(entry.value) as Map<String, dynamic>,
+          ),
         );
-        if (record.requestHash == requestHash) results.add(record);
-      } catch (e) {
+      } catch (error) {
         throw TdkException(
           message:
               'Failed to deserialize consent record for key "${entry.key}".',
           code: TdkExceptionType.failedToReadConsentRecord.code,
-          originalMessage: e.toString(),
+          originalMessage: error.toString(),
         );
       }
     }
-    return results;
+    return records;
   }
+
+  TdkException _invalidBackupFormat({String? originalMessage}) => TdkException(
+    message: 'The consent history backup payload is malformed.',
+    code: 'invalid_backup_format',
+    originalMessage: originalMessage,
+  );
 }
