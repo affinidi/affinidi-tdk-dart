@@ -34,11 +34,16 @@ class Backup {
     required Map<String, dynamic> vaultStore,
     required List<Map<String, dynamic>> repositoryManifest,
     required Map<String, dynamic> repositoryData,
+    required String defaultRepositoryId,
     Map<String, dynamic> namedComponents = const {},
   }) {
     final data = <String, dynamic>{
       'vaultStore': vaultStore,
-      'repositories': {'manifest': repositoryManifest, 'data': repositoryData},
+      'repositories': {
+        'defaultId': defaultRepositoryId,
+        'manifest': repositoryManifest,
+        'data': repositoryData,
+      },
       'namedComponents': namedComponents,
     };
     _validateVaultData(data);
@@ -105,13 +110,15 @@ class Backup {
 
     final repositories = data['repositories'];
     if (repositories is! Map<String, dynamic> ||
-        repositories.length != 2 ||
+        repositories.length != 3 ||
+        !repositories.containsKey('defaultId') ||
         !repositories.containsKey('manifest') ||
         !repositories.containsKey('data')) {
       throw _invalidFormat();
     }
     final manifest = repositories['manifest'];
     final repositoryData = repositories['data'];
+    final defaultRepositoryId = repositories['defaultId'];
     if (manifest is! List || repositoryData is! Map<String, dynamic>) {
       throw _invalidFormat();
     }
@@ -136,6 +143,10 @@ class Backup {
       if (restorable) {
         restorableIds.add(id);
       }
+    }
+    if (defaultRepositoryId is! String ||
+        !repositoryIds.contains(defaultRepositoryId)) {
+      throw _invalidFormat();
     }
     if (repositoryData.keys.toSet().difference(restorableIds).isNotEmpty ||
         restorableIds.difference(repositoryData.keys.toSet()).isNotEmpty) {

@@ -17,10 +17,8 @@ import 'vault_backup_service_interface.dart';
 ///
 /// The Vault exports a repository-scoped [Backup], which is JSON-encoded and
 /// encrypted with a passphrase-derived key (PBKDF2 + AES-CBC authenticated with
-/// HMAC-SHA256).
-/// Any tampering with the ciphertext fails authentication before the plaintext
-/// is used. Only the encrypted [BackupData] ever leaves this service; the
-/// plaintext envelope and the derived key are never exposed.
+/// HMAC-SHA256). Any tampering with the ciphertext fails authentication before
+/// the plaintext is used. Only encrypted bytes leave this service.
 class VaultBackupService implements VaultBackupServiceInterface {
   /// Length, in bytes, of the per-backup PBKDF2 salt generated internally.
   static const int _saltLength = 16;
@@ -28,16 +26,16 @@ class VaultBackupService implements VaultBackupServiceInterface {
   /// Creates a [VaultBackupService].
   ///
   /// Parameters:
-  /// * [cryptographyService] - Provides PBKDF2 key derivation and authenticated
-  ///   AES-CBC (HMAC-SHA256) encryption.
+  /// * [cryptographyService] - Optional cryptography implementation. Defaults
+  ///   to [CryptographyService].
   /// * [logger] - Optional logger; defaults to [Logger.instance].
   /// * [now] - Optional clock used for the backup timestamp; defaults to
   ///   [DateTime.now]. Injectable for deterministic tests.
   VaultBackupService({
-    required CryptographyServiceInterface cryptographyService,
+    CryptographyServiceInterface? cryptographyService,
     Logger? logger,
     DateTime Function()? now,
-  }) : _cryptographyService = cryptographyService,
+  }) : _cryptographyService = cryptographyService ?? CryptographyService(),
        _logger = logger ?? Logger.instance,
        _now = now ?? DateTime.now;
 
@@ -106,7 +104,6 @@ class VaultBackupService implements VaultBackupServiceInterface {
     required VaultStoreFactory vaultStoreFactory,
     required Map<String, ProfileRepositoryFactory> repositoryFactories,
     Map<String, RestorableFactory> namedRestorableFactories = const {},
-    String? defaultProfileRepositoryId,
   }) async {
     final Backup backup;
     try {
@@ -168,6 +165,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
     final repositoriesSection =
         backup.data['repositories'] as Map<String, dynamic>;
     final manifest = repositoriesSection['manifest'] as List;
+    final defaultRepositoryId = repositoriesSection['defaultId'] as String;
     final repositoryIds = {
       for (final entry in manifest)
         (entry as Map<String, dynamic>)['id'] as String,
@@ -203,7 +201,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
       vaultStore,
       profileRepositories: repositories,
       namedRestorables: namedRestorables,
-      defaultProfileRepositoryId: defaultProfileRepositoryId,
+      defaultProfileRepositoryId: defaultRepositoryId,
     );
     await vault.ensureInitialized();
     await vault.import(backup.data);
