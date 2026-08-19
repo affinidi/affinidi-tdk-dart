@@ -160,4 +160,62 @@ void main() {
       verify(() => mockStorage.delete(key: '${vaultId}_contentKey')).called(1);
     });
   });
+
+  group('When backing up vault data', () {
+    final seed = Uint8List.fromList([1, 2, 3, 4]);
+    final contentKey = Uint8List.fromList([5, 6, 7, 8]);
+
+    test('it exports secure storage state', () async {
+      when(
+        () => mockStorage.read(key: '${vaultId}_seed'),
+      ).thenAnswer((_) async => base64Encode(seed));
+      when(
+        () => mockStorage.read(key: '${vaultId}_contentKey'),
+      ).thenAnswer((_) async => base64Encode(contentKey));
+      when(
+        () => mockStorage.read(key: '${vaultId}_accountIndex'),
+      ).thenAnswer((_) async => '7');
+
+      expect(await vaultStore.export(), {
+        'version': '1.0.0',
+        'seed': base64Encode(seed),
+        'contentKey': base64Encode(contentKey),
+        'accountIndex': 7,
+      });
+    });
+
+    test('it clears and imports secure storage state', () async {
+      when(
+        () => mockStorage.delete(key: any(named: 'key')),
+      ).thenAnswer((_) async {});
+      when(
+        () => mockStorage.write(
+          key: any(named: 'key'),
+          value: any(named: 'value'),
+        ),
+      ).thenAnswer((_) async {});
+
+      await vaultStore.import({
+        'version': '1.0.0',
+        'seed': base64Encode(seed),
+        'contentKey': base64Encode(contentKey),
+        'accountIndex': 7,
+      });
+
+      verifyInOrder([
+        () => mockStorage.delete(key: '${vaultId}_accountIndex'),
+        () => mockStorage.delete(key: '${vaultId}_seed'),
+        () => mockStorage.delete(key: '${vaultId}_contentKey'),
+        () => mockStorage.write(
+          key: '${vaultId}_seed',
+          value: base64Encode(seed),
+        ),
+        () => mockStorage.write(
+          key: '${vaultId}_contentKey',
+          value: base64Encode(contentKey),
+        ),
+        () => mockStorage.write(key: '${vaultId}_accountIndex', value: '7'),
+      ]);
+    });
+  });
 }

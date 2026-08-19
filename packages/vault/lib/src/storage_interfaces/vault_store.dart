@@ -1,8 +1,20 @@
+import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+
+import '../exceptions/tdk_exception_type.dart';
+import 'restorable.dart';
+
 /// Interface for storing vault data
-abstract class VaultStore {
+abstract class VaultStore implements Restorable {
+  static const _currentBackupVersion = '1.0.0';
+  static const _versionKey = 'version';
+  static const _seedKey = 'seed';
+  static const _contentKeyKey = 'contentKey';
+  static const _accountIndexKey = 'accountIndex';
+
   /// Stores the account index to storage.
   ///
   /// [accountIndex] - The account index to store.
@@ -43,4 +55,74 @@ abstract class VaultStore {
 
   /// Removes all stored data including account index and seed
   Future<void> clear();
+
+  @override
+  Future<Map<String, dynamic>> export() async {
+    final seed = await getSeed();
+    if (seed == null) {
+      throw TdkException(
+        message: 'Cannot export VaultStore state without a seed.',
+        code: TdkExceptionType.invalidBackupFormat.code,
+      );
+    }
+
+    final contentKey = await getContentKey();
+    return {
+      _versionKey: _currentBackupVersion,
+      _seedKey: base64Encode(seed),
+      if (contentKey != null) _contentKeyKey: base64Encode(contentKey),
+      _accountIndexKey: await getAccountIndex(),
+    };
+  }
+
+  @override
+  Future<void> import(Map<String, dynamic> data) async {
+    const allowedKeys = {
+      _versionKey,
+      _seedKey,
+      _contentKeyKey,
+      _accountIndexKey,
+    };
+    final version = data[_versionKey];
+    final seedValue = data[_seedKey];
+    final contentKeyValue = data[_contentKeyKey];
+    final accountIndex = data[_accountIndexKey];
+
+    if (data.keys.any((key) => !allowedKeys.contains(key)) ||
+        version != _currentBackupVersion ||
+        seedValue is! String ||
+        (contentKeyValue != null && contentKeyValue is! String) ||
+        accountIndex is! int ||
+        accountIndex < 0) {
+      throw TdkException(
+        message: 'The VaultStore backup payload is malformed.',
+        code: TdkExceptionType.invalidBackupFormat.code,
+      );
+    }
+
+    final Uint8List seed;
+    final Uint8List? contentKey;
+    try {
+      seed = base64Decode(seedValue);
+      contentKey = contentKeyValue == null
+          ? null
+          : base64Decode(contentKeyValue as String);
+    } on FormatException catch (error, stackTrace) {
+      Error.throwWithStackTrace(
+        TdkException(
+          message: 'The VaultStore backup payload contains invalid data.',
+          code: TdkExceptionType.invalidBackupFormat.code,
+          originalMessage: error.toString(),
+        ),
+        stackTrace,
+      );
+    }
+
+    await clear();
+    await setSeed(seed);
+    if (contentKey != null) {
+      await setContentKey(contentKey);
+    }
+    await setAccountIndex(accountIndex);
+  }
 }

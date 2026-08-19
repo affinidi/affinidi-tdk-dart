@@ -24,7 +24,6 @@ export 'src/services/vault_backup_service_interface.dart';
 export 'src/services/vault_credentials_backup_source.dart';
 export 'src/services/vault_files_backup_source.dart';
 export 'src/services/vault_profiles_backup_source.dart';
-export 'src/services/vault_store_backup_source.dart';
 export 'src/storage_interfaces/credential_storage.dart';
 export 'src/storage_interfaces/file_storage.dart';
 export 'src/storage_interfaces/item.dart';
