@@ -194,25 +194,21 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
   }
 
   @override
+  Future<bool> isEmpty() async {
+    final page = await _repository.listCredentialData(
+      profileId: _profileId,
+      limit: 1,
+    );
+    return page.items.isEmpty;
+  }
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {
     final credentials = _parseBackup(data);
-
-    final existingIds = <String>{};
-    String? cursor;
-    do {
-      final page = await _repository.listCredentialData(
-        profileId: _profileId,
-        limit: _pageSize,
-        exclusiveStartItemId: cursor,
-      );
-      existingIds.addAll(page.items.map((credential) => credential.id));
-      cursor = page.lastEvaluatedItemId;
-    } while (cursor != null);
-
+    if (!await isEmpty()) {
+      throw _restoreDestinationNotEmpty();
+    }
     for (final (id, credential) in credentials) {
-      if (!existingIds.add(id)) {
-        continue;
-      }
       await _saveCredential(credentialId: id, verifiableCredential: credential);
     }
   }
@@ -256,5 +252,10 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
     message: 'The credential storage backup payload is malformed.',
     code: _invalidBackupFormatCode,
     originalMessage: originalMessage,
+  );
+
+  TdkException _restoreDestinationNotEmpty() => TdkException(
+    message: 'Credential restore destination is not empty.',
+    code: 'restore_destination_not_empty',
   );
 }

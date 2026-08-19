@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart' show TdkException;
 import 'package:affinidi_tdk_vault_flutter_utils/storages/flutter_secure_vault_store.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -184,10 +185,10 @@ void main() {
       });
     });
 
-    test('it clears and imports secure storage state', () async {
+    test('it imports secure storage state into an empty destination', () async {
       when(
-        () => mockStorage.delete(key: any(named: 'key')),
-      ).thenAnswer((_) async {});
+        () => mockStorage.read(key: any(named: 'key')),
+      ).thenAnswer((_) async => null);
       when(
         () => mockStorage.write(
           key: any(named: 'key'),
@@ -203,9 +204,6 @@ void main() {
       });
 
       verifyInOrder([
-        () => mockStorage.delete(key: '${vaultId}_accountIndex'),
-        () => mockStorage.delete(key: '${vaultId}_seed'),
-        () => mockStorage.delete(key: '${vaultId}_contentKey'),
         () => mockStorage.write(
           key: '${vaultId}_seed',
           value: base64Encode(seed),
@@ -216,6 +214,41 @@ void main() {
         ),
         () => mockStorage.write(key: '${vaultId}_accountIndex', value: '7'),
       ]);
+      verifyNever(() => mockStorage.delete(key: any(named: 'key')));
+    });
+
+    test('it rejects a non-empty secure storage destination', () async {
+      when(
+        () => mockStorage.read(key: '${vaultId}_seed'),
+      ).thenAnswer((_) async => base64Encode(seed));
+      when(
+        () => mockStorage.read(key: '${vaultId}_contentKey'),
+      ).thenAnswer((_) async => null);
+      when(
+        () => mockStorage.read(key: '${vaultId}_accountIndex'),
+      ).thenAnswer((_) async => '0');
+
+      await expectLater(
+        vaultStore.import({
+          'version': '1.0.0',
+          'seed': base64Encode(seed),
+          'accountIndex': 0,
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            'restore_destination_not_empty',
+          ),
+        ),
+      );
+
+      verifyNever(
+        () => mockStorage.write(
+          key: any(named: 'key'),
+          value: any(named: 'value'),
+        ),
+      );
     });
   });
 }

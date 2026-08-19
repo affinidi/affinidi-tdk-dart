@@ -81,9 +81,18 @@ class FlutterSecureConsentStorage implements ConsentStorage, Restorable {
   }
 
   @override
+  Future<bool> isEmpty() async {
+    final all = await _secureStorage.readAll();
+    final prefix = '${_namespace}_';
+    return all.keys.every((key) => !key.startsWith(prefix));
+  }
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {
     final records = _parseBackup(data);
-
+    if (!await isEmpty()) {
+      throw _restoreDestinationNotEmpty();
+    }
     for (final record in records) {
       await saveOrUpdate(record);
     }
@@ -141,5 +150,10 @@ class FlutterSecureConsentStorage implements ConsentStorage, Restorable {
     message: 'The consent history backup payload is malformed.',
     code: 'invalid_backup_format',
     originalMessage: originalMessage,
+  );
+
+  TdkException _restoreDestinationNotEmpty() => TdkException(
+    message: 'Consent history restore destination is not empty.',
+    code: 'restore_destination_not_empty',
   );
 }

@@ -24,6 +24,10 @@ void main() {
   setUp(() {
     mockStorage = MockFlutterSecureStorage();
     store = FlutterSecureConsentStorage(secureStorage: mockStorage);
+    when(() => mockStorage.readAll()).thenAnswer((_) async => {});
+    when(
+      () => mockStorage.delete(key: any(named: 'key')),
+    ).thenAnswer((_) async {});
   });
 
   group('saveOrUpdate', () {
@@ -215,31 +219,87 @@ void main() {
       ).called(1);
     });
 
-    test(
-      're-import updates the same key instead of creating another key',
-      () async {
-        when(
-          () => mockStorage.write(
-            key: any(named: 'key'),
-            value: any(named: 'value'),
-          ),
-        ).thenAnswer((_) async {});
-        final payload = {
+    test('rejects and preserves destination-only records', () async {
+      when(() => mockStorage.readAll()).thenAnswer(
+        (_) async => {
+          '${defaultNamespace}_destination-only': jsonEncode(record.toJson()),
+          'other_namespace_untouched': jsonEncode(record.toJson()),
+        },
+      );
+      when(
+        () => mockStorage.write(
+          key: any(named: 'key'),
+          value: any(named: 'value'),
+        ),
+      ).thenAnswer((_) async {});
+
+      await expectLater(
+        store.import({
           'version': '1.0.0',
           'records': [record.toJson()],
-        };
-
-        await store.import(payload);
-        await store.import(payload);
-
-        verify(
-          () => mockStorage.write(
-            key: '${defaultNamespace}_${record.hash}',
-            value: jsonEncode(record.toJson()),
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            'restore_destination_not_empty',
           ),
-        ).called(2);
-      },
-    );
+        ),
+      );
+
+      verifyNever(
+        () => mockStorage.delete(key: '${defaultNamespace}_destination-only'),
+      );
+      verifyNever(() => mockStorage.delete(key: 'other_namespace_untouched'));
+      verifyNever(
+        () => mockStorage.write(
+          key: '${defaultNamespace}_${record.hash}',
+          value: jsonEncode(record.toJson()),
+        ),
+      );
+    });
+
+    test('re-import is rejected after the first import', () async {
+      var stored = false;
+      when(() => mockStorage.readAll()).thenAnswer(
+        (_) async => stored
+            ? {
+                '${defaultNamespace}_${record.hash}': jsonEncode(
+                  record.toJson(),
+                ),
+              }
+            : {},
+      );
+      when(
+        () => mockStorage.write(
+          key: any(named: 'key'),
+          value: any(named: 'value'),
+        ),
+      ).thenAnswer((_) async => stored = true);
+      final payload = {
+        'version': '1.0.0',
+        'records': [record.toJson()],
+      };
+
+      await store.import(payload);
+      await expectLater(
+        store.import(payload),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            'restore_destination_not_empty',
+          ),
+        ),
+      );
+
+      verify(
+        () => mockStorage.write(
+          key: '${defaultNamespace}_${record.hash}',
+          value: jsonEncode(record.toJson()),
+        ),
+      ).called(1);
+    });
 
     test('rejects malformed records before any write', () async {
       await expectLater(

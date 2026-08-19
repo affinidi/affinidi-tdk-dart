@@ -219,6 +219,19 @@ class VaultBackupService implements VaultBackupServiceInterface {
       );
     }
 
+    if (!await vaultStore.isEmpty()) {
+      throw _restoreDestinationNotEmpty('VaultStore');
+    }
+    for (final id in repositoryData.keys.toList()..sort()) {
+      if (!await (repositories[id]! as Restorable).isEmpty()) {
+        throw _restoreDestinationNotEmpty('Repository "$id"');
+      }
+    }
+    for (final id in namedData.keys.toList()..sort()) {
+      if (!await namedRestorables[id]!.isEmpty()) {
+        throw _restoreDestinationNotEmpty('Named component "$id"');
+      }
+    }
     await vaultStore.import(vaultStoreData);
     final vault = await Vault.fromVaultStore(
       vaultStore,
@@ -244,5 +257,10 @@ class VaultBackupService implements VaultBackupServiceInterface {
   TdkException _invalidBackupFormat() => TdkException(
     message: 'Backup is not compatible with the configured Vault factories.',
     code: TdkExceptionType.invalidBackupFormat.code,
+  );
+
+  TdkException _restoreDestinationNotEmpty(String destination) => TdkException(
+    message: '$destination restore destination is not empty.',
+    code: TdkExceptionType.restoreDestinationNotEmpty.code,
   );
 }
