@@ -4,7 +4,6 @@ import 'storage_interfaces/profile_access_sharing.dart';
 import 'storage_interfaces/profile_repository.dart';
 import 'storage_interfaces/profile_storage_info.dart';
 import 'storage_interfaces/restorable.dart';
-import 'storage_interfaces/restorable_profile_repository.dart';
 
 /// A handle for a profile repository that may also include access sharing and storage info.
 final class ProfileRepositoryHandle {
@@ -29,14 +28,7 @@ final class ProfileRepositoryHandle {
         ? repository as ProfileStorageInfo
         : null;
 
-    // Preserve the restore capability through the decorator when present.
-    final wrapped =
-        repository is RestorableProfileRepository && repository is Restorable
-        ? CacheInvalidatingRestorableProfileRepository(
-            repository,
-            onProfilesMutated: onProfilesMutated,
-          )
-        : repository is Restorable
+    final wrapped = repository is Restorable
         ? CacheInvalidatingRestorableRepository(
             repository,
             onProfilesMutated: onProfilesMutated,
