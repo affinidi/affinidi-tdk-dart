@@ -1,9 +1,12 @@
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_edge_provider/affinidi_tdk_vault_edge_provider.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
 import 'fixtures/profile_fixtures.dart';
 import 'fixtures/wallet_fixtures.dart';
+import 'mocks/credential_mock_setup.dart';
+import 'mocks/file_mock_setup.dart';
 import 'mocks/mock_edge_credential_repository.dart';
 import 'mocks/mock_edge_encryption_service.dart';
 import 'mocks/mock_edge_file_repository.dart';
@@ -12,16 +15,19 @@ import 'mocks/mock_edge_repository_factory.dart';
 
 void main() {
   late MockEdgeProfileRepository mockRepository;
-  late MockEdgeFileRepository mockFileRepository;
+  late MockEdgeFileRepositoryInterface mockFileRepository;
   late MockEdgeCredentialRepository mockCredentialRepository;
   late MockEdgeRepositoryFactory mockEdgeRepositoryFactory;
   late MockEdgeEncryptionService mockEncryptionService;
+  late InMemoryVaultStore vaultStore;
   late EdgeProfileRepository sut;
+
+  setUpAll(FileMockSetup.setupFallbackValues);
 
   setUp(() {
     mockRepository = MockEdgeProfileRepository();
     mockCredentialRepository = MockEdgeCredentialRepository();
-    mockFileRepository = MockEdgeFileRepository();
+    mockFileRepository = MockEdgeFileRepositoryInterface();
 
     mockEdgeRepositoryFactory = MockEdgeRepositoryFactory(
       profileRepository: mockRepository,
@@ -30,6 +36,13 @@ void main() {
     );
 
     mockEncryptionService = MockEdgeEncryptionService();
+    vaultStore = InMemoryVaultStore();
+
+    CredentialMockSetup.setupEmptyCredentialListMocks(mockCredentialRepository);
+    FileMockSetup.setupFileRepositoryMocks(mockFileRepository);
+    MockEncryptionServiceSetup.setupEncryptionServiceDefaults(
+      mockEncryptionService,
+    );
 
     sut = EdgeProfileRepository(
       'sut',
@@ -138,7 +151,7 @@ void main() {
       await sut.configure(
         RepositoryConfiguration(
           wallet: WalletFixtures.wallet,
-          keyStorage: InMemoryVaultStore(),
+          keyStorage: vaultStore,
         ),
       );
     });
@@ -282,6 +295,146 @@ void main() {
           equals(profile.description),
         );
       });
+    });
+
+    group('and backing up profiles', () {
+      Future<(EdgeProfile, String)> profileAndDid() async {
+        const profile = EdgeProfile(
+          id: 'profile-1',
+          accountIndex: 3,
+          name: 'Profile One',
+          description: 'Description',
+        );
+        mockRepository.listProfilesReturnValue = [profile];
+        final did = (await sut.listProfiles()).single.did;
+        return (profile, did);
+      }
+
+      test('it exports durable profile and nested storage state', () async {
+        final (profile, did) = await profileAndDid();
+
+        final exported = await sut.export();
+
+        expect(exported, {
+          'version': '1.0.0',
+          'profiles': [
+            {
+              'id': profile.id,
+              'accountIndex': profile.accountIndex,
+              'name': profile.name,
+              'did': did,
+              'description': profile.description,
+              'fileStorages': {
+                'sut': {'version': '1.0.0', 'items': <dynamic>[]},
+              },
+              'credentialStorages': {
+                'sut': {'version': '1.0.0', 'credentials': <dynamic>[]},
+              },
+              'sharedStorages': <String, dynamic>{},
+            },
+          ],
+        });
+      });
+
+      test('it restores the original profile id and account index', () async {
+        final (profile, did) = await profileAndDid();
+        mockRepository.listProfilesReturnValue = [];
+
+        await sut.import({
+          'version': '1.0.0',
+          'profiles': [
+            {
+              'id': profile.id,
+              'accountIndex': profile.accountIndex,
+              'name': profile.name,
+              'did': did,
+              'description': profile.description,
+              'fileStorages': {
+                'sut': {'version': '1.0.0', 'items': <dynamic>[]},
+              },
+              'credentialStorages': {
+                'sut': {'version': '1.0.0', 'credentials': <dynamic>[]},
+              },
+              'sharedStorages': <String, dynamic>{},
+            },
+          ],
+        });
+
+        expect(mockRepository.lastCalledCreateProfileId, profile.id);
+        expect(
+          mockRepository.lastCalledCreateProfileAccountIndex,
+          profile.accountIndex,
+        );
+        expect(await vaultStore.getAccountIndex(), profile.accountIndex);
+      });
+
+      test('it does not recreate an existing matching profile', () async {
+        final (profile, did) = await profileAndDid();
+
+        await sut.import({
+          'version': '1.0.0',
+          'profiles': [
+            {
+              'id': profile.id,
+              'accountIndex': profile.accountIndex,
+              'name': profile.name,
+              'did': did,
+              'description': profile.description,
+              'fileStorages': {
+                'sut': {'version': '1.0.0', 'items': <dynamic>[]},
+              },
+              'credentialStorages': {
+                'sut': {'version': '1.0.0', 'credentials': <dynamic>[]},
+              },
+              'sharedStorages': <String, dynamic>{},
+            },
+          ],
+        });
+
+        expect(mockRepository.lastCalledCreateProfileId, isNull);
+      });
+
+      test(
+        'it rejects a profile DID from another wallet before writes',
+        () async {
+          final (profile, _) = await profileAndDid();
+          mockRepository.listProfilesReturnValue = [];
+
+          await expectLater(
+            sut.import({
+              'version': '1.0.0',
+              'profiles': [
+                {
+                  'id': profile.id,
+                  'accountIndex': profile.accountIndex,
+                  'name': profile.name,
+                  'did': 'did:key:wrong-wallet',
+                  'description': profile.description,
+                  'fileStorages': <String, dynamic>{},
+                  'credentialStorages': <String, dynamic>{},
+                  'sharedStorages': <String, dynamic>{},
+                },
+              ],
+            }),
+            throwsA(
+              isA<TdkException>().having(
+                (error) => error.code,
+                'code',
+                'invalid_backup_format',
+              ),
+            ),
+          );
+
+          expect(mockRepository.lastCalledCreateProfileId, isNull);
+          verifyNever(
+            () => mockFileRepository.createFolder(
+              profileId: any(named: 'profileId'),
+              folderName: any(named: 'folderName'),
+              parentFolderId: any(named: 'parentFolderId'),
+            ),
+          );
+        },
+      );
     });
   });
 }
