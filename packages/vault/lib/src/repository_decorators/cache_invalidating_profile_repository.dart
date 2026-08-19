@@ -72,21 +72,42 @@ class CacheInvalidatingProfileRepository implements ProfileRepository {
   }
 }
 
+/// A profile repository decorator that forwards generic backup state and
+/// invalidates cached profiles after import.
+class CacheInvalidatingRestorableRepository
+    extends CacheInvalidatingProfileRepository
+    implements Restorable {
+  /// Creates a [CacheInvalidatingRestorableRepository].
+  CacheInvalidatingRestorableRepository(
+    super.repository, {
+    required super.onProfilesMutated,
+  }) : _restorable = repository as Restorable;
+
+  final Restorable _restorable;
+
+  @override
+  Future<Map<String, dynamic>> export() => _restorable.export();
+
+  @override
+  Future<void> import(Map<String, dynamic> data) async {
+    await _restorable.import(data);
+    invalidateProfilesCache();
+  }
+}
+
 /// A [CacheInvalidatingProfileRepository] that also forwards the
 /// [RestorableProfileRepository] capability of the wrapped repository.
 class CacheInvalidatingRestorableProfileRepository
-    extends CacheInvalidatingProfileRepository
+    extends CacheInvalidatingRestorableRepository
     implements RestorableProfileRepository, Restorable {
   /// Creates a [CacheInvalidatingRestorableProfileRepository].
   CacheInvalidatingRestorableProfileRepository(
     ProfileRepository repository, {
     required super.onProfilesMutated,
-  }) : _restorable = repository as RestorableProfileRepository,
+  }) : _restorableProfile = repository as RestorableProfileRepository,
        super(repository);
 
-  final RestorableProfileRepository _restorable;
-
-  Restorable get _restorableState => _restorable as Restorable;
+  final RestorableProfileRepository _restorableProfile;
 
   @override
   Future<Profile> restoreProfile({
@@ -96,7 +117,7 @@ class CacheInvalidatingRestorableProfileRepository
     String? description,
     VaultCancelToken? cancelToken,
   }) async {
-    final profile = await _restorable.restoreProfile(
+    final profile = await _restorableProfile.restoreProfile(
       accountIndex: accountIndex,
       name: name,
       id: id,
@@ -105,14 +126,5 @@ class CacheInvalidatingRestorableProfileRepository
     );
     invalidateProfilesCache();
     return profile;
-  }
-
-  @override
-  Future<Map<String, dynamic>> export() => _restorableState.export();
-
-  @override
-  Future<void> import(Map<String, dynamic> data) async {
-    await _restorableState.import(data);
-    invalidateProfilesCache();
   }
 }
