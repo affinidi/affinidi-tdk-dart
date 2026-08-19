@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
@@ -7,14 +8,16 @@ import '../backup.dart';
 import '../backup_data.dart';
 import '../exceptions/tdk_exception_type.dart';
 import '../passphrase_policy.dart';
+import '../storage_interfaces/profile_repository.dart';
 import '../storage_interfaces/restorable.dart';
+import '../vault.dart';
 import 'vault_backup_service_interface.dart';
 
 /// Creates and restores encrypted Vault backups.
 ///
-/// Each registered [Restorable] component contributes a namespaced section to a
-/// versioned [Backup] envelope, which is JSON-encoded and encrypted with a
-/// passphrase-derived key (PBKDF2 + AES-CBC authenticated with HMAC-SHA256).
+/// The Vault exports a repository-scoped [Backup], which is JSON-encoded and
+/// encrypted with a passphrase-derived key (PBKDF2 + AES-CBC authenticated with
+/// HMAC-SHA256).
 /// Any tampering with the ciphertext fails authentication before the plaintext
 /// is used. Only the encrypted [BackupData] ever leaves this service; the
 /// plaintext envelope and the derived key are never exposed.
@@ -25,30 +28,28 @@ class VaultBackupService implements VaultBackupServiceInterface {
   /// Creates a [VaultBackupService].
   ///
   /// Parameters:
-  /// * [restorables] - The components to include in every backup and restore
-  ///   cycle.
   /// * [cryptographyService] - Provides PBKDF2 key derivation and authenticated
   ///   AES-CBC (HMAC-SHA256) encryption.
   /// * [logger] - Optional logger; defaults to [Logger.instance].
   /// * [now] - Optional clock used for the backup timestamp; defaults to
   ///   [DateTime.now]. Injectable for deterministic tests.
   VaultBackupService({
-    required List<Restorable> restorables,
     required CryptographyServiceInterface cryptographyService,
     Logger? logger,
     DateTime Function()? now,
-  }) : _restorables = List.unmodifiable(restorables),
-       _cryptographyService = cryptographyService,
+  }) : _cryptographyService = cryptographyService,
        _logger = logger ?? Logger.instance,
        _now = now ?? DateTime.now;
 
-  final List<Restorable> _restorables;
   final CryptographyServiceInterface _cryptographyService;
   final Logger _logger;
   final DateTime Function() _now;
 
   @override
-  Future<BackupData> createBackup({required String passphrase}) async {
+  Future<ByteData> createBackup({
+    required Vault vault,
+    required String passphrase,
+  }) async {
     final policyViolation = PassphrasePolicy.standard.validate(passphrase);
     if (policyViolation != null) {
       throw TdkException(
@@ -57,7 +58,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
       );
     }
     try {
-      final backup = Backup(data: await _exportSections());
+      final backup = Backup.fromVaultData(await vault.export());
       final plaintext = jsonEncode(backup.toJson());
 
       final salt = _cryptographyService.getRandomBytes(_saltLength);
@@ -76,10 +77,13 @@ class VaultBackupService implements VaultBackupServiceInterface {
         _wipe(key);
       }
 
-      return BackupData(
+      final backupData = BackupData(
         encryptedBackup: encryptedBackup,
         salt: base64Encode(salt),
         timestamp: _now().toUtc().toIso8601String(),
+      );
+      return ByteData.sublistView(
+        Uint8List.fromList(utf8.encode(jsonEncode(backupData.toJson()))),
       );
     } on TdkException {
       rethrow;
@@ -96,13 +100,26 @@ class VaultBackupService implements VaultBackupServiceInterface {
   }
 
   @override
-  Future<void> restoreFromBackup({
-    required BackupData backupData,
+  Future<Vault> restoreBackup({
+    required ByteData backupData,
     required String passphrase,
+    required VaultStoreFactory vaultStoreFactory,
+    required Map<String, ProfileRepositoryFactory> repositoryFactories,
+    Map<String, RestorableFactory> namedRestorableFactories = const {},
+    String? defaultProfileRepositoryId,
   }) async {
     final Backup backup;
     try {
-      final salt = base64Decode(backupData.salt);
+      final bytes = backupData.buffer.asUint8List(
+        backupData.offsetInBytes,
+        backupData.lengthInBytes,
+      );
+      final rawBackupData = jsonDecode(utf8.decode(bytes));
+      if (rawBackupData is! Map<String, dynamic>) {
+        throw _invalidBackupFormat();
+      }
+      final encryptedData = BackupData.fromJson(rawBackupData);
+      final salt = base64Decode(encryptedData.salt);
       final key = await _cryptographyService.Pbkdf2(
         password: passphrase,
         nonce: salt,
@@ -112,7 +129,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
       try {
         decrypted = await _cryptographyService.Aes256DecryptStringFromHex(
           key: key,
-          encryptedData: backupData.encryptedBackup,
+          encryptedData: encryptedData.encryptedBackup,
         );
       } finally {
         _wipe(key);
@@ -131,7 +148,8 @@ class VaultBackupService implements VaultBackupServiceInterface {
       }
 
       final json = jsonDecode(decrypted) as Map<String, dynamic>;
-      backup = Backup.fromJson(json);
+      final decodedBackup = Backup.fromJson(json);
+      backup = Backup.fromVaultData(decodedBackup.data);
     } on TdkException {
       rethrow;
     } catch (error, stackTrace) {
@@ -147,41 +165,63 @@ class VaultBackupService implements VaultBackupServiceInterface {
       );
     }
 
-    await _importSections(backup.data);
-  }
+    final repositoriesSection =
+        backup.data['repositories'] as Map<String, dynamic>;
+    final manifest = repositoriesSection['manifest'] as List;
+    final repositoryIds = {
+      for (final entry in manifest)
+        (entry as Map<String, dynamic>)['id'] as String,
+    };
+    final namedData = backup.data['namedComponents'] as Map<String, dynamic>;
+    if (!_sameIds(repositoryIds, repositoryFactories.keys.toSet()) ||
+        !_sameIds(
+          namedData.keys.toSet(),
+          namedRestorableFactories.keys.toSet(),
+        )) {
+      throw _invalidBackupFormat();
+    }
 
-  Future<Map<String, dynamic>> _exportSections() async {
-    final sections = <String, dynamic>{};
-    for (final restorable in _restorables) {
-      final section = await restorable.export();
-      for (final key in section.keys) {
-        if (sections.containsKey(key)) {
-          throw TdkException(
-            message:
-                'Duplicate backup section "$key": each source must own a '
-                'unique namespace.',
-            code: TdkExceptionType.backupCreationFailed.code,
-          );
-        }
+    final repositories = <String, ProfileRepository>{};
+    for (final entry in manifest) {
+      final manifestEntry = entry as Map<String, dynamic>;
+      final id = manifestEntry['id'] as String;
+      final repository = await repositoryFactories[id]!();
+      if (repository.id != id ||
+          (repository is Restorable) != (manifestEntry['restorable'] as bool)) {
+        throw _invalidBackupFormat();
       }
-      sections.addAll(section);
+      repositories[id] = repository;
     }
-    return sections;
-  }
+    final namedRestorables = <String, Restorable>{};
+    for (final id in namedData.keys) {
+      namedRestorables[id] = await namedRestorableFactories[id]!();
+    }
 
-  Future<void> _importSections(Map<String, dynamic> data) async {
-    final snapshot = Map<String, dynamic>.unmodifiable(data);
-    for (final restorable in _restorables) {
-      await restorable.import(snapshot);
-    }
+    final vaultStore = await vaultStoreFactory();
+    await vaultStore.import(backup.data['vaultStore'] as Map<String, dynamic>);
+    final vault = await Vault.fromVaultStore(
+      vaultStore,
+      profileRepositories: repositories,
+      namedRestorables: namedRestorables,
+      defaultProfileRepositoryId: defaultProfileRepositoryId,
+    );
+    await vault.ensureInitialized();
+    await vault.import(backup.data);
+    return vault;
   }
 
   /// Overwrite of a derived-key buffer to shorten its lifetime.
   void _wipe(List<int> bytes) {
-    try {
+    if (bytes is Uint8List) {
       bytes.fillRange(0, bytes.length, 0);
-    } on UnsupportedError {
-      // The buffer is not mutable; nothing more we can do.
     }
   }
+
+  bool _sameIds(Set<String> left, Set<String> right) =>
+      left.length == right.length && left.containsAll(right);
+
+  TdkException _invalidBackupFormat() => TdkException(
+    message: 'Backup is not compatible with the configured Vault factories.',
+    code: TdkExceptionType.invalidBackupFormat.code,
+  );
 }
