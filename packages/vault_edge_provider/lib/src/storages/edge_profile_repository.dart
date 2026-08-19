@@ -10,8 +10,7 @@ import 'edge_file_storage.dart';
 
 /// A Vault implementation of [ProfileRepository] for locally managing
 /// user profiles.
-class EdgeProfileRepository
-    implements ProfileRepository, RestorableProfileRepository, Restorable {
+class EdgeProfileRepository implements ProfileRepository, Restorable {
   /// Creates a new instance of [EdgeProfileRepository].
   ///
   /// The [_id] parameter is used to identify this repository instance.
@@ -142,21 +141,6 @@ Profile repository must be configured using a RepositoryConfiguration''',
       sharedStorages: {},
     );
   }
-
-  @override
-  Future<Profile> restoreProfile({
-    required int accountIndex,
-    required String name,
-    String? id,
-    String? description,
-    VaultCancelToken? cancelToken,
-  }) => _restoreProfile(
-    accountIndex: accountIndex,
-    name: name,
-    id: id,
-    description: description,
-    cancelToken: cancelToken,
-  );
 
   Future<Profile> _restoreProfile({
     required int accountIndex,

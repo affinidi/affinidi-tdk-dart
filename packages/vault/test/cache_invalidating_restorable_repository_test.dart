@@ -3,14 +3,13 @@ import 'package:affinidi_tdk_vault/src/repository_decorators/cache_invalidating_
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
-class _RestorableProfileRepository extends Mock
-    implements ProfileRepository, RestorableProfileRepository, Restorable {}
+class _Repository extends Mock implements ProfileRepository, Restorable {}
 
 void main() {
   test('delegates state and invalidates profiles after import', () async {
-    final repository = _RestorableProfileRepository();
+    final repository = _Repository();
     var invalidations = 0;
-    final decorated = CacheInvalidatingRestorableProfileRepository(
+    final decorated = CacheInvalidatingRestorableRepository(
       repository,
       onProfilesMutated: () => invalidations++,
     );
