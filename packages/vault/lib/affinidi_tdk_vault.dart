@@ -5,8 +5,6 @@ export 'package:affinidi_tdk_common/affinidi_tdk_common.dart' show TdkException;
 export 'package:ssi/ssi.dart'
     show KeyStore, StoredKey, UniversalParser, VerifiableCredential;
 
-export 'src/backup.dart';
-export 'src/backup_data.dart';
 export 'src/digital_credential.dart';
 export 'src/dto/shared_item_dto.dart';
 export 'src/dto/shared_profile_dto.dart';
@@ -21,9 +19,6 @@ export 'src/permissions.dart';
 export 'src/profile.dart';
 export 'src/services/vault_backup_service.dart';
 export 'src/services/vault_backup_service_interface.dart';
-export 'src/services/vault_credentials_backup_source.dart';
-export 'src/services/vault_files_backup_source.dart';
-export 'src/services/vault_profiles_backup_source.dart';
 export 'src/storage_interfaces/credential_storage.dart';
 export 'src/storage_interfaces/file_storage.dart';
 export 'src/storage_interfaces/item.dart';
@@ -33,7 +28,6 @@ export 'src/storage_interfaces/profile_repository.dart';
 export 'src/storage_interfaces/profile_storage_info.dart';
 export 'src/storage_interfaces/repository_configuration.dart';
 export 'src/storage_interfaces/restorable.dart';
-export 'src/storage_interfaces/restorable_profile_repository.dart';
 export 'src/storage_interfaces/shared_storage.dart';
 export 'src/storage_interfaces/vault_store.dart';
 export 'src/utils/file_provider_configuration.dart';
