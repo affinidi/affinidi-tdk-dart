@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:affinidi_tdk_vault_edge_provider/affinidi_tdk_vault_edge_provider.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
@@ -296,6 +298,225 @@ void main() {
           ),
         ).called(1);
       });
+    });
+  });
+
+  group('When backing up files', () {
+    final invalidBackupFormat = isA<TdkException>().having(
+      (error) => error.code,
+      'code',
+      'invalid_backup_format',
+    );
+
+    test('it exports root and nested items', () async {
+      final folder = FileFixtures.createMockFolder(
+        id: 'old-folder',
+        name: 'documents',
+      );
+      final rootFile = FileFixtures.createMockFileData(
+        id: 'root-file',
+        name: 'root.txt',
+      );
+      final nestedFile = FileFixtures.createMockFileData(
+        id: 'nested-file',
+        name: 'nested.txt',
+        parentId: 'old-folder',
+      );
+      when(
+        () => mockRepository.getFolder(
+          folderId: null,
+          limit: 50,
+          exclusiveStartItemId: null,
+        ),
+      ).thenAnswer(
+        (_) async =>
+            PaginatedList(items: [folder, rootFile], lastEvaluatedItemId: null),
+      );
+      when(
+        () => mockRepository.getFolder(
+          folderId: 'old-folder',
+          limit: 50,
+          exclusiveStartItemId: null,
+        ),
+      ).thenAnswer(
+        (_) async =>
+            PaginatedList(items: [nestedFile], lastEvaluatedItemId: null),
+      );
+
+      final exported = await storage.export();
+
+      expect(exported['version'], '1.0.0');
+      expect(
+        exported['items'],
+        containsAll([
+          {
+            'id': 'old-folder',
+            'name': 'documents',
+            'parentId': null,
+            'type': 'folder',
+          },
+          {
+            'id': 'root-file',
+            'name': 'root.txt',
+            'parentId': null,
+            'type': 'file',
+            'content': base64Encode(FileFixtures.smallFileData),
+          },
+          {
+            'id': 'nested-file',
+            'name': 'nested.txt',
+            'parentId': 'old-folder',
+            'type': 'file',
+            'content': base64Encode(FileFixtures.smallFileData),
+          },
+        ]),
+      );
+    });
+
+    test('it remaps file parents to restored folder ids', () async {
+      when(
+        () => mockRepository.createFolder(
+          profileId: FileFixtures.profileId,
+          folderName: 'documents',
+          parentFolderId: null,
+        ),
+      ).thenAnswer(
+        (_) async =>
+            FileFixtures.createMockFolder(id: 'new-folder', name: 'documents'),
+      );
+
+      await storage.import({
+        'version': '1.0.0',
+        'items': [
+          {
+            'id': 'old-folder',
+            'name': 'documents',
+            'parentId': null,
+            'type': 'folder',
+          },
+          {
+            'id': 'old-file',
+            'name': 'document.txt',
+            'parentId': 'old-folder',
+            'type': 'file',
+            'content': base64Encode(FileFixtures.smallFileData),
+          },
+        ],
+      });
+
+      verify(
+        () => mockRepository.createFile(
+          profileId: FileFixtures.profileId,
+          fileName: 'document.txt',
+          data: FileFixtures.smallFileData,
+          parentFolderId: 'new-folder',
+        ),
+      ).called(1);
+    });
+
+    test('it reuses existing folders and files by parent and name', () async {
+      final existingFolder = FileFixtures.createMockFolder(
+        id: 'existing-folder',
+        name: 'documents',
+      );
+      final existingFile = FileFixtures.createMockFileData(
+        id: 'existing-file',
+        name: 'document.txt',
+        parentId: 'existing-folder',
+      );
+      when(
+        () => mockRepository.getFolder(
+          folderId: null,
+          limit: 50,
+          exclusiveStartItemId: null,
+        ),
+      ).thenAnswer(
+        (_) async =>
+            PaginatedList(items: [existingFolder], lastEvaluatedItemId: null),
+      );
+      when(
+        () => mockRepository.getFolder(
+          folderId: 'existing-folder',
+          limit: 50,
+          exclusiveStartItemId: null,
+        ),
+      ).thenAnswer(
+        (_) async =>
+            PaginatedList(items: [existingFile], lastEvaluatedItemId: null),
+      );
+
+      await storage.import({
+        'version': '1.0.0',
+        'items': [
+          {
+            'id': 'old-folder',
+            'name': 'documents',
+            'parentId': null,
+            'type': 'folder',
+          },
+          {
+            'id': 'old-file',
+            'name': 'document.txt',
+            'parentId': 'old-folder',
+            'type': 'file',
+            'content': base64Encode(FileFixtures.smallFileData),
+          },
+        ],
+      });
+
+      verifyNever(
+        () => mockRepository.createFolder(
+          profileId: any(named: 'profileId'),
+          folderName: any(named: 'folderName'),
+          parentFolderId: any(named: 'parentFolderId'),
+        ),
+      );
+      verifyNever(
+        () => mockRepository.createFile(
+          profileId: any(named: 'profileId'),
+          fileName: any(named: 'fileName'),
+          data: any(named: 'data'),
+          parentFolderId: any(named: 'parentFolderId'),
+        ),
+      );
+    });
+
+    test('it rejects folder cycles before repository access', () async {
+      await expectLater(
+        storage.import(const {
+          'version': '1.0.0',
+          'items': [
+            {
+              'id': 'folder-a',
+              'name': 'a',
+              'parentId': 'folder-b',
+              'type': 'folder',
+            },
+            {
+              'id': 'folder-b',
+              'name': 'b',
+              'parentId': 'folder-a',
+              'type': 'folder',
+            },
+          ],
+        }),
+        throwsA(invalidBackupFormat),
+      );
+
+      verifyNever(
+        () => mockRepository.getFolder(
+          folderId: any(named: 'folderId'),
+          limit: any(named: 'limit'),
+          exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+        ),
+      );
+      verifyNever(
+        () => mockRepository.createFolder(
+          profileId: any(named: 'profileId'),
+          folderName: any(named: 'folderName'),
+          parentFolderId: any(named: 'parentFolderId'),
+        ),
+      );
     });
   });
 }
