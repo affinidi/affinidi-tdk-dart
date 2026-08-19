@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
+import 'package:synchronized/synchronized.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../affinidi_tdk_vault_edge_provider.dart';
@@ -9,23 +10,29 @@ import '../../affinidi_tdk_vault_edge_provider.dart';
 /// verifiable credentials with encryption support.
 class EdgeCredentialStorage implements CredentialStorage, Restorable {
   /// Creates a new instance of [EdgeCredentialStorage].
+  ///
+  /// [lock] allows an owning [EdgeProfileRepository] to serialize this
+  /// storage with profile and file operations.
   EdgeCredentialStorage({
     required EdgeCredentialsRepositoryInterface repository,
     required String id,
     required String profileId,
     CredentialCodec? codec,
     required EdgeEncryptionServiceInterface encryptionService,
+    Lock? lock,
   }) : _repository = repository,
        _id = id,
        _profileId = profileId,
        _codec = codec ?? CredentialCodec(),
-       _encryptionService = encryptionService;
+       _encryptionService = encryptionService,
+       _lock = lock ?? Lock(reentrant: true);
 
   final EdgeCredentialsRepositoryInterface _repository;
   final String _id;
   final String _profileId;
   final CredentialCodec _codec;
   final EdgeEncryptionServiceInterface _encryptionService;
+  final Lock _lock;
 
   static const _backupVersion = '1.0.0';
   static const _pageSize = 50;
@@ -38,7 +45,7 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
   Future<void> deleteCredential({
     required String digitalCredentialId,
     VaultCancelToken? cancelToken,
-  }) async {
+  }) => _lock.synchronized(() async {
     final credentialData = await _repository.getCredentialData(
       credentialId: digitalCredentialId,
       cancelToken: cancelToken,
@@ -58,13 +65,13 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
       credentialId: digitalCredentialId,
       cancelToken: cancelToken,
     );
-  }
+  });
 
   @override
   Future<DigitalCredential> getCredential({
     required String digitalCredentialId,
     VaultCancelToken? cancelToken,
-  }) async {
+  }) => _lock.synchronized(() async {
     final credentialData = await _repository.getCredentialData(
       credentialId: digitalCredentialId,
       cancelToken: cancelToken,
@@ -88,14 +95,14 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
       credentialBytes: decryptedContent,
       id: credentialData.id,
     );
-  }
+  });
 
   @override
   Future<PaginatedList<DigitalCredential>> listCredentials({
     int? limit,
     String? exclusiveStartItemId,
     VaultCancelToken? cancelToken,
-  }) async {
+  }) => _lock.synchronized(() async {
     final credentialDataList = await _repository.listCredentialData(
       profileId: _profileId,
       limit: limit,
@@ -120,7 +127,7 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
       items: credentials,
       lastEvaluatedItemId: credentialDataList.lastEvaluatedItemId,
     );
-  }
+  });
 
   @override
   dynamic query(String pexQuery) {
@@ -132,13 +139,13 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
   Future<void> saveCredential({
     required VerifiableCredential verifiableCredential,
     VaultCancelToken? cancelToken,
-  }) async {
+  }) => _lock.synchronized(() async {
     await _saveCredential(
       credentialId: const Uuid().v4(),
       verifiableCredential: verifiableCredential,
       cancelToken: cancelToken,
     );
-  }
+  });
 
   Future<void> _saveCredential({
     required String credentialId,
@@ -168,7 +175,7 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
   }
 
   @override
-  Future<Map<String, dynamic>> export() async {
+  Future<Map<String, dynamic>> export() => _lock.synchronized(() async {
     final credentials = <Map<String, dynamic>>[];
     String? cursor;
     do {
@@ -186,32 +193,37 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
     } while (cursor != null);
 
     return {'version': _backupVersion, 'credentials': credentials};
-  }
+  });
 
   @override
-  Future<void> validateImport(Map<String, dynamic> data) async {
-    _parseBackup(data);
-  }
+  Future<void> validateImport(Map<String, dynamic> data) =>
+      _lock.synchronized(() async {
+        _parseBackup(data);
+      });
 
   @override
-  Future<bool> isEmpty() async {
+  Future<bool> isEmpty() => _lock.synchronized(() async {
     final page = await _repository.listCredentialData(
       profileId: _profileId,
       limit: 1,
     );
     return page.items.isEmpty;
-  }
+  });
 
   @override
-  Future<void> import(Map<String, dynamic> data) async {
-    final credentials = _parseBackup(data);
-    if (!await isEmpty()) {
-      throw _restoreDestinationNotEmpty();
-    }
-    for (final (id, credential) in credentials) {
-      await _saveCredential(credentialId: id, verifiableCredential: credential);
-    }
-  }
+  Future<void> import(Map<String, dynamic> data) =>
+      _lock.synchronized(() async {
+        final credentials = _parseBackup(data);
+        if (!await isEmpty()) {
+          throw _restoreDestinationNotEmpty();
+        }
+        for (final (id, credential) in credentials) {
+          await _saveCredential(
+            credentialId: id,
+            verifiableCredential: credential,
+          );
+        }
+      });
 
   List<(String, VerifiableCredential)> _parseBackup(Map<String, dynamic> data) {
     const allowedKeys = {'version', 'credentials'};
