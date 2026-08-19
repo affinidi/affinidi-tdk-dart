@@ -77,6 +77,101 @@ void main() {
         throwsA(isA<TdkException>()),
       );
     });
+
+    group('vault schema', () {
+      Map<String, dynamic> component([String value = 'value']) => {
+        'version': '1.0.0',
+        'value': value,
+      };
+
+      test('creates a repository-scoped backup', () {
+        final backup = Backup.vault(
+          vaultStore: component('wallet'),
+          repositoryManifest: const [
+            {'id': 'cloud', 'restorable': false},
+            {'id': 'edge', 'restorable': true},
+          ],
+          repositoryData: {'edge': component('profiles')},
+          namedComponents: {'consentHistory': component('consent')},
+        );
+
+        expect(backup.data, {
+          'namedComponents': {'consentHistory': component('consent')},
+          'repositories': {
+            'data': {'edge': component('profiles')},
+            'manifest': const [
+              {'id': 'cloud', 'restorable': false},
+              {'id': 'edge', 'restorable': true},
+            ],
+          },
+          'vaultStore': component('wallet'),
+        });
+      });
+
+      test('sorts map keys deterministically', () {
+        final backup = Backup.vault(
+          vaultStore: component(),
+          repositoryManifest: const [
+            {'restorable': true, 'id': 'z'},
+            {'restorable': true, 'id': 'a'},
+          ],
+          repositoryData: {'z': component('z'), 'a': component('a')},
+          namedComponents: {'z': component('z'), 'a': component('a')},
+        );
+
+        expect(backup.data.keys, [
+          'namedComponents',
+          'repositories',
+          'vaultStore',
+        ]);
+        expect((backup.data['namedComponents'] as Map<String, dynamic>).keys, [
+          'a',
+          'z',
+        ]);
+        final repositories =
+            backup.data['repositories'] as Map<String, dynamic>;
+        expect((repositories['data'] as Map<String, dynamic>).keys, ['a', 'z']);
+      });
+
+      test('rejects duplicate repository ids', () {
+        expect(
+          () => Backup.vault(
+            vaultStore: component(),
+            repositoryManifest: const [
+              {'id': 'edge', 'restorable': true},
+              {'id': 'edge', 'restorable': true},
+            ],
+            repositoryData: {'edge': component()},
+          ),
+          throwsA(isA<TdkException>()),
+        );
+      });
+
+      test('rejects missing and unexpected repository payloads', () {
+        expect(
+          () => Backup.vault(
+            vaultStore: component(),
+            repositoryManifest: const [
+              {'id': 'edge', 'restorable': true},
+              {'id': 'cloud', 'restorable': false},
+            ],
+            repositoryData: {'cloud': component()},
+          ),
+          throwsA(isA<TdkException>()),
+        );
+      });
+
+      test('rejects component payloads without a version', () {
+        expect(
+          () => Backup.vault(
+            vaultStore: const {'seed': 'missing-version'},
+            repositoryManifest: const [],
+            repositoryData: const {},
+          ),
+          throwsA(isA<TdkException>()),
+        );
+      });
+    });
   });
 
   group('BackupData', () {
