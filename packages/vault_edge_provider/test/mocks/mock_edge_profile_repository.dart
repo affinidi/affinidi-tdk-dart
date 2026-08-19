@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:affinidi_tdk_vault_edge_provider/affinidi_tdk_vault_edge_provider.dart';
 
 class MockEdgeProfileRepository implements EdgeProfileRepositoryInterface {
@@ -5,6 +7,9 @@ class MockEdgeProfileRepository implements EdgeProfileRepositoryInterface {
   String? lastCalledCreateProfileDescription;
   String? lastCalledCreateProfileId;
   int? lastCalledCreateProfileAccountIndex;
+  int createProfileCallCount = 0;
+  Completer<void>? createProfileCalled;
+  Completer<String>? createProfileCompleter;
   String? lastCalledDeletedProfileId;
   EdgeProfile? lastCalledUpdateProfile;
   bool lastCalledListProfiles = false;
@@ -20,10 +25,17 @@ class MockEdgeProfileRepository implements EdgeProfileRepositoryInterface {
     String? id,
     VaultCancelToken? cancelToken,
   }) async {
+    createProfileCallCount++;
+    if (createProfileCalled != null && !createProfileCalled!.isCompleted) {
+      createProfileCalled!.complete();
+    }
     lastCalledCreateProfileName = name;
     lastCalledCreateProfileDescription = description;
     lastCalledCreateProfileId = id;
     lastCalledCreateProfileAccountIndex = accountIndex;
+    if (createProfileCompleter != null) {
+      return createProfileCompleter!.future;
+    }
     return id ?? 'mock_profile_id';
   }
 

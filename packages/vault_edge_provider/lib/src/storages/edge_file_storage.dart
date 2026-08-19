@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:dio/dio.dart';
+import 'package:synchronized/synchronized.dart';
 
 import '../exceptions/tdk_exception_type.dart';
 import '../interfaces/edge_file_repository_interface.dart';
@@ -12,16 +13,21 @@ import '../services/edge_encryption_service_interface.dart';
 /// files and folders.
 class EdgeFileStorage implements FileStorage, Restorable {
   /// Creates a new instance of [EdgeFileStorage].
+  ///
+  /// [lock] allows an owning edge profile repository to serialize this
+  /// storage with profile and credential operations.
   EdgeFileStorage({
     required EdgeFileRepositoryInterface repository,
     required String id,
     required String profileId,
     required EdgeEncryptionServiceInterface encryptionService,
     FileProviderConfiguration? configuration,
+    Lock? lock,
   }) : _repository = repository,
        _id = id,
        _profileId = profileId,
        _encryptionService = encryptionService,
+       _lock = lock ?? Lock(reentrant: true),
        _maxFileSize =
            configuration?.maxFileSize ?? FileUtils.defaultMaxFileSize,
        _allowedExtensions =
@@ -32,6 +38,7 @@ class EdgeFileStorage implements FileStorage, Restorable {
   final String _id;
   final String _profileId;
   final EdgeEncryptionServiceInterface _encryptionService;
+  final Lock _lock;
   final int _maxFileSize;
   final List<String> _allowedExtensions;
 
@@ -57,7 +64,7 @@ class EdgeFileStorage implements FileStorage, Restorable {
     String? parentFolderId,
     VaultCancelToken? cancelToken,
     void Function(int, int)? onSendProgress,
-  }) async {
+  }) => _lock.synchronized(() async {
     // Validate file size
     if (!FileUtils.isFileSizeValid(data.length, _maxFileSize)) {
       Error.throwWithStackTrace(
@@ -100,14 +107,14 @@ class EdgeFileStorage implements FileStorage, Restorable {
       data: encryptedContent,
       parentFolderId: sanitizedParentFolderId,
     );
-  }
+  });
 
   @override
   Future<Folder> createFolder({
     required String folderName,
     required String parentFolderId,
     VaultCancelToken? cancelToken,
-  }) async {
+  }) => _lock.synchronized(() async {
     final sanitizedParentFolderId = _convertToRootFolderIfNeeded(
       parentFolderId,
     );
@@ -129,23 +136,23 @@ class EdgeFileStorage implements FileStorage, Restorable {
       modifiedAt: folderData.modifiedAt,
       parentId: folderData.parentId,
     );
-  }
+  });
 
   @override
   Future<void> deleteFile({
     required String fileId,
     VaultCancelToken? cancelToken,
-  }) async {
+  }) => _lock.synchronized(() async {
     // Check if file exists
     await _repository.getFile(fileId: fileId);
     await _repository.deleteFile(fileId: fileId);
-  }
+  });
 
   @override
   Future<void> deleteFolder({
     required String folderId,
     VaultCancelToken? cancelToken,
-  }) async {
+  }) => _lock.synchronized(() async {
     final success = await _repository.deleteFolder(folderId: folderId);
     if (!success) {
       Error.throwWithStackTrace(
@@ -156,13 +163,13 @@ class EdgeFileStorage implements FileStorage, Restorable {
         StackTrace.current,
       );
     }
-  }
+  });
 
   @override
   Future<File> getFile({
     required String fileId,
     VaultCancelToken? cancelToken,
-  }) async {
+  }) => _lock.synchronized(() async {
     final fileData = await _repository.getFile(fileId: fileId);
 
     return File(
@@ -172,14 +179,14 @@ class EdgeFileStorage implements FileStorage, Restorable {
       modifiedAt: fileData.modifiedAt,
       parentId: fileData.parentId,
     );
-  }
+  });
 
   @override
   Future<Uint8List> getFileContent({
     required String fileId,
     VaultCancelToken? cancelToken,
     ProgressCallback? onReceiveProgress,
-  }) async {
+  }) => _lock.synchronized(() async {
     final encryptedContent = await _repository.getFileContent(fileId: fileId);
 
     final decryptedContent = await _encryptionService.decryptData(
@@ -187,7 +194,7 @@ class EdgeFileStorage implements FileStorage, Restorable {
     );
 
     return decryptedContent;
-  }
+  });
 
   @override
   Future<PaginatedList<Item>> getFolder({
@@ -195,7 +202,7 @@ class EdgeFileStorage implements FileStorage, Restorable {
     int? limit,
     String? exclusiveStartItemId,
     VaultCancelToken? cancelToken,
-  }) async {
+  }) => _lock.synchronized(() async {
     final sanitizedFolderId = _convertToRootFolderIfNeeded(folderId);
 
     // Get the raw folder data from repository
@@ -233,14 +240,14 @@ class EdgeFileStorage implements FileStorage, Restorable {
       items: decryptedItems,
       lastEvaluatedItemId: rawFolderData.lastEvaluatedItemId,
     );
-  }
+  });
 
   @override
   Future<void> renameFile({
     required String fileId,
     required String newName,
     VaultCancelToken? cancelToken,
-  }) async {
+  }) => _lock.synchronized(() async {
     // Check if new name has valid extension
     if (!FileUtils.isFileExtensionAllowed(newName, _allowedExtensions)) {
       Error.throwWithStackTrace(
@@ -257,14 +264,14 @@ class EdgeFileStorage implements FileStorage, Restorable {
 
     final encryptedNewName = await _encryptionService.encryptString(newName);
     await _repository.renameFile(fileId: fileId, newName: encryptedNewName);
-  }
+  });
 
   @override
   Future<void> renameFolder({
     required String folderId,
     required String newName,
     VaultCancelToken? cancelToken,
-  }) async {
+  }) => _lock.synchronized(() async {
     final sanitizedFolderId = _convertToRootFolderIfNeeded(folderId);
     if (sanitizedFolderId == null) {
       Error.throwWithStackTrace(
@@ -290,10 +297,10 @@ class EdgeFileStorage implements FileStorage, Restorable {
         StackTrace.current,
       );
     }
-  }
+  });
 
   @override
-  Future<Map<String, dynamic>> export() async {
+  Future<Map<String, dynamic>> export() => _lock.synchronized(() async {
     final items = <Map<String, dynamic>>[];
     final pendingFolders = <String?>[null];
     while (pendingFolders.isNotEmpty) {
@@ -330,61 +337,63 @@ class EdgeFileStorage implements FileStorage, Restorable {
     }
 
     return {'version': _backupVersion, 'items': items};
-  }
+  });
 
   @override
-  Future<void> validateImport(Map<String, dynamic> data) async {
-    _parseBackup(data);
-  }
+  Future<void> validateImport(Map<String, dynamic> data) =>
+      _lock.synchronized(() async {
+        _parseBackup(data);
+      });
 
   @override
-  Future<bool> isEmpty() async {
+  Future<bool> isEmpty() => _lock.synchronized(() async {
     final page = await getFolder(folderId: _profileId, limit: 1);
     return page.items.isEmpty;
-  }
+  });
 
   @override
-  Future<void> import(Map<String, dynamic> data) async {
-    final (folders, files) = _parseBackup(data);
-    if (!await isEmpty()) {
-      throw _restoreDestinationNotEmpty();
-    }
-
-    final restoredFolderIds = <String, String>{};
-    final remainingFolders = List<_BackupFolder>.of(folders);
-    while (remainingFolders.isNotEmpty) {
-      final restored = <_BackupFolder>[];
-      for (final folder in remainingFolders) {
-        final parentId = folder.parentId == null
-            ? _profileId
-            : restoredFolderIds[folder.parentId];
-        if (parentId == null) {
-          continue;
+  Future<void> import(Map<String, dynamic> data) =>
+      _lock.synchronized(() async {
+        final (folders, files) = _parseBackup(data);
+        if (!await isEmpty()) {
+          throw _restoreDestinationNotEmpty();
         }
-        final restoredId = (await createFolder(
-          folderName: folder.name,
-          parentFolderId: parentId,
-        )).id;
-        restoredFolderIds[folder.id] = restoredId;
-        restored.add(folder);
-      }
-      if (restored.isEmpty) {
-        throw _invalidBackupFormat();
-      }
-      remainingFolders.removeWhere(restored.contains);
-    }
 
-    for (final file in files) {
-      final parentId = file.parentId == null
-          ? _profileId
-          : restoredFolderIds[file.parentId]!;
-      await createFile(
-        fileName: file.name,
-        data: file.content,
-        parentFolderId: parentId,
-      );
-    }
-  }
+        final restoredFolderIds = <String, String>{};
+        final remainingFolders = List<_BackupFolder>.of(folders);
+        while (remainingFolders.isNotEmpty) {
+          final restored = <_BackupFolder>[];
+          for (final folder in remainingFolders) {
+            final parentId = folder.parentId == null
+                ? _profileId
+                : restoredFolderIds[folder.parentId];
+            if (parentId == null) {
+              continue;
+            }
+            final restoredId = (await createFolder(
+              folderName: folder.name,
+              parentFolderId: parentId,
+            )).id;
+            restoredFolderIds[folder.id] = restoredId;
+            restored.add(folder);
+          }
+          if (restored.isEmpty) {
+            throw _invalidBackupFormat();
+          }
+          remainingFolders.removeWhere(restored.contains);
+        }
+
+        for (final file in files) {
+          final parentId = file.parentId == null
+              ? _profileId
+              : restoredFolderIds[file.parentId]!;
+          await createFile(
+            fileName: file.name,
+            data: file.content,
+            parentFolderId: parentId,
+          );
+        }
+      });
 
   (List<_BackupFolder>, List<_BackupFile>) _parseBackup(
     Map<String, dynamic> data,

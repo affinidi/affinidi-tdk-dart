@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_edge_provider/affinidi_tdk_vault_edge_provider.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
+import 'fixtures/file_fixtures.dart';
 import 'fixtures/profile_fixtures.dart';
 import 'fixtures/wallet_fixtures.dart';
 import 'mocks/credential_mock_setup.dart';
@@ -490,6 +493,87 @@ void main() {
         );
 
         expect(mockRepository.lastCalledCreateProfileId, isNull);
+      });
+
+      test('it blocks direct file mutations until export completes', () async {
+        await profileAndDid();
+        final profile = (await sut.listProfiles()).single;
+        final exportStarted = Completer<void>();
+        final releaseExport = Completer<void>();
+        when(
+          () => mockFileRepository.getFolder(
+            folderId: any(named: 'folderId'),
+            limit: any(named: 'limit'),
+            exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+          ),
+        ).thenAnswer((_) async {
+          if (!exportStarted.isCompleted) exportStarted.complete();
+          await releaseExport.future;
+          return PaginatedList(items: const [], lastEvaluatedItemId: null);
+        });
+
+        final exportFuture = sut.export();
+        await exportStarted.future;
+        final mutationFuture = profile.defaultFileStorage!.createFile(
+          fileName: 'during-export.txt',
+          data: FileFixtures.smallFileData,
+        );
+        await Future<void>.value();
+        verifyNever(
+          () => mockFileRepository.createFile(
+            profileId: any(named: 'profileId'),
+            fileName: any(named: 'fileName'),
+            data: any(named: 'data'),
+            parentFolderId: any(named: 'parentFolderId'),
+          ),
+        );
+
+        releaseExport.complete();
+        await exportFuture;
+        await mutationFuture;
+        verify(
+          () => mockFileRepository.createFile(
+            profileId: profile.id,
+            fileName: 'during-export.txt',
+            data: FileFixtures.smallFileData,
+            parentFolderId: null,
+          ),
+        ).called(1);
+      });
+
+      test('it blocks profile creation until import completes', () async {
+        final (profile, did) = await profileAndDid();
+        mockRepository.listProfilesReturnValue = [];
+        mockRepository.createProfileCalled = Completer<void>();
+        mockRepository.createProfileCompleter = Completer<String>();
+        final importFuture = sut.import({
+          'version': '1.0.0',
+          'profiles': [
+            {
+              'id': profile.id,
+              'accountIndex': profile.accountIndex,
+              'name': profile.name,
+              'did': did,
+              'description': profile.description,
+              'fileStorages': {
+                'sut': {'version': '1.0.0', 'items': <dynamic>[]},
+              },
+              'credentialStorages': {
+                'sut': {'version': '1.0.0', 'credentials': <dynamic>[]},
+              },
+              'sharedStorages': <String, dynamic>{},
+            },
+          ],
+        });
+        await mockRepository.createProfileCalled!.future;
+        final mutationFuture = sut.createProfile(name: 'Concurrent profile');
+        await Future<void>.value();
+        expect(mockRepository.createProfileCallCount, 1);
+
+        mockRepository.createProfileCompleter!.complete(profile.id);
+        await importFuture;
+        await mutationFuture;
+        expect(mockRepository.createProfileCallCount, 2);
       });
     });
   });
