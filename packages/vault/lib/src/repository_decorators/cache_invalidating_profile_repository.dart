@@ -1,6 +1,7 @@
 import '../helpers/vault_cancel_token.dart';
 import '../profile.dart';
 import '../storage_interfaces/profile_repository.dart';
+import '../storage_interfaces/restorable.dart';
 import '../storage_interfaces/restorable_profile_repository.dart';
 
 /// A decorator for [ProfileRepository] that invalidates cache on profile mutations.
@@ -75,7 +76,7 @@ class CacheInvalidatingProfileRepository implements ProfileRepository {
 /// [RestorableProfileRepository] capability of the wrapped repository.
 class CacheInvalidatingRestorableProfileRepository
     extends CacheInvalidatingProfileRepository
-    implements RestorableProfileRepository {
+    implements RestorableProfileRepository, Restorable {
   /// Creates a [CacheInvalidatingRestorableProfileRepository].
   CacheInvalidatingRestorableProfileRepository(
     ProfileRepository repository, {
@@ -84,6 +85,8 @@ class CacheInvalidatingRestorableProfileRepository
        super(repository);
 
   final RestorableProfileRepository _restorable;
+
+  Restorable get _restorableState => _restorable as Restorable;
 
   @override
   Future<Profile> restoreProfile({
@@ -102,5 +105,14 @@ class CacheInvalidatingRestorableProfileRepository
     );
     invalidateProfilesCache();
     return profile;
+  }
+
+  @override
+  Future<Map<String, dynamic>> export() => _restorableState.export();
+
+  @override
+  Future<void> import(Map<String, dynamic> data) async {
+    await _restorableState.import(data);
+    invalidateProfilesCache();
   }
 }

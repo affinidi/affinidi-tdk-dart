@@ -3,6 +3,7 @@ import 'package:affinidi_tdk_vault_edge_provider/affinidi_tdk_vault_edge_provide
 class MockEdgeProfileRepository implements EdgeProfileRepositoryInterface {
   String? lastCalledCreateProfileName;
   String? lastCalledCreateProfileDescription;
+  String? lastCalledCreateProfileId;
   int? lastCalledCreateProfileAccountIndex;
   String? lastCalledDeletedProfileId;
   EdgeProfile? lastCalledUpdateProfile;
@@ -21,6 +22,7 @@ class MockEdgeProfileRepository implements EdgeProfileRepositoryInterface {
   }) async {
     lastCalledCreateProfileName = name;
     lastCalledCreateProfileDescription = description;
+    lastCalledCreateProfileId = id;
     lastCalledCreateProfileAccountIndex = accountIndex;
     return id ?? 'mock_profile_id';
   }
