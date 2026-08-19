@@ -65,6 +65,57 @@ void main() async {
 
 **Note**: The example above uses `VfsProfileRepository` from the `affinidi_tdk_vault_data_manager` package to enable cloud storage functionality. If you only need local storage or custom implementations, you can use just the core vault package.
 
+### Backup and restore
+
+Vault backups contain durable state from the `VaultStore`, local repositories
+that implement `Restorable`, and explicitly registered named components. Cloud
+repositories are recorded by ID but their remote data is not copied; after the
+wallet is restored they reconnect through their normal configuration.
+
+The core API uses `ByteData`, keeping file access platform-independent:
+
+```dart
+import 'dart:io';
+
+final backupService = VaultBackupService();
+final backup = await backupService.createBackup(
+  vault: vault,
+  passphrase: 'A-strong-passphrase1',
+);
+
+// Native applications can persist the bytes with dart:io.
+await File('vault.backup').writeAsBytes(
+  backup.buffer.asUint8List(backup.offsetInBytes, backup.lengthInBytes),
+);
+```
+
+Restore factories are keyed by the same stable repository and component IDs
+used when the Vault was created. Repository factories receive the restored
+`VaultStore`, allowing local repositories to construct their encryption
+services before the Vault is opened normally:
+
+```dart
+final fileBytes = await File('vault.backup').readAsBytes();
+final restoredVault = await backupService.restoreBackup(
+  backupData: ByteData.sublistView(fileBytes),
+  passphrase: 'A-strong-passphrase1',
+  vaultStoreFactory: createVaultStore,
+  repositoryFactories: {
+    'edge': (vaultStore) => createEdgeRepository(vaultStore),
+    'cloud': (_) => createCloudRepository(),
+  },
+);
+```
+
+All repository and named-component factories are validated before wallet state
+is written. Unknown IDs, incompatible versions, incorrect passphrases, and
+tampered backups are rejected.
+
+Platform-specific state can participate without coupling its domain package to
+Vault. For example, create one `FlutterSecureConsentStorage`, register it in
+`Vault.fromVaultStore` as `consentHistory`, and inject the same instance into
+IOTA services as `ConsentStorage`.
+
 ### Profile Sharing
 
 The Vault package supports sharing profiles and individual items (files/folders) with other users. This enables collaborative access to data while maintaining security through encryption.

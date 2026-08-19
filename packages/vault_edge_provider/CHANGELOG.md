@@ -1,3 +1,7 @@
+## Unreleased
+
+- **FEAT**: add durable export and import for local profiles, credentials, and files.
+
 ## 3.0.1
 
  - Update a dependency to the latest release.

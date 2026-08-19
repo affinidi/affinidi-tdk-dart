@@ -1,3 +1,7 @@
+## Unreleased
+
+- **FEAT**: add encrypted, repository-scoped Vault backup and restore.
+
 ## 3.0.1
 
  - Update a dependency to the latest release.
