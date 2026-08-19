@@ -85,15 +85,17 @@ VerifiableCredential _credential() => UniversalParser.parse('''
 
 void main() {
   test(
-    'restores durable edge data and reopens the Vault idempotently',
+    'rejects occupied storage and restores durable edge data into empty storage',
     () async {
       drift.driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
       addTearDown(() {
         drift.driftRuntimeOptions.dontWarnAboutMultipleDatabases = false;
       });
       final sourceDatabase = Database(NativeDatabase.memory());
+      final occupiedDatabase = Database(NativeDatabase.memory());
       final targetDatabase = Database(NativeDatabase.memory());
       addTearDown(sourceDatabase.close);
+      addTearDown(occupiedDatabase.close);
       addTearDown(targetDatabase.close);
 
       final sourceStore = await _vaultStore();
@@ -138,6 +140,68 @@ void main() {
         passphrase: passphrase,
       );
 
+      final occupiedStore = await _vaultStore();
+      final occupiedVault = await Vault.fromVaultStore(
+        occupiedStore,
+        profileRepositories: {
+          'edge': _repository(
+            id: 'edge',
+            database: occupiedDatabase,
+            vaultStore: occupiedStore,
+          ),
+          'cloud': _CloudRepository('cloud'),
+        },
+      );
+      await occupiedVault.ensureInitialized();
+      final destinationOnly = await occupiedVault.defaultProfileRepository
+          .createProfile(name: 'Destination only');
+      await destinationOnly.defaultCredentialStorage!.saveCredential(
+        verifiableCredential: _credential(),
+      );
+      final obsoleteFolder = await destinationOnly.defaultFileStorage!
+          .createFolder(
+            folderName: 'obsolete',
+            parentFolderId: destinationOnly.id,
+          );
+      await destinationOnly.defaultFileStorage!.createFile(
+        fileName: 'obsolete.txt',
+        data: Uint8List.fromList([9, 9, 9]),
+        parentFolderId: obsoleteFolder.id,
+      );
+
+      final rejectionStore = InMemoryVaultStore();
+      await expectLater(
+        service.restoreBackup(
+          backupData: backup,
+          passphrase: passphrase,
+          vaultStoreFactory: () => rejectionStore,
+          repositoryFactories: {
+            'edge': (vaultStore) => _repository(
+              id: 'edge',
+              database: occupiedDatabase,
+              vaultStore: vaultStore,
+            ),
+            'cloud': (_) => _CloudRepository('cloud'),
+          },
+        ),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            'restore_destination_not_empty',
+          ),
+        ),
+      );
+      expect(await rejectionStore.getSeed(), isNull);
+      final preservedProfiles = await occupiedVault.listProfiles();
+      expect(preservedProfiles.map((profile) => profile.id), [
+        destinationOnly.id,
+      ]);
+      final preservedRoot = await destinationOnly.defaultFileStorage!.getFolder(
+        folderId: destinationOnly.id,
+      );
+      expect(preservedRoot.items.whereType<Folder>().single.name, 'obsolete');
+
       final targetStore = InMemoryVaultStore();
       Future<Vault> restore() => service.restoreBackup(
         backupData: backup,
@@ -153,8 +217,17 @@ void main() {
         },
       );
 
-      await restore();
       final restoredVault = await restore();
+      await expectLater(
+        restore(),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            'restore_destination_not_empty',
+          ),
+        ),
+      );
       final restoredProfiles = await restoredVault.listProfiles();
 
       expect(

@@ -338,35 +338,16 @@ class EdgeFileStorage implements FileStorage, Restorable {
   }
 
   @override
+  Future<bool> isEmpty() async {
+    final page = await getFolder(folderId: _profileId, limit: 1);
+    return page.items.isEmpty;
+  }
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {
     final (folders, files) = _parseBackup(data);
-    final existingFoldersByParent = <String, Map<String, String>>{};
-    final existingFileNamesByParent = <String, Set<String>>{};
-
-    Future<void> ensureChildrenLoaded(String parentId) async {
-      if (existingFoldersByParent.containsKey(parentId)) {
-        return;
-      }
-      final foldersByName = <String, String>{};
-      final fileNames = <String>{};
-      String? cursor;
-      do {
-        final page = await getFolder(
-          folderId: parentId,
-          limit: _pageSize,
-          exclusiveStartItemId: cursor,
-        );
-        for (final item in page.items) {
-          if (item is Folder) {
-            foldersByName[item.name] = item.id;
-          } else if (item is File) {
-            fileNames.add(item.name);
-          }
-        }
-        cursor = page.lastEvaluatedItemId;
-      } while (cursor != null);
-      existingFoldersByParent[parentId] = foldersByName;
-      existingFileNamesByParent[parentId] = fileNames;
+    if (!await isEmpty()) {
+      throw _restoreDestinationNotEmpty();
     }
 
     final restoredFolderIds = <String, String>{};
@@ -380,16 +361,10 @@ class EdgeFileStorage implements FileStorage, Restorable {
         if (parentId == null) {
           continue;
         }
-        await ensureChildrenLoaded(parentId);
-        final siblings = existingFoldersByParent[parentId]!;
-        var restoredId = siblings[folder.name];
-        if (restoredId == null) {
-          restoredId = (await createFolder(
-            folderName: folder.name,
-            parentFolderId: parentId,
-          )).id;
-          siblings[folder.name] = restoredId;
-        }
+        final restoredId = (await createFolder(
+          folderName: folder.name,
+          parentFolderId: parentId,
+        )).id;
         restoredFolderIds[folder.id] = restoredId;
         restored.add(folder);
       }
@@ -403,11 +378,6 @@ class EdgeFileStorage implements FileStorage, Restorable {
       final parentId = file.parentId == null
           ? _profileId
           : restoredFolderIds[file.parentId]!;
-      await ensureChildrenLoaded(parentId);
-      final siblingNames = existingFileNamesByParent[parentId]!;
-      if (!siblingNames.add(file.name)) {
-        continue;
-      }
       await createFile(
         fileName: file.name,
         data: file.content,
@@ -508,6 +478,11 @@ class EdgeFileStorage implements FileStorage, Restorable {
     message: 'The file storage backup payload is malformed.',
     code: _invalidBackupFormatCode,
     originalMessage: originalMessage,
+  );
+
+  TdkException _restoreDestinationNotEmpty() => TdkException(
+    message: 'File restore destination is not empty.',
+    code: 'restore_destination_not_empty',
   );
 }
 

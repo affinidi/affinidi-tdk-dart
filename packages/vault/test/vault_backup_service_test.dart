@@ -25,6 +25,9 @@ class _Repository implements ProfileRepository, Restorable {
   Future<void> validateImport(Map<String, dynamic> data) async {}
 
   @override
+  Future<bool> isEmpty() async => true;
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {
     value = data['value'] as String;
     imported = true;
@@ -77,6 +80,9 @@ class _NamedComponent implements Restorable {
   Future<void> validateImport(Map<String, dynamic> data) async {
     if (validationError != null) throw validationError!;
   }
+
+  @override
+  Future<bool> isEmpty() async => true;
 
   @override
   Future<void> import(Map<String, dynamic> data) async {

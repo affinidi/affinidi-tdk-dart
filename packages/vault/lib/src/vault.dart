@@ -415,9 +415,10 @@ class Vault implements Restorable {
         backup.data['repositories'] as Map<String, dynamic>;
     final repositoryData = repositorySection['data'] as Map<String, dynamic>;
     final namedData = backup.data['namedComponents'] as Map<String, dynamic>;
-    final vaultStoreData = backup.data['vaultStore'] as Map<String, dynamic>;
 
-    await _vaultStore.import(vaultStoreData);
+    if (!await isEmpty()) {
+      throw _restoreDestinationNotEmpty();
+    }
     final repositoryIds = repositoryData.keys.toList()..sort();
     for (final id in repositoryIds) {
       await (_profileRepositories[id]! as Restorable).import(
@@ -431,6 +432,27 @@ class Vault implements Restorable {
       );
     }
     _invalidateProfilesCache();
+  }
+
+  @override
+  /// Returns whether all local repository and named-component destinations are
+  /// empty. The already-open VaultStore is intentionally excluded.
+  Future<bool> isEmpty() async {
+    final repositoryIds = _profileRepositories.keys.toList()..sort();
+    for (final id in repositoryIds) {
+      final repository = _profileRepositories[id]!;
+      if (repository is Restorable &&
+          !await (repository as Restorable).isEmpty()) {
+        return false;
+      }
+    }
+    final namedIds = _namedRestorables.keys.toList()..sort();
+    for (final id in namedIds) {
+      if (!await _namedRestorables[id]!.isEmpty()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   bool _sameIds(Set<String> left, Set<String> right) =>
@@ -447,6 +469,11 @@ class Vault implements Restorable {
   TdkException _invalidBackupFormat() => TdkException(
     message: 'The Vault backup cannot be imported into this Vault.',
     code: TdkExceptionType.invalidBackupFormat.code,
+  );
+
+  TdkException _restoreDestinationNotEmpty() => TdkException(
+    message: 'Vault restore destination is not empty.',
+    code: TdkExceptionType.restoreDestinationNotEmpty.code,
   );
 
   /// Ensures the vault is initialized by configuring all profile repositories.
