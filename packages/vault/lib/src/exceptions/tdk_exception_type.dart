@@ -44,6 +44,9 @@ enum TdkExceptionType {
   /// Exception thrown when creating a backup fails.
   backupCreationFailed('backup_creation_failed'),
 
+  /// Exception thrown when a restore destination already contains local data.
+  restoreDestinationNotEmpty('restore_destination_not_empty'),
+
   /// Exception thrown when the backup passphrase is shorter than the minimum
   /// required length.
   weakPassphrase('weak_passphrase');

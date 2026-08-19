@@ -71,16 +71,25 @@ void main() {
       expect(await target.getAccountIndex(), equals(accountIndex));
     });
 
-    test('exact import removes an existing content key', () async {
+    test('rejects a non-empty destination without changing it', () async {
       final target = await populatedStore();
 
-      await target.import({
-        'version': '1.0.0',
-        'seed': base64Encode(seed),
-        'accountIndex': accountIndex,
-      });
+      await expectLater(
+        target.import({
+          'version': '1.0.0',
+          'seed': base64Encode(seed),
+          'accountIndex': accountIndex,
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            'restore_destination_not_empty',
+          ),
+        ),
+      );
 
-      expect(await target.getContentKey(), isNull);
+      await expectOriginalState(target);
     });
 
     test('rejects malformed data before writes', () async {

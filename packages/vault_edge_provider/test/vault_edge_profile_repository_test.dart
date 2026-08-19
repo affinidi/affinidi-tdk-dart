@@ -368,31 +368,69 @@ void main() {
         expect(await vaultStore.getAccountIndex(), profile.accountIndex);
       });
 
-      test('it does not recreate an existing matching profile', () async {
+      test('it rejects an existing matching profile', () async {
         final (profile, did) = await profileAndDid();
 
-        await sut.import({
-          'version': '1.0.0',
-          'profiles': [
-            {
-              'id': profile.id,
-              'accountIndex': profile.accountIndex,
-              'name': profile.name,
-              'did': did,
-              'description': profile.description,
-              'fileStorages': {
-                'sut': {'version': '1.0.0', 'items': <dynamic>[]},
+        await expectLater(
+          sut.import({
+            'version': '1.0.0',
+            'profiles': [
+              {
+                'id': profile.id,
+                'accountIndex': profile.accountIndex,
+                'name': profile.name,
+                'did': did,
+                'description': profile.description,
+                'fileStorages': {
+                  'sut': {'version': '1.0.0', 'items': <dynamic>[]},
+                },
+                'credentialStorages': {
+                  'sut': {'version': '1.0.0', 'credentials': <dynamic>[]},
+                },
+                'sharedStorages': <String, dynamic>{},
               },
-              'credentialStorages': {
-                'sut': {'version': '1.0.0', 'credentials': <dynamic>[]},
-              },
-              'sharedStorages': <String, dynamic>{},
-            },
-          ],
-        });
+            ],
+          }),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              'restore_destination_not_empty',
+            ),
+          ),
+        );
 
+        expect(mockRepository.lastCalledDeletedProfileId, isNull);
         expect(mockRepository.lastCalledCreateProfileId, isNull);
       });
+
+      test(
+        'it preserves destination-only profiles when rejecting restore',
+        () async {
+          mockRepository.listProfilesReturnValue = const [
+            EdgeProfile(
+              id: 'destination-only',
+              accountIndex: 9,
+              name: 'Destination only',
+              description: null,
+            ),
+          ];
+
+          await expectLater(
+            sut.import(const {'version': '1.0.0', 'profiles': <dynamic>[]}),
+            throwsA(
+              isA<TdkException>().having(
+                (error) => error.code,
+                'code',
+                'restore_destination_not_empty',
+              ),
+            ),
+          );
+
+          expect(mockRepository.lastCalledDeletedProfileId, isNull);
+          expect(mockRepository.lastCalledCreateProfileId, isNull);
+        },
+      );
 
       test(
         'it rejects a profile DID from another wallet before writes',

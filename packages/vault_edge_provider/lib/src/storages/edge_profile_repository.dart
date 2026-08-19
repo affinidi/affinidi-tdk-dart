@@ -380,66 +380,50 @@ Profile repository must be configured using a RepositoryConfiguration''',
   @override
   Future<void> validateImport(Map<String, dynamic> data) async {
     final profiles = await _parseBackup(data);
-    final existingProfiles = await listProfiles();
-    final existingById = {
-      for (final profile in existingProfiles) profile.id: profile,
-    };
 
     for (final backupProfile in profiles) {
-      final profile = existingById[backupProfile.id];
-      if (profile != null &&
-          (profile.accountIndex != backupProfile.accountIndex ||
-              profile.did != backupProfile.did)) {
-        throw _invalidBackupFormat();
-      }
-      final fileStorages =
-          profile?.fileStorages ??
-          <String, Object>{
-            _id: EdgeFileStorage(
-              repository: _repositoryFactory.createFileRepository(
-                profileId: backupProfile.id,
-              ),
-              id: _id,
-              profileId: backupProfile.id,
-              encryptionService: _encryptionService,
-            ),
-          };
-      final credentialStorages =
-          profile?.credentialStorages ??
-          <String, Object>{
-            _id: EdgeCredentialStorage(
-              repository: _repositoryFactory.createCredentialRepository(
-                profileId: backupProfile.id,
-              ),
-              id: _id,
-              profileId: backupProfile.id,
-              encryptionService: _encryptionService,
-            ),
-          };
+      final fileStorages = <String, Object>{
+        _id: EdgeFileStorage(
+          repository: _repositoryFactory.createFileRepository(
+            profileId: backupProfile.id,
+          ),
+          id: _id,
+          profileId: backupProfile.id,
+          encryptionService: _encryptionService,
+        ),
+      };
+      final credentialStorages = <String, Object>{
+        _id: EdgeCredentialStorage(
+          repository: _repositoryFactory.createCredentialRepository(
+            profileId: backupProfile.id,
+          ),
+          id: _id,
+          profileId: backupProfile.id,
+          encryptionService: _encryptionService,
+        ),
+      };
       await _validateStorages(fileStorages, backupProfile.fileStorages);
       await _validateStorages(
         credentialStorages,
         backupProfile.credentialStorages,
       );
-      await _validateStorages({
-        for (final storage in profile?.sharedStorages ?? <SharedStorage>[])
-          storage.id: storage,
-      }, backupProfile.sharedStorages);
+      await _validateStorages(const {}, backupProfile.sharedStorages);
     }
   }
 
   @override
+  Future<bool> isEmpty() async => (await _repository.listProfiles()).isEmpty;
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {
     await validateImport(data);
+    if (!await isEmpty()) {
+      throw _restoreDestinationNotEmpty();
+    }
     final profiles = await _parseBackup(data);
-    final existingProfiles = await listProfiles();
-    final existingById = {
-      for (final profile in existingProfiles) profile.id: profile,
-    };
 
     for (final backupProfile in profiles) {
-      var profile = existingById[backupProfile.id];
-      profile ??= await _restoreProfile(
+      final profile = await _restoreProfile(
         accountIndex: backupProfile.accountIndex,
         name: backupProfile.name,
         id: backupProfile.id,
@@ -454,7 +438,6 @@ Profile repository must be configured using a RepositoryConfiguration''',
         profile.sharedStorages,
         backupProfile.sharedStorages,
       );
-      existingById[profile.id] = profile;
     }
   }
 
@@ -590,6 +573,11 @@ Profile repository must be configured using a RepositoryConfiguration''',
   TdkException _invalidBackupFormat() => TdkException(
     message: 'The edge profile repository backup payload is malformed.',
     code: _invalidBackupFormatCode,
+  );
+
+  TdkException _restoreDestinationNotEmpty() => TdkException(
+    message: 'Profile repository restore destination is not empty.',
+    code: 'restore_destination_not_empty',
   );
 
   Future<KeyPair> _memoizedKeyPair({required String accountIndex}) async {

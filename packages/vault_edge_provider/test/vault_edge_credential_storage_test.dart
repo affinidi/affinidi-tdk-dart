@@ -351,11 +351,11 @@ void main() {
       ).called(1);
     });
 
-    test('it skips credentials already stored with the same id', () async {
+    test('it rejects a non-empty credential destination', () async {
       when(
         () => mockRepository.listCredentialData(
           profileId: CredentialFixtures.profileId,
-          limit: 50,
+          limit: 1,
           exclusiveStartItemId: null,
           cancelToken: null,
         ),
@@ -366,17 +366,32 @@ void main() {
         ),
       );
 
-      await storage.import({
-        'version': '1.0.0',
-        'credentials': [
-          {
-            'id': CredentialFixtures.credentialId,
-            'verifiableCredential':
-                CredentialFixtures.universityDegreeCredentialJson,
-          },
-        ],
-      });
+      await expectLater(
+        storage.import({
+          'version': '1.0.0',
+          'credentials': [
+            {
+              'id': CredentialFixtures.credentialId,
+              'verifiableCredential':
+                  CredentialFixtures.universityDegreeCredentialJson,
+            },
+          ],
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            'restore_destination_not_empty',
+          ),
+        ),
+      );
 
+      verifyNever(
+        () => mockRepository.deleteCredential(
+          credentialId: any(named: 'credentialId'),
+          cancelToken: any(named: 'cancelToken'),
+        ),
+      );
       verifyNever(
         () => mockRepository.saveCredentialData(
           profileId: any(named: 'profileId'),

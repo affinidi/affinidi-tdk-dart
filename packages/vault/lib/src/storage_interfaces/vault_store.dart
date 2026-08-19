@@ -81,10 +81,20 @@ abstract class VaultStore implements Restorable {
   }
 
   @override
+  Future<bool> isEmpty() async =>
+      await getSeed() == null &&
+      await getContentKey() == null &&
+      await getAccountIndex() == 0;
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {
     final parsed = _parseImportData(data);
-
-    await clear();
+    if (!await isEmpty()) {
+      throw TdkException(
+        message: 'VaultStore restore destination is not empty.',
+        code: TdkExceptionType.restoreDestinationNotEmpty.code,
+      );
+    }
     await setSeed(parsed.seed);
     if (parsed.contentKey != null) {
       await setContentKey(parsed.contentKey!);

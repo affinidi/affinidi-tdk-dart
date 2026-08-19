@@ -13,10 +13,14 @@ abstract interface class Restorable {
   /// check needed by [import].
   Future<void> validateImport(Map<String, dynamic> data);
 
-  /// Replaces this component's durable state with a previously exported
-  /// payload.
+  /// Returns whether this component's restoration destination has no existing
+  /// durable state.
+  Future<bool> isEmpty();
+
+  /// Restores a previously exported payload into an empty destination.
   ///
   /// [data] must have passed [validateImport]. Implementations should also call
-  /// [validateImport] defensively when invoked directly.
+  /// [validateImport] defensively and reject non-empty destinations when invoked
+  /// directly.
   Future<void> import(Map<String, dynamic> data);
 }

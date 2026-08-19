@@ -56,6 +56,9 @@ class _RestorableRepository extends _Repository implements Restorable {
   Future<void> validateImport(Map<String, dynamic> data) async {}
 
   @override
+  Future<bool> isEmpty() async => true;
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {
     events.add(id);
     imported = data;
@@ -77,6 +80,9 @@ class _NamedRestorable implements Restorable {
 
   @override
   Future<void> validateImport(Map<String, dynamic> data) async {}
+
+  @override
+  Future<bool> isEmpty() async => true;
 
   @override
   Future<void> import(Map<String, dynamic> data) async {
@@ -155,7 +161,7 @@ void main() {
       });
     });
 
-    test('imports store, repositories, then named components', () async {
+    test('imports repositories before named components', () async {
       final sourceEvents = <String>[];
       final source = await _vault(
         store: await _store(sourceEvents),
@@ -187,7 +193,7 @@ void main() {
 
       await target.import(backup);
 
-      expect(targetEvents, ['vaultStore', 'edge', 'consentHistory']);
+      expect(targetEvents, ['edge', 'consentHistory']);
       expect(repository.imported, {'version': '1.0.0', 'value': 'profiles'});
       expect(named.imported, {'version': '1.0.0', 'value': 'consentHistory'});
     });

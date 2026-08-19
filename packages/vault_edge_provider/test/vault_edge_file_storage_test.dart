@@ -414,7 +414,7 @@ void main() {
       ).called(1);
     });
 
-    test('it reuses existing folders and files by parent and name', () async {
+    test('it rejects a non-empty file destination', () async {
       final existingFolder = FileFixtures.createMockFolder(
         id: 'existing-folder',
         name: 'documents',
@@ -427,7 +427,7 @@ void main() {
       when(
         () => mockRepository.getFolder(
           folderId: null,
-          limit: 50,
+          limit: 1,
           exclusiveStartItemId: null,
         ),
       ).thenAnswer(
@@ -445,25 +445,40 @@ void main() {
             PaginatedList(items: [existingFile], lastEvaluatedItemId: null),
       );
 
-      await storage.import({
-        'version': '1.0.0',
-        'items': [
-          {
-            'id': 'old-folder',
-            'name': 'documents',
-            'parentId': null,
-            'type': 'folder',
-          },
-          {
-            'id': 'old-file',
-            'name': 'document.txt',
-            'parentId': 'old-folder',
-            'type': 'file',
-            'content': base64Encode(FileFixtures.smallFileData),
-          },
-        ],
-      });
+      await expectLater(
+        storage.import({
+          'version': '1.0.0',
+          'items': [
+            {
+              'id': 'old-folder',
+              'name': 'documents',
+              'parentId': null,
+              'type': 'folder',
+            },
+            {
+              'id': 'old-file',
+              'name': 'document.txt',
+              'parentId': 'old-folder',
+              'type': 'file',
+              'content': base64Encode(FileFixtures.smallFileData),
+            },
+          ],
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            'restore_destination_not_empty',
+          ),
+        ),
+      );
 
+      verifyNever(
+        () => mockRepository.deleteFile(fileId: any(named: 'fileId')),
+      );
+      verifyNever(
+        () => mockRepository.deleteFolder(folderId: any(named: 'folderId')),
+      );
       verifyNever(
         () => mockRepository.createFolder(
           profileId: any(named: 'profileId'),

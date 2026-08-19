@@ -92,6 +92,9 @@ class CacheInvalidatingRestorableRepository
       _restorable.validateImport(data);
 
   @override
+  Future<bool> isEmpty() => _restorable.isEmpty();
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {
     await _restorable.import(data);
     invalidateProfilesCache();
