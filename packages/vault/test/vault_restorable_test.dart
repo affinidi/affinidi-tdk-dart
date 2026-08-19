@@ -53,6 +53,9 @@ class _RestorableRepository extends _Repository implements Restorable {
   };
 
   @override
+  Future<void> validateImport(Map<String, dynamic> data) async {}
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {
     events.add(id);
     imported = data;
@@ -71,6 +74,9 @@ class _NamedRestorable implements Restorable {
     'version': '1.0.0',
     'value': id,
   };
+
+  @override
+  Future<void> validateImport(Map<String, dynamic> data) async {}
 
   @override
   Future<void> import(Map<String, dynamic> data) async {

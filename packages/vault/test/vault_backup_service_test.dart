@@ -22,6 +22,9 @@ class _Repository implements ProfileRepository, Restorable {
   };
 
   @override
+  Future<void> validateImport(Map<String, dynamic> data) async {}
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {
     value = data['value'] as String;
     imported = true;
@@ -58,9 +61,10 @@ class _Repository implements ProfileRepository, Restorable {
 }
 
 class _NamedComponent implements Restorable {
-  _NamedComponent({this.value = 'source'});
+  _NamedComponent({this.value = 'source', this.validationError});
 
   String value;
+  final Exception? validationError;
   bool imported = false;
 
   @override
@@ -70,9 +74,24 @@ class _NamedComponent implements Restorable {
   };
 
   @override
+  Future<void> validateImport(Map<String, dynamic> data) async {
+    if (validationError != null) throw validationError!;
+  }
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {
     value = data['value'] as String;
     imported = true;
+  }
+}
+
+class _TrackingStore extends InMemoryVaultStore {
+  bool imported = false;
+
+  @override
+  Future<void> import(Map<String, dynamic> data) async {
+    imported = true;
+    await super.import(data);
   }
 }
 
@@ -253,6 +272,42 @@ void main() {
         throwsA(isA<TdkException>()),
       );
       expect(storeFactoryCalls, 0);
+    });
+
+    test('invalid final component fails before any durable import', () async {
+      final source = await _vault(
+        store: await _store(),
+        repositories: {'edge': _Repository('edge', value: 'profiles')},
+        named: {'last': _NamedComponent(value: 'named')},
+      );
+      final bytes = await service.createBackup(
+        vault: source,
+        passphrase: passphrase,
+      );
+      final targetStore = _TrackingStore();
+      final targetRepository = _Repository('edge', value: 'empty');
+
+      await expectLater(
+        service.restoreBackup(
+          backupData: bytes,
+          passphrase: passphrase,
+          vaultStoreFactory: () => targetStore,
+          repositoryFactories: {'edge': (_) => targetRepository},
+          namedRestorableFactories: {
+            'last': () => _NamedComponent(
+              validationError: TdkException(
+                message: 'Malformed named component',
+                code: 'invalid_backup_format',
+              ),
+            ),
+          },
+        ),
+        throwsA(isA<TdkException>()),
+      );
+
+      expect(targetStore.imported, isFalse);
+      expect(await targetStore.getSeed(), isNull);
+      expect(targetRepository.imported, isFalse);
     });
 
     test('tampered bytes fail before store creation', () async {

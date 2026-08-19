@@ -518,5 +518,23 @@ void main() {
         ),
       );
     });
+
+    test('it rejects unsupported versions before repository access', () async {
+      await expectLater(
+        storage.validateImport(const {
+          'version': '2.0.0',
+          'items': <dynamic>[],
+        }),
+        throwsA(invalidBackupFormat),
+      );
+
+      verifyNever(
+        () => mockRepository.getFolder(
+          folderId: any(named: 'folderId'),
+          limit: any(named: 'limit'),
+          exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+        ),
+      );
+    });
   });
 }
