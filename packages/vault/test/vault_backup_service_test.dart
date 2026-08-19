@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
+import 'package:affinidi_tdk_vault/src/backup_data.dart';
 import 'package:test/test.dart';
 
 import 'mocks/mock_cryptography_service.dart';

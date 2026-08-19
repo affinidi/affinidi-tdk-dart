@@ -48,6 +48,5 @@ abstract interface class VaultBackupServiceInterface {
     required VaultStoreFactory vaultStoreFactory,
     required Map<String, ProfileRepositoryFactory> repositoryFactories,
     Map<String, RestorableFactory> namedRestorableFactories = const {},
-    String? defaultProfileRepositoryId,
   });
 }

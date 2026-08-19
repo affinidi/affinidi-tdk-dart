@@ -1,4 +1,6 @@
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
+import 'package:affinidi_tdk_vault/src/backup.dart';
+import 'package:affinidi_tdk_vault/src/backup_data.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -92,6 +94,7 @@ void main() {
             {'id': 'edge', 'restorable': true},
           ],
           repositoryData: {'edge': component('profiles')},
+          defaultRepositoryId: 'edge',
           namedComponents: {'consentHistory': component('consent')},
         );
 
@@ -99,6 +102,7 @@ void main() {
           'namedComponents': {'consentHistory': component('consent')},
           'repositories': {
             'data': {'edge': component('profiles')},
+            'defaultId': 'edge',
             'manifest': const [
               {'id': 'cloud', 'restorable': false},
               {'id': 'edge', 'restorable': true},
@@ -116,6 +120,7 @@ void main() {
             {'restorable': true, 'id': 'a'},
           ],
           repositoryData: {'z': component('z'), 'a': component('a')},
+          defaultRepositoryId: 'a',
           namedComponents: {'z': component('z'), 'a': component('a')},
         );
 
@@ -142,6 +147,7 @@ void main() {
               {'id': 'edge', 'restorable': true},
             ],
             repositoryData: {'edge': component()},
+            defaultRepositoryId: 'edge',
           ),
           throwsA(isA<TdkException>()),
         );
@@ -156,6 +162,7 @@ void main() {
               {'id': 'cloud', 'restorable': false},
             ],
             repositoryData: {'cloud': component()},
+            defaultRepositoryId: 'edge',
           ),
           throwsA(isA<TdkException>()),
         );
@@ -167,6 +174,7 @@ void main() {
             vaultStore: const {'seed': 'missing-version'},
             repositoryManifest: const [],
             repositoryData: const {},
+            defaultRepositoryId: 'missing',
           ),
           throwsA(isA<TdkException>()),
         );
