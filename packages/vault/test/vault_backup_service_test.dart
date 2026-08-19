@@ -147,7 +147,7 @@ void main() {
         backupData: bytes,
         passphrase: passphrase,
         vaultStoreFactory: InMemoryVaultStore.new,
-        repositoryFactories: {'edge': () => targetRepository},
+        repositoryFactories: {'edge': (_) => targetRepository},
         namedRestorableFactories: {'consentHistory': () => targetComponent},
       );
 
@@ -178,7 +178,7 @@ void main() {
         backupData: ByteData.view(padded.buffer, 4, bytes.lengthInBytes),
         passphrase: passphrase,
         vaultStoreFactory: InMemoryVaultStore.new,
-        repositoryFactories: {'edge': () => _Repository('edge')},
+        repositoryFactories: {'edge': (_) => _Repository('edge')},
       );
 
       expect(restored.profileRepositories.keys, ['edge']);
@@ -221,7 +221,7 @@ void main() {
             factoryCalls++;
             return InMemoryVaultStore();
           },
-          repositoryFactories: {'edge': () => _Repository('edge')},
+          repositoryFactories: {'edge': (_) => _Repository('edge')},
         ),
         throwsA(isA<TdkException>()),
       );
@@ -277,7 +277,7 @@ void main() {
             storeFactoryCalls++;
             return InMemoryVaultStore();
           },
-          repositoryFactories: {'edge': () => _Repository('edge')},
+          repositoryFactories: {'edge': (_) => _Repository('edge')},
         ),
         throwsA(isA<TdkException>()),
       );

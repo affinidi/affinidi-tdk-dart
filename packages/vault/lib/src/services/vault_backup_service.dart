@@ -181,11 +181,12 @@ class VaultBackupService implements VaultBackupServiceInterface {
       throw _invalidBackupFormat();
     }
 
+    final vaultStore = await vaultStoreFactory();
     final repositories = <String, ProfileRepository>{};
     for (final entry in manifest) {
       final manifestEntry = entry as Map<String, dynamic>;
       final id = manifestEntry['id'] as String;
-      final repository = await repositoryFactories[id]!();
+      final repository = await repositoryFactories[id]!(vaultStore);
       if (repository.id != id ||
           (repository is Restorable) != (manifestEntry['restorable'] as bool)) {
         throw _invalidBackupFormat();
@@ -197,7 +198,6 @@ class VaultBackupService implements VaultBackupServiceInterface {
       namedRestorables[id] = await namedRestorableFactories[id]!();
     }
 
-    final vaultStore = await vaultStoreFactory();
     await vaultStore.import(backup.data['vaultStore'] as Map<String, dynamic>);
     final vault = await Vault.fromVaultStore(
       vaultStore,
