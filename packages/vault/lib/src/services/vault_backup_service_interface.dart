@@ -1,27 +1,52 @@
-import '../backup_data.dart' show BackupData;
+import 'dart:async';
+import 'dart:typed_data';
+
+import '../storage_interfaces/profile_repository.dart';
+import '../storage_interfaces/restorable.dart';
+import '../storage_interfaces/vault_store.dart';
+import '../vault.dart';
+
+/// Creates an empty VaultStore for restoration.
+typedef VaultStoreFactory = FutureOr<VaultStore> Function();
+
+/// Creates a profile repository for restoration.
+typedef ProfileRepositoryFactory = FutureOr<ProfileRepository> Function();
+
+/// Creates a named restorable component for restoration.
+typedef RestorableFactory = FutureOr<Restorable> Function();
 
 /// Defines the contract for creating and restoring encrypted Vault backups.
 abstract interface class VaultBackupServiceInterface {
-  /// Creates an encrypted backup of all registered `Restorable` components.
+  /// Creates an encrypted backup of [vault].
   ///
   /// Parameters:
   /// * [passphrase] - The user passphrase used to derive the backup encryption
   ///   key.
   ///
-  /// Returns a [Future] containing the encrypted [BackupData].
+  /// Returns encrypted, file-ready bytes.
   /// Throws a `TdkException` if the backup cannot be created.
-  Future<BackupData> createBackup({required String passphrase});
+  Future<ByteData> createBackup({
+    required Vault vault,
+    required String passphrase,
+  });
 
-  /// Restores all registered `Restorable` components from an encrypted backup.
+  /// Restores and opens a Vault from encrypted backup bytes.
   ///
   /// Parameters:
-  /// * [backupData] - The encrypted backup previously produced by [createBackup].
+  /// * [backupData] - Bytes previously produced by [createBackup].
   /// * [passphrase] - The user passphrase used to derive the decryption key.
+  /// * [vaultStoreFactory] - Creates the empty destination VaultStore.
+  /// * [repositoryFactories] - Factories keyed by repository ID.
+  /// * [namedRestorableFactories] - Factories keyed by named component ID.
   ///
   /// Throws a `TdkException` if the passphrase is incorrect or the backup is
   /// malformed.
-  Future<void> restoreFromBackup({
-    required BackupData backupData,
+  Future<Vault> restoreBackup({
+    required ByteData backupData,
     required String passphrase,
+    required VaultStoreFactory vaultStoreFactory,
+    required Map<String, ProfileRepositoryFactory> repositoryFactories,
+    Map<String, RestorableFactory> namedRestorableFactories = const {},
+    String? defaultProfileRepositoryId,
   });
 }
