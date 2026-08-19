@@ -25,11 +25,13 @@ class MockSharedStorage extends Mock implements SharedStorage {}
 Future<Vault> createTestVault({
   required VaultStore vaultStore,
   required Map<String, ProfileRepository> profileRepositories,
+  Map<String, Restorable> namedRestorables = const {},
   String? defaultProfileRepositoryId,
 }) async {
   return Vault.fromVaultStore(
     vaultStore,
     profileRepositories: profileRepositories,
+    namedRestorables: namedRestorables,
     defaultProfileRepositoryId: defaultProfileRepositoryId,
   );
 }
