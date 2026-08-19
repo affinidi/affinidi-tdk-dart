@@ -378,7 +378,59 @@ Profile repository must be configured using a RepositoryConfiguration''',
   }
 
   @override
+  Future<void> validateImport(Map<String, dynamic> data) async {
+    final profiles = await _parseBackup(data);
+    final existingProfiles = await listProfiles();
+    final existingById = {
+      for (final profile in existingProfiles) profile.id: profile,
+    };
+
+    for (final backupProfile in profiles) {
+      final profile = existingById[backupProfile.id];
+      if (profile != null &&
+          (profile.accountIndex != backupProfile.accountIndex ||
+              profile.did != backupProfile.did)) {
+        throw _invalidBackupFormat();
+      }
+      final fileStorages =
+          profile?.fileStorages ??
+          <String, Object>{
+            _id: EdgeFileStorage(
+              repository: _repositoryFactory.createFileRepository(
+                profileId: backupProfile.id,
+              ),
+              id: _id,
+              profileId: backupProfile.id,
+              encryptionService: _encryptionService,
+            ),
+          };
+      final credentialStorages =
+          profile?.credentialStorages ??
+          <String, Object>{
+            _id: EdgeCredentialStorage(
+              repository: _repositoryFactory.createCredentialRepository(
+                profileId: backupProfile.id,
+              ),
+              id: _id,
+              profileId: backupProfile.id,
+              encryptionService: _encryptionService,
+            ),
+          };
+      await _validateStorages(fileStorages, backupProfile.fileStorages);
+      await _validateStorages(
+        credentialStorages,
+        backupProfile.credentialStorages,
+      );
+      await _validateStorages({
+        for (final storage in profile?.sharedStorages ?? <SharedStorage>[])
+          storage.id: storage,
+      }, backupProfile.sharedStorages);
+    }
+  }
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {
+    await validateImport(data);
     final profiles = await _parseBackup(data);
     final existingProfiles = await listProfiles();
     final existingById = {
@@ -387,11 +439,6 @@ Profile repository must be configured using a RepositoryConfiguration''',
 
     for (final backupProfile in profiles) {
       var profile = existingById[backupProfile.id];
-      if (profile != null &&
-          (profile.accountIndex != backupProfile.accountIndex ||
-              profile.did != backupProfile.did)) {
-        throw _invalidBackupFormat();
-      }
       profile ??= await _restoreProfile(
         accountIndex: backupProfile.accountIndex,
         name: backupProfile.name,
@@ -516,6 +563,19 @@ Profile repository must be configured using a RepositoryConfiguration''',
         throw _invalidBackupFormat();
       }
       await storage.import(entry.value);
+    }
+  }
+
+  Future<void> _validateStorages(
+    Map<String, Object> storages,
+    Map<String, Map<String, dynamic>> payloads,
+  ) async {
+    for (final entry in payloads.entries) {
+      final storage = storages[entry.key];
+      if (storage is! Restorable) {
+        throw _invalidBackupFormat();
+      }
+      await storage.validateImport(entry.value);
     }
   }
 

@@ -189,7 +189,35 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
   }
 
   @override
+  Future<void> validateImport(Map<String, dynamic> data) async {
+    _parseBackup(data);
+  }
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {
+    final credentials = _parseBackup(data);
+
+    final existingIds = <String>{};
+    String? cursor;
+    do {
+      final page = await _repository.listCredentialData(
+        profileId: _profileId,
+        limit: _pageSize,
+        exclusiveStartItemId: cursor,
+      );
+      existingIds.addAll(page.items.map((credential) => credential.id));
+      cursor = page.lastEvaluatedItemId;
+    } while (cursor != null);
+
+    for (final (id, credential) in credentials) {
+      if (!existingIds.add(id)) {
+        continue;
+      }
+      await _saveCredential(credentialId: id, verifiableCredential: credential);
+    }
+  }
+
+  List<(String, VerifiableCredential)> _parseBackup(Map<String, dynamic> data) {
     const allowedKeys = {'version', 'credentials'};
     final rawCredentials = data['credentials'];
     if (data.keys.any((key) => !allowedKeys.contains(key)) ||
@@ -221,24 +249,7 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
       }
     }
 
-    final existingIds = <String>{};
-    String? cursor;
-    do {
-      final page = await _repository.listCredentialData(
-        profileId: _profileId,
-        limit: _pageSize,
-        exclusiveStartItemId: cursor,
-      );
-      existingIds.addAll(page.items.map((credential) => credential.id));
-      cursor = page.lastEvaluatedItemId;
-    } while (cursor != null);
-
-    for (final (id, credential) in credentials) {
-      if (!existingIds.add(id)) {
-        continue;
-      }
-      await _saveCredential(credentialId: id, verifiableCredential: credential);
-    }
+    return credentials;
   }
 
   TdkException _invalidBackupFormat({String? originalMessage}) => TdkException(

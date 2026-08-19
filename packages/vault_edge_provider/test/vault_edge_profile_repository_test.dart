@@ -435,6 +435,24 @@ void main() {
           );
         },
       );
+
+      test('it rejects unsupported versions before writes', () async {
+        await expectLater(
+          sut.validateImport(const {
+            'version': '2.0.0',
+            'profiles': <dynamic>[],
+          }),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              'invalid_backup_format',
+            ),
+          ),
+        );
+
+        expect(mockRepository.lastCalledCreateProfileId, isNull);
+      });
     });
   });
 }

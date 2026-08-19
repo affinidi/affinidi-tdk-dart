@@ -263,5 +263,28 @@ void main() {
         ),
       );
     });
+
+    test('rejects unsupported versions before any write', () async {
+      await expectLater(
+        store.validateImport(const {
+          'version': '2.0.0',
+          'records': <dynamic>[],
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            'invalid_backup_format',
+          ),
+        ),
+      );
+
+      verifyNever(
+        () => mockStorage.write(
+          key: any(named: 'key'),
+          value: any(named: 'value'),
+        ),
+      );
+    });
   });
 }
