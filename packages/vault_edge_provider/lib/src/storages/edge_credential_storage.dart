@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:uuid/uuid.dart';
 
@@ -5,7 +7,7 @@ import '../../affinidi_tdk_vault_edge_provider.dart';
 
 /// An Edge based implementation of [CredentialStorage] for storing and managing
 /// verifiable credentials with encryption support.
-class EdgeCredentialStorage implements CredentialStorage {
+class EdgeCredentialStorage implements CredentialStorage, Restorable {
   /// Creates a new instance of [EdgeCredentialStorage].
   EdgeCredentialStorage({
     required EdgeCredentialsRepositoryInterface repository,
@@ -24,6 +26,10 @@ class EdgeCredentialStorage implements CredentialStorage {
   final String _profileId;
   final CredentialCodec _codec;
   final EdgeEncryptionServiceInterface _encryptionService;
+
+  static const _backupVersion = '1.0.0';
+  static const _pageSize = 50;
+  static const _invalidBackupFormatCode = 'invalid_backup_format';
 
   @override
   String get id => _id;
@@ -127,8 +133,18 @@ class EdgeCredentialStorage implements CredentialStorage {
     required VerifiableCredential verifiableCredential,
     VaultCancelToken? cancelToken,
   }) async {
-    final credentialId = const Uuid().v4();
+    await _saveCredential(
+      credentialId: const Uuid().v4(),
+      verifiableCredential: verifiableCredential,
+      cancelToken: cancelToken,
+    );
+  }
 
+  Future<void> _saveCredential({
+    required String credentialId,
+    required VerifiableCredential verifiableCredential,
+    VaultCancelToken? cancelToken,
+  }) async {
     final credentialName =
         verifiableCredential.type
             .where((type) => type != 'VerifiableCredential')
@@ -150,4 +166,84 @@ class EdgeCredentialStorage implements CredentialStorage {
       cancelToken: cancelToken,
     );
   }
+
+  @override
+  Future<Map<String, dynamic>> export() async {
+    final credentials = <Map<String, dynamic>>[];
+    String? cursor;
+    do {
+      final page = await listCredentials(
+        limit: _pageSize,
+        exclusiveStartItemId: cursor,
+      );
+      for (final credential in page.items) {
+        credentials.add({
+          'id': credential.id,
+          'verifiableCredential': credential.verifiableCredential.toJson(),
+        });
+      }
+      cursor = page.lastEvaluatedItemId;
+    } while (cursor != null);
+
+    return {'version': _backupVersion, 'credentials': credentials};
+  }
+
+  @override
+  Future<void> import(Map<String, dynamic> data) async {
+    const allowedKeys = {'version', 'credentials'};
+    final rawCredentials = data['credentials'];
+    if (data.keys.any((key) => !allowedKeys.contains(key)) ||
+        data['version'] != _backupVersion ||
+        rawCredentials is! List) {
+      throw _invalidBackupFormat();
+    }
+
+    final credentials = <(String, VerifiableCredential)>[];
+    final backupIds = <String>{};
+    for (final rawCredential in rawCredentials) {
+      if (rawCredential is! Map<String, dynamic> ||
+          rawCredential.length != 2 ||
+          !rawCredential.containsKey('id') ||
+          !rawCredential.containsKey('verifiableCredential')) {
+        throw _invalidBackupFormat();
+      }
+      final id = rawCredential['id'];
+      if (id is! String || id.isEmpty || !backupIds.add(id)) {
+        throw _invalidBackupFormat();
+      }
+      try {
+        final credential = UniversalParser.parse(
+          jsonEncode(rawCredential['verifiableCredential']),
+        );
+        credentials.add((id, credential));
+      } catch (error) {
+        throw _invalidBackupFormat(originalMessage: error.toString());
+      }
+    }
+
+    final existingIds = <String>{};
+    String? cursor;
+    do {
+      final page = await _repository.listCredentialData(
+        profileId: _profileId,
+        limit: _pageSize,
+        exclusiveStartItemId: cursor,
+      );
+      existingIds.addAll(page.items.map((credential) => credential.id));
+      cursor = page.lastEvaluatedItemId;
+    } while (cursor != null);
+
+    for (final (id, credential) in credentials) {
+      if (!existingIds.add(id)) {
+        continue;
+      }
+      await _saveCredential(credentialId: id, verifiableCredential: credential);
+    }
+  }
+
+  TdkException _invalidBackupFormat({String? originalMessage}) => TdkException(
+    message: 'The credential storage backup payload is malformed.',
+    code: _invalidBackupFormatCode,
+    originalMessage: originalMessage,
+  );
 }
