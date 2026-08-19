@@ -76,7 +76,25 @@ abstract class VaultStore implements Restorable {
   }
 
   @override
+  Future<void> validateImport(Map<String, dynamic> data) async {
+    _parseImportData(data);
+  }
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {
+    final parsed = _parseImportData(data);
+
+    await clear();
+    await setSeed(parsed.seed);
+    if (parsed.contentKey != null) {
+      await setContentKey(parsed.contentKey!);
+    }
+    await setAccountIndex(parsed.accountIndex);
+  }
+
+  ({Uint8List seed, Uint8List? contentKey, int accountIndex}) _parseImportData(
+    Map<String, dynamic> data,
+  ) {
     const allowedKeys = {
       _versionKey,
       _seedKey,
@@ -118,11 +136,6 @@ abstract class VaultStore implements Restorable {
       );
     }
 
-    await clear();
-    await setSeed(seed);
-    if (contentKey != null) {
-      await setContentKey(contentKey);
-    }
-    await setAccountIndex(accountIndex);
+    return (seed: seed, contentKey: contentKey, accountIndex: accountIndex);
   }
 }

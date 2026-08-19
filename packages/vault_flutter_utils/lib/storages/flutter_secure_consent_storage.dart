@@ -76,7 +76,20 @@ class FlutterSecureConsentStorage implements ConsentStorage, Restorable {
   };
 
   @override
+  Future<void> validateImport(Map<String, dynamic> data) async {
+    _parseBackup(data);
+  }
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {
+    final records = _parseBackup(data);
+
+    for (final record in records) {
+      await saveOrUpdate(record);
+    }
+  }
+
+  List<IotaConsentRecord> _parseBackup(Map<String, dynamic> data) {
     const allowedKeys = {'version', 'records'};
     final rawRecords = data['records'];
     if (data.keys.any((key) => !allowedKeys.contains(key)) ||
@@ -97,9 +110,7 @@ class FlutterSecureConsentStorage implements ConsentStorage, Restorable {
       throw _invalidBackupFormat(originalMessage: error.toString());
     }
 
-    for (final record in records) {
-      await saveOrUpdate(record);
-    }
+    return records;
   }
 
   Future<List<IotaConsentRecord>> _readAllRecords() async {

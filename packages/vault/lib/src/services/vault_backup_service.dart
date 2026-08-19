@@ -3,12 +3,14 @@ import 'dart:typed_data';
 
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
+import 'package:ssi/ssi.dart';
 
 import '../backup.dart';
 import '../backup_data.dart';
 import '../exceptions/tdk_exception_type.dart';
 import '../passphrase_policy.dart';
 import '../storage_interfaces/profile_repository.dart';
+import '../storage_interfaces/repository_configuration.dart';
 import '../storage_interfaces/restorable.dart';
 import '../vault.dart';
 import 'vault_backup_service_interface.dart';
@@ -165,6 +167,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
     final repositoriesSection =
         backup.data['repositories'] as Map<String, dynamic>;
     final manifest = repositoriesSection['manifest'] as List;
+    final repositoryData = repositoriesSection['data'] as Map<String, dynamic>;
     final defaultRepositoryId = repositoriesSection['defaultId'] as String;
     final repositoryIds = {
       for (final entry in manifest)
@@ -196,7 +199,27 @@ class VaultBackupService implements VaultBackupServiceInterface {
       namedRestorables[id] = await namedRestorableFactories[id]!();
     }
 
-    await vaultStore.import(backup.data['vaultStore'] as Map<String, dynamic>);
+    final vaultStoreData = backup.data['vaultStore'] as Map<String, dynamic>;
+    await vaultStore.validateImport(vaultStoreData);
+    final seed = base64Decode(vaultStoreData['seed'] as String);
+    final wallet = Bip32Wallet.fromSeed(seed);
+    for (final entry in repositoryData.entries) {
+      final repository = repositories[entry.key]! as Restorable;
+      final profileRepository = repositories[entry.key]!;
+      if (!await profileRepository.isConfigured()) {
+        await profileRepository.configure(
+          RepositoryConfiguration(wallet: wallet, keyStorage: vaultStore),
+        );
+      }
+      await repository.validateImport(entry.value as Map<String, dynamic>);
+    }
+    for (final entry in namedData.entries) {
+      await namedRestorables[entry.key]!.validateImport(
+        entry.value as Map<String, dynamic>,
+      );
+    }
+
+    await vaultStore.import(vaultStoreData);
     final vault = await Vault.fromVaultStore(
       vaultStore,
       profileRepositories: repositories,

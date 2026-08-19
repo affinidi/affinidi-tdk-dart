@@ -7,9 +7,16 @@ abstract interface class Restorable {
   /// component's payload.
   Future<Map<String, dynamic>> export();
 
+  /// Validates a previously exported payload without mutating durable state.
+  ///
+  /// Implementations must perform every deterministic format and compatibility
+  /// check needed by [import].
+  Future<void> validateImport(Map<String, dynamic> data);
+
   /// Replaces this component's durable state with a previously exported
   /// payload.
   ///
-  /// [data] must be a map returned by this component's [export] method.
+  /// [data] must have passed [validateImport]. Implementations should also call
+  /// [validateImport] defensively when invoked directly.
   Future<void> import(Map<String, dynamic> data);
 }

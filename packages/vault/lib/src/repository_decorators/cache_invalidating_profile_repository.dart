@@ -88,6 +88,10 @@ class CacheInvalidatingRestorableRepository
   Future<Map<String, dynamic>> export() => _restorable.export();
 
   @override
+  Future<void> validateImport(Map<String, dynamic> data) =>
+      _restorable.validateImport(data);
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {
     await _restorable.import(data);
     invalidateProfilesCache();

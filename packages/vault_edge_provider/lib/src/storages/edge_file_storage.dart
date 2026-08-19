@@ -333,6 +333,11 @@ class EdgeFileStorage implements FileStorage, Restorable {
   }
 
   @override
+  Future<void> validateImport(Map<String, dynamic> data) async {
+    _parseBackup(data);
+  }
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {
     final (folders, files) = _parseBackup(data);
     final existingFoldersByParent = <String, Map<String, String>>{};

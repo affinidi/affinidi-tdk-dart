@@ -417,5 +417,24 @@ void main() {
         ),
       );
     });
+
+    test('it rejects unsupported versions before repository access', () async {
+      await expectLater(
+        storage.validateImport(const {
+          'version': '2.0.0',
+          'credentials': <dynamic>[],
+        }),
+        throwsA(invalidBackupFormat),
+      );
+
+      verifyNever(
+        () => mockRepository.listCredentialData(
+          profileId: any(named: 'profileId'),
+          limit: any(named: 'limit'),
+          exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+          cancelToken: any(named: 'cancelToken'),
+        ),
+      );
+    });
   });
 }

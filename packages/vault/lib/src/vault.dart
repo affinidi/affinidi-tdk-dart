@@ -343,9 +343,12 @@ class Vault implements Restorable {
   }
 
   @override
-  /// Imports state into this already-open Vault when the wallet and registered
-  /// component topology match the backup.
-  Future<void> import(Map<String, dynamic> data) async {
+  /// Validates state against this Vault's wallet and registered components.
+  Future<void> validateImport(Map<String, dynamic> data) async {
+    await _validateBackup(data);
+  }
+
+  Future<Backup> _validateBackup(Map<String, dynamic> data) async {
     _throwIfNotInitialized();
 
     final backup = Backup.fromVaultData(data);
@@ -386,6 +389,33 @@ class Vault implements Restorable {
     if (!_sameBytes(currentSeed, backupSeed)) {
       throw _invalidBackupFormat();
     }
+
+    await _vaultStore.validateImport(vaultStoreData);
+    final repositoryIds = repositoryData.keys.toList()..sort();
+    for (final id in repositoryIds) {
+      await (_profileRepositories[id]! as Restorable).validateImport(
+        repositoryData[id] as Map<String, dynamic>,
+      );
+    }
+    final namedIds = namedData.keys.toList()..sort();
+    for (final id in namedIds) {
+      await _namedRestorables[id]!.validateImport(
+        namedData[id] as Map<String, dynamic>,
+      );
+    }
+    return backup;
+  }
+
+  @override
+  /// Imports state into this already-open Vault when the wallet and registered
+  /// component topology match the backup.
+  Future<void> import(Map<String, dynamic> data) async {
+    final backup = await _validateBackup(data);
+    final repositorySection =
+        backup.data['repositories'] as Map<String, dynamic>;
+    final repositoryData = repositorySection['data'] as Map<String, dynamic>;
+    final namedData = backup.data['namedComponents'] as Map<String, dynamic>;
+    final vaultStoreData = backup.data['vaultStore'] as Map<String, dynamic>;
 
     await _vaultStore.import(vaultStoreData);
     final repositoryIds = repositoryData.keys.toList()..sort();
