@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 
 import '../exceptions/tdk_exception_type.dart';
+import '../storage_interfaces/restorable.dart';
 import '../storage_interfaces/vault_store.dart';
 
 /// A [Restorable] that backs up and restores the wallet keys held by a
