@@ -1,3 +1,7 @@
+## Unreleased
+
+- **FEAT**: add consent history export and import to `FlutterSecureConsentStorage`.
+
 ## 2.0.9
 
  - **FIX**: Rename entry point for package affinidi_tdk_vault_flutter_utils (#163).
