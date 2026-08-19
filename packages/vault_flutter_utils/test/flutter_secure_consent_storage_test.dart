@@ -167,4 +167,101 @@ void main() {
       },
     );
   });
+
+  group('backup and restore', () {
+    test('exports only records from its namespace', () async {
+      final second = ConsentRecordFixtures.secondRecord();
+      when(() => mockStorage.readAll()).thenAnswer(
+        (_) async => {
+          '${defaultNamespace}_$hash': jsonEncode(record.toJson()),
+          '${defaultNamespace}_${second.hash}': jsonEncode(second.toJson()),
+          'other_namespace_ignored': jsonEncode(record.toJson()),
+        },
+      );
+
+      final exported = await store.export();
+
+      expect(exported, {
+        'version': '1.0.0',
+        'records': [record.toJson(), second.toJson()],
+      });
+    });
+
+    test('imports records through namespaced upsert keys', () async {
+      final second = ConsentRecordFixtures.secondRecord();
+      when(
+        () => mockStorage.write(
+          key: any(named: 'key'),
+          value: any(named: 'value'),
+        ),
+      ).thenAnswer((_) async {});
+
+      await store.import({
+        'version': '1.0.0',
+        'records': [record.toJson(), second.toJson()],
+      });
+
+      verify(
+        () => mockStorage.write(
+          key: '${defaultNamespace}_${record.hash}',
+          value: jsonEncode(record.toJson()),
+        ),
+      ).called(1);
+      verify(
+        () => mockStorage.write(
+          key: '${defaultNamespace}_${second.hash}',
+          value: jsonEncode(second.toJson()),
+        ),
+      ).called(1);
+    });
+
+    test(
+      're-import updates the same key instead of creating another key',
+      () async {
+        when(
+          () => mockStorage.write(
+            key: any(named: 'key'),
+            value: any(named: 'value'),
+          ),
+        ).thenAnswer((_) async {});
+        final payload = {
+          'version': '1.0.0',
+          'records': [record.toJson()],
+        };
+
+        await store.import(payload);
+        await store.import(payload);
+
+        verify(
+          () => mockStorage.write(
+            key: '${defaultNamespace}_${record.hash}',
+            value: jsonEncode(record.toJson()),
+          ),
+        ).called(2);
+      },
+    );
+
+    test('rejects malformed records before any write', () async {
+      await expectLater(
+        store.import(const {
+          'version': '1.0.0',
+          'records': [42],
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            'invalid_backup_format',
+          ),
+        ),
+      );
+
+      verifyNever(
+        () => mockStorage.write(
+          key: any(named: 'key'),
+          value: any(named: 'value'),
+        ),
+      );
+    });
+  });
 }
