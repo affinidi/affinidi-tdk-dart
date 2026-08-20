@@ -29,6 +29,9 @@ class _MalformedConsent implements Restorable {
 
   @override
   Future<void> import(Map<String, dynamic> data) async {}
+
+  @override
+  Future<void> rollbackImport() async {}
 }
 
 Future<InMemoryVaultStore> _sourceStore() async {

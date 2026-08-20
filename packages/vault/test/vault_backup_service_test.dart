@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:collection';
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
@@ -17,6 +17,9 @@ class _Repository implements ProfileRepository, Restorable {
   final String id;
   String value;
   bool imported = false;
+  int rollbackCalls = 0;
+  bool _empty = true;
+  bool _importPendingRollback = false;
 
   @override
   Future<Map<String, dynamic>> export() async => {
@@ -28,12 +31,23 @@ class _Repository implements ProfileRepository, Restorable {
   Future<void> validateImport(Map<String, dynamic> data) async {}
 
   @override
-  Future<bool> isEmpty() async => true;
+  Future<bool> isEmpty() async => _empty;
 
   @override
   Future<void> import(Map<String, dynamic> data) async {
+    _importPendingRollback = true;
     value = data['value'] as String;
     imported = true;
+    _empty = false;
+  }
+
+  @override
+  Future<void> rollbackImport() async {
+    if (!_importPendingRollback) return;
+    imported = false;
+    _empty = true;
+    _importPendingRollback = false;
+    rollbackCalls++;
   }
 
   @override
@@ -67,11 +81,19 @@ class _Repository implements ProfileRepository, Restorable {
 }
 
 class _NamedComponent implements Restorable {
-  _NamedComponent({this.value = 'source', this.validationError});
+  _NamedComponent({
+    this.value = 'source',
+    this.validationError,
+    this.importError,
+  });
 
   String value;
   final Exception? validationError;
+  final Exception? importError;
   bool imported = false;
+  int rollbackCalls = 0;
+  bool _empty = true;
+  bool _importPendingRollback = false;
 
   @override
   Future<Map<String, dynamic>> export() async => {
@@ -85,22 +107,41 @@ class _NamedComponent implements Restorable {
   }
 
   @override
-  Future<bool> isEmpty() async => true;
+  Future<bool> isEmpty() async => _empty;
 
   @override
   Future<void> import(Map<String, dynamic> data) async {
+    if (importError != null) throw importError!;
+    _importPendingRollback = true;
     value = data['value'] as String;
     imported = true;
+    _empty = false;
+  }
+
+  @override
+  Future<void> rollbackImport() async {
+    if (!_importPendingRollback) return;
+    imported = false;
+    _empty = true;
+    _importPendingRollback = false;
+    rollbackCalls++;
   }
 }
 
 class _TrackingStore extends InMemoryVaultStore {
   bool imported = false;
+  bool cleared = false;
 
   @override
   Future<void> import(Map<String, dynamic> data) async {
     imported = true;
     await super.import(data);
+  }
+
+  @override
+  Future<void> clear() async {
+    cleared = true;
+    await super.clear();
   }
 }
 
@@ -511,6 +552,54 @@ void main() {
       expect(await targetStore.getSeed(), isNull);
       expect(targetRepository.imported, isFalse);
     });
+
+    test(
+      'late import failure rolls back repository state and vault store',
+      () async {
+        final source = await _vault(
+          store: await _store(),
+          repositories: {'edge': _Repository('edge', value: 'profiles')},
+          named: {'last': _NamedComponent(value: 'named')},
+        );
+        final bytes = await service.createBackup(
+          vault: source,
+          passphrase: passphrase,
+        );
+        final targetStore = _TrackingStore();
+        final targetRepository = _Repository('edge', value: 'empty');
+
+        await expectLater(
+          service.restoreBackup(
+            backupData: bytes,
+            passphrase: passphrase,
+            vaultStoreFactory: () => targetStore,
+            repositoryFactories: {
+              'edge': ProfileRepositoryRegistration.withBackupData(
+                id: 'edge',
+                factory: (_) => targetRepository,
+                asRestorable: restorableIdentity,
+              ),
+            },
+            namedRestorableFactories: {
+              'last': () => _NamedComponent(
+                importError: TdkException(
+                  message: 'late failure',
+                  code: 'invalid_backup_format',
+                ),
+              ),
+            },
+          ),
+          throwsA(isA<TdkException>()),
+        );
+
+        expect(targetStore.imported, isTrue);
+        expect(targetStore.cleared, isTrue);
+        expect(await targetStore.getSeed(), isNull);
+        expect(await targetRepository.isEmpty(), isTrue);
+        expect(targetRepository.rollbackCalls, 1);
+        expect(targetRepository.imported, isFalse);
+      },
+    );
 
     test('tampered bytes fail before store creation', () async {
       final source = await _vault(

@@ -41,6 +41,7 @@ class EdgeFileStorage implements FileStorage, Restorable {
   final Lock _lock;
   final int _maxFileSize;
   final List<String> _allowedExtensions;
+  bool _importPendingRollback = false;
 
   static const _backupVersion = '1.0.0';
   static const _pageSize = 50;
@@ -358,6 +359,7 @@ class EdgeFileStorage implements FileStorage, Restorable {
         if (!await isEmpty()) {
           throw _restoreDestinationNotEmpty();
         }
+        _importPendingRollback = true;
 
         final restoredFolderIds = <String, String>{};
         final remainingFolders = List<_BackupFolder>.of(folders);
@@ -394,6 +396,38 @@ class EdgeFileStorage implements FileStorage, Restorable {
           );
         }
       });
+
+  @override
+  Future<void> rollbackImport() => _lock.synchronized(() async {
+    if (!_importPendingRollback) return;
+    final folderIds = <String>[];
+    final pendingFolders = <String?>[null];
+    while (pendingFolders.isNotEmpty) {
+      final folderId = pendingFolders.removeLast();
+      String? cursor;
+      do {
+        final page = await getFolder(
+          folderId: folderId,
+          limit: _pageSize,
+          exclusiveStartItemId: cursor,
+        );
+        for (final item in page.items) {
+          if (item is Folder) {
+            folderIds.add(item.id);
+            pendingFolders.add(item.id);
+          } else if (item is File) {
+            await _repository.deleteFile(fileId: item.id);
+          }
+        }
+        cursor = page.lastEvaluatedItemId;
+      } while (cursor != null);
+    }
+
+    for (final folderId in folderIds.reversed) {
+      await _repository.deleteFolder(folderId: folderId);
+    }
+    _importPendingRollback = false;
+  });
 
   (List<_BackupFolder>, List<_BackupFile>) _parseBackup(
     Map<String, dynamic> data,

@@ -23,4 +23,11 @@ abstract interface class Restorable {
   /// [validateImport] defensively and reject non-empty destinations when invoked
   /// directly.
   Future<void> import(Map<String, dynamic> data);
+
+  /// Rolls back durable state written by [import].
+  ///
+  /// This is required so multi-component restore flows can compensate for
+  /// partial progress after a late import failure. It must be a no-op when
+  /// this instance has not started an import, and must be idempotent.
+  Future<void> rollbackImport();
 }

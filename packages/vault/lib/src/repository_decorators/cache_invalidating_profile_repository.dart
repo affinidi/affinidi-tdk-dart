@@ -99,4 +99,10 @@ class CacheInvalidatingRestorableRepository
     await _restorable.import(data);
     invalidateProfilesCache();
   }
+
+  @override
+  Future<void> rollbackImport() async {
+    await _restorable.rollbackImport();
+    invalidateProfilesCache();
+  }
 }

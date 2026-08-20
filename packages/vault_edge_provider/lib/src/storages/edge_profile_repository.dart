@@ -32,6 +32,7 @@ class EdgeProfileRepository implements ProfileRepository, Restorable {
   final EdgeEncryptionServiceInterface _encryptionService;
   final _keyPairs = <String, KeyPair>{};
   final _lock = Lock(reentrant: true);
+  bool _importPendingRollback = false;
 
   static const _backupVersion = '1.0.0';
   static const _invalidBackupFormatCode = 'invalid_backup_format';
@@ -439,6 +440,7 @@ Profile repository must be configured using a RepositoryConfiguration''',
       if (!await isEmpty()) {
         throw _restoreDestinationNotEmpty();
       }
+      _importPendingRollback = true;
       final profiles = await _parseBackup(data);
 
       for (final backupProfile in profiles) {
@@ -460,6 +462,30 @@ Profile repository must be configured using a RepositoryConfiguration''',
       }
     },
   );
+
+  @override
+  Future<void> rollbackImport() => _lock.synchronized(() async {
+    if (!_importPendingRollback) return;
+    for (final profile in await listProfiles()) {
+      for (final storage in profile.fileStorages.values) {
+        if (storage is Restorable) {
+          await (storage as Restorable).rollbackImport();
+        }
+      }
+      for (final storage in profile.credentialStorages.values) {
+        if (storage is Restorable) {
+          await (storage as Restorable).rollbackImport();
+        }
+      }
+      for (final storage in profile.sharedStorages) {
+        if (storage is Restorable) {
+          await (storage as Restorable).rollbackImport();
+        }
+      }
+      await _repository.deleteProfile(profileId: profile.id);
+    }
+    _importPendingRollback = false;
+  });
 
   Future<List<_BackupProfile>> _parseBackup(Map<String, dynamic> data) async {
     const allowedKeys = {'version', 'profiles'};
