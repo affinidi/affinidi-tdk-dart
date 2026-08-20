@@ -1,6 +1,9 @@
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 
 import 'exceptions/tdk_exception_type.dart';
+import 'storage_interfaces/profile_repository.dart';
+import 'storage_interfaces/restorable.dart';
+import 'storage_interfaces/vault_store.dart';
 
 /// Represents the decrypted contents of a vault backup.
 ///
@@ -48,6 +51,40 @@ class Backup {
     };
     _validateVaultData(data);
     return Backup(data: _sortMap(data));
+  }
+
+  /// Exports registered Vault storage into a validated backup envelope.
+  static Future<Backup> fromRestorables({
+    required VaultStore vaultStore,
+    required Map<String, ProfileRepository> profileRepositories,
+    required Map<String, Restorable> namedRestorables,
+    required String defaultRepositoryId,
+  }) async {
+    final repositoryIds = profileRepositories.keys.toList()..sort();
+    final manifest = <Map<String, dynamic>>[];
+    final repositoryData = <String, dynamic>{};
+    for (final id in repositoryIds) {
+      final repository = profileRepositories[id]!;
+      final restorable = repository is Restorable;
+      manifest.add({'id': id, 'restorable': restorable});
+      if (restorable) {
+        repositoryData[id] = await (repository as Restorable).export();
+      }
+    }
+
+    final namedData = <String, dynamic>{};
+    final namedIds = namedRestorables.keys.toList()..sort();
+    for (final id in namedIds) {
+      namedData[id] = await namedRestorables[id]!.export();
+    }
+
+    return Backup.vault(
+      vaultStore: await vaultStore.export(),
+      repositoryManifest: manifest,
+      repositoryData: repositoryData,
+      defaultRepositoryId: defaultRepositoryId,
+      namedComponents: namedData,
+    );
   }
 
   /// Parses and validates repository-scoped Vault backup data.
