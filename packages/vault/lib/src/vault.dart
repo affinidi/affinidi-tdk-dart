@@ -460,10 +460,11 @@ class Vault implements Restorable {
 
   bool _sameBytes(Uint8List left, Uint8List right) {
     if (left.length != right.length) return false;
+    var diff = 0;
     for (var index = 0; index < left.length; index++) {
-      if (left[index] != right[index]) return false;
+      diff |= left[index] ^ right[index];
     }
-    return true;
+    return diff == 0;
   }
 
   TdkException _invalidBackupFormat() => TdkException(
