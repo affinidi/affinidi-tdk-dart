@@ -6,23 +6,25 @@ import 'package:test/test.dart';
 class _Repository extends Mock implements ProfileRepository, Restorable {}
 
 void main() {
-  test('delegates state and invalidates profiles after import', () async {
-    final repository = _Repository();
-    var invalidations = 0;
-    final decorated = CacheInvalidatingRestorableRepository(
-      repository,
-      onProfilesMutated: () => invalidations++,
-    );
-    const payload = <String, dynamic>{'version': '1.0.0'};
-    when(repository.export).thenAnswer((_) async => payload);
-    when(() => repository.import(payload)).thenAnswer((_) async {});
+  group('When importing through a cache-invalidating repository', () {
+    test('it delegates state and invalidates profiles', () async {
+      final repository = _Repository();
+      var invalidations = 0;
+      final decorated = CacheInvalidatingRestorableRepository(
+        repository,
+        onProfilesMutated: () => invalidations++,
+      );
+      const payload = <String, dynamic>{'version': '1.0.0'};
+      when(repository.export).thenAnswer((_) async => payload);
+      when(() => repository.import(payload)).thenAnswer((_) async {});
 
-    expect(await decorated.export(), payload);
-    expect(invalidations, 0);
+      expect(await decorated.export(), payload);
+      expect(invalidations, 0);
 
-    await decorated.import(payload);
+      await decorated.import(payload);
 
-    verify(() => repository.import(payload)).called(1);
-    expect(invalidations, 1);
+      verify(() => repository.import(payload)).called(1);
+      expect(invalidations, 1);
+    });
   });
 }

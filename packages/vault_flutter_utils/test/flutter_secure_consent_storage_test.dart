@@ -30,26 +30,29 @@ void main() {
     ).thenAnswer((_) async {});
   });
 
-  group('saveOrUpdate', () {
-    test('writes the record as JSON under the namespaced hash key', () async {
-      when(
-        () => mockStorage.write(
-          key: any(named: 'key'),
-          value: any(named: 'value'),
-        ),
-      ).thenAnswer((_) async {});
+  group('When saving or updating a consent record', () {
+    test(
+      'it writes the record as JSON under the namespaced hash key',
+      () async {
+        when(
+          () => mockStorage.write(
+            key: any(named: 'key'),
+            value: any(named: 'value'),
+          ),
+        ).thenAnswer((_) async {});
 
-      await store.saveOrUpdate(record);
+        await store.saveOrUpdate(record);
 
-      verify(
-        () => mockStorage.write(
-          key: '${defaultNamespace}_$hash',
-          value: jsonEncode(record.toJson()),
-        ),
-      ).called(1);
-    });
+        verify(
+          () => mockStorage.write(
+            key: '${defaultNamespace}_$hash',
+            value: jsonEncode(record.toJson()),
+          ),
+        ).called(1);
+      },
+    );
 
-    test('uses a custom namespace when provided', () async {
+    test('it uses a custom namespace when provided', () async {
       const customNamespace = 'my_app_consent';
       final customStore = FlutterSecureConsentStorage(
         namespace: customNamespace,
@@ -74,8 +77,8 @@ void main() {
     });
   });
 
-  group('findByRequestHash', () {
-    test('returns null when no records exist in the namespace', () async {
+  group('When finding a consent record by request hash', () {
+    test('it returns null when no records exist in the namespace', () async {
       when(() => mockStorage.readAll()).thenAnswer((_) async => {});
 
       final result = await store.findByRequestHash(
@@ -85,7 +88,7 @@ void main() {
       expect(result, isNull);
     });
 
-    test('returns the record matching requestHash when found', () async {
+    test('it returns the matching record when found', () async {
       when(() => mockStorage.readAll()).thenAnswer(
         (_) async => {'${defaultNamespace}_$hash': jsonEncode(record.toJson())},
       );
@@ -99,7 +102,7 @@ void main() {
       expect(result.clientId, record.clientId);
     });
 
-    test('ignores entries from other namespaces', () async {
+    test('it ignores entries from other namespaces', () async {
       when(() => mockStorage.readAll()).thenAnswer(
         (_) async => {'other_namespace_$hash': jsonEncode(record.toJson())},
       );
@@ -112,7 +115,7 @@ void main() {
     });
 
     test(
-      'throws TdkException with failedToReadConsentRecord when an entry is corrupt',
+      'it throws failedToReadConsentRecord when an entry is corrupt',
       () async {
         when(() => mockStorage.readAll()).thenAnswer(
           (_) async => {'${defaultNamespace}_bad': 'not valid json {{{'},
@@ -132,8 +135,8 @@ void main() {
     );
   });
 
-  group('findAllByRequestHash', () {
-    test('returns an empty list when no records match', () async {
+  group('When finding all consent records by request hash', () {
+    test('it returns an empty list when no records match', () async {
       when(() => mockStorage.readAll()).thenAnswer((_) async => {});
 
       final results = await store.findAllByRequestHash(
@@ -143,37 +146,34 @@ void main() {
       expect(results, isEmpty);
     });
 
-    test(
-      'returns all records matching requestHash and ignores others',
-      () async {
-        final second = ConsentRecordFixtures.secondRecord();
-        final unrelated = ConsentRecordFixtures.record().copyWith(
-          hash: 'other-hash',
-          requestHash: 'different-request-hash',
-        );
-        when(() => mockStorage.readAll()).thenAnswer(
-          (_) async => {
-            '${defaultNamespace}_$hash': jsonEncode(record.toJson()),
-            '${defaultNamespace}_${second.hash}': jsonEncode(second.toJson()),
-            '${defaultNamespace}_other-hash': jsonEncode(unrelated.toJson()),
-          },
-        );
+    test('it returns all matching records and ignores others', () async {
+      final second = ConsentRecordFixtures.secondRecord();
+      final unrelated = ConsentRecordFixtures.record().copyWith(
+        hash: 'other-hash',
+        requestHash: 'different-request-hash',
+      );
+      when(() => mockStorage.readAll()).thenAnswer(
+        (_) async => {
+          '${defaultNamespace}_$hash': jsonEncode(record.toJson()),
+          '${defaultNamespace}_${second.hash}': jsonEncode(second.toJson()),
+          '${defaultNamespace}_other-hash': jsonEncode(unrelated.toJson()),
+        },
+      );
 
-        final results = await store.findAllByRequestHash(
-          ConsentRecordFixtures.requestHash,
-        );
+      final results = await store.findAllByRequestHash(
+        ConsentRecordFixtures.requestHash,
+      );
 
-        expect(results, hasLength(2));
-        expect(
-          results.map((r) => r.hash),
-          containsAll([record.hash, second.hash]),
-        );
-      },
-    );
+      expect(results, hasLength(2));
+      expect(
+        results.map((r) => r.hash),
+        containsAll([record.hash, second.hash]),
+      );
+    });
   });
 
-  group('backup and restore', () {
-    test('exports only records from its namespace', () async {
+  group('When backing up and restoring consent records', () {
+    test('it exports only records from its namespace', () async {
       final second = ConsentRecordFixtures.secondRecord();
       when(() => mockStorage.readAll()).thenAnswer(
         (_) async => {
@@ -191,7 +191,7 @@ void main() {
       });
     });
 
-    test('imports records through namespaced upsert keys', () async {
+    test('it imports records through namespaced upsert keys', () async {
       final second = ConsentRecordFixtures.secondRecord();
       when(
         () => mockStorage.write(
@@ -219,7 +219,7 @@ void main() {
       ).called(1);
     });
 
-    test('rejects and preserves destination-only records', () async {
+    test('it rejects and preserves destination-only records', () async {
       when(() => mockStorage.readAll()).thenAnswer(
         (_) async => {
           '${defaultNamespace}_destination-only': jsonEncode(record.toJson()),
@@ -259,7 +259,7 @@ void main() {
       );
     });
 
-    test('re-import is rejected after the first import', () async {
+    test('it rejects re-import after the first import', () async {
       var stored = false;
       when(() => mockStorage.readAll()).thenAnswer(
         (_) async => stored
@@ -301,7 +301,7 @@ void main() {
       ).called(1);
     });
 
-    test('rejects malformed records before any write', () async {
+    test('it rejects malformed records before any write', () async {
       await expectLater(
         store.import(const {
           'version': '1.0.0',
@@ -324,7 +324,7 @@ void main() {
       );
     });
 
-    test('rejects unsupported versions before any write', () async {
+    test('it rejects unsupported versions before any write', () async {
       await expectLater(
         store.validateImport(const {
           'version': '2.0.0',

@@ -153,201 +153,219 @@ Future<Vault> _vault({
 
 void main() {
   group('Vault Restorable', () {
-    test('rollback before import does not touch registered state', () async {
-      final events = <String>[];
-      final repository = _RestorableRepository(
-        'edge',
-        value: 'user-data',
-        events: events,
-      )..imported = {'value': 'user-data'};
-      final named = _NamedRestorable('consentHistory', events)
-        ..imported = {'value': 'user-data'};
-      final vault = await _vault(
-        store: await _store(events),
-        repositories: {'edge': repository},
-        named: {'consentHistory': named},
+    group('When rolling back before an import', () {
+      test('it preserves registered repository and component state', () async {
+        final events = <String>[];
+        final repository = _RestorableRepository(
+          'edge',
+          value: 'user-data',
+          events: events,
+        )..imported = {'value': 'user-data'};
+        final named = _NamedRestorable('consentHistory', events)
+          ..imported = {'value': 'user-data'};
+        final vault = await _vault(
+          store: await _store(events),
+          repositories: {'edge': repository},
+          named: {'consentHistory': named},
+        );
+
+        await vault.rollbackImport();
+
+        expect(repository.imported, {'value': 'user-data'});
+        expect(named.imported, {'value': 'user-data'});
+        expect(repository.rollbackCalls, 0);
+        expect(named.rollbackCalls, 0);
+      });
+
+      test('it preserves VaultStore data', () async {
+        final store = await _store([]);
+        final seed = await store.getSeed();
+
+        await store.rollbackImport();
+
+        expect(await store.getSeed(), seed);
+        expect(await store.getAccountIndex(), 3);
+      });
+    });
+
+    group('When exporting restorable state', () {
+      test(
+        'it exports repositories and named components by stable ID',
+        () async {
+          final events = <String>[];
+          final vault = await _vault(
+            store: await _store(events),
+            repositories: {
+              'z-cloud': _Repository('z-cloud'),
+              'a-edge': _RestorableRepository(
+                'a-edge',
+                value: 'profiles',
+                events: events,
+              ),
+            },
+            named: {
+              'consentHistory': _NamedRestorable('consentHistory', events),
+            },
+          );
+
+          final exported = await vault.export();
+          final repositories = exported['repositories'] as Map<String, dynamic>;
+
+          expect(repositories['manifest'], [
+            {'id': 'a-edge', 'restorable': true},
+            {'id': 'z-cloud', 'restorable': false},
+          ]);
+          expect(repositories['data'], {
+            'a-edge': {'version': '1.0.0', 'value': 'profiles'},
+          });
+          expect(exported['namedComponents'], {
+            'consentHistory': {'version': '1.0.0', 'value': 'consentHistory'},
+          });
+        },
       );
-
-      await vault.rollbackImport();
-
-      expect(repository.imported, {'value': 'user-data'});
-      expect(named.imported, {'value': 'user-data'});
-      expect(repository.rollbackCalls, 0);
-      expect(named.rollbackCalls, 0);
     });
 
-    test('VaultStore rollback before import preserves stored data', () async {
-      final store = await _store([]);
-      final seed = await store.getSeed();
+    group('When importing restorable state', () {
+      test('it imports repositories before named components', () async {
+        final sourceEvents = <String>[];
+        final source = await _vault(
+          store: await _store(sourceEvents),
+          repositories: {
+            'edge': _RestorableRepository(
+              'edge',
+              value: 'profiles',
+              events: sourceEvents,
+            ),
+          },
+          named: {
+            'consentHistory': _NamedRestorable('consentHistory', sourceEvents),
+          },
+        );
+        final backup = await source.export();
 
-      await store.rollbackImport();
+        final targetEvents = <String>[];
+        final repository = _RestorableRepository(
+          'edge',
+          value: 'empty',
+          events: targetEvents,
+        );
+        final named = _NamedRestorable('consentHistory', targetEvents);
+        final target = await _vault(
+          store: await _store(targetEvents),
+          repositories: {'edge': repository},
+          named: {'consentHistory': named},
+        );
 
-      expect(await store.getSeed(), seed);
-      expect(await store.getAccountIndex(), 3);
-    });
+        await target.import(backup);
 
-    test('exports repositories and named components by stable id', () async {
-      final events = <String>[];
-      final vault = await _vault(
-        store: await _store(events),
-        repositories: {
-          'z-cloud': _Repository('z-cloud'),
-          'a-edge': _RestorableRepository(
-            'a-edge',
-            value: 'profiles',
+        expect(targetEvents, ['edge', 'consentHistory']);
+        expect(repository.imported, {'version': '1.0.0', 'value': 'profiles'});
+        expect(named.imported, {'version': '1.0.0', 'value': 'consentHistory'});
+      });
+
+      test('it rejects missing registrations before any import', () async {
+        final sourceEvents = <String>[];
+        final source = await _vault(
+          store: await _store(sourceEvents),
+          repositories: {
+            'edge': _RestorableRepository(
+              'edge',
+              value: 'profiles',
+              events: sourceEvents,
+            ),
+          },
+          named: {'consentHistory': _NamedRestorable('named', sourceEvents)},
+        );
+        final backup = await source.export();
+
+        final targetEvents = <String>[];
+        final target = await _vault(
+          store: await _store(targetEvents),
+          repositories: {
+            'edge': _RestorableRepository(
+              'edge',
+              value: 'empty',
+              events: targetEvents,
+            ),
+          },
+        );
+
+        await expectLater(target.import(backup), throwsA(isA<TdkException>()));
+        expect(targetEvents, isEmpty);
+      });
+
+      test('it rejects a different wallet before any import', () async {
+        final sourceEvents = <String>[];
+        final source = await _vault(
+          store: await _store(sourceEvents),
+          repositories: {
+            'edge': _RestorableRepository(
+              'edge',
+              value: 'profiles',
+              events: sourceEvents,
+            ),
+          },
+        );
+        final backup = await source.export();
+
+        final targetEvents = <String>[];
+        final target = await _vault(
+          store: await _store(targetEvents, seedOffset: 1),
+          repositories: {
+            'edge': _RestorableRepository(
+              'edge',
+              value: 'empty',
+              events: targetEvents,
+            ),
+          },
+        );
+
+        await expectLater(target.import(backup), throwsA(isA<TdkException>()));
+        expect(targetEvents, isEmpty);
+      });
+
+      test(
+        'it routes colliding payload shapes only by repository ID',
+        () async {
+          final events = <String>[];
+          final source = await _vault(
+            store: await _store(events),
+            repositories: {
+              'first': _RestorableRepository(
+                'first',
+                value: 'one',
+                events: events,
+              ),
+              'second': _RestorableRepository(
+                'second',
+                value: 'two',
+                events: events,
+              ),
+            },
+          );
+          final backup = await source.export();
+
+          final first = _RestorableRepository(
+            'first',
+            value: 'empty',
             events: events,
-          ),
-        },
-        named: {'consentHistory': _NamedRestorable('consentHistory', events)},
-      );
-
-      final exported = await vault.export();
-      final repositories = exported['repositories'] as Map<String, dynamic>;
-
-      expect(repositories['manifest'], [
-        {'id': 'a-edge', 'restorable': true},
-        {'id': 'z-cloud', 'restorable': false},
-      ]);
-      expect(repositories['data'], {
-        'a-edge': {'version': '1.0.0', 'value': 'profiles'},
-      });
-      expect(exported['namedComponents'], {
-        'consentHistory': {'version': '1.0.0', 'value': 'consentHistory'},
-      });
-    });
-
-    test('imports repositories before named components', () async {
-      final sourceEvents = <String>[];
-      final source = await _vault(
-        store: await _store(sourceEvents),
-        repositories: {
-          'edge': _RestorableRepository(
-            'edge',
-            value: 'profiles',
-            events: sourceEvents,
-          ),
-        },
-        named: {
-          'consentHistory': _NamedRestorable('consentHistory', sourceEvents),
-        },
-      );
-      final backup = await source.export();
-
-      final targetEvents = <String>[];
-      final repository = _RestorableRepository(
-        'edge',
-        value: 'empty',
-        events: targetEvents,
-      );
-      final named = _NamedRestorable('consentHistory', targetEvents);
-      final target = await _vault(
-        store: await _store(targetEvents),
-        repositories: {'edge': repository},
-        named: {'consentHistory': named},
-      );
-
-      await target.import(backup);
-
-      expect(targetEvents, ['edge', 'consentHistory']);
-      expect(repository.imported, {'version': '1.0.0', 'value': 'profiles'});
-      expect(named.imported, {'version': '1.0.0', 'value': 'consentHistory'});
-    });
-
-    test('rejects missing registrations before any import', () async {
-      final sourceEvents = <String>[];
-      final source = await _vault(
-        store: await _store(sourceEvents),
-        repositories: {
-          'edge': _RestorableRepository(
-            'edge',
-            value: 'profiles',
-            events: sourceEvents,
-          ),
-        },
-        named: {'consentHistory': _NamedRestorable('named', sourceEvents)},
-      );
-      final backup = await source.export();
-
-      final targetEvents = <String>[];
-      final target = await _vault(
-        store: await _store(targetEvents),
-        repositories: {
-          'edge': _RestorableRepository(
-            'edge',
-            value: 'empty',
-            events: targetEvents,
-          ),
-        },
-      );
-
-      await expectLater(target.import(backup), throwsA(isA<TdkException>()));
-      expect(targetEvents, isEmpty);
-    });
-
-    test('rejects a different wallet before any import', () async {
-      final sourceEvents = <String>[];
-      final source = await _vault(
-        store: await _store(sourceEvents),
-        repositories: {
-          'edge': _RestorableRepository(
-            'edge',
-            value: 'profiles',
-            events: sourceEvents,
-          ),
-        },
-      );
-      final backup = await source.export();
-
-      final targetEvents = <String>[];
-      final target = await _vault(
-        store: await _store(targetEvents, seedOffset: 1),
-        repositories: {
-          'edge': _RestorableRepository(
-            'edge',
-            value: 'empty',
-            events: targetEvents,
-          ),
-        },
-      );
-
-      await expectLater(target.import(backup), throwsA(isA<TdkException>()));
-      expect(targetEvents, isEmpty);
-    });
-
-    test('routes colliding payload shapes only by repository id', () async {
-      final events = <String>[];
-      final source = await _vault(
-        store: await _store(events),
-        repositories: {
-          'first': _RestorableRepository('first', value: 'one', events: events),
-          'second': _RestorableRepository(
+          );
+          final second = _RestorableRepository(
             'second',
-            value: 'two',
+            value: 'empty',
             events: events,
-          ),
+          );
+          final target = await _vault(
+            store: await _store(events),
+            repositories: {'first': first, 'second': second},
+          );
+
+          await target.import(backup);
+
+          expect(first.imported?['value'], 'one');
+          expect(second.imported?['value'], 'two');
         },
       );
-      final backup = await source.export();
-
-      final first = _RestorableRepository(
-        'first',
-        value: 'empty',
-        events: events,
-      );
-      final second = _RestorableRepository(
-        'second',
-        value: 'empty',
-        events: events,
-      );
-      final target = await _vault(
-        store: await _store(events),
-        repositories: {'first': first, 'second': second},
-      );
-
-      await target.import(backup);
-
-      expect(first.imported?['value'], 'one');
-      expect(second.imported?['value'], 'two');
     });
   });
 }

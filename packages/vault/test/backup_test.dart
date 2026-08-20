@@ -4,89 +4,110 @@ import 'package:affinidi_tdk_vault/src/backup_data.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Backup', () {
-    test('toJson and fromJson round-trip preserves version and data', () {
-      final backup = Backup(version: Backup.currentVersion, data: {'edge': 1});
+  group('When working with a backup', () {
+    group('and serializing then deserializing it', () {
+      test('it preserves the version and data', () {
+        final backup = Backup(
+          version: Backup.currentVersion,
+          data: {'edge': 1},
+        );
 
-      final restored = Backup.fromJson(backup.toJson());
+        final restored = Backup.fromJson(backup.toJson());
 
-      expect(restored.version, equals(Backup.currentVersion));
-      expect(restored.data, equals({'edge': 1}));
+        expect(restored.version, equals(Backup.currentVersion));
+        expect(restored.data, equals({'edge': 1}));
+      });
     });
 
-    test('fromJson throws TdkException when version is unsupported', () {
-      expect(
-        () =>
-            Backup.fromJson({'version': '99.0.0', 'data': <String, dynamic>{}}),
-        throwsA(
-          isA<TdkException>().having(
-            (e) => e.code,
-            'code',
-            equals('invalid_backup_format'),
+    group('and deserializing an unsupported version', () {
+      test('it throws an invalid backup format exception', () {
+        expect(
+          () => Backup.fromJson({
+            'version': '99.0.0',
+            'data': <String, dynamic>{},
+          }),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              equals('invalid_backup_format'),
+            ),
           ),
-        ),
-      );
+        );
+      });
     });
 
-    test('defaults version to currentVersion', () {
-      final backup = Backup(data: const {});
+    group('and creating it without a version', () {
+      test('it defaults to the current version', () {
+        final backup = Backup(data: const {});
 
-      expect(backup.version, equals(Backup.currentVersion));
+        expect(backup.version, equals(Backup.currentVersion));
+      });
     });
 
-    test('exposes data as an unmodifiable map', () {
-      final backup = Backup(data: {'a': 1});
+    group('and modifying its data', () {
+      test('it prevents the modification', () {
+        final backup = Backup(data: {'a': 1});
 
-      expect(() => backup.data['b'] = 2, throwsUnsupportedError);
+        expect(() => backup.data['b'] = 2, throwsUnsupportedError);
+      });
     });
 
-    test('fromJson throws TdkException when version is missing', () {
-      expect(
-        () => Backup.fromJson({'data': <String, dynamic>{}}),
-        throwsA(
-          isA<TdkException>().having(
-            (e) => e.code,
-            'code',
-            equals('invalid_backup_format'),
+    group('and deserializing it without a version', () {
+      test('it throws an invalid backup format exception', () {
+        expect(
+          () => Backup.fromJson({'data': <String, dynamic>{}}),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              equals('invalid_backup_format'),
+            ),
           ),
-        ),
-      );
+        );
+      });
     });
 
-    test('fromJson throws TdkException when version is not a String', () {
-      expect(
-        () => Backup.fromJson({'version': 1, 'data': <String, dynamic>{}}),
-        throwsA(isA<TdkException>()),
-      );
+    group('and deserializing it with a non-string version', () {
+      test('it throws a TdkException', () {
+        expect(
+          () => Backup.fromJson({'version': 1, 'data': <String, dynamic>{}}),
+          throwsA(isA<TdkException>()),
+        );
+      });
     });
 
-    test('fromJson throws TdkException when data is missing', () {
-      expect(
-        () => Backup.fromJson({'version': '1.0.0'}),
-        throwsA(
-          isA<TdkException>().having(
-            (e) => e.code,
-            'code',
-            equals('invalid_backup_format'),
+    group('and deserializing it without data', () {
+      test('it throws an invalid backup format exception', () {
+        expect(
+          () => Backup.fromJson({'version': '1.0.0'}),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              equals('invalid_backup_format'),
+            ),
           ),
-        ),
-      );
+        );
+      });
     });
 
-    test('fromJson throws TdkException when data is not a Map', () {
-      expect(
-        () => Backup.fromJson({'version': '1.0.0', 'data': 'nope'}),
-        throwsA(isA<TdkException>()),
-      );
+    group('and deserializing it with non-map data', () {
+      test('it throws a TdkException', () {
+        expect(
+          () => Backup.fromJson({'version': '1.0.0', 'data': 'nope'}),
+          throwsA(isA<TdkException>()),
+        );
+      });
     });
 
-    group('vault schema', () {
+    group('and creating it with the vault schema', () {
       Map<String, dynamic> component([String value = 'value']) => {
         'version': '1.0.0',
         'value': value,
       };
 
-      test('creates a repository-scoped backup', () {
+      test('it creates a repository-scoped backup', () {
         final backup = Backup.vault(
           vaultStore: component('wallet'),
           repositoryManifest: const [
@@ -112,7 +133,7 @@ void main() {
         });
       });
 
-      test('sorts map keys deterministically', () {
+      test('it sorts map keys deterministically', () {
         final backup = Backup.vault(
           vaultStore: component(),
           repositoryManifest: const [
@@ -138,7 +159,7 @@ void main() {
         expect((repositories['data'] as Map<String, dynamic>).keys, ['a', 'z']);
       });
 
-      test('rejects duplicate repository ids', () {
+      test('it rejects duplicate repository IDs', () {
         expect(
           () => Backup.vault(
             vaultStore: component(),
@@ -153,7 +174,7 @@ void main() {
         );
       });
 
-      test('rejects missing and unexpected repository payloads', () {
+      test('it rejects missing and unexpected repository payloads', () {
         expect(
           () => Backup.vault(
             vaultStore: component(),
@@ -168,7 +189,7 @@ void main() {
         );
       });
 
-      test('rejects component payloads without a version', () {
+      test('it rejects component payloads without a version', () {
         expect(
           () => Backup.vault(
             vaultStore: const {'seed': 'missing-version'},
@@ -182,57 +203,65 @@ void main() {
     });
   });
 
-  group('BackupData', () {
-    test('toJson and fromJson round-trip preserves all fields', () {
-      const backup = BackupData(
-        encryptedBackup: 'deadbeef',
-        salt: 'c2FsdA==',
-        timestamp: '2024-01-02T03:04:05.000Z',
-      );
+  group('When working with backup data', () {
+    group('and serializing then deserializing it', () {
+      test('it preserves all fields', () {
+        const backup = BackupData(
+          encryptedBackup: 'deadbeef',
+          salt: 'c2FsdA==',
+          timestamp: '2024-01-02T03:04:05.000Z',
+        );
 
-      final restored = BackupData.fromJson(backup.toJson());
+        final restored = BackupData.fromJson(backup.toJson());
 
-      expect(restored.encryptedBackup, equals('deadbeef'));
-      expect(restored.salt, equals('c2FsdA=='));
-      expect(restored.timestamp, equals('2024-01-02T03:04:05.000Z'));
+        expect(restored.encryptedBackup, equals('deadbeef'));
+        expect(restored.salt, equals('c2FsdA=='));
+        expect(restored.timestamp, equals('2024-01-02T03:04:05.000Z'));
+      });
     });
 
-    test('fromJson throws TdkException when a field is missing', () {
-      expect(
-        () => BackupData.fromJson({
-          'encryptedBackup': 'deadbeef',
-          'salt': 'c2FsdA==',
-        }),
-        throwsA(
-          isA<TdkException>().having(
-            (e) => e.code,
-            'code',
-            equals('invalid_backup_format'),
+    group('and deserializing it with a missing field', () {
+      test('it throws an invalid backup format exception', () {
+        expect(
+          () => BackupData.fromJson({
+            'encryptedBackup': 'deadbeef',
+            'salt': 'c2FsdA==',
+          }),
+          throwsA(
+            isA<TdkException>().having(
+              (e) => e.code,
+              'code',
+              equals('invalid_backup_format'),
+            ),
           ),
-        ),
-      );
+        );
+      });
     });
 
-    test('fromJson throws TdkException when a field has the wrong type', () {
-      expect(
-        () => BackupData.fromJson({
-          'encryptedBackup': 'deadbeef',
-          'salt': 123,
-          'timestamp': '2024-01-02T03:04:05.000Z',
-        }),
-        throwsA(isA<TdkException>()),
-      );
+    group('and deserializing it with a field of the wrong type', () {
+      test('it throws a TdkException', () {
+        expect(
+          () => BackupData.fromJson({
+            'encryptedBackup': 'deadbeef',
+            'salt': 123,
+            'timestamp': '2024-01-02T03:04:05.000Z',
+          }),
+          throwsA(isA<TdkException>()),
+        );
+      });
     });
 
-    test('toString redacts the encrypted payload', () {
-      const backup = BackupData(
-        encryptedBackup: 'deadbeef',
-        salt: 'c2FsdA==',
-        timestamp: '2024-01-02T03:04:05.000Z',
-      );
+    group('and converting it to a string', () {
+      test('it redacts the encrypted payload', () {
+        const backup = BackupData(
+          encryptedBackup: 'deadbeef',
+          salt: 'c2FsdA==',
+          timestamp: '2024-01-02T03:04:05.000Z',
+        );
 
-      expect(backup.toString(), isNot(contains('deadbeef')));
-      expect(backup.toString(), contains('[REDACTED]'));
+        expect(backup.toString(), isNot(contains('deadbeef')));
+        expect(backup.toString(), contains('[REDACTED]'));
+      });
     });
   });
 }
