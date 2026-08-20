@@ -244,7 +244,13 @@ void main() {
         backupData: bytes,
         passphrase: passphrase,
         vaultStoreFactory: InMemoryVaultStore.new,
-        repositoryFactories: {'edge': (_) => targetRepository},
+        repositoryFactories: {
+          'edge': ProfileRepositoryRegistration.withBackupData(
+            id: 'edge',
+            factory: (_) => targetRepository,
+            asRestorable: restorableIdentity,
+          ),
+        },
         namedRestorableFactories: {'consentHistory': () => targetComponent},
       );
 
@@ -273,7 +279,13 @@ void main() {
           backupData: bytes,
           passphrase: passphrase,
           vaultStoreFactory: () => targetStore,
-          repositoryFactories: {'edge': (_) => targetRepository},
+          repositoryFactories: {
+            'edge': ProfileRepositoryRegistration.withBackupData(
+              id: 'edge',
+              factory: (_) => targetRepository,
+              asRestorable: restorableIdentity,
+            ),
+          },
         );
 
         final firstRestore = restore();
@@ -330,7 +342,13 @@ void main() {
         backupData: ByteData.view(padded.buffer, 4, bytes.lengthInBytes),
         passphrase: passphrase,
         vaultStoreFactory: InMemoryVaultStore.new,
-        repositoryFactories: {'edge': (_) => _Repository('edge')},
+        repositoryFactories: {
+          'edge': ProfileRepositoryRegistration.withBackupData(
+            id: 'edge',
+            factory: (_) => _Repository('edge'),
+            asRestorable: restorableIdentity,
+          ),
+        },
       );
 
       expect(restored.profileRepositories.keys, ['edge']);
@@ -373,12 +391,58 @@ void main() {
             factoryCalls++;
             return InMemoryVaultStore();
           },
-          repositoryFactories: {'edge': (_) => _Repository('edge')},
+          repositoryFactories: {
+            'edge': ProfileRepositoryRegistration.withBackupData(
+              id: 'edge',
+              factory: (_) => _Repository('edge'),
+              asRestorable: restorableIdentity,
+            ),
+          },
         ),
         throwsA(isA<TdkException>()),
       );
       expect(factoryCalls, 0);
     });
+
+    test(
+      'manifest topology mismatch fails before store or repository creation',
+      () async {
+        final source = await _vault(
+          store: await _store(),
+          repositories: {'edge': _Repository('edge')},
+        );
+        final bytes = await service.createBackup(
+          vault: source,
+          passphrase: passphrase,
+        );
+        var storeFactoryCalls = 0;
+        var repositoryFactoryCalls = 0;
+
+        await expectLater(
+          service.restoreBackup(
+            backupData: bytes,
+            passphrase: passphrase,
+            vaultStoreFactory: () {
+              storeFactoryCalls++;
+              return InMemoryVaultStore();
+            },
+            repositoryFactories: {
+              'edge': ProfileRepositoryRegistration.withoutBackupData(
+                id: 'edge',
+                factory: (_) {
+                  repositoryFactoryCalls++;
+                  return _Repository('edge');
+                },
+              ),
+            },
+          ),
+          throwsA(isA<TdkException>()),
+        );
+
+        expect(storeFactoryCalls, 0);
+        expect(repositoryFactoryCalls, 0);
+      },
+    );
 
     test('missing repository factory fails before store creation', () async {
       final source = await _vault(
@@ -424,7 +488,13 @@ void main() {
           backupData: bytes,
           passphrase: passphrase,
           vaultStoreFactory: () => targetStore,
-          repositoryFactories: {'edge': (_) => targetRepository},
+          repositoryFactories: {
+            'edge': ProfileRepositoryRegistration.withBackupData(
+              id: 'edge',
+              factory: (_) => targetRepository,
+              asRestorable: restorableIdentity,
+            ),
+          },
           namedRestorableFactories: {
             'last': () => _NamedComponent(
               validationError: TdkException(
@@ -465,7 +535,13 @@ void main() {
             storeFactoryCalls++;
             return InMemoryVaultStore();
           },
-          repositoryFactories: {'edge': (_) => _Repository('edge')},
+          repositoryFactories: {
+            'edge': ProfileRepositoryRegistration.withBackupData(
+              id: 'edge',
+              factory: (_) => _Repository('edge'),
+              asRestorable: restorableIdentity,
+            ),
+          },
         ),
         throwsA(isA<TdkException>()),
       );
