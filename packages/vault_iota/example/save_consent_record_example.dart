@@ -39,6 +39,12 @@ class DatabaseConsentStorage implements ConsentStorage {
     // SELECT * FROM consent_records WHERE request_hash = ?
     return _db.values.where((r) => r.requestHash == requestHash).toList();
   }
+
+  @override
+  Future<List<IotaConsentRecord>> listAll() async {
+    // SELECT * FROM consent_records
+    return _db.values.toList();
+  }
 }
 
 /// A stub [IotaShareResponseServiceInterface] for demonstration purposes.
