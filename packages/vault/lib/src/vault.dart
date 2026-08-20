@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
@@ -317,117 +316,41 @@ class Vault implements Restorable {
   Future<Map<String, dynamic>> export() async {
     _throwIfNotInitialized();
 
-    final repositoryIds = _profileRepositories.keys.toList()..sort();
-    final manifest = <Map<String, dynamic>>[];
-    final repositoryData = <String, dynamic>{};
-    for (final id in repositoryIds) {
-      final repository = _profileRepositories[id]!;
-      final restorable = repository is Restorable;
-      manifest.add({'id': id, 'restorable': restorable});
-      if (restorable) {
-        repositoryData[id] = await (repository as Restorable).export();
-      }
-    }
-
-    final namedData = <String, dynamic>{};
-    final namedIds = _namedRestorables.keys.toList()..sort();
-    for (final id in namedIds) {
-      namedData[id] = await _namedRestorables[id]!.export();
-    }
-
-    return Backup.vault(
-      vaultStore: await _vaultStore.export(),
-      repositoryManifest: manifest,
-      repositoryData: repositoryData,
+    final backup = await Backup.fromRestorables(
+      vaultStore: _vaultStore,
+      profileRepositories: _profileRepositories,
+      namedRestorables: _namedRestorables,
       defaultRepositoryId:
           _defaultProfileRepositoryId ?? _profileRepositories.keys.first,
-      namedComponents: namedData,
-    ).data;
+    );
+    return backup.data;
   }
 
   @override
   /// Validates state against this Vault's wallet and registered components.
   Future<void> validateImport(Map<String, dynamic> data) async {
-    await _validateBackup(data);
+    await _prepareRestore(data);
   }
 
-  Future<Backup> _validateBackup(Map<String, dynamic> data) async {
+  Future<BackupRestorePlan> _prepareRestore(Map<String, dynamic> data) {
     _throwIfNotInitialized();
-
-    final backup = Backup.fromVaultData(data);
-    final repositorySection =
-        backup.data['repositories'] as Map<String, dynamic>;
-    final manifest = repositorySection['manifest'] as List;
-    final repositoryData = repositorySection['data'] as Map<String, dynamic>;
-    final namedData = backup.data['namedComponents'] as Map<String, dynamic>;
-
-    final expectedRepositoryIds = _profileRepositories.keys.toSet();
-    final backupRepositoryIds = <String>{};
-    for (final rawEntry in manifest) {
-      final entry = rawEntry as Map<String, dynamic>;
-      final id = entry['id'] as String;
-      backupRepositoryIds.add(id);
-      if ((_profileRepositories[id] is Restorable) !=
-          (entry['restorable'] as bool)) {
-        throw VaultRestoreException.invalidBackupFormat();
-      }
-    }
-    if (!_sameIds(expectedRepositoryIds, backupRepositoryIds) ||
-        !_sameIds(_namedRestorables.keys.toSet(), namedData.keys.toSet())) {
-      throw VaultRestoreException.invalidBackupFormat();
-    }
-
-    final vaultStoreData = backup.data['vaultStore'] as Map<String, dynamic>;
-    final encodedSeed = vaultStoreData['seed'];
-    final currentSeed = await _vaultStore.getSeed();
-    if (encodedSeed is! String || currentSeed == null) {
-      throw VaultRestoreException.invalidBackupFormat();
-    }
-    final Uint8List backupSeed;
-    try {
-      backupSeed = base64Decode(encodedSeed);
-    } on FormatException {
-      throw VaultRestoreException.invalidBackupFormat();
-    }
-    if (!_sameBytes(currentSeed, backupSeed)) {
-      throw VaultRestoreException.invalidBackupFormat();
-    }
-
-    await _vaultStore.validateImport(vaultStoreData);
-    final repositoryIds = repositoryData.keys.toList()..sort();
-    for (final id in repositoryIds) {
-      await (_profileRepositories[id]! as Restorable).validateImport(
-        repositoryData[id] as Map<String, dynamic>,
-      );
-    }
-    final namedIds = namedData.keys.toList()..sort();
-    for (final id in namedIds) {
-      await _namedRestorables[id]!.validateImport(
-        namedData[id] as Map<String, dynamic>,
-      );
-    }
-    return backup;
+    return BackupRestorePlan.prepare(
+      data: data,
+      vaultStore: _vaultStore,
+      profileRepositories: _profileRepositories,
+      namedRestorables: _namedRestorables,
+    );
   }
 
   @override
   /// Imports state into this already-open Vault when the wallet and registered
   /// component topology match the backup.
   Future<void> import(Map<String, dynamic> data) async {
-    final backup = await _validateBackup(data);
-    final repositorySection =
-        backup.data['repositories'] as Map<String, dynamic>;
-    final repositoryData = repositorySection['data'] as Map<String, dynamic>;
-    final namedData = backup.data['namedComponents'] as Map<String, dynamic>;
+    final importPlan = await _prepareRestore(data);
 
     if (!await isEmpty()) {
       throw VaultRestoreException.destinationNotEmpty();
     }
-    final importPlan = BackupRestorePlan.fromBackupData(
-      repositoryData: repositoryData,
-      namedData: namedData,
-      profileRepositories: _profileRepositories,
-      namedRestorables: _namedRestorables,
-    );
     _pendingImportPlan = importPlan;
     final importFailure = await importPlan.execute();
     if (importFailure != null) {
@@ -475,18 +398,6 @@ class Vault implements Restorable {
       }
     }
     return true;
-  }
-
-  bool _sameIds(Set<String> left, Set<String> right) =>
-      left.length == right.length && left.containsAll(right);
-
-  bool _sameBytes(Uint8List left, Uint8List right) {
-    if (left.length != right.length) return false;
-    var diff = 0;
-    for (var index = 0; index < left.length; index++) {
-      diff |= left[index] ^ right[index];
-    }
-    return diff == 0;
   }
 
   /// Ensures the vault is initialized by configuring all profile repositories.
