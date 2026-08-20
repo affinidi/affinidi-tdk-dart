@@ -2,6 +2,7 @@ import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:ssi/ssi.dart';
 import 'package:synchronized/synchronized.dart';
 
+import '../exceptions/edge_restore_exception.dart';
 import '../exceptions/tdk_exception_type.dart';
 import '../interfaces/edge_repository_factory_interface.dart';
 import '../models/edge_profile.dart';
@@ -35,7 +36,6 @@ class EdgeProfileRepository implements ProfileRepository, Restorable {
   bool _importPendingRollback = false;
 
   static const _backupVersion = '1.0.0';
-  static const _invalidBackupFormatCode = 'invalid_backup_format';
 
   @override
   String get id => _id;
@@ -438,7 +438,7 @@ Profile repository must be configured using a RepositoryConfiguration''',
     () async {
       await validateImport(data);
       if (!await isEmpty()) {
-        throw _restoreDestinationNotEmpty();
+        throw EdgeRestoreException.destinationNotEmpty('Profile repository');
       }
       _importPendingRollback = true;
       final profiles = await _parseBackup(data);
@@ -493,7 +493,7 @@ Profile repository must be configured using a RepositoryConfiguration''',
     if (data.keys.any((key) => !allowedKeys.contains(key)) ||
         data['version'] != _backupVersion ||
         rawProfiles is! List) {
-      throw _invalidBackupFormat();
+      throw EdgeRestoreException.invalidBackupFormat('edge profile repository');
     }
 
     final profiles = <_BackupProfile>[];
@@ -501,7 +501,9 @@ Profile repository must be configured using a RepositoryConfiguration''',
     final accountIndexes = <int>{};
     for (final rawProfile in rawProfiles) {
       if (rawProfile is! Map<String, dynamic>) {
-        throw _invalidBackupFormat();
+        throw EdgeRestoreException.invalidBackupFormat(
+          'edge profile repository',
+        );
       }
       const requiredKeys = {
         'id',
@@ -517,7 +519,9 @@ Profile repository must be configured using a RepositoryConfiguration''',
           rawProfile.keys.any(
             (key) => !requiredKeys.contains(key) && !optionalKeys.contains(key),
           )) {
-        throw _invalidBackupFormat();
+        throw EdgeRestoreException.invalidBackupFormat(
+          'edge profile repository',
+        );
       }
       final id = rawProfile['id'];
       final accountIndex = rawProfile['accountIndex'];
@@ -535,7 +539,9 @@ Profile repository must be configured using a RepositoryConfiguration''',
           did is! String ||
           did.isEmpty ||
           (description != null && description is! String)) {
-        throw _invalidBackupFormat();
+        throw EdgeRestoreException.invalidBackupFormat(
+          'edge profile repository',
+        );
       }
 
       final derivedDid = DidKey.getDid(
@@ -544,7 +550,9 @@ Profile repository must be configured using a RepositoryConfiguration''',
         )).publicKey,
       );
       if (derivedDid != did) {
-        throw _invalidBackupFormat();
+        throw EdgeRestoreException.invalidBackupFormat(
+          'edge profile repository',
+        );
       }
 
       profiles.add(
@@ -570,12 +578,14 @@ Profile repository must be configured using a RepositoryConfiguration''',
 
   Map<String, Map<String, dynamic>> _parseStoragePayloads(Object? raw) {
     if (raw is! Map<String, dynamic>) {
-      throw _invalidBackupFormat();
+      throw EdgeRestoreException.invalidBackupFormat('edge profile repository');
     }
     final payloads = <String, Map<String, dynamic>>{};
     for (final entry in raw.entries) {
       if (entry.key.isEmpty || entry.value is! Map<String, dynamic>) {
-        throw _invalidBackupFormat();
+        throw EdgeRestoreException.invalidBackupFormat(
+          'edge profile repository',
+        );
       }
       payloads[entry.key] = entry.value as Map<String, dynamic>;
     }
@@ -589,7 +599,9 @@ Profile repository must be configured using a RepositoryConfiguration''',
     for (final entry in payloads.entries) {
       final storage = storages[entry.key];
       if (storage is! Restorable) {
-        throw _invalidBackupFormat();
+        throw EdgeRestoreException.invalidBackupFormat(
+          'edge profile repository',
+        );
       }
       await storage.import(entry.value);
     }
@@ -602,7 +614,9 @@ Profile repository must be configured using a RepositoryConfiguration''',
     for (final entry in payloads.entries) {
       final storage = storages[entry.key];
       if (storage is! Restorable) {
-        throw _invalidBackupFormat();
+        throw EdgeRestoreException.invalidBackupFormat(
+          'edge profile repository',
+        );
       }
       await storage.validateImport(entry.value);
     }
@@ -615,16 +629,6 @@ Profile repository must be configured using a RepositoryConfiguration''',
     final byId = {for (final storage in storages) storage.id: storage};
     await _importStorages(byId, payloads);
   }
-
-  TdkException _invalidBackupFormat() => TdkException(
-    message: 'The edge profile repository backup payload is malformed.',
-    code: _invalidBackupFormatCode,
-  );
-
-  TdkException _restoreDestinationNotEmpty() => TdkException(
-    message: 'Profile repository restore destination is not empty.',
-    code: 'restore_destination_not_empty',
-  );
 
   Future<KeyPair> _memoizedKeyPair({required String accountIndex}) async {
     _keyPairs[accountIndex] ??= await _getProfileKeyPair(

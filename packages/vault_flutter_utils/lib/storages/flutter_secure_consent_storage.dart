@@ -6,6 +6,7 @@ import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart'
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../src/exceptions/tdk_exception_type.dart';
+import '../src/exceptions/vault_restore_exception.dart';
 
 /// Implementation of [ConsentStorage] backed by Flutter's secure storage.
 ///
@@ -92,7 +93,7 @@ class FlutterSecureConsentStorage implements ConsentStorage, Restorable {
   Future<void> import(Map<String, dynamic> data) async {
     final records = _parseBackup(data);
     if (!await isEmpty()) {
-      throw _restoreDestinationNotEmpty();
+      throw VaultRestoreException.destinationNotEmpty('Consent history');
     }
     _importPendingRollback = true;
     for (final record in records) {
@@ -119,7 +120,7 @@ class FlutterSecureConsentStorage implements ConsentStorage, Restorable {
     if (data.keys.any((key) => !allowedKeys.contains(key)) ||
         data['version'] != _backupVersion ||
         rawRecords is! List) {
-      throw _invalidBackupFormat();
+      throw VaultRestoreException.invalidBackupFormat('consent history');
     }
 
     final records = <IotaConsentRecord>[];
@@ -131,7 +132,10 @@ class FlutterSecureConsentStorage implements ConsentStorage, Restorable {
         records.add(IotaConsentRecord.fromJson(rawRecord));
       }
     } catch (error) {
-      throw _invalidBackupFormat(originalMessage: error.toString());
+      throw VaultRestoreException.invalidBackupFormat(
+        'consent history',
+        originalMessage: error.toString(),
+      );
     }
 
     return records;
@@ -160,15 +164,4 @@ class FlutterSecureConsentStorage implements ConsentStorage, Restorable {
     }
     return records;
   }
-
-  TdkException _invalidBackupFormat({String? originalMessage}) => TdkException(
-    message: 'The consent history backup payload is malformed.',
-    code: 'invalid_backup_format',
-    originalMessage: originalMessage,
-  );
-
-  TdkException _restoreDestinationNotEmpty() => TdkException(
-    message: 'Consent history restore destination is not empty.',
-    code: 'restore_destination_not_empty',
-  );
 }

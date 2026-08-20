@@ -5,6 +5,7 @@ import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:dio/dio.dart';
 import 'package:synchronized/synchronized.dart';
 
+import '../exceptions/edge_restore_exception.dart';
 import '../exceptions/tdk_exception_type.dart';
 import '../interfaces/edge_file_repository_interface.dart';
 import '../services/edge_encryption_service_interface.dart';
@@ -45,7 +46,6 @@ class EdgeFileStorage implements FileStorage, Restorable {
 
   static const _backupVersion = '1.0.0';
   static const _pageSize = 50;
-  static const _invalidBackupFormatCode = 'invalid_backup_format';
 
   @override
   String get id => _id;
@@ -357,7 +357,7 @@ class EdgeFileStorage implements FileStorage, Restorable {
       _lock.synchronized(() async {
         final (folders, files) = _parseBackup(data);
         if (!await isEmpty()) {
-          throw _restoreDestinationNotEmpty();
+          throw EdgeRestoreException.destinationNotEmpty('File');
         }
         _importPendingRollback = true;
 
@@ -380,7 +380,7 @@ class EdgeFileStorage implements FileStorage, Restorable {
             restored.add(folder);
           }
           if (restored.isEmpty) {
-            throw _invalidBackupFormat();
+            throw EdgeRestoreException.invalidBackupFormat('file storage');
           }
           remainingFolders.removeWhere(restored.contains);
         }
@@ -437,7 +437,7 @@ class EdgeFileStorage implements FileStorage, Restorable {
     if (data.keys.any((key) => !allowedKeys.contains(key)) ||
         data['version'] != _backupVersion ||
         rawItems is! List) {
-      throw _invalidBackupFormat();
+      throw EdgeRestoreException.invalidBackupFormat('file storage');
     }
 
     final folders = <_BackupFolder>[];
@@ -445,7 +445,7 @@ class EdgeFileStorage implements FileStorage, Restorable {
     final itemIds = <String>{};
     for (final rawItem in rawItems) {
       if (rawItem is! Map<String, dynamic>) {
-        throw _invalidBackupFormat();
+        throw EdgeRestoreException.invalidBackupFormat('file storage');
       }
       final id = rawItem['id'];
       final name = rawItem['name'];
@@ -457,7 +457,7 @@ class EdgeFileStorage implements FileStorage, Restorable {
           name is! String ||
           name.isEmpty ||
           (parentId != null && parentId is! String)) {
-        throw _invalidBackupFormat();
+        throw EdgeRestoreException.invalidBackupFormat('file storage');
       }
       final parsedParentId = parentId is String ? parentId : null;
 
@@ -474,11 +474,14 @@ class EdgeFileStorage implements FileStorage, Restorable {
         try {
           content = base64Decode(rawItem['content'] as String);
         } on FormatException catch (error) {
-          throw _invalidBackupFormat(originalMessage: error.toString());
+          throw EdgeRestoreException.invalidBackupFormat(
+            'file storage',
+            originalMessage: error.toString(),
+          );
         }
         if (!FileUtils.isFileSizeValid(content.length, _maxFileSize) ||
             !FileUtils.isFileExtensionAllowed(name, _allowedExtensions)) {
-          throw _invalidBackupFormat();
+          throw EdgeRestoreException.invalidBackupFormat('file storage');
         }
         files.add(
           _BackupFile(
@@ -489,7 +492,7 @@ class EdgeFileStorage implements FileStorage, Restorable {
           ),
         );
       } else {
-        throw _invalidBackupFormat();
+        throw EdgeRestoreException.invalidBackupFormat('file storage');
       }
     }
 
@@ -499,34 +502,23 @@ class EdgeFileStorage implements FileStorage, Restorable {
       var parentId = folder.parentId;
       while (parentId != null) {
         if (!visited.add(parentId)) {
-          throw _invalidBackupFormat();
+          throw EdgeRestoreException.invalidBackupFormat('file storage');
         }
         final parent = foldersById[parentId];
         if (parent == null) {
-          throw _invalidBackupFormat();
+          throw EdgeRestoreException.invalidBackupFormat('file storage');
         }
         parentId = parent.parentId;
       }
     }
     for (final file in files) {
       if (file.parentId != null && !foldersById.containsKey(file.parentId)) {
-        throw _invalidBackupFormat();
+        throw EdgeRestoreException.invalidBackupFormat('file storage');
       }
     }
 
     return (folders, files);
   }
-
-  TdkException _invalidBackupFormat({String? originalMessage}) => TdkException(
-    message: 'The file storage backup payload is malformed.',
-    code: _invalidBackupFormatCode,
-    originalMessage: originalMessage,
-  );
-
-  TdkException _restoreDestinationNotEmpty() => TdkException(
-    message: 'File restore destination is not empty.',
-    code: 'restore_destination_not_empty',
-  );
 }
 
 class _BackupFolder {

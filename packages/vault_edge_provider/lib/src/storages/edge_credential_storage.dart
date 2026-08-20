@@ -5,6 +5,7 @@ import 'package:synchronized/synchronized.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../affinidi_tdk_vault_edge_provider.dart';
+import '../exceptions/edge_restore_exception.dart';
 
 /// An Edge based implementation of [CredentialStorage] for storing and managing
 /// verifiable credentials with encryption support.
@@ -37,7 +38,6 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
 
   static const _backupVersion = '1.0.0';
   static const _pageSize = 50;
-  static const _invalidBackupFormatCode = 'invalid_backup_format';
 
   @override
   String get id => _id;
@@ -216,7 +216,7 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
       _lock.synchronized(() async {
         final credentials = _parseBackup(data);
         if (!await isEmpty()) {
-          throw _restoreDestinationNotEmpty();
+          throw EdgeRestoreException.destinationNotEmpty('Credential');
         }
         _importPendingRollback = true;
         for (final (id, credential) in credentials) {
@@ -251,7 +251,7 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
     if (data.keys.any((key) => !allowedKeys.contains(key)) ||
         data['version'] != _backupVersion ||
         rawCredentials is! List) {
-      throw _invalidBackupFormat();
+      throw EdgeRestoreException.invalidBackupFormat('credential storage');
     }
 
     final credentials = <(String, VerifiableCredential)>[];
@@ -261,11 +261,11 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
           rawCredential.length != 2 ||
           !rawCredential.containsKey('id') ||
           !rawCredential.containsKey('verifiableCredential')) {
-        throw _invalidBackupFormat();
+        throw EdgeRestoreException.invalidBackupFormat('credential storage');
       }
       final id = rawCredential['id'];
       if (id is! String || id.isEmpty || !backupIds.add(id)) {
-        throw _invalidBackupFormat();
+        throw EdgeRestoreException.invalidBackupFormat('credential storage');
       }
       try {
         final credential = UniversalParser.parse(
@@ -273,21 +273,13 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
         );
         credentials.add((id, credential));
       } catch (error) {
-        throw _invalidBackupFormat(originalMessage: error.toString());
+        throw EdgeRestoreException.invalidBackupFormat(
+          'credential storage',
+          originalMessage: error.toString(),
+        );
       }
     }
 
     return credentials;
   }
-
-  TdkException _invalidBackupFormat({String? originalMessage}) => TdkException(
-    message: 'The credential storage backup payload is malformed.',
-    code: _invalidBackupFormatCode,
-    originalMessage: originalMessage,
-  );
-
-  TdkException _restoreDestinationNotEmpty() => TdkException(
-    message: 'Credential restore destination is not empty.',
-    code: 'restore_destination_not_empty',
-  );
 }
