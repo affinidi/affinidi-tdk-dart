@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:typed_data';
@@ -7,48 +6,13 @@ import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault/src/backup_data.dart';
 import 'package:test/test.dart';
 
+import 'fakes/fake_blocking_vault_store.dart';
 import 'fakes/fake_logger.dart';
 import 'fakes/fake_restorable.dart';
 import 'fakes/fake_restorable_profile_repository.dart';
 import 'fakes/fake_vault_store.dart';
+import 'fixtures/vault_backup_service_fixtures.dart';
 import 'mocks/mock_cryptography_service.dart';
-
-class _BlockingStore extends InMemoryVaultStore {
-  final importStarted = Completer<void>();
-  final allowImport = Completer<void>();
-  int importCalls = 0;
-
-  @override
-  Future<void> import(Map<String, dynamic> data) async {
-    importCalls++;
-    if (!importStarted.isCompleted) {
-      importStarted.complete();
-    }
-    await allowImport.future;
-    await super.import(data);
-  }
-}
-
-Future<InMemoryVaultStore> _store() async {
-  final store = InMemoryVaultStore();
-  await store.setSeed(Uint8List.fromList(List.generate(32, (index) => index)));
-  await store.setAccountIndex(4);
-  return store;
-}
-
-Future<Vault> _vault({
-  required VaultStore store,
-  required Map<String, ProfileRepository> repositories,
-  Map<String, Restorable> named = const {},
-}) async {
-  final vault = await Vault.fromVaultStore(
-    store,
-    profileRepositories: repositories,
-    namedRestorables: named,
-  );
-  await vault.ensureInitialized();
-  return vault;
-}
 
 void main() {
   group('VaultBackupService', () {
@@ -66,8 +30,8 @@ void main() {
 
     group('When creating a vault backup', () {
       test('it creates encrypted file-ready bytes', () async {
-        final vault = await _vault(
-          store: await _store(),
+        final vault = await VaultBackupServiceFixtures.vault(
+          store: await VaultBackupServiceFixtures.store(),
           repositories: {'edge': FakeRestorableProfileRepository('edge')},
         );
 
@@ -88,8 +52,8 @@ void main() {
       });
 
       test('it wipes mutable derived key buffers', () async {
-        final vault = await _vault(
-          store: await _store(),
+        final vault = await VaultBackupServiceFixtures.vault(
+          store: await VaultBackupServiceFixtures.store(),
           repositories: {'edge': FakeRestorableProfileRepository('edge')},
         );
 
@@ -111,8 +75,8 @@ void main() {
           logger: logger,
           now: () => DateTime.utc(2024, 1, 2, 3, 4, 5),
         );
-        final vault = await _vault(
-          store: await _store(),
+        final vault = await VaultBackupServiceFixtures.vault(
+          store: await VaultBackupServiceFixtures.store(),
           repositories: {'edge': FakeRestorableProfileRepository('edge')},
         );
 
@@ -128,8 +92,8 @@ void main() {
 
     group('When restoring a valid vault backup', () {
       test('it restores and opens a fresh Vault', () async {
-        final source = await _vault(
-          store: await _store(),
+        final source = await VaultBackupServiceFixtures.vault(
+          store: await VaultBackupServiceFixtures.store(),
           repositories: {
             'edge': FakeRestorableProfileRepository('edge', value: 'profiles'),
           },
@@ -169,8 +133,8 @@ void main() {
       test(
         'it serializes concurrent restores against the same destination',
         () async {
-          final source = await _vault(
-            store: await _store(),
+          final source = await VaultBackupServiceFixtures.vault(
+            store: await VaultBackupServiceFixtures.store(),
             repositories: {
               'edge': FakeRestorableProfileRepository(
                 'edge',
@@ -182,7 +146,7 @@ void main() {
             vault: source,
             passphrase: passphrase,
           );
-          final targetStore = _BlockingStore();
+          final targetStore = FakeBlockingVaultStore();
           final targetRepository = FakeRestorableProfileRepository(
             'edge',
             value: 'empty',
@@ -236,8 +200,8 @@ void main() {
       );
 
       test('it supports ByteData views with a non-zero offset', () async {
-        final source = await _vault(
-          store: await _store(),
+        final source = await VaultBackupServiceFixtures.vault(
+          store: await VaultBackupServiceFixtures.store(),
           repositories: {'edge': FakeRestorableProfileRepository('edge')},
         );
         final bytes = await service.createBackup(
@@ -270,8 +234,8 @@ void main() {
 
     group('When creating a vault backup with a weak passphrase', () {
       test('it rejects the passphrase', () async {
-        final vault = await _vault(
-          store: await _store(),
+        final vault = await VaultBackupServiceFixtures.vault(
+          store: await VaultBackupServiceFixtures.store(),
           repositories: {'edge': FakeRestorableProfileRepository('edge')},
         );
 
@@ -292,8 +256,8 @@ void main() {
       test(
         'it fails before factories are called for a wrong passphrase',
         () async {
-          final source = await _vault(
-            store: await _store(),
+          final source = await VaultBackupServiceFixtures.vault(
+            store: await VaultBackupServiceFixtures.store(),
             repositories: {'edge': FakeRestorableProfileRepository('edge')},
           );
           final bytes = await service.createBackup(
@@ -327,8 +291,8 @@ void main() {
       test(
         'it fails before creating storage when the manifest topology differs',
         () async {
-          final source = await _vault(
-            store: await _store(),
+          final source = await VaultBackupServiceFixtures.vault(
+            store: await VaultBackupServiceFixtures.store(),
             repositories: {'edge': FakeRestorableProfileRepository('edge')},
           );
           final bytes = await service.createBackup(
@@ -367,8 +331,8 @@ void main() {
       test(
         'it fails before store creation when a factory is missing',
         () async {
-          final source = await _vault(
-            store: await _store(),
+          final source = await VaultBackupServiceFixtures.vault(
+            store: await VaultBackupServiceFixtures.store(),
             repositories: {'edge': FakeRestorableProfileRepository('edge')},
           );
           final bytes = await service.createBackup(
@@ -396,8 +360,8 @@ void main() {
       test(
         'it fails before durable import for an invalid final component',
         () async {
-          final source = await _vault(
-            store: await _store(),
+          final source = await VaultBackupServiceFixtures.vault(
+            store: await VaultBackupServiceFixtures.store(),
             repositories: {
               'edge': FakeRestorableProfileRepository(
                 'edge',
@@ -449,8 +413,8 @@ void main() {
       test(
         'it rolls back repository and store state after a late import failure',
         () async {
-          final source = await _vault(
-            store: await _store(),
+          final source = await VaultBackupServiceFixtures.vault(
+            store: await VaultBackupServiceFixtures.store(),
             repositories: {
               'edge': FakeRestorableProfileRepository(
                 'edge',
@@ -503,8 +467,8 @@ void main() {
       );
 
       test('it fails before store creation when bytes are tampered', () async {
-        final source = await _vault(
-          store: await _store(),
+        final source = await VaultBackupServiceFixtures.vault(
+          store: await VaultBackupServiceFixtures.store(),
           repositories: {'edge': FakeRestorableProfileRepository('edge')},
         );
         final bytes = await service.createBackup(

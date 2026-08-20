@@ -8,84 +8,9 @@ import 'package:drift/drift.dart' as drift;
 import 'package:drift/native.dart';
 import 'package:test/test.dart';
 
-class _CloudRepository implements ProfileRepository {
-  _CloudRepository(this.id);
-
-  @override
-  final String id;
-
-  @override
-  Future<void> configure(Object configuration) async {}
-
-  @override
-  Future<bool> isConfigured() async => true;
-
-  @override
-  Future<List<Profile>> listProfiles({VaultCancelToken? cancelToken}) async =>
-      const [];
-
-  @override
-  Future<Profile> createProfile({
-    required String name,
-    String? description,
-    VaultCancelToken? cancelToken,
-  }) => throw UnsupportedError('cloud test repository');
-
-  @override
-  Future<void> updateProfile(
-    Profile profile, {
-    VaultCancelToken? cancelToken,
-  }) => throw UnsupportedError('cloud test repository');
-
-  @override
-  Future<void> deleteProfile(
-    Profile profile, {
-    VaultCancelToken? cancelToken,
-  }) => throw UnsupportedError('cloud test repository');
-}
-
-Future<InMemoryVaultStore> _vaultStore() async {
-  final store = InMemoryVaultStore();
-  await store.setSeed(Uint8List.fromList(List.generate(32, (index) => index)));
-  return store;
-}
-
-EdgeProfileRepository _repository({
-  required String id,
-  required Database database,
-  required VaultStore vaultStore,
-}) {
-  return EdgeProfileRepository(
-    id,
-    EdgeDriftRepositoryFactory(database: database),
-    EdgeEncryptionService(vaultStore: vaultStore),
-  );
-}
-
-VerifiableCredential _credential({
-  String id = 'urn:uuid:backup-credential',
-  String type = 'BackupCredential',
-  String name = 'Backup Test',
-}) => UniversalParser.parse('''
-{
-  "@context": ["https://www.w3.org/2018/credentials/v1"],
-  "id": "$id",
-  "type": ["VerifiableCredential", "$type"],
-  "issuer": "did:example:issuer",
-  "issuanceDate": "2024-01-01T00:00:00Z",
-  "credentialSubject": {
-    "id": "did:example:subject",
-    "name": "$name"
-  },
-  "proof": {
-    "type": "Ed25519Signature2018",
-    "created": "2024-01-01T00:00:00Z",
-    "proofPurpose": "assertionMethod",
-    "verificationMethod": "did:example:issuer#key-1",
-    "jws": "test-signature"
-  }
-}
-''');
+import 'fakes/fake_cloud_repository.dart';
+import 'fixtures/credential_fixtures.dart';
+import 'fixtures/vault_backup_fixtures.dart';
 
 void main() {
   group('When backing up and restoring durable edge data', () {
@@ -103,8 +28,8 @@ void main() {
         addTearDown(occupiedDatabase.close);
         addTearDown(targetDatabase.close);
 
-        final sourceStore = await _vaultStore();
-        final sourceRepository = _repository(
+        final sourceStore = await VaultBackupFixtures.vaultStore();
+        final sourceRepository = VaultBackupFixtures.repository(
           id: 'edge',
           database: sourceDatabase,
           vaultStore: sourceStore,
@@ -113,7 +38,7 @@ void main() {
           sourceStore,
           profileRepositories: {
             'edge': sourceRepository,
-            'cloud': _CloudRepository('cloud'),
+            'cloud': FakeCloudRepository('cloud'),
           },
         );
         await sourceVault.ensureInitialized();
@@ -124,7 +49,7 @@ void main() {
               description: 'Restored from backup',
             );
         await profile.defaultCredentialStorage!.saveCredential(
-          verifiableCredential: _credential(),
+          verifiableCredential: CredentialFixtures.backupCredential(),
         );
         final folder = await profile.defaultFileStorage!.createFolder(
           folderName: 'documents',
@@ -146,23 +71,23 @@ void main() {
           passphrase: passphrase,
         );
 
-        final occupiedStore = await _vaultStore();
+        final occupiedStore = await VaultBackupFixtures.vaultStore();
         final occupiedVault = await Vault.fromVaultStore(
           occupiedStore,
           profileRepositories: {
-            'edge': _repository(
+            'edge': VaultBackupFixtures.repository(
               id: 'edge',
               database: occupiedDatabase,
               vaultStore: occupiedStore,
             ),
-            'cloud': _CloudRepository('cloud'),
+            'cloud': FakeCloudRepository('cloud'),
           },
         );
         await occupiedVault.ensureInitialized();
         final destinationOnly = await occupiedVault.defaultProfileRepository
             .createProfile(name: 'Destination only');
         await destinationOnly.defaultCredentialStorage!.saveCredential(
-          verifiableCredential: _credential(),
+          verifiableCredential: CredentialFixtures.backupCredential(),
         );
         final obsoleteFolder = await destinationOnly.defaultFileStorage!
             .createFolder(
@@ -184,7 +109,7 @@ void main() {
             repositoryFactories: {
               'edge': ProfileRepositoryRegistration.withBackupData(
                 id: 'edge',
-                factory: (vaultStore) => _repository(
+                factory: (vaultStore) => VaultBackupFixtures.repository(
                   id: 'edge',
                   database: occupiedDatabase,
                   vaultStore: vaultStore,
@@ -193,7 +118,7 @@ void main() {
               ),
               'cloud': ProfileRepositoryRegistration.withoutBackupData(
                 id: 'cloud',
-                factory: (_) => _CloudRepository('cloud'),
+                factory: (_) => FakeCloudRepository('cloud'),
               ),
             },
           ),
@@ -222,7 +147,7 @@ void main() {
           repositoryFactories: {
             'edge': ProfileRepositoryRegistration.withBackupData(
               id: 'edge',
-              factory: (vaultStore) => _repository(
+              factory: (vaultStore) => VaultBackupFixtures.repository(
                 id: 'edge',
                 database: targetDatabase,
                 vaultStore: vaultStore,
@@ -231,7 +156,7 @@ void main() {
             ),
             'cloud': ProfileRepositoryRegistration.withoutBackupData(
               id: 'cloud',
-              factory: (_) => _CloudRepository('cloud'),
+              factory: (_) => FakeCloudRepository('cloud'),
             ),
           },
         );
@@ -307,7 +232,7 @@ void main() {
         const profileId = 'shared-profile-id';
         const accountIndex = 1;
         const credentialStorageId = 'shared-credential-id';
-        final sourceStore = await _vaultStore();
+        final sourceStore = await VaultBackupFixtures.vaultStore();
         await sourceStore.setAccountIndex(accountIndex);
         final factoryA = EdgeDriftRepositoryFactory(database: sourceDatabaseA);
         final factoryB = EdgeDriftRepositoryFactory(database: sourceDatabaseB);
@@ -324,12 +249,12 @@ void main() {
 
         final encryption = EdgeEncryptionService(vaultStore: sourceStore);
         final codec = CredentialCodec();
-        final credentialA = _credential(
+        final credentialA = CredentialFixtures.backupCredential(
           id: 'urn:uuid:credential-a',
           type: 'RepositoryACredential',
           name: 'A',
         );
-        final credentialB = _credential(
+        final credentialB = CredentialFixtures.backupCredential(
           id: 'urn:uuid:credential-b',
           type: 'RepositoryBCredential',
           name: 'B',
@@ -405,7 +330,7 @@ void main() {
           repositoryFactories: {
             'edge-a': ProfileRepositoryRegistration.withBackupData(
               id: 'edge-a',
-              factory: (store) => _repository(
+              factory: (store) => VaultBackupFixtures.repository(
                 id: 'edge-a',
                 database: targetDatabaseA,
                 vaultStore: store,
@@ -414,7 +339,7 @@ void main() {
             ),
             'edge-b': ProfileRepositoryRegistration.withBackupData(
               id: 'edge-b',
-              factory: (store) => _repository(
+              factory: (store) => VaultBackupFixtures.repository(
                 id: 'edge-b',
                 database: targetDatabaseB,
                 vaultStore: store,

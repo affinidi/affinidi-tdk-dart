@@ -2,6 +2,28 @@ import 'dart:convert';
 import 'package:affinidi_tdk_vault_edge_provider/affinidi_tdk_vault_edge_provider.dart';
 
 class CredentialFixtures {
+  static VerifiableCredential backupCredential({
+    String id = 'urn:uuid:backup-credential',
+    String type = 'BackupCredential',
+    String name = 'Backup Test',
+  }) => UniversalParser.parse(
+    jsonEncode({
+      '@context': ['https://www.w3.org/2018/credentials/v1'],
+      'id': id,
+      'type': ['VerifiableCredential', type],
+      'issuer': 'did:example:issuer',
+      'issuanceDate': '2024-01-01T00:00:00Z',
+      'credentialSubject': {'id': 'did:example:subject', 'name': name},
+      'proof': {
+        'type': 'Ed25519Signature2018',
+        'created': '2024-01-01T00:00:00Z',
+        'proofPurpose': 'assertionMethod',
+        'verificationMethod': 'did:example:issuer#key-1',
+        'jws': 'test-signature',
+      },
+    }),
+  );
+
   static Map<String, dynamic> get testCredentialJson => {
     '@context': ['https://www.w3.org/2018/credentials/v1'],
     'type': ['VerifiableCredential', 'TestCredential'],
