@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:collection';
 import 'dart:typed_data';
 
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault/src/backup_data.dart';
 import 'package:test/test.dart';
@@ -122,14 +124,28 @@ Future<Vault> _vault({
   return vault;
 }
 
+class _TestLogger extends Logger {
+  _TestLogger()
+    : super(Environment.getEnvironmentConfig(EnvironmentType.local));
+
+  final List<String> warnings = [];
+
+  @override
+  void warning(Object? message, {String? component}) {
+    warnings.add(message.toString());
+  }
+}
+
 void main() {
   group('VaultBackupService', () {
     const passphrase = 'Correct-horse-staple1';
     late VaultBackupService service;
+    late FakeCryptographyService cryptographyService;
 
     setUp(() {
+      cryptographyService = FakeCryptographyService();
       service = VaultBackupService(
-        cryptographyService: FakeCryptographyService(),
+        cryptographyService: cryptographyService,
         now: () => DateTime.utc(2024, 1, 2, 3, 4, 5),
       );
     });
@@ -154,6 +170,44 @@ void main() {
       expect(envelope.encryptedBackup, isNotEmpty);
       expect(envelope.salt, isNotEmpty);
       expect(envelope.timestamp, '2024-01-02T03:04:05.000Z');
+    });
+
+    test('wipes derived key buffers returned as mutable List<int>', () async {
+      final vault = await _vault(
+        store: await _store(),
+        repositories: {'edge': _Repository('edge')},
+      );
+
+      await service.createBackup(vault: vault, passphrase: passphrase);
+
+      expect(cryptographyService.lastDerivedKey, isNotNull);
+      expect(cryptographyService.lastDerivedKey, everyElement(0));
+    });
+
+    test('warns when derived key buffers cannot be wiped in place', () async {
+      final logger = _TestLogger();
+      final immutableCrypto = FakeCryptographyService(
+        keyFactory: (password) => UnmodifiableListView<int>(
+          List<int>.from(utf8.encode('key-$password')),
+        ),
+      );
+      final warningService = VaultBackupService(
+        cryptographyService: immutableCrypto,
+        logger: logger,
+        now: () => DateTime.utc(2024, 1, 2, 3, 4, 5),
+      );
+      final vault = await _vault(
+        store: await _store(),
+        repositories: {'edge': _Repository('edge')},
+      );
+
+      await warningService.createBackup(vault: vault, passphrase: passphrase);
+
+      expect(logger.warnings, hasLength(1));
+      expect(
+        logger.warnings.single,
+        contains('Unable to wipe derived key material'),
+      );
     });
 
     test('restores and opens a fresh Vault', () async {
