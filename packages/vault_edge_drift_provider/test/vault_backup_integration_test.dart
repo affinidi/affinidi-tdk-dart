@@ -180,12 +180,19 @@ void main() {
           passphrase: passphrase,
           vaultStoreFactory: () => rejectionStore,
           repositoryFactories: {
-            'edge': (vaultStore) => _repository(
+            'edge': ProfileRepositoryRegistration.withBackupData(
               id: 'edge',
-              database: occupiedDatabase,
-              vaultStore: vaultStore,
+              factory: (vaultStore) => _repository(
+                id: 'edge',
+                database: occupiedDatabase,
+                vaultStore: vaultStore,
+              ),
+              asRestorable: restorableIdentity,
             ),
-            'cloud': (_) => _CloudRepository('cloud'),
+            'cloud': ProfileRepositoryRegistration.withoutBackupData(
+              id: 'cloud',
+              factory: (_) => _CloudRepository('cloud'),
+            ),
           },
         ),
         throwsA(
@@ -212,12 +219,19 @@ void main() {
         passphrase: passphrase,
         vaultStoreFactory: () => targetStore,
         repositoryFactories: {
-          'edge': (vaultStore) => _repository(
+          'edge': ProfileRepositoryRegistration.withBackupData(
             id: 'edge',
-            database: targetDatabase,
-            vaultStore: vaultStore,
+            factory: (vaultStore) => _repository(
+              id: 'edge',
+              database: targetDatabase,
+              vaultStore: vaultStore,
+            ),
+            asRestorable: restorableIdentity,
           ),
-          'cloud': (_) => _CloudRepository('cloud'),
+          'cloud': ProfileRepositoryRegistration.withoutBackupData(
+            id: 'cloud',
+            factory: (_) => _CloudRepository('cloud'),
+          ),
         },
       );
 
@@ -380,15 +394,23 @@ void main() {
         passphrase: 'Correct-horse-staple1',
         vaultStoreFactory: () => targetStore,
         repositoryFactories: {
-          'edge-a': (store) => _repository(
+          'edge-a': ProfileRepositoryRegistration.withBackupData(
             id: 'edge-a',
-            database: targetDatabaseA,
-            vaultStore: store,
+            factory: (store) => _repository(
+              id: 'edge-a',
+              database: targetDatabaseA,
+              vaultStore: store,
+            ),
+            asRestorable: restorableIdentity,
           ),
-          'edge-b': (store) => _repository(
+          'edge-b': ProfileRepositoryRegistration.withBackupData(
             id: 'edge-b',
-            database: targetDatabaseB,
-            vaultStore: store,
+            factory: (store) => _repository(
+              id: 'edge-b',
+              database: targetDatabaseB,
+              vaultStore: store,
+            ),
+            asRestorable: restorableIdentity,
           ),
         },
       );

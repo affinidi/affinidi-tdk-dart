@@ -119,8 +119,12 @@ void main() {
       passphrase: 'Correct-horse-staple1',
       vaultStoreFactory: InMemoryVaultStore.new,
       repositoryFactories: {
-        'edge': (store) =>
-            _repository(database: targetDatabase, vaultStore: store),
+        'edge': ProfileRepositoryRegistration.withBackupData(
+          id: 'edge',
+          factory: (store) =>
+              _repository(database: targetDatabase, vaultStore: store),
+          asRestorable: restorableIdentity,
+        ),
       },
       namedRestorableFactories: {'consentHistory': () => targetConsent},
     );
@@ -167,8 +171,12 @@ void main() {
         passphrase: 'Correct-horse-staple1',
         vaultStoreFactory: () => targetStore,
         repositoryFactories: {
-          'edge': (store) =>
-              _repository(database: targetDatabase, vaultStore: store),
+          'edge': ProfileRepositoryRegistration.withBackupData(
+            id: 'edge',
+            factory: (store) =>
+                _repository(database: targetDatabase, vaultStore: store),
+            asRestorable: restorableIdentity,
+          ),
         },
         namedRestorableFactories: {'consentHistory': () => targetConsent},
       ),

@@ -106,7 +106,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
     required ByteData backupData,
     required String passphrase,
     required VaultStoreFactory vaultStoreFactory,
-    required Map<String, ProfileRepositoryFactory> repositoryFactories,
+    required Map<String, ProfileRepositoryRegistration> repositoryFactories,
     Map<String, RestorableFactory> namedRestorableFactories = const {},
   }) => _restoreLock.synchronized(() async {
     final Backup backup;
@@ -184,17 +184,37 @@ class VaultBackupService implements VaultBackupServiceInterface {
       throw _invalidBackupFormat();
     }
 
-    final vaultStore = await vaultStoreFactory();
-    final repositories = <String, ProfileRepository>{};
     for (final entry in manifest) {
       final manifestEntry = entry as Map<String, dynamic>;
       final id = manifestEntry['id'] as String;
-      final repository = await repositoryFactories[id]!(vaultStore);
-      if (repository.id != id ||
-          (repository is Restorable) != (manifestEntry['restorable'] as bool)) {
+      final registration = repositoryFactories[id]!;
+      if (registration.id != id ||
+          registration.expectsBackupData !=
+              (manifestEntry['restorable'] as bool)) {
+        throw _invalidBackupFormat();
+      }
+    }
+
+    final vaultStore = await vaultStoreFactory();
+    final repositories = <String, ProfileRepository>{};
+    final restorableRepositories = <String, Restorable>{};
+    for (final entry in manifest) {
+      final manifestEntry = entry as Map<String, dynamic>;
+      final id = manifestEntry['id'] as String;
+      final registration = repositoryFactories[id]!;
+      final repository = await registration.create(vaultStore);
+      if (repository.id != id) {
+        throw _invalidBackupFormat();
+      }
+      final restorable = registration.restorableView(repository);
+      if ((restorable != null) != (manifestEntry['restorable'] as bool) ||
+          (!registration.expectsBackupData && repository is Restorable)) {
         throw _invalidBackupFormat();
       }
       repositories[id] = repository;
+      if (restorable != null) {
+        restorableRepositories[id] = restorable;
+      }
     }
     final namedRestorables = <String, Restorable>{};
     for (final id in namedData.keys) {
@@ -206,7 +226,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
     final seed = base64Decode(vaultStoreData['seed'] as String);
     final wallet = Bip32Wallet.fromSeed(seed);
     for (final entry in repositoryData.entries) {
-      final repository = repositories[entry.key]! as Restorable;
+      final repository = restorableRepositories[entry.key]!;
       final profileRepository = repositories[entry.key]!;
       if (!await profileRepository.isConfigured()) {
         await profileRepository.configure(
@@ -225,7 +245,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
       throw _restoreDestinationNotEmpty('VaultStore');
     }
     for (final id in repositoryData.keys.toList()..sort()) {
-      if (!await (repositories[id]! as Restorable).isEmpty()) {
+      if (!await restorableRepositories[id]!.isEmpty()) {
         throw _restoreDestinationNotEmpty('Repository "$id"');
       }
     }
