@@ -4,7 +4,6 @@ import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:ssi/ssi.dart';
 
 import 'backup.dart';
-import 'backup_restore_plan.dart';
 import 'dto/shared_item_dto.dart';
 import 'dto/shared_profile_dto.dart';
 import 'exceptions/tdk_exception_type.dart';
@@ -23,6 +22,7 @@ import 'storage_interfaces/repository_configuration.dart';
 import 'storage_interfaces/restorable.dart';
 import 'storage_interfaces/shared_storage.dart';
 import 'storage_interfaces/vault_store.dart';
+import 'vault_restore_plan.dart';
 import 'vault_storage_usage.dart';
 
 /// Manages vault operations and profile repositories.
@@ -35,7 +35,7 @@ class Vault implements Restorable {
   late final Map<String, ProfileRepositoryHandle> _profileRepositoryHandles;
   late final Map<String, ProfileRepository> _profileRepositories;
   final Map<String, Restorable> _namedRestorables;
-  BackupRestorePlan? _pendingImportPlan;
+  VaultRestorePlan? _pendingImportPlan;
   List<Profile>? _profilesCache;
   int _profilesCacheVersion = 0;
 
@@ -332,9 +332,9 @@ class Vault implements Restorable {
     await _prepareRestore(data);
   }
 
-  Future<BackupRestorePlan> _prepareRestore(Map<String, dynamic> data) {
+  Future<VaultRestorePlan> _prepareRestore(Map<String, dynamic> data) {
     _throwIfNotInitialized();
-    return BackupRestorePlan.prepare(
+    return VaultRestorePlan.prepare(
       data: data,
       vaultStore: _vaultStore,
       profileRepositories: _profileRepositories,
@@ -382,23 +382,10 @@ class Vault implements Restorable {
   @override
   /// Returns whether all local repository and named-component destinations are
   /// empty. The already-open VaultStore is intentionally excluded.
-  Future<bool> isEmpty() async {
-    final repositoryIds = _profileRepositories.keys.toList()..sort();
-    for (final id in repositoryIds) {
-      final repository = _profileRepositories[id]!;
-      if (repository is Restorable &&
-          !await (repository as Restorable).isEmpty()) {
-        return false;
-      }
-    }
-    final namedIds = _namedRestorables.keys.toList()..sort();
-    for (final id in namedIds) {
-      if (!await _namedRestorables[id]!.isEmpty()) {
-        return false;
-      }
-    }
-    return true;
-  }
+  Future<bool> isEmpty() => VaultRestorePlan.isDestinationEmpty(
+    profileRepositories: _profileRepositories,
+    namedRestorables: _namedRestorables,
+  );
 
   /// Ensures the vault is initialized by configuring all profile repositories.
   Future<void> ensureInitialized() async {
