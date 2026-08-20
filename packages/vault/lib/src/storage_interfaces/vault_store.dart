@@ -14,6 +14,7 @@ abstract class VaultStore implements Restorable {
   static const _seedKey = 'seed';
   static const _contentKeyKey = 'contentKey';
   static const _accountIndexKey = 'accountIndex';
+  bool _importPendingRollback = false;
 
   /// Stores the account index to storage.
   ///
@@ -53,8 +54,15 @@ abstract class VaultStore implements Restorable {
   /// Returns the key.
   Future<Uint8List?> getContentKey();
 
-  /// Removes all stored data including account index and seed
+  /// Removes all stored data including account index and seed.
   Future<void> clear();
+
+  @override
+  Future<void> rollbackImport() async {
+    if (!_importPendingRollback) return;
+    await clear();
+    _importPendingRollback = false;
+  }
 
   @override
   Future<Map<String, dynamic>> export() async {
@@ -95,6 +103,7 @@ abstract class VaultStore implements Restorable {
         code: TdkExceptionType.restoreDestinationNotEmpty.code,
       );
     }
+    _importPendingRollback = true;
     await setSeed(parsed.seed);
     if (parsed.contentKey != null) {
       await setContentKey(parsed.contentKey!);

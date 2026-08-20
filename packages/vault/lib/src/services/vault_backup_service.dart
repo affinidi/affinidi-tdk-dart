@@ -3,8 +3,8 @@ import 'dart:typed_data';
 
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
-import 'package:synchronized/synchronized.dart';
 import 'package:ssi/ssi.dart';
+import 'package:synchronized/synchronized.dart';
 
 import '../backup.dart';
 import '../backup_data.dart';
@@ -254,16 +254,37 @@ class VaultBackupService implements VaultBackupServiceInterface {
         throw _restoreDestinationNotEmpty('Named component "$id"');
       }
     }
-    await vaultStore.import(vaultStoreData);
-    final vault = await Vault.fromVaultStore(
-      vaultStore,
-      profileRepositories: repositories,
-      namedRestorables: namedRestorables,
-      defaultProfileRepositoryId: defaultRepositoryId,
-    );
-    await vault.ensureInitialized();
-    await vault.import(backup.data);
-    return vault;
+    var vaultStoreImported = false;
+    try {
+      await vaultStore.import(vaultStoreData);
+      vaultStoreImported = true;
+      final vault = await Vault.fromVaultStore(
+        vaultStore,
+        profileRepositories: repositories,
+        namedRestorables: namedRestorables,
+        defaultProfileRepositoryId: defaultRepositoryId,
+      );
+      await vault.ensureInitialized();
+      await vault.import(backup.data);
+      return vault;
+    } catch (error, stackTrace) {
+      if (vaultStoreImported) {
+        try {
+          await vaultStore.rollbackImport();
+        } catch (_) {
+          Error.throwWithStackTrace(
+            TdkException(
+              message:
+                  'Vault restore failed and automatic rollback could not '
+                  'clear the VaultStore.',
+              code: TdkExceptionType.restoreRollbackFailed.code,
+            ),
+            stackTrace,
+          );
+        }
+      }
+      Error.throwWithStackTrace(error, stackTrace);
+    }
   });
 
   /// Overwrite of a derived-key buffer to shorten its lifetime.

@@ -33,6 +33,7 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
   final CredentialCodec _codec;
   final EdgeEncryptionServiceInterface _encryptionService;
   final Lock _lock;
+  bool _importPendingRollback = false;
 
   static const _backupVersion = '1.0.0';
   static const _pageSize = 50;
@@ -217,6 +218,7 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
         if (!await isEmpty()) {
           throw _restoreDestinationNotEmpty();
         }
+        _importPendingRollback = true;
         for (final (id, credential) in credentials) {
           await _saveCredential(
             credentialId: id,
@@ -224,6 +226,24 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
           );
         }
       });
+
+  @override
+  Future<void> rollbackImport() => _lock.synchronized(() async {
+    if (!_importPendingRollback) return;
+    String? cursor;
+    do {
+      final page = await _repository.listCredentialData(
+        profileId: _profileId,
+        limit: _pageSize,
+        exclusiveStartItemId: cursor,
+      );
+      for (final credential in page.items) {
+        await _repository.deleteCredential(credentialId: credential.id);
+      }
+      cursor = page.lastEvaluatedItemId;
+    } while (cursor != null);
+    _importPendingRollback = false;
+  });
 
   List<(String, VerifiableCredential)> _parseBackup(Map<String, dynamic> data) {
     const allowedKeys = {'version', 'credentials'};

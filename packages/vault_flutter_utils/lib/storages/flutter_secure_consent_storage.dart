@@ -32,6 +32,7 @@ class FlutterSecureConsentStorage implements ConsentStorage, Restorable {
 
   final String _namespace;
   final FlutterSecureStorage _secureStorage;
+  bool _importPendingRollback = false;
 
   static const _backupVersion = '1.0.0';
 
@@ -93,9 +94,23 @@ class FlutterSecureConsentStorage implements ConsentStorage, Restorable {
     if (!await isEmpty()) {
       throw _restoreDestinationNotEmpty();
     }
+    _importPendingRollback = true;
     for (final record in records) {
       await saveOrUpdate(record);
     }
+  }
+
+  @override
+  Future<void> rollbackImport() async {
+    if (!_importPendingRollback) return;
+    final all = await _secureStorage.readAll();
+    final prefix = '${_namespace}_';
+    for (final key in all.keys) {
+      if (key.startsWith(prefix)) {
+        await _secureStorage.delete(key: key);
+      }
+    }
+    _importPendingRollback = false;
   }
 
   List<IotaConsentRecord> _parseBackup(Map<String, dynamic> data) {
