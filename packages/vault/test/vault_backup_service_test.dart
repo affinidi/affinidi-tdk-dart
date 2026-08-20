@@ -8,142 +8,10 @@ import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault/src/backup_data.dart';
 import 'package:test/test.dart';
 
+import 'fakes/fake_restorable.dart';
+import 'fakes/fake_restorable_profile_repository.dart';
+import 'fakes/fake_vault_store.dart';
 import 'mocks/mock_cryptography_service.dart';
-
-class _Repository implements ProfileRepository, Restorable {
-  _Repository(this.id, {this.value = 'source'});
-
-  @override
-  final String id;
-  String value;
-  bool imported = false;
-  int rollbackCalls = 0;
-  bool _empty = true;
-  bool _importPendingRollback = false;
-
-  @override
-  Future<Map<String, dynamic>> export() async => {
-    'version': '1.0.0',
-    'value': value,
-  };
-
-  @override
-  Future<void> validateImport(Map<String, dynamic> data) async {}
-
-  @override
-  Future<bool> isEmpty() async => _empty;
-
-  @override
-  Future<void> import(Map<String, dynamic> data) async {
-    _importPendingRollback = true;
-    value = data['value'] as String;
-    imported = true;
-    _empty = false;
-  }
-
-  @override
-  Future<void> rollbackImport() async {
-    if (!_importPendingRollback) return;
-    imported = false;
-    _empty = true;
-    _importPendingRollback = false;
-    rollbackCalls++;
-  }
-
-  @override
-  Future<void> configure(Object configuration) async {}
-
-  @override
-  Future<bool> isConfigured() async => true;
-
-  @override
-  Future<List<Profile>> listProfiles({VaultCancelToken? cancelToken}) async =>
-      const [];
-
-  @override
-  Future<Profile> createProfile({
-    required String name,
-    String? description,
-    VaultCancelToken? cancelToken,
-  }) => throw UnimplementedError();
-
-  @override
-  Future<void> updateProfile(
-    Profile profile, {
-    VaultCancelToken? cancelToken,
-  }) => throw UnimplementedError();
-
-  @override
-  Future<void> deleteProfile(
-    Profile profile, {
-    VaultCancelToken? cancelToken,
-  }) => throw UnimplementedError();
-}
-
-class _NamedComponent implements Restorable {
-  _NamedComponent({
-    this.value = 'source',
-    this.validationError,
-    this.importError,
-  });
-
-  String value;
-  final Exception? validationError;
-  final Exception? importError;
-  bool imported = false;
-  int rollbackCalls = 0;
-  bool _empty = true;
-  bool _importPendingRollback = false;
-
-  @override
-  Future<Map<String, dynamic>> export() async => {
-    'version': '1.0.0',
-    'value': value,
-  };
-
-  @override
-  Future<void> validateImport(Map<String, dynamic> data) async {
-    if (validationError != null) throw validationError!;
-  }
-
-  @override
-  Future<bool> isEmpty() async => _empty;
-
-  @override
-  Future<void> import(Map<String, dynamic> data) async {
-    if (importError != null) throw importError!;
-    _importPendingRollback = true;
-    value = data['value'] as String;
-    imported = true;
-    _empty = false;
-  }
-
-  @override
-  Future<void> rollbackImport() async {
-    if (!_importPendingRollback) return;
-    imported = false;
-    _empty = true;
-    _importPendingRollback = false;
-    rollbackCalls++;
-  }
-}
-
-class _TrackingStore extends InMemoryVaultStore {
-  bool imported = false;
-  bool cleared = false;
-
-  @override
-  Future<void> import(Map<String, dynamic> data) async {
-    imported = true;
-    await super.import(data);
-  }
-
-  @override
-  Future<void> clear() async {
-    cleared = true;
-    await super.clear();
-  }
-}
 
 class _BlockingStore extends InMemoryVaultStore {
   final importStarted = Completer<void>();
@@ -212,7 +80,7 @@ void main() {
       test('it creates encrypted file-ready bytes', () async {
         final vault = await _vault(
           store: await _store(),
-          repositories: {'edge': _Repository('edge')},
+          repositories: {'edge': FakeRestorableProfileRepository('edge')},
         );
 
         final bytes = await service.createBackup(
@@ -234,7 +102,7 @@ void main() {
       test('it wipes mutable derived key buffers', () async {
         final vault = await _vault(
           store: await _store(),
-          repositories: {'edge': _Repository('edge')},
+          repositories: {'edge': FakeRestorableProfileRepository('edge')},
         );
 
         await service.createBackup(vault: vault, passphrase: passphrase);
@@ -257,7 +125,7 @@ void main() {
         );
         final vault = await _vault(
           store: await _store(),
-          repositories: {'edge': _Repository('edge')},
+          repositories: {'edge': FakeRestorableProfileRepository('edge')},
         );
 
         await warningService.createBackup(vault: vault, passphrase: passphrase);
@@ -274,15 +142,20 @@ void main() {
       test('it restores and opens a fresh Vault', () async {
         final source = await _vault(
           store: await _store(),
-          repositories: {'edge': _Repository('edge', value: 'profiles')},
-          named: {'consentHistory': _NamedComponent(value: 'consent')},
+          repositories: {
+            'edge': FakeRestorableProfileRepository('edge', value: 'profiles'),
+          },
+          named: {'consentHistory': FakeRestorable(value: 'consent')},
         );
         final bytes = await service.createBackup(
           vault: source,
           passphrase: passphrase,
         );
-        final targetRepository = _Repository('edge', value: 'empty');
-        final targetComponent = _NamedComponent(value: 'empty');
+        final targetRepository = FakeRestorableProfileRepository(
+          'edge',
+          value: 'empty',
+        );
+        final targetComponent = FakeRestorable(value: 'empty');
 
         final restored = await service.restoreBackup(
           backupData: bytes,
@@ -310,14 +183,22 @@ void main() {
         () async {
           final source = await _vault(
             store: await _store(),
-            repositories: {'edge': _Repository('edge', value: 'profiles')},
+            repositories: {
+              'edge': FakeRestorableProfileRepository(
+                'edge',
+                value: 'profiles',
+              ),
+            },
           );
           final bytes = await service.createBackup(
             vault: source,
             passphrase: passphrase,
           );
           final targetStore = _BlockingStore();
-          final targetRepository = _Repository('edge', value: 'empty');
+          final targetRepository = FakeRestorableProfileRepository(
+            'edge',
+            value: 'empty',
+          );
 
           Future<Vault> restore() => service.restoreBackup(
             backupData: bytes,
@@ -369,7 +250,7 @@ void main() {
       test('it supports ByteData views with a non-zero offset', () async {
         final source = await _vault(
           store: await _store(),
-          repositories: {'edge': _Repository('edge')},
+          repositories: {'edge': FakeRestorableProfileRepository('edge')},
         );
         final bytes = await service.createBackup(
           vault: source,
@@ -389,7 +270,7 @@ void main() {
           repositoryFactories: {
             'edge': ProfileRepositoryRegistration.withBackupData(
               id: 'edge',
-              factory: (_) => _Repository('edge'),
+              factory: (_) => FakeRestorableProfileRepository('edge'),
               asRestorable: restorableIdentity,
             ),
           },
@@ -403,7 +284,7 @@ void main() {
       test('it rejects the passphrase', () async {
         final vault = await _vault(
           store: await _store(),
-          repositories: {'edge': _Repository('edge')},
+          repositories: {'edge': FakeRestorableProfileRepository('edge')},
         );
 
         await expectLater(
@@ -425,7 +306,7 @@ void main() {
         () async {
           final source = await _vault(
             store: await _store(),
-            repositories: {'edge': _Repository('edge')},
+            repositories: {'edge': FakeRestorableProfileRepository('edge')},
           );
           final bytes = await service.createBackup(
             vault: source,
@@ -444,7 +325,7 @@ void main() {
               repositoryFactories: {
                 'edge': ProfileRepositoryRegistration.withBackupData(
                   id: 'edge',
-                  factory: (_) => _Repository('edge'),
+                  factory: (_) => FakeRestorableProfileRepository('edge'),
                   asRestorable: restorableIdentity,
                 ),
               },
@@ -460,7 +341,7 @@ void main() {
         () async {
           final source = await _vault(
             store: await _store(),
-            repositories: {'edge': _Repository('edge')},
+            repositories: {'edge': FakeRestorableProfileRepository('edge')},
           );
           final bytes = await service.createBackup(
             vault: source,
@@ -482,7 +363,7 @@ void main() {
                   id: 'edge',
                   factory: (_) {
                     repositoryFactoryCalls++;
-                    return _Repository('edge');
+                    return FakeRestorableProfileRepository('edge');
                   },
                 ),
               },
@@ -500,7 +381,7 @@ void main() {
         () async {
           final source = await _vault(
             store: await _store(),
-            repositories: {'edge': _Repository('edge')},
+            repositories: {'edge': FakeRestorableProfileRepository('edge')},
           );
           final bytes = await service.createBackup(
             vault: source,
@@ -529,15 +410,23 @@ void main() {
         () async {
           final source = await _vault(
             store: await _store(),
-            repositories: {'edge': _Repository('edge', value: 'profiles')},
-            named: {'last': _NamedComponent(value: 'named')},
+            repositories: {
+              'edge': FakeRestorableProfileRepository(
+                'edge',
+                value: 'profiles',
+              ),
+            },
+            named: {'last': FakeRestorable(value: 'named')},
           );
           final bytes = await service.createBackup(
             vault: source,
             passphrase: passphrase,
           );
-          final targetStore = _TrackingStore();
-          final targetRepository = _Repository('edge', value: 'empty');
+          final targetStore = FakeVaultStore();
+          final targetRepository = FakeRestorableProfileRepository(
+            'edge',
+            value: 'empty',
+          );
 
           await expectLater(
             service.restoreBackup(
@@ -552,7 +441,7 @@ void main() {
                 ),
               },
               namedRestorableFactories: {
-                'last': () => _NamedComponent(
+                'last': () => FakeRestorable(
                   validationError: TdkException(
                     message: 'Malformed named component',
                     code: 'invalid_backup_format',
@@ -574,15 +463,23 @@ void main() {
         () async {
           final source = await _vault(
             store: await _store(),
-            repositories: {'edge': _Repository('edge', value: 'profiles')},
-            named: {'last': _NamedComponent(value: 'named')},
+            repositories: {
+              'edge': FakeRestorableProfileRepository(
+                'edge',
+                value: 'profiles',
+              ),
+            },
+            named: {'last': FakeRestorable(value: 'named')},
           );
           final bytes = await service.createBackup(
             vault: source,
             passphrase: passphrase,
           );
-          final targetStore = _TrackingStore();
-          final targetRepository = _Repository('edge', value: 'empty');
+          final targetStore = FakeVaultStore();
+          final targetRepository = FakeRestorableProfileRepository(
+            'edge',
+            value: 'empty',
+          );
 
           await expectLater(
             service.restoreBackup(
@@ -597,7 +494,7 @@ void main() {
                 ),
               },
               namedRestorableFactories: {
-                'last': () => _NamedComponent(
+                'last': () => FakeRestorable(
                   importError: TdkException(
                     message: 'late failure',
                     code: 'invalid_backup_format',
@@ -620,7 +517,7 @@ void main() {
       test('it fails before store creation when bytes are tampered', () async {
         final source = await _vault(
           store: await _store(),
-          repositories: {'edge': _Repository('edge')},
+          repositories: {'edge': FakeRestorableProfileRepository('edge')},
         );
         final bytes = await service.createBackup(
           vault: source,
@@ -643,7 +540,7 @@ void main() {
             repositoryFactories: {
               'edge': ProfileRepositoryRegistration.withBackupData(
                 id: 'edge',
-                factory: (_) => _Repository('edge'),
+                factory: (_) => FakeRestorableProfileRepository('edge'),
                 asRestorable: restorableIdentity,
               ),
             },
