@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'backup.dart';
 import 'exceptions/vault_restore_exception.dart';
+import 'extensions/set_extensions.dart';
 import 'storage_interfaces/profile_repository.dart';
 import 'storage_interfaces/restorable.dart';
 import 'storage_interfaces/vault_store.dart';
@@ -61,8 +62,10 @@ class VaultRestorePlan {
         throw VaultRestoreException.invalidBackupFormat();
       }
     }
-    if (!_sameIds(expectedRepositoryIds, backupRepositoryIds) ||
-        !_sameIds(namedRestorables.keys.toSet(), namedData.keys.toSet())) {
+    if (!expectedRepositoryIds.hasSameElementsAs(backupRepositoryIds) ||
+        !namedRestorables.keys.toSet().hasSameElementsAs(
+          namedData.keys.toSet(),
+        )) {
       throw VaultRestoreException.invalidBackupFormat();
     }
 
@@ -103,9 +106,6 @@ class VaultRestorePlan {
 
     return importPlan;
   }
-
-  static bool _sameIds(Set<String> left, Set<String> right) =>
-      left.length == right.length && left.containsAll(right);
 
   static bool _sameBytes(Uint8List left, Uint8List right) {
     if (left.length != right.length) return false;

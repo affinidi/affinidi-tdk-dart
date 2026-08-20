@@ -1,6 +1,7 @@
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 
 import 'exceptions/tdk_exception_type.dart';
+import 'exceptions/vault_restore_exception.dart';
 import 'storage_interfaces/profile_repository.dart';
 import 'storage_interfaces/restorable.dart';
 import 'storage_interfaces/vault_store.dart';
@@ -140,7 +141,7 @@ class Backup {
     const topLevelKeys = {'vaultStore', 'repositories', 'namedComponents'};
     if (data.length != topLevelKeys.length ||
         !data.keys.toSet().containsAll(topLevelKeys)) {
-      throw _invalidFormat();
+      throw VaultRestoreException.malformedBackupData();
     }
 
     _validateComponentPayload(data['vaultStore']);
@@ -151,13 +152,13 @@ class Backup {
         !repositories.containsKey('defaultId') ||
         !repositories.containsKey('manifest') ||
         !repositories.containsKey('data')) {
-      throw _invalidFormat();
+      throw VaultRestoreException.malformedBackupData();
     }
     final manifest = repositories['manifest'];
     final repositoryData = repositories['data'];
     final defaultRepositoryId = repositories['defaultId'];
     if (manifest is! List || repositoryData is! Map<String, dynamic>) {
-      throw _invalidFormat();
+      throw VaultRestoreException.malformedBackupData();
     }
 
     final repositoryIds = <String>{};
@@ -167,7 +168,7 @@ class Backup {
           rawEntry.length != 2 ||
           !rawEntry.containsKey('id') ||
           !rawEntry.containsKey('restorable')) {
-        throw _invalidFormat();
+        throw VaultRestoreException.malformedBackupData();
       }
       final id = rawEntry['id'];
       final restorable = rawEntry['restorable'];
@@ -175,7 +176,7 @@ class Backup {
           id.isEmpty ||
           !repositoryIds.add(id) ||
           restorable is! bool) {
-        throw _invalidFormat();
+        throw VaultRestoreException.malformedBackupData();
       }
       if (restorable) {
         restorableIds.add(id);
@@ -183,11 +184,11 @@ class Backup {
     }
     if (defaultRepositoryId is! String ||
         !repositoryIds.contains(defaultRepositoryId)) {
-      throw _invalidFormat();
+      throw VaultRestoreException.malformedBackupData();
     }
     if (repositoryData.keys.toSet().difference(restorableIds).isNotEmpty ||
         restorableIds.difference(repositoryData.keys.toSet()).isNotEmpty) {
-      throw _invalidFormat();
+      throw VaultRestoreException.malformedBackupData();
     }
     for (final payload in repositoryData.values) {
       _validateComponentPayload(payload);
@@ -196,7 +197,7 @@ class Backup {
     final namedComponents = data['namedComponents'];
     if (namedComponents is! Map<String, dynamic> ||
         namedComponents.keys.any((id) => id.isEmpty)) {
-      throw _invalidFormat();
+      throw VaultRestoreException.malformedBackupData();
     }
     for (final payload in namedComponents.values) {
       _validateComponentPayload(payload);
@@ -205,7 +206,7 @@ class Backup {
 
   static void _validateComponentPayload(Object? payload) {
     if (payload is! Map<String, dynamic> || payload['version'] is! String) {
-      throw _invalidFormat();
+      throw VaultRestoreException.malformedBackupData();
     }
   }
 
@@ -227,9 +228,4 @@ class Backup {
     }
     return Map.unmodifiable(result);
   }
-
-  static TdkException _invalidFormat() => TdkException(
-    message: 'The Vault backup data is malformed.',
-    code: TdkExceptionType.invalidBackupFormat.code,
-  );
 }

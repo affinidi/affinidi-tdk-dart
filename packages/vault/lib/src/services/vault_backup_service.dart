@@ -9,6 +9,8 @@ import 'package:synchronized/synchronized.dart';
 import '../backup.dart';
 import '../backup_data.dart';
 import '../exceptions/tdk_exception_type.dart';
+import '../exceptions/vault_restore_exception.dart';
+import '../extensions/set_extensions.dart';
 import '../passphrase_policy.dart';
 import '../storage_interfaces/profile_repository.dart';
 import '../storage_interfaces/repository_configuration.dart';
@@ -117,7 +119,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
       );
       final rawBackupData = jsonDecode(utf8.decode(bytes));
       if (rawBackupData is! Map<String, dynamic>) {
-        throw _invalidBackupFormat();
+        throw VaultRestoreException.invalidBackupFormat();
       }
       final encryptedData = BackupData.fromJson(rawBackupData);
       final salt = base64Decode(encryptedData.salt);
@@ -176,12 +178,11 @@ class VaultBackupService implements VaultBackupServiceInterface {
         (entry as Map<String, dynamic>)['id'] as String,
     };
     final namedData = backup.data['namedComponents'] as Map<String, dynamic>;
-    if (!_sameIds(repositoryIds, repositoryFactories.keys.toSet()) ||
-        !_sameIds(
-          namedData.keys.toSet(),
+    if (!repositoryIds.hasSameElementsAs(repositoryFactories.keys.toSet()) ||
+        !namedData.keys.toSet().hasSameElementsAs(
           namedRestorableFactories.keys.toSet(),
         )) {
-      throw _invalidBackupFormat();
+      throw VaultRestoreException.invalidBackupFormat();
     }
 
     for (final entry in manifest) {
@@ -191,7 +192,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
       if (registration.id != id ||
           registration.expectsBackupData !=
               (manifestEntry['restorable'] as bool)) {
-        throw _invalidBackupFormat();
+        throw VaultRestoreException.invalidBackupFormat();
       }
     }
 
@@ -204,12 +205,12 @@ class VaultBackupService implements VaultBackupServiceInterface {
       final registration = repositoryFactories[id]!;
       final repository = await registration.create(vaultStore);
       if (repository.id != id) {
-        throw _invalidBackupFormat();
+        throw VaultRestoreException.invalidBackupFormat();
       }
       final restorable = registration.restorableView(repository);
       if ((restorable != null) != (manifestEntry['restorable'] as bool) ||
           (!registration.expectsBackupData && repository is Restorable)) {
-        throw _invalidBackupFormat();
+        throw VaultRestoreException.invalidBackupFormat();
       }
       repositories[id] = repository;
       if (restorable != null) {
@@ -242,16 +243,18 @@ class VaultBackupService implements VaultBackupServiceInterface {
     }
 
     if (!await vaultStore.isEmpty()) {
-      throw _restoreDestinationNotEmpty('VaultStore');
+      throw VaultRestoreException.destinationNotEmpty('VaultStore');
     }
     for (final id in repositoryData.keys.toList()..sort()) {
       if (!await restorableRepositories[id]!.isEmpty()) {
-        throw _restoreDestinationNotEmpty('Repository "$id"');
+        throw VaultRestoreException.destinationNotEmpty('Repository "$id"');
       }
     }
     for (final id in namedData.keys.toList()..sort()) {
       if (!await namedRestorables[id]!.isEmpty()) {
-        throw _restoreDestinationNotEmpty('Named component "$id"');
+        throw VaultRestoreException.destinationNotEmpty(
+          'Named component "$id"',
+        );
       }
     }
     var vaultStoreImported = false;
@@ -305,17 +308,4 @@ class VaultBackupService implements VaultBackupServiceInterface {
       );
     }
   }
-
-  bool _sameIds(Set<String> left, Set<String> right) =>
-      left.length == right.length && left.containsAll(right);
-
-  TdkException _invalidBackupFormat() => TdkException(
-    message: 'Backup is not compatible with the configured Vault factories.',
-    code: TdkExceptionType.invalidBackupFormat.code,
-  );
-
-  TdkException _restoreDestinationNotEmpty(String destination) => TdkException(
-    message: '$destination restore destination is not empty.',
-    code: TdkExceptionType.restoreDestinationNotEmpty.code,
-  );
 }
