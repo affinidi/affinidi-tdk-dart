@@ -3,11 +3,11 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault/src/backup_data.dart';
 import 'package:test/test.dart';
 
+import 'fakes/fake_logger.dart';
 import 'fakes/fake_restorable.dart';
 import 'fakes/fake_restorable_profile_repository.dart';
 import 'fakes/fake_vault_store.dart';
@@ -48,18 +48,6 @@ Future<Vault> _vault({
   );
   await vault.ensureInitialized();
   return vault;
-}
-
-class _TestLogger extends Logger {
-  _TestLogger()
-    : super(Environment.getEnvironmentConfig(EnvironmentType.local));
-
-  final List<String> warnings = [];
-
-  @override
-  void warning(Object? message, {String? component}) {
-    warnings.add(message.toString());
-  }
 }
 
 void main() {
@@ -112,7 +100,7 @@ void main() {
       });
 
       test('it warns when derived key buffers cannot be wiped', () async {
-        final logger = _TestLogger();
+        final logger = FakeLogger();
         final immutableCrypto = FakeCryptographyService(
           keyFactory: (password) => UnmodifiableListView<int>(
             List<int>.from(utf8.encode('key-$password')),
