@@ -8,11 +8,36 @@ import 'storage_interfaces/restorable.dart';
 import 'storage_interfaces/vault_store.dart';
 
 /// Executes an ordered Vault backup import with compensating rollback.
-class BackupRestorePlan {
-  BackupRestorePlan._();
+class VaultRestorePlan {
+  VaultRestorePlan._();
+
+  /// Returns whether all registered local restore destinations are empty.
+  ///
+  /// The already-open [VaultStore] is intentionally excluded.
+  static Future<bool> isDestinationEmpty({
+    required Map<String, ProfileRepository> profileRepositories,
+    required Map<String, Restorable> namedRestorables,
+  }) async {
+    final repositoryIds = profileRepositories.keys.toList()..sort();
+    for (final id in repositoryIds) {
+      final repository = profileRepositories[id]!;
+      if (repository is Restorable &&
+          !await (repository as Restorable).isEmpty()) {
+        return false;
+      }
+    }
+
+    final namedIds = namedRestorables.keys.toList()..sort();
+    for (final id in namedIds) {
+      if (!await namedRestorables[id]!.isEmpty()) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   /// Validates backup data and creates its ordered import plan.
-  static Future<BackupRestorePlan> prepare({
+  static Future<VaultRestorePlan> prepare({
     required Map<String, dynamic> data,
     required VaultStore vaultStore,
     required Map<String, ProfileRepository> profileRepositories,
@@ -58,7 +83,7 @@ class BackupRestorePlan {
     }
 
     await vaultStore.validateImport(vaultStoreData);
-    final importPlan = BackupRestorePlan._();
+    final importPlan = VaultRestorePlan._();
 
     final repositoryIds = repositoryData.keys.toList()..sort();
     for (final id in repositoryIds) {
@@ -104,7 +129,7 @@ class BackupRestorePlan {
   }
 
   /// Executes the plan and returns failure details after attempting rollback.
-  Future<BackupRestoreFailure?> execute() async {
+  Future<VaultRestoreFailure?> execute() async {
     try {
       for (final entry in _operations.entries) {
         _attemptedImports[entry.key] = entry.value.restorable;
@@ -136,7 +161,7 @@ class BackupRestorePlan {
 }
 
 /// Details of an import failure and any targets that could not be rolled back.
-typedef BackupRestoreFailure = ({
+typedef VaultRestoreFailure = ({
   Object error,
   StackTrace stackTrace,
   List<String> rollbackErrors,
