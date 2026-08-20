@@ -248,6 +248,18 @@ class VaultBackupService implements VaultBackupServiceInterface {
   void _wipe(List<int> bytes) {
     if (bytes is Uint8List) {
       bytes.fillRange(0, bytes.length, 0);
+      return;
+    }
+
+    try {
+      for (var index = 0; index < bytes.length; index++) {
+        bytes[index] = 0;
+      }
+    } catch (_) {
+      _logger.warning(
+        'Unable to wipe derived key material: unsupported buffer type '
+        '(${bytes.runtimeType}).',
+      );
     }
   }
 
