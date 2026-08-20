@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:collection';
 import 'dart:typed_data';
@@ -99,6 +100,22 @@ class _TrackingStore extends InMemoryVaultStore {
   @override
   Future<void> import(Map<String, dynamic> data) async {
     imported = true;
+    await super.import(data);
+  }
+}
+
+class _BlockingStore extends InMemoryVaultStore {
+  final importStarted = Completer<void>();
+  final allowImport = Completer<void>();
+  int importCalls = 0;
+
+  @override
+  Future<void> import(Map<String, dynamic> data) async {
+    importCalls++;
+    if (!importStarted.isCompleted) {
+      importStarted.complete();
+    }
+    await allowImport.future;
     await super.import(data);
   }
 }
@@ -237,6 +254,61 @@ void main() {
       expect(targetComponent.imported, isTrue);
       expect(targetComponent.value, 'consent');
     });
+
+    test(
+      'serializes concurrent restores against the same destination',
+      () async {
+        final source = await _vault(
+          store: await _store(),
+          repositories: {'edge': _Repository('edge', value: 'profiles')},
+        );
+        final bytes = await service.createBackup(
+          vault: source,
+          passphrase: passphrase,
+        );
+        final targetStore = _BlockingStore();
+        final targetRepository = _Repository('edge', value: 'empty');
+
+        Future<Vault> restore() => service.restoreBackup(
+          backupData: bytes,
+          passphrase: passphrase,
+          vaultStoreFactory: () => targetStore,
+          repositoryFactories: {'edge': (_) => targetRepository},
+        );
+
+        final firstRestore = restore();
+        await targetStore.importStarted.future;
+
+        var secondCompleted = false;
+        final secondRestore = restore().whenComplete(() {
+          secondCompleted = true;
+        });
+
+        await Future<void>.microtask(() {});
+        await Future<void>.microtask(() {});
+
+        expect(targetStore.importCalls, 1);
+        expect(secondCompleted, isFalse);
+
+        targetStore.allowImport.complete();
+
+        final restored = await firstRestore;
+        await expectLater(
+          secondRestore,
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              'restore_destination_not_empty',
+            ),
+          ),
+        );
+
+        expect(restored.profileRepositories.keys, ['edge']);
+        expect(targetRepository.imported, isTrue);
+        expect(targetRepository.value, 'profiles');
+      },
+    );
 
     test('supports ByteData views with a non-zero offset', () async {
       final source = await _vault(

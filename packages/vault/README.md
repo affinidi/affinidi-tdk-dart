@@ -110,8 +110,11 @@ final restoredVault = await backupService.restoreBackup(
 All repository and named-component factories are validated before wallet state
 is written. Every destination VaultStore, local repository, and named component
 must be empty; restore rejects existing local data and never deletes it
-automatically. Unknown IDs, incompatible versions, incorrect passphrases, and
-tampered backups are also rejected.
+automatically. Concurrent restores through the same `VaultBackupService`
+instance are serialized so those emptiness checks and imports do not overlap.
+Unknown IDs, incompatible versions, incorrect passphrases, and tampered
+backups are also rejected. Avoid targeting the same persistence layer from
+multiple service instances at the same time.
 
 Platform-specific state can participate without coupling its domain package to
 Vault. For example, create one `FlutterSecureConsentStorage`, register it in

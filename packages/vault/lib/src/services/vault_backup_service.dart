@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
+import 'package:synchronized/synchronized.dart';
 import 'package:ssi/ssi.dart';
 
 import '../backup.dart';
@@ -44,6 +45,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
   final CryptographyServiceInterface _cryptographyService;
   final Logger _logger;
   final DateTime Function() _now;
+  final Lock _restoreLock = Lock();
 
   @override
   Future<ByteData> createBackup({
@@ -106,7 +108,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
     required VaultStoreFactory vaultStoreFactory,
     required Map<String, ProfileRepositoryFactory> repositoryFactories,
     Map<String, RestorableFactory> namedRestorableFactories = const {},
-  }) async {
+  }) => _restoreLock.synchronized(() async {
     final Backup backup;
     try {
       final bytes = backupData.buffer.asUint8List(
@@ -242,7 +244,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
     await vault.ensureInitialized();
     await vault.import(backup.data);
     return vault;
-  }
+  });
 
   /// Overwrite of a derived-key buffer to shorten its lifetime.
   void _wipe(List<int> bytes) {
