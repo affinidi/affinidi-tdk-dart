@@ -206,6 +206,11 @@ class MyConsentStore implements ConsentStorage {
   Future<List<IotaConsentRecord>> findAllByRequestHash(String requestHash) async {
     // return all matching records, or an empty list
   }
+
+  @override
+  Future<bool> deleteByHash(String hash) async {
+    // delete by record.hash; return true if a record was removed
+  }
 }
 
 final consentService = IotaConsentRecordService(

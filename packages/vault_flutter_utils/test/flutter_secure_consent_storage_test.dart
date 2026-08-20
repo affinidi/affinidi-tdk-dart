@@ -167,4 +167,36 @@ void main() {
       },
     );
   });
+
+  group('deleteByHash', () {
+    test('deletes the record and returns true when it exists', () async {
+      when(
+        () => mockStorage.containsKey(key: any(named: 'key')),
+      ).thenAnswer((_) async => true);
+      when(
+        () => mockStorage.delete(key: any(named: 'key')),
+      ).thenAnswer((_) async {});
+
+      final result = await store.deleteByHash(hash);
+
+      expect(result, isTrue);
+      verify(
+        () => mockStorage.delete(key: '${defaultNamespace}_$hash'),
+      ).called(1);
+    });
+
+    test(
+      'returns false and does not delete when the record is missing',
+      () async {
+        when(
+          () => mockStorage.containsKey(key: any(named: 'key')),
+        ).thenAnswer((_) async => false);
+
+        final result = await store.deleteByHash(hash);
+
+        expect(result, isFalse);
+        verifyNever(() => mockStorage.delete(key: any(named: 'key')));
+      },
+    );
+  });
 }
