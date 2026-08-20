@@ -1,35 +1,10 @@
-import 'dart:typed_data';
-
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:test/test.dart';
 
 import 'fakes/fake_profile_repository.dart';
 import 'fakes/fake_restorable.dart';
 import 'fakes/fake_restorable_profile_repository.dart';
-import 'fakes/fake_vault_store.dart';
-
-Future<FakeVaultStore> _store(List<String> events, {int seedOffset = 0}) async {
-  final store = FakeVaultStore(events: events);
-  await store.setSeed(
-    Uint8List.fromList(List.generate(32, (index) => index + seedOffset)),
-  );
-  await store.setAccountIndex(3);
-  return store;
-}
-
-Future<Vault> _vault({
-  required FakeVaultStore store,
-  required Map<String, ProfileRepository> repositories,
-  Map<String, Restorable> named = const {},
-}) async {
-  final vault = await Vault.fromVaultStore(
-    store,
-    profileRepositories: repositories,
-    namedRestorables: named,
-  );
-  await vault.ensureInitialized();
-  return vault;
-}
+import 'fixtures/vault_restorable_fixtures.dart';
 
 void main() {
   group('When rolling back before an import', () {
@@ -42,8 +17,8 @@ void main() {
       )..importedData = {'value': 'user-data'};
       final named = FakeRestorable(id: 'consentHistory', events: events)
         ..importedData = {'value': 'user-data'};
-      final vault = await _vault(
-        store: await _store(events),
+      final vault = await VaultRestorableFixtures.vault(
+        store: await VaultRestorableFixtures.store(events),
         repositories: {'edge': repository},
         named: {'consentHistory': named},
       );
@@ -57,7 +32,7 @@ void main() {
     });
 
     test('it preserves VaultStore data', () async {
-      final store = await _store([]);
+      final store = await VaultRestorableFixtures.store([]);
       final seed = await store.getSeed();
 
       await store.rollbackImport();
@@ -70,8 +45,8 @@ void main() {
   group('When exporting restorable state', () {
     test('it exports repositories and named components by stable ID', () async {
       final events = <String>[];
-      final vault = await _vault(
-        store: await _store(events),
+      final vault = await VaultRestorableFixtures.vault(
+        store: await VaultRestorableFixtures.store(events),
         repositories: {
           'z-cloud': FakeProfileRepository('z-cloud'),
           'a-edge': FakeRestorableProfileRepository(
@@ -107,8 +82,8 @@ void main() {
   group('When importing restorable state', () {
     test('it imports repositories before named components', () async {
       final sourceEvents = <String>[];
-      final source = await _vault(
-        store: await _store(sourceEvents),
+      final source = await VaultRestorableFixtures.vault(
+        store: await VaultRestorableFixtures.store(sourceEvents),
         repositories: {
           'edge': FakeRestorableProfileRepository(
             'edge',
@@ -132,8 +107,8 @@ void main() {
         events: targetEvents,
       );
       final named = FakeRestorable(id: 'consentHistory', events: targetEvents);
-      final target = await _vault(
-        store: await _store(targetEvents),
+      final target = await VaultRestorableFixtures.vault(
+        store: await VaultRestorableFixtures.store(targetEvents),
         repositories: {'edge': repository},
         named: {'consentHistory': named},
       );
@@ -153,8 +128,8 @@ void main() {
 
     test('it rejects missing registrations before any import', () async {
       final sourceEvents = <String>[];
-      final source = await _vault(
-        store: await _store(sourceEvents),
+      final source = await VaultRestorableFixtures.vault(
+        store: await VaultRestorableFixtures.store(sourceEvents),
         repositories: {
           'edge': FakeRestorableProfileRepository(
             'edge',
@@ -169,8 +144,8 @@ void main() {
       final backup = await source.export();
 
       final targetEvents = <String>[];
-      final target = await _vault(
-        store: await _store(targetEvents),
+      final target = await VaultRestorableFixtures.vault(
+        store: await VaultRestorableFixtures.store(targetEvents),
         repositories: {
           'edge': FakeRestorableProfileRepository(
             'edge',
@@ -186,8 +161,8 @@ void main() {
 
     test('it rejects a different wallet before any import', () async {
       final sourceEvents = <String>[];
-      final source = await _vault(
-        store: await _store(sourceEvents),
+      final source = await VaultRestorableFixtures.vault(
+        store: await VaultRestorableFixtures.store(sourceEvents),
         repositories: {
           'edge': FakeRestorableProfileRepository(
             'edge',
@@ -199,8 +174,8 @@ void main() {
       final backup = await source.export();
 
       final targetEvents = <String>[];
-      final target = await _vault(
-        store: await _store(targetEvents, seedOffset: 1),
+      final target = await VaultRestorableFixtures.vault(
+        store: await VaultRestorableFixtures.store(targetEvents, seedOffset: 1),
         repositories: {
           'edge': FakeRestorableProfileRepository(
             'edge',
@@ -216,8 +191,8 @@ void main() {
 
     test('it routes colliding payload shapes only by repository ID', () async {
       final events = <String>[];
-      final source = await _vault(
-        store: await _store(events),
+      final source = await VaultRestorableFixtures.vault(
+        store: await VaultRestorableFixtures.store(events),
         repositories: {
           'first': FakeRestorableProfileRepository(
             'first',
@@ -243,8 +218,8 @@ void main() {
         value: 'empty',
         events: events,
       );
-      final target = await _vault(
-        store: await _store(events),
+      final target = await VaultRestorableFixtures.vault(
+        store: await VaultRestorableFixtures.store(events),
         repositories: {'first': first, 'second': second},
       );
 

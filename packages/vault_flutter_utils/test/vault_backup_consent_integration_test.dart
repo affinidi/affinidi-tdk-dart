@@ -1,33 +1,12 @@
-import 'dart:typed_data';
-
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_edge_drift_provider/affinidi_tdk_vault_edge_drift_provider.dart';
-import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'fakes/fake_restorable.dart';
 import 'fixtures/vault_backup_consent_fixtures.dart';
-
-Future<InMemoryVaultStore> _sourceStore() async {
-  final store = InMemoryVaultStore();
-  await store.setSeed(Uint8List.fromList(List.generate(32, (index) => index)));
-  return store;
-}
-
-IotaConsentRecord _record(String profileId) => IotaConsentRecord(
-  hash: 'consent-for-$profileId',
-  requestHash: 'request-hash',
-  sharedAt: '2024-01-01T00:00:00.000Z',
-  profileName: 'Personal',
-  profileId: profileId,
-  clientId: 'did:key:verifier',
-  isAutoShareEnabled: false,
-  sharedVcIds: const ['vc-1'],
-  claimedVcTypesCsv: 'EmailV1VC',
-);
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +23,7 @@ void main() {
       final targetDatabase = Database(NativeDatabase.memory());
       addTearDown(sourceDatabase.close);
       addTearDown(targetDatabase.close);
-      final sourceStore = await _sourceStore();
+      final sourceStore = await VaultBackupConsentFixtures.sourceStore();
       final sourceConsentValues = <String, String>{};
       final sourceConsent = VaultBackupConsentFixtures.consentStorage(
         sourceConsentValues,
@@ -63,7 +42,7 @@ void main() {
       final profile = await sourceVault.defaultProfileRepository.createProfile(
         name: 'Personal',
       );
-      final consent = _record(profile.id);
+      final consent = VaultBackupConsentFixtures.record(profile.id);
       await sourceConsent.saveOrUpdate(consent);
 
       final service = VaultBackupService(
@@ -112,7 +91,7 @@ void main() {
         final targetDatabase = Database(NativeDatabase.memory());
         addTearDown(sourceDatabase.close);
         addTearDown(targetDatabase.close);
-        final sourceStore = await _sourceStore();
+        final sourceStore = await VaultBackupConsentFixtures.sourceStore();
         final sourceVault = await Vault.fromVaultStore(
           sourceStore,
           profileRepositories: {
