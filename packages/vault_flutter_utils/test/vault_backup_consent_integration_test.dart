@@ -3,66 +3,18 @@ import 'dart:typed_data';
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_edge_drift_provider/affinidi_tdk_vault_edge_drift_provider.dart';
-import 'package:affinidi_tdk_vault_edge_provider/affinidi_tdk_vault_edge_provider.dart';
-import 'package:affinidi_tdk_vault_flutter_utils/vault_flutter_utils.dart';
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:drift/native.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 
-class _SecureStorage extends Mock implements FlutterSecureStorage {}
-
-class _MalformedConsent implements Restorable {
-  @override
-  Future<Map<String, dynamic>> export() async => {
-    'version': '1.0.0',
-    'records': [42],
-  };
-
-  @override
-  Future<void> validateImport(Map<String, dynamic> data) async {}
-
-  @override
-  Future<bool> isEmpty() async => true;
-
-  @override
-  Future<void> import(Map<String, dynamic> data) async {}
-
-  @override
-  Future<void> rollbackImport() async {}
-}
+import 'fakes/fake_restorable.dart';
+import 'fixtures/vault_backup_consent_fixtures.dart';
 
 Future<InMemoryVaultStore> _sourceStore() async {
   final store = InMemoryVaultStore();
   await store.setSeed(Uint8List.fromList(List.generate(32, (index) => index)));
   return store;
-}
-
-EdgeProfileRepository _repository({
-  required Database database,
-  required VaultStore vaultStore,
-}) => EdgeProfileRepository(
-  'edge',
-  EdgeDriftRepositoryFactory(database: database),
-  EdgeEncryptionService(vaultStore: vaultStore),
-);
-
-FlutterSecureConsentStorage _consentStorage(Map<String, String> values) {
-  final secureStorage = _SecureStorage();
-  when(secureStorage.readAll).thenAnswer((_) async => Map.of(values));
-  when(
-    () => secureStorage.write(
-      key: any(named: 'key'),
-      value: any(named: 'value'),
-    ),
-  ).thenAnswer((invocation) async {
-    final key = invocation.namedArguments[#key] as String;
-    final value = invocation.namedArguments[#value] as String;
-    values[key] = value;
-  });
-  return FlutterSecureConsentStorage(secureStorage: secureStorage);
 }
 
 IotaConsentRecord _record(String profileId) => IotaConsentRecord(
@@ -94,11 +46,13 @@ void main() {
       addTearDown(targetDatabase.close);
       final sourceStore = await _sourceStore();
       final sourceConsentValues = <String, String>{};
-      final sourceConsent = _consentStorage(sourceConsentValues);
+      final sourceConsent = VaultBackupConsentFixtures.consentStorage(
+        sourceConsentValues,
+      );
       final sourceVault = await Vault.fromVaultStore(
         sourceStore,
         profileRepositories: {
-          'edge': _repository(
+          'edge': VaultBackupConsentFixtures.repository(
             database: sourceDatabase,
             vaultStore: sourceStore,
           ),
@@ -120,7 +74,9 @@ void main() {
         passphrase: 'Correct-horse-staple1',
       );
       final targetConsentValues = <String, String>{};
-      final targetConsent = _consentStorage(targetConsentValues);
+      final targetConsent = VaultBackupConsentFixtures.consentStorage(
+        targetConsentValues,
+      );
       final restored = await service.restoreBackup(
         backupData: backup,
         passphrase: 'Correct-horse-staple1',
@@ -128,8 +84,10 @@ void main() {
         repositoryFactories: {
           'edge': ProfileRepositoryRegistration.withBackupData(
             id: 'edge',
-            factory: (store) =>
-                _repository(database: targetDatabase, vaultStore: store),
+            factory: (store) => VaultBackupConsentFixtures.repository(
+              database: targetDatabase,
+              vaultStore: store,
+            ),
             asRestorable: restorableIdentity,
           ),
         },
@@ -158,12 +116,19 @@ void main() {
         final sourceVault = await Vault.fromVaultStore(
           sourceStore,
           profileRepositories: {
-            'edge': _repository(
+            'edge': VaultBackupConsentFixtures.repository(
               database: sourceDatabase,
               vaultStore: sourceStore,
             ),
           },
-          namedRestorables: {'consentHistory': _MalformedConsent()},
+          namedRestorables: {
+            'consentHistory': FakeRestorable(
+              data: {
+                'version': '1.0.0',
+                'records': [42],
+              },
+            ),
+          },
         );
         await sourceVault.ensureInitialized();
         await sourceVault.defaultProfileRepository.createProfile(
@@ -177,7 +142,7 @@ void main() {
           passphrase: 'Correct-horse-staple1',
         );
         final targetStore = InMemoryVaultStore();
-        final targetConsent = _consentStorage(<String, String>{});
+        final targetConsent = VaultBackupConsentFixtures.consentStorage({});
 
         await expectLater(
           service.restoreBackup(
@@ -187,8 +152,10 @@ void main() {
             repositoryFactories: {
               'edge': ProfileRepositoryRegistration.withBackupData(
                 id: 'edge',
-                factory: (store) =>
-                    _repository(database: targetDatabase, vaultStore: store),
+                factory: (store) => VaultBackupConsentFixtures.repository(
+                  database: targetDatabase,
+                  vaultStore: store,
+                ),
                 asRestorable: restorableIdentity,
               ),
             },
