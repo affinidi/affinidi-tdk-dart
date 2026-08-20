@@ -86,93 +86,45 @@ void main() {
     drift.driftRuntimeOptions.dontWarnAboutMultipleDatabases = false;
   });
 
-  test('restores consent after its referenced profile', () async {
-    final sourceDatabase = Database(NativeDatabase.memory());
-    final targetDatabase = Database(NativeDatabase.memory());
-    addTearDown(sourceDatabase.close);
-    addTearDown(targetDatabase.close);
-    final sourceStore = await _sourceStore();
-    final sourceConsentValues = <String, String>{};
-    final sourceConsent = _consentStorage(sourceConsentValues);
-    final sourceVault = await Vault.fromVaultStore(
-      sourceStore,
-      profileRepositories: {
-        'edge': _repository(database: sourceDatabase, vaultStore: sourceStore),
-      },
-      namedRestorables: {'consentHistory': sourceConsent},
-    );
-    await sourceVault.ensureInitialized();
-    final profile = await sourceVault.defaultProfileRepository.createProfile(
-      name: 'Personal',
-    );
-    final consent = _record(profile.id);
-    await sourceConsent.saveOrUpdate(consent);
+  group('When backing up and restoring consent history', () {
+    test('it restores consent after its referenced profile', () async {
+      final sourceDatabase = Database(NativeDatabase.memory());
+      final targetDatabase = Database(NativeDatabase.memory());
+      addTearDown(sourceDatabase.close);
+      addTearDown(targetDatabase.close);
+      final sourceStore = await _sourceStore();
+      final sourceConsentValues = <String, String>{};
+      final sourceConsent = _consentStorage(sourceConsentValues);
+      final sourceVault = await Vault.fromVaultStore(
+        sourceStore,
+        profileRepositories: {
+          'edge': _repository(
+            database: sourceDatabase,
+            vaultStore: sourceStore,
+          ),
+        },
+        namedRestorables: {'consentHistory': sourceConsent},
+      );
+      await sourceVault.ensureInitialized();
+      final profile = await sourceVault.defaultProfileRepository.createProfile(
+        name: 'Personal',
+      );
+      final consent = _record(profile.id);
+      await sourceConsent.saveOrUpdate(consent);
 
-    final service = VaultBackupService(
-      cryptographyService: CryptographyService(),
-    );
-    final backup = await service.createBackup(
-      vault: sourceVault,
-      passphrase: 'Correct-horse-staple1',
-    );
-    final targetConsentValues = <String, String>{};
-    final targetConsent = _consentStorage(targetConsentValues);
-    final restored = await service.restoreBackup(
-      backupData: backup,
-      passphrase: 'Correct-horse-staple1',
-      vaultStoreFactory: InMemoryVaultStore.new,
-      repositoryFactories: {
-        'edge': ProfileRepositoryRegistration.withBackupData(
-          id: 'edge',
-          factory: (store) =>
-              _repository(database: targetDatabase, vaultStore: store),
-          asRestorable: restorableIdentity,
-        ),
-      },
-      namedRestorableFactories: {'consentHistory': () => targetConsent},
-    );
-
-    final restoredConsent = await targetConsent.findByRequestHash(
-      consent.requestHash,
-    );
-    expect(restoredConsent, isNotNull);
-    expect(restoredConsent!.profileId, profile.id);
-    expect(
-      (await restored.getProfileById(restoredConsent.profileId)).id,
-      profile.id,
-    );
-  });
-
-  test('malformed consent fails before wallet or profile writes', () async {
-    final sourceDatabase = Database(NativeDatabase.memory());
-    final targetDatabase = Database(NativeDatabase.memory());
-    addTearDown(sourceDatabase.close);
-    addTearDown(targetDatabase.close);
-    final sourceStore = await _sourceStore();
-    final sourceVault = await Vault.fromVaultStore(
-      sourceStore,
-      profileRepositories: {
-        'edge': _repository(database: sourceDatabase, vaultStore: sourceStore),
-      },
-      namedRestorables: {'consentHistory': _MalformedConsent()},
-    );
-    await sourceVault.ensureInitialized();
-    await sourceVault.defaultProfileRepository.createProfile(name: 'Personal');
-    final service = VaultBackupService(
-      cryptographyService: CryptographyService(),
-    );
-    final backup = await service.createBackup(
-      vault: sourceVault,
-      passphrase: 'Correct-horse-staple1',
-    );
-    final targetStore = InMemoryVaultStore();
-    final targetConsent = _consentStorage(<String, String>{});
-
-    await expectLater(
-      service.restoreBackup(
+      final service = VaultBackupService(
+        cryptographyService: CryptographyService(),
+      );
+      final backup = await service.createBackup(
+        vault: sourceVault,
+        passphrase: 'Correct-horse-staple1',
+      );
+      final targetConsentValues = <String, String>{};
+      final targetConsent = _consentStorage(targetConsentValues);
+      final restored = await service.restoreBackup(
         backupData: backup,
         passphrase: 'Correct-horse-staple1',
-        vaultStoreFactory: () => targetStore,
+        vaultStoreFactory: InMemoryVaultStore.new,
         repositoryFactories: {
           'edge': ProfileRepositoryRegistration.withBackupData(
             id: 'edge',
@@ -182,16 +134,77 @@ void main() {
           ),
         },
         namedRestorableFactories: {'consentHistory': () => targetConsent},
-      ),
-      throwsA(isA<TdkException>()),
-    );
+      );
 
-    expect(await targetStore.getSeed(), isNull);
-    expect(
-      await EdgeDriftRepositoryFactory(
-        database: targetDatabase,
-      ).createProfileRepository().listProfiles(),
-      isEmpty,
+      final restoredConsent = await targetConsent.findByRequestHash(
+        consent.requestHash,
+      );
+      expect(restoredConsent, isNotNull);
+      expect(restoredConsent!.profileId, profile.id);
+      expect(
+        (await restored.getProfileById(restoredConsent.profileId)).id,
+        profile.id,
+      );
+    });
+
+    test(
+      'it rejects malformed consent before wallet or profile writes',
+      () async {
+        final sourceDatabase = Database(NativeDatabase.memory());
+        final targetDatabase = Database(NativeDatabase.memory());
+        addTearDown(sourceDatabase.close);
+        addTearDown(targetDatabase.close);
+        final sourceStore = await _sourceStore();
+        final sourceVault = await Vault.fromVaultStore(
+          sourceStore,
+          profileRepositories: {
+            'edge': _repository(
+              database: sourceDatabase,
+              vaultStore: sourceStore,
+            ),
+          },
+          namedRestorables: {'consentHistory': _MalformedConsent()},
+        );
+        await sourceVault.ensureInitialized();
+        await sourceVault.defaultProfileRepository.createProfile(
+          name: 'Personal',
+        );
+        final service = VaultBackupService(
+          cryptographyService: CryptographyService(),
+        );
+        final backup = await service.createBackup(
+          vault: sourceVault,
+          passphrase: 'Correct-horse-staple1',
+        );
+        final targetStore = InMemoryVaultStore();
+        final targetConsent = _consentStorage(<String, String>{});
+
+        await expectLater(
+          service.restoreBackup(
+            backupData: backup,
+            passphrase: 'Correct-horse-staple1',
+            vaultStoreFactory: () => targetStore,
+            repositoryFactories: {
+              'edge': ProfileRepositoryRegistration.withBackupData(
+                id: 'edge',
+                factory: (store) =>
+                    _repository(database: targetDatabase, vaultStore: store),
+                asRestorable: restorableIdentity,
+              ),
+            },
+            namedRestorableFactories: {'consentHistory': () => targetConsent},
+          ),
+          throwsA(isA<TdkException>()),
+        );
+
+        expect(await targetStore.getSeed(), isNull);
+        expect(
+          await EdgeDriftRepositoryFactory(
+            database: targetDatabase,
+          ).createProfileRepository().listProfiles(),
+          isEmpty,
+        );
+      },
     );
   });
 }
