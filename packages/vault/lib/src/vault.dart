@@ -5,9 +5,11 @@ import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:ssi/ssi.dart';
 
 import 'backup.dart';
+import 'backup_restore_plan.dart';
 import 'dto/shared_item_dto.dart';
 import 'dto/shared_profile_dto.dart';
 import 'exceptions/tdk_exception_type.dart';
+import 'exceptions/vault_restore_exception.dart';
 import 'helpers/vault_cancel_token.dart';
 import 'helpers/vault_progress_callback.dart';
 import 'item_permission.dart';
@@ -34,6 +36,7 @@ class Vault implements Restorable {
   late final Map<String, ProfileRepositoryHandle> _profileRepositoryHandles;
   late final Map<String, ProfileRepository> _profileRepositories;
   final Map<String, Restorable> _namedRestorables;
+  BackupRestorePlan? _pendingImportPlan;
   List<Profile>? _profilesCache;
   int _profilesCacheVersion = 0;
 
@@ -366,28 +369,28 @@ class Vault implements Restorable {
       backupRepositoryIds.add(id);
       if ((_profileRepositories[id] is Restorable) !=
           (entry['restorable'] as bool)) {
-        throw _invalidBackupFormat();
+        throw VaultRestoreException.invalidBackupFormat();
       }
     }
     if (!_sameIds(expectedRepositoryIds, backupRepositoryIds) ||
         !_sameIds(_namedRestorables.keys.toSet(), namedData.keys.toSet())) {
-      throw _invalidBackupFormat();
+      throw VaultRestoreException.invalidBackupFormat();
     }
 
     final vaultStoreData = backup.data['vaultStore'] as Map<String, dynamic>;
     final encodedSeed = vaultStoreData['seed'];
     final currentSeed = await _vaultStore.getSeed();
     if (encodedSeed is! String || currentSeed == null) {
-      throw _invalidBackupFormat();
+      throw VaultRestoreException.invalidBackupFormat();
     }
     final Uint8List backupSeed;
     try {
       backupSeed = base64Decode(encodedSeed);
     } on FormatException {
-      throw _invalidBackupFormat();
+      throw VaultRestoreException.invalidBackupFormat();
     }
     if (!_sameBytes(currentSeed, backupSeed)) {
-      throw _invalidBackupFormat();
+      throw VaultRestoreException.invalidBackupFormat();
     }
 
     await _vaultStore.validateImport(vaultStoreData);
@@ -417,20 +420,39 @@ class Vault implements Restorable {
     final namedData = backup.data['namedComponents'] as Map<String, dynamic>;
 
     if (!await isEmpty()) {
-      throw _restoreDestinationNotEmpty();
+      throw VaultRestoreException.destinationNotEmpty();
     }
-    final repositoryIds = repositoryData.keys.toList()..sort();
-    for (final id in repositoryIds) {
-      await (_profileRepositories[id]! as Restorable).import(
-        repositoryData[id] as Map<String, dynamic>,
-      );
+    final importPlan = BackupRestorePlan.fromBackupData(
+      repositoryData: repositoryData,
+      namedData: namedData,
+      profileRepositories: _profileRepositories,
+      namedRestorables: _namedRestorables,
+    );
+    _pendingImportPlan = importPlan;
+    final importFailure = await importPlan.execute();
+    if (importFailure != null) {
+      if (importFailure.rollbackErrors.isNotEmpty) {
+        Error.throwWithStackTrace(
+          VaultRestoreException.rollbackFailed(importFailure.rollbackErrors),
+          importFailure.stackTrace,
+        );
+      }
+      _pendingImportPlan = null;
+      Error.throwWithStackTrace(importFailure.error, importFailure.stackTrace);
     }
-    final namedIds = namedData.keys.toList()..sort();
-    for (final id in namedIds) {
-      await _namedRestorables[id]!.import(
-        namedData[id] as Map<String, dynamic>,
-      );
+    _invalidateProfilesCache();
+  }
+
+  @override
+  Future<void> rollbackImport() async {
+    final importPlan = _pendingImportPlan;
+    if (importPlan == null) return;
+    final rollbackErrors = await importPlan.rollback();
+    if (rollbackErrors.isNotEmpty) {
+      throw VaultRestoreException.rollbackFailed(rollbackErrors);
     }
+
+    _pendingImportPlan = null;
     _invalidateProfilesCache();
   }
 
@@ -466,16 +488,6 @@ class Vault implements Restorable {
     }
     return diff == 0;
   }
-
-  TdkException _invalidBackupFormat() => TdkException(
-    message: 'The Vault backup cannot be imported into this Vault.',
-    code: TdkExceptionType.invalidBackupFormat.code,
-  );
-
-  TdkException _restoreDestinationNotEmpty() => TdkException(
-    message: 'Vault restore destination is not empty.',
-    code: TdkExceptionType.restoreDestinationNotEmpty.code,
-  );
 
   /// Ensures the vault is initialized by configuring all profile repositories.
   Future<void> ensureInitialized() async {

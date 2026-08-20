@@ -47,6 +47,10 @@ enum TdkExceptionType {
   /// Exception thrown when a restore destination already contains local data.
   restoreDestinationNotEmpty('restore_destination_not_empty'),
 
+  /// Exception thrown when a restore fails and rollback cannot fully clean up
+  /// the partial destination state.
+  restoreRollbackFailed('restore_rollback_failed'),
+
   /// Exception thrown when the backup passphrase is shorter than the minimum
   /// required length.
   weakPassphrase('weak_passphrase');

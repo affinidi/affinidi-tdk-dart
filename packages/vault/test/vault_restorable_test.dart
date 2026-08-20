@@ -45,6 +45,8 @@ class _RestorableRepository extends _Repository implements Restorable {
   final String value;
   final List<String> events;
   Map<String, dynamic>? imported;
+  bool _importPendingRollback = false;
+  int rollbackCalls = 0;
 
   @override
   Future<Map<String, dynamic>> export() async => {
@@ -60,8 +62,17 @@ class _RestorableRepository extends _Repository implements Restorable {
 
   @override
   Future<void> import(Map<String, dynamic> data) async {
+    _importPendingRollback = true;
     events.add(id);
     imported = data;
+  }
+
+  @override
+  Future<void> rollbackImport() async {
+    if (!_importPendingRollback) return;
+    imported = null;
+    _importPendingRollback = false;
+    rollbackCalls++;
   }
 }
 
@@ -71,6 +82,8 @@ class _NamedRestorable implements Restorable {
   final String id;
   final List<String> events;
   Map<String, dynamic>? imported;
+  bool _importPendingRollback = false;
+  int rollbackCalls = 0;
 
   @override
   Future<Map<String, dynamic>> export() async => {
@@ -86,8 +99,17 @@ class _NamedRestorable implements Restorable {
 
   @override
   Future<void> import(Map<String, dynamic> data) async {
+    _importPendingRollback = true;
     events.add(id);
     imported = data;
+  }
+
+  @override
+  Future<void> rollbackImport() async {
+    if (!_importPendingRollback) return;
+    imported = null;
+    _importPendingRollback = false;
+    rollbackCalls++;
   }
 }
 
@@ -131,6 +153,39 @@ Future<Vault> _vault({
 
 void main() {
   group('Vault Restorable', () {
+    test('rollback before import does not touch registered state', () async {
+      final events = <String>[];
+      final repository = _RestorableRepository(
+        'edge',
+        value: 'user-data',
+        events: events,
+      )..imported = {'value': 'user-data'};
+      final named = _NamedRestorable('consentHistory', events)
+        ..imported = {'value': 'user-data'};
+      final vault = await _vault(
+        store: await _store(events),
+        repositories: {'edge': repository},
+        named: {'consentHistory': named},
+      );
+
+      await vault.rollbackImport();
+
+      expect(repository.imported, {'value': 'user-data'});
+      expect(named.imported, {'value': 'user-data'});
+      expect(repository.rollbackCalls, 0);
+      expect(named.rollbackCalls, 0);
+    });
+
+    test('VaultStore rollback before import preserves stored data', () async {
+      final store = await _store([]);
+      final seed = await store.getSeed();
+
+      await store.rollbackImport();
+
+      expect(await store.getSeed(), seed);
+      expect(await store.getAccountIndex(), 3);
+    });
+
     test('exports repositories and named components by stable id', () async {
       final events = <String>[];
       final vault = await _vault(
