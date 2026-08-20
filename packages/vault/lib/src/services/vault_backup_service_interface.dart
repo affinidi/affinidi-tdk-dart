@@ -40,6 +40,12 @@ abstract interface class VaultBackupServiceInterface {
   /// * [repositoryFactories] - Factories keyed by repository ID.
   /// * [namedRestorableFactories] - Factories keyed by named component ID.
   ///
+  /// Concurrent restore calls made through the same service instance are
+  /// serialized so the empty-destination checks and subsequent imports execute
+  /// as one critical section. Callers should still avoid running concurrent
+  /// restores through separate service instances against the same persistence
+  /// targets.
+  ///
   /// Throws a `TdkException` if the passphrase is incorrect or the backup is
   /// malformed.
   Future<Vault> restoreBackup({
