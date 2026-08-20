@@ -172,6 +172,30 @@ void main() {
     });
   });
 
+  group('When listing all consent records', () {
+    test(
+      'it returns all records from its namespace and ignores others',
+      () async {
+        final second = ConsentRecordFixtures.secondRecord();
+        when(() => mockStorage.readAll()).thenAnswer(
+          (_) async => {
+            '${defaultNamespace}_$hash': jsonEncode(record.toJson()),
+            '${defaultNamespace}_${second.hash}': jsonEncode(second.toJson()),
+            'other_namespace_ignored': jsonEncode(record.toJson()),
+          },
+        );
+
+        final results = await store.listAll();
+
+        expect(results, hasLength(2));
+        expect(
+          results.map((r) => r.hash),
+          containsAll([record.hash, second.hash]),
+        );
+      },
+    );
+  });
+
   group('When backing up and restoring consent records', () {
     test('it exports only records from its namespace', () async {
       final second = ConsentRecordFixtures.secondRecord();

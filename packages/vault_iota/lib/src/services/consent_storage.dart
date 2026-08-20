@@ -27,4 +27,10 @@ abstract interface class ConsentStorage {
   /// Parameters:
   /// * [requestHash] - Verifier+request hash supplied by the caller.
   Future<List<IotaConsentRecord>> findAllByRequestHash(String requestHash);
+
+  /// Returns all persisted consent records.
+  ///
+  /// Records are returned in storage-defined order. Returns an empty list if
+  /// none exist.
+  Future<List<IotaConsentRecord>> listAll();
 }

@@ -72,6 +72,9 @@ class FlutterSecureConsentStorage implements ConsentStorage, Restorable {
   }
 
   @override
+  Future<List<IotaConsentRecord>> listAll() => _readAllRecords();
+
+  @override
   Future<Map<String, dynamic>> export() async => {
     'version': _backupVersion,
     'records': [for (final record in await _readAllRecords()) record.toJson()],
