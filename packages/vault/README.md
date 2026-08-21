@@ -101,8 +101,15 @@ final restoredVault = await backupService.restoreBackup(
   passphrase: 'A-strong-passphrase1',
   vaultStoreFactory: createVaultStore,
   repositoryFactories: {
-    'edge': (vaultStore) => createEdgeRepository(vaultStore),
-    'cloud': (_) => createCloudRepository(),
+    'edge': ProfileRepositoryRegistration.withBackupData(
+      id: 'edge',
+      factory: createEdgeRepository,
+      asRestorable: restorableIdentity,
+    ),
+    'cloud': ProfileRepositoryRegistration.withoutBackupData(
+      id: 'cloud',
+      factory: (_) => createCloudRepository(),
+    ),
   },
 );
 ```
@@ -248,6 +255,8 @@ await vault.setItemAccess(
 **Note**: Profile and item sharing require the profile repository to implement the `ProfileAccessSharing` interface. The `VfsProfileRepository` from `affinidi_tdk_vault_data_manager` supports both profile and item-level sharing.
 
 For more sample usage, go to the [example folder](https://github.com/affinidi/affinidi-tdk-dart/tree/main/packages/vault/example), including:
+- [vault_backup.dart](https://github.com/affinidi/affinidi-tdk-dart/blob/main/packages/vault/example/vault_backup.dart) - Creating and saving an encrypted Vault backup
+- [vault_restore.dart](https://github.com/affinidi/affinidi-tdk-dart/blob/main/packages/vault/example/vault_restore.dart) - Restoring a Vault into empty storage
 - [shared_profiles.dart](https://github.com/affinidi/affinidi-tdk-dart/blob/main/packages/vault/example/shared_profiles.dart) - Profile sharing examples
 - [shared_items.dart](https://github.com/affinidi/affinidi-tdk-dart/blob/main/packages/vault/example/shared_items.dart) - Item-level sharing examples
 - [time_bound_sharing.dart](https://github.com/affinidi/affinidi-tdk-dart/blob/main/packages/vault/example/time_bound_sharing.dart) - Time-bound sharing examples
