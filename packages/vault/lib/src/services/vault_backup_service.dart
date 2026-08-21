@@ -259,8 +259,8 @@ class VaultBackupService implements VaultBackupServiceInterface {
     }
     var vaultStoreImported = false;
     try {
-      await vaultStore.import(vaultStoreData);
       vaultStoreImported = true;
+      await vaultStore.import(vaultStoreData);
       final vault = await Vault.fromVaultStore(
         vaultStore,
         profileRepositories: repositories,
