@@ -188,10 +188,11 @@ lookup can never silently miss due to a mismatched, caller-computed hash.
 #### Bringing your own storage backend
 
 Implement `ConsentStorage` with any persistence technology you prefer
-(Drift, Hive, SQLite, a remote API, etc.):
+(Drift, Hive, SQLite, a remote API, etc.). If your backend also supports
+enumerating the full consent history, implement `EnumerableConsentStorage`:
 
 ```dart
-class MyConsentStore implements ConsentStorage {
+class MyConsentStore implements EnumerableConsentStorage {
   @override
   Future<void> saveOrUpdate(IotaConsentRecord record) async {
     // upsert by record.hash in your database

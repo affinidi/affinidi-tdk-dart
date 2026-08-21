@@ -12,7 +12,8 @@ import '../src/exceptions/vault_restore_exception.dart';
 ///
 /// Each record is stored as a JSON string keyed by its [IotaConsentRecord.hash],
 /// prefixed with a namespace to avoid collisions with other secure storage entries.
-class FlutterSecureConsentStorage implements ConsentStorage, Restorable {
+class FlutterSecureConsentStorage
+    implements EnumerableConsentStorage, Restorable {
   /// Creates a [FlutterSecureConsentStorage].
   ///
   /// Parameters:
