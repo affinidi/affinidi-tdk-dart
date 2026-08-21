@@ -8,7 +8,7 @@ import 'fixtures/vault_restorable_fixtures.dart';
 
 void main() {
   group('When rolling back before an import', () {
-    group('when rollbackImport is called', () {
+    group('and rollbackImport is called', () {
       test('it preserves registered repository and component state', () async {
         final events = <String>[];
         final repository = FakeRestorableProfileRepository(
@@ -45,7 +45,7 @@ void main() {
   });
 
   group('When exporting restorable state', () {
-    group('when export is called', () {
+    group('and export is called', () {
       test(
         'it rejects a repository registered under a mismatched ID',
         () async {
@@ -112,7 +112,7 @@ void main() {
   });
 
   group('When importing restorable state', () {
-    group('when the backup is valid', () {
+    group('and the backup is valid', () {
       test('it imports repositories before named components', () async {
         final sourceEvents = <String>[];
         final source = await VaultRestorableFixtures.vault(
@@ -206,7 +206,7 @@ void main() {
       );
     });
 
-    group('when the backup is invalid before import starts', () {
+    group('and the backup is invalid before import starts', () {
       test('it rejects missing registrations before any import', () async {
         final sourceEvents = <String>[];
         final source = await VaultRestorableFixtures.vault(
