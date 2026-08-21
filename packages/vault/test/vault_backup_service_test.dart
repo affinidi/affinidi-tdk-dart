@@ -8,6 +8,7 @@ import 'package:test/test.dart';
 
 import 'fakes/fake_blocking_vault_store.dart';
 import 'fakes/fake_logger.dart';
+import 'fakes/fake_partial_import_failure_vault_store.dart';
 import 'fakes/fake_restorable.dart';
 import 'fakes/fake_restorable_profile_repository.dart';
 import 'fakes/fake_vault_store.dart';
@@ -462,6 +463,61 @@ void main() {
           expect(await targetStore.getSeed(), isNull);
           expect(await targetRepository.isEmpty(), isTrue);
           expect(targetRepository.rollbackCalls, 1);
+          expect(targetRepository.imported, isFalse);
+        },
+      );
+
+      test(
+        'it rolls back partial VaultStore writes when store import throws',
+        () async {
+          final sourceStore = await VaultBackupServiceFixtures.store();
+          await sourceStore.setContentKey(Uint8List.fromList([7, 8, 9]));
+          final source = await VaultBackupServiceFixtures.vault(
+            store: sourceStore,
+            repositories: {
+              'edge': FakeRestorableProfileRepository(
+                'edge',
+                value: 'profiles',
+              ),
+            },
+          );
+          final bytes = await service.createBackup(
+            vault: source,
+            passphrase: passphrase,
+          );
+          final targetStore = FakePartialImportFailureVaultStore();
+          final targetRepository = FakeRestorableProfileRepository(
+            'edge',
+            value: 'empty',
+          );
+
+          await expectLater(
+            service.restoreBackup(
+              backupData: bytes,
+              passphrase: passphrase,
+              vaultStoreFactory: () => targetStore,
+              repositoryFactories: {
+                'edge': ProfileRepositoryRegistration.withBackupData(
+                  id: 'edge',
+                  factory: (_) => targetRepository,
+                  asRestorable: restorableIdentity,
+                ),
+              },
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (error) => error.code,
+                'code',
+                'secure_storage_failure',
+              ),
+            ),
+          );
+
+          expect(targetStore.imported, isTrue);
+          expect(targetStore.cleared, isTrue);
+          expect(await targetStore.getSeed(), isNull);
+          expect(await targetStore.getContentKey(), isNull);
+          expect(await targetStore.getAccountIndex(), 0);
           expect(targetRepository.imported, isFalse);
         },
       );
