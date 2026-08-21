@@ -1,5 +1,8 @@
 ## Unreleased
 
+> Note: This release has breaking changes and must be published with a major version bump.
+
+- **BREAKING CHANGE**: `VaultStore` now implements `Restorable`. External classes declared with `implements VaultStore` must implement `export`, `validateImport`, `isEmpty`, `import`, and `rollbackImport`.
 - **FEAT**: add encrypted, repository-scoped Vault backup and restore.
 - **FIX**: minimize the lifetime of plaintext Vault backup data during encryption.
 

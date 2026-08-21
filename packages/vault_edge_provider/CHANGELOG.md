@@ -1,5 +1,8 @@
 ## Unreleased
 
+> Note: This release has breaking changes and must be published with a major version bump.
+
+- **BREAKING CHANGE**: `EdgeProfileRepositoryInterface.createProfile(...)` adds the optional named `id` parameter. External implementations must update their override to accept `String? id`; restore uses it to preserve the original profile identifier.
 - **FEAT**: add durable export and import for local profiles, credentials, and files.
 
 ## 3.0.1
