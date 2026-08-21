@@ -2,9 +2,8 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
-
-import '../exceptions/tdk_exception_type.dart';
+import '../exceptions/vault_backup_exception.dart';
+import '../exceptions/vault_restore_exception.dart';
 import 'restorable.dart';
 
 /// Interface for storing vault data
@@ -68,10 +67,7 @@ abstract class VaultStore implements Restorable {
   Future<Map<String, dynamic>> export() async {
     final seed = await getSeed();
     if (seed == null) {
-      throw TdkException(
-        message: 'Cannot export VaultStore state without a seed.',
-        code: TdkExceptionType.invalidBackupFormat.code,
-      );
+      throw VaultBackupException.missingVaultStoreSeed();
     }
 
     final contentKey = await getContentKey();
@@ -98,10 +94,7 @@ abstract class VaultStore implements Restorable {
   Future<void> import(Map<String, dynamic> data) async {
     final parsed = _parseImportData(data);
     if (!await isEmpty()) {
-      throw TdkException(
-        message: 'VaultStore restore destination is not empty.',
-        code: TdkExceptionType.restoreDestinationNotEmpty.code,
-      );
+      throw VaultRestoreException.destinationNotEmpty('VaultStore');
     }
     _importPendingRollback = true;
     await setSeed(parsed.seed);
@@ -131,10 +124,7 @@ abstract class VaultStore implements Restorable {
         (contentKeyValue != null && contentKeyValue is! String) ||
         accountIndex is! int ||
         accountIndex < 0) {
-      throw TdkException(
-        message: 'The VaultStore backup payload is malformed.',
-        code: TdkExceptionType.invalidBackupFormat.code,
-      );
+      throw VaultRestoreException.malformedVaultStoreData();
     }
 
     final Uint8List seed;
@@ -146,11 +136,7 @@ abstract class VaultStore implements Restorable {
           : base64Decode(contentKeyValue as String);
     } on FormatException catch (error, stackTrace) {
       Error.throwWithStackTrace(
-        TdkException(
-          message: 'The VaultStore backup payload contains invalid data.',
-          code: TdkExceptionType.invalidBackupFormat.code,
-          originalMessage: error.toString(),
-        ),
+        VaultRestoreException.invalidVaultStoreData(error.toString()),
         stackTrace,
       );
     }

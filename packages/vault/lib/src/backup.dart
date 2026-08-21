@@ -1,6 +1,5 @@
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 
-import 'exceptions/tdk_exception_type.dart';
 import 'exceptions/vault_backup_exception.dart';
 import 'exceptions/vault_restore_exception.dart';
 import 'storage_interfaces/profile_repository.dart';
@@ -122,23 +121,14 @@ class Backup {
   factory Backup.fromJson(Map<String, dynamic> json) {
     final version = json['version'];
     if (version is! String) {
-      throw TdkException(
-        message: 'Backup is missing a valid "version" field.',
-        code: TdkExceptionType.invalidBackupFormat.code,
-      );
+      throw VaultRestoreException.invalidVersion();
     }
     if (!supportedVersions.contains(version)) {
-      throw TdkException(
-        message: 'Unsupported backup version: $version.',
-        code: TdkExceptionType.invalidBackupFormat.code,
-      );
+      throw VaultRestoreException.unsupportedVersion(version);
     }
     final data = json['data'];
     if (data is! Map<String, dynamic>) {
-      throw TdkException(
-        message: 'Backup is missing a valid "data" field.',
-        code: TdkExceptionType.invalidBackupFormat.code,
-      );
+      throw VaultRestoreException.invalidData();
     }
     return Backup(version: version, data: data);
   }

@@ -6,7 +6,7 @@ import 'package:ssi/ssi.dart';
 import 'backup.dart';
 import 'dto/shared_item_dto.dart';
 import 'dto/shared_profile_dto.dart';
-import 'exceptions/tdk_exception_type.dart';
+import 'exceptions/vault_exception.dart';
 import 'exceptions/vault_restore_exception.dart';
 import 'helpers/vault_cancel_token.dart';
 import 'helpers/vault_progress_callback.dart';
@@ -41,10 +41,7 @@ class Vault implements Restorable {
 
   void _throwIfNotInitialized() {
     if (!_initialized) {
-      throw TdkException(
-        message: 'Must initialize vault by calling ensureInitialized',
-        code: TdkExceptionType.vaultNotInitialized.code,
-      );
+      throw VaultException.notInitialized();
     }
   }
 
@@ -87,10 +84,7 @@ class Vault implements Restorable {
     final profileInfo = _findProfileById(refreshedProfiles, profileId);
 
     if (profileInfo == null) {
-      throw TdkException(
-        message: 'Cannot find profile with id: $profileId',
-        code: TdkExceptionType.invalidProfileIdentifier.code,
-      );
+      throw VaultException.profileNotFound(profileId);
     }
 
     return profileInfo;
@@ -132,10 +126,7 @@ class Vault implements Restorable {
   ProfileRepositoryHandle _getProfileRepositoryHandle(String repositoryId) {
     final repositoryHandle = _profileRepositoryHandles[repositoryId];
     if (repositoryHandle == null) {
-      throw TdkException(
-        message: 'Cannot find the profile repository with id: $repositoryId',
-        code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-      );
+      throw VaultException.profileRepositoryNotFound(repositoryId);
     }
 
     return repositoryHandle;
@@ -150,10 +141,7 @@ class Vault implements Restorable {
     final accessSharing = repositoryHandle.accessSharing;
     if (accessSharing == null) {
       Error.throwWithStackTrace(
-        TdkException(
-          message: unsupportedMessage,
-          code: TdkExceptionType.unsupportedProfileAccessSharing.code,
-        ),
+        VaultException.unsupportedProfileAccessSharing(unsupportedMessage),
         StackTrace.current,
       );
     }
@@ -164,15 +152,11 @@ class Vault implements Restorable {
   ProfileStorageInfo _getProfileStorageInfo(
     String repositoryId, {
     required String unsupportedMessage,
-    required TdkExceptionType unsupportedExceptionType,
   }) {
     final storageInfo = _getProfileRepositoryHandle(repositoryId).storageInfo;
     if (storageInfo == null) {
       Error.throwWithStackTrace(
-        TdkException(
-          message: unsupportedMessage,
-          code: unsupportedExceptionType.code,
-        ),
+        VaultException.unsupportedProfileStorageUsage(unsupportedMessage),
         StackTrace.current,
       );
     }
@@ -239,10 +223,7 @@ class Vault implements Restorable {
 
     if (_profileRepositories.entries.isEmpty) {
       Error.throwWithStackTrace(
-        TdkException(
-          message: 'Must provide at least one profile repository',
-          code: TdkExceptionType.missingProfileRepository.code,
-        ),
+        VaultException.missingProfileRepository(),
         StackTrace.current,
       );
     }
@@ -250,10 +231,7 @@ class Vault implements Restorable {
     if (defaultProfileRepositoryId != null) {
       if (!profileRepositories.containsKey(defaultProfileRepositoryId)) {
         Error.throwWithStackTrace(
-          TdkException(
-            message: 'Invalid profile repository identifier',
-            code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-          ),
+          VaultException.invalidProfileRepositoryIdentifier(),
           StackTrace.current,
         );
       }
@@ -268,10 +246,7 @@ class Vault implements Restorable {
   set defaultProfileRepositoryId(String value) {
     if (!_profileRepositories.containsKey(value)) {
       Error.throwWithStackTrace(
-        TdkException(
-          message: 'Invalid profile repository identifier',
-          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-        ),
+        VaultException.invalidProfileRepositoryIdentifier(),
         StackTrace.current,
       );
     }
@@ -295,10 +270,7 @@ class Vault implements Restorable {
     final seed = await vaultStore.getSeed();
     if (seed == null) {
       Error.throwWithStackTrace(
-        TdkException(
-          message: 'No seed found in vault store',
-          code: TdkExceptionType.vaultNotInitialized.code,
-        ),
+        VaultException.missingSeed(),
         StackTrace.current,
       );
     }
@@ -657,10 +629,7 @@ class Vault implements Restorable {
       final currentUserProfiles = await listProfiles(cancelToken: cancelToken);
       if (currentUserProfiles.isEmpty) {
         Error.throwWithStackTrace(
-          TdkException(
-            message: 'No profiles found for current user',
-            code: TdkExceptionType.invalidProfileIdentifier.code,
-          ),
+          VaultException.noProfilesForCurrentUser(),
           StackTrace.current,
         );
       }
@@ -670,10 +639,7 @@ class Vault implements Restorable {
 
     if (sharedStorage == null) {
       Error.throwWithStackTrace(
-        TdkException(
-          message: 'Cannot read shared item',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
+        VaultException.cannotReadSharedItem(),
         StackTrace.current,
       );
     }
@@ -781,8 +747,6 @@ class Vault implements Restorable {
         profileInfo.profileRepositoryId,
         unsupportedMessage:
             'The profile repository for profile $profileId does not support storage usage reporting',
-        unsupportedExceptionType:
-            TdkExceptionType.unsupportedProfileStorageUsageReporting,
       );
 
       return storageInfo.getStorageUsage(cancelToken: cancelToken);
@@ -795,8 +759,6 @@ class Vault implements Restorable {
       defaultProfileRepositoryId,
       unsupportedMessage:
           'The default profile repository does not support storage usage reporting',
-      unsupportedExceptionType:
-          TdkExceptionType.unsupportedProfileStorageUsageReporting,
     );
 
     return defaultStorageInfo.getStorageUsage(cancelToken: cancelToken);

@@ -8,7 +8,7 @@ import 'package:synchronized/synchronized.dart';
 
 import '../backup.dart';
 import '../backup_data.dart';
-import '../exceptions/tdk_exception_type.dart';
+import '../exceptions/vault_backup_exception.dart';
 import '../exceptions/vault_restore_exception.dart';
 import '../extensions/set_extensions.dart';
 import '../passphrase_policy.dart';
@@ -63,10 +63,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
   }) async {
     final policyViolation = passphrasePolicy.validate(passphrase);
     if (policyViolation != null) {
-      throw TdkException(
-        message: 'Passphrase does not satisfy the required policy.',
-        code: TdkExceptionType.weakPassphrase.code,
-      );
+      throw VaultBackupException.weakPassphrase();
     }
     try {
       final salt = _cryptographyService.getRandomBytes(_saltLength);
@@ -95,10 +92,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
     } catch (error, stackTrace) {
       _logger.error('Failed to create vault backup (${error.runtimeType})');
       Error.throwWithStackTrace(
-        TdkException(
-          message: 'Failed to create vault backup.',
-          code: TdkExceptionType.backupCreationFailed.code,
-        ),
+        VaultBackupException.creationFailed(),
         stackTrace,
       );
     }
@@ -155,12 +149,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
         _logger.warning(
           'Failed to decrypt backup; wrong passphrase or tampered data.',
         );
-        throw TdkException(
-          message:
-              'Failed to decrypt backup; the passphrase may be incorrect or '
-              'the backup has been tampered with.',
-          code: TdkExceptionType.invalidBackupFormat.code,
-        );
+        throw VaultRestoreException.decryptionFailed();
       }
 
       final json = jsonDecode(decrypted) as Map<String, dynamic>;
@@ -171,12 +160,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
     } catch (error, stackTrace) {
       _logger.error('Failed to read backup (${error.runtimeType})');
       Error.throwWithStackTrace(
-        TdkException(
-          message:
-              'Backup could not be decrypted or is not in a recognised '
-              'format.',
-          code: TdkExceptionType.invalidBackupFormat.code,
-        ),
+        VaultRestoreException.unreadableBackup(),
         stackTrace,
       );
     }
@@ -290,12 +274,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
           await vaultStore.rollbackImport();
         } catch (_) {
           Error.throwWithStackTrace(
-            TdkException(
-              message:
-                  'Vault restore failed and automatic rollback could not '
-                  'clear the VaultStore.',
-              code: TdkExceptionType.restoreRollbackFailed.code,
-            ),
+            VaultRestoreException.vaultStoreRollbackFailed(),
             stackTrace,
           );
         }

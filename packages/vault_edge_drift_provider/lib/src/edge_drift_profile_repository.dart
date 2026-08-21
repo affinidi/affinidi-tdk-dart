@@ -3,6 +3,7 @@ import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
 
 import 'database/database.dart' hide Profile;
+import 'exceptions/profile_repository_exception.dart';
 
 /// Repository class to manage profiles on a local Drift database
 class EdgeDriftProfileRepository implements EdgeProfileRepositoryInterface {
@@ -51,10 +52,7 @@ class EdgeDriftProfileRepository implements EdgeProfileRepositoryInterface {
       )..where((filter) => filter.id.equals(profileId))).go();
 
       if (deleted == 0) {
-        throw TdkException(
-          message: 'Failed to delete profile',
-          code: TdkExceptionType.unableToDeleteNonExistentProfile.code,
-        );
+        throw ProfileRepositoryException.unableToDeleteNonExistentProfile();
       }
     });
   }
@@ -87,10 +85,7 @@ class EdgeDriftProfileRepository implements EdgeProfileRepositoryInterface {
     )..where((filter) => filter.id.equals(profile.id))).getSingleOrNull();
 
     if (existing == null) {
-      throw TdkException(
-        message: 'Failed to update profile',
-        code: TdkExceptionType.unableToUpdateNonExistentProfile.code,
-      );
+      throw ProfileRepositoryException.unableToUpdateNonExistentProfile();
     }
 
     final entry = ProfilesCompanion(

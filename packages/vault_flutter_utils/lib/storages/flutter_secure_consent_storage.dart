@@ -5,7 +5,7 @@ import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart'
     hide TdkExceptionType;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../src/exceptions/tdk_exception_type.dart';
+import '../src/exceptions/consent_storage_exception.dart';
 import '../src/exceptions/vault_restore_exception.dart';
 
 /// Implementation of [ConsentStorage] backed by Flutter's secure storage.
@@ -166,10 +166,8 @@ class FlutterSecureConsentStorage
           ),
         );
       } catch (error) {
-        throw TdkException(
-          message:
-              'Failed to deserialize consent record for key "${entry.key}".',
-          code: TdkExceptionType.failedToReadConsentRecord.code,
+        throw ConsentStorageException.failedToReadRecord(
+          key: entry.key,
           originalMessage: error.toString(),
         );
       }

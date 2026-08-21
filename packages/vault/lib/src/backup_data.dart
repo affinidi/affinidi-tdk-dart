@@ -1,6 +1,6 @@
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 
-import 'exceptions/tdk_exception_type.dart';
+import 'exceptions/vault_restore_exception.dart';
 
 /// Represents an encrypted vault backup ready for storage or transfer.
 class BackupData {
@@ -31,10 +31,7 @@ class BackupData {
     final salt = json['salt'];
     final timestamp = json['timestamp'];
     if (encryptedBackup is! String || salt is! String || timestamp is! String) {
-      throw TdkException(
-        message: 'Backup file is missing required fields or has invalid types.',
-        code: TdkExceptionType.invalidBackupFormat.code,
-      );
+      throw VaultRestoreException.invalidBackupData();
     }
     return BackupData(
       encryptedBackup: encryptedBackup,
