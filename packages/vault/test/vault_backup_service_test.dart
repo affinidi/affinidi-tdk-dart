@@ -108,6 +108,32 @@ void main() {
           contains('Unable to wipe derived key material'),
         );
       });
+
+      test('it warns when typed derived key buffers cannot be wiped', () async {
+        final logger = FakeLogger();
+        final immutableCrypto = FakeCryptographyService(
+          keyFactory: (password) => Uint8List.fromList(
+            utf8.encode('key-$password'),
+          ).asUnmodifiableView(),
+        );
+        final warningService = VaultBackupService(
+          cryptographyService: immutableCrypto,
+          logger: logger,
+          now: () => DateTime.utc(2024, 1, 2, 3, 4, 5),
+        );
+        final vault = await VaultBackupServiceFixtures.vault(
+          store: await VaultBackupServiceFixtures.store(),
+          repositories: {'edge': FakeRestorableProfileRepository('edge')},
+        );
+
+        await warningService.createBackup(vault: vault, passphrase: passphrase);
+
+        expect(logger.warnings, hasLength(1));
+        expect(
+          logger.warnings.single,
+          contains('Unable to wipe derived key material'),
+        );
+      });
     });
 
     group('When restoring a valid vault backup', () {

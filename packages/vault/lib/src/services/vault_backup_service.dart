@@ -299,14 +299,14 @@ class VaultBackupService implements VaultBackupServiceInterface {
 
   /// Overwrite of a derived-key buffer to shorten its lifetime.
   void _wipe(List<int> bytes) {
-    if (bytes is Uint8List) {
-      bytes.fillRange(0, bytes.length, 0);
-      return;
-    }
-
     try {
-      for (var index = 0; index < bytes.length; index++) {
-        bytes[index] = 0;
+      if (bytes is Uint8List) {
+        bytes.fillRange(0, bytes.length, 0);
+        return;
+      } else {
+        for (var index = 0; index < bytes.length; index++) {
+          bytes[index] = 0;
+        }
       }
     } catch (_) {
       _logger.warning(
