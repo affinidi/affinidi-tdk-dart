@@ -1,6 +1,7 @@
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 
 import 'exceptions/tdk_exception_type.dart';
+import 'exceptions/vault_backup_exception.dart';
 import 'exceptions/vault_restore_exception.dart';
 import 'storage_interfaces/profile_repository.dart';
 import 'storage_interfaces/restorable.dart';
@@ -62,6 +63,16 @@ class Backup {
     required String defaultRepositoryId,
   }) async {
     final repositoryIds = profileRepositories.keys.toList()..sort();
+    for (final id in repositoryIds) {
+      final repositoryId = profileRepositories[id]!.id;
+      if (repositoryId != id) {
+        throw VaultBackupException.repositoryIdMismatch(
+          registrationId: id,
+          repositoryId: repositoryId,
+        );
+      }
+    }
+
     final manifest = <Map<String, dynamic>>[];
     final repositoryData = <String, dynamic>{};
     for (final id in repositoryIds) {

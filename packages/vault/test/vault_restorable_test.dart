@@ -47,6 +47,31 @@ void main() {
   group('When exporting restorable state', () {
     group('when export is called', () {
       test(
+        'it rejects a repository registered under a mismatched ID',
+        () async {
+          final events = <String>[];
+          final vault = await VaultRestorableFixtures.vault(
+            store: await VaultRestorableFixtures.store(events),
+            repositories: {
+              'registered-edge': FakeRestorableProfileRepository('actual-edge'),
+            },
+          );
+
+          await expectLater(
+            vault.export(),
+            throwsA(
+              isA<TdkException>().having(
+                (error) => error.code,
+                'code',
+                'invalid_profile_repository_identifier',
+              ),
+            ),
+          );
+          expect(events, isNot(contains('exportVaultStore')));
+        },
+      );
+
+      test(
         'it exports repositories and named components by stable ID',
         () async {
           final events = <String>[];
