@@ -77,7 +77,9 @@ The core API uses `ByteData`, keeping file access platform-independent:
 ```dart
 import 'dart:io';
 
-final backupService = VaultBackupService();
+final backupService = VaultBackupService(
+  passphrasePolicy: const PassphrasePolicy(minLength: 16),
+);
 final backup = await backupService.createBackup(
   vault: vault,
   passphrase: 'A-strong-passphrase1',

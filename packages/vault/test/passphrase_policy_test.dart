@@ -12,38 +12,41 @@ void main() {
     });
 
     group('and the passphrase is shorter than the minimum length', () {
-      test('it returns the minimum-length error', () {
-        expect(
-          policy.validate('Ab1!'),
-          equals('Passphrase must be at least 12 characters long.'),
-        );
+      test('it returns the too-short violation', () {
+        expect(policy.validate('Ab1!'), equals(PassphraseViolation.tooShort));
       });
     });
 
     group('and the passphrase has no uppercase letter', () {
-      test('it returns the uppercase error', () {
+      test('it returns the missing-uppercase violation', () {
         expect(
           policy.validate('lowercase-only-1!'),
-          equals('Passphrase must contain at least one uppercase letter.'),
+          equals(PassphraseViolation.missingUppercase),
         );
       });
     });
 
     group('and the passphrase has no number', () {
-      test('it returns the number error', () {
+      test('it returns the missing-number violation', () {
         expect(
           policy.validate('NoNumbersHere!'),
-          equals('Passphrase must contain at least one number.'),
+          equals(PassphraseViolation.missingNumber),
         );
       });
     });
 
     group('and the passphrase has no special character', () {
-      test('it returns the special-character error', () {
+      test('it returns the missing-special-character violation', () {
         expect(
           policy.validate('NoSpecials1234'),
-          equals('Passphrase must contain at least one special character.'),
+          equals(PassphraseViolation.missingSpecialCharacter),
         );
+      });
+    });
+
+    group('and a violation is mapped to a localized message', () {
+      test('it exposes a stable code', () {
+        expect(PassphraseViolation.tooShort.code, equals('too_short'));
       });
     });
   });

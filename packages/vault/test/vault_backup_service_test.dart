@@ -334,6 +334,30 @@ void main() {
           ),
         );
       });
+
+      group('and a stricter minimum length is configured', () {
+        test('it applies the configured policy', () async {
+          final vault = await VaultBackupServiceFixtures.vault(
+            store: await VaultBackupServiceFixtures.store(),
+            repositories: {'edge': FakeRestorableProfileRepository('edge')},
+          );
+          final strictService = VaultBackupService(
+            cryptographyService: cryptographyService,
+            passphrasePolicy: const PassphrasePolicy(minLength: 64),
+          );
+
+          await expectLater(
+            strictService.createBackup(vault: vault, passphrase: passphrase),
+            throwsA(
+              isA<TdkException>().having(
+                (error) => error.code,
+                'code',
+                'weak_passphrase',
+              ),
+            ),
+          );
+        });
+      });
     });
 
     group('When restoring an invalid vault backup', () {

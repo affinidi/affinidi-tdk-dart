@@ -33,11 +33,14 @@ class VaultBackupService implements VaultBackupServiceInterface {
   /// Parameters:
   /// * [cryptographyService] - Optional cryptography implementation. Defaults
   ///   to [CryptographyService].
+  /// * [passphrasePolicy] - Rules applied when creating a backup. Defaults to
+  ///   [PassphrasePolicy.standard].
   /// * [logger] - Optional logger; defaults to [Logger.instance].
   /// * [now] - Optional clock used for the backup timestamp; defaults to
   ///   [DateTime.now]. Injectable for deterministic tests.
   VaultBackupService({
     CryptographyServiceInterface? cryptographyService,
+    this.passphrasePolicy = PassphrasePolicy.standard,
     Logger? logger,
     DateTime Function()? now,
   }) : _cryptographyService = cryptographyService ?? CryptographyService(),
@@ -45,6 +48,10 @@ class VaultBackupService implements VaultBackupServiceInterface {
        _now = now ?? DateTime.now;
 
   final CryptographyServiceInterface _cryptographyService;
+
+  /// Rules applied to passphrases when creating backups.
+  final PassphrasePolicy passphrasePolicy;
+
   final Logger _logger;
   final DateTime Function() _now;
   final Lock _restoreLock = Lock();
@@ -54,10 +61,10 @@ class VaultBackupService implements VaultBackupServiceInterface {
     required Vault vault,
     required String passphrase,
   }) async {
-    final policyViolation = PassphrasePolicy.standard.validate(passphrase);
+    final policyViolation = passphrasePolicy.validate(passphrase);
     if (policyViolation != null) {
       throw TdkException(
-        message: policyViolation,
+        message: 'Passphrase does not satisfy the required policy.',
         code: TdkExceptionType.weakPassphrase.code,
       );
     }

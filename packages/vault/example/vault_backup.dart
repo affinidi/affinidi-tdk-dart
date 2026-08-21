@@ -9,13 +9,14 @@ import 'package:affinidi_tdk_vault_edge_provider/affinidi_tdk_vault_edge_provide
 
 const _edgeRepositoryId = 'edge';
 const _vfsRepositoryId = 'vfs';
+const _passphrasePolicy = PassphrasePolicy(minLength: 16);
 
 Future<void> main(List<String> arguments) async {
   final passphrase = io.Platform.environment['VAULT_BACKUP_PASSPHRASE'];
   if (passphrase == null) {
     io.stderr.writeln(
       'Set VAULT_BACKUP_PASSPHRASE to a passphrase that satisfies '
-      'PassphrasePolicy.standard.',
+      'the configured passphrase policy.',
     );
     io.exitCode = 64;
     return;
@@ -28,10 +29,9 @@ Future<void> main(List<String> arguments) async {
     await vault.profileRepositories[_edgeRepositoryId]!.createProfile(
       name: 'Local backup example',
     );
-    final backup = await VaultBackupService().createBackup(
-      vault: vault,
-      passphrase: passphrase,
-    );
+    final backup = await VaultBackupService(
+      passphrasePolicy: _passphrasePolicy,
+    ).createBackup(vault: vault, passphrase: passphrase);
 
     await io.File(backupPath).writeAsBytes(
       backup.buffer.asUint8List(backup.offsetInBytes, backup.lengthInBytes),

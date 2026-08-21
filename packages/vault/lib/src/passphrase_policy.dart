@@ -1,3 +1,24 @@
+/// A rule that a passphrase failed to satisfy.
+enum PassphraseViolation {
+  /// The passphrase is shorter than the configured minimum length.
+  tooShort('too_short'),
+
+  /// The passphrase does not contain an uppercase letter.
+  missingUppercase('missing_uppercase'),
+
+  /// The passphrase does not contain a number.
+  missingNumber('missing_number'),
+
+  /// The passphrase does not contain a special character.
+  missingSpecialCharacter('missing_special_character');
+
+  /// Creates a [PassphraseViolation].
+  const PassphraseViolation(this.code);
+
+  /// Stable code that consumers can map to a localized message.
+  final String code;
+}
+
 /// The rules a backup passphrase must satisfy.
 ///
 /// This is the single source of truth for passphrase strength, shared by the
@@ -28,21 +49,21 @@ class PassphrasePolicy {
   /// Whether at least one non-alphanumeric character is required.
   final bool requireSpecialCharacter;
 
-  /// Returns `null` when [passphrase] satisfies the policy, or a human-readable
-  /// reason describing the first unmet rule.
-  String? validate(String passphrase) {
+  /// Returns `null` when [passphrase] satisfies the policy, or the first rule
+  /// it violates.
+  PassphraseViolation? validate(String passphrase) {
     if (passphrase.length < minLength) {
-      return 'Passphrase must be at least $minLength characters long.';
+      return PassphraseViolation.tooShort;
     }
     if (requireUppercase && !passphrase.contains(RegExp(r'[A-Z]'))) {
-      return 'Passphrase must contain at least one uppercase letter.';
+      return PassphraseViolation.missingUppercase;
     }
     if (requireNumber && !passphrase.contains(RegExp(r'[0-9]'))) {
-      return 'Passphrase must contain at least one number.';
+      return PassphraseViolation.missingNumber;
     }
     if (requireSpecialCharacter &&
         !passphrase.contains(RegExp(r'[^A-Za-z0-9]'))) {
-      return 'Passphrase must contain at least one special character.';
+      return PassphraseViolation.missingSpecialCharacter;
     }
     return null;
   }
