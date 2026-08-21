@@ -9,11 +9,11 @@ import 'package:ssi/ssi.dart'
         VcDataModelV1,
         VerifiableCredential;
 
-/// A database-backed [ConsentStorage] implementation.
+/// A database-backed [EnumerableConsentStorage] implementation.
 ///
 /// Replace the in-memory map with your real database calls (e.g. sqflite,
 /// Drift, Isar, or a remote API).
-class DatabaseConsentStorage implements ConsentStorage {
+class DatabaseConsentStorage implements EnumerableConsentStorage {
   // Simulates a database table keyed by IotaConsentRecord.hash.
   final Map<String, IotaConsentRecord> _db = {};
 
