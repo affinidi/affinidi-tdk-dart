@@ -230,18 +230,17 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
   @override
   Future<void> rollbackImport() => _lock.synchronized(() async {
     if (!_importPendingRollback) return;
-    String? cursor;
-    do {
+    var hasMoreCredentials = true;
+    while (hasMoreCredentials) {
       final page = await _repository.listCredentialData(
         profileId: _profileId,
         limit: _pageSize,
-        exclusiveStartItemId: cursor,
       );
+      hasMoreCredentials = page.items.isNotEmpty;
       for (final credential in page.items) {
         await _repository.deleteCredential(credentialId: credential.id);
       }
-      cursor = page.lastEvaluatedItemId;
-    } while (cursor != null);
+    }
     _importPendingRollback = false;
   });
 
