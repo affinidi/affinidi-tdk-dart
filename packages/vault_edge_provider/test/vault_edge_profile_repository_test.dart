@@ -371,6 +371,76 @@ void main() {
         expect(await vaultStore.getAccountIndex(), profile.accountIndex);
       });
 
+      test(
+        'it restores the original account index during rollback after a late failure',
+        () async {
+          final (profile, did) = await profileAndDid();
+          mockRepository.listProfilesReturnValue = [];
+          await vaultStore.setAccountIndex(1);
+          when(
+            () => mockFileRepository.createFile(
+              profileId: any(named: 'profileId'),
+              fileName: any(named: 'fileName'),
+              data: any(named: 'data'),
+              parentFolderId: any(named: 'parentFolderId'),
+            ),
+          ).thenThrow(
+            TdkException(
+              message: 'late file import failure',
+              code: 'invalid_backup_format',
+            ),
+          );
+
+          await expectLater(
+            sut.import({
+              'version': '1.0.0',
+              'profiles': [
+                {
+                  'id': profile.id,
+                  'accountIndex': profile.accountIndex,
+                  'name': profile.name,
+                  'did': did,
+                  'description': profile.description,
+                  'fileStorages': {
+                    'sut': {
+                      'version': '1.0.0',
+                      'items': [
+                        {
+                          'id': 'source-file-1',
+                          'name': 'late-failure.txt',
+                          'parentId': null,
+                          'type': 'file',
+                          'content': 'AQID',
+                        },
+                      ],
+                    },
+                  },
+                  'credentialStorages': {
+                    'sut': {'version': '1.0.0', 'credentials': <dynamic>[]},
+                  },
+                  'sharedStorages': <String, dynamic>{},
+                },
+              ],
+            }),
+            throwsA(
+              isA<TdkException>().having(
+                (error) => error.code,
+                'code',
+                'invalid_backup_format',
+              ),
+            ),
+          );
+
+          expect(await vaultStore.getAccountIndex(), profile.accountIndex);
+
+          mockRepository.listProfilesReturnValue = [profile];
+          await sut.rollbackImport();
+
+          expect(await vaultStore.getAccountIndex(), 1);
+          expect(mockRepository.lastCalledDeletedProfileId, profile.id);
+        },
+      );
+
       test('it rejects an existing matching profile', () async {
         final (profile, did) = await profileAndDid();
 
