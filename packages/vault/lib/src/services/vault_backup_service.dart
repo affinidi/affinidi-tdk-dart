@@ -63,7 +63,10 @@ class VaultBackupService implements VaultBackupServiceInterface {
   }) async {
     final policyViolation = passphrasePolicy.validate(passphrase);
     if (policyViolation != null) {
-      throw VaultBackupException.weakPassphrase();
+      throw VaultBackupException.weakPassphrase(
+        violation: policyViolation,
+        minLength: passphrasePolicy.minLength,
+      );
     }
     try {
       final salt = _cryptographyService.getRandomBytes(_saltLength);

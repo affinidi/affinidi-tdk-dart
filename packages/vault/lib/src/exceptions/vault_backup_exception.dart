@@ -1,5 +1,7 @@
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 
+import '../passphrase_policy.dart';
+import 'passphrase_policy_exception.dart';
 import 'tdk_exception_type.dart';
 
 /// Creates exceptions raised while creating a Vault backup.
@@ -11,10 +13,10 @@ abstract final class VaultBackupException {
   );
 
   /// Creates an exception for a passphrase that violates the configured policy.
-  static TdkException weakPassphrase() => TdkException(
-    message: 'Passphrase does not satisfy the required policy.',
-    code: TdkExceptionType.weakPassphrase.code,
-  );
+  static PassphrasePolicyException weakPassphrase({
+    required PassphraseViolation violation,
+    required int minLength,
+  }) => PassphrasePolicyException(violation: violation, minLength: minLength);
 
   /// Creates an exception for an unexpected backup creation failure.
   static TdkException creationFailed() => TdkException(

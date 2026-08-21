@@ -349,11 +349,19 @@ void main() {
           await expectLater(
             strictService.createBackup(vault: vault, passphrase: passphrase),
             throwsA(
-              isA<TdkException>().having(
-                (error) => error.code,
-                'code',
-                'weak_passphrase',
-              ),
+              isA<PassphrasePolicyException>()
+                  .having((error) => error.code, 'code', 'weak_passphrase')
+                  .having(
+                    (error) => error.violation,
+                    'violation',
+                    PassphraseViolation.tooShort,
+                  )
+                  .having((error) => error.minLength, 'minLength', 64)
+                  .having(
+                    (error) => error.toString(),
+                    'description',
+                    allOf(contains('too_short'), contains('minLength: 64')),
+                  ),
             ),
           );
         });
