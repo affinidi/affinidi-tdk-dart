@@ -34,6 +34,7 @@ class EdgeProfileRepository implements ProfileRepository, Restorable {
   final _keyPairs = <String, KeyPair>{};
   final _lock = Lock(reentrant: true);
   bool _importPendingRollback = false;
+  int? _accountIndexBeforeImport;
 
   static const _backupVersion = '1.0.0';
 
@@ -440,6 +441,7 @@ Profile repository must be configured using a RepositoryConfiguration''',
       if (!await isEmpty()) {
         throw EdgeRestoreException.destinationNotEmpty('Profile repository');
       }
+      _accountIndexBeforeImport = await _vaultStore.getAccountIndex();
       _importPendingRollback = true;
       final profiles = await _parseBackup(data);
 
@@ -484,6 +486,11 @@ Profile repository must be configured using a RepositoryConfiguration''',
       }
       await _repository.deleteProfile(profileId: profile.id);
     }
+    final accountIndexBeforeImport = _accountIndexBeforeImport;
+    if (accountIndexBeforeImport != null) {
+      await _vaultStore.setAccountIndex(accountIndexBeforeImport);
+    }
+    _accountIndexBeforeImport = null;
     _importPendingRollback = false;
   });
 
