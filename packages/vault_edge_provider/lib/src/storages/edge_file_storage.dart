@@ -404,6 +404,7 @@ class EdgeFileStorage implements FileStorage, Restorable {
     final pendingFolders = <String?>[null];
     while (pendingFolders.isNotEmpty) {
       final folderId = pendingFolders.removeLast();
+      final items = <Item>[];
       String? cursor;
       do {
         final page = await getFolder(
@@ -411,16 +412,18 @@ class EdgeFileStorage implements FileStorage, Restorable {
           limit: _pageSize,
           exclusiveStartItemId: cursor,
         );
-        for (final item in page.items) {
-          if (item is Folder) {
-            folderIds.add(item.id);
-            pendingFolders.add(item.id);
-          } else if (item is File) {
-            await _repository.deleteFile(fileId: item.id);
-          }
-        }
+        items.addAll(page.items);
         cursor = page.lastEvaluatedItemId;
       } while (cursor != null);
+
+      for (final item in items) {
+        if (item is Folder) {
+          folderIds.add(item.id);
+          pendingFolders.add(item.id);
+        } else if (item is File) {
+          await _repository.deleteFile(fileId: item.id);
+        }
+      }
     }
 
     for (final folderId in folderIds.reversed) {

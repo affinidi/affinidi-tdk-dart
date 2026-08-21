@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:affinidi_tdk_vault_edge_provider/affinidi_tdk_vault_edge_provider.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
@@ -451,5 +453,80 @@ void main() {
         ),
       );
     });
+
+    test(
+      'it rolls back all imported credentials across multiple pages',
+      () async {
+        final storedCredentials = <EdgeCredential>[];
+        when(
+          () => mockRepository.listCredentialData(
+            profileId: CredentialFixtures.profileId,
+            limit: any(named: 'limit'),
+            exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+            cancelToken: any(named: 'cancelToken'),
+          ),
+        ).thenAnswer((invocation) async {
+          final limit = invocation.namedArguments[#limit] as int?;
+          final cursor =
+              invocation.namedArguments[#exclusiveStartItemId] as String?;
+          final offset = int.tryParse(cursor ?? '') ?? 0;
+          final items = limit == null
+              ? storedCredentials.skip(offset).toList()
+              : storedCredentials.skip(offset).take(limit).toList();
+          final lastEvaluatedItemId = limit != null && items.isNotEmpty
+              ? (offset + items.length).toString()
+              : null;
+          return PaginatedList(
+            items: items,
+            lastEvaluatedItemId: lastEvaluatedItemId,
+          );
+        });
+        when(
+          () => mockRepository.saveCredentialData(
+            profileId: CredentialFixtures.profileId,
+            credentialId: any(named: 'credentialId'),
+            credentialName: any(named: 'credentialName'),
+            credentialContent: any(named: 'credentialContent'),
+            cancelToken: any(named: 'cancelToken'),
+          ),
+        ).thenAnswer((invocation) async {
+          storedCredentials.add(
+            EdgeCredential(
+              id: invocation.namedArguments[#credentialId] as String,
+              content:
+                  invocation.namedArguments[#credentialContent] as Uint8List,
+            ),
+          );
+        });
+        when(
+          () => mockRepository.deleteCredential(
+            credentialId: any(named: 'credentialId'),
+            cancelToken: any(named: 'cancelToken'),
+          ),
+        ).thenAnswer((invocation) async {
+          final credentialId =
+              invocation.namedArguments[#credentialId] as String;
+          storedCredentials.removeWhere(
+            (credential) => credential.id == credentialId,
+          );
+        });
+
+        final credentials = List.generate(120, (index) {
+          return {
+            'id': 'credential-$index',
+            'verifiableCredential':
+                CredentialFixtures.universityDegreeCredentialJson,
+          };
+        });
+
+        await storage.import({'version': '1.0.0', 'credentials': credentials});
+
+        expect(storedCredentials, hasLength(120));
+
+        await storage.rollbackImport();
+
+        expect(storedCredentials, isEmpty);
+      },
+    );
   });
 }

@@ -551,5 +551,84 @@ void main() {
         ),
       );
     });
+
+    test('it rolls back all imported files across multiple pages', () async {
+      final itemsByParent = <String?, List<Item>>{null: []};
+      var nextFileId = 0;
+      when(
+        () => mockRepository.getFolder(
+          folderId: any(named: 'folderId'),
+          limit: any(named: 'limit'),
+          exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+        ),
+      ).thenAnswer((invocation) async {
+        final folderId = invocation.namedArguments[#folderId] as String?;
+        final limit = invocation.namedArguments[#limit] as int?;
+        final cursor =
+            invocation.namedArguments[#exclusiveStartItemId] as String?;
+        final offset = int.tryParse(cursor ?? '') ?? 0;
+        final sourceItems = List<Item>.of(itemsByParent[folderId] ?? const []);
+        final pageItems = limit == null
+            ? sourceItems.skip(offset).toList()
+            : sourceItems.skip(offset).take(limit).toList();
+        final lastEvaluatedItemId = limit != null && pageItems.isNotEmpty
+            ? (offset + pageItems.length).toString()
+            : null;
+        return PaginatedList(
+          items: pageItems,
+          lastEvaluatedItemId: lastEvaluatedItemId,
+        );
+      });
+      when(
+        () => mockRepository.createFile(
+          profileId: FileFixtures.profileId,
+          fileName: any(named: 'fileName'),
+          data: any(named: 'data'),
+          parentFolderId: any(named: 'parentFolderId'),
+        ),
+      ).thenAnswer((invocation) async {
+        final parentFolderId =
+            invocation.namedArguments[#parentFolderId] as String?;
+        final fileName = invocation.namedArguments[#fileName] as String;
+        final now = DateTime(2023, 1, 1);
+        itemsByParent
+            .putIfAbsent(parentFolderId, () => [])
+            .add(
+              File(
+                id: 'restored-file-${nextFileId++}',
+                name: fileName,
+                createdAt: now,
+                modifiedAt: now,
+                parentId: parentFolderId,
+              ),
+            );
+      });
+      when(
+        () => mockRepository.deleteFile(fileId: any(named: 'fileId')),
+      ).thenAnswer((invocation) async {
+        final fileId = invocation.namedArguments[#fileId] as String;
+        for (final items in itemsByParent.values) {
+          items.removeWhere((item) => item.id == fileId);
+        }
+      });
+
+      final backupItems = List.generate(120, (index) {
+        return {
+          'id': 'source-file-$index',
+          'name': 'file-$index.txt',
+          'parentId': null,
+          'type': 'file',
+          'content': base64Encode(FileFixtures.smallFileData),
+        };
+      });
+
+      await storage.import({'version': '1.0.0', 'items': backupItems});
+
+      expect(itemsByParent[null], hasLength(120));
+
+      await storage.rollbackImport();
+
+      expect(itemsByParent[null], isEmpty);
+    });
   });
 }
