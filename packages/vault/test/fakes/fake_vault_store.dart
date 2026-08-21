@@ -8,6 +8,12 @@ class FakeVaultStore extends InMemoryVaultStore {
   bool cleared = false;
 
   @override
+  Future<Map<String, dynamic>> export() async {
+    events?.add('exportVaultStore');
+    return super.export();
+  }
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {
     imported = true;
     events?.add('vaultStore');

@@ -1,6 +1,7 @@
 ## Unreleased
 
 - **FEAT**: add encrypted, repository-scoped Vault backup and restore.
+- **FIX**: minimize the lifetime of plaintext Vault backup data during encryption.
 
 ## 3.0.1
 

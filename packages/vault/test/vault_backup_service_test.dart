@@ -52,6 +52,24 @@ void main() {
         expect(envelope.timestamp, '2024-01-02T03:04:05.000Z');
       });
 
+      test('it derives the key before exporting sensitive state', () async {
+        final events = <String>[];
+        final store = FakeVaultStore(events: events);
+        await store.setSeed(Uint8List.fromList(List.generate(32, (i) => i)));
+        await store.setAccountIndex(4);
+        final vault = await VaultBackupServiceFixtures.vault(
+          store: store,
+          repositories: {'edge': FakeRestorableProfileRepository('edge')},
+        );
+        final orderedService = VaultBackupService(
+          cryptographyService: FakeCryptographyService(events: events),
+        );
+
+        await orderedService.createBackup(vault: vault, passphrase: passphrase);
+
+        expect(events, ['deriveKey', 'exportVaultStore', 'encrypt']);
+      });
+
       test('it wipes mutable derived key buffers', () async {
         final vault = await VaultBackupServiceFixtures.vault(
           store: await VaultBackupServiceFixtures.store(),

@@ -10,10 +10,13 @@ import 'package:mocktail/mocktail.dart';
 /// the wrong-passphrase path to be tested without real crypto.
 class FakeCryptographyService extends Fake
     implements CryptographyServiceInterface {
-  FakeCryptographyService({List<int> Function(String password)? keyFactory})
-    : _keyFactory = keyFactory;
+  FakeCryptographyService({
+    List<int> Function(String password)? keyFactory,
+    this.events,
+  }) : _keyFactory = keyFactory;
 
   final List<int> Function(String password)? _keyFactory;
+  final List<String>? events;
   List<int>? lastDerivedKey;
 
   @override
@@ -25,6 +28,7 @@ class FakeCryptographyService extends Fake
     required String password,
     required List<int> nonce,
   }) async {
+    events?.add('deriveKey');
     final key =
         _keyFactory?.call(password) ??
         List<int>.from(utf8.encode('key-$password'));
@@ -37,9 +41,12 @@ class FakeCryptographyService extends Fake
   Future<String> Aes256EncryptStringToHex({
     required List<int> key,
     required String data,
-  }) async => base64Encode(
-    utf8.encode(jsonEncode({'key': base64Encode(key), 'data': data})),
-  );
+  }) async {
+    events?.add('encrypt');
+    return base64Encode(
+      utf8.encode(jsonEncode({'key': base64Encode(key), 'data': data})),
+    );
+  }
 
   @override
   // ignore: non_constant_identifier_names

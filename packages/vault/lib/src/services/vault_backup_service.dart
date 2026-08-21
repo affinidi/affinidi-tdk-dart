@@ -62,9 +62,6 @@ class VaultBackupService implements VaultBackupServiceInterface {
       );
     }
     try {
-      final backup = Backup.fromVaultData(await vault.export());
-      final plaintext = jsonEncode(backup.toJson());
-
       final salt = _cryptographyService.getRandomBytes(_saltLength);
       final key = await _cryptographyService.Pbkdf2(
         password: passphrase,
@@ -73,10 +70,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
 
       final String encryptedBackup;
       try {
-        encryptedBackup = await _cryptographyService.Aes256EncryptStringToHex(
-          key: key,
-          data: plaintext,
-        );
+        encryptedBackup = await _exportAndEncrypt(vault: vault, key: key);
       } finally {
         _wipe(key);
       }
@@ -101,6 +95,18 @@ class VaultBackupService implements VaultBackupServiceInterface {
         stackTrace,
       );
     }
+  }
+
+  Future<String> _exportAndEncrypt({
+    required Vault vault,
+    required List<int> key,
+  }) async {
+    final backup = Backup.fromVaultData(await vault.export());
+    final plaintext = jsonEncode(backup.toJson());
+    return _cryptographyService.Aes256EncryptStringToHex(
+      key: key,
+      data: plaintext,
+    );
   }
 
   @override
