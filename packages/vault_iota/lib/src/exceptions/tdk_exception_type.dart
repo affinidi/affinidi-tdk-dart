@@ -72,6 +72,13 @@ enum TdkExceptionType {
   /// `ConsentStorage` fails.
   failedToReadConsentRecord('failed_to_read_consent_record'),
 
+  /// Thrown when deleting a consent record from the consumer-provided
+  /// `ConsentStorage` fails.
+  failedToDeleteConsentRecord('failed_to_delete_consent_record'),
+
+  /// Thrown when the consent record to delete does not exist in the store.
+  consentRecordNotFound('consent_record_not_found'),
+
   /// Thrown when `IotaShareResponseService.submitShareResponse` is called but
   /// the selected credentials do not cover every required DCQL credential query.
   incompleteCredentialSelection('incomplete_credential_selection'),

@@ -1,6 +1,7 @@
 ## Unreleased
 
 - **FEAT**: add consent history export and import to `FlutterSecureConsentStorage`.
+- **FEAT**: add `deleteByHash` to `FlutterSecureConsentStorage`.
 
 ## 2.0.9
 

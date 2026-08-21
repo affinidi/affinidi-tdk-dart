@@ -33,4 +33,13 @@ abstract interface class ConsentStorage {
   /// Records are returned in storage-defined order. Returns an empty list if
   /// none exist.
   Future<List<IotaConsentRecord>> listAll();
+
+  /// Deletes the record identified by [hash].
+  ///
+  /// Returns `true` if a record existed and was removed, or `false` if no
+  /// record matched [hash]. Throws if the underlying storage operation fails.
+  ///
+  /// Parameters:
+  /// * [hash] - The [IotaConsentRecord.hash] of the record to delete.
+  Future<bool> deleteByHash(String hash);
 }
