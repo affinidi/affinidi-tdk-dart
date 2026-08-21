@@ -218,6 +218,7 @@ class Vault implements Restorable {
     required Wallet wallet,
     required VaultStore vaultStore,
     required Map<String, ProfileRepository> profileRepositories,
+    Map<String, Restorable> restorableRepositories = const {},
     Map<String, Restorable> namedRestorables = const {},
     String? defaultProfileRepositoryId,
   }) : _wallet = wallet,
@@ -228,6 +229,7 @@ class Vault implements Restorable {
         entry.key: ProfileRepositoryHandle.fromRepository(
           entry.value,
           onProfilesMutated: _invalidateProfilesCache,
+          restorableView: restorableRepositories[entry.key],
         ),
     });
     _profileRepositories = Map.unmodifiable({
@@ -281,10 +283,12 @@ class Vault implements Restorable {
   ///
   /// [vaultStore] - The vault store to use.
   /// [profileRepositories] - Map of profile repositories.
+  /// [restorableRepositories] - Optional backup views keyed by repository ID.
   /// [defaultProfileRepositoryId] - Optional ID of the default profile repository.
   static Future<Vault> fromVaultStore(
     VaultStore vaultStore, {
     required Map<String, ProfileRepository> profileRepositories,
+    Map<String, Restorable> restorableRepositories = const {},
     Map<String, Restorable> namedRestorables = const {},
     String? defaultProfileRepositoryId,
   }) async {
@@ -306,6 +310,7 @@ class Vault implements Restorable {
       wallet: wallet,
       vaultStore: vaultStore,
       profileRepositories: profileRepositories,
+      restorableRepositories: restorableRepositories,
       namedRestorables: namedRestorables,
       defaultProfileRepositoryId: defaultProfileRepositoryId,
     );

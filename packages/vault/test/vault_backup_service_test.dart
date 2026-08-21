@@ -9,6 +9,7 @@ import 'package:test/test.dart';
 import 'fakes/fake_blocking_vault_store.dart';
 import 'fakes/fake_logger.dart';
 import 'fakes/fake_partial_import_failure_vault_store.dart';
+import 'fakes/fake_profile_repository.dart';
 import 'fakes/fake_restorable.dart';
 import 'fakes/fake_restorable_profile_repository.dart';
 import 'fakes/fake_vault_store.dart';
@@ -148,6 +149,44 @@ void main() {
         expect(targetComponent.imported, isTrue);
         expect(targetComponent.value, 'consent');
       });
+
+      test(
+        'it carries an adapted repository backup view into the Vault',
+        () async {
+          final source = await VaultBackupServiceFixtures.vault(
+            store: await VaultBackupServiceFixtures.store(),
+            repositories: {
+              'edge': FakeRestorableProfileRepository(
+                'edge',
+                value: 'profiles',
+              ),
+            },
+          );
+          final bytes = await service.createBackup(
+            vault: source,
+            passphrase: passphrase,
+          );
+          final targetRepository = FakeProfileRepository('edge');
+          final targetRestorable = FakeRestorable(value: 'empty');
+
+          final restored = await service.restoreBackup(
+            backupData: bytes,
+            passphrase: passphrase,
+            vaultStoreFactory: InMemoryVaultStore.new,
+            repositoryFactories: {
+              'edge': ProfileRepositoryRegistration.withBackupData(
+                id: 'edge',
+                factory: (_) => targetRepository,
+                asRestorable: (_) => targetRestorable,
+              ),
+            },
+          );
+
+          expect(targetRestorable.imported, isTrue);
+          expect(targetRestorable.value, 'profiles');
+          expect(restored.profileRepositories['edge'], isA<Restorable>());
+        },
+      );
 
       test(
         'it serializes concurrent restores against the same destination',

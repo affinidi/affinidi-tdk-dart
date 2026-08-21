@@ -270,6 +270,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
       final vault = await Vault.fromVaultStore(
         vaultStore,
         profileRepositories: repositories,
+        restorableRepositories: restorableRepositories,
         namedRestorables: namedRestorables,
         defaultProfileRepositoryId: defaultRepositoryId,
       );

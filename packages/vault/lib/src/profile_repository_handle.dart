@@ -17,6 +17,7 @@ final class ProfileRepositoryHandle {
   factory ProfileRepositoryHandle.fromRepository(
     ProfileRepository repository, {
     required void Function() onProfilesMutated,
+    Restorable? restorableView,
   }) {
     final accessSharing = repository is ProfileAccessSharing
         ? CacheInvalidatingProfileAccessSharing(
@@ -28,9 +29,13 @@ final class ProfileRepositoryHandle {
         ? repository as ProfileStorageInfo
         : null;
 
-    final wrapped = repository is Restorable
+    final restorable =
+        restorableView ??
+        (repository is Restorable ? repository as Restorable : null);
+    final wrapped = restorable != null
         ? CacheInvalidatingRestorableRepository(
             repository,
+            restorable: restorable,
             onProfilesMutated: onProfilesMutated,
           )
         : CacheInvalidatingProfileRepository(

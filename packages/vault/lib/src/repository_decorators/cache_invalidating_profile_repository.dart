@@ -79,8 +79,9 @@ class CacheInvalidatingRestorableRepository
   /// Creates a [CacheInvalidatingRestorableRepository].
   CacheInvalidatingRestorableRepository(
     super.repository, {
+    Restorable? restorable,
     required super.onProfilesMutated,
-  }) : _restorable = repository as Restorable;
+  }) : _restorable = restorable ?? repository as Restorable;
 
   final Restorable _restorable;
 
