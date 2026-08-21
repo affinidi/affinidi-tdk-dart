@@ -28,6 +28,9 @@ void main() {
     when(
       () => mockStorage.delete(key: any(named: 'key')),
     ).thenAnswer((_) async {});
+    when(
+      () => mockStorage.containsKey(key: any(named: 'key')),
+    ).thenAnswer((_) async => false);
   });
 
   group('When saving or updating a consent record', () {
@@ -194,6 +197,53 @@ void main() {
         );
       },
     );
+  });
+
+  group('When deleting a consent record by hash', () {
+    test('it deletes the namespaced key and returns true', () async {
+      when(
+        () => mockStorage.containsKey(key: '${defaultNamespace}_$hash'),
+      ).thenAnswer((_) async => true);
+
+      final result = await store.deleteByHash(hash);
+
+      expect(result, isTrue);
+      verify(
+        () => mockStorage.delete(key: '${defaultNamespace}_$hash'),
+      ).called(1);
+    });
+
+    test(
+      'it returns false and does not delete when the key is absent',
+      () async {
+        when(
+          () => mockStorage.containsKey(key: '${defaultNamespace}_$hash'),
+        ).thenAnswer((_) async => false);
+
+        final result = await store.deleteByHash(hash);
+
+        expect(result, isFalse);
+        verifyNever(() => mockStorage.delete(key: any(named: 'key')));
+      },
+    );
+
+    test('it respects a custom namespace', () async {
+      const customNamespace = 'my_app_consent';
+      final customStore = FlutterSecureConsentStorage(
+        namespace: customNamespace,
+        secureStorage: mockStorage,
+      );
+      when(
+        () => mockStorage.containsKey(key: '${customNamespace}_$hash'),
+      ).thenAnswer((_) async => true);
+
+      final result = await customStore.deleteByHash(hash);
+
+      expect(result, isTrue);
+      verify(
+        () => mockStorage.delete(key: '${customNamespace}_$hash'),
+      ).called(1);
+    });
   });
 
   group('When backing up and restoring consent records', () {

@@ -211,6 +211,11 @@ class MyConsentStore implements ConsentStorage {
   Future<List<IotaConsentRecord>> listAll() async {
     // return every stored record, or an empty list
   }
+
+  @override
+  Future<bool> deleteByHash(String hash) async {
+    // delete the record matching hash; return whether one existed
+  }
 }
 
 final consentService = IotaConsentRecordService(
@@ -219,6 +224,19 @@ final consentService = IotaConsentRecordService(
   shareResponseService: responseService,
 );
 ```
+
+#### Deleting a consent record
+
+Call `deleteConsentRecord` when the user removes an entry from their consent
+history (e.g. from a "Manage consent" screen):
+
+```dart
+await consentService.deleteConsentRecord(hash: record.hash);
+```
+
+Throws a `TdkException` with code `consent_record_not_found` if `hash` does
+not match any stored record, or `failed_to_delete_consent_record` if the
+underlying storage operation fails.
 
 ## Security considerations
 
@@ -299,6 +317,8 @@ All errors are thrown as `TdkException` with one of the following codes:
 | `failed_to_fetch_verifier_metadata` | The verifier's client metadata could not be fetched or parsed. |
 | `failed_to_persist_consent_record` | Persisting a consent record to the `ConsentStorage` backend failed. |
 | `failed_to_read_consent_record` | Reading a consent record from the `ConsentStorage` backend failed. |
+| `failed_to_delete_consent_record` | Deleting a consent record from the `ConsentStorage` backend failed. |
+| `consent_record_not_found` | `IotaConsentRecordService.deleteConsentRecord` was called with a hash that does not match any stored record. |
 
 ## Support & feedback
 
