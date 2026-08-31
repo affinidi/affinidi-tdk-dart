@@ -21,8 +21,9 @@ class FakeVaultStore extends InMemoryVaultStore {
   }
 
   @override
-  Future<void> clear() async {
+  Future<void> clearAllData() async {
     cleared = true;
-    await super.clear();
+    events?.add('clearVaultStore');
+    await super.clearAllData();
   }
 }

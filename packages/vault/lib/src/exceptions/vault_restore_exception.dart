@@ -86,7 +86,7 @@ abstract final class VaultRestoreException {
   /// Creates an exception identifying targets that could not be rolled back.
   static TdkException rollbackFailed(List<String> targets) => TdkException(
     message:
-        'Vault restore failed and automatic rollback could not fully clear: '
+        'Vault restore cleanup could not fully clear: '
         '${targets.join(', ')}.',
     code: TdkExceptionType.restoreRollbackFailed.code,
   );

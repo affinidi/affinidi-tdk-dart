@@ -259,6 +259,7 @@ class Vault implements Restorable {
   /// [vaultStore] - The vault store to use.
   /// [profileRepositories] - Map of profile repositories.
   /// [restorableRepositories] - Optional backup views keyed by repository ID.
+  /// [namedRestorables] - Optional named components included in backups.
   /// [defaultProfileRepositoryId] - Optional ID of the default profile repository.
   static Future<Vault> fromVaultStore(
     VaultStore vaultStore, {
@@ -363,6 +364,37 @@ class Vault implements Restorable {
     profileRepositories: _profileRepositories,
     namedRestorables: _namedRestorables,
   );
+
+  @override
+  /// Permanently deletes all local data owned by this Vault.
+  ///
+  /// Applications should prefer `VaultBackupService.discardInterruptedRestore`
+  /// for recovery and call this only after explicit user confirmation.
+  Future<void> clearAllData() async {
+    final errors = <String>[];
+    for (final id in _namedRestorables.keys.toList()..sort()) {
+      try {
+        await _namedRestorables[id]!.clearAllData();
+      } catch (_) {
+        errors.add('named:$id');
+      }
+    }
+    for (final id in _profileRepositories.keys.toList()..sort()) {
+      final repository = _profileRepositories[id];
+      if (repository is! Restorable) continue;
+      try {
+        await (repository as Restorable).clearAllData();
+      } catch (_) {
+        errors.add('repository:$id');
+      }
+    }
+    if (errors.isNotEmpty) {
+      throw VaultRestoreException.rollbackFailed(errors);
+    }
+    await _vaultStore.clearAllData();
+    _pendingImportPlan = null;
+    _invalidateProfilesCache();
+  }
 
   /// Ensures the vault is initialized by configuring all profile repositories.
   Future<void> ensureInitialized() async {

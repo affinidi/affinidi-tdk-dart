@@ -398,8 +398,9 @@ class EdgeFileStorage implements FileStorage, Restorable {
       });
 
   @override
-  Future<void> rollbackImport() => _lock.synchronized(() async {
-    if (!_importPendingRollback) return;
+  Future<void> clearAllData() => _lock.synchronized(_clear);
+
+  Future<void> _clear() async {
     final folderIds = <String>[];
     final pendingFolders = <String?>[null];
     while (pendingFolders.isNotEmpty) {
@@ -430,6 +431,12 @@ class EdgeFileStorage implements FileStorage, Restorable {
       await _repository.deleteFolder(folderId: folderId);
     }
     _importPendingRollback = false;
+  }
+
+  @override
+  Future<void> rollbackImport() => _lock.synchronized(() async {
+    if (!_importPendingRollback) return;
+    await _clear();
   });
 
   (List<_BackupFolder>, List<_BackupFile>) _parseBackup(

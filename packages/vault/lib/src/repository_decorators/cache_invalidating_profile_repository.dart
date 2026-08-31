@@ -102,6 +102,12 @@ class CacheInvalidatingRestorableRepository
   }
 
   @override
+  Future<void> clearAllData() async {
+    await _restorable.clearAllData();
+    invalidateProfilesCache();
+  }
+
+  @override
   Future<void> rollbackImport() async {
     await _restorable.rollbackImport();
     invalidateProfilesCache();

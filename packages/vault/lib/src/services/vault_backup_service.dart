@@ -57,6 +57,41 @@ class VaultBackupService implements VaultBackupServiceInterface {
   final Lock _restoreLock = Lock();
 
   @override
+  Future<void> discardInterruptedRestore({
+    required VaultStoreFactory vaultStoreFactory,
+    required Map<String, ProfileRepositoryRegistration> repositoryFactories,
+    Map<String, RestorableFactory> namedRestorableFactories = const {},
+  }) => _restoreLock.synchronized(() async {
+    final vaultStore = await vaultStoreFactory();
+    final cleanupErrors = <String>[];
+    for (final id in namedRestorableFactories.keys.toList()..sort()) {
+      try {
+        await (await namedRestorableFactories[id]!()).clearAllData();
+      } catch (_) {
+        cleanupErrors.add('named:$id');
+      }
+    }
+    for (final id in repositoryFactories.keys.toList()..sort()) {
+      final registration = repositoryFactories[id]!;
+      if (!registration.expectsBackupData) continue;
+      try {
+        final repository = await registration.create(vaultStore);
+        await registration.restorableView(repository)!.clearAllData();
+      } catch (_) {
+        cleanupErrors.add('repository:$id');
+      }
+    }
+    if (cleanupErrors.isNotEmpty) {
+      throw VaultRestoreException.rollbackFailed(cleanupErrors);
+    }
+    try {
+      await vaultStore.clearAllData();
+    } catch (_) {
+      throw VaultRestoreException.rollbackFailed(['vaultStore']);
+    }
+  });
+
+  @override
   Future<ByteData> createBackup({
     required Vault vault,
     required Uint8List passphrase,

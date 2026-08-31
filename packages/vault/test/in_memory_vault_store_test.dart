@@ -58,7 +58,7 @@ void main() {
         await store.setAccountIndex(VaultStoreFixtures.testAccountIndex);
 
         // Clear all data
-        await store.clear();
+        await store.clearAllData();
 
         // Verify all data is cleared
         expect(await store.getSeed(), isNull);

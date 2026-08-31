@@ -137,6 +137,140 @@ void main() {
     });
 
     group('When restoring a valid vault backup', () {
+      test(
+        'it discards all local state left by an interrupted restore',
+        () async {
+          final targetStore = FakeVaultStore();
+          await targetStore.setSeed(Uint8List.fromList([1, 2, 3]));
+          final targetRepository = FakeRestorableProfileRepository(
+            'edge',
+            value: 'partial',
+            isEmpty: false,
+          );
+          final targetComponent = FakeRestorable(
+            value: 'partial',
+            isEmpty: false,
+          );
+
+          await service.discardInterruptedRestore(
+            vaultStoreFactory: () => targetStore,
+            repositoryFactories: {
+              'edge': ProfileRepositoryRegistration.withBackupData(
+                id: 'edge',
+                factory: (_) => targetRepository,
+                asRestorable: restorableIdentity,
+              ),
+            },
+            namedRestorableFactories: {'consentHistory': () => targetComponent},
+          );
+
+          expect(await targetStore.isEmpty(), isTrue);
+          expect(await targetRepository.isEmpty(), isTrue);
+          expect(await targetComponent.isEmpty(), isTrue);
+        },
+      );
+
+      test('it can discard interrupted local state repeatedly', () async {
+        final targetStore = FakeVaultStore();
+        final targetRepository = FakeRestorableProfileRepository('edge');
+
+        Future<void> discard() => service.discardInterruptedRestore(
+          vaultStoreFactory: () => targetStore,
+          repositoryFactories: {
+            'edge': ProfileRepositoryRegistration.withBackupData(
+              id: 'edge',
+              factory: (_) => targetRepository,
+              asRestorable: restorableIdentity,
+            ),
+          },
+        );
+
+        await discard();
+        await discard();
+
+        expect(await targetStore.isEmpty(), isTrue);
+        expect(await targetRepository.isEmpty(), isTrue);
+      });
+
+      test(
+        'it preserves the VaultStore when dependent cleanup fails',
+        () async {
+          final targetStore = FakeVaultStore();
+          await targetStore.setSeed(Uint8List.fromList([1, 2, 3]));
+
+          await expectLater(
+            service.discardInterruptedRestore(
+              vaultStoreFactory: () => targetStore,
+              repositoryFactories: const {},
+              namedRestorableFactories: {
+                'last': () => FakeRestorable(
+                  rollbackError: Exception('storage unavailable'),
+                ),
+              },
+            ),
+            throwsA(
+              isA<TdkException>().having(
+                (error) => error.code,
+                'code',
+                'restore_rollback_failed',
+              ),
+            ),
+          );
+
+          expect(await targetStore.isEmpty(), isFalse);
+        },
+      );
+
+      test('it clears dependent state before the VaultStore', () async {
+        final events = <String>[];
+        final targetStore = FakeVaultStore(events: events);
+        final targetRepository = FakeRestorableProfileRepository(
+          'edge',
+          events: events,
+        );
+        final targetComponent = FakeRestorable(
+          id: 'consentHistory',
+          events: events,
+        );
+
+        await service.discardInterruptedRestore(
+          vaultStoreFactory: () => targetStore,
+          repositoryFactories: {
+            'edge': ProfileRepositoryRegistration.withBackupData(
+              id: 'edge',
+              factory: (_) => targetRepository,
+              asRestorable: restorableIdentity,
+            ),
+          },
+          namedRestorableFactories: {'consentHistory': () => targetComponent},
+        );
+
+        expect(events, [
+          'clear:consentHistory',
+          'clear:edge',
+          'clearVaultStore',
+        ]);
+      });
+
+      test('it leaves non-restorable repositories untouched', () async {
+        var cloudFactoryCalls = 0;
+
+        await service.discardInterruptedRestore(
+          vaultStoreFactory: InMemoryVaultStore.new,
+          repositoryFactories: {
+            'cloud': ProfileRepositoryRegistration.withoutBackupData(
+              id: 'cloud',
+              factory: (_) {
+                cloudFactoryCalls++;
+                return FakeProfileRepository('cloud');
+              },
+            ),
+          },
+        );
+
+        expect(cloudFactoryCalls, 0);
+      });
+
       test('it restores and opens a fresh Vault', () async {
         final source = await VaultBackupServiceFixtures.vault(
           store: await VaultBackupServiceFixtures.store(),

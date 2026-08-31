@@ -44,7 +44,7 @@ class InMemoryVaultStore extends VaultStore {
   }
 
   @override
-  Future<void> clear() async {
+  Future<void> clearAllData() async {
     _seed = null;
     _accountIndex = 0;
     _contentKey = null;

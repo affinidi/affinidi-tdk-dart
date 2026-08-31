@@ -466,6 +466,30 @@ Profile repository must be configured using a RepositoryConfiguration''',
   );
 
   @override
+  Future<void> clearAllData() => _lock.synchronized(() async {
+    for (final profile in await listProfiles()) {
+      for (final storage in profile.fileStorages.values) {
+        if (storage is Restorable) {
+          await (storage as Restorable).clearAllData();
+        }
+      }
+      for (final storage in profile.credentialStorages.values) {
+        if (storage is Restorable) {
+          await (storage as Restorable).clearAllData();
+        }
+      }
+      for (final storage in profile.sharedStorages) {
+        if (storage is Restorable) {
+          await (storage as Restorable).clearAllData();
+        }
+      }
+      await _repository.deleteProfile(profileId: profile.id);
+    }
+    _accountIndexBeforeImport = null;
+    _importPendingRollback = false;
+  });
+
+  @override
   Future<void> rollbackImport() => _lock.synchronized(() async {
     if (!_importPendingRollback) return;
     for (final profile in await listProfiles()) {

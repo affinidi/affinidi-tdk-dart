@@ -136,6 +136,30 @@ Unknown IDs, incompatible versions, incorrect passphrases, and tampered
 backups are also rejected. Avoid targeting the same persistence layer from
 multiple service instances at the same time.
 
+Applications should persist their own restore-in-progress flag immediately
+before calling `restoreBackup` and clear it after restore completes. If the
+flag remains set on the next app start, show a recovery interface before
+opening or mutating the destination. After the user confirms that the partial
+restore may be deleted, discard all registered local restore state:
+
+```dart
+if (await restoreState.isInProgress()) {
+  await backupService.discardInterruptedRestore(
+    vaultStoreFactory: createVaultStore,
+    repositoryFactories: repositoryFactories,
+    namedRestorableFactories: namedRestorableFactories,
+  );
+  await restoreState.clear();
+}
+```
+
+`discardInterruptedRestore` is intentionally destructive. It clears named
+components and local repositories before the VaultStore, leaves cloud and
+other non-restorable repositories untouched, and can safely be called again if
+the app is interrupted during cleanup. Clear the application flag only after
+cleanup succeeds. Backup selection and retry should be a separate subsequent
+action.
+
 Platform-specific state can participate without coupling its domain package to
 Vault. For example, create one `FlutterSecureConsentStorage`, register it in
 `Vault.fromVaultStore` as `consentHistory`, and inject the same instance into

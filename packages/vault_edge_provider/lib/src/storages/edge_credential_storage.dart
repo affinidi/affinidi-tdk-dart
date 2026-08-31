@@ -228,8 +228,9 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
       });
 
   @override
-  Future<void> rollbackImport() => _lock.synchronized(() async {
-    if (!_importPendingRollback) return;
+  Future<void> clearAllData() => _lock.synchronized(_clear);
+
+  Future<void> _clear() async {
     var hasMoreCredentials = true;
     while (hasMoreCredentials) {
       final page = await _repository.listCredentialData(
@@ -242,6 +243,12 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
       }
     }
     _importPendingRollback = false;
+  }
+
+  @override
+  Future<void> rollbackImport() => _lock.synchronized(() async {
+    if (!_importPendingRollback) return;
+    await _clear();
   });
 
   List<(String, VerifiableCredential)> _parseBackup(Map<String, dynamic> data) {

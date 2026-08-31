@@ -7,6 +7,7 @@ class FakeRestorable implements Restorable {
     this.events,
     this.validationError,
     this.importError,
+    this.rollbackError,
     bool isEmpty = true,
   }) : value = value ?? id ?? 'source',
        _empty = isEmpty;
@@ -16,6 +17,7 @@ class FakeRestorable implements Restorable {
   final List<String>? events;
   final Exception? validationError;
   final Exception? importError;
+  final Exception? rollbackError;
   Map<String, dynamic>? importedData;
   int rollbackCalls = 0;
   bool _empty;
@@ -48,11 +50,18 @@ class FakeRestorable implements Restorable {
   }
 
   @override
-  Future<void> rollbackImport() async {
-    if (!_importPendingRollback) return;
+  Future<void> clearAllData() async {
+    if (rollbackError != null) throw rollbackError!;
+    if (id != null) events?.add('clear:$id');
     importedData = null;
     _empty = true;
     _importPendingRollback = false;
     rollbackCalls++;
+  }
+
+  @override
+  Future<void> rollbackImport() async {
+    if (!_importPendingRollback) return;
+    await clearAllData();
   }
 }

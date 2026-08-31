@@ -110,6 +110,16 @@ typedef RestorableFactory = FutureOr<Restorable> Function();
 
 /// Defines the contract for creating and restoring encrypted Vault backups.
 abstract interface class VaultBackupServiceInterface {
+  /// Permanently deletes local state left by an interrupted restoration.
+  ///
+  /// Applications must gate this destructive operation behind their own
+  /// durable restore-in-progress flag and explicit user confirmation.
+  Future<void> discardInterruptedRestore({
+    required VaultStoreFactory vaultStoreFactory,
+    required Map<String, ProfileRepositoryRegistration> repositoryFactories,
+    Map<String, RestorableFactory> namedRestorableFactories = const {},
+  });
+
   /// Creates an encrypted backup of [vault].
   ///
   /// Parameters:

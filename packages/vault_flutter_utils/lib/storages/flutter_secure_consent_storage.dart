@@ -114,8 +114,7 @@ class FlutterSecureConsentStorage
   }
 
   @override
-  Future<void> rollbackImport() async {
-    if (!_importPendingRollback) return;
+  Future<void> clearAllData() async {
     final all = await _secureStorage.readAll();
     final prefix = '${_namespace}_';
     for (final key in all.keys) {
@@ -124,6 +123,12 @@ class FlutterSecureConsentStorage
       }
     }
     _importPendingRollback = false;
+  }
+
+  @override
+  Future<void> rollbackImport() async {
+    if (!_importPendingRollback) return;
+    await clearAllData();
   }
 
   List<IotaConsentRecord> _parseBackup(Map<String, dynamic> data) {

@@ -153,7 +153,7 @@ void main() {
         () => mockStorage.delete(key: any(named: 'key')),
       ).thenAnswer((_) async {});
 
-      await vaultStore.clear();
+      await vaultStore.clearAllData();
       verify(
         () => mockStorage.delete(key: '${vaultId}_accountIndex'),
       ).called(1);

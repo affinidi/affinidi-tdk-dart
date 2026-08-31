@@ -15,6 +15,9 @@ class FakeRestorable implements Restorable {
   Future<bool> isEmpty() async => true;
 
   @override
+  Future<void> clearAllData() async {}
+
+  @override
   Future<void> import(Map<String, dynamic> data) async {}
 
   @override

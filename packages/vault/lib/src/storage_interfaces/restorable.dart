@@ -17,6 +17,12 @@ abstract interface class Restorable {
   /// durable state.
   Future<bool> isEmpty();
 
+  /// Deletes all durable state owned by this restore target.
+  ///
+  /// This operation must be idempotent. Applications should invoke it only
+  /// after explicitly confirming that an interrupted restore may be discarded.
+  Future<void> clearAllData();
+
   /// Restores a previously exported payload into an empty destination.
   ///
   /// [data] must have passed [validateImport]. Implementations should also call
