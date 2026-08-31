@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'package:mocktail/mocktail.dart';
@@ -11,11 +12,11 @@ import 'package:mocktail/mocktail.dart';
 class FakeCryptographyService extends Fake
     implements CryptographyServiceInterface {
   FakeCryptographyService({
-    List<int> Function(String password)? keyFactory,
+    List<int> Function(Uint8List passwordBytes)? keyFactory,
     this.events,
   }) : _keyFactory = keyFactory;
 
-  final List<int> Function(String password)? _keyFactory;
+  final List<int> Function(Uint8List passwordBytes)? _keyFactory;
   final List<String>? events;
   List<int>? lastDerivedKey;
 
@@ -23,15 +24,14 @@ class FakeCryptographyService extends Fake
   List<int> getRandomBytes(int length) => List<int>.filled(length, 7);
 
   @override
-  // ignore: non_constant_identifier_names
-  Future<List<int>> Pbkdf2({
-    required String password,
+  Future<List<int>> pbkdf2FromBytes({
+    required Uint8List passwordBytes,
     required List<int> nonce,
   }) async {
     events?.add('deriveKey');
     final key =
-        _keyFactory?.call(password) ??
-        List<int>.from(utf8.encode('key-$password'));
+        _keyFactory?.call(passwordBytes) ??
+        List<int>.from([...utf8.encode('key-'), ...passwordBytes]);
     lastDerivedKey = key;
     return key;
   }

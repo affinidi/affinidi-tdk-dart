@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
@@ -11,6 +12,9 @@ import 'package:test/test.dart';
 import 'fakes/fake_cloud_repository.dart';
 import 'fixtures/credential_fixtures.dart';
 import 'fixtures/vault_backup_fixtures.dart';
+
+Uint8List _passphrase() =>
+    Uint8List.fromList(utf8.encode('Correct-horse-staple1'));
 
 void main() {
   group('When backing up and restoring durable edge data', () {
@@ -65,7 +69,7 @@ void main() {
         final service = VaultBackupService(
           cryptographyService: CryptographyService(),
         );
-        const passphrase = 'Correct-horse-staple1';
+        final passphrase = _passphrase();
         final backup = await service.createBackup(
           vault: sourceVault,
           passphrase: passphrase,
@@ -320,12 +324,12 @@ void main() {
         );
         final backup = await service.createBackup(
           vault: sourceVault,
-          passphrase: 'Correct-horse-staple1',
+          passphrase: _passphrase(),
         );
         final targetStore = InMemoryVaultStore();
         final restored = await service.restoreBackup(
           backupData: backup,
-          passphrase: 'Correct-horse-staple1',
+          passphrase: _passphrase(),
           vaultStoreFactory: () => targetStore,
           repositoryFactories: {
             'edge-a': ProfileRepositoryRegistration.withBackupData(

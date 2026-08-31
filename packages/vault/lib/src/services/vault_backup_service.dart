@@ -59,7 +59,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
   @override
   Future<ByteData> createBackup({
     required Vault vault,
-    required String passphrase,
+    required Uint8List passphrase,
   }) async {
     final policyViolation = passphrasePolicy.validate(passphrase);
     if (policyViolation != null) {
@@ -70,8 +70,8 @@ class VaultBackupService implements VaultBackupServiceInterface {
     }
     try {
       final salt = _cryptographyService.getRandomBytes(_saltLength);
-      final key = await _cryptographyService.Pbkdf2(
-        password: passphrase,
+      final key = await _cryptographyService.pbkdf2FromBytes(
+        passwordBytes: passphrase,
         nonce: salt,
       );
 
@@ -116,7 +116,7 @@ class VaultBackupService implements VaultBackupServiceInterface {
   @override
   Future<Vault> restoreBackup({
     required ByteData backupData,
-    required String passphrase,
+    required Uint8List passphrase,
     required VaultStoreFactory vaultStoreFactory,
     required Map<String, ProfileRepositoryRegistration> repositoryFactories,
     Map<String, RestorableFactory> namedRestorableFactories = const {},
@@ -133,8 +133,8 @@ class VaultBackupService implements VaultBackupServiceInterface {
       }
       final encryptedData = BackupData.fromJson(rawBackupData);
       final salt = base64Decode(encryptedData.salt);
-      final key = await _cryptographyService.Pbkdf2(
-        password: passphrase,
+      final key = await _cryptographyService.pbkdf2FromBytes(
+        passwordBytes: passphrase,
         nonce: salt,
       );
 

@@ -10,15 +10,18 @@ const _edgeRepositoryId = 'edge';
 const _vfsRepositoryId = 'vfs';
 
 Future<void> main(List<String> arguments) async {
-  final passphrase = io.Platform.environment['VAULT_BACKUP_PASSPHRASE'];
-  if (passphrase == null) {
+  final passphraseFile =
+      io.Platform.environment['VAULT_BACKUP_PASSPHRASE_FILE'];
+  if (passphraseFile == null) {
     io.stderr.writeln(
-      'Set VAULT_BACKUP_PASSPHRASE to the passphrase used for the backup.',
+      'Set VAULT_BACKUP_PASSPHRASE_FILE to the file containing the '
+      'passphrase used for the backup.',
     );
     io.exitCode = 64;
     return;
   }
 
+  final passphrase = await io.File(passphraseFile).readAsBytes();
   final backupPath = arguments.firstOrNull ?? 'vault.backup';
   final backupBytes = await io.File(backupPath).readAsBytes();
   final edgeDatabase = await DatabaseConfig.createInMemoryDatabase();
@@ -60,6 +63,7 @@ Future<void> main(List<String> arguments) async {
       '${restoredProfiles.map((profile) => profile.name).join(', ')}',
     );
   } finally {
+    passphrase.fillRange(0, passphrase.length, 0);
     await edgeDatabase.close();
   }
 }

@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_edge_drift_provider/affinidi_tdk_vault_edge_drift_provider.dart';
@@ -7,6 +10,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'fakes/fake_restorable.dart';
 import 'fixtures/vault_backup_consent_fixtures.dart';
+
+Uint8List _passphrase() =>
+    Uint8List.fromList(utf8.encode('Correct-horse-staple1'));
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -50,7 +56,7 @@ void main() {
       );
       final backup = await service.createBackup(
         vault: sourceVault,
-        passphrase: 'Correct-horse-staple1',
+        passphrase: _passphrase(),
       );
       final targetConsentValues = <String, String>{};
       final targetConsent = VaultBackupConsentFixtures.consentStorage(
@@ -58,7 +64,7 @@ void main() {
       );
       final restored = await service.restoreBackup(
         backupData: backup,
-        passphrase: 'Correct-horse-staple1',
+        passphrase: _passphrase(),
         vaultStoreFactory: InMemoryVaultStore.new,
         repositoryFactories: {
           'edge': ProfileRepositoryRegistration.withBackupData(
@@ -118,7 +124,7 @@ void main() {
         );
         final backup = await service.createBackup(
           vault: sourceVault,
-          passphrase: 'Correct-horse-staple1',
+          passphrase: _passphrase(),
         );
         final targetStore = InMemoryVaultStore();
         final targetConsent = VaultBackupConsentFixtures.consentStorage({});
@@ -126,7 +132,7 @@ void main() {
         await expectLater(
           service.restoreBackup(
             backupData: backup,
-            passphrase: 'Correct-horse-staple1',
+            passphrase: _passphrase(),
             vaultStoreFactory: () => targetStore,
             repositoryFactories: {
               'edge': ProfileRepositoryRegistration.withBackupData(

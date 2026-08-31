@@ -18,7 +18,7 @@ import 'mocks/mock_cryptography_service.dart';
 
 void main() {
   group('VaultBackupService', () {
-    const passphrase = 'Correct-horse-staple1';
+    final passphrase = Uint8List.fromList(utf8.encode('Correct-horse-staple1'));
     late VaultBackupService service;
     late FakeCryptographyService cryptographyService;
 
@@ -324,7 +324,10 @@ void main() {
         );
 
         await expectLater(
-          service.createBackup(vault: vault, passphrase: 'short'),
+          service.createBackup(
+            vault: vault,
+            passphrase: Uint8List.fromList(utf8.encode('short')),
+          ),
           throwsA(
             isA<TdkException>().having(
               (error) => error.code,
@@ -385,7 +388,9 @@ void main() {
           await expectLater(
             service.restoreBackup(
               backupData: bytes,
-              passphrase: 'Incorrect-passphrase1',
+              passphrase: Uint8List.fromList(
+                utf8.encode('Incorrect-passphrase1'),
+              ),
               vaultStoreFactory: () {
                 factoryCalls++;
                 return InMemoryVaultStore();

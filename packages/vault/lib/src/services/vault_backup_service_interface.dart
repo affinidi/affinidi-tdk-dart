@@ -114,13 +114,13 @@ abstract interface class VaultBackupServiceInterface {
   ///
   /// Parameters:
   /// * [passphrase] - The user passphrase used to derive the backup encryption
-  ///   key.
+  ///   key. The caller must overwrite this buffer after the operation.
   ///
   /// Returns encrypted, file-ready bytes.
   /// Throws a `TdkException` if the backup cannot be created.
   Future<ByteData> createBackup({
     required Vault vault,
-    required String passphrase,
+    required Uint8List passphrase,
   });
 
   /// Restores and opens a Vault from encrypted backup bytes.
@@ -128,6 +128,7 @@ abstract interface class VaultBackupServiceInterface {
   /// Parameters:
   /// * [backupData] - Bytes previously produced by [createBackup].
   /// * [passphrase] - The user passphrase used to derive the decryption key.
+  ///   The caller must overwrite this buffer after the operation.
   /// * [vaultStoreFactory] - Creates the empty destination VaultStore.
   /// * [repositoryFactories] - Repository restore registrations keyed by
   ///   repository ID.
@@ -143,7 +144,7 @@ abstract interface class VaultBackupServiceInterface {
   /// malformed.
   Future<Vault> restoreBackup({
     required ByteData backupData,
-    required String passphrase,
+    required Uint8List passphrase,
     required VaultStoreFactory vaultStoreFactory,
     required Map<String, ProfileRepositoryRegistration> repositoryFactories,
     Map<String, RestorableFactory> namedRestorableFactories = const {},

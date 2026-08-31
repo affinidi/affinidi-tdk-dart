@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 /// A rule that a passphrase failed to satisfy.
 enum PassphraseViolation {
   /// The passphrase is shorter than the configured minimum length.
@@ -37,7 +39,7 @@ class PassphrasePolicy {
   /// The default policy applied by the backup service.
   static const PassphrasePolicy standard = PassphrasePolicy();
 
-  /// Minimum number of characters required.
+  /// Minimum number of UTF-8 code points required.
   final int minLength;
 
   /// Whether at least one uppercase letter (A-Z) is required.
@@ -51,20 +53,30 @@ class PassphrasePolicy {
 
   /// Returns `null` when [passphrase] satisfies the policy, or the first rule
   /// it violates.
-  PassphraseViolation? validate(String passphrase) {
-    if (passphrase.length < minLength) {
+  PassphraseViolation? validate(Uint8List passphrase) {
+    if (_utf8CodePointLength(passphrase) < minLength) {
       return PassphraseViolation.tooShort;
     }
-    if (requireUppercase && !passphrase.contains(RegExp(r'[A-Z]'))) {
+    if (requireUppercase && !passphrase.any(_isUppercase)) {
       return PassphraseViolation.missingUppercase;
     }
-    if (requireNumber && !passphrase.contains(RegExp(r'[0-9]'))) {
+    if (requireNumber && !passphrase.any(_isNumber)) {
       return PassphraseViolation.missingNumber;
     }
     if (requireSpecialCharacter &&
-        !passphrase.contains(RegExp(r'[^A-Za-z0-9]'))) {
+        !passphrase.any((byte) => !_isAsciiAlphanumeric(byte))) {
       return PassphraseViolation.missingSpecialCharacter;
     }
     return null;
   }
+
+  static bool _isUppercase(int byte) => byte >= 0x41 && byte <= 0x5a;
+
+  static bool _isNumber(int byte) => byte >= 0x30 && byte <= 0x39;
+
+  static int _utf8CodePointLength(Uint8List bytes) =>
+      bytes.where((byte) => byte & 0xc0 != 0x80).length;
+
+  static bool _isAsciiAlphanumeric(int byte) =>
+      _isUppercase(byte) || (byte >= 0x61 && byte <= 0x7a) || _isNumber(byte);
 }

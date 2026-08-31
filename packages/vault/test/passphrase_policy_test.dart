@@ -1,5 +1,11 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:test/test.dart';
+
+Uint8List passphraseBytes(String value) =>
+    Uint8List.fromList(utf8.encode(value));
 
 void main() {
   group('When validating PassphrasePolicy.standard', () {
@@ -7,20 +13,26 @@ void main() {
 
     group('and the passphrase meets every rule', () {
       test('it accepts the passphrase', () {
-        expect(policy.validate('Correct-horse-staple1'), isNull);
+        expect(
+          policy.validate(passphraseBytes('Correct-horse-staple1')),
+          isNull,
+        );
       });
     });
 
     group('and the passphrase is shorter than the minimum length', () {
       test('it returns the too-short violation', () {
-        expect(policy.validate('Ab1!'), equals(PassphraseViolation.tooShort));
+        expect(
+          policy.validate(passphraseBytes('Ab1!')),
+          equals(PassphraseViolation.tooShort),
+        );
       });
     });
 
     group('and the passphrase has no uppercase letter', () {
       test('it returns the missing-uppercase violation', () {
         expect(
-          policy.validate('lowercase-only-1!'),
+          policy.validate(passphraseBytes('lowercase-only-1!')),
           equals(PassphraseViolation.missingUppercase),
         );
       });
@@ -29,7 +41,7 @@ void main() {
     group('and the passphrase has no number', () {
       test('it returns the missing-number violation', () {
         expect(
-          policy.validate('NoNumbersHere!'),
+          policy.validate(passphraseBytes('NoNumbersHere!')),
           equals(PassphraseViolation.missingNumber),
         );
       });
@@ -38,7 +50,7 @@ void main() {
     group('and the passphrase has no special character', () {
       test('it returns the missing-special-character violation', () {
         expect(
-          policy.validate('NoSpecials1234'),
+          policy.validate(passphraseBytes('NoSpecials1234')),
           equals(PassphraseViolation.missingSpecialCharacter),
         );
       });
@@ -60,7 +72,16 @@ void main() {
 
     group('and the passphrase meets the minimum length', () {
       test('it only enforces that minimum length', () {
-        expect(policy.validate('all-lowercase-plain'), isNull);
+        expect(policy.validate(passphraseBytes('all-lowercase-plain')), isNull);
+      });
+    });
+
+    group('and multibyte characters do not meet the minimum length', () {
+      test('it counts UTF-8 code points rather than bytes', () {
+        expect(
+          policy.validate(passphraseBytes('🔐🔐🔐')),
+          equals(PassphraseViolation.tooShort),
+        );
       });
     });
   });

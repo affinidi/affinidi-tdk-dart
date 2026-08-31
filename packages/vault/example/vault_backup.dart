@@ -12,16 +12,18 @@ const _vfsRepositoryId = 'vfs';
 const _passphrasePolicy = PassphrasePolicy(minLength: 16);
 
 Future<void> main(List<String> arguments) async {
-  final passphrase = io.Platform.environment['VAULT_BACKUP_PASSPHRASE'];
-  if (passphrase == null) {
+  final passphraseFile =
+      io.Platform.environment['VAULT_BACKUP_PASSPHRASE_FILE'];
+  if (passphraseFile == null) {
     io.stderr.writeln(
-      'Set VAULT_BACKUP_PASSPHRASE to a passphrase that satisfies '
-      'the configured passphrase policy.',
+      'Set VAULT_BACKUP_PASSPHRASE_FILE to a file containing a passphrase '
+      'that satisfies the configured passphrase policy.',
     );
     io.exitCode = 64;
     return;
   }
 
+  final passphrase = await io.File(passphraseFile).readAsBytes();
   final backupPath = arguments.firstOrNull ?? 'vault.backup';
   final edgeDatabase = await DatabaseConfig.createInMemoryDatabase();
   try {
@@ -38,6 +40,7 @@ Future<void> main(List<String> arguments) async {
       flush: true,
     );
   } finally {
+    passphrase.fillRange(0, passphrase.length, 0);
     await edgeDatabase.close();
   }
   io.stdout.writeln('Encrypted vault backup written to $backupPath');

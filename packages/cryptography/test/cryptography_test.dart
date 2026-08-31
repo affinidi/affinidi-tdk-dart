@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'package:test/test.dart';
@@ -43,6 +44,22 @@ void main() {
           );
 
       expect(decryptedData, dataToEncrypt);
+    });
+  });
+
+  group('When deriving a PBKDF2 key from mutable bytes', () {
+    test('it matches derivation from the equivalent string', () async {
+      final nonce = utf8.encode('fixed_salt');
+      final fromString = await cryptographyService.Pbkdf2(
+        password: 'password',
+        nonce: nonce,
+      );
+      final fromBytes = await cryptographyService.pbkdf2FromBytes(
+        passwordBytes: Uint8List.fromList(utf8.encode('password')),
+        nonce: nonce,
+      );
+
+      expect(fromBytes, fromString);
     });
   });
 

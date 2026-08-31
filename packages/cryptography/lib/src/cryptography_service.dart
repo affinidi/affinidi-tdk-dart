@@ -94,6 +94,16 @@ class CryptographyService implements CryptographyServiceInterface {
     required List<int> nonce,
   }) => _implementation.Pbkdf2(password: password, nonce: nonce);
 
+  /// Derives a key using PBKDF2 from mutable password bytes.
+  @override
+  Future<List<int>> pbkdf2FromBytes({
+    required Uint8List passwordBytes,
+    required List<int> nonce,
+  }) => _implementation.pbkdf2FromBytes(
+    passwordBytes: passwordBytes,
+    nonce: nonce,
+  );
+
   /// Creates a hash from the given source string.
   ///
   /// [hashSource] - The source string to hash.

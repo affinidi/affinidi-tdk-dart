@@ -80,10 +80,16 @@ import 'dart:io';
 final backupService = VaultBackupService(
   passphrasePolicy: const PassphrasePolicy(minLength: 16),
 );
-final backup = await backupService.createBackup(
-  vault: vault,
-  passphrase: 'A-strong-passphrase1',
-);
+final passphrase = await File(passphraseFilePath).readAsBytes();
+late final ByteData backup;
+try {
+  backup = await backupService.createBackup(
+    vault: vault,
+    passphrase: passphrase,
+  );
+} finally {
+  passphrase.fillRange(0, passphrase.length, 0);
+}
 
 // Native applications can persist the bytes with dart:io.
 await File('vault.backup').writeAsBytes(
@@ -98,22 +104,27 @@ services before the Vault is opened normally:
 
 ```dart
 final fileBytes = await File('vault.backup').readAsBytes();
-final restoredVault = await backupService.restoreBackup(
-  backupData: ByteData.sublistView(fileBytes),
-  passphrase: 'A-strong-passphrase1',
-  vaultStoreFactory: createVaultStore,
-  repositoryFactories: {
-    'edge': ProfileRepositoryRegistration.withBackupData(
-      id: 'edge',
-      factory: createEdgeRepository,
-      asRestorable: restorableIdentity,
-    ),
-    'cloud': ProfileRepositoryRegistration.withoutBackupData(
-      id: 'cloud',
-      factory: (_) => createCloudRepository(),
-    ),
-  },
-);
+final passphrase = await File(passphraseFilePath).readAsBytes();
+try {
+  final restoredVault = await backupService.restoreBackup(
+    backupData: ByteData.sublistView(fileBytes),
+    passphrase: passphrase,
+    vaultStoreFactory: createVaultStore,
+    repositoryFactories: {
+      'edge': ProfileRepositoryRegistration.withBackupData(
+        id: 'edge',
+        factory: createEdgeRepository,
+        asRestorable: restorableIdentity,
+      ),
+      'cloud': ProfileRepositoryRegistration.withoutBackupData(
+        id: 'cloud',
+        factory: (_) => createCloudRepository(),
+      ),
+    },
+  );
+} finally {
+  passphrase.fillRange(0, passphrase.length, 0);
+}
 ```
 
 All repository and named-component factories are validated before wallet state

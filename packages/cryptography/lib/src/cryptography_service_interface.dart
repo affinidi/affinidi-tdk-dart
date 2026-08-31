@@ -22,6 +22,12 @@ abstract interface class CryptographyServiceInterface {
     required List<int> nonce,
   });
 
+  /// Derives a key using PBKDF2 from mutable password bytes.
+  Future<List<int>> pbkdf2FromBytes({
+    required Uint8List passwordBytes,
+    required List<int> nonce,
+  });
+
   /// Encrypts the given data using AES-256 algorithm.
   Future<List<int>> Aes256Encrypt({
     required List<int> key,
