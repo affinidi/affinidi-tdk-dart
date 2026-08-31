@@ -101,10 +101,13 @@ void main() {
             {'id': 'z-cloud', 'restorable': false},
           ]);
           expect(repositories['data'], {
-            'a-edge': {'version': '1.0.0', 'value': 'profiles'},
+            'a-edge': {'schemaVersion': '1.0.0', 'value': 'profiles'},
           });
           expect(exported['namedComponents'], {
-            'consentHistory': {'version': '1.0.0', 'value': 'consentHistory'},
+            'consentHistory': {
+              'schemaVersion': '1.0.0',
+              'value': 'consentHistory',
+            },
           });
         },
       );
@@ -153,11 +156,11 @@ void main() {
 
         expect(targetEvents, ['edge', 'consentHistory']);
         expect(repository.importedData, {
-          'version': '1.0.0',
+          'schemaVersion': '1.0.0',
           'value': 'profiles',
         });
         expect(named.importedData, {
-          'version': '1.0.0',
+          'schemaVersion': '1.0.0',
           'value': 'consentHistory',
         });
       });

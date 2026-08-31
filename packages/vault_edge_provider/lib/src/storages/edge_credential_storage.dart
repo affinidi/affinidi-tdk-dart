@@ -36,7 +36,11 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
   final Lock _lock;
   bool _importPendingRollback = false;
 
-  static const _backupVersion = '1.0.0';
+  static const _backupSchemaVersion = '1.0.0';
+  static const _backupSchemaMigrations = <String, BackupSchemaMigration>{
+    // For 1.1.0, add: '1.0.0': _migrateFromV1ToV1_1.
+    // It returns {...data, 'schemaVersion': '1.1.0'} plus field changes.
+  };
   static const _pageSize = 50;
 
   @override
@@ -193,7 +197,7 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
       cursor = page.lastEvaluatedItemId;
     } while (cursor != null);
 
-    return {'version': _backupVersion, 'credentials': credentials};
+    return {'schemaVersion': _backupSchemaVersion, 'credentials': credentials};
   });
 
   @override
@@ -252,10 +256,18 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
   });
 
   List<(String, VerifiableCredential)> _parseBackup(Map<String, dynamic> data) {
-    const allowedKeys = {'version', 'credentials'};
-    final rawCredentials = data['credentials'];
-    if (data.keys.any((key) => !allowedKeys.contains(key)) ||
-        data['version'] != _backupVersion ||
+    final migratedData = migrateBackupSchemaData(
+      data: data,
+      currentSchemaVersion: _backupSchemaVersion,
+      schemaMigrations: _backupSchemaMigrations,
+    );
+    if (migratedData == null) {
+      throw EdgeRestoreException.invalidBackupFormat('credential storage');
+    }
+
+    const allowedKeys = {'schemaVersion', 'credentials'};
+    final rawCredentials = migratedData['credentials'];
+    if (migratedData.keys.any((key) => !allowedKeys.contains(key)) ||
         rawCredentials is! List) {
       throw EdgeRestoreException.invalidBackupFormat('credential storage');
     }

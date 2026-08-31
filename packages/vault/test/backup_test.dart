@@ -103,7 +103,7 @@ void main() {
 
     group('and creating it with the vault schema', () {
       Map<String, dynamic> component([String value = 'value']) => {
-        'version': '1.0.0',
+        'schemaVersion': '1.0.0',
         'value': value,
       };
 

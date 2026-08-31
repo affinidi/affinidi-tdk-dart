@@ -44,7 +44,11 @@ class EdgeFileStorage implements FileStorage, Restorable {
   final List<String> _allowedExtensions;
   bool _importPendingRollback = false;
 
-  static const _backupVersion = '1.0.0';
+  static const _backupSchemaVersion = '1.0.0';
+  static const _backupSchemaMigrations = <String, BackupSchemaMigration>{
+    // For 1.1.0, add: '1.0.0': _migrateFromV1ToV1_1.
+    // It returns {...data, 'schemaVersion': '1.1.0'} plus field changes.
+  };
   static const _pageSize = 50;
 
   @override
@@ -337,7 +341,7 @@ class EdgeFileStorage implements FileStorage, Restorable {
       } while (cursor != null);
     }
 
-    return {'version': _backupVersion, 'items': items};
+    return {'schemaVersion': _backupSchemaVersion, 'items': items};
   });
 
   @override
@@ -442,10 +446,18 @@ class EdgeFileStorage implements FileStorage, Restorable {
   (List<_BackupFolder>, List<_BackupFile>) _parseBackup(
     Map<String, dynamic> data,
   ) {
-    const allowedKeys = {'version', 'items'};
-    final rawItems = data['items'];
-    if (data.keys.any((key) => !allowedKeys.contains(key)) ||
-        data['version'] != _backupVersion ||
+    final migratedData = migrateBackupSchemaData(
+      data: data,
+      currentSchemaVersion: _backupSchemaVersion,
+      schemaMigrations: _backupSchemaMigrations,
+    );
+    if (migratedData == null) {
+      throw EdgeRestoreException.invalidBackupFormat('file storage');
+    }
+
+    const allowedKeys = {'schemaVersion', 'items'};
+    final rawItems = migratedData['items'];
+    if (migratedData.keys.any((key) => !allowedKeys.contains(key)) ||
         rawItems is! List) {
       throw EdgeRestoreException.invalidBackupFormat('file storage');
     }

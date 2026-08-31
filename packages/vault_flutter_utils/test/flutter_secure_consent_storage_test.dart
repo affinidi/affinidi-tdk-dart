@@ -260,7 +260,7 @@ void main() {
       final exported = await store.export();
 
       expect(exported, {
-        'version': '1.0.0',
+        'schemaVersion': '1.0.0',
         'records': [record.toJson(), second.toJson()],
       });
     });
@@ -275,7 +275,7 @@ void main() {
       ).thenAnswer((_) async {});
 
       await store.import({
-        'version': '1.0.0',
+        'schemaVersion': '1.0.0',
         'records': [record.toJson(), second.toJson()],
       });
 
@@ -309,7 +309,7 @@ void main() {
 
       await expectLater(
         store.import({
-          'version': '1.0.0',
+          'schemaVersion': '1.0.0',
           'records': [record.toJson()],
         }),
         throwsA(
@@ -351,7 +351,7 @@ void main() {
         ),
       ).thenAnswer((_) async => stored = true);
       final payload = {
-        'version': '1.0.0',
+        'schemaVersion': '1.0.0',
         'records': [record.toJson()],
       };
 
@@ -378,7 +378,7 @@ void main() {
     test('it rejects malformed records before any write', () async {
       await expectLater(
         store.import(const {
-          'version': '1.0.0',
+          'schemaVersion': '1.0.0',
           'records': [42],
         }),
         throwsA(

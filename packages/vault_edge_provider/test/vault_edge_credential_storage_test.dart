@@ -312,7 +312,7 @@ void main() {
 
       final exported = await storage.export();
 
-      expect(exported['version'], '1.0.0');
+      expect(exported['schemaVersion'], '1.0.0');
       expect(exported['credentials'], [
         {
           'id': CredentialFixtures.credentialId,
@@ -332,7 +332,7 @@ void main() {
       CredentialMockSetup.setupEmptyCredentialListMocks(mockRepository);
 
       await storage.import({
-        'version': '1.0.0',
+        'schemaVersion': '1.0.0',
         'credentials': [
           {
             'id': CredentialFixtures.credentialId,
@@ -370,7 +370,7 @@ void main() {
 
       await expectLater(
         storage.import({
-          'version': '1.0.0',
+          'schemaVersion': '1.0.0',
           'credentials': [
             {
               'id': CredentialFixtures.credentialId,
@@ -408,7 +408,7 @@ void main() {
     test('it rejects malformed credentials before repository access', () async {
       await expectLater(
         storage.import(const {
-          'version': '1.0.0',
+          'schemaVersion': '1.0.0',
           'credentials': [
             {'id': 'credential-id', 'verifiableCredential': 42},
           ],
@@ -438,7 +438,7 @@ void main() {
     test('it rejects unsupported versions before repository access', () async {
       await expectLater(
         storage.validateImport(const {
-          'version': '2.0.0',
+          'schemaVersion': '2.0.0',
           'credentials': <dynamic>[],
         }),
         throwsA(invalidBackupFormat),
@@ -519,7 +519,10 @@ void main() {
           };
         });
 
-        await storage.import({'version': '1.0.0', 'credentials': credentials});
+        await storage.import({
+          'schemaVersion': '1.0.0',
+          'credentials': credentials,
+        });
 
         expect(storedCredentials, hasLength(120));
 

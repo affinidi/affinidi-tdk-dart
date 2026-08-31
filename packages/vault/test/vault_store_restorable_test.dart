@@ -29,12 +29,41 @@ void main() {
     expect(await store.getAccountIndex(), equals(accountIndex));
   }
 
+  group('When resolving backup storage versions', () {
+    test('it applies registered migrations until the current version', () {
+      final migrated = migrateBackupSchemaData(
+        data: const {'schemaVersion': '1.0.0', 'value': 'original'},
+        currentSchemaVersion: '1.2.0',
+        schemaMigrations: {
+          '1.0.0': (data) => {...data, 'schemaVersion': '1.1.0'},
+          '1.1.0': (data) => {
+            ...data,
+            'schemaVersion': '1.2.0',
+            'value': 'migrated',
+          },
+        },
+      );
+
+      expect(migrated, {'schemaVersion': '1.2.0', 'value': 'migrated'});
+    });
+
+    test('it rejects a version without a registered migration', () {
+      final migrated = migrateBackupSchemaData(
+        data: const {'schemaVersion': '0.9.0'},
+        currentSchemaVersion: '1.0.0',
+        schemaMigrations: const {},
+      );
+
+      expect(migrated, isNull);
+    });
+  });
+
   group('When exporting VaultStore state', () {
     test('it exports component-local state', () async {
       final exported = await (await populatedStore()).export();
 
       expect(exported, {
-        'version': '1.0.0',
+        'schemaVersion': '1.0.0',
         'seed': base64Encode(seed),
         'contentKey': base64Encode(contentKey),
         'accountIndex': accountIndex,
@@ -47,7 +76,7 @@ void main() {
       await store.setAccountIndex(accountIndex);
 
       expect(await store.export(), {
-        'version': '1.0.0',
+        'schemaVersion': '1.0.0',
         'seed': base64Encode(seed),
         'accountIndex': accountIndex,
       });
@@ -78,7 +107,7 @@ void main() {
 
       await expectLater(
         target.import({
-          'version': '1.0.0',
+          'schemaVersion': '1.0.0',
           'seed': base64Encode(seed),
           'accountIndex': accountIndex,
         }),
@@ -99,7 +128,7 @@ void main() {
 
       await expectLater(
         store.import(const {
-          'version': '1.0.0',
+          'schemaVersion': '1.0.0',
           'seed': 'AQIDBAU=',
           'contentKey': 'CQgHBgU=',
           'accountIndex': 'not-an-int',
@@ -115,7 +144,7 @@ void main() {
 
       await expectLater(
         store.import(const {
-          'version': '1.0.0',
+          'schemaVersion': '1.0.0',
           'seed': '!!!!',
           'accountIndex': accountIndex,
         }),

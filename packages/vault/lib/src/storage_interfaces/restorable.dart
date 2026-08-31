@@ -1,3 +1,38 @@
+/// Converts a backup payload from one schema version to its next version.
+typedef BackupSchemaMigration =
+    Map<String, dynamic> Function(Map<String, dynamic> data);
+
+/// Returns [data] at [currentSchemaVersion], applying migrations in order.
+///
+/// Each migration must return a new payload whose `schemaVersion` identifies
+/// the next migration or [currentSchemaVersion]. Returns `null` when the
+/// payload schema version is invalid, unsupported, or part of a migration
+/// cycle.
+Map<String, dynamic>? migrateBackupSchemaData({
+  required Map<String, dynamic> data,
+  required String currentSchemaVersion,
+  required Map<String, BackupSchemaMigration> schemaMigrations,
+}) {
+  var migratedData = Map<String, dynamic>.of(data);
+  final migratedSchemaVersions = <String>{};
+
+  while (migratedData['schemaVersion'] != currentSchemaVersion) {
+    final schemaVersion = migratedData['schemaVersion'];
+    if (schemaVersion is! String ||
+        !migratedSchemaVersions.add(schemaVersion)) {
+      return null;
+    }
+
+    final migration = schemaMigrations[schemaVersion];
+    if (migration == null) return null;
+    migratedData = Map<String, dynamic>.of(
+      migration(Map<String, dynamic>.unmodifiable(migratedData)),
+    );
+  }
+
+  return migratedData;
+}
+
 /// Defines the contract for Vault components whose durable state can be
 /// exported and restored.
 abstract interface class Restorable {

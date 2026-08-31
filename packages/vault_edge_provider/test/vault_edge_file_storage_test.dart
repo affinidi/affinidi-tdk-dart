@@ -345,7 +345,7 @@ void main() {
 
       final exported = await storage.export();
 
-      expect(exported['version'], '1.0.0');
+      expect(exported['schemaVersion'], '1.0.0');
       expect(
         exported['items'],
         containsAll([
@@ -386,7 +386,7 @@ void main() {
       );
 
       await storage.import({
-        'version': '1.0.0',
+        'schemaVersion': '1.0.0',
         'items': [
           {
             'id': 'old-folder',
@@ -447,7 +447,7 @@ void main() {
 
       await expectLater(
         storage.import({
-          'version': '1.0.0',
+          'schemaVersion': '1.0.0',
           'items': [
             {
               'id': 'old-folder',
@@ -499,7 +499,7 @@ void main() {
     test('it rejects folder cycles before repository access', () async {
       await expectLater(
         storage.import(const {
-          'version': '1.0.0',
+          'schemaVersion': '1.0.0',
           'items': [
             {
               'id': 'folder-a',
@@ -537,7 +537,7 @@ void main() {
     test('it rejects unsupported versions before repository access', () async {
       await expectLater(
         storage.validateImport(const {
-          'version': '2.0.0',
+          'schemaVersion': '2.0.0',
           'items': <dynamic>[],
         }),
         throwsA(invalidBackupFormat),
@@ -622,7 +622,7 @@ void main() {
         };
       });
 
-      await storage.import({'version': '1.0.0', 'items': backupItems});
+      await storage.import({'schemaVersion': '1.0.0', 'items': backupItems});
 
       expect(itemsByParent[null], hasLength(120));
 

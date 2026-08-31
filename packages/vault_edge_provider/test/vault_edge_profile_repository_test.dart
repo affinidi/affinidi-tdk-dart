@@ -319,7 +319,7 @@ void main() {
         final exported = await sut.export();
 
         expect(exported, {
-          'version': '1.0.0',
+          'schemaVersion': '1.0.0',
           'profiles': [
             {
               'id': profile.id,
@@ -328,10 +328,10 @@ void main() {
               'did': did,
               'description': profile.description,
               'fileStorages': {
-                'sut': {'version': '1.0.0', 'items': <dynamic>[]},
+                'sut': {'schemaVersion': '1.0.0', 'items': <dynamic>[]},
               },
               'credentialStorages': {
-                'sut': {'version': '1.0.0', 'credentials': <dynamic>[]},
+                'sut': {'schemaVersion': '1.0.0', 'credentials': <dynamic>[]},
               },
               'sharedStorages': <String, dynamic>{},
             },
@@ -344,7 +344,7 @@ void main() {
         mockRepository.listProfilesReturnValue = [];
 
         await sut.import({
-          'version': '1.0.0',
+          'schemaVersion': '1.0.0',
           'profiles': [
             {
               'id': profile.id,
@@ -353,10 +353,10 @@ void main() {
               'did': did,
               'description': profile.description,
               'fileStorages': {
-                'sut': {'version': '1.0.0', 'items': <dynamic>[]},
+                'sut': {'schemaVersion': '1.0.0', 'items': <dynamic>[]},
               },
               'credentialStorages': {
-                'sut': {'version': '1.0.0', 'credentials': <dynamic>[]},
+                'sut': {'schemaVersion': '1.0.0', 'credentials': <dynamic>[]},
               },
               'sharedStorages': <String, dynamic>{},
             },
@@ -393,7 +393,7 @@ void main() {
 
           await expectLater(
             sut.import({
-              'version': '1.0.0',
+              'schemaVersion': '1.0.0',
               'profiles': [
                 {
                   'id': profile.id,
@@ -403,7 +403,7 @@ void main() {
                   'description': profile.description,
                   'fileStorages': {
                     'sut': {
-                      'version': '1.0.0',
+                      'schemaVersion': '1.0.0',
                       'items': [
                         {
                           'id': 'source-file-1',
@@ -416,7 +416,10 @@ void main() {
                     },
                   },
                   'credentialStorages': {
-                    'sut': {'version': '1.0.0', 'credentials': <dynamic>[]},
+                    'sut': {
+                      'schemaVersion': '1.0.0',
+                      'credentials': <dynamic>[],
+                    },
                   },
                   'sharedStorages': <String, dynamic>{},
                 },
@@ -446,7 +449,7 @@ void main() {
 
         await expectLater(
           sut.import({
-            'version': '1.0.0',
+            'schemaVersion': '1.0.0',
             'profiles': [
               {
                 'id': profile.id,
@@ -455,10 +458,10 @@ void main() {
                 'did': did,
                 'description': profile.description,
                 'fileStorages': {
-                  'sut': {'version': '1.0.0', 'items': <dynamic>[]},
+                  'sut': {'schemaVersion': '1.0.0', 'items': <dynamic>[]},
                 },
                 'credentialStorages': {
-                  'sut': {'version': '1.0.0', 'credentials': <dynamic>[]},
+                  'sut': {'schemaVersion': '1.0.0', 'credentials': <dynamic>[]},
                 },
                 'sharedStorages': <String, dynamic>{},
               },
@@ -490,7 +493,10 @@ void main() {
           ];
 
           await expectLater(
-            sut.import(const {'version': '1.0.0', 'profiles': <dynamic>[]}),
+            sut.import(const {
+              'schemaVersion': '1.0.0',
+              'profiles': <dynamic>[],
+            }),
             throwsA(
               isA<TdkException>().having(
                 (error) => error.code,
@@ -513,7 +519,7 @@ void main() {
 
           await expectLater(
             sut.import({
-              'version': '1.0.0',
+              'schemaVersion': '1.0.0',
               'profiles': [
                 {
                   'id': profile.id,
@@ -550,7 +556,7 @@ void main() {
       test('it rejects unsupported versions before writes', () async {
         await expectLater(
           sut.validateImport(const {
-            'version': '2.0.0',
+            'schemaVersion': '2.0.0',
             'profiles': <dynamic>[],
           }),
           throwsA(
@@ -617,7 +623,7 @@ void main() {
         mockRepository.createProfileCalled = Completer<void>();
         mockRepository.createProfileCompleter = Completer<String>();
         final importFuture = sut.import({
-          'version': '1.0.0',
+          'schemaVersion': '1.0.0',
           'profiles': [
             {
               'id': profile.id,
@@ -626,10 +632,10 @@ void main() {
               'did': did,
               'description': profile.description,
               'fileStorages': {
-                'sut': {'version': '1.0.0', 'items': <dynamic>[]},
+                'sut': {'schemaVersion': '1.0.0', 'items': <dynamic>[]},
               },
               'credentialStorages': {
-                'sut': {'version': '1.0.0', 'credentials': <dynamic>[]},
+                'sut': {'schemaVersion': '1.0.0', 'credentials': <dynamic>[]},
               },
               'sharedStorages': <String, dynamic>{},
             },

@@ -206,7 +206,8 @@ class Backup {
   }
 
   static void _validateComponentPayload(Object? payload) {
-    if (payload is! Map<String, dynamic> || payload['version'] is! String) {
+    if (payload is! Map<String, dynamic> ||
+        payload['schemaVersion'] is! String) {
       throw VaultRestoreException.malformedBackupData();
     }
   }

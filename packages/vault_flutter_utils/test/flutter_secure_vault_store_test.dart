@@ -178,7 +178,7 @@ void main() {
       ).thenAnswer((_) async => '7');
 
       expect(await vaultStore.export(), {
-        'version': '1.0.0',
+        'schemaVersion': '1.0.0',
         'seed': base64Encode(seed),
         'contentKey': base64Encode(contentKey),
         'accountIndex': 7,
@@ -197,7 +197,7 @@ void main() {
       ).thenAnswer((_) async {});
 
       await vaultStore.import({
-        'version': '1.0.0',
+        'schemaVersion': '1.0.0',
         'seed': base64Encode(seed),
         'contentKey': base64Encode(contentKey),
         'accountIndex': 7,
@@ -230,7 +230,7 @@ void main() {
 
       await expectLater(
         vaultStore.import({
-          'version': '1.0.0',
+          'schemaVersion': '1.0.0',
           'seed': base64Encode(seed),
           'accountIndex': 0,
         }),

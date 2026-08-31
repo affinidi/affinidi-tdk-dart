@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart' show Restorable;
+import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart'
+    show BackupSchemaMigration, Restorable, migrateBackupSchemaData;
 import 'package:affinidi_tdk_vault_iota/affinidi_tdk_vault_iota.dart'
     hide TdkExceptionType;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -36,7 +37,11 @@ class FlutterSecureConsentStorage
   final FlutterSecureStorage _secureStorage;
   bool _importPendingRollback = false;
 
-  static const _backupVersion = '1.0.0';
+  static const _backupSchemaVersion = '1.0.0';
+  static const _backupSchemaMigrations = <String, BackupSchemaMigration>{
+    // For 1.1.0, add: '1.0.0': _migrateFromV1ToV1_1.
+    // It returns {...data, 'schemaVersion': '1.1.0'} plus field changes.
+  };
 
   String _key(String hash) => '${_namespace}_$hash';
 
@@ -85,7 +90,7 @@ class FlutterSecureConsentStorage
 
   @override
   Future<Map<String, dynamic>> export() async => {
-    'version': _backupVersion,
+    'schemaVersion': _backupSchemaVersion,
     'records': [for (final record in await _readAllRecords()) record.toJson()],
   };
 
@@ -132,10 +137,18 @@ class FlutterSecureConsentStorage
   }
 
   List<IotaConsentRecord> _parseBackup(Map<String, dynamic> data) {
-    const allowedKeys = {'version', 'records'};
-    final rawRecords = data['records'];
-    if (data.keys.any((key) => !allowedKeys.contains(key)) ||
-        data['version'] != _backupVersion ||
+    final migratedData = migrateBackupSchemaData(
+      data: data,
+      currentSchemaVersion: _backupSchemaVersion,
+      schemaMigrations: _backupSchemaMigrations,
+    );
+    if (migratedData == null) {
+      throw VaultRestoreException.invalidBackupFormat('consent history');
+    }
+
+    const allowedKeys = {'schemaVersion', 'records'};
+    final rawRecords = migratedData['records'];
+    if (migratedData.keys.any((key) => !allowedKeys.contains(key)) ||
         rawRecords is! List) {
       throw VaultRestoreException.invalidBackupFormat('consent history');
     }

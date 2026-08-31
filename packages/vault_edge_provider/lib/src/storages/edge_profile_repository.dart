@@ -36,7 +36,11 @@ class EdgeProfileRepository implements ProfileRepository, Restorable {
   bool _importPendingRollback = false;
   int? _accountIndexBeforeImport;
 
-  static const _backupVersion = '1.0.0';
+  static const _backupSchemaVersion = '1.0.0';
+  static const _backupSchemaMigrations = <String, BackupSchemaMigration>{
+    // For 1.1.0, add: '1.0.0': _migrateFromV1ToV1_1.
+    // It returns {...data, 'schemaVersion': '1.1.0'} plus field changes.
+  };
 
   @override
   String get id => _id;
@@ -364,7 +368,7 @@ Profile repository must be configured using a RepositoryConfiguration''',
         'sharedStorages': await _exportSharedStorages(profile.sharedStorages),
       });
     }
-    return {'version': _backupVersion, 'profiles': profiles};
+    return {'schemaVersion': _backupSchemaVersion, 'profiles': profiles};
   });
 
   Future<Map<String, dynamic>> _exportStorages(
@@ -519,10 +523,18 @@ Profile repository must be configured using a RepositoryConfiguration''',
   });
 
   Future<List<_BackupProfile>> _parseBackup(Map<String, dynamic> data) async {
-    const allowedKeys = {'version', 'profiles'};
-    final rawProfiles = data['profiles'];
-    if (data.keys.any((key) => !allowedKeys.contains(key)) ||
-        data['version'] != _backupVersion ||
+    final migratedData = migrateBackupSchemaData(
+      data: data,
+      currentSchemaVersion: _backupSchemaVersion,
+      schemaMigrations: _backupSchemaMigrations,
+    );
+    if (migratedData == null) {
+      throw EdgeRestoreException.invalidBackupFormat('edge profile repository');
+    }
+
+    const allowedKeys = {'schemaVersion', 'profiles'};
+    final rawProfiles = migratedData['profiles'];
+    if (migratedData.keys.any((key) => !allowedKeys.contains(key)) ||
         rawProfiles is! List) {
       throw EdgeRestoreException.invalidBackupFormat('edge profile repository');
     }

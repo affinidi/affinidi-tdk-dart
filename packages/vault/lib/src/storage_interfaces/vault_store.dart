@@ -8,11 +8,14 @@ import 'restorable.dart';
 
 /// Interface for storing vault data
 abstract class VaultStore implements Restorable {
-  static const _currentBackupVersion = '1.0.0';
-  static const _versionKey = 'version';
+  static const _currentBackupSchemaVersion = '1.0.0';
+  static const _schemaVersionKey = 'schemaVersion';
   static const _seedKey = 'seed';
   static const _contentKeyKey = 'contentKey';
   static const _accountIndexKey = 'accountIndex';
+  static const _backupSchemaMigrations = <String, BackupSchemaMigration>{
+    // When introducing 1.1.0, add: '1.0.0': _migrateFromV1ToV1_1.
+  };
   bool _importPendingRollback = false;
 
   /// Stores the account index to storage.
@@ -73,7 +76,7 @@ abstract class VaultStore implements Restorable {
 
     final contentKey = await getContentKey();
     return {
-      _versionKey: _currentBackupVersion,
+      _schemaVersionKey: _currentBackupSchemaVersion,
       _seedKey: base64Encode(seed),
       if (contentKey != null) _contentKeyKey: base64Encode(contentKey),
       _accountIndexKey: await getAccountIndex(),
@@ -108,19 +111,26 @@ abstract class VaultStore implements Restorable {
   ({Uint8List seed, Uint8List? contentKey, int accountIndex}) _parseImportData(
     Map<String, dynamic> data,
   ) {
+    final migratedData = migrateBackupSchemaData(
+      data: data,
+      currentSchemaVersion: _currentBackupSchemaVersion,
+      schemaMigrations: _backupSchemaMigrations,
+    );
+    if (migratedData == null) {
+      throw VaultRestoreException.malformedVaultStoreData();
+    }
+
     const allowedKeys = {
-      _versionKey,
+      _schemaVersionKey,
       _seedKey,
       _contentKeyKey,
       _accountIndexKey,
     };
-    final version = data[_versionKey];
-    final seedValue = data[_seedKey];
-    final contentKeyValue = data[_contentKeyKey];
-    final accountIndex = data[_accountIndexKey];
+    final seedValue = migratedData[_seedKey];
+    final contentKeyValue = migratedData[_contentKeyKey];
+    final accountIndex = migratedData[_accountIndexKey];
 
-    if (data.keys.any((key) => !allowedKeys.contains(key)) ||
-        version != _currentBackupVersion ||
+    if (migratedData.keys.any((key) => !allowedKeys.contains(key)) ||
         seedValue is! String ||
         (contentKeyValue != null && contentKeyValue is! String) ||
         accountIndex is! int ||

@@ -27,7 +27,7 @@ class FakeRestorable implements Restorable {
 
   @override
   Future<Map<String, dynamic>> export() async => {
-    'version': '1.0.0',
+    'schemaVersion': '1.0.0',
     'value': value,
   };
 

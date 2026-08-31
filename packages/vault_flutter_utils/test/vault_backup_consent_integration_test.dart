@@ -109,7 +109,7 @@ void main() {
           namedRestorables: {
             'consentHistory': FakeRestorable(
               data: {
-                'version': '1.0.0',
+                'schemaVersion': '1.0.0',
                 'records': [42],
               },
             ),

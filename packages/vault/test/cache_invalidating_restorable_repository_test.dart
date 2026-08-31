@@ -14,7 +14,7 @@ void main() {
         repository,
         onProfilesMutated: () => invalidations++,
       );
-      const payload = <String, dynamic>{'version': '1.0.0'};
+      const payload = <String, dynamic>{'schemaVersion': '1.0.0'};
       when(repository.export).thenAnswer((_) async => payload);
       when(() => repository.import(payload)).thenAnswer((_) async {});
 
