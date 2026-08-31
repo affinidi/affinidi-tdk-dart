@@ -344,7 +344,7 @@ void main() {
 
           expect(targetRestorable.imported, isTrue);
           expect(targetRestorable.value, 'profiles');
-          expect(restored.profileRepositories['edge'], isA<Restorable>());
+          expect(restored.profileRepositories['edge']!.id, targetRepository.id);
         },
       );
 

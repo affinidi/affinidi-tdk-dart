@@ -643,6 +643,112 @@ void main() {
       verify(() => mockProfileRepository.listProfiles()).called(1);
     });
 
+    test('it invalidates cached profiles after sharing a profile', () async {
+      final cachedProfile = VaultFixtures.createTestProfile(id: 'test-id');
+      final refreshedProfile = VaultFixtures.createTestProfile(
+        id: 'test-id',
+        name: 'Refreshed Profile',
+      );
+      var listProfilesCount = 0;
+      when(() => mockProfileRepository.listProfiles()).thenAnswer((_) async {
+        listProfilesCount++;
+        return listProfilesCount == 1 ? [cachedProfile] : [refreshedProfile];
+      });
+      when(
+        () => mockProfileRepository.grantItemAccessMultiple(
+          accountIndex: cachedProfile.accountIndex,
+          granteeDid: 'did:test:123',
+          permissionGroups: any(named: 'permissionGroups'),
+        ),
+      ).thenAnswer((_) async => Uint8List.fromList([1, 2, 3]));
+
+      await vault.listProfiles();
+      clearInteractions(mockProfileRepository);
+
+      await vault.shareProfile(
+        profileId: cachedProfile.id,
+        toDid: 'did:test:123',
+        permissions: Permissions.all,
+      );
+
+      expect(await vault.getProfileById(cachedProfile.id), refreshedProfile);
+      verify(() => mockProfileRepository.listProfiles()).called(1);
+    });
+
+    test(
+      'it invalidates cached profiles after adding a shared profile',
+      () async {
+        final cachedProfile = VaultFixtures.createTestProfile(id: 'test-id');
+        final refreshedProfile = VaultFixtures.createTestProfile(
+          id: 'test-id',
+          name: 'Refreshed Profile',
+        );
+        final sharedProfile = SharedProfileDto(
+          kek: Uint8List.fromList([1, 2, 3]),
+          profileId: 'shared-id',
+          profileDID: 'did:test:shared',
+        );
+        var listProfilesCount = 0;
+        when(() => mockProfileRepository.listProfiles()).thenAnswer((_) async {
+          listProfilesCount++;
+          return listProfilesCount == 1 ? [cachedProfile] : [refreshedProfile];
+        });
+        when(
+          () => mockProfileRepository.receiveItemAccess(
+            profile: cachedProfile,
+            ownerProfileId: sharedProfile.profileId,
+            kek: sharedProfile.kek,
+            ownerProfileDid: sharedProfile.profileDID,
+          ),
+        ).thenAnswer((_) async => refreshedProfile);
+
+        await vault.listProfiles();
+        clearInteractions(mockProfileRepository);
+
+        await vault.addSharedProfile(
+          profileId: cachedProfile.id,
+          sharedProfile: sharedProfile,
+        );
+
+        expect(await vault.getProfileById(cachedProfile.id), refreshedProfile);
+        verify(() => mockProfileRepository.listProfiles()).called(1);
+      },
+    );
+
+    test(
+      'it invalidates cached profiles after revoking profile access',
+      () async {
+        final cachedProfile = VaultFixtures.createTestProfile(id: 'test-id');
+        final refreshedProfile = VaultFixtures.createTestProfile(
+          id: 'test-id',
+          name: 'Refreshed Profile',
+        );
+        var listProfilesCount = 0;
+        when(() => mockProfileRepository.listProfiles()).thenAnswer((_) async {
+          listProfilesCount++;
+          return listProfilesCount == 1 ? [cachedProfile] : [refreshedProfile];
+        });
+        when(
+          () => mockProfileRepository.revokeItemAccess(
+            accountIndex: cachedProfile.accountIndex,
+            granteeDid: 'did:test:123',
+            itemIds: [cachedProfile.id],
+          ),
+        ).thenAnswer((_) async {});
+
+        await vault.listProfiles();
+        clearInteractions(mockProfileRepository);
+
+        await vault.revokeProfileAccess(
+          profileId: cachedProfile.id,
+          granteeDid: 'did:test:123',
+        );
+
+        expect(await vault.getProfileById(cachedProfile.id), refreshedProfile);
+        verify(() => mockProfileRepository.listProfiles()).called(1);
+      },
+    );
+
     test('should throw when sharing non-existent profile', () async {
       when(
         () => mockProfileRepository.listProfiles(),
@@ -716,6 +822,38 @@ void main() {
   group('File and Folder Sharing', () {
     setUp(() async {
       await vault.ensureInitialized();
+    });
+
+    test('it invalidates cached profiles after setting item access', () async {
+      final cachedProfile = VaultFixtures.createTestProfile(id: 'test-id');
+      final refreshedProfile = VaultFixtures.createTestProfile(
+        id: 'test-id',
+        name: 'Refreshed Profile',
+      );
+      var listProfilesCount = 0;
+      when(() => mockProfileRepository.listProfiles()).thenAnswer((_) async {
+        listProfilesCount++;
+        return listProfilesCount == 1 ? [cachedProfile] : [refreshedProfile];
+      });
+      when(
+        () => mockProfileRepository.grantItemAccessMultiple(
+          accountIndex: cachedProfile.accountIndex,
+          granteeDid: 'did:test:123',
+          permissionGroups: any(named: 'permissionGroups'),
+        ),
+      ).thenAnswer((_) async => Uint8List.fromList([1, 2, 3]));
+
+      await vault.listProfiles();
+      clearInteractions(mockProfileRepository);
+
+      await vault.setItemAccess(
+        profileId: cachedProfile.id,
+        granteeDid: 'did:test:123',
+        policy: ItemPermissionsPolicy.empty(),
+      );
+
+      expect(await vault.getProfileById(cachedProfile.id), refreshedProfile);
+      verify(() => mockProfileRepository.listProfiles()).called(1);
     });
 
     test('should get item access successfully', () async {

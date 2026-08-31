@@ -58,6 +58,7 @@ class Backup {
   static Future<Backup> fromRestorables({
     required VaultStore vaultStore,
     required Map<String, ProfileRepository> profileRepositories,
+    required Map<String, Restorable> restorableRepositories,
     required Map<String, Restorable> namedRestorables,
     required String defaultRepositoryId,
   }) async {
@@ -75,11 +76,10 @@ class Backup {
     final manifest = <Map<String, dynamic>>[];
     final repositoryData = <String, dynamic>{};
     for (final id in repositoryIds) {
-      final repository = profileRepositories[id]!;
-      final restorable = repository is Restorable;
-      manifest.add({'id': id, 'restorable': restorable});
-      if (restorable) {
-        repositoryData[id] = await (repository as Restorable).export();
+      final restorable = restorableRepositories[id];
+      manifest.add({'id': id, 'restorable': restorable != null});
+      if (restorable != null) {
+        repositoryData[id] = await restorable.export();
       }
     }
 

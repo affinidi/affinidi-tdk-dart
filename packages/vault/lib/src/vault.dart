@@ -34,6 +34,7 @@ class Vault implements Restorable {
 
   late final Map<String, ProfileRepositoryHandle> _profileRepositoryHandles;
   late final Map<String, ProfileRepository> _profileRepositories;
+  late final Map<String, Restorable> _restorableRepositories;
   final Map<String, Restorable> _namedRestorables;
   VaultRestorePlan? _pendingImportPlan;
   List<Profile>? _profilesCache;
@@ -218,7 +219,12 @@ class Vault implements Restorable {
     });
     _profileRepositories = Map.unmodifiable({
       for (final entry in _profileRepositoryHandles.entries)
-        entry.key: entry.value.repository,
+        entry.key: entry.value,
+    });
+    _restorableRepositories = Map.unmodifiable({
+      for (final entry in _profileRepositoryHandles.entries)
+        if (entry.value.restorable case final restorable?)
+          entry.key: restorable,
     });
 
     if (_profileRepositories.entries.isEmpty) {
@@ -297,6 +303,7 @@ class Vault implements Restorable {
     final backup = await Backup.fromRestorables(
       vaultStore: _vaultStore,
       profileRepositories: _profileRepositories,
+      restorableRepositories: _restorableRepositories,
       namedRestorables: _namedRestorables,
       defaultRepositoryId:
           _defaultProfileRepositoryId ?? _profileRepositories.keys.first,
@@ -316,6 +323,7 @@ class Vault implements Restorable {
       data: data,
       vaultStore: _vaultStore,
       profileRepositories: _profileRepositories,
+      restorableRepositories: _restorableRepositories,
       namedRestorables: _namedRestorables,
     );
   }
@@ -361,7 +369,7 @@ class Vault implements Restorable {
   /// Returns whether all local repository and named-component destinations are
   /// empty. The already-open VaultStore is intentionally excluded.
   Future<bool> isEmpty() => VaultRestorePlan.isDestinationEmpty(
-    profileRepositories: _profileRepositories,
+    restorableRepositories: _restorableRepositories,
     namedRestorables: _namedRestorables,
   );
 
@@ -379,11 +387,9 @@ class Vault implements Restorable {
         errors.add('named:$id');
       }
     }
-    for (final id in _profileRepositories.keys.toList()..sort()) {
-      final repository = _profileRepositories[id];
-      if (repository is! Restorable) continue;
+    for (final id in _restorableRepositories.keys.toList()..sort()) {
       try {
-        await (repository as Restorable).clearAllData();
+        await _restorableRepositories[id]!.clearAllData();
       } catch (_) {
         errors.add('repository:$id');
       }
@@ -491,7 +497,9 @@ class Vault implements Restorable {
           expiresAt: expiresAt,
         ),
       ],
+      cancelToken: cancelToken,
     );
+    _invalidateProfilesCache();
 
     return SharedProfileDto(
       kek: kek,
@@ -520,12 +528,16 @@ class Vault implements Restorable {
     );
 
     // Use item-level access method since profile is a node
-    return await profileSharedAccessRepository.receiveItemAccess(
-      profile: profileInfo,
-      ownerProfileId: sharedProfile.profileId,
-      kek: sharedProfile.kek,
-      ownerProfileDid: sharedProfile.profileDID,
-    );
+    final updatedProfile = await profileSharedAccessRepository
+        .receiveItemAccess(
+          profile: profileInfo,
+          ownerProfileId: sharedProfile.profileId,
+          kek: sharedProfile.kek,
+          ownerProfileDid: sharedProfile.profileDID,
+          cancelToken: cancelToken,
+        );
+    _invalidateProfilesCache();
+    return updatedProfile;
   }
 
   /// Accepts a shared item (file/folder) that was granted by another user.
@@ -549,13 +561,16 @@ class Vault implements Restorable {
           'Sharing nodes is not supported on ${profileInfo.profileRepositoryId}',
     );
 
-    return await profileSharedAccessRepository.receiveItemAccess(
-      profile: profileInfo,
-      ownerProfileId: sharedItems.ownerProfileId,
-      kek: sharedItems.kek,
-      ownerProfileDid: sharedItems.ownerProfileDID,
-      cancelToken: cancelToken,
-    );
+    final updatedProfile = await profileSharedAccessRepository
+        .receiveItemAccess(
+          profile: profileInfo,
+          ownerProfileId: sharedItems.ownerProfileId,
+          kek: sharedItems.kek,
+          ownerProfileDid: sharedItems.ownerProfileDID,
+          cancelToken: cancelToken,
+        );
+    _invalidateProfilesCache();
+    return updatedProfile;
   }
 
   /// Revokes access to a profile for a specific user.
@@ -588,7 +603,9 @@ class Vault implements Restorable {
       accountIndex: profileInfo.accountIndex,
       granteeDid: granteeDid,
       itemIds: [profileId], // Profile ID is the nodeId
+      cancelToken: cancelToken,
     );
+    _invalidateProfilesCache();
   }
 
   /// Gets access permissions for items for a user.
@@ -745,12 +762,14 @@ class Vault implements Restorable {
 
     final permissionGroups = policy.buildPermissionGroups();
 
-    return await profileSharedAccessRepository.grantItemAccessMultiple(
+    final kek = await profileSharedAccessRepository.grantItemAccessMultiple(
       accountIndex: profileInfo.accountIndex,
       granteeDid: granteeDid,
       permissionGroups: permissionGroups,
       cancelToken: cancelToken,
     );
+    _invalidateProfilesCache();
+    return kek;
   }
 
   /// Returns the current storage usage for the default profile repository.

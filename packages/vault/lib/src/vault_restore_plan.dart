@@ -16,14 +16,12 @@ class VaultRestorePlan {
   ///
   /// The already-open [VaultStore] is intentionally excluded.
   static Future<bool> isDestinationEmpty({
-    required Map<String, ProfileRepository> profileRepositories,
+    required Map<String, Restorable> restorableRepositories,
     required Map<String, Restorable> namedRestorables,
   }) async {
-    final repositoryIds = profileRepositories.keys.toList()..sort();
+    final repositoryIds = restorableRepositories.keys.toList()..sort();
     for (final id in repositoryIds) {
-      final repository = profileRepositories[id]!;
-      if (repository is Restorable &&
-          !await (repository as Restorable).isEmpty()) {
+      if (!await restorableRepositories[id]!.isEmpty()) {
         return false;
       }
     }
@@ -42,6 +40,7 @@ class VaultRestorePlan {
     required Map<String, dynamic> data,
     required VaultStore vaultStore,
     required Map<String, ProfileRepository> profileRepositories,
+    required Map<String, Restorable> restorableRepositories,
     required Map<String, Restorable> namedRestorables,
   }) async {
     final backup = Backup.fromVaultData(data);
@@ -57,7 +56,7 @@ class VaultRestorePlan {
       final entry = rawEntry as Map<String, dynamic>;
       final id = entry['id'] as String;
       backupRepositoryIds.add(id);
-      if ((profileRepositories[id] is Restorable) !=
+      if (restorableRepositories.containsKey(id) !=
           (entry['restorable'] as bool)) {
         throw VaultRestoreException.invalidBackupFormat();
       }
@@ -90,7 +89,7 @@ class VaultRestorePlan {
 
     final repositoryIds = repositoryData.keys.toList()..sort();
     for (final id in repositoryIds) {
-      final restorable = profileRepositories[id]! as Restorable;
+      final restorable = restorableRepositories[id]!;
       final payload = repositoryData[id] as Map<String, dynamic>;
       await restorable.validateImport(payload);
       importPlan._add('repository:$id', restorable, payload);
