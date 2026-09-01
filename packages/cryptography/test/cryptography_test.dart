@@ -26,16 +26,7 @@ void main() {
     test('decrypts back to the original plaintext', () async {
       const salt = 'fixed_salt';
       const dataToEncrypt = 'Hello, Affinidi!';
-      final passwordBytes = Uint8List.fromList([
-        112,
-        97,
-        115,
-        115,
-        119,
-        111,
-        114,
-        100,
-      ]);
+      final passwordBytes = Uint8List.fromList(utf8.encode('password'));
 
       late final List<int> encryptionKey;
       try {
