@@ -1,10 +1,13 @@
-## Unreleased
-
-> Note: This release has breaking changes and must be published with a major version bump.
-
-- **BREAKING CHANGE**: `VaultStore` now implements `Restorable`. External classes declared with `implements VaultStore` must implement `export`, `validateImport`, `isEmpty`, `clearAllData`, `import`, and `rollbackImport`. Classes that extend `VaultStore` retain the existing `clear` contract and inherit the other methods.
-- **FEAT**: add encrypted, repository-scoped Vault backup and restore.
-- **FIX**: minimize the lifetime of plaintext Vault backup data during encryption.
+- BREAKING CHANGE: `VaultStore` now implements `Restorable`. External
+	classes declared with `implements VaultStore` must implement `export`,
+	`validateImport`, `isEmpty`, `clearAllData`, `import`, and `rollbackImport`.
+	Classes declared with `extends VaultStore` require no additional methods:
+	they inherit the backup and restore implementation, and their existing
+	`clear()` implementation is used by `clearAllData()`.
+- Add encrypted Vault backup and restore, including repository-scoped and named
+	restorable components, passphrase policy validation, schema migration, and
+	interrupted-restore recovery.
+- Minimize the lifetime of plaintext Vault backup data during encryption.
 
 ## 3.0.1
 

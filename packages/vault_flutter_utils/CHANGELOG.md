@@ -1,7 +1,10 @@
-## Unreleased
-
-- **FEAT**: add consent history export and import to `FlutterSecureConsentStorage`.
-- **FEAT**: add `deleteByHash` to `FlutterSecureConsentStorage`.
+- Implement consent-record deletion through
+	`FlutterSecureConsentStorage.deleteByHash(...)`.
+- Add consent history backup and restore to `FlutterSecureConsentStorage`,
+	including schema validation, empty-destination checks, and rollback of a
+	partially imported history.
+- Allow consent history to participate in Vault backups by registering
+	`FlutterSecureConsentStorage` as a named `Restorable` component.
 
 ## 2.0.9
 
