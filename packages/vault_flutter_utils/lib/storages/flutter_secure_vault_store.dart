@@ -93,7 +93,7 @@ class FlutterSecureVaultStore extends VaultStore {
 
   /// Removes all stored data including account index and seed
   @override
-  Future<void> clearAllData() async {
+  Future<void> clear() async {
     await _secureStorage.delete(key: _Key.accountIndex.key(_vaultId));
     await _secureStorage.delete(key: _Key.seed.key(_vaultId));
     await _secureStorage.delete(key: _Key.contentKey.key(_vaultId));

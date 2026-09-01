@@ -148,7 +148,20 @@ void main() {
   });
 
   group('When clearing vault data', () {
-    test('it removes accountIndex and seed', () async {
+    test('it removes vault data through clear', () async {
+      when(
+        () => mockStorage.delete(key: any(named: 'key')),
+      ).thenAnswer((_) async {});
+
+      await vaultStore.clear();
+      verify(
+        () => mockStorage.delete(key: '${vaultId}_accountIndex'),
+      ).called(1);
+      verify(() => mockStorage.delete(key: '${vaultId}_seed')).called(1);
+      verify(() => mockStorage.delete(key: '${vaultId}_contentKey')).called(1);
+    });
+
+    test('it removes vault data through clearAllData', () async {
       when(
         () => mockStorage.delete(key: any(named: 'key')),
       ).thenAnswer((_) async {});

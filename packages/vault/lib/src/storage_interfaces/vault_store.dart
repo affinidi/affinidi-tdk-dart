@@ -57,8 +57,10 @@ abstract class VaultStore implements Restorable {
   Future<Uint8List?> getContentKey();
 
   /// Removes all stored data including account index and seed.
+  Future<void> clear();
+
   @override
-  Future<void> clearAllData();
+  Future<void> clearAllData() => clear();
 
   @override
   Future<void> rollbackImport() async {

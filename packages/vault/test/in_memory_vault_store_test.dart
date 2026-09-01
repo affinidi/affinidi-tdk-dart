@@ -52,15 +52,23 @@ void main() {
     });
 
     group('When clearing data', () {
-      test('it should clear all stored data', () async {
-        // Setup test data
+      test('it clears all stored data through clear', () async {
         await store.setSeed(Uint8List.fromList([1, 2, 3, 4]));
         await store.setAccountIndex(VaultStoreFixtures.testAccountIndex);
 
-        // Clear all data
+        await store.clear();
+
+        expect(await store.getSeed(), isNull);
+        expect(await store.getAccountIndex(), equals(0));
+        expect(await store.getContentKey(), isNull);
+      });
+
+      test('it clears all stored data through clearAllData', () async {
+        await store.setSeed(Uint8List.fromList([1, 2, 3, 4]));
+        await store.setAccountIndex(VaultStoreFixtures.testAccountIndex);
+
         await store.clearAllData();
 
-        // Verify all data is cleared
         expect(await store.getSeed(), isNull);
         expect(await store.getAccountIndex(), equals(0));
         expect(await store.getContentKey(), isNull);
