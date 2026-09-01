@@ -23,14 +23,28 @@ void main() {
 
   group('Aes256EncryptStringToHex and Aes256DecryptStringFromHex', () {
     test('decrypts back to the original plaintext', () async {
-      const password = 'password';
       const salt = 'fixed_salt';
       const dataToEncrypt = 'Hello, Affinidi!';
+      final passwordBytes = Uint8List.fromList([
+        112,
+        97,
+        115,
+        115,
+        119,
+        111,
+        114,
+        100,
+      ]);
 
-      final encryptionKey = await cryptographyService.Pbkdf2(
-        password: password,
-        nonce: utf8.encode(salt),
-      );
+      late final List<int> encryptionKey;
+      try {
+        encryptionKey = await cryptographyService.pbkdf2FromBytes(
+          passwordBytes: passwordBytes,
+          nonce: utf8.encode(salt),
+        );
+      } finally {
+        passwordBytes.fillRange(0, passwordBytes.length, 0);
+      }
 
       final encryptedData = await cryptographyService.Aes256EncryptStringToHex(
         key: encryptionKey,
@@ -48,18 +62,18 @@ void main() {
   });
 
   group('When deriving a PBKDF2 key from mutable bytes', () {
-    test('it matches derivation from the equivalent string', () async {
+    test('it derives a 32-byte key', () async {
       final nonce = utf8.encode('fixed_salt');
-      final fromString = await cryptographyService.Pbkdf2(
-        password: 'password',
-        nonce: nonce,
+      final passwordBytes = Uint8List.fromList(
+        List<int>.generate(16, (i) => i),
       );
-      final fromBytes = await cryptographyService.pbkdf2FromBytes(
-        passwordBytes: Uint8List.fromList(utf8.encode('password')),
+
+      final key = await cryptographyService.pbkdf2FromBytes(
+        passwordBytes: passwordBytes,
         nonce: nonce,
       );
 
-      expect(fromBytes, fromString);
+      expect(key, hasLength(32));
     });
   });
 

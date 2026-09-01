@@ -72,6 +72,10 @@ class BaseCryptographyService implements CryptographyServiceInterface {
   }
 
   @override
+  @Deprecated(
+    'Use pbkdf2FromBytes with a caller-owned, zeroable byte buffer. '
+    'String passwords cannot be securely wiped from memory.',
+  )
   Future<List<int>> Pbkdf2({
     required String password,
     required List<int> nonce,
@@ -90,14 +94,21 @@ class BaseCryptographyService implements CryptographyServiceInterface {
     required List<int> nonce,
   }) async {
     print('Started creating PDKDF2');
-    final keyDerivedFromPassword = await _pbkdf2Algorithm.deriveKey(
-      secretKey: cryptography.SecretKey(passwordBytes),
-      nonce: nonce,
+    final passwordKey = cryptography.SecretKeyData(
+      passwordBytes,
+      overwriteWhenDestroyed: true,
     );
-
-    final bytes = await keyDerivedFromPassword.extractBytes();
-    print('Completed creating PDKDF2');
-    return bytes;
+    try {
+      final keyDerivedFromPassword = await _pbkdf2Algorithm.deriveKey(
+        secretKey: passwordKey,
+        nonce: nonce,
+      );
+      final bytes = await keyDerivedFromPassword.extractBytes();
+      print('Completed creating PDKDF2');
+      return bytes;
+    } finally {
+      passwordKey.destroy();
+    }
   }
 
   @override

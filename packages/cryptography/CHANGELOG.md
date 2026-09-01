@@ -1,5 +1,11 @@
 # Change Log
 
+## Unreleased
+
+- Deprecate String-based `Pbkdf2`; use `pbkdf2FromBytes` with a caller-owned,
+  zeroable passphrase buffer for security-sensitive key derivation.
+- Destroy the PBKDF2 implementation's internal passphrase key copy after use.
+
 ## 3.0.0
 
 - BREAKING CHANGE: The minimum supported Dart SDK version has been updated to 3.8.0 (previously 3.6.0).

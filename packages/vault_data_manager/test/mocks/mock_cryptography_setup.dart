@@ -7,8 +7,8 @@ void setupMockCryptographyDefaults(MockCryptographyService mock) {
   when(() => mock.getRandomBytes(32)).thenReturn(mockBytes());
 
   when(
-    () => mock.Pbkdf2(
-      password: any(named: 'password'),
+    () => mock.pbkdf2FromBytes(
+      passwordBytes: any(named: 'passwordBytes'),
       nonce: any(named: 'nonce'),
     ),
   ).thenAnswer((_) async => mockBytes());
