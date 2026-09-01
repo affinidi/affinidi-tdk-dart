@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -74,6 +75,22 @@ void main() {
       );
 
       expect(key, hasLength(32));
+    });
+
+    test('it does not write operation timing to stdout', () async {
+      final messages = <String>[];
+
+      await runZoned(
+        () => cryptographyService.pbkdf2FromBytes(
+          passwordBytes: Uint8List(16),
+          nonce: utf8.encode('fixed_salt'),
+        ),
+        zoneSpecification: ZoneSpecification(
+          print: (_, _, _, message) => messages.add(message),
+        ),
+      );
+
+      expect(messages, isEmpty);
     });
   });
 

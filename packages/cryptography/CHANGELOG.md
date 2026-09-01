@@ -5,6 +5,7 @@
 - Deprecate String-based `Pbkdf2`; use `pbkdf2FromBytes` with a caller-owned,
   zeroable passphrase buffer for security-sensitive key derivation.
 - Destroy the PBKDF2 implementation's internal passphrase key copy after use.
+- Remove unconditional cryptographic operation timing messages from stdout.
 
 ## 3.0.0
 

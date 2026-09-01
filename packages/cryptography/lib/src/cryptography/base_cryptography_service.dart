@@ -44,31 +44,20 @@ class BaseCryptographyService implements CryptographyServiceInterface {
 
   @override
   String getSha256HexFromString(String input) {
-    print('Started creating SHA256 HEX from string');
     final hex = getSha256HexFromBytes(utf8.encode(input));
-
-    print('Completed creating SHA256 HEX from string');
     return hex;
   }
 
   @override
   String getSha256HexFromBytes(List<int> bytes) {
-    print('Started creating SHA256 HEX from bytes');
     final hex = crypto.sha256.convert(bytes).toString();
-
-    print('Completed creating SHA256 HEX from bytes');
     return hex;
   }
 
   @override
   List<int> getRandomBytes(int length) {
-    print('Started generating random bytes');
-
     final random = Random.secure();
-    final bytes = List<int>.generate(length, (_) => random.nextInt(256));
-
-    print('Completed generating random bytes');
-    return bytes;
+    return List<int>.generate(length, (_) => random.nextInt(256));
   }
 
   @override
@@ -93,7 +82,6 @@ class BaseCryptographyService implements CryptographyServiceInterface {
     required Uint8List passwordBytes,
     required List<int> nonce,
   }) async {
-    print('Started creating PDKDF2');
     final passwordKey = cryptography.SecretKeyData(
       passwordBytes,
       overwriteWhenDestroyed: true,
@@ -104,7 +92,6 @@ class BaseCryptographyService implements CryptographyServiceInterface {
         nonce: nonce,
       );
       final bytes = await keyDerivedFromPassword.extractBytes();
-      print('Completed creating PDKDF2');
       return bytes;
     } finally {
       passwordKey.destroy();
@@ -116,7 +103,6 @@ class BaseCryptographyService implements CryptographyServiceInterface {
     required List<int> key,
     required List<int> data,
   }) async {
-    print('Started encrypting with AES256');
     final nonce = getRandomBytes(_aes256NonceLength);
     final secretKey = await _aes256Algorithm.newSecretKeyFromBytes(key);
 
@@ -127,7 +113,6 @@ class BaseCryptographyService implements CryptographyServiceInterface {
     );
 
     final encryptedData = secretBox.concatenation();
-    print('Completed encrypting with AES256');
     return encryptedData;
   }
 
@@ -136,7 +121,6 @@ class BaseCryptographyService implements CryptographyServiceInterface {
     required List<int> key,
     required List<int> encryptedData,
   }) async {
-    print('Started decrypting with AES256');
     final secretBox = cryptography.SecretBox.fromConcatenation(
       encryptedData,
       nonceLength: _aes256NonceLength,
@@ -150,10 +134,8 @@ class BaseCryptographyService implements CryptographyServiceInterface {
         secretKey: cryptography.SecretKey(key),
       );
 
-      print('Completed decrypting with AES256');
       return decrypted;
     } on cryptography.SecretBoxAuthenticationError catch (_) {
-      print('Failed decrypting with AES256');
       return null;
     }
   }
@@ -163,13 +145,11 @@ class BaseCryptographyService implements CryptographyServiceInterface {
     required List<int> key,
     required String data,
   }) async {
-    print('Started encrypting with AES256 to hex');
     final encryptedBytes = await Aes256Encrypt(
       key: key,
       data: utf8.encode(data),
     );
 
-    print('Completed encrypting with AES256 to hex');
     return hex.encode(encryptedBytes);
   }
 
@@ -178,13 +158,11 @@ class BaseCryptographyService implements CryptographyServiceInterface {
     required List<int> key,
     required String encryptedData,
   }) async {
-    print('Started decrypting with AES256 from hex');
     final decryptedBytes = await Aes256Decrypt(
       key: key,
       encryptedData: hex.decode(encryptedData),
     );
 
-    print('Completed decrypting with AES256 from hex');
     if (decryptedBytes == null) {
       return null;
     }
@@ -194,37 +172,25 @@ class BaseCryptographyService implements CryptographyServiceInterface {
 
   @override
   Map<String, dynamic> decodeJwtToken({required String token}) {
-    print('Started decoding JWT token');
-    final decodedToken = JwtDecoder.decode(token);
-    print('Completed decoding JWT token');
-    return decodedToken;
+    return JwtDecoder.decode(token);
   }
 
   @override
   String createHash({required String hashSource}) {
-    print('Started creating hash');
     List<int> bytes = utf8.encode(hashSource);
     var digest = crypto.sha1.convert(bytes);
-
-    print('Completed creating hash');
     return digest.toString();
   }
 
   @override
   String createSha256Hex({required List<int> bytes}) {
-    print('Started creating SHA256 HEX from bytes');
     var digest = crypto.sha256.convert(bytes);
-
-    print('Completed creating SHA256 HEX from bytes');
     return digest.toString();
   }
 
   @override
   String createMd5Base64({required List<int> bytes}) {
-    print('Started creating MD5 base64 from bytes');
     var digest = crypto.md5.convert(bytes);
-
-    print('Completed creating MD5 base64 from bytes');
     return base64.encode(digest.bytes);
   }
 
@@ -233,7 +199,6 @@ class BaseCryptographyService implements CryptographyServiceInterface {
     required String jwtToken,
     required String didKey,
   }) {
-    print('Started verifying JWT token');
     try {
       final key = _ecPublicKeyFromDid(didKey);
 
@@ -264,8 +229,6 @@ class BaseCryptographyService implements CryptographyServiceInterface {
         errorMessage: ex.message,
         jwtPayload: null,
       );
-    } finally {
-      print('Completed verifying JWT token');
     }
   }
 
@@ -274,7 +237,6 @@ class BaseCryptographyService implements CryptographyServiceInterface {
     required Map<String, dynamic> jwk,
     required List<int> data,
   }) {
-    print('Started encrypting with RSA public key from JWK');
     final publicKey = _getRsaPublicKeyFromJwk(jwk);
     final encryptor = pce.OAEPEncoding.withSHA256(pce.RSAEngine());
 
@@ -283,32 +245,23 @@ class BaseCryptographyService implements CryptographyServiceInterface {
       pce.PublicKeyParameter<pce.RSAPublicKey>(publicKey),
     ); // true=encrypt
 
-    print('Completed encrypting with RSA public key from JWK');
     return _processInBlocks(encryptor, Uint8List.fromList(data));
   }
 
   @override
   String encryptToHex(Uint8List key, Uint8List data) {
-    print('Started encrypting to hex');
     final bytes = encryptToBytes(key, data);
-
-    print('Completed encrypting to hex');
     return hex.encode(bytes);
   }
 
   @override
   Uint8List? decryptFromHex(Uint8List key, String hexStr) {
-    print('Started decrypting from hex');
     final ivAndBytes = hex.decode(hexStr);
-    final result = decryptFromBytes(key, Uint8List.fromList(ivAndBytes));
-
-    print('Completed decrypting from hex');
-    return result;
+    return decryptFromBytes(key, Uint8List.fromList(ivAndBytes));
   }
 
   @override
   Uint8List encryptToBytes(Uint8List key, Uint8List data) {
-    print('Started encrypting to bytes');
     final iv = _secureRandom.nextBytes(_ivLength);
     final bytes = _aesCbcEncrypt(
       key: key,
@@ -318,13 +271,11 @@ class BaseCryptographyService implements CryptographyServiceInterface {
       enforce128BitAlignment: true,
     );
 
-    print('Completed encrypting to bytes');
     return Uint8List.fromList([...iv, ...bytes]);
   }
 
   @override
   Uint8List? decryptFromBytes(Uint8List key, Uint8List ivAndBytes) {
-    print('Started decrypting from bytes');
     try {
       final iv = Uint8List.fromList(ivAndBytes.take(_ivLength).toList());
       final bytes = Uint8List.fromList(ivAndBytes.skip(_ivLength).toList());
@@ -339,8 +290,6 @@ class BaseCryptographyService implements CryptographyServiceInterface {
       return _unpad(decryptedAndPadding);
     } catch (error) {
       return null;
-    } finally {
-      print('Completed decrypting from bytes');
     }
   }
 
@@ -351,7 +300,6 @@ class BaseCryptographyService implements CryptographyServiceInterface {
     required Uint8List cipherText,
     bool enforceAssertions = false,
   }) {
-    print('Started decrypting with AES CBC');
     if (enforceAssertions) {
       assert(256 == key.length * 8);
       assert(128 == iv.length * 8);
@@ -376,7 +324,6 @@ class BaseCryptographyService implements CryptographyServiceInterface {
 
     assert(offset == cipherText.length);
 
-    print('Completed decrypting with AES CBC');
     return paddedPlainText;
   }
 
@@ -442,8 +389,6 @@ class BaseCryptographyService implements CryptographyServiceInterface {
   }
 
   pc.RSAPublicKey _getRsaPublicKeyFromJwk(Map<String, dynamic> jwk) {
-    print('Started getting RSA public key from JWK');
-
     const alg = 'RSAES_OAEP_SHA_256';
 
     if (jwk['alg'] != alg) {
@@ -459,9 +404,6 @@ class BaseCryptographyService implements CryptographyServiceInterface {
       radix: 16,
     );
 
-    print('Completed getting RSA public key from JWK');
-
-    // print(bu.CryptoUtils.encodeRSAPublicKeyToPem(pc.RSAPublicKey(n, e)));
     return pc.RSAPublicKey(n, e);
   }
 
