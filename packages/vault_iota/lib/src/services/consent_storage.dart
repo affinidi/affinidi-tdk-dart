@@ -27,4 +27,22 @@ abstract interface class ConsentStorage {
   /// Parameters:
   /// * [requestHash] - Verifier+request hash supplied by the caller.
   Future<List<IotaConsentRecord>> findAllByRequestHash(String requestHash);
+
+  /// Deletes the record identified by [hash].
+  ///
+  /// Returns `true` if a record existed and was removed, or `false` if no
+  /// record matched [hash]. Throws if the underlying storage operation fails.
+  ///
+  /// Parameters:
+  /// * [hash] - The [IotaConsentRecord.hash] of the record to delete.
+  Future<bool> deleteByHash(String hash);
+}
+
+/// Optional consent-storage extension for backends that can enumerate history.
+abstract interface class EnumerableConsentStorage implements ConsentStorage {
+  /// Returns all persisted consent records.
+  ///
+  /// Records are returned in storage-defined order. Returns an empty list if
+  /// none exist.
+  Future<List<IotaConsentRecord>> listAll();
 }

@@ -11,6 +11,8 @@ resolution: workspace
 dependencies:
   affinidi_tdk_vault: ^3.0.1
   affinidi_tdk_vault_data_manager: ^3.0.1
+  affinidi_tdk_vault_edge_drift_provider: ^3.0.2
+  affinidi_tdk_vault_edge_provider: ^3.0.1
   base_codecs: ^1.0.1
   ssi: ^3.3.0
 

@@ -1,9 +1,15 @@
+import 'dart:async';
+
 import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart';
 import 'package:affinidi_tdk_vault_edge_provider/affinidi_tdk_vault_edge_provider.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
+import 'fixtures/file_fixtures.dart';
 import 'fixtures/profile_fixtures.dart';
 import 'fixtures/wallet_fixtures.dart';
+import 'mocks/credential_mock_setup.dart';
+import 'mocks/file_mock_setup.dart';
 import 'mocks/mock_edge_credential_repository.dart';
 import 'mocks/mock_edge_encryption_service.dart';
 import 'mocks/mock_edge_file_repository.dart';
@@ -12,16 +18,19 @@ import 'mocks/mock_edge_repository_factory.dart';
 
 void main() {
   late MockEdgeProfileRepository mockRepository;
-  late MockEdgeFileRepository mockFileRepository;
+  late MockEdgeFileRepositoryInterface mockFileRepository;
   late MockEdgeCredentialRepository mockCredentialRepository;
   late MockEdgeRepositoryFactory mockEdgeRepositoryFactory;
   late MockEdgeEncryptionService mockEncryptionService;
+  late InMemoryVaultStore vaultStore;
   late EdgeProfileRepository sut;
+
+  setUpAll(FileMockSetup.setupFallbackValues);
 
   setUp(() {
     mockRepository = MockEdgeProfileRepository();
     mockCredentialRepository = MockEdgeCredentialRepository();
-    mockFileRepository = MockEdgeFileRepository();
+    mockFileRepository = MockEdgeFileRepositoryInterface();
 
     mockEdgeRepositoryFactory = MockEdgeRepositoryFactory(
       profileRepository: mockRepository,
@@ -30,6 +39,13 @@ void main() {
     );
 
     mockEncryptionService = MockEdgeEncryptionService();
+    vaultStore = InMemoryVaultStore();
+
+    CredentialMockSetup.setupEmptyCredentialListMocks(mockCredentialRepository);
+    FileMockSetup.setupFileRepositoryMocks(mockFileRepository);
+    MockEncryptionServiceSetup.setupEncryptionServiceDefaults(
+      mockEncryptionService,
+    );
 
     sut = EdgeProfileRepository(
       'sut',
@@ -138,7 +154,7 @@ void main() {
       await sut.configure(
         RepositoryConfiguration(
           wallet: WalletFixtures.wallet,
-          keyStorage: InMemoryVaultStore(),
+          keyStorage: vaultStore,
         ),
       );
     });
@@ -281,6 +297,359 @@ void main() {
           mockRepository.lastCalledUpdateProfile!.description,
           equals(profile.description),
         );
+      });
+    });
+
+    group('and backing up profiles', () {
+      Future<(EdgeProfile, String)> profileAndDid() async {
+        const profile = EdgeProfile(
+          id: 'profile-1',
+          accountIndex: 3,
+          name: 'Profile One',
+          description: 'Description',
+        );
+        mockRepository.listProfilesReturnValue = [profile];
+        final did = (await sut.listProfiles()).single.did;
+        return (profile, did);
+      }
+
+      test('it exports durable profile and nested storage state', () async {
+        final (profile, did) = await profileAndDid();
+
+        final exported = await sut.export();
+
+        expect(exported, {
+          'schemaVersion': '1.0.0',
+          'profiles': [
+            {
+              'id': profile.id,
+              'accountIndex': profile.accountIndex,
+              'name': profile.name,
+              'did': did,
+              'description': profile.description,
+              'fileStorages': {
+                'sut': {'schemaVersion': '1.0.0', 'items': <dynamic>[]},
+              },
+              'credentialStorages': {
+                'sut': {'schemaVersion': '1.0.0', 'credentials': <dynamic>[]},
+              },
+              'sharedStorages': <String, dynamic>{},
+            },
+          ],
+        });
+      });
+
+      test('it restores the original profile id and account index', () async {
+        final (profile, did) = await profileAndDid();
+        mockRepository.listProfilesReturnValue = [];
+
+        await sut.import({
+          'schemaVersion': '1.0.0',
+          'profiles': [
+            {
+              'id': profile.id,
+              'accountIndex': profile.accountIndex,
+              'name': profile.name,
+              'did': did,
+              'description': profile.description,
+              'fileStorages': {
+                'sut': {'schemaVersion': '1.0.0', 'items': <dynamic>[]},
+              },
+              'credentialStorages': {
+                'sut': {'schemaVersion': '1.0.0', 'credentials': <dynamic>[]},
+              },
+              'sharedStorages': <String, dynamic>{},
+            },
+          ],
+        });
+
+        expect(mockRepository.lastCalledCreateProfileId, profile.id);
+        expect(
+          mockRepository.lastCalledCreateProfileAccountIndex,
+          profile.accountIndex,
+        );
+        expect(await vaultStore.getAccountIndex(), profile.accountIndex);
+      });
+
+      test(
+        'it restores the original account index during rollback after a late failure',
+        () async {
+          final (profile, did) = await profileAndDid();
+          mockRepository.listProfilesReturnValue = [];
+          await vaultStore.setAccountIndex(1);
+          when(
+            () => mockFileRepository.createFile(
+              profileId: any(named: 'profileId'),
+              fileName: any(named: 'fileName'),
+              data: any(named: 'data'),
+              parentFolderId: any(named: 'parentFolderId'),
+            ),
+          ).thenThrow(
+            TdkException(
+              message: 'late file import failure',
+              code: 'invalid_backup_format',
+            ),
+          );
+
+          await expectLater(
+            sut.import({
+              'schemaVersion': '1.0.0',
+              'profiles': [
+                {
+                  'id': profile.id,
+                  'accountIndex': profile.accountIndex,
+                  'name': profile.name,
+                  'did': did,
+                  'description': profile.description,
+                  'fileStorages': {
+                    'sut': {
+                      'schemaVersion': '1.0.0',
+                      'items': [
+                        {
+                          'id': 'source-file-1',
+                          'name': 'late-failure.txt',
+                          'parentId': null,
+                          'type': 'file',
+                          'content': 'AQID',
+                        },
+                      ],
+                    },
+                  },
+                  'credentialStorages': {
+                    'sut': {
+                      'schemaVersion': '1.0.0',
+                      'credentials': <dynamic>[],
+                    },
+                  },
+                  'sharedStorages': <String, dynamic>{},
+                },
+              ],
+            }),
+            throwsA(
+              isA<TdkException>().having(
+                (error) => error.code,
+                'code',
+                'invalid_backup_format',
+              ),
+            ),
+          );
+
+          expect(await vaultStore.getAccountIndex(), profile.accountIndex);
+
+          mockRepository.listProfilesReturnValue = [profile];
+          await sut.rollbackImport();
+
+          expect(await vaultStore.getAccountIndex(), 1);
+          expect(mockRepository.lastCalledDeletedProfileId, profile.id);
+        },
+      );
+
+      test('it rejects an existing matching profile', () async {
+        final (profile, did) = await profileAndDid();
+
+        await expectLater(
+          sut.import({
+            'schemaVersion': '1.0.0',
+            'profiles': [
+              {
+                'id': profile.id,
+                'accountIndex': profile.accountIndex,
+                'name': profile.name,
+                'did': did,
+                'description': profile.description,
+                'fileStorages': {
+                  'sut': {'schemaVersion': '1.0.0', 'items': <dynamic>[]},
+                },
+                'credentialStorages': {
+                  'sut': {'schemaVersion': '1.0.0', 'credentials': <dynamic>[]},
+                },
+                'sharedStorages': <String, dynamic>{},
+              },
+            ],
+          }),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              'restore_destination_not_empty',
+            ),
+          ),
+        );
+
+        expect(mockRepository.lastCalledDeletedProfileId, isNull);
+        expect(mockRepository.lastCalledCreateProfileId, isNull);
+      });
+
+      test(
+        'it preserves destination-only profiles when rejecting restore',
+        () async {
+          mockRepository.listProfilesReturnValue = const [
+            EdgeProfile(
+              id: 'destination-only',
+              accountIndex: 9,
+              name: 'Destination only',
+              description: null,
+            ),
+          ];
+
+          await expectLater(
+            sut.import(const {
+              'schemaVersion': '1.0.0',
+              'profiles': <dynamic>[],
+            }),
+            throwsA(
+              isA<TdkException>().having(
+                (error) => error.code,
+                'code',
+                'restore_destination_not_empty',
+              ),
+            ),
+          );
+
+          expect(mockRepository.lastCalledDeletedProfileId, isNull);
+          expect(mockRepository.lastCalledCreateProfileId, isNull);
+        },
+      );
+
+      test(
+        'it rejects a profile DID from another wallet before writes',
+        () async {
+          final (profile, _) = await profileAndDid();
+          mockRepository.listProfilesReturnValue = [];
+
+          await expectLater(
+            sut.import({
+              'schemaVersion': '1.0.0',
+              'profiles': [
+                {
+                  'id': profile.id,
+                  'accountIndex': profile.accountIndex,
+                  'name': profile.name,
+                  'did': 'did:key:wrong-wallet',
+                  'description': profile.description,
+                  'fileStorages': <String, dynamic>{},
+                  'credentialStorages': <String, dynamic>{},
+                  'sharedStorages': <String, dynamic>{},
+                },
+              ],
+            }),
+            throwsA(
+              isA<TdkException>().having(
+                (error) => error.code,
+                'code',
+                'invalid_backup_format',
+              ),
+            ),
+          );
+
+          expect(mockRepository.lastCalledCreateProfileId, isNull);
+          verifyNever(
+            () => mockFileRepository.createFolder(
+              profileId: any(named: 'profileId'),
+              folderName: any(named: 'folderName'),
+              parentFolderId: any(named: 'parentFolderId'),
+            ),
+          );
+        },
+      );
+
+      test('it rejects unsupported versions before writes', () async {
+        await expectLater(
+          sut.validateImport(const {
+            'schemaVersion': '2.0.0',
+            'profiles': <dynamic>[],
+          }),
+          throwsA(
+            isA<TdkException>().having(
+              (error) => error.code,
+              'code',
+              'invalid_backup_format',
+            ),
+          ),
+        );
+
+        expect(mockRepository.lastCalledCreateProfileId, isNull);
+      });
+
+      test('it blocks direct file mutations until export completes', () async {
+        await profileAndDid();
+        final profile = (await sut.listProfiles()).single;
+        final exportStarted = Completer<void>();
+        final releaseExport = Completer<void>();
+        when(
+          () => mockFileRepository.getFolder(
+            folderId: any(named: 'folderId'),
+            limit: any(named: 'limit'),
+            exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+          ),
+        ).thenAnswer((_) async {
+          if (!exportStarted.isCompleted) exportStarted.complete();
+          await releaseExport.future;
+          return PaginatedList(items: const [], lastEvaluatedItemId: null);
+        });
+
+        final exportFuture = sut.export();
+        await exportStarted.future;
+        final mutationFuture = profile.defaultFileStorage!.createFile(
+          fileName: 'during-export.txt',
+          data: FileFixtures.smallFileData,
+        );
+        await Future<void>.value();
+        verifyNever(
+          () => mockFileRepository.createFile(
+            profileId: any(named: 'profileId'),
+            fileName: any(named: 'fileName'),
+            data: any(named: 'data'),
+            parentFolderId: any(named: 'parentFolderId'),
+          ),
+        );
+
+        releaseExport.complete();
+        await exportFuture;
+        await mutationFuture;
+        verify(
+          () => mockFileRepository.createFile(
+            profileId: profile.id,
+            fileName: 'during-export.txt',
+            data: FileFixtures.smallFileData,
+            parentFolderId: null,
+          ),
+        ).called(1);
+      });
+
+      test('it blocks profile creation until import completes', () async {
+        final (profile, did) = await profileAndDid();
+        mockRepository.listProfilesReturnValue = [];
+        mockRepository.createProfileCalled = Completer<void>();
+        mockRepository.createProfileCompleter = Completer<String>();
+        final importFuture = sut.import({
+          'schemaVersion': '1.0.0',
+          'profiles': [
+            {
+              'id': profile.id,
+              'accountIndex': profile.accountIndex,
+              'name': profile.name,
+              'did': did,
+              'description': profile.description,
+              'fileStorages': {
+                'sut': {'schemaVersion': '1.0.0', 'items': <dynamic>[]},
+              },
+              'credentialStorages': {
+                'sut': {'schemaVersion': '1.0.0', 'credentials': <dynamic>[]},
+              },
+              'sharedStorages': <String, dynamic>{},
+            },
+          ],
+        });
+        await mockRepository.createProfileCalled!.future;
+        final mutationFuture = sut.createProfile(name: 'Concurrent profile');
+        await Future<void>.value();
+        expect(mockRepository.createProfileCallCount, 1);
+
+        mockRepository.createProfileCompleter!.complete(profile.id);
+        await importFuture;
+        await mutationFuture;
+        expect(mockRepository.createProfileCallCount, 2);
       });
     });
   });

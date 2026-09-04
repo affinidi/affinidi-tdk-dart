@@ -151,6 +151,13 @@ When making changes:
    - Extract complex logic into well-named functions.
    - Keep functions focused on a single responsibility.
 
+9. **Exceptions**:
+
+   - Packages throw `TdkException` from `affinidi_tdk_common`. Do not introduce new public exception types unless callers need extra fields to act on the error.
+   - Group the exceptions of a feature in an `abstract final class` of static factories, for example `VaultRestoreException.decryptionFailed()`. The factories return `TdkException`, so the public error type and existing `catch` blocks are unaffected.
+   - Keep the message and the `TdkExceptionType` code paired in the factory rather than repeating them at each throw site. This keeps wording consistent and makes codes easy to audit.
+   - Only add a factory class once a feature has several throw sites. A single throw site is clearer inline.
+
 ### Package-Specific Guidelines
 
 When working on packages in the `packages/` directory:

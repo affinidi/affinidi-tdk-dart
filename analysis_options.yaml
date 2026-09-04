@@ -11,6 +11,9 @@ analyzer:
     - "clients/**"
     - "!clients/didcomm/**"
 
+  cannot-ignore:
+    - implementation_imports
   errors:
     lines_longer_than_80_chars: ignore
     avoid_print: ignore
+    implementation_imports: error

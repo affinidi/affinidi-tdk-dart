@@ -1,0 +1,346 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
+import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
+import 'package:ssi/ssi.dart';
+import 'package:synchronized/synchronized.dart';
+
+import '../backup.dart';
+import '../backup_data.dart';
+import '../exceptions/vault_backup_exception.dart';
+import '../exceptions/vault_restore_exception.dart';
+import '../extensions/set_extensions.dart';
+import '../passphrase_policy.dart';
+import '../storage_interfaces/profile_repository.dart';
+import '../storage_interfaces/repository_configuration.dart';
+import '../storage_interfaces/restorable.dart';
+import '../vault.dart';
+import 'vault_backup_service_interface.dart';
+
+/// Creates and restores encrypted Vault backups.
+///
+/// The Vault exports a repository-scoped [Backup], which is JSON-encoded and
+/// encrypted with a passphrase-derived key (PBKDF2 + AES-CBC authenticated with
+/// HMAC-SHA256). Any tampering with the ciphertext fails authentication before
+/// the plaintext is used. Only encrypted bytes leave this service.
+class VaultBackupService implements VaultBackupServiceInterface {
+  /// Length, in bytes, of the per-backup PBKDF2 salt generated internally.
+  static const int _saltLength = 16;
+
+  /// Creates a [VaultBackupService].
+  ///
+  /// Parameters:
+  /// * [cryptographyService] - Optional cryptography implementation. Defaults
+  ///   to [CryptographyService].
+  /// * [passphrasePolicy] - Rules applied when creating a backup. Defaults to
+  ///   [PassphrasePolicy.standard].
+  /// * [logger] - Optional logger; defaults to [Logger.instance].
+  /// * [now] - Optional clock used for the backup timestamp; defaults to
+  ///   [DateTime.now]. Injectable for deterministic tests.
+  VaultBackupService({
+    CryptographyServiceInterface? cryptographyService,
+    this.passphrasePolicy = PassphrasePolicy.standard,
+    Logger? logger,
+    DateTime Function()? now,
+  }) : _cryptographyService = cryptographyService ?? CryptographyService(),
+       _logger = logger ?? Logger.instance,
+       _now = now ?? DateTime.now;
+
+  final CryptographyServiceInterface _cryptographyService;
+
+  /// Rules applied to passphrases when creating backups.
+  final PassphrasePolicy passphrasePolicy;
+
+  final Logger _logger;
+  final DateTime Function() _now;
+  final Lock _restoreLock = Lock();
+
+  @override
+  Future<void> discardInterruptedRestore({
+    required VaultStoreFactory vaultStoreFactory,
+    required Map<String, ProfileRepositoryRegistration> repositoryFactories,
+    Map<String, RestorableFactory> namedRestorableFactories = const {},
+  }) => _restoreLock.synchronized(() async {
+    final vaultStore = await vaultStoreFactory();
+    final cleanupErrors = <String>[];
+    for (final id in namedRestorableFactories.keys.toList()..sort()) {
+      await _tryClear(
+        'named:$id',
+        () async => await namedRestorableFactories[id]!(),
+        cleanupErrors,
+      );
+    }
+    for (final id in repositoryFactories.keys.toList()..sort()) {
+      final registration = repositoryFactories[id]!;
+      if (!registration.expectsBackupData) continue;
+      await _tryClear('repository:$id', () async {
+        final repository = await registration.create(vaultStore);
+        return registration.restorableView(repository)!;
+      }, cleanupErrors);
+    }
+    if (cleanupErrors.isNotEmpty) {
+      throw VaultRestoreException.rollbackFailed(cleanupErrors);
+    }
+    try {
+      await vaultStore.clearAllData();
+    } catch (_) {
+      throw VaultRestoreException.rollbackFailed(['vaultStore']);
+    }
+  });
+
+  Future<void> _tryClear(
+    String label,
+    Future<Restorable> Function() obtain,
+    List<String> errors,
+  ) async {
+    try {
+      await (await obtain()).clearAllData();
+    } catch (_) {
+      errors.add(label);
+    }
+  }
+
+  @override
+  Future<ByteData> createBackup({
+    required Vault vault,
+    required Uint8List passphrase,
+  }) async {
+    final policyViolation = passphrasePolicy.validate(passphrase);
+    if (policyViolation != null) {
+      throw VaultBackupException.weakPassphrase(
+        violation: policyViolation,
+        minLength: passphrasePolicy.minLength,
+      );
+    }
+    try {
+      final salt = _cryptographyService.getRandomBytes(_saltLength);
+      final key = await _cryptographyService.pbkdf2FromBytes(
+        passwordBytes: passphrase,
+        nonce: salt,
+      );
+
+      final String encryptedBackup;
+      try {
+        encryptedBackup = await _exportAndEncrypt(vault: vault, key: key);
+      } finally {
+        _wipe(key);
+      }
+
+      final backupData = BackupData(
+        encryptedBackup: encryptedBackup,
+        salt: base64Encode(salt),
+        timestamp: _now().toUtc().toIso8601String(),
+      );
+      return ByteData.sublistView(
+        Uint8List.fromList(utf8.encode(jsonEncode(backupData.toJson()))),
+      );
+    } on TdkException {
+      rethrow;
+    } catch (error, stackTrace) {
+      _logger.error('Failed to create vault backup (${error.runtimeType})');
+      Error.throwWithStackTrace(
+        VaultBackupException.creationFailed(),
+        stackTrace,
+      );
+    }
+  }
+
+  Future<String> _exportAndEncrypt({
+    required Vault vault,
+    required List<int> key,
+  }) async {
+    final backup = Backup.fromVaultData(await vault.export());
+    final plaintext = jsonEncode(backup.toJson());
+    return _cryptographyService.Aes256EncryptStringToHex(
+      key: key,
+      data: plaintext,
+    );
+  }
+
+  @override
+  Future<Vault> restoreBackup({
+    required ByteData backupData,
+    required Uint8List passphrase,
+    required VaultStoreFactory vaultStoreFactory,
+    required Map<String, ProfileRepositoryRegistration> repositoryFactories,
+    Map<String, RestorableFactory> namedRestorableFactories = const {},
+  }) => _restoreLock.synchronized(() async {
+    final Backup backup;
+    try {
+      final bytes = backupData.buffer.asUint8List(
+        backupData.offsetInBytes,
+        backupData.lengthInBytes,
+      );
+      final rawBackupData = jsonDecode(utf8.decode(bytes));
+      if (rawBackupData is! Map<String, dynamic>) {
+        throw VaultRestoreException.invalidBackupFormat();
+      }
+      final encryptedData = BackupData.fromJson(rawBackupData);
+      final salt = base64Decode(encryptedData.salt);
+      final key = await _cryptographyService.pbkdf2FromBytes(
+        passwordBytes: passphrase,
+        nonce: salt,
+      );
+
+      final String? decrypted;
+      try {
+        decrypted = await _cryptographyService.Aes256DecryptStringFromHex(
+          key: key,
+          encryptedData: encryptedData.encryptedBackup,
+        );
+      } finally {
+        _wipe(key);
+      }
+
+      if (decrypted == null) {
+        _logger.warning(
+          'Failed to decrypt backup; wrong passphrase or tampered data.',
+        );
+        throw VaultRestoreException.decryptionFailed();
+      }
+
+      final json = jsonDecode(decrypted) as Map<String, dynamic>;
+      final decodedBackup = Backup.fromJson(json);
+      backup = Backup.fromVaultData(decodedBackup.data);
+    } on TdkException {
+      rethrow;
+    } catch (error, stackTrace) {
+      _logger.error('Failed to read backup (${error.runtimeType})');
+      Error.throwWithStackTrace(
+        VaultRestoreException.unreadableBackup(),
+        stackTrace,
+      );
+    }
+
+    final repositoriesSection =
+        backup.data['repositories'] as Map<String, dynamic>;
+    final manifest = repositoriesSection['manifest'] as List;
+    final repositoryData = repositoriesSection['data'] as Map<String, dynamic>;
+    final defaultRepositoryId = repositoriesSection['defaultId'] as String;
+    final repositoryIds = {
+      for (final entry in manifest)
+        (entry as Map<String, dynamic>)['id'] as String,
+    };
+    final namedData = backup.data['namedComponents'] as Map<String, dynamic>;
+    if (!repositoryIds.hasSameElementsAs(repositoryFactories.keys.toSet()) ||
+        !namedData.keys.toSet().hasSameElementsAs(
+          namedRestorableFactories.keys.toSet(),
+        )) {
+      throw VaultRestoreException.invalidBackupFormat();
+    }
+
+    for (final entry in manifest) {
+      final manifestEntry = entry as Map<String, dynamic>;
+      final id = manifestEntry['id'] as String;
+      final registration = repositoryFactories[id]!;
+      if (registration.id != id ||
+          registration.expectsBackupData !=
+              (manifestEntry['restorable'] as bool)) {
+        throw VaultRestoreException.invalidBackupFormat();
+      }
+    }
+
+    final vaultStore = await vaultStoreFactory();
+    final repositories = <String, ProfileRepository>{};
+    final restorableRepositories = <String, Restorable>{};
+    for (final entry in manifest) {
+      final manifestEntry = entry as Map<String, dynamic>;
+      final id = manifestEntry['id'] as String;
+      final registration = repositoryFactories[id]!;
+      final repository = await registration.create(vaultStore);
+      if (repository.id != id) {
+        throw VaultRestoreException.invalidBackupFormat();
+      }
+      final restorable = registration.restorableView(repository);
+      if ((restorable != null) != (manifestEntry['restorable'] as bool) ||
+          (!registration.expectsBackupData && repository is Restorable)) {
+        throw VaultRestoreException.invalidBackupFormat();
+      }
+      repositories[id] = repository;
+      if (restorable != null) {
+        restorableRepositories[id] = restorable;
+      }
+    }
+    final namedRestorables = <String, Restorable>{};
+    for (final id in namedData.keys) {
+      namedRestorables[id] = await namedRestorableFactories[id]!();
+    }
+
+    final vaultStoreData = backup.data['vaultStore'] as Map<String, dynamic>;
+    // Vault.import revalidates through VaultRestorePlan, but that runs after
+    // the seed is written, so validate here to keep a rejected backup from
+    // mutating the VaultStore at all.
+    await vaultStore.validateImport(vaultStoreData);
+    final seed = base64Decode(vaultStoreData['seed'] as String);
+    final wallet = Bip32Wallet.fromSeed(seed);
+    for (final entry in repositoryData.entries) {
+      final repository = restorableRepositories[entry.key]!;
+      final profileRepository = repositories[entry.key]!;
+      if (!await profileRepository.isConfigured()) {
+        await profileRepository.configure(
+          RepositoryConfiguration(wallet: wallet, keyStorage: vaultStore),
+        );
+      }
+      await repository.validateImport(entry.value as Map<String, dynamic>);
+    }
+    for (final entry in namedData.entries) {
+      await namedRestorables[entry.key]!.validateImport(
+        entry.value as Map<String, dynamic>,
+      );
+    }
+
+    // The VaultStore is excluded from Vault.isEmpty because a restored Vault
+    // is opened from an already-seeded store, so it is checked here instead.
+    // The repository and named destinations are checked by Vault.import.
+    if (!await vaultStore.isEmpty()) {
+      throw VaultRestoreException.destinationNotEmpty('VaultStore');
+    }
+    var vaultStoreImported = false;
+    try {
+      vaultStoreImported = true;
+      await vaultStore.import(vaultStoreData);
+      final vault = await Vault.fromVaultStore(
+        vaultStore,
+        profileRepositories: repositories,
+        restorableRepositories: restorableRepositories,
+        namedRestorables: namedRestorables,
+        defaultProfileRepositoryId: defaultRepositoryId,
+      );
+      await vault.ensureInitialized();
+      await vault.import(backup.data);
+      return vault;
+    } catch (error, stackTrace) {
+      if (vaultStoreImported) {
+        try {
+          await vaultStore.rollbackImport();
+        } catch (_) {
+          Error.throwWithStackTrace(
+            VaultRestoreException.vaultStoreRollbackFailed(),
+            stackTrace,
+          );
+        }
+      }
+      Error.throwWithStackTrace(error, stackTrace);
+    }
+  });
+
+  /// Overwrite of a derived-key buffer to shorten its lifetime.
+  void _wipe(List<int> bytes) {
+    try {
+      if (bytes is Uint8List) {
+        bytes.fillRange(0, bytes.length, 0);
+        return;
+      } else {
+        for (var index = 0; index < bytes.length; index++) {
+          bytes[index] = 0;
+        }
+      }
+    } catch (_) {
+      _logger.warning(
+        'Unable to wipe derived key material: unsupported buffer type '
+        '(${bytes.runtimeType}).',
+      );
+    }
+  }
+}

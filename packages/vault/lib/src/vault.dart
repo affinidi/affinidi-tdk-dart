@@ -3,9 +3,11 @@ import 'dart:typed_data';
 import 'package:affinidi_tdk_common/affinidi_tdk_common.dart';
 import 'package:ssi/ssi.dart';
 
+import 'backup.dart';
 import 'dto/shared_item_dto.dart';
 import 'dto/shared_profile_dto.dart';
-import 'exceptions/tdk_exception_type.dart';
+import 'exceptions/vault_exception.dart';
+import 'exceptions/vault_restore_exception.dart';
 import 'helpers/vault_cancel_token.dart';
 import 'helpers/vault_progress_callback.dart';
 import 'item_permission.dart';
@@ -17,12 +19,14 @@ import 'storage_interfaces/profile_access_sharing.dart';
 import 'storage_interfaces/profile_repository.dart';
 import 'storage_interfaces/profile_storage_info.dart';
 import 'storage_interfaces/repository_configuration.dart';
+import 'storage_interfaces/restorable.dart';
 import 'storage_interfaces/shared_storage.dart';
 import 'storage_interfaces/vault_store.dart';
+import 'vault_restore_plan.dart';
 import 'vault_storage_usage.dart';
 
 /// Manages vault operations and profile repositories.
-class Vault {
+class Vault implements Restorable {
   late final Wallet _wallet;
   final VaultStore _vaultStore;
   bool _initialized = false;
@@ -30,15 +34,15 @@ class Vault {
 
   late final Map<String, ProfileRepositoryHandle> _profileRepositoryHandles;
   late final Map<String, ProfileRepository> _profileRepositories;
+  late final Map<String, Restorable> _restorableRepositories;
+  final Map<String, Restorable> _namedRestorables;
+  VaultRestorePlan? _pendingImportPlan;
   List<Profile>? _profilesCache;
   int _profilesCacheVersion = 0;
 
   void _throwIfNotInitialized() {
     if (!_initialized) {
-      throw TdkException(
-        message: 'Must initialize vault by calling ensureInitialized',
-        code: TdkExceptionType.vaultNotInitialized.code,
-      );
+      throw VaultException.notInitialized();
     }
   }
 
@@ -81,10 +85,7 @@ class Vault {
     final profileInfo = _findProfileById(refreshedProfiles, profileId);
 
     if (profileInfo == null) {
-      throw TdkException(
-        message: 'Cannot find profile with id: $profileId',
-        code: TdkExceptionType.invalidProfileIdentifier.code,
-      );
+      throw VaultException.profileNotFound(profileId);
     }
 
     return profileInfo;
@@ -126,10 +127,7 @@ class Vault {
   ProfileRepositoryHandle _getProfileRepositoryHandle(String repositoryId) {
     final repositoryHandle = _profileRepositoryHandles[repositoryId];
     if (repositoryHandle == null) {
-      throw TdkException(
-        message: 'Cannot find the profile repository with id: $repositoryId',
-        code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-      );
+      throw VaultException.profileRepositoryNotFound(repositoryId);
     }
 
     return repositoryHandle;
@@ -144,10 +142,7 @@ class Vault {
     final accessSharing = repositoryHandle.accessSharing;
     if (accessSharing == null) {
       Error.throwWithStackTrace(
-        TdkException(
-          message: unsupportedMessage,
-          code: TdkExceptionType.unsupportedProfileAccessSharing.code,
-        ),
+        VaultException.unsupportedProfileAccessSharing(unsupportedMessage),
         StackTrace.current,
       );
     }
@@ -158,15 +153,11 @@ class Vault {
   ProfileStorageInfo _getProfileStorageInfo(
     String repositoryId, {
     required String unsupportedMessage,
-    required TdkExceptionType unsupportedExceptionType,
   }) {
     final storageInfo = _getProfileRepositoryHandle(repositoryId).storageInfo;
     if (storageInfo == null) {
       Error.throwWithStackTrace(
-        TdkException(
-          message: unsupportedMessage,
-          code: unsupportedExceptionType.code,
-        ),
+        VaultException.unsupportedProfileStorageUsage(unsupportedMessage),
         StackTrace.current,
       );
     }
@@ -212,27 +203,33 @@ class Vault {
     required Wallet wallet,
     required VaultStore vaultStore,
     required Map<String, ProfileRepository> profileRepositories,
+    Map<String, Restorable> restorableRepositories = const {},
+    Map<String, Restorable> namedRestorables = const {},
     String? defaultProfileRepositoryId,
   }) : _wallet = wallet,
-       _vaultStore = vaultStore {
+       _vaultStore = vaultStore,
+       _namedRestorables = Map.unmodifiable(namedRestorables) {
     _profileRepositoryHandles = Map.unmodifiable({
       for (final entry in profileRepositories.entries)
         entry.key: ProfileRepositoryHandle.fromRepository(
           entry.value,
           onProfilesMutated: _invalidateProfilesCache,
+          restorableView: restorableRepositories[entry.key],
         ),
     });
     _profileRepositories = Map.unmodifiable({
       for (final entry in _profileRepositoryHandles.entries)
-        entry.key: entry.value.repository,
+        entry.key: entry.value,
+    });
+    _restorableRepositories = Map.unmodifiable({
+      for (final entry in _profileRepositoryHandles.entries)
+        if (entry.value.restorable case final restorable?)
+          entry.key: restorable,
     });
 
     if (_profileRepositories.entries.isEmpty) {
       Error.throwWithStackTrace(
-        TdkException(
-          message: 'Must provide at least one profile repository',
-          code: TdkExceptionType.missingProfileRepository.code,
-        ),
+        VaultException.missingProfileRepository(),
         StackTrace.current,
       );
     }
@@ -240,10 +237,7 @@ class Vault {
     if (defaultProfileRepositoryId != null) {
       if (!profileRepositories.containsKey(defaultProfileRepositoryId)) {
         Error.throwWithStackTrace(
-          TdkException(
-            message: 'Invalid profile repository identifier',
-            code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-          ),
+          VaultException.invalidProfileRepositoryIdentifier(),
           StackTrace.current,
         );
       }
@@ -258,10 +252,7 @@ class Vault {
   set defaultProfileRepositoryId(String value) {
     if (!_profileRepositories.containsKey(value)) {
       Error.throwWithStackTrace(
-        TdkException(
-          message: 'Invalid profile repository identifier',
-          code: TdkExceptionType.invalidProfileRepositoryIdentifier.code,
-        ),
+        VaultException.invalidProfileRepositoryIdentifier(),
         StackTrace.current,
       );
     }
@@ -273,19 +264,20 @@ class Vault {
   ///
   /// [vaultStore] - The vault store to use.
   /// [profileRepositories] - Map of profile repositories.
+  /// [restorableRepositories] - Optional backup views keyed by repository ID.
+  /// [namedRestorables] - Optional named components included in backups.
   /// [defaultProfileRepositoryId] - Optional ID of the default profile repository.
   static Future<Vault> fromVaultStore(
     VaultStore vaultStore, {
     required Map<String, ProfileRepository> profileRepositories,
+    Map<String, Restorable> restorableRepositories = const {},
+    Map<String, Restorable> namedRestorables = const {},
     String? defaultProfileRepositoryId,
   }) async {
     final seed = await vaultStore.getSeed();
     if (seed == null) {
       Error.throwWithStackTrace(
-        TdkException(
-          message: 'No seed found in vault store',
-          code: TdkExceptionType.vaultNotInitialized.code,
-        ),
+        VaultException.missingSeed(),
         StackTrace.current,
       );
     }
@@ -297,8 +289,117 @@ class Vault {
       wallet: wallet,
       vaultStore: vaultStore,
       profileRepositories: profileRepositories,
+      restorableRepositories: restorableRepositories,
+      namedRestorables: namedRestorables,
       defaultProfileRepositoryId: defaultProfileRepositoryId,
     );
+  }
+
+  @override
+  /// Exports the VaultStore, restorable repositories, and named components.
+  Future<Map<String, dynamic>> export() async {
+    _throwIfNotInitialized();
+
+    final backup = await Backup.fromRestorables(
+      vaultStore: _vaultStore,
+      profileRepositories: _profileRepositories,
+      restorableRepositories: _restorableRepositories,
+      namedRestorables: _namedRestorables,
+      defaultRepositoryId:
+          _defaultProfileRepositoryId ?? _profileRepositories.keys.first,
+    );
+    return backup.data;
+  }
+
+  @override
+  /// Validates state against this Vault's wallet and registered components.
+  Future<void> validateImport(Map<String, dynamic> data) async {
+    await _prepareRestore(data);
+  }
+
+  Future<VaultRestorePlan> _prepareRestore(Map<String, dynamic> data) {
+    _throwIfNotInitialized();
+    return VaultRestorePlan.prepare(
+      data: data,
+      vaultStore: _vaultStore,
+      profileRepositories: _profileRepositories,
+      restorableRepositories: _restorableRepositories,
+      namedRestorables: _namedRestorables,
+    );
+  }
+
+  @override
+  /// Imports state into this already-open Vault when the wallet and registered
+  /// component topology match the backup.
+  Future<void> import(Map<String, dynamic> data) async {
+    final importPlan = await _prepareRestore(data);
+
+    if (!await isEmpty()) {
+      throw VaultRestoreException.destinationNotEmpty();
+    }
+    _pendingImportPlan = importPlan;
+    final importFailure = await importPlan.execute();
+    if (importFailure != null) {
+      if (importFailure.rollbackErrors.isNotEmpty) {
+        Error.throwWithStackTrace(
+          VaultRestoreException.rollbackFailed(importFailure.rollbackErrors),
+          importFailure.stackTrace,
+        );
+      }
+      _pendingImportPlan = null;
+      Error.throwWithStackTrace(importFailure.error, importFailure.stackTrace);
+    }
+    _invalidateProfilesCache();
+  }
+
+  @override
+  Future<void> rollbackImport() async {
+    final importPlan = _pendingImportPlan;
+    if (importPlan == null) return;
+    final rollbackErrors = await importPlan.rollback();
+    if (rollbackErrors.isNotEmpty) {
+      throw VaultRestoreException.rollbackFailed(rollbackErrors);
+    }
+
+    _pendingImportPlan = null;
+    _invalidateProfilesCache();
+  }
+
+  @override
+  /// Returns whether all local repository and named-component destinations are
+  /// empty. The already-open VaultStore is intentionally excluded.
+  Future<bool> isEmpty() => VaultRestorePlan.isDestinationEmpty(
+    restorableRepositories: _restorableRepositories,
+    namedRestorables: _namedRestorables,
+  );
+
+  @override
+  /// Permanently deletes all local data owned by this Vault.
+  ///
+  /// Applications should prefer `VaultBackupService.discardInterruptedRestore`
+  /// for recovery and call this only after explicit user confirmation.
+  Future<void> clearAllData() async {
+    final errors = <String>[];
+    for (final id in _namedRestorables.keys.toList()..sort()) {
+      try {
+        await _namedRestorables[id]!.clearAllData();
+      } catch (_) {
+        errors.add('named:$id');
+      }
+    }
+    for (final id in _restorableRepositories.keys.toList()..sort()) {
+      try {
+        await _restorableRepositories[id]!.clearAllData();
+      } catch (_) {
+        errors.add('repository:$id');
+      }
+    }
+    if (errors.isNotEmpty) {
+      throw VaultRestoreException.rollbackFailed(errors);
+    }
+    await _vaultStore.clearAllData();
+    _pendingImportPlan = null;
+    _invalidateProfilesCache();
   }
 
   /// Ensures the vault is initialized by configuring all profile repositories.
@@ -396,7 +497,9 @@ class Vault {
           expiresAt: expiresAt,
         ),
       ],
+      cancelToken: cancelToken,
     );
+    _invalidateProfilesCache();
 
     return SharedProfileDto(
       kek: kek,
@@ -425,12 +528,16 @@ class Vault {
     );
 
     // Use item-level access method since profile is a node
-    return await profileSharedAccessRepository.receiveItemAccess(
-      profile: profileInfo,
-      ownerProfileId: sharedProfile.profileId,
-      kek: sharedProfile.kek,
-      ownerProfileDid: sharedProfile.profileDID,
-    );
+    final updatedProfile = await profileSharedAccessRepository
+        .receiveItemAccess(
+          profile: profileInfo,
+          ownerProfileId: sharedProfile.profileId,
+          kek: sharedProfile.kek,
+          ownerProfileDid: sharedProfile.profileDID,
+          cancelToken: cancelToken,
+        );
+    _invalidateProfilesCache();
+    return updatedProfile;
   }
 
   /// Accepts a shared item (file/folder) that was granted by another user.
@@ -454,13 +561,16 @@ class Vault {
           'Sharing nodes is not supported on ${profileInfo.profileRepositoryId}',
     );
 
-    return await profileSharedAccessRepository.receiveItemAccess(
-      profile: profileInfo,
-      ownerProfileId: sharedItems.ownerProfileId,
-      kek: sharedItems.kek,
-      ownerProfileDid: sharedItems.ownerProfileDID,
-      cancelToken: cancelToken,
-    );
+    final updatedProfile = await profileSharedAccessRepository
+        .receiveItemAccess(
+          profile: profileInfo,
+          ownerProfileId: sharedItems.ownerProfileId,
+          kek: sharedItems.kek,
+          ownerProfileDid: sharedItems.ownerProfileDID,
+          cancelToken: cancelToken,
+        );
+    _invalidateProfilesCache();
+    return updatedProfile;
   }
 
   /// Revokes access to a profile for a specific user.
@@ -493,7 +603,9 @@ class Vault {
       accountIndex: profileInfo.accountIndex,
       granteeDid: granteeDid,
       itemIds: [profileId], // Profile ID is the nodeId
+      cancelToken: cancelToken,
     );
+    _invalidateProfilesCache();
   }
 
   /// Gets access permissions for items for a user.
@@ -566,10 +678,7 @@ class Vault {
       final currentUserProfiles = await listProfiles(cancelToken: cancelToken);
       if (currentUserProfiles.isEmpty) {
         Error.throwWithStackTrace(
-          TdkException(
-            message: 'No profiles found for current user',
-            code: TdkExceptionType.invalidProfileIdentifier.code,
-          ),
+          VaultException.noProfilesForCurrentUser(),
           StackTrace.current,
         );
       }
@@ -579,10 +688,7 @@ class Vault {
 
     if (sharedStorage == null) {
       Error.throwWithStackTrace(
-        TdkException(
-          message: 'Cannot read shared item',
-          code: TdkExceptionType.invalidProfileIdentifier.code,
-        ),
+        VaultException.cannotReadSharedItem(),
         StackTrace.current,
       );
     }
@@ -656,12 +762,14 @@ class Vault {
 
     final permissionGroups = policy.buildPermissionGroups();
 
-    return await profileSharedAccessRepository.grantItemAccessMultiple(
+    final kek = await profileSharedAccessRepository.grantItemAccessMultiple(
       accountIndex: profileInfo.accountIndex,
       granteeDid: granteeDid,
       permissionGroups: permissionGroups,
       cancelToken: cancelToken,
     );
+    _invalidateProfilesCache();
+    return kek;
   }
 
   /// Returns the current storage usage for the default profile repository.
@@ -690,8 +798,6 @@ class Vault {
         profileInfo.profileRepositoryId,
         unsupportedMessage:
             'The profile repository for profile $profileId does not support storage usage reporting',
-        unsupportedExceptionType:
-            TdkExceptionType.unsupportedProfileStorageUsageReporting,
       );
 
       return storageInfo.getStorageUsage(cancelToken: cancelToken);
@@ -704,8 +810,6 @@ class Vault {
       defaultProfileRepositoryId,
       unsupportedMessage:
           'The default profile repository does not support storage usage reporting',
-      unsupportedExceptionType:
-          TdkExceptionType.unsupportedProfileStorageUsageReporting,
     );
 
     return defaultStorageInfo.getStorageUsage(cancelToken: cancelToken);

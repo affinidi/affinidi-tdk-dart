@@ -36,7 +36,24 @@ enum TdkExceptionType {
   requestCancelled('request_cancelled'),
 
   /// Exception thrown when the provided time frame is invalid.
-  invalidTimeFrame('invalid_time_frame');
+  invalidTimeFrame('invalid_time_frame'),
+
+  /// Exception thrown when a backup cannot be parsed because it is malformed.
+  invalidBackupFormat('invalid_backup_format'),
+
+  /// Exception thrown when creating a backup fails.
+  backupCreationFailed('backup_creation_failed'),
+
+  /// Exception thrown when a restore destination already contains local data.
+  restoreDestinationNotEmpty('restore_destination_not_empty'),
+
+  /// Exception thrown when a restore fails and rollback cannot fully clean up
+  /// the partial destination state.
+  restoreRollbackFailed('restore_rollback_failed'),
+
+  /// Exception thrown when the backup passphrase is shorter than the minimum
+  /// required length.
+  weakPassphrase('weak_passphrase');
 
   /// Creates a new instance of [TdkExceptionType].
   ///

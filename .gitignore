@@ -68,3 +68,7 @@ pubspec.lock
 # Flutter dependencies
 **/.flutter-plugins
 **/.flutter-plugins-dependencies
+
+
+# iOS
+build/

@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 import 'package:test/test.dart';
@@ -22,14 +24,19 @@ void main() {
 
   group('Aes256EncryptStringToHex and Aes256DecryptStringFromHex', () {
     test('decrypts back to the original plaintext', () async {
-      const password = 'password';
       const salt = 'fixed_salt';
       const dataToEncrypt = 'Hello, Affinidi!';
+      final passwordBytes = Uint8List.fromList(utf8.encode('password'));
 
-      final encryptionKey = await cryptographyService.Pbkdf2(
-        password: password,
-        nonce: utf8.encode(salt),
-      );
+      late final List<int> encryptionKey;
+      try {
+        encryptionKey = await cryptographyService.pbkdf2FromBytes(
+          passwordBytes: passwordBytes,
+          nonce: utf8.encode(salt),
+        );
+      } finally {
+        passwordBytes.fillRange(0, passwordBytes.length, 0);
+      }
 
       final encryptedData = await cryptographyService.Aes256EncryptStringToHex(
         key: encryptionKey,
@@ -43,6 +50,38 @@ void main() {
           );
 
       expect(decryptedData, dataToEncrypt);
+    });
+  });
+
+  group('When deriving a PBKDF2 key from mutable bytes', () {
+    test('it derives a 32-byte key', () async {
+      final nonce = utf8.encode('fixed_salt');
+      final passwordBytes = Uint8List.fromList(
+        List<int>.generate(16, (i) => i),
+      );
+
+      final key = await cryptographyService.pbkdf2FromBytes(
+        passwordBytes: passwordBytes,
+        nonce: nonce,
+      );
+
+      expect(key, hasLength(32));
+    });
+
+    test('it does not write operation timing to stdout', () async {
+      final messages = <String>[];
+
+      await runZoned(
+        () => cryptographyService.pbkdf2FromBytes(
+          passwordBytes: Uint8List(16),
+          nonce: utf8.encode('fixed_salt'),
+        ),
+        zoneSpecification: ZoneSpecification(
+          print: (_, _, _, message) => messages.add(message),
+        ),
+      );
+
+      expect(messages, isEmpty);
     });
   });
 

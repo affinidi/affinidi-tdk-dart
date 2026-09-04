@@ -65,6 +65,106 @@ void main() async {
 
 **Note**: The example above uses `VfsProfileRepository` from the `affinidi_tdk_vault_data_manager` package to enable cloud storage functionality. If you only need local storage or custom implementations, you can use just the core vault package.
 
+### Backup and restore
+
+Vault backups contain durable state from the `VaultStore`, local repositories
+that implement `Restorable`, and explicitly registered named components. Cloud
+repositories are recorded by ID but their remote data is not copied; after the
+wallet is restored they reconnect through their normal configuration.
+
+The core API uses `ByteData`, keeping file access platform-independent:
+
+```dart
+import 'dart:io';
+
+final backupService = VaultBackupService(
+  passphrasePolicy: const PassphrasePolicy(minLength: 16),
+);
+final passphrase = await File(passphraseFilePath).readAsBytes();
+late final ByteData backup;
+try {
+  backup = await backupService.createBackup(
+    vault: vault,
+    passphrase: passphrase,
+  );
+} finally {
+  passphrase.fillRange(0, passphrase.length, 0);
+}
+
+// Native applications can persist the bytes with dart:io.
+await File('vault.backup').writeAsBytes(
+  backup.buffer.asUint8List(backup.offsetInBytes, backup.lengthInBytes),
+);
+```
+
+Restore factories are keyed by the same stable repository and component IDs
+used when the Vault was created. Repository factories receive the restored
+`VaultStore`, allowing local repositories to construct their encryption
+services before the Vault is opened normally:
+
+```dart
+final fileBytes = await File('vault.backup').readAsBytes();
+final passphrase = await File(passphraseFilePath).readAsBytes();
+try {
+  final restoredVault = await backupService.restoreBackup(
+    backupData: ByteData.sublistView(fileBytes),
+    passphrase: passphrase,
+    vaultStoreFactory: createVaultStore,
+    repositoryFactories: {
+      'edge': ProfileRepositoryRegistration.withBackupData(
+        id: 'edge',
+        factory: createEdgeRepository,
+        asRestorable: restorableIdentity,
+      ),
+      'cloud': ProfileRepositoryRegistration.withoutBackupData(
+        id: 'cloud',
+        factory: (_) => createCloudRepository(),
+      ),
+    },
+  );
+} finally {
+  passphrase.fillRange(0, passphrase.length, 0);
+}
+```
+
+All repository and named-component factories are validated before wallet state
+is written. Every destination VaultStore, local repository, and named component
+must be empty; restore rejects existing local data and never deletes it
+automatically. Concurrent restores through the same `VaultBackupService`
+instance are serialized so those emptiness checks and imports do not overlap.
+Unknown IDs, incompatible versions, incorrect passphrases, and tampered
+backups are also rejected. Avoid targeting the same persistence layer from
+multiple service instances at the same time.
+
+Applications should persist their own restore-in-progress flag immediately
+before calling `restoreBackup` and clear it after restore completes. If the
+flag remains set on the next app start, show a recovery interface before
+opening or mutating the destination. After the user confirms that the partial
+restore may be deleted, discard all registered local restore state:
+
+```dart
+if (await restoreState.isInProgress()) {
+  await backupService.discardInterruptedRestore(
+    vaultStoreFactory: createVaultStore,
+    repositoryFactories: repositoryFactories,
+    namedRestorableFactories: namedRestorableFactories,
+  );
+  await restoreState.clear();
+}
+```
+
+`discardInterruptedRestore` is intentionally destructive. It clears named
+components and local repositories before the VaultStore, leaves cloud and
+other non-restorable repositories untouched, and can safely be called again if
+the app is interrupted during cleanup. Clear the application flag only after
+cleanup succeeds. Backup selection and retry should be a separate subsequent
+action.
+
+Platform-specific state can participate without coupling its domain package to
+Vault. For example, create one `FlutterSecureConsentStorage`, register it in
+`Vault.fromVaultStore` as `consentHistory`, and inject the same instance into
+IOTA services as `ConsentStorage`.
+
 ### Profile Sharing
 
 The Vault package supports sharing profiles and individual items (files/folders) with other users. This enables collaborative access to data while maintaining security through encryption.
@@ -192,6 +292,8 @@ await vault.setItemAccess(
 **Note**: Profile and item sharing require the profile repository to implement the `ProfileAccessSharing` interface. The `VfsProfileRepository` from `affinidi_tdk_vault_data_manager` supports both profile and item-level sharing.
 
 For more sample usage, go to the [example folder](https://github.com/affinidi/affinidi-tdk-dart/tree/main/packages/vault/example), including:
+- [vault_backup.dart](https://github.com/affinidi/affinidi-tdk-dart/blob/main/packages/vault/example/vault_backup.dart) - Creating and saving an encrypted Vault backup
+- [vault_restore.dart](https://github.com/affinidi/affinidi-tdk-dart/blob/main/packages/vault/example/vault_restore.dart) - Restoring a Vault into empty storage
 - [shared_profiles.dart](https://github.com/affinidi/affinidi-tdk-dart/blob/main/packages/vault/example/shared_profiles.dart) - Profile sharing examples
 - [shared_items.dart](https://github.com/affinidi/affinidi-tdk-dart/blob/main/packages/vault/example/shared_items.dart) - Item-level sharing examples
 - [time_bound_sharing.dart](https://github.com/affinidi/affinidi-tdk-dart/blob/main/packages/vault/example/time_bound_sharing.dart) - Time-bound sharing examples

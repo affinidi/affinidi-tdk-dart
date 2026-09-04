@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:affinidi_tdk_vault_edge_provider/affinidi_tdk_vault_edge_provider.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
@@ -296,6 +298,394 @@ void main() {
           ),
         ).called(1);
       });
+    });
+  });
+
+  group('When backing up files', () {
+    final invalidBackupFormat = isA<TdkException>().having(
+      (error) => error.code,
+      'code',
+      'invalid_backup_format',
+    );
+
+    test('it exports root and nested items', () async {
+      final folder = FileFixtures.createMockFolder(
+        id: 'old-folder',
+        name: 'documents',
+      );
+      final rootFile = FileFixtures.createMockFileData(
+        id: 'root-file',
+        name: 'root.txt',
+      );
+      final nestedFile = FileFixtures.createMockFileData(
+        id: 'nested-file',
+        name: 'nested.txt',
+        parentId: 'old-folder',
+      );
+      when(
+        () => mockRepository.getFolder(
+          folderId: null,
+          limit: 50,
+          exclusiveStartItemId: null,
+        ),
+      ).thenAnswer(
+        (_) async =>
+            PaginatedList(items: [folder, rootFile], lastEvaluatedItemId: null),
+      );
+      when(
+        () => mockRepository.getFolder(
+          folderId: 'old-folder',
+          limit: 50,
+          exclusiveStartItemId: null,
+        ),
+      ).thenAnswer(
+        (_) async =>
+            PaginatedList(items: [nestedFile], lastEvaluatedItemId: null),
+      );
+
+      final exported = await storage.export();
+
+      expect(exported['schemaVersion'], '1.0.0');
+      expect(
+        exported['items'],
+        containsAll([
+          {
+            'id': 'old-folder',
+            'name': 'documents',
+            'parentId': null,
+            'type': 'folder',
+          },
+          {
+            'id': 'root-file',
+            'name': 'root.txt',
+            'parentId': null,
+            'type': 'file',
+            'content': base64Encode(FileFixtures.smallFileData),
+          },
+          {
+            'id': 'nested-file',
+            'name': 'nested.txt',
+            'parentId': 'old-folder',
+            'type': 'file',
+            'content': base64Encode(FileFixtures.smallFileData),
+          },
+        ]),
+      );
+    });
+
+    test('it creates nested folders once, parents first', () async {
+      final createdFolderNames = <String>[];
+      when(
+        () => mockRepository.createFolder(
+          profileId: FileFixtures.profileId,
+          folderName: any(named: 'folderName'),
+          parentFolderId: any(named: 'parentFolderId'),
+        ),
+      ).thenAnswer((invocation) async {
+        final name = invocation.namedArguments[#folderName] as String;
+        createdFolderNames.add(name);
+        return FileFixtures.createMockFolder(id: 'new-$name', name: name);
+      });
+
+      // Deliberately listed deepest first to prove the order is derived from
+      // the parent links rather than the backup order.
+      await storage.import({
+        'schemaVersion': '1.0.0',
+        'items': [
+          {
+            'id': 'level-3',
+            'name': 'third',
+            'parentId': 'level-2',
+            'type': 'folder',
+          },
+          {
+            'id': 'level-2',
+            'name': 'second',
+            'parentId': 'level-1',
+            'type': 'folder',
+          },
+          {
+            'id': 'level-1',
+            'name': 'first',
+            'parentId': null,
+            'type': 'folder',
+          },
+        ],
+      });
+
+      expect(createdFolderNames, ['first', 'second', 'third']);
+      verify(
+        () => mockRepository.createFolder(
+          profileId: FileFixtures.profileId,
+          folderName: 'second',
+          parentFolderId: 'new-first',
+        ),
+      ).called(1);
+      verify(
+        () => mockRepository.createFolder(
+          profileId: FileFixtures.profileId,
+          folderName: 'third',
+          parentFolderId: 'new-second',
+        ),
+      ).called(1);
+    });
+
+    test('it remaps file parents to restored folder ids', () async {
+      when(
+        () => mockRepository.createFolder(
+          profileId: FileFixtures.profileId,
+          folderName: 'documents',
+          parentFolderId: null,
+        ),
+      ).thenAnswer(
+        (_) async =>
+            FileFixtures.createMockFolder(id: 'new-folder', name: 'documents'),
+      );
+
+      await storage.import({
+        'schemaVersion': '1.0.0',
+        'items': [
+          {
+            'id': 'old-folder',
+            'name': 'documents',
+            'parentId': null,
+            'type': 'folder',
+          },
+          {
+            'id': 'old-file',
+            'name': 'document.txt',
+            'parentId': 'old-folder',
+            'type': 'file',
+            'content': base64Encode(FileFixtures.smallFileData),
+          },
+        ],
+      });
+
+      verify(
+        () => mockRepository.createFile(
+          profileId: FileFixtures.profileId,
+          fileName: 'document.txt',
+          data: FileFixtures.smallFileData,
+          parentFolderId: 'new-folder',
+        ),
+      ).called(1);
+    });
+
+    test('it rejects a non-empty file destination', () async {
+      final existingFolder = FileFixtures.createMockFolder(
+        id: 'existing-folder',
+        name: 'documents',
+      );
+      final existingFile = FileFixtures.createMockFileData(
+        id: 'existing-file',
+        name: 'document.txt',
+        parentId: 'existing-folder',
+      );
+      when(
+        () => mockRepository.getFolder(
+          folderId: null,
+          limit: 1,
+          exclusiveStartItemId: null,
+        ),
+      ).thenAnswer(
+        (_) async =>
+            PaginatedList(items: [existingFolder], lastEvaluatedItemId: null),
+      );
+      when(
+        () => mockRepository.getFolder(
+          folderId: 'existing-folder',
+          limit: 50,
+          exclusiveStartItemId: null,
+        ),
+      ).thenAnswer(
+        (_) async =>
+            PaginatedList(items: [existingFile], lastEvaluatedItemId: null),
+      );
+
+      await expectLater(
+        storage.import({
+          'schemaVersion': '1.0.0',
+          'items': [
+            {
+              'id': 'old-folder',
+              'name': 'documents',
+              'parentId': null,
+              'type': 'folder',
+            },
+            {
+              'id': 'old-file',
+              'name': 'document.txt',
+              'parentId': 'old-folder',
+              'type': 'file',
+              'content': base64Encode(FileFixtures.smallFileData),
+            },
+          ],
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            'restore_destination_not_empty',
+          ),
+        ),
+      );
+
+      verifyNever(
+        () => mockRepository.deleteFile(fileId: any(named: 'fileId')),
+      );
+      verifyNever(
+        () => mockRepository.deleteFolder(folderId: any(named: 'folderId')),
+      );
+      verifyNever(
+        () => mockRepository.createFolder(
+          profileId: any(named: 'profileId'),
+          folderName: any(named: 'folderName'),
+          parentFolderId: any(named: 'parentFolderId'),
+        ),
+      );
+      verifyNever(
+        () => mockRepository.createFile(
+          profileId: any(named: 'profileId'),
+          fileName: any(named: 'fileName'),
+          data: any(named: 'data'),
+          parentFolderId: any(named: 'parentFolderId'),
+        ),
+      );
+    });
+
+    test('it rejects folder cycles before repository access', () async {
+      await expectLater(
+        storage.import(const {
+          'schemaVersion': '1.0.0',
+          'items': [
+            {
+              'id': 'folder-a',
+              'name': 'a',
+              'parentId': 'folder-b',
+              'type': 'folder',
+            },
+            {
+              'id': 'folder-b',
+              'name': 'b',
+              'parentId': 'folder-a',
+              'type': 'folder',
+            },
+          ],
+        }),
+        throwsA(invalidBackupFormat),
+      );
+
+      verifyNever(
+        () => mockRepository.getFolder(
+          folderId: any(named: 'folderId'),
+          limit: any(named: 'limit'),
+          exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+        ),
+      );
+      verifyNever(
+        () => mockRepository.createFolder(
+          profileId: any(named: 'profileId'),
+          folderName: any(named: 'folderName'),
+          parentFolderId: any(named: 'parentFolderId'),
+        ),
+      );
+    });
+
+    test('it rejects unsupported versions before repository access', () async {
+      await expectLater(
+        storage.validateImport(const {
+          'schemaVersion': '2.0.0',
+          'items': <dynamic>[],
+        }),
+        throwsA(invalidBackupFormat),
+      );
+
+      verifyNever(
+        () => mockRepository.getFolder(
+          folderId: any(named: 'folderId'),
+          limit: any(named: 'limit'),
+          exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+        ),
+      );
+    });
+
+    test('it rolls back all imported files across multiple pages', () async {
+      final itemsByParent = <String?, List<Item>>{null: []};
+      var nextFileId = 0;
+      when(
+        () => mockRepository.getFolder(
+          folderId: any(named: 'folderId'),
+          limit: any(named: 'limit'),
+          exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+        ),
+      ).thenAnswer((invocation) async {
+        final folderId = invocation.namedArguments[#folderId] as String?;
+        final limit = invocation.namedArguments[#limit] as int?;
+        final cursor =
+            invocation.namedArguments[#exclusiveStartItemId] as String?;
+        final offset = int.tryParse(cursor ?? '') ?? 0;
+        final sourceItems = List<Item>.of(itemsByParent[folderId] ?? const []);
+        final pageItems = limit == null
+            ? sourceItems.skip(offset).toList()
+            : sourceItems.skip(offset).take(limit).toList();
+        final lastEvaluatedItemId = limit != null && pageItems.isNotEmpty
+            ? (offset + pageItems.length).toString()
+            : null;
+        return PaginatedList(
+          items: pageItems,
+          lastEvaluatedItemId: lastEvaluatedItemId,
+        );
+      });
+      when(
+        () => mockRepository.createFile(
+          profileId: FileFixtures.profileId,
+          fileName: any(named: 'fileName'),
+          data: any(named: 'data'),
+          parentFolderId: any(named: 'parentFolderId'),
+        ),
+      ).thenAnswer((invocation) async {
+        final parentFolderId =
+            invocation.namedArguments[#parentFolderId] as String?;
+        final fileName = invocation.namedArguments[#fileName] as String;
+        final now = DateTime(2023, 1, 1);
+        itemsByParent
+            .putIfAbsent(parentFolderId, () => [])
+            .add(
+              File(
+                id: 'restored-file-${nextFileId++}',
+                name: fileName,
+                createdAt: now,
+                modifiedAt: now,
+                parentId: parentFolderId,
+              ),
+            );
+      });
+      when(
+        () => mockRepository.deleteFile(fileId: any(named: 'fileId')),
+      ).thenAnswer((invocation) async {
+        final fileId = invocation.namedArguments[#fileId] as String;
+        for (final items in itemsByParent.values) {
+          items.removeWhere((item) => item.id == fileId);
+        }
+      });
+
+      final backupItems = List.generate(120, (index) {
+        return {
+          'id': 'source-file-$index',
+          'name': 'file-$index.txt',
+          'parentId': null,
+          'type': 'file',
+          'content': base64Encode(FileFixtures.smallFileData),
+        };
+      });
+
+      await storage.import({'schemaVersion': '1.0.0', 'items': backupItems});
+
+      expect(itemsByParent[null], hasLength(120));
+
+      await storage.rollbackImport();
+
+      expect(itemsByParent[null], isEmpty);
     });
   });
 }

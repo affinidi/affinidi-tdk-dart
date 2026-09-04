@@ -24,28 +24,38 @@ void main() {
   setUp(() {
     mockStorage = MockFlutterSecureStorage();
     store = FlutterSecureConsentStorage(secureStorage: mockStorage);
+    when(() => mockStorage.readAll()).thenAnswer((_) async => {});
+    when(
+      () => mockStorage.delete(key: any(named: 'key')),
+    ).thenAnswer((_) async {});
+    when(
+      () => mockStorage.containsKey(key: any(named: 'key')),
+    ).thenAnswer((_) async => false);
   });
 
-  group('saveOrUpdate', () {
-    test('writes the record as JSON under the namespaced hash key', () async {
-      when(
-        () => mockStorage.write(
-          key: any(named: 'key'),
-          value: any(named: 'value'),
-        ),
-      ).thenAnswer((_) async {});
+  group('When saving or updating a consent record', () {
+    test(
+      'it writes the record as JSON under the namespaced hash key',
+      () async {
+        when(
+          () => mockStorage.write(
+            key: any(named: 'key'),
+            value: any(named: 'value'),
+          ),
+        ).thenAnswer((_) async {});
 
-      await store.saveOrUpdate(record);
+        await store.saveOrUpdate(record);
 
-      verify(
-        () => mockStorage.write(
-          key: '${defaultNamespace}_$hash',
-          value: jsonEncode(record.toJson()),
-        ),
-      ).called(1);
-    });
+        verify(
+          () => mockStorage.write(
+            key: '${defaultNamespace}_$hash',
+            value: jsonEncode(record.toJson()),
+          ),
+        ).called(1);
+      },
+    );
 
-    test('uses a custom namespace when provided', () async {
+    test('it uses a custom namespace when provided', () async {
       const customNamespace = 'my_app_consent';
       final customStore = FlutterSecureConsentStorage(
         namespace: customNamespace,
@@ -70,8 +80,8 @@ void main() {
     });
   });
 
-  group('findByRequestHash', () {
-    test('returns null when no records exist in the namespace', () async {
+  group('When finding a consent record by request hash', () {
+    test('it returns null when no records exist in the namespace', () async {
       when(() => mockStorage.readAll()).thenAnswer((_) async => {});
 
       final result = await store.findByRequestHash(
@@ -81,7 +91,7 @@ void main() {
       expect(result, isNull);
     });
 
-    test('returns the record matching requestHash when found', () async {
+    test('it returns the matching record when found', () async {
       when(() => mockStorage.readAll()).thenAnswer(
         (_) async => {'${defaultNamespace}_$hash': jsonEncode(record.toJson())},
       );
@@ -95,7 +105,7 @@ void main() {
       expect(result.clientId, record.clientId);
     });
 
-    test('ignores entries from other namespaces', () async {
+    test('it ignores entries from other namespaces', () async {
       when(() => mockStorage.readAll()).thenAnswer(
         (_) async => {'other_namespace_$hash': jsonEncode(record.toJson())},
       );
@@ -108,7 +118,7 @@ void main() {
     });
 
     test(
-      'throws TdkException with failedToReadConsentRecord when an entry is corrupt',
+      'it throws failedToReadConsentRecord when an entry is corrupt',
       () async {
         when(() => mockStorage.readAll()).thenAnswer(
           (_) async => {'${defaultNamespace}_bad': 'not valid json {{{'},
@@ -128,8 +138,8 @@ void main() {
     );
   });
 
-  group('findAllByRequestHash', () {
-    test('returns an empty list when no records match', () async {
+  group('When finding all consent records by request hash', () {
+    test('it returns an empty list when no records match', () async {
       when(() => mockStorage.readAll()).thenAnswer((_) async => {});
 
       final results = await store.findAllByRequestHash(
@@ -139,25 +149,46 @@ void main() {
       expect(results, isEmpty);
     });
 
+    test('it returns all matching records and ignores others', () async {
+      final second = ConsentRecordFixtures.secondRecord();
+      final unrelated = ConsentRecordFixtures.record().copyWith(
+        hash: 'other-hash',
+        requestHash: 'different-request-hash',
+      );
+      when(() => mockStorage.readAll()).thenAnswer(
+        (_) async => {
+          '${defaultNamespace}_$hash': jsonEncode(record.toJson()),
+          '${defaultNamespace}_${second.hash}': jsonEncode(second.toJson()),
+          '${defaultNamespace}_other-hash': jsonEncode(unrelated.toJson()),
+        },
+      );
+
+      final results = await store.findAllByRequestHash(
+        ConsentRecordFixtures.requestHash,
+      );
+
+      expect(results, hasLength(2));
+      expect(
+        results.map((r) => r.hash),
+        containsAll([record.hash, second.hash]),
+      );
+    });
+  });
+
+  group('When listing all consent records', () {
     test(
-      'returns all records matching requestHash and ignores others',
+      'it returns all records from its namespace and ignores others',
       () async {
         final second = ConsentRecordFixtures.secondRecord();
-        final unrelated = ConsentRecordFixtures.record().copyWith(
-          hash: 'other-hash',
-          requestHash: 'different-request-hash',
-        );
         when(() => mockStorage.readAll()).thenAnswer(
           (_) async => {
             '${defaultNamespace}_$hash': jsonEncode(record.toJson()),
             '${defaultNamespace}_${second.hash}': jsonEncode(second.toJson()),
-            '${defaultNamespace}_other-hash': jsonEncode(unrelated.toJson()),
+            'other_namespace_ignored': jsonEncode(record.toJson()),
           },
         );
 
-        final results = await store.findAllByRequestHash(
-          ConsentRecordFixtures.requestHash,
-        );
+        final results = await store.listAll();
 
         expect(results, hasLength(2));
         expect(
@@ -166,5 +197,228 @@ void main() {
         );
       },
     );
+  });
+
+  group('When deleting a consent record by hash', () {
+    test('it deletes the namespaced key and returns true', () async {
+      when(
+        () => mockStorage.containsKey(key: '${defaultNamespace}_$hash'),
+      ).thenAnswer((_) async => true);
+
+      final result = await store.deleteByHash(hash);
+
+      expect(result, isTrue);
+      verify(
+        () => mockStorage.delete(key: '${defaultNamespace}_$hash'),
+      ).called(1);
+    });
+
+    test(
+      'it returns false and does not delete when the key is absent',
+      () async {
+        when(
+          () => mockStorage.containsKey(key: '${defaultNamespace}_$hash'),
+        ).thenAnswer((_) async => false);
+
+        final result = await store.deleteByHash(hash);
+
+        expect(result, isFalse);
+        verifyNever(() => mockStorage.delete(key: any(named: 'key')));
+      },
+    );
+
+    test('it respects a custom namespace', () async {
+      const customNamespace = 'my_app_consent';
+      final customStore = FlutterSecureConsentStorage(
+        namespace: customNamespace,
+        secureStorage: mockStorage,
+      );
+      when(
+        () => mockStorage.containsKey(key: '${customNamespace}_$hash'),
+      ).thenAnswer((_) async => true);
+
+      final result = await customStore.deleteByHash(hash);
+
+      expect(result, isTrue);
+      verify(
+        () => mockStorage.delete(key: '${customNamespace}_$hash'),
+      ).called(1);
+    });
+  });
+
+  group('When backing up and restoring consent records', () {
+    test('it exports only records from its namespace', () async {
+      final second = ConsentRecordFixtures.secondRecord();
+      when(() => mockStorage.readAll()).thenAnswer(
+        (_) async => {
+          '${defaultNamespace}_$hash': jsonEncode(record.toJson()),
+          '${defaultNamespace}_${second.hash}': jsonEncode(second.toJson()),
+          'other_namespace_ignored': jsonEncode(record.toJson()),
+        },
+      );
+
+      final exported = await store.export();
+
+      expect(exported, {
+        'schemaVersion': '1.0.0',
+        'records': [record.toJson(), second.toJson()],
+      });
+    });
+
+    test('it imports records through namespaced upsert keys', () async {
+      final second = ConsentRecordFixtures.secondRecord();
+      when(
+        () => mockStorage.write(
+          key: any(named: 'key'),
+          value: any(named: 'value'),
+        ),
+      ).thenAnswer((_) async {});
+
+      await store.import({
+        'schemaVersion': '1.0.0',
+        'records': [record.toJson(), second.toJson()],
+      });
+
+      verify(
+        () => mockStorage.write(
+          key: '${defaultNamespace}_${record.hash}',
+          value: jsonEncode(record.toJson()),
+        ),
+      ).called(1);
+      verify(
+        () => mockStorage.write(
+          key: '${defaultNamespace}_${second.hash}',
+          value: jsonEncode(second.toJson()),
+        ),
+      ).called(1);
+    });
+
+    test('it rejects and preserves destination-only records', () async {
+      when(() => mockStorage.readAll()).thenAnswer(
+        (_) async => {
+          '${defaultNamespace}_destination-only': jsonEncode(record.toJson()),
+          'other_namespace_untouched': jsonEncode(record.toJson()),
+        },
+      );
+      when(
+        () => mockStorage.write(
+          key: any(named: 'key'),
+          value: any(named: 'value'),
+        ),
+      ).thenAnswer((_) async {});
+
+      await expectLater(
+        store.import({
+          'schemaVersion': '1.0.0',
+          'records': [record.toJson()],
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            'restore_destination_not_empty',
+          ),
+        ),
+      );
+
+      verifyNever(
+        () => mockStorage.delete(key: '${defaultNamespace}_destination-only'),
+      );
+      verifyNever(() => mockStorage.delete(key: 'other_namespace_untouched'));
+      verifyNever(
+        () => mockStorage.write(
+          key: '${defaultNamespace}_${record.hash}',
+          value: jsonEncode(record.toJson()),
+        ),
+      );
+    });
+
+    test('it rejects re-import after the first import', () async {
+      var stored = false;
+      when(() => mockStorage.readAll()).thenAnswer(
+        (_) async => stored
+            ? {
+                '${defaultNamespace}_${record.hash}': jsonEncode(
+                  record.toJson(),
+                ),
+              }
+            : {},
+      );
+      when(
+        () => mockStorage.write(
+          key: any(named: 'key'),
+          value: any(named: 'value'),
+        ),
+      ).thenAnswer((_) async => stored = true);
+      final payload = {
+        'schemaVersion': '1.0.0',
+        'records': [record.toJson()],
+      };
+
+      await store.import(payload);
+      await expectLater(
+        store.import(payload),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            'restore_destination_not_empty',
+          ),
+        ),
+      );
+
+      verify(
+        () => mockStorage.write(
+          key: '${defaultNamespace}_${record.hash}',
+          value: jsonEncode(record.toJson()),
+        ),
+      ).called(1);
+    });
+
+    test('it rejects malformed records before any write', () async {
+      await expectLater(
+        store.import(const {
+          'schemaVersion': '1.0.0',
+          'records': [42],
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            'invalid_backup_format',
+          ),
+        ),
+      );
+
+      verifyNever(
+        () => mockStorage.write(
+          key: any(named: 'key'),
+          value: any(named: 'value'),
+        ),
+      );
+    });
+
+    test('it rejects unsupported versions before any write', () async {
+      await expectLater(
+        store.validateImport(const {
+          'version': '2.0.0',
+          'records': <dynamic>[],
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            'invalid_backup_format',
+          ),
+        ),
+      );
+
+      verifyNever(
+        () => mockStorage.write(
+          key: any(named: 'key'),
+          value: any(named: 'value'),
+        ),
+      );
+    });
   });
 }
