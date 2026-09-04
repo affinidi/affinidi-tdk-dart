@@ -13,6 +13,7 @@ import 'fakes/fake_cloud_repository.dart';
 import 'fixtures/credential_fixtures.dart';
 import 'fixtures/vault_backup_fixtures.dart';
 
+/// A fresh buffer per call, because PBKDF2 wipes the passphrase it is given.
 Uint8List _passphrase() =>
     Uint8List.fromList(utf8.encode('Correct-horse-staple1'));
 
@@ -69,10 +70,9 @@ void main() {
         final service = VaultBackupService(
           cryptographyService: CryptographyService(),
         );
-        final passphrase = _passphrase();
         final backup = await service.createBackup(
           vault: sourceVault,
-          passphrase: passphrase,
+          passphrase: _passphrase(),
         );
 
         final occupiedStore = await VaultBackupFixtures.vaultStore();
@@ -108,7 +108,7 @@ void main() {
         await expectLater(
           service.restoreBackup(
             backupData: backup,
-            passphrase: passphrase,
+            passphrase: _passphrase(),
             vaultStoreFactory: () => rejectionStore,
             repositoryFactories: {
               'edge': ProfileRepositoryRegistration.withBackupData(
@@ -146,7 +146,7 @@ void main() {
         final targetStore = InMemoryVaultStore();
         Future<Vault> restore() => service.restoreBackup(
           backupData: backup,
-          passphrase: passphrase,
+          passphrase: _passphrase(),
           vaultStoreFactory: () => targetStore,
           repositoryFactories: {
             'edge': ProfileRepositoryRegistration.withBackupData(

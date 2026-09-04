@@ -373,6 +373,63 @@ void main() {
       );
     });
 
+    test('it creates nested folders once, parents first', () async {
+      final createdFolderNames = <String>[];
+      when(
+        () => mockRepository.createFolder(
+          profileId: FileFixtures.profileId,
+          folderName: any(named: 'folderName'),
+          parentFolderId: any(named: 'parentFolderId'),
+        ),
+      ).thenAnswer((invocation) async {
+        final name = invocation.namedArguments[#folderName] as String;
+        createdFolderNames.add(name);
+        return FileFixtures.createMockFolder(id: 'new-$name', name: name);
+      });
+
+      // Deliberately listed deepest first to prove the order is derived from
+      // the parent links rather than the backup order.
+      await storage.import({
+        'schemaVersion': '1.0.0',
+        'items': [
+          {
+            'id': 'level-3',
+            'name': 'third',
+            'parentId': 'level-2',
+            'type': 'folder',
+          },
+          {
+            'id': 'level-2',
+            'name': 'second',
+            'parentId': 'level-1',
+            'type': 'folder',
+          },
+          {
+            'id': 'level-1',
+            'name': 'first',
+            'parentId': null,
+            'type': 'folder',
+          },
+        ],
+      });
+
+      expect(createdFolderNames, ['first', 'second', 'third']);
+      verify(
+        () => mockRepository.createFolder(
+          profileId: FileFixtures.profileId,
+          folderName: 'second',
+          parentFolderId: 'new-first',
+        ),
+      ).called(1);
+      verify(
+        () => mockRepository.createFolder(
+          profileId: FileFixtures.profileId,
+          folderName: 'third',
+          parentFolderId: 'new-second',
+        ),
+      ).called(1);
+    });
+
     test('it remaps file parents to restored folder ids', () async {
       when(
         () => mockRepository.createFolder(

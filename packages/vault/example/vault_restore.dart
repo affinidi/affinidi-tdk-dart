@@ -10,6 +10,8 @@ const _edgeRepositoryId = 'edge';
 const _vfsRepositoryId = 'vfs';
 
 Future<void> main(List<String> arguments) async {
+  // Read the passphrase from a file so it is never a literal in source or a
+  // shell history entry.
   final passphraseFile =
       io.Platform.environment['VAULT_BACKUP_PASSPHRASE_FILE'];
   if (passphraseFile == null) {
@@ -54,11 +56,11 @@ Future<void> main(List<String> arguments) async {
 
     final restoredProfiles = await vault.profileRepositories[_edgeRepositoryId]!
         .listProfiles();
-    io.stdout.writeln(
+    print(
       'Vault restored with repositories: '
       '${vault.profileRepositories.keys.join(', ')}',
     );
-    io.stdout.writeln(
+    print(
       'Restored local profiles: '
       '${restoredProfiles.map((profile) => profile.name).join(', ')}',
     );

@@ -12,6 +12,8 @@ const _vfsRepositoryId = 'vfs';
 const _passphrasePolicy = PassphrasePolicy(minLength: 16);
 
 Future<void> main(List<String> arguments) async {
+  // Read the passphrase from a file so it is never a literal in source or a
+  // shell history entry.
   final passphraseFile =
       io.Platform.environment['VAULT_BACKUP_PASSPHRASE_FILE'];
   if (passphraseFile == null) {
@@ -43,7 +45,7 @@ Future<void> main(List<String> arguments) async {
     passphrase.fillRange(0, passphrase.length, 0);
     await edgeDatabase.close();
   }
-  io.stdout.writeln('Encrypted vault backup written to $backupPath');
+  print('Encrypted vault backup written to $backupPath');
 }
 
 Future<Vault> _openVault({required Database edgeDatabase}) async {

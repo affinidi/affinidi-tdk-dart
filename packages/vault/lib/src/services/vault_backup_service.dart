@@ -65,21 +65,19 @@ class VaultBackupService implements VaultBackupServiceInterface {
     final vaultStore = await vaultStoreFactory();
     final cleanupErrors = <String>[];
     for (final id in namedRestorableFactories.keys.toList()..sort()) {
-      try {
-        await (await namedRestorableFactories[id]!()).clearAllData();
-      } catch (_) {
-        cleanupErrors.add('named:$id');
-      }
+      await _tryClear(
+        'named:$id',
+        () async => await namedRestorableFactories[id]!(),
+        cleanupErrors,
+      );
     }
     for (final id in repositoryFactories.keys.toList()..sort()) {
       final registration = repositoryFactories[id]!;
       if (!registration.expectsBackupData) continue;
-      try {
+      await _tryClear('repository:$id', () async {
         final repository = await registration.create(vaultStore);
-        await registration.restorableView(repository)!.clearAllData();
-      } catch (_) {
-        cleanupErrors.add('repository:$id');
-      }
+        return registration.restorableView(repository)!;
+      }, cleanupErrors);
     }
     if (cleanupErrors.isNotEmpty) {
       throw VaultRestoreException.rollbackFailed(cleanupErrors);
@@ -90,6 +88,18 @@ class VaultBackupService implements VaultBackupServiceInterface {
       throw VaultRestoreException.rollbackFailed(['vaultStore']);
     }
   });
+
+  Future<void> _tryClear(
+    String label,
+    Future<Restorable> Function() obtain,
+    List<String> errors,
+  ) async {
+    try {
+      await (await obtain()).clearAllData();
+    } catch (_) {
+      errors.add(label);
+    }
+  }
 
   @override
   Future<ByteData> createBackup({
@@ -258,6 +268,9 @@ class VaultBackupService implements VaultBackupServiceInterface {
     }
 
     final vaultStoreData = backup.data['vaultStore'] as Map<String, dynamic>;
+    // Vault.import revalidates through VaultRestorePlan, but that runs after
+    // the seed is written, so validate here to keep a rejected backup from
+    // mutating the VaultStore at all.
     await vaultStore.validateImport(vaultStoreData);
     final seed = base64Decode(vaultStoreData['seed'] as String);
     final wallet = Bip32Wallet.fromSeed(seed);
@@ -277,20 +290,11 @@ class VaultBackupService implements VaultBackupServiceInterface {
       );
     }
 
+    // The VaultStore is excluded from Vault.isEmpty because a restored Vault
+    // is opened from an already-seeded store, so it is checked here instead.
+    // The repository and named destinations are checked by Vault.import.
     if (!await vaultStore.isEmpty()) {
       throw VaultRestoreException.destinationNotEmpty('VaultStore');
-    }
-    for (final id in repositoryData.keys.toList()..sort()) {
-      if (!await restorableRepositories[id]!.isEmpty()) {
-        throw VaultRestoreException.destinationNotEmpty('Repository "$id"');
-      }
-    }
-    for (final id in namedData.keys.toList()..sort()) {
-      if (!await namedRestorables[id]!.isEmpty()) {
-        throw VaultRestoreException.destinationNotEmpty(
-          'Named component "$id"',
-        );
-      }
     }
     var vaultStoreImported = false;
     try {

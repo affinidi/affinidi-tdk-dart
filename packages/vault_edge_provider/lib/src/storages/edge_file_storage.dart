@@ -365,28 +365,18 @@ class EdgeFileStorage implements FileStorage, Restorable {
         }
         _importPendingRollback = true;
 
+        // One create call per folder, parents first. _parseBackup already
+        // rejects cycles and folders whose parent is missing, so every parent
+        // is present in restoredFolderIds by the time a child is reached.
         final restoredFolderIds = <String, String>{};
-        final remainingFolders = List<_BackupFolder>.of(folders);
-        while (remainingFolders.isNotEmpty) {
-          final restored = <_BackupFolder>[];
-          for (final folder in remainingFolders) {
-            final parentId = folder.parentId == null
-                ? _profileId
-                : restoredFolderIds[folder.parentId];
-            if (parentId == null) {
-              continue;
-            }
-            final restoredId = (await createFolder(
-              folderName: folder.name,
-              parentFolderId: parentId,
-            )).id;
-            restoredFolderIds[folder.id] = restoredId;
-            restored.add(folder);
-          }
-          if (restored.isEmpty) {
-            throw EdgeRestoreException.invalidBackupFormat('file storage');
-          }
-          remainingFolders.removeWhere(restored.contains);
+        for (final folder in _parentsFirst(folders)) {
+          final parentId = folder.parentId == null
+              ? _profileId
+              : restoredFolderIds[folder.parentId]!;
+          restoredFolderIds[folder.id] = (await createFolder(
+            folderName: folder.name,
+            parentFolderId: parentId,
+          )).id;
         }
 
         for (final file in files) {
@@ -400,6 +390,26 @@ class EdgeFileStorage implements FileStorage, Restorable {
           );
         }
       });
+
+  /// Orders folders so that every folder follows its parent.
+  List<_BackupFolder> _parentsFirst(List<_BackupFolder> folders) {
+    final childrenByParent = <String?, List<_BackupFolder>>{};
+    for (final folder in folders) {
+      childrenByParent.putIfAbsent(folder.parentId, () => []).add(folder);
+    }
+
+    final ordered = <_BackupFolder>[];
+    final pendingParentIds = <String?>[null];
+    while (pendingParentIds.isNotEmpty) {
+      final parentId = pendingParentIds.removeLast();
+      for (final folder
+          in childrenByParent[parentId] ?? const <_BackupFolder>[]) {
+        ordered.add(folder);
+        pendingParentIds.add(folder.id);
+      }
+    }
+    return ordered;
+  }
 
   @override
   Future<void> clearAllData() => _lock.synchronized(_clear);
