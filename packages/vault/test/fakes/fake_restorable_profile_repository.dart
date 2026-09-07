@@ -14,6 +14,7 @@ class FakeRestorableProfileRepository extends FakeProfileRepository
   String value;
   final List<String>? events;
   Map<String, dynamic>? importedData;
+  int clearAllDataCalls = 0;
   int rollbackCalls = 0;
   bool _empty;
   bool _importPendingRollback = false;
@@ -39,19 +40,21 @@ class FakeRestorableProfileRepository extends FakeProfileRepository
     importedData = data;
     value = data['value'] as String;
     _empty = false;
+    _importPendingRollback = false;
   }
 
   @override
   Future<void> clearAllData() async {
+    clearAllDataCalls++;
     events?.add('clear:$id');
     importedData = null;
     _empty = true;
     _importPendingRollback = false;
-    rollbackCalls++;
   }
 
   @override
   Future<void> rollbackImport() async {
+    rollbackCalls++;
     if (!_importPendingRollback) return;
     await clearAllData();
   }

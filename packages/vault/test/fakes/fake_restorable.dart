@@ -19,6 +19,7 @@ class FakeRestorable implements Restorable {
   final Exception? importError;
   final Exception? rollbackError;
   Map<String, dynamic>? importedData;
+  int clearAllDataCalls = 0;
   int rollbackCalls = 0;
   bool _empty;
   bool _importPendingRollback = false;
@@ -47,20 +48,22 @@ class FakeRestorable implements Restorable {
     importedData = data;
     value = data['value'] as String;
     _empty = false;
+    _importPendingRollback = false;
   }
 
   @override
   Future<void> clearAllData() async {
+    clearAllDataCalls++;
     if (rollbackError != null) throw rollbackError!;
     if (id != null) events?.add('clear:$id');
     importedData = null;
     _empty = true;
     _importPendingRollback = false;
-    rollbackCalls++;
   }
 
   @override
   Future<void> rollbackImport() async {
+    rollbackCalls++;
     if (!_importPendingRollback) return;
     await clearAllData();
   }

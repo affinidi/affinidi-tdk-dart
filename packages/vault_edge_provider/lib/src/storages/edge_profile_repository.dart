@@ -466,6 +466,8 @@ Profile repository must be configured using a RepositoryConfiguration''',
           backupProfile.sharedStorages,
         );
       }
+      _accountIndexBeforeImport = null;
+      _importPendingRollback = false;
     },
   );
 
@@ -499,17 +501,17 @@ Profile repository must be configured using a RepositoryConfiguration''',
     for (final profile in await listProfiles()) {
       for (final storage in profile.fileStorages.values) {
         if (storage is Restorable) {
-          await (storage as Restorable).rollbackImport();
+          await (storage as Restorable).clearAllData();
         }
       }
       for (final storage in profile.credentialStorages.values) {
         if (storage is Restorable) {
-          await (storage as Restorable).rollbackImport();
+          await (storage as Restorable).clearAllData();
         }
       }
       for (final storage in profile.sharedStorages) {
         if (storage is Restorable) {
-          await (storage as Restorable).rollbackImport();
+          await (storage as Restorable).clearAllData();
         }
       }
       await _repository.deleteProfile(profileId: profile.id);

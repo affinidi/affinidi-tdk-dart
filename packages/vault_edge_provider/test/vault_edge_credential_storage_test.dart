@@ -455,7 +455,7 @@ void main() {
     });
 
     test(
-      'it rolls back all imported credentials across multiple pages',
+      'it preserves successfully imported credentials when rollback is called',
       () async {
         final storedCredentials = <EdgeCredential>[];
         when(
@@ -528,7 +528,7 @@ void main() {
 
         await storage.rollbackImport();
 
-        expect(storedCredentials, isEmpty);
+        expect(storedCredentials, hasLength(120));
       },
     );
   });

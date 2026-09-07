@@ -116,6 +116,7 @@ class FlutterSecureConsentStorage
     for (final record in records) {
       await saveOrUpdate(record);
     }
+    _importPendingRollback = false;
   }
 
   @override

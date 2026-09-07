@@ -389,6 +389,7 @@ class EdgeFileStorage implements FileStorage, Restorable {
             parentFolderId: parentId,
           );
         }
+        _importPendingRollback = false;
       });
 
   /// Orders folders so that every folder follows its parent.

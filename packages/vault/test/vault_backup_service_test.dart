@@ -687,6 +687,12 @@ void main() {
             'edge',
             value: 'empty',
           );
+          final targetComponent = FakeRestorable(
+            importError: TdkException(
+              message: 'late failure',
+              code: 'invalid_backup_format',
+            ),
+          );
 
           await expectLater(
             service.restoreBackup(
@@ -700,14 +706,7 @@ void main() {
                   asRestorable: restorableIdentity,
                 ),
               },
-              namedRestorableFactories: {
-                'last': () => FakeRestorable(
-                  importError: TdkException(
-                    message: 'late failure',
-                    code: 'invalid_backup_format',
-                  ),
-                ),
-              },
+              namedRestorableFactories: {'last': () => targetComponent},
             ),
             throwsA(isA<TdkException>()),
           );
@@ -716,8 +715,11 @@ void main() {
           expect(targetStore.cleared, isTrue);
           expect(await targetStore.getSeed(), isNull);
           expect(await targetRepository.isEmpty(), isTrue);
-          expect(targetRepository.rollbackCalls, 1);
+          expect(targetRepository.clearAllDataCalls, 1);
+          expect(targetRepository.rollbackCalls, 0);
           expect(targetRepository.imported, isFalse);
+          expect(targetComponent.clearAllDataCalls, 0);
+          expect(targetComponent.rollbackCalls, 1);
         },
       );
 

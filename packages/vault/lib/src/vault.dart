@@ -349,6 +349,7 @@ class Vault implements Restorable {
       _pendingImportPlan = null;
       Error.throwWithStackTrace(importFailure.error, importFailure.stackTrace);
     }
+    _pendingImportPlan = null;
     _invalidateProfilesCache();
   }
 

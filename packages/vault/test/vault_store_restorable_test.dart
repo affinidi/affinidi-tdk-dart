@@ -96,6 +96,7 @@ void main() {
       final target = InMemoryVaultStore();
 
       await target.import(exported);
+      await target.rollbackImport();
 
       expect(await target.getSeed(), equals(seed));
       expect(await target.getContentKey(), equals(contentKey));

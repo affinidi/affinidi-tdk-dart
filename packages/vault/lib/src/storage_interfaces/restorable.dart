@@ -68,7 +68,8 @@ abstract interface class Restorable {
   /// Rolls back durable state written by [import].
   ///
   /// This is required so multi-component restore flows can compensate for
-  /// partial progress after a late import failure. It must be a no-op when
-  /// this instance has not started an import, and must be idempotent.
+  /// partial progress after an import failure. It must be a no-op when this
+  /// instance has not started an import or its import completed successfully,
+  /// and must be idempotent.
   Future<void> rollbackImport();
 }

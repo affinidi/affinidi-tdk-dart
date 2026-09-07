@@ -153,6 +153,7 @@ void main() {
         );
 
         await target.import(backup);
+        await target.rollbackImport();
 
         expect(targetEvents, ['edge', 'consentHistory']);
         expect(repository.importedData, {

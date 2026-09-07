@@ -296,10 +296,12 @@ class VaultBackupService implements VaultBackupServiceInterface {
     if (!await vaultStore.isEmpty()) {
       throw VaultRestoreException.destinationNotEmpty('VaultStore');
     }
-    var vaultStoreImported = false;
+    var vaultStoreImportStarted = false;
+    var vaultStoreImportCompleted = false;
     try {
-      vaultStoreImported = true;
+      vaultStoreImportStarted = true;
       await vaultStore.import(vaultStoreData);
+      vaultStoreImportCompleted = true;
       final vault = await Vault.fromVaultStore(
         vaultStore,
         profileRepositories: repositories,
@@ -311,9 +313,13 @@ class VaultBackupService implements VaultBackupServiceInterface {
       await vault.import(backup.data);
       return vault;
     } catch (error, stackTrace) {
-      if (vaultStoreImported) {
+      if (vaultStoreImportStarted) {
         try {
-          await vaultStore.rollbackImport();
+          if (vaultStoreImportCompleted) {
+            await vaultStore.clearAllData();
+          } else {
+            await vaultStore.rollbackImport();
+          }
         } catch (_) {
           Error.throwWithStackTrace(
             VaultRestoreException.vaultStoreRollbackFailed(),

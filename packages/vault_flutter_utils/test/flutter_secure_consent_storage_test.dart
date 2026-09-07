@@ -278,6 +278,7 @@ void main() {
         'schemaVersion': '1.0.0',
         'records': [record.toJson(), second.toJson()],
       });
+      await store.rollbackImport();
 
       verify(
         () => mockStorage.write(
@@ -291,6 +292,7 @@ void main() {
           value: jsonEncode(second.toJson()),
         ),
       ).called(1);
+      verifyNever(() => mockStorage.delete(key: any(named: 'key')));
     });
 
     test('it rejects and preserves destination-only records', () async {

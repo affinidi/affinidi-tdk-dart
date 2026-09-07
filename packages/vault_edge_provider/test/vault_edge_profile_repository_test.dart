@@ -5,6 +5,7 @@ import 'package:affinidi_tdk_vault_edge_provider/affinidi_tdk_vault_edge_provide
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
+import 'fixtures/credential_fixtures.dart';
 import 'fixtures/file_fixtures.dart';
 import 'fixtures/profile_fixtures.dart';
 import 'fixtures/wallet_fixtures.dart';
@@ -369,6 +370,12 @@ void main() {
           profile.accountIndex,
         );
         expect(await vaultStore.getAccountIndex(), profile.accountIndex);
+
+        mockRepository.listProfilesReturnValue = [profile];
+        await sut.rollbackImport();
+
+        expect(mockRepository.lastCalledDeletedProfileId, isNull);
+        expect(await vaultStore.getAccountIndex(), profile.accountIndex);
       });
 
       test(
@@ -440,6 +447,95 @@ void main() {
           await sut.rollbackImport();
 
           expect(await vaultStore.getAccountIndex(), 1);
+          expect(mockRepository.lastCalledDeletedProfileId, profile.id);
+        },
+      );
+
+      test(
+        'it rolls back an imported file when credential import fails',
+        () async {
+          final (profile, did) = await profileAndDid();
+          mockRepository.listProfilesReturnValue = [];
+          var folderReadCount = 0;
+          when(
+            () => mockFileRepository.getFolder(
+              folderId: any(named: 'folderId'),
+              limit: any(named: 'limit'),
+              exclusiveStartItemId: any(named: 'exclusiveStartItemId'),
+            ),
+          ).thenAnswer((_) async {
+            folderReadCount++;
+            return PaginatedList(
+              items: folderReadCount == 2
+                  ? [FileFixtures.createMockFileData(id: 'restored-file')]
+                  : [],
+              lastEvaluatedItemId: null,
+            );
+          });
+          when(
+            () => mockCredentialRepository.saveCredentialData(
+              profileId: any(named: 'profileId'),
+              credentialId: any(named: 'credentialId'),
+              credentialName: any(named: 'credentialName'),
+              credentialContent: any(named: 'credentialContent'),
+              cancelToken: any(named: 'cancelToken'),
+            ),
+          ).thenThrow(
+            TdkException(
+              message: 'late credential import failure',
+              code: 'invalid_backup_format',
+            ),
+          );
+
+          await expectLater(
+            sut.import({
+              'schemaVersion': '1.0.0',
+              'profiles': [
+                {
+                  'id': profile.id,
+                  'accountIndex': profile.accountIndex,
+                  'name': profile.name,
+                  'did': did,
+                  'description': profile.description,
+                  'fileStorages': {
+                    'sut': {
+                      'schemaVersion': '1.0.0',
+                      'items': [
+                        {
+                          'id': 'source-file',
+                          'name': 'restored.txt',
+                          'parentId': null,
+                          'type': 'file',
+                          'content': 'AQID',
+                        },
+                      ],
+                    },
+                  },
+                  'credentialStorages': {
+                    'sut': {
+                      'schemaVersion': '1.0.0',
+                      'credentials': [
+                        {
+                          'id': 'credential-1',
+                          'verifiableCredential':
+                              CredentialFixtures.universityDegreeCredentialJson,
+                        },
+                      ],
+                    },
+                  },
+                  'sharedStorages': <String, dynamic>{},
+                },
+              ],
+            }),
+            throwsA(isA<TdkException>()),
+          );
+
+          mockRepository.listProfilesReturnValue = [profile];
+          await sut.rollbackImport();
+
+          verify(
+            () => mockFileRepository.deleteFile(fileId: 'restored-file'),
+          ).called(1);
           expect(mockRepository.lastCalledDeletedProfileId, profile.id);
         },
       );

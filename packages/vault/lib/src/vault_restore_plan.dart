@@ -118,6 +118,7 @@ class VaultRestorePlan {
   final Map<String, ({Restorable restorable, Map<String, dynamic> payload})>
   _operations = {};
   final Map<String, Restorable> _attemptedImports = {};
+  final Set<String> _completedImports = {};
 
   void _add(
     String target,
@@ -133,6 +134,7 @@ class VaultRestorePlan {
       for (final entry in _operations.entries) {
         _attemptedImports[entry.key] = entry.value.restorable;
         await entry.value.restorable.import(entry.value.payload);
+        _completedImports.add(entry.key);
       }
       return null;
     } catch (error, stackTrace) {
@@ -150,7 +152,11 @@ class VaultRestorePlan {
     final rollbackErrors = <String>[];
     for (final entry in _attemptedImports.entries.toList().reversed) {
       try {
-        await entry.value.rollbackImport();
+        if (_completedImports.contains(entry.key)) {
+          await entry.value.clearAllData();
+        } else {
+          await entry.value.rollbackImport();
+        }
       } catch (_) {
         rollbackErrors.add(entry.key);
       }

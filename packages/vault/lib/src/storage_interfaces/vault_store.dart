@@ -108,6 +108,7 @@ abstract class VaultStore implements Restorable {
       await setContentKey(parsed.contentKey!);
     }
     await setAccountIndex(parsed.accountIndex);
+    _importPendingRollback = false;
   }
 
   ({Uint8List seed, Uint8List? contentKey, int accountIndex}) _parseImportData(

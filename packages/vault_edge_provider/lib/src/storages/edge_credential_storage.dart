@@ -229,6 +229,7 @@ class EdgeCredentialStorage implements CredentialStorage, Restorable {
             verifiableCredential: credential,
           );
         }
+        _importPendingRollback = false;
       });
 
   @override
