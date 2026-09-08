@@ -23,6 +23,7 @@ part 'wallet_dto.g.dart';
 /// * [keys]
 /// * [createdAt]
 /// * [modifiedAt]
+/// * [version] - The version of the wallet
 @BuiltValue()
 abstract class WalletDto implements Built<WalletDto, WalletDtoBuilder> {
   /// id of the wallet in uuidV4 format
@@ -57,6 +58,10 @@ abstract class WalletDto implements Built<WalletDto, WalletDtoBuilder> {
 
   @BuiltValueField(wireName: r'modifiedAt')
   String? get modifiedAt;
+
+  /// The version of the wallet
+  @BuiltValueField(wireName: r'version')
+  int? get version;
 
   WalletDto._();
 
@@ -144,6 +149,13 @@ class _$WalletDtoSerializer implements PrimitiveSerializer<WalletDto> {
       yield serializers.serialize(
         object.modifiedAt,
         specifiedType: const FullType(String),
+      );
+    }
+    if (object.version != null) {
+      yield r'version';
+      yield serializers.serialize(
+        object.version,
+        specifiedType: const FullType(int),
       );
     }
   }
@@ -255,6 +267,12 @@ class _$WalletDtoSerializer implements PrimitiveSerializer<WalletDto> {
                   )
                   as String;
           result.modifiedAt = valueDes;
+          break;
+        case r'version':
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
+          result.version = valueDes;
           break;
         default:
           unhandled.add(key);
