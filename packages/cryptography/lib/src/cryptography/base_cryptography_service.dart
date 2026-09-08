@@ -61,23 +61,6 @@ class BaseCryptographyService implements CryptographyServiceInterface {
   }
 
   @override
-  @Deprecated(
-    'Use pbkdf2FromBytes with a caller-owned, zeroable byte buffer. '
-    'String passwords cannot be securely wiped from memory.',
-  )
-  Future<List<int>> Pbkdf2({
-    required String password,
-    required List<int> nonce,
-  }) async {
-    final passwordBytes = Uint8List.fromList(utf8.encode(password));
-    try {
-      return await pbkdf2FromBytes(passwordBytes: passwordBytes, nonce: nonce);
-    } finally {
-      passwordBytes.fillRange(0, passwordBytes.length, 0);
-    }
-  }
-
-  @override
   Future<List<int>> pbkdf2FromBytes({
     required Uint8List passwordBytes,
     required List<int> nonce,

@@ -88,21 +88,6 @@ class CryptographyService implements CryptographyServiceInterface {
     required String data,
   }) => _implementation.Aes256EncryptStringToHex(key: key, data: data);
 
-  /// Derives a key using PBKDF2 from an immutable password string.
-  ///
-  /// [password] - The password to derive the key from.
-  ///
-  /// [nonce] - The nonce to use in the derivation.
-  @override
-  @Deprecated(
-    'Use pbkdf2FromBytes with a caller-owned, zeroable byte buffer. '
-    'String passwords cannot be securely wiped from memory.',
-  )
-  Future<List<int>> Pbkdf2({
-    required String password,
-    required List<int> nonce,
-  }) => _implementation.Pbkdf2(password: password, nonce: nonce);
-
   /// Derives a key using PBKDF2 from mutable password bytes.
   ///
   /// The caller retains ownership of [passwordBytes] and should overwrite it
