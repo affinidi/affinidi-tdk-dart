@@ -17,6 +17,7 @@ Name | Type | Description | Notes
 **keys** | [**BuiltList&lt;WalletDtoKeysInner&gt;**](WalletDtoKeysInner.md) |  | [optional] 
 **createdAt** | **String** |  | [optional] 
 **modifiedAt** | **String** |  | [optional] 
+**version** | **int** | The version of the wallet | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
