@@ -1,3 +1,9 @@
+## 4.0.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **FEAT**: backup restore (#226).
+
 - BREAKING CHANGE: `EdgeProfileRepositoryInterface.createProfile(...)` adds
 	the optional named `id` parameter. External implementations and test doubles
 	must add `String? id` to their override so restore can preserve the original

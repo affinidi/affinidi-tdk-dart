@@ -1,3 +1,11 @@
+## 2.0.0
+
+> Note: This release has breaking changes.
+
+ - **FIX**: use numeric dev version for vault iota (#240).
+ - **FEAT**: add affinidi_tdk_vault_iota package (#102).
+ - **BREAKING** **FEAT**: backup restore (#226).
+
 ## 1.0.0
 - chore: Promote vault_iota to a stable release
 

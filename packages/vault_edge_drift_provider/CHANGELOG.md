@@ -1,3 +1,9 @@
+## 4.0.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **FEAT**: backup restore (#226).
+
 - BREAKING CHANGE: `EdgeDriftProfileRepository.createProfile(...)` adds the
 	optional named `id` parameter to implement the updated
 	`EdgeProfileRepositoryInterface` contract. External subclasses that override

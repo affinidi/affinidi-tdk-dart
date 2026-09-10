@@ -1,3 +1,10 @@
+## 4.0.0
+
+> Note: This release has breaking changes.
+
+ - **FEAT**: add affinidi_tdk_vault_iota package (#102).
+ - **BREAKING** **FEAT**: backup restore (#226).
+
 - BREAKING CHANGE: Replace the String-based `Pbkdf2(...)` API with
     `pbkdf2FromBytes(...)`, which accepts a caller-owned `Uint8List
     passwordBytes` and a `List<int> nonce`. External implementations must add

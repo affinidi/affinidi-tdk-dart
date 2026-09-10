@@ -1,3 +1,11 @@
+## 3.0.0
+
+> Note: This release has breaking changes.
+
+ - **FIX**: use numeric dev version for vault iota (#240).
+ - **FEAT**: add affinidi_tdk_vault_iota package (#102).
+ - **BREAKING** **FEAT**: backup restore (#226).
+
 - Implement consent-record deletion through
 	`FlutterSecureConsentStorage.deleteByHash(...)`.
 - Add consent history backup and restore to `FlutterSecureConsentStorage`,

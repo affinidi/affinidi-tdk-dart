@@ -1,3 +1,9 @@
+## 4.0.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **FEAT**: backup restore (#226).
+
 ## 3.0.1
 
  - Update a dependency to the latest release.

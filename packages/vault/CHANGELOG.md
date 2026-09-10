@@ -1,3 +1,9 @@
+## 4.0.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **FEAT**: backup restore (#226).
+
 - BREAKING CHANGE: `VaultStore` now implements `Restorable`. External
 	classes declared with `implements VaultStore` must implement `export`,
 	`validateImport`, `isEmpty`, `clearAllData`, `import`, and `rollbackImport`.

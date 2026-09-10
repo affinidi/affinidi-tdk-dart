@@ -7,7 +7,7 @@ dev_dependencies:
   affinidi_tdk_consumer_auth_provider: ^5.0.2
   affinidi_tdk_credential_issuance_client: ^2.0.0
   affinidi_tdk_credential_verification_client: ^2.0.0
-  affinidi_tdk_cryptography: ^3.0.0
+  affinidi_tdk_cryptography: ^4.0.0
   affinidi_tdk_didcomm_mediator_client: ^2.0.3
   affinidi_tdk_iam_client: ^2.0.0
   affinidi_tdk_iota_client: ^2.0.0
