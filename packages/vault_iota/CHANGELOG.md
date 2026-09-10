@@ -1,4 +1,4 @@
-## 1.0.0
+## 1.0.0-dev.1
 
 - BREAKING CHANGE: `ConsentStorage` adds `deleteByHash(...)`. External
 	implementations and test doubles must implement the method and return whether
