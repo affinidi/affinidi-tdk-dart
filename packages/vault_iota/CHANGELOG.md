@@ -1,3 +1,6 @@
+## 1.0.0
+- chore: Promote vault_iota to a stable release
+
 ## 1.0.0-dev.1
 
 - BREAKING CHANGE: `ConsentStorage` adds `deleteByHash(...)`. External
