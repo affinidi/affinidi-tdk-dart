@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 
 Future<void> main() async {
@@ -7,12 +9,17 @@ Future<void> main() async {
   const password = 'password';
   const salt = 'fixed_salt';
   const dataToEncrypt = 'Hello, Affinidi!';
+  final passwordBytes = Uint8List.fromList(utf8.encode(password));
 
-  // Derive encryption key using PBKDF2
-  final encryptionKey = await cryptographyService.Pbkdf2(
-    password: password,
-    nonce: utf8.encode(salt),
-  );
+  late final List<int> encryptionKey;
+  try {
+    encryptionKey = await cryptographyService.pbkdf2FromBytes(
+      passwordBytes: passwordBytes,
+      nonce: utf8.encode(salt),
+    );
+  } finally {
+    passwordBytes.fillRange(0, passwordBytes.length, 0);
+  }
 
   // Encrypt the data
   final encryptedData = await cryptographyService.Aes256EncryptStringToHex(

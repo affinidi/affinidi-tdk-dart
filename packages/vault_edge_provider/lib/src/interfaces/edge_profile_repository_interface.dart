@@ -7,11 +7,15 @@ abstract interface class EdgeProfileRepositoryInterface {
   /// Retrieves list of local profiles
   Future<List<EdgeProfile>> listProfiles({VaultCancelToken? cancelToken});
 
-  /// Creates a new local profile
+  /// Creates a new local profile.
+  ///
+  /// When [id] is provided it is used as the profile identifier, so a profile
+  /// can be restored with its original id; otherwise a new id is generated.
   Future<String> createProfile({
     required String name,
     String? description,
     required int accountIndex,
+    String? id,
     VaultCancelToken? cancelToken,
   });
 

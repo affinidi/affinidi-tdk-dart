@@ -16,9 +16,12 @@ abstract interface class CryptographyServiceInterface {
   /// Generates a list of random bytes of the given length.
   List<int> getRandomBytes(int length);
 
-  /// Derives a key using PBKDF2 algorithm.
-  Future<List<int>> Pbkdf2({
-    required String password,
+  /// Derives a key using PBKDF2 from mutable password bytes.
+  ///
+  /// The caller retains ownership of [passwordBytes] and should overwrite it
+  /// immediately after this operation completes.
+  Future<List<int>> pbkdf2FromBytes({
+    required Uint8List passwordBytes,
     required List<int> nonce,
   });
 

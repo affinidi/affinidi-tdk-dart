@@ -1,3 +1,10 @@
+- BREAKING CHANGE: `EdgeDriftProfileRepository.createProfile(...)` adds the
+	optional named `id` parameter to implement the updated
+	`EdgeProfileRepositoryInterface` contract. External subclasses that override
+	`createProfile(...)` must add `String? id` to their override. Existing direct
+	callers remain compatible because the parameter is optional.
+- Support restoring Drift-backed profiles with their original identifiers.
+
 ## 3.0.2
 
  - **FIX**: Remove dependency on flutter_test (#182).

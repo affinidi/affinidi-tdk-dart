@@ -36,18 +36,26 @@ dart pub get
 Here is an example of how to use the cryptographic utilities:
 
 ```dart
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:affinidi_tdk_cryptography/affinidi_tdk_cryptography.dart';
 
-void main() {
-  const password = 'password';
+Future<void> main() async {
   const salt = 'fixed_salt';
 
   // Encryption
   final cryptographyService = CryptographyService();
-  final passwordEncryptionKey = await cryptographyService.Pbkdf2(
-    password: password,
-    nonce: utf8.encode(salt),
-  );
+  final Uint8List passwordBytes = readPasswordBytes();
+  late final List<int> passwordEncryptionKey;
+  try {
+    passwordEncryptionKey = await cryptographyService.pbkdf2FromBytes(
+      passwordBytes: passwordBytes,
+      nonce: utf8.encode(salt),
+    );
+  } finally {
+    passwordBytes.fillRange(0, passwordBytes.length, 0);
+  }
   final encryptionKey = cryptographyService.getRandomBytes(32);
   final encryptedPassword = await cryptographyService.Aes256Encrypt(
     key: encryptionKey,
@@ -57,12 +65,12 @@ void main() {
   ...
 
   // Decryption
-  final passwordBytes = await cryptographyService.Aes256Decrypt(
+  final decryptedPasswordBytes = await cryptographyService.Aes256Decrypt(
     encryptedData: encryptedPassword,
     key: encryptionKey,
   );
-  if (passwordBytes == null) {
-    throw Exception('Failed to decrypt passwordBytes');
+  if (decryptedPasswordBytes == null) {
+    throw Exception('Failed to decrypt password');
   }
 }
 ```

@@ -188,10 +188,11 @@ lookup can never silently miss due to a mismatched, caller-computed hash.
 #### Bringing your own storage backend
 
 Implement `ConsentStorage` with any persistence technology you prefer
-(Drift, Hive, SQLite, a remote API, etc.):
+(Drift, Hive, SQLite, a remote API, etc.). If your backend also supports
+enumerating the full consent history, implement `EnumerableConsentStorage`:
 
 ```dart
-class MyConsentStore implements ConsentStorage {
+class MyConsentStore implements EnumerableConsentStorage {
   @override
   Future<void> saveOrUpdate(IotaConsentRecord record) async {
     // upsert by record.hash in your database
@@ -206,6 +207,16 @@ class MyConsentStore implements ConsentStorage {
   Future<List<IotaConsentRecord>> findAllByRequestHash(String requestHash) async {
     // return all matching records, or an empty list
   }
+
+  @override
+  Future<List<IotaConsentRecord>> listAll() async {
+    // return every stored record, or an empty list
+  }
+
+  @override
+  Future<bool> deleteByHash(String hash) async {
+    // delete the record matching hash; return whether one existed
+  }
 }
 
 final consentService = IotaConsentRecordService(
@@ -214,6 +225,19 @@ final consentService = IotaConsentRecordService(
   shareResponseService: responseService,
 );
 ```
+
+#### Deleting a consent record
+
+Call `deleteConsentRecord` when the user removes an entry from their consent
+history (e.g. from a "Manage consent" screen):
+
+```dart
+await consentService.deleteConsentRecord(hash: record.hash);
+```
+
+Throws a `TdkException` with code `consent_record_not_found` if `hash` does
+not match any stored record, or `failed_to_delete_consent_record` if the
+underlying storage operation fails.
 
 ## Security considerations
 
@@ -294,6 +318,8 @@ All errors are thrown as `TdkException` with one of the following codes:
 | `failed_to_fetch_verifier_metadata` | The verifier's client metadata could not be fetched or parsed. |
 | `failed_to_persist_consent_record` | Persisting a consent record to the `ConsentStorage` backend failed. |
 | `failed_to_read_consent_record` | Reading a consent record from the `ConsentStorage` backend failed. |
+| `failed_to_delete_consent_record` | Deleting a consent record from the `ConsentStorage` backend failed. |
+| `consent_record_not_found` | `IotaConsentRecordService.deleteConsentRecord` was called with a hash that does not match any stored record. |
 
 ## Support & feedback
 
@@ -304,10 +330,10 @@ If you face any issues or have suggestions, please don't hesitate to contact us 
 If you have a technical issue with the package's codebase, you can also create an issue directly in GitHub.
 
 1. Ensure the bug was not already reported by searching on GitHub under
-   [Issues](https://github.com/affinidi/affinidi-tdk/issues).
+   [Issues](https://github.com/affinidi/affinidi-tdk-dart/issues).
 
 2. If you're unable to find an open issue addressing the problem,
-   [open a new one](https://github.com/affinidi/affinidi-tdk/issues/new).
+   [open a new one](https://github.com/affinidi/affinidi-tdk-dart/issues/new).
    Be sure to include a **title and clear description**, as much relevant information as possible,
    and a **code sample** or an **executable test case** demonstrating the expected behaviour that is not occurring.
 
@@ -315,4 +341,4 @@ If you have a technical issue with the package's codebase, you can also create a
 
 Want to contribute?
 
-Head over to our [CONTRIBUTING](https://github.com/affinidi/affinidi-tdk/blob/main/CONTRIBUTING.md) guidelines.
+Head over to our [CONTRIBUTING](https://github.com/affinidi/affinidi-tdk-dart/blob/main/CONTRIBUTING.md) guidelines.

@@ -20,12 +20,17 @@ class CryptographyService implements CryptographyServiceInterface {
   /// final cryptographyService = CryptographyService();
   /// final encryptionKey = cryptographyService.getRandomBytes(32);
   /// final nonce = utf8.encode('nonce');
-  /// final passphrase = 'your-passphrase';
+  /// final passphraseBytes = Uint8List.fromList(readPassphraseBytes());
   ///
-  /// final passphraseEncryptionKey = await cryptographyService.Pbkdf2(
-  ///   password: passphrase,
-  ///   nonce: nonce,
-  /// );
+  /// late final List<int> passphraseEncryptionKey;
+  /// try {
+  ///   passphraseEncryptionKey = await cryptographyService.pbkdf2FromBytes(
+  ///     passwordBytes: passphraseBytes,
+  ///     nonce: nonce,
+  ///   );
+  /// } finally {
+  ///   passphraseBytes.fillRange(0, passphraseBytes.length, 0);
+  /// }
   ///
   /// final encryptedKey = await cryptographyService.Aes256Encrypt(
   ///   key: passphraseEncryptionKey,
@@ -83,16 +88,18 @@ class CryptographyService implements CryptographyServiceInterface {
     required String data,
   }) => _implementation.Aes256EncryptStringToHex(key: key, data: data);
 
-  /// Derives a key using PBKDF2 algorithm.
+  /// Derives a key using PBKDF2 from mutable password bytes.
   ///
-  /// [password] - The password to derive the key from.
-  ///
-  /// [nonce] - The nonce to use in the derivation.
+  /// The caller retains ownership of [passwordBytes] and should overwrite it
+  /// immediately after this operation completes.
   @override
-  Future<List<int>> Pbkdf2({
-    required String password,
+  Future<List<int>> pbkdf2FromBytes({
+    required Uint8List passwordBytes,
     required List<int> nonce,
-  }) => _implementation.Pbkdf2(password: password, nonce: nonce);
+  }) => _implementation.pbkdf2FromBytes(
+    passwordBytes: passwordBytes,
+    nonce: nonce,
+  );
 
   /// Creates a hash from the given source string.
   ///

@@ -1,3 +1,11 @@
+- BREAKING CHANGE: `EdgeProfileRepositoryInterface.createProfile(...)` adds
+	the optional named `id` parameter. External implementations and test doubles
+	must add `String? id` to their override so restore can preserve the original
+	profile identifier. Existing direct callers remain compatible because the
+	parameter is optional.
+- Add durable backup and restore for local profiles, credentials, folders, and
+	files, including schema validation and rollback of partially imported data.
+
 ## 3.0.1
 
  - Update a dependency to the latest release.

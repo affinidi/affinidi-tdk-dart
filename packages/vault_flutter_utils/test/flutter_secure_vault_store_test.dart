@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:affinidi_tdk_vault/affinidi_tdk_vault.dart' show TdkException;
 import 'package:affinidi_tdk_vault_flutter_utils/storages/flutter_secure_vault_store.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -147,7 +148,7 @@ void main() {
   });
 
   group('When clearing vault data', () {
-    test('it removes accountIndex and seed', () async {
+    test('it removes vault data through clear', () async {
       when(
         () => mockStorage.delete(key: any(named: 'key')),
       ).thenAnswer((_) async {});
@@ -158,6 +159,109 @@ void main() {
       ).called(1);
       verify(() => mockStorage.delete(key: '${vaultId}_seed')).called(1);
       verify(() => mockStorage.delete(key: '${vaultId}_contentKey')).called(1);
+    });
+
+    test('it removes vault data through clearAllData', () async {
+      when(
+        () => mockStorage.delete(key: any(named: 'key')),
+      ).thenAnswer((_) async {});
+
+      await vaultStore.clearAllData();
+      verify(
+        () => mockStorage.delete(key: '${vaultId}_accountIndex'),
+      ).called(1);
+      verify(() => mockStorage.delete(key: '${vaultId}_seed')).called(1);
+      verify(() => mockStorage.delete(key: '${vaultId}_contentKey')).called(1);
+    });
+  });
+
+  group('When backing up vault data', () {
+    final seed = Uint8List.fromList([1, 2, 3, 4]);
+    final contentKey = Uint8List.fromList([5, 6, 7, 8]);
+
+    test('it exports secure storage state', () async {
+      when(
+        () => mockStorage.read(key: '${vaultId}_seed'),
+      ).thenAnswer((_) async => base64Encode(seed));
+      when(
+        () => mockStorage.read(key: '${vaultId}_contentKey'),
+      ).thenAnswer((_) async => base64Encode(contentKey));
+      when(
+        () => mockStorage.read(key: '${vaultId}_accountIndex'),
+      ).thenAnswer((_) async => '7');
+
+      expect(await vaultStore.export(), {
+        'schemaVersion': '1.0.0',
+        'seed': base64Encode(seed),
+        'contentKey': base64Encode(contentKey),
+        'accountIndex': 7,
+      });
+    });
+
+    test('it imports secure storage state into an empty destination', () async {
+      when(
+        () => mockStorage.read(key: any(named: 'key')),
+      ).thenAnswer((_) async => null);
+      when(
+        () => mockStorage.write(
+          key: any(named: 'key'),
+          value: any(named: 'value'),
+        ),
+      ).thenAnswer((_) async {});
+
+      await vaultStore.import({
+        'schemaVersion': '1.0.0',
+        'seed': base64Encode(seed),
+        'contentKey': base64Encode(contentKey),
+        'accountIndex': 7,
+      });
+
+      verifyInOrder([
+        () => mockStorage.write(
+          key: '${vaultId}_seed',
+          value: base64Encode(seed),
+        ),
+        () => mockStorage.write(
+          key: '${vaultId}_contentKey',
+          value: base64Encode(contentKey),
+        ),
+        () => mockStorage.write(key: '${vaultId}_accountIndex', value: '7'),
+      ]);
+      verifyNever(() => mockStorage.delete(key: any(named: 'key')));
+    });
+
+    test('it rejects a non-empty secure storage destination', () async {
+      when(
+        () => mockStorage.read(key: '${vaultId}_seed'),
+      ).thenAnswer((_) async => base64Encode(seed));
+      when(
+        () => mockStorage.read(key: '${vaultId}_contentKey'),
+      ).thenAnswer((_) async => null);
+      when(
+        () => mockStorage.read(key: '${vaultId}_accountIndex'),
+      ).thenAnswer((_) async => '0');
+
+      await expectLater(
+        vaultStore.import({
+          'schemaVersion': '1.0.0',
+          'seed': base64Encode(seed),
+          'accountIndex': 0,
+        }),
+        throwsA(
+          isA<TdkException>().having(
+            (error) => error.code,
+            'code',
+            'restore_destination_not_empty',
+          ),
+        ),
+      );
+
+      verifyNever(
+        () => mockStorage.write(
+          key: any(named: 'key'),
+          value: any(named: 'value'),
+        ),
+      );
     });
   });
 }

@@ -39,6 +39,16 @@ abstract interface class IotaConsentRecordServiceInterface {
     bool isConsentManagementEnabled = false,
   });
 
+  /// Deletes the consent record identified by [hash].
+  ///
+  /// Parameters:
+  /// * [hash] - The `IotaConsentRecord.hash` of the record to delete.
+  ///
+  /// Throws `TdkException` with code `consent_record_not_found` if no record
+  /// matches [hash], or `failed_to_delete_consent_record` if the underlying
+  /// storage operation fails.
+  Future<void> deleteConsentRecord({required String hash});
+
   /// Checks whether a previous consent record authorises this share request,
   /// and if so, submits the VP automatically.
   ///
