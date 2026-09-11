@@ -9,7 +9,7 @@ environment:
 resolution: workspace
 dependencies:
   affinidi_tdk_vault: ^4.0.0
-  affinidi_tdk_vault_iota: ^2.0.0
+  affinidi_tdk_vault_iota: ^1.0.0
   flutter:
     sdk: flutter
   flutter_secure_storage: ^10.0.0
