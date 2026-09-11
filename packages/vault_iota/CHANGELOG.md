@@ -1,3 +1,7 @@
+## 1.0.1
+
+ - **FIX**: republish for cryptography 4.0.0 compatibility (#245).
+
 ## 1.0.0
 - chore: Promote vault_iota to a stable release
 
