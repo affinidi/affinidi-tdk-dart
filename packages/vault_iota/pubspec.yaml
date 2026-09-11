@@ -10,7 +10,7 @@ environment:
 resolution: workspace
 
 dependencies:
-  affinidi_tdk_common: ^2.0.0
+  affinidi_tdk_common: ^2.2.0
   affinidi_tdk_cryptography: ^4.0.0
   dcql: ^1.2.0
   dio: ^5.9.2
