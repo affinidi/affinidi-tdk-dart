@@ -65,7 +65,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **listIssuanceDataRecords**
-> ListIssuanceRecordResponse listIssuanceDataRecords(projectId, configurationId, limit, exclusiveStartKey)
+> ListIssuanceRecordResponse listIssuanceDataRecords(projectId, configurationId, issuanceId, limit, exclusiveStartKey)
 
 List records
 
@@ -82,11 +82,12 @@ import 'package:affinidi_tdk_credential_issuance_client/api.dart';
 final api = AffinidiTdkCredentialIssuanceClient().getDefaultApi();
 final String projectId = projectId_example; // String | Affinidi project id
 final String configurationId = configurationId_example; // String | The id of the issuance configuration
+final String issuanceId = issuanceId_example; // String | Optional filter to retrieve records for a specific issuance ID
 final int limit = 56; // int | Maximum number of records to fetch in a list
 final String exclusiveStartKey = exclusiveStartKey_example; // String | exclusiveStartKey for retrieving the next batch of data.
 
 try {
-    final response = api.listIssuanceDataRecords(projectId, configurationId, limit, exclusiveStartKey);
+    final response = api.listIssuanceDataRecords(projectId, configurationId, issuanceId, limit, exclusiveStartKey);
     print(response);
 } catch on DioException (e) {
     print('Exception when calling DefaultApi->listIssuanceDataRecords: $e\n');
@@ -99,6 +100,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **String**| Affinidi project id | 
  **configurationId** | **String**| The id of the issuance configuration | 
+ **issuanceId** | **String**| Optional filter to retrieve records for a specific issuance ID | [optional] 
  **limit** | **int**| Maximum number of records to fetch in a list | [optional] [default to 10]
  **exclusiveStartKey** | **String**| exclusiveStartKey for retrieving the next batch of data. | [optional] 
 
