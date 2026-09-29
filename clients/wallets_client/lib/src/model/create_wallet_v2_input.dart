@@ -42,7 +42,7 @@ abstract class CreateWalletV2Input
   /// algorithm to generate key for the wallet
   @BuiltValueField(wireName: r'algorithm')
   CreateWalletV2InputAlgorithmEnum? get algorithm;
-  // enum algorithmEnum {  secp256k1,  ed25519,  p256,  };
+  // enum algorithmEnum {  secp256k1,  ed25519,  p256,  mldsa44,  };
 
   /// Service endpoints to include in DID document
   @BuiltValueField(wireName: r'services')
@@ -286,6 +286,11 @@ class CreateWalletV2InputAlgorithmEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'p256')
   static const CreateWalletV2InputAlgorithmEnum p256 =
       _$createWalletV2InputAlgorithmEnum_p256;
+
+  /// algorithm to generate key for the wallet
+  @BuiltValueEnumConst(wireName: r'mldsa44')
+  static const CreateWalletV2InputAlgorithmEnum mldsa44 =
+      _$createWalletV2InputAlgorithmEnum_mldsa44;
 
   static Serializer<CreateWalletV2InputAlgorithmEnum> get serializer =>
       _$createWalletV2InputAlgorithmEnumSerializer;
