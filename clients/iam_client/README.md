@@ -50,13 +50,13 @@ Please follow the [installation procedure](#installation--usage) and then run th
 import 'package:affinidi_tdk_iam_client/affinidi_tdk_iam_client.dart';
 
 
-final api = AffinidiTdkIamClient().getAuthzApi();
-final String granteeDid = granteeDid_example; // String | 
+final api = AffinidiTdkIamClient().getAccountsApi();
 
 try {
-    api.deleteAccessVfs(granteeDid);
+    final response = await api.listAccountPasskeys();
+    print(response);
 } catch on DioException (e) {
-    print("Exception when calling AuthzApi->deleteAccessVfs: $e\n");
+    print("Exception when calling AccountsApi->listAccountPasskeys: $e\n");
 }
 
 ```
@@ -67,6 +67,8 @@ All URIs are relative to *https://apse1.api.affinidi.io/iam*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+[*AccountsApi*](doc/AccountsApi.md) | [**listAccountPasskeys**](doc/AccountsApi.md#listaccountpasskeys) | **GET** /v1/accounts/passkeys | 
+[*AccountsApi*](doc/AccountsApi.md) | [**listAccountProviders**](doc/AccountsApi.md#listaccountproviders) | **GET** /v1/accounts/providers | 
 [*AuthzApi*](doc/AuthzApi.md) | [**deleteAccessVfs**](doc/AuthzApi.md#deleteaccessvfs) | **DELETE** /v1/authz/vfs/access/{granteeDid} | delete access of granteeDid
 [*AuthzApi*](doc/AuthzApi.md) | [**grantAccessVfs**](doc/AuthzApi.md#grantaccessvfs) | **POST** /v1/authz/vfs/access | Grant access to the virtual file system
 [*AuthzApi*](doc/AuthzApi.md) | [**updateAccessVfs**](doc/AuthzApi.md#updateaccessvfs) | **PUT** /v1/authz/vfs/access/{granteeDid} | Update access of granteeDid
@@ -114,11 +116,15 @@ Class | Method | HTTP request | Description
  - [CreateTokenInput](doc/CreateTokenInput.md)
  - [GrantAccessInput](doc/GrantAccessInput.md)
  - [GrantAccessOutput](doc/GrantAccessOutput.md)
+ - [IdentityMappingError](doc/IdentityMappingError.md)
  - [InvalidDIDError](doc/InvalidDIDError.md)
  - [InvalidParameterError](doc/InvalidParameterError.md)
  - [JsonWebKeyDto](doc/JsonWebKeyDto.md)
  - [JsonWebKeySetDto](doc/JsonWebKeySetDto.md)
+ - [MalformedUpstreamResponseError](doc/MalformedUpstreamResponseError.md)
  - [NotFoundError](doc/NotFoundError.md)
+ - [PasskeyDto](doc/PasskeyDto.md)
+ - [PasskeyList](doc/PasskeyList.md)
  - [PolicyDto](doc/PolicyDto.md)
  - [PolicyStatementDto](doc/PolicyStatementDto.md)
  - [PrincipalCannotBeDeletedError](doc/PrincipalCannotBeDeletedError.md)
@@ -127,6 +133,8 @@ Class | Method | HTTP request | Description
  - [ProjectList](doc/ProjectList.md)
  - [ProjectWithPolicyDto](doc/ProjectWithPolicyDto.md)
  - [ProjectWithPolicyList](doc/ProjectWithPolicyList.md)
+ - [ProviderDto](doc/ProviderDto.md)
+ - [ProviderList](doc/ProviderList.md)
  - [RightsEnum](doc/RightsEnum.md)
  - [TokenDto](doc/TokenDto.md)
  - [TokenList](doc/TokenList.md)
@@ -142,6 +150,7 @@ Class | Method | HTTP request | Description
  - [UpdateProjectInput](doc/UpdateProjectInput.md)
  - [UpdateTokenInput](doc/UpdateTokenInput.md)
  - [UpdateTokenPrivateKeyAuthenticationMethodDto](doc/UpdateTokenPrivateKeyAuthenticationMethodDto.md)
+ - [UpstreamUnavailableError](doc/UpstreamUnavailableError.md)
  - [UserDto](doc/UserDto.md)
  - [UserList](doc/UserList.md)
  - [WhoamiDto](doc/WhoamiDto.md)
