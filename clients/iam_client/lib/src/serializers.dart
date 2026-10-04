@@ -24,11 +24,15 @@ import 'package:affinidi_tdk_iam_client/src/model/create_project_scoped_token_ou
 import 'package:affinidi_tdk_iam_client/src/model/create_token_input.dart';
 import 'package:affinidi_tdk_iam_client/src/model/grant_access_input.dart';
 import 'package:affinidi_tdk_iam_client/src/model/grant_access_output.dart';
+import 'package:affinidi_tdk_iam_client/src/model/identity_mapping_error.dart';
 import 'package:affinidi_tdk_iam_client/src/model/invalid_did_error.dart';
 import 'package:affinidi_tdk_iam_client/src/model/invalid_parameter_error.dart';
 import 'package:affinidi_tdk_iam_client/src/model/json_web_key_dto.dart';
 import 'package:affinidi_tdk_iam_client/src/model/json_web_key_set_dto.dart';
+import 'package:affinidi_tdk_iam_client/src/model/malformed_upstream_response_error.dart';
 import 'package:affinidi_tdk_iam_client/src/model/not_found_error.dart';
+import 'package:affinidi_tdk_iam_client/src/model/passkey_dto.dart';
+import 'package:affinidi_tdk_iam_client/src/model/passkey_list.dart';
 import 'package:affinidi_tdk_iam_client/src/model/policy_dto.dart';
 import 'package:affinidi_tdk_iam_client/src/model/policy_statement_dto.dart';
 import 'package:affinidi_tdk_iam_client/src/model/principal_cannot_be_deleted_error.dart';
@@ -37,6 +41,8 @@ import 'package:affinidi_tdk_iam_client/src/model/project_dto.dart';
 import 'package:affinidi_tdk_iam_client/src/model/project_list.dart';
 import 'package:affinidi_tdk_iam_client/src/model/project_with_policy_dto.dart';
 import 'package:affinidi_tdk_iam_client/src/model/project_with_policy_list.dart';
+import 'package:affinidi_tdk_iam_client/src/model/provider_dto.dart';
+import 'package:affinidi_tdk_iam_client/src/model/provider_list.dart';
 import 'package:affinidi_tdk_iam_client/src/model/rights_enum.dart';
 import 'package:affinidi_tdk_iam_client/src/model/token_dto.dart';
 import 'package:affinidi_tdk_iam_client/src/model/token_list.dart';
@@ -52,6 +58,7 @@ import 'package:affinidi_tdk_iam_client/src/model/update_access_output.dart';
 import 'package:affinidi_tdk_iam_client/src/model/update_project_input.dart';
 import 'package:affinidi_tdk_iam_client/src/model/update_token_input.dart';
 import 'package:affinidi_tdk_iam_client/src/model/update_token_private_key_authentication_method_dto.dart';
+import 'package:affinidi_tdk_iam_client/src/model/upstream_unavailable_error.dart';
 import 'package:affinidi_tdk_iam_client/src/model/user_dto.dart';
 import 'package:affinidi_tdk_iam_client/src/model/user_list.dart';
 import 'package:affinidi_tdk_iam_client/src/model/whoami_dto.dart';
@@ -69,11 +76,15 @@ part 'serializers.g.dart';
   CreateTokenInput,
   GrantAccessInput,
   GrantAccessOutput,
+  IdentityMappingError,
   InvalidDIDError,
   InvalidParameterError,
   JsonWebKeyDto,
   JsonWebKeySetDto,
+  MalformedUpstreamResponseError,
   NotFoundError,
+  PasskeyDto,
+  PasskeyList,
   PolicyDto,
   PolicyStatementDto,
   PrincipalCannotBeDeletedError,
@@ -82,6 +93,8 @@ part 'serializers.g.dart';
   ProjectList,
   ProjectWithPolicyDto,
   ProjectWithPolicyList,
+  ProviderDto,
+  ProviderList,
   RightsEnum,
   TokenDto,
   TokenList,
@@ -97,6 +110,7 @@ part 'serializers.g.dart';
   UpdateProjectInput,
   UpdateTokenInput,
   UpdateTokenPrivateKeyAuthenticationMethodDto,
+  UpstreamUnavailableError,
   UserDto,
   UserList,
   WhoamiDto,
