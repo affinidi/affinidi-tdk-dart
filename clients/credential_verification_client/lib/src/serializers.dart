@@ -42,11 +42,29 @@ part 'serializers.g.dart';
 Serializers serializers =
     (_$serializers.toBuilder()
           ..addBuilderFactory(
+            const FullType(BuiltList, [
+              FullType(BuiltMap, [FullType(String), FullType(JsonObject)]),
+            ]),
+            () => ListBuilder<BuiltMap<String, JsonObject>>(),
+          )
+          ..addBuilderFactory(
             const FullType(BuiltMap, [
               FullType(String),
               FullType.nullable(JsonObject),
             ]),
-            () => MapBuilder<String, JsonObject>(),
+            () => MapBuilder<String, JsonObject?>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(NotFoundErrorDetailsInner)]),
+            () => ListBuilder<NotFoundErrorDetailsInner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(JsonObject)]),
+            () => ListBuilder<JsonObject>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(String)]),
+            () => ListBuilder<String>(),
           )
           ..add(const OneOfSerializer())
           ..add(const AnyOfSerializer())
