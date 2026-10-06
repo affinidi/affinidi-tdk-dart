@@ -25,6 +25,8 @@ class _$WalletDto extends WalletDto {
   final String? createdAt;
   @override
   final String? modifiedAt;
+  @override
+  final int? version;
 
   factory _$WalletDto([void Function(WalletDtoBuilder)? updates]) =>
       (WalletDtoBuilder()..update(updates))._build();
@@ -39,6 +41,7 @@ class _$WalletDto extends WalletDto {
     this.keys,
     this.createdAt,
     this.modifiedAt,
+    this.version,
   }) : super._();
   @override
   WalletDto rebuild(void Function(WalletDtoBuilder) updates) =>
@@ -59,7 +62,8 @@ class _$WalletDto extends WalletDto {
         ari == other.ari &&
         keys == other.keys &&
         createdAt == other.createdAt &&
-        modifiedAt == other.modifiedAt;
+        modifiedAt == other.modifiedAt &&
+        version == other.version;
   }
 
   @override
@@ -74,6 +78,7 @@ class _$WalletDto extends WalletDto {
     _$hash = $jc(_$hash, keys.hashCode);
     _$hash = $jc(_$hash, createdAt.hashCode);
     _$hash = $jc(_$hash, modifiedAt.hashCode);
+    _$hash = $jc(_$hash, version.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -89,7 +94,8 @@ class _$WalletDto extends WalletDto {
           ..add('ari', ari)
           ..add('keys', keys)
           ..add('createdAt', createdAt)
-          ..add('modifiedAt', modifiedAt))
+          ..add('modifiedAt', modifiedAt)
+          ..add('version', version))
         .toString();
   }
 }
@@ -134,6 +140,10 @@ class WalletDtoBuilder implements Builder<WalletDto, WalletDtoBuilder> {
   String? get modifiedAt => _$this._modifiedAt;
   set modifiedAt(String? modifiedAt) => _$this._modifiedAt = modifiedAt;
 
+  int? _version;
+  int? get version => _$this._version;
+  set version(int? version) => _$this._version = version;
+
   WalletDtoBuilder() {
     WalletDto._defaults(this);
   }
@@ -150,6 +160,7 @@ class WalletDtoBuilder implements Builder<WalletDto, WalletDtoBuilder> {
       _keys = $v.keys?.toBuilder();
       _createdAt = $v.createdAt;
       _modifiedAt = $v.modifiedAt;
+      _version = $v.version;
       _$v = null;
     }
     return this;
@@ -183,6 +194,7 @@ class WalletDtoBuilder implements Builder<WalletDto, WalletDtoBuilder> {
             keys: _keys?.build(),
             createdAt: createdAt,
             modifiedAt: modifiedAt,
+            version: version,
           );
     } catch (_) {
       late String _$failedField;

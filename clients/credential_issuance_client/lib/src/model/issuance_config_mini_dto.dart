@@ -307,18 +307,14 @@ class _$IssuanceConfigMiniDtoSerializer
   }
 }
 
+/// String identifying the format of this Credential, i.e., jwt_vc_json-ld or ldp_vc. Depending on the format value, the object contains further elements defining the type
 class IssuanceConfigMiniDtoFormatEnum extends EnumClass {
-  /// String identifying the format of this Credential, i.e., jwt_vc_json-ld or ldp_vc. Depending on the format value, the object contains further elements defining the type
   @BuiltValueEnumConst(wireName: r'ldp_vc')
   static const IssuanceConfigMiniDtoFormatEnum ldpVc =
       _$issuanceConfigMiniDtoFormatEnum_ldpVc;
-
-  /// String identifying the format of this Credential, i.e., jwt_vc_json-ld or ldp_vc. Depending on the format value, the object contains further elements defining the type
   @BuiltValueEnumConst(wireName: r'jwt_vc_json-ld')
   static const IssuanceConfigMiniDtoFormatEnum jwtVcJsonLd =
       _$issuanceConfigMiniDtoFormatEnum_jwtVcJsonLd;
-
-  /// String identifying the format of this Credential, i.e., jwt_vc_json-ld or ldp_vc. Depending on the format value, the object contains further elements defining the type
   @BuiltValueEnumConst(wireName: r'sd_jwt_vc_json-ld')
   static const IssuanceConfigMiniDtoFormatEnum sdJwtVcJsonLd =
       _$issuanceConfigMiniDtoFormatEnum_sdJwtVcJsonLd;
