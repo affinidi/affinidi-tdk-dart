@@ -135,8 +135,8 @@ class _$CredentialProofSerializer
   }
 }
 
+/// String denoting the key proof type.
 class CredentialProofProofTypeEnum extends EnumClass {
-  /// String denoting the key proof type.
   @BuiltValueEnumConst(wireName: r'jwt')
   static const CredentialProofProofTypeEnum jwt =
       _$credentialProofProofTypeEnum_jwt;
