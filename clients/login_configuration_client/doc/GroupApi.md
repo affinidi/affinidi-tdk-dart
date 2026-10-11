@@ -38,7 +38,7 @@ final AddUserToGroupInput addUserToGroupInput = ; // AddUserToGroupInput | AddUs
 try {
     final response = api.addUserToGroup(groupName, addUserToGroupInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling GroupApi->addUserToGroup: $e\n');
 }
 ```
@@ -84,7 +84,7 @@ final CreateGroupInput createGroupInput = ; // CreateGroupInput | CreateGroup
 try {
     final response = api.createGroup(createGroupInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling GroupApi->createGroup: $e\n');
 }
 ```
@@ -128,7 +128,7 @@ final String groupName = groupName_example; // String |
 
 try {
     api.deleteGroup(groupName);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling GroupApi->deleteGroup: $e\n');
 }
 ```
@@ -173,7 +173,7 @@ final String groupName = groupName_example; // String |
 try {
     final response = api.getGroupById(groupName);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling GroupApi->getGroupById: $e\n');
 }
 ```
@@ -221,7 +221,7 @@ final String sortOrder = sortOrder_example; // String | sort response in specifi
 try {
     final response = api.listGroupUserMappings(groupName, limit, exclusiveStartKey, sortOrder);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling GroupApi->listGroupUserMappings: $e\n');
 }
 ```
@@ -268,7 +268,7 @@ final api = AffinidiTdkLoginConfigurationClient().getGroupApi();
 try {
     final response = api.listGroups();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling GroupApi->listGroups: $e\n');
 }
 ```
@@ -310,7 +310,7 @@ final RemoveUserFromGroupInput removeUserFromGroupInput = ; // RemoveUserFromGro
 
 try {
     api.removeUserFromGroup(groupName, removeUserFromGroupInput);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling GroupApi->removeUserFromGroup: $e\n');
 }
 ```
