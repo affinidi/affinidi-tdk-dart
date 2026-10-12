@@ -9,6 +9,10 @@ part of 'share_requirements_matcher_service.dart';
 /// - JSONPath: `$.type`, `$.issuer`, and any dot-notation field path
 /// - Filter: any valid JSON Schema (Draft 7) — `const`, `enum`, `pattern`,
 ///   `contains`, `minimum`, `maximum`, `format`, etc.
+/// - Issuer filters: to match both string and object (`{"id": ...}`) issuers,
+///   use the path list `$.issuer.id`, `$.issuer`, `$.vc.issuer.id`,
+///   `$.vc.issuer`. This evaluator accepts a match on any path, but other PEX
+///   engines need that order (see "Filtering by issuer" in the README).
 abstract final class PexEvaluator {
   /// Returns the VCs from [allVCs] that satisfy all `constraints.fields` in
   /// [inputDescriptor].

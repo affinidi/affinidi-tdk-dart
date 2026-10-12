@@ -239,6 +239,51 @@ Throws a `TdkException` with code `consent_record_not_found` if `hash` does
 not match any stored record, or `failed_to_delete_consent_record` if the
 underlying storage operation fails.
 
+## Filtering by issuer
+
+A W3C credential's `issuer` can be a string (`"issuer": "did:..."`) or an
+object (`"issuer": {"id": "did:..."}`). Credentials signed with the Dart `ssi`
+library use the object form. A `"type": "string"` filter on `$.issuer` alone
+does not match object-form issuers, so a verifier that filters by issuer should
+use one of the shapes below. Both match either issuer form.
+
+For PEX, use this field in the input descriptor's `constraints.fields`:
+
+```json
+{
+  "path": ["$.issuer.id", "$.issuer", "$.vc.issuer.id", "$.vc.issuer"],
+  "filter": { "type": "string", "const": "did:example:issuer" }
+}
+```
+
+Keep the paths in this order and keep `"type": "string"` in the filter:
+
+- Some PEX implementations, such as Sphereon PEX, evaluate only the first path
+  that resolves to a value. For an object-form issuer, `$.issuer` resolves to
+  the object, so `$.issuer.id` has to come before it.
+- Keep `$.issuer` in the list. When vault_iota routes identity verification
+  descriptors, it recognises an issuer filter only on `$.issuer`, `$.vc.issuer`
+  or `$.iss`, with `"type": "string"` and a `const` or `pattern`.
+- Without `"type": "string"`, a `pattern` filter is not applied to an object.
+  vault_iota tries every path, so `$.issuer` would then pass any object-form
+  issuer.
+
+For DCQL, add one claim per issuer form to the `ldp_vc` credential query and
+accept either through `claim_sets`. vault_iota reads the issuer in its object
+form whichever form the credential uses, so `iss_obj` is the claim that matches
+here and `["issuer"]` on its own matches nothing. `iss_str` covers DCQL
+engines that read the credential's JSON as written.
+
+```json
+{
+  "claims": [
+    { "id": "iss_str", "path": ["issuer"], "values": ["did:example:issuer"] },
+    { "id": "iss_obj", "path": ["issuer", "id"], "values": ["did:example:issuer"] }
+  ],
+  "claim_sets": [["iss_str"], ["iss_obj"]]
+}
+```
+
 ## Security considerations
 
 ### Replay attack protection
