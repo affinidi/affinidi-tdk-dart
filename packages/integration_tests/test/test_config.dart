@@ -133,15 +133,17 @@ class TestConfig {
       clientOptions: const AffinidiClientOptions(),
     );
 
-    final accessListAddMessage = AccessListAddMessage(
+    final accessListUpdateMessage = TrustTaskMessage(
       id: const Uuid().v4(),
-      from: ownDidDocument.id,
-      to: [mediatorClient.mediatorDidDocument.id],
-      theirDids: theirDids,
+      document: AccessListUpdateTask(
+        issuer: ownDidDocument.id,
+        mediatorDid: mediatorClient.mediatorDidDocument.id,
+        add: theirDids,
+      ),
       expiresTime: expiresTime,
     );
 
-    await mediatorClient.sendAclManagementMessage(accessListAddMessage);
+    await mediatorClient.sendTrustTask(accessListUpdateMessage);
   }
 
   Future<String> getDidKeyForPrivateKeyPath(String privateKeyPath) async {
