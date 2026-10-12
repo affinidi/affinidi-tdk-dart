@@ -185,23 +185,17 @@ class _$ServiceEndpointInputSerializer
   }
 }
 
+/// type of service endpoint
 class ServiceEndpointInputServiceTypeEnum extends EnumClass {
-  /// type of service endpoint
   @BuiltValueEnumConst(wireName: r'DIDCommMessaging')
   static const ServiceEndpointInputServiceTypeEnum dIDCommMessaging =
       _$serviceEndpointInputServiceTypeEnum_dIDCommMessaging;
-
-  /// type of service endpoint
   @BuiltValueEnumConst(wireName: r'LinkedDomains')
   static const ServiceEndpointInputServiceTypeEnum linkedDomains =
       _$serviceEndpointInputServiceTypeEnum_linkedDomains;
-
-  /// type of service endpoint
   @BuiltValueEnumConst(wireName: r'IdentityHub')
   static const ServiceEndpointInputServiceTypeEnum identityHub =
       _$serviceEndpointInputServiceTypeEnum_identityHub;
-
-  /// type of service endpoint
   @BuiltValueEnumConst(wireName: r'CredentialRegistry')
   static const ServiceEndpointInputServiceTypeEnum credentialRegistry =
       _$serviceEndpointInputServiceTypeEnum_credentialRegistry;
