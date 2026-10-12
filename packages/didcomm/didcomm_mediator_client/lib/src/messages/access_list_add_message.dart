@@ -7,6 +7,11 @@ import 'acl_management_message.dart';
 /// Represents a root DIDComm ACL Management Message.
 ///
 /// This message is used to add DIDs to the mediator's ACL of the did (from).
+@Deprecated(
+  'The acl-management protocol is not supported by Affinidi mediators 0.31 '
+  'and later. Use AccessListUpdateTask or AccountUpdateTask with '
+  'DidcommMediatorClient.sendTrustTask instead.',
+)
 class AccessListAddMessage extends AclManagementMessage {
   /// Lists of DIDs which shall be added to ACL.
   final List<String> theirDids;

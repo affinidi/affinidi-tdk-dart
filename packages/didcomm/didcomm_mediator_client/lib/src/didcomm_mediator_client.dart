@@ -157,6 +157,11 @@ class DidcommMediatorClient extends MediatorClient {
   /// [message] - The message to send.
   ///
   /// Returns the packed [DidcommMessage] that was sent.
+  @Deprecated(
+    'The acl-management protocol is not supported by Affinidi mediators 0.31 '
+    'and later. Use AccessListUpdateTask or AccountUpdateTask with '
+    'DidcommMediatorClient.sendTrustTask instead.',
+  )
   Future<DidcommMessage> sendAclManagementMessage(
     AclManagementMessage message,
   ) async {
