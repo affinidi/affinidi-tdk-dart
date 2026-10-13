@@ -258,9 +258,12 @@ For PEX, use this field in the input descriptor's `constraints.fields`:
 
 Keep the paths in this order and keep `"type": "string"` in the filter:
 
-- Some PEX implementations, such as Sphereon PEX, evaluate only the first path
-  that resolves to a value. For an object-form issuer, `$.issuer` resolves to
-  the object, so `$.issuer.id` has to come before it.
+- The order is required. The
+  [DIF Presentation Exchange spec](https://identity.foundation/presentation-exchange/spec/v2.1.1/#input-descriptor-object)
+  says the `path` array "MUST be evaluated from 0-index forward, breaking as
+  soon as a Field Query Result is found". For an object-form issuer,
+  `$.issuer` resolves to the object, evaluation stops there and the string
+  filter fails, so `$.issuer.id` has to come first.
 - Keep `$.issuer` in the list. When vault_iota routes identity verification
   descriptors, it recognises an issuer filter only on `$.issuer`, `$.vc.issuer`
   or `$.iss`, with `"type": "string"` and a `const` or `pattern`.

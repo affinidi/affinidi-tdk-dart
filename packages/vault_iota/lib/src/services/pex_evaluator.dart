@@ -11,8 +11,11 @@ part of 'share_requirements_matcher_service.dart';
 ///   `contains`, `minimum`, `maximum`, `format`, etc.
 /// - Issuer filters: to match both string and object (`{"id": ...}`) issuers,
 ///   use the path list `$.issuer.id`, `$.issuer`, `$.vc.issuer.id`,
-///   `$.vc.issuer`. This evaluator accepts a match on any path, but other PEX
-///   engines need that order (see "Filtering by issuer" in the README).
+///   `$.vc.issuer` in that order. This evaluator is more lenient than the DIF
+///   Presentation Exchange spec: it tries each path until one passes the
+///   filter. The spec stops at the first path that resolves to a value, so
+///   spec-conformant engines need that order (see "Filtering by issuer" in
+///   the README).
 abstract final class PexEvaluator {
   /// Returns the VCs from [allVCs] that satisfy all `constraints.fields` in
   /// [inputDescriptor].
