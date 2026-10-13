@@ -160,6 +160,59 @@ void main() {
 
   // ── PEX: IDV routing ──────────────────────────────────────────────────────
 
+  group(
+    'when a claimed descriptor filters the recommended issuer paths by pattern',
+    () {
+      final matcher = ShareRequirementsMatcher();
+
+      PDRequirements requirementsFor(String issuer) => classifier.classify(
+        _pd([
+          buildDescriptor(
+            id: 'degree',
+            type: 'UniversityDegree',
+            issuer: issuer,
+            issuerPaths: recommendedIssuerPaths,
+            usePattern: true,
+          ),
+        ]),
+      );
+
+      for (final issuerAsObject in _issuerAsObjectValues) {
+        final form = _formName(issuerAsObject);
+
+        test('should match a VC with $form issuer from that DID', () async {
+          final vc = buildTestVc(
+            type: 'UniversityDegree',
+            issuer: _trustedIssuer,
+            issuerAsObject: issuerAsObject,
+          );
+          final result = await matcher.match(requirementsFor(_trustedIssuer), [
+            vc,
+          ]);
+
+          expect(result.hasEnoughVCsAvailableToShare, isTrue);
+        });
+
+        test(
+          'should not match a VC with $form issuer from a different DID',
+          () async {
+            final vc = buildTestVc(
+              type: 'UniversityDegree',
+              issuer: _otherIssuer,
+              issuerAsObject: issuerAsObject,
+            );
+            final result = await matcher.match(
+              requirementsFor(_trustedIssuer),
+              [vc],
+            );
+
+            expect(result.hasEnoughVCsAvailableToShare, isFalse);
+          },
+        );
+      }
+    },
+  );
+
   group('when an IDV descriptor filters by the recommended issuer paths', () {
     final matcher = ShareRequirementsMatcher();
     late PDRequirements requirements;

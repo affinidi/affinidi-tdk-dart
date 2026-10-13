@@ -13,7 +13,7 @@ const recommendedIssuerPaths = [
 /// Builds a minimal raw input descriptor map with a `$.type` filter.
 ///
 /// Optionally includes `$.@context`, issuer filters and a `group` field.
-/// Set [usePattern] to produce regex filters instead of const filters.
+/// Set [usePattern] to produce anchored regex filters instead of const filters.
 /// [issuerPaths] sets the `path` list of the issuer field; defaults to
 /// `[r'$.issuer']`. Pass [recommendedIssuerPaths] to match both issuer forms.
 Map<String, dynamic> buildDescriptor({
@@ -48,7 +48,9 @@ Map<String, dynamic> buildDescriptor({
   if (issuer != null) {
     fields.add({
       'path': issuerPaths,
-      'filter': {'type': 'string', 'const': issuer},
+      'filter': usePattern
+          ? {'type': 'string', 'pattern': '^$issuer\$'}
+          : {'type': 'string', 'const': issuer},
     });
   }
 
