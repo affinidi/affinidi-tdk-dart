@@ -17,10 +17,11 @@ const recommendedIssuerPaths = [
 /// Optionally includes `$.@context`, issuer filters and a `group` field.
 /// Set [usePattern] to produce anchored regex filters instead of const filters.
 /// The type and issuer values are regex-escaped, so a DID with dots stays an
-/// exact match. The context value is not: `PDClassifier` strips the anchors
-/// but does not unescape, and its ProfileTemplate check compares the result
-/// with the literal URL. Type and issuer are read the same way; no test passes
-/// one with regex metacharacters.
+/// exact match for the matcher. The context value is not: `PDClassifier` strips
+/// the anchors but does not unescape, and its ProfileTemplate check compares the
+/// result with the literal URL. Type and issuer are read the same way, so a
+/// dotted issuer with [usePattern] will not route to IDV; use `const` (the
+/// default) for an IDV test with a did:web issuer.
 /// [issuerPaths] sets the `path` list of the issuer field; defaults to
 /// `[r'$.issuer']`. Pass [recommendedIssuerPaths] to match both issuer forms.
 Map<String, dynamic> buildDescriptor({

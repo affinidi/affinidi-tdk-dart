@@ -266,7 +266,11 @@ Keep the paths in this order and keep `"type": "string"` in the filter:
   filter fails, so `$.issuer.id` has to come first.
 - Keep `$.issuer` in the list. When vault_iota routes identity verification
   descriptors, it recognises an issuer filter only on `$.issuer`, `$.vc.issuer`
-  or `$.iss`, with `"type": "string"` and a `const` or `pattern`.
+  or `$.iss`, with `"type": "string"` and a `const` or `pattern`. It strips the
+  `^` and `$` anchors from a pattern and compares the rest with the trusted
+  issuer list as plain text, so use `const` for the issuer, or a pattern with no
+  escaped characters. An escaped dotted DID such as `^did:web:idv\.example\.com$`
+  is treated as a claimed descriptor, not an identity verification one.
 - Without `"type": "string"`, a `pattern` filter is not applied to an object.
   vault_iota tries every path, so `$.issuer` would then pass any object-form
   issuer.
