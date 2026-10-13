@@ -271,8 +271,8 @@ Keep the paths in this order and keep `"type": "string"` in the filter:
 For DCQL, add one claim per issuer form to the `ldp_vc` credential query and
 accept either through `claim_sets`. vault_iota reads the issuer in its object
 form whichever form the credential uses, so `iss_obj` is the claim that matches
-here and `["issuer"]` on its own matches nothing. `iss_str` covers DCQL
-engines that read the credential's JSON as written.
+here and an `["issuer"]` claim with a DID in `values` never matches. `iss_str`
+covers DCQL engines that read the credential's JSON as written.
 
 ```json
 {
