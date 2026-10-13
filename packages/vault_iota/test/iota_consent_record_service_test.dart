@@ -1086,6 +1086,141 @@ void main() {
     },
   );
 
+  // The README's DCQL issuer query: one claim per issuer form, either of which
+  // satisfies it through claim_sets. There are no credential_sets, so this
+  // runs the plain DCQL re-check.
+  group(
+    'When trying automatic consent for a DCQL request that filters by issuer with claim_sets',
+    () {
+      const requestedIssuer = 'did:key:z6MkIdvIssuer';
+      const otherIssuer = 'did:key:z6MkOtherIssuer';
+
+      final issuerFilteredRequest = DcqlShareRequest(
+        request: IotaConsentRecordFixtures.dcqlShareRequest.request,
+        dcqlQuery: DcqlCredentialQuery(
+          credentials: [
+            DcqlCredential(
+              id: 'query-1',
+              format: CredentialFormat.ldpVc,
+              meta: DcqlMeta(
+                typeValues: [
+                  ['UniversityDegree'],
+                ],
+              ),
+              claims: [
+                DcqlClaim(
+                  id: 'iss_str',
+                  path: ['issuer'],
+                  values: [requestedIssuer],
+                ),
+                DcqlClaim(
+                  id: 'iss_obj',
+                  path: ['issuer', 'id'],
+                  values: [requestedIssuer],
+                ),
+              ],
+              claimSets: [
+                ['iss_str'],
+                ['iss_obj'],
+              ],
+            ),
+          ],
+        ),
+        jwtAssertion: IotaConsentRecordFixtures.dcqlShareRequest.jwtAssertion,
+      );
+
+      // Stores a record that previously shared [vc] (hash matches the mocked
+      // createHash output), then re-runs automatic consent with [vc] still
+      // available, so only the DCQL re-check decides the outcome.
+      Future<AutoConsentResult> tryWithStoredVc(
+        ParsedVerifiableCredential<dynamic> vc,
+      ) {
+        when(() => store.findAllByRequestHash(any())).thenAnswer(
+          (_) async => [
+            IotaConsentRecord(
+              hash: 'mock_hash',
+              requestHash: IotaConsentRecordFixtures.requestHash,
+              sharedAt: IotaConsentRecordFixtures.sharedAt,
+              profileName: IotaConsentRecordFixtures.profileName,
+              profileId: IotaConsentRecordFixtures.profileId,
+              clientId: IotaConsentRecordFixtures.clientId,
+              isAutoShareEnabled: true,
+              isConsentManagementEnabled: false,
+              sharedVcIds: [vc.id.toString()],
+              claimedVcTypesCsv: 'UniversityDegree',
+            ),
+          ],
+        );
+
+        return service.tryAutomaticConsent(
+          shareRequest: issuerFilteredRequest,
+          matchedCredentials: IotaConsentRecordFixtures.claimedCredentials(
+            available: [vc],
+          ),
+          verifierMetadata: IotaConsentRecordFixtures.verifierMetadata,
+          vaultId: IotaConsentRecordFixtures.vaultId,
+        );
+      }
+
+      for (final issuerAsObject in [false, true]) {
+        final form = issuerAsObject ? 'an object-form' : 'a string-form';
+
+        test(
+          'it returns AutoConsentApproved for a stored VC with $form issuer from the requested DID',
+          () async {
+            final vc =
+                buildTestVc(
+                      type: 'UniversityDegree',
+                      issuer: requestedIssuer,
+                      issuerAsObject: issuerAsObject,
+                    )
+                    as ParsedVerifiableCredential<dynamic>;
+
+            final result = await tryWithStoredVc(vc);
+
+            expect(result, isA<AutoConsentApproved>());
+            final captured =
+                verify(
+                      () => shareResponseService.submitShareResponse(
+                        shareRequest: any(named: 'shareRequest'),
+                        selectedCredentials: captureAny(
+                          named: 'selectedCredentials',
+                        ),
+                        acceptResponseUri: any(named: 'acceptResponseUri'),
+                      ),
+                    ).captured.single
+                    as List<VerifiableCredential>;
+            expect(captured, [same(vc)]);
+          },
+        );
+
+        test(
+          'it returns AutoConsentDeclined for a stored VC with $form issuer from a different DID',
+          () async {
+            final vc =
+                buildTestVc(
+                      type: 'UniversityDegree',
+                      issuer: otherIssuer,
+                      issuerAsObject: issuerAsObject,
+                    )
+                    as ParsedVerifiableCredential<dynamic>;
+
+            final result = await tryWithStoredVc(vc);
+
+            expect(result, isA<AutoConsentDeclined>());
+            verifyNever(
+              () => shareResponseService.submitShareResponse(
+                shareRequest: any(named: 'shareRequest'),
+                selectedCredentials: any(named: 'selectedCredentials'),
+                acceptResponseUri: any(named: 'acceptResponseUri'),
+              ),
+            );
+          },
+        );
+      }
+    },
+  );
+
   group('When trying automatic consent for a DCQL share request', () {
     test(
       'it returns AutoConsentDeclined when no stored records match',
