@@ -239,6 +239,58 @@ Throws a `TdkException` with code `consent_record_not_found` if `hash` does
 not match any stored record, or `failed_to_delete_consent_record` if the
 underlying storage operation fails.
 
+## Filtering by issuer
+
+A W3C credential's `issuer` can be a string (`"issuer": "did:..."`) or an
+object (`"issuer": {"id": "did:..."}`). Credentials signed with the Dart `ssi`
+library use the object form. A `"type": "string"` filter on `$.issuer` alone
+does not match object-form issuers, so a verifier that filters by issuer should
+use one of the shapes below. Both match either issuer form.
+
+For PEX, use this field in the input descriptor's `constraints.fields`:
+
+```json
+{
+  "path": ["$.issuer.id", "$.issuer", "$.vc.issuer.id", "$.vc.issuer"],
+  "filter": { "type": "string", "const": "did:example:issuer" }
+}
+```
+
+Keep the paths in this order and keep `"type": "string"` in the filter:
+
+- The order is required. The
+  [DIF Presentation Exchange spec](https://identity.foundation/presentation-exchange/spec/v2.1.1/#input-descriptor-object)
+  says the `path` array "MUST be evaluated from 0-index forward, breaking as
+  soon as a Field Query Result is found". For an object-form issuer,
+  `$.issuer` resolves to the object, evaluation stops there and the string
+  filter fails, so `$.issuer.id` has to come first.
+- Keep `$.issuer` in the list. When vault_iota routes identity verification
+  descriptors, it recognises an issuer filter only on `$.issuer`, `$.vc.issuer`
+  or `$.iss`, with `"type": "string"` and a `const` or `pattern`. It strips the
+  `^` and `$` anchors from a pattern and compares the rest with the trusted
+  issuer list as plain text, so use `const` for the issuer, or a pattern with no
+  escaped characters. An escaped dotted DID such as `^did:web:idv\.example\.com$`
+  is treated as a claimed descriptor, not an identity verification one.
+- Without `"type": "string"`, a `pattern` filter is not applied to an object.
+  vault_iota tries every path, so `$.issuer` would then pass any object-form
+  issuer.
+
+For DCQL, add one claim per issuer form to the `ldp_vc` credential query and
+accept either through `claim_sets`. vault_iota reads the issuer in its object
+form whichever form the credential uses, so `iss_obj` is the claim that matches
+here and an `["issuer"]` claim with a DID in `values` never matches. `iss_str`
+covers DCQL engines that read the credential's JSON as written.
+
+```json
+{
+  "claims": [
+    { "id": "iss_str", "path": ["issuer"], "values": ["did:example:issuer"] },
+    { "id": "iss_obj", "path": ["issuer", "id"], "values": ["did:example:issuer"] }
+  ],
+  "claim_sets": [["iss_str"], ["iss_obj"]]
+}
+```
+
 ## Security considerations
 
 ### Replay attack protection
