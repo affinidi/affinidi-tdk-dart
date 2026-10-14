@@ -29,12 +29,12 @@ abstract class SignPresentationLdpInputDto
 
   @BuiltValueField(wireName: r'signatureScheme')
   SignPresentationLdpInputDtoSignatureSchemeEnum? get signatureScheme;
-  // enum signatureSchemeEnum {  ecdsa_secp256k1_sha256,  ecdsa_p256_sha256,  ed25519,  };
+  // enum signatureSchemeEnum {  ecdsa_secp256k1_sha256,  ecdsa_p256_sha256,  ed25519,  mldsa44,  };
 
   /// W3C signature suite for canonicalization. Defaults to rdfc variants for each algorithm (ecdsa-rdfc-2019 for P256, eddsa-rdfc-2022 for Ed25519, EcdsaSecp256k1Signature2019 for secp256k1).
   @BuiltValueField(wireName: r'signatureSuite')
   SignPresentationLdpInputDtoSignatureSuiteEnum? get signatureSuite;
-  // enum signatureSuiteEnum {  ecdsa-jcs-2019,  ecdsa-rdfc-2019,  eddsa-jcs-2022,  eddsa-rdfc-2022,  EcdsaSecp256k1Signature2019,  };
+  // enum signatureSuiteEnum {  ecdsa-jcs-2019,  ecdsa-rdfc-2019,  eddsa-jcs-2022,  eddsa-rdfc-2022,  EcdsaSecp256k1Signature2019,  mldsa44-jcs-2024,  mldsa44-rdfc-2024,  };
 
   /// Domain(s) for which the presentation is intended
   @BuiltValueField(wireName: r'domain')
@@ -249,6 +249,9 @@ class SignPresentationLdpInputDtoSignatureSchemeEnum extends EnumClass {
   @BuiltValueEnumConst(wireName: r'ed25519')
   static const SignPresentationLdpInputDtoSignatureSchemeEnum ed25519 =
       _$signPresentationLdpInputDtoSignatureSchemeEnum_ed25519;
+  @BuiltValueEnumConst(wireName: r'mldsa44')
+  static const SignPresentationLdpInputDtoSignatureSchemeEnum mldsa44 =
+      _$signPresentationLdpInputDtoSignatureSchemeEnum_mldsa44;
 
   static Serializer<SignPresentationLdpInputDtoSignatureSchemeEnum>
   get serializer => _$signPresentationLdpInputDtoSignatureSchemeEnumSerializer;
@@ -262,32 +265,30 @@ class SignPresentationLdpInputDtoSignatureSchemeEnum extends EnumClass {
       _$signPresentationLdpInputDtoSignatureSchemeEnumValueOf(name);
 }
 
+/// W3C signature suite for canonicalization. Defaults to rdfc variants for each algorithm (ecdsa-rdfc-2019 for P256, eddsa-rdfc-2022 for Ed25519, EcdsaSecp256k1Signature2019 for secp256k1).
 class SignPresentationLdpInputDtoSignatureSuiteEnum extends EnumClass {
-  /// W3C signature suite for canonicalization. Defaults to rdfc variants for each algorithm (ecdsa-rdfc-2019 for P256, eddsa-rdfc-2022 for Ed25519, EcdsaSecp256k1Signature2019 for secp256k1).
   @BuiltValueEnumConst(wireName: r'ecdsa-jcs-2019')
   static const SignPresentationLdpInputDtoSignatureSuiteEnum ecdsaJcs2019 =
       _$signPresentationLdpInputDtoSignatureSuiteEnum_ecdsaJcs2019;
-
-  /// W3C signature suite for canonicalization. Defaults to rdfc variants for each algorithm (ecdsa-rdfc-2019 for P256, eddsa-rdfc-2022 for Ed25519, EcdsaSecp256k1Signature2019 for secp256k1).
   @BuiltValueEnumConst(wireName: r'ecdsa-rdfc-2019')
   static const SignPresentationLdpInputDtoSignatureSuiteEnum ecdsaRdfc2019 =
       _$signPresentationLdpInputDtoSignatureSuiteEnum_ecdsaRdfc2019;
-
-  /// W3C signature suite for canonicalization. Defaults to rdfc variants for each algorithm (ecdsa-rdfc-2019 for P256, eddsa-rdfc-2022 for Ed25519, EcdsaSecp256k1Signature2019 for secp256k1).
   @BuiltValueEnumConst(wireName: r'eddsa-jcs-2022')
   static const SignPresentationLdpInputDtoSignatureSuiteEnum eddsaJcs2022 =
       _$signPresentationLdpInputDtoSignatureSuiteEnum_eddsaJcs2022;
-
-  /// W3C signature suite for canonicalization. Defaults to rdfc variants for each algorithm (ecdsa-rdfc-2019 for P256, eddsa-rdfc-2022 for Ed25519, EcdsaSecp256k1Signature2019 for secp256k1).
   @BuiltValueEnumConst(wireName: r'eddsa-rdfc-2022')
   static const SignPresentationLdpInputDtoSignatureSuiteEnum eddsaRdfc2022 =
       _$signPresentationLdpInputDtoSignatureSuiteEnum_eddsaRdfc2022;
-
-  /// W3C signature suite for canonicalization. Defaults to rdfc variants for each algorithm (ecdsa-rdfc-2019 for P256, eddsa-rdfc-2022 for Ed25519, EcdsaSecp256k1Signature2019 for secp256k1).
   @BuiltValueEnumConst(wireName: r'EcdsaSecp256k1Signature2019')
   static const SignPresentationLdpInputDtoSignatureSuiteEnum
   ecdsaSecp256k1Signature2019 =
       _$signPresentationLdpInputDtoSignatureSuiteEnum_ecdsaSecp256k1Signature2019;
+  @BuiltValueEnumConst(wireName: r'mldsa44-jcs-2024')
+  static const SignPresentationLdpInputDtoSignatureSuiteEnum mldsa44Jcs2024 =
+      _$signPresentationLdpInputDtoSignatureSuiteEnum_mldsa44Jcs2024;
+  @BuiltValueEnumConst(wireName: r'mldsa44-rdfc-2024')
+  static const SignPresentationLdpInputDtoSignatureSuiteEnum mldsa44Rdfc2024 =
+      _$signPresentationLdpInputDtoSignatureSuiteEnum_mldsa44Rdfc2024;
 
   static Serializer<SignPresentationLdpInputDtoSignatureSuiteEnum>
   get serializer => _$signPresentationLdpInputDtoSignatureSuiteEnumSerializer;
