@@ -261,18 +261,14 @@ class _$InitiateDataSharingRequestInputSerializer
   }
 }
 
+/// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
 class InitiateDataSharingRequestInputModeEnum extends EnumClass {
-  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
   @BuiltValueEnumConst(wireName: r'redirect')
   static const InitiateDataSharingRequestInputModeEnum redirect =
       _$initiateDataSharingRequestInputModeEnum_redirect;
-
-  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
   @BuiltValueEnumConst(wireName: r'websocket')
   static const InitiateDataSharingRequestInputModeEnum websocket =
       _$initiateDataSharingRequestInputModeEnum_websocket;
-
-  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
   @BuiltValueEnumConst(wireName: r'didcomm')
   static const InitiateDataSharingRequestInputModeEnum didcomm =
       _$initiateDataSharingRequestInputModeEnum_didcomm;

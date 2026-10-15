@@ -148,13 +148,11 @@ class _$ChangeCredentialStatusInputSerializer
   }
 }
 
+/// reason for revocation
 class ChangeCredentialStatusInputChangeReasonEnum extends EnumClass {
-  /// reason for revocation
   @BuiltValueEnumConst(wireName: r'INVALID_CREDENTIAL')
   static const ChangeCredentialStatusInputChangeReasonEnum INVALID_CREDENTIAL =
       _$changeCredentialStatusInputChangeReasonEnum_INVALID_CREDENTIAL;
-
-  /// reason for revocation
   @BuiltValueEnumConst(wireName: r'COMPROMISED_ISSUER')
   static const ChangeCredentialStatusInputChangeReasonEnum COMPROMISED_ISSUER =
       _$changeCredentialStatusInputChangeReasonEnum_COMPROMISED_ISSUER;
