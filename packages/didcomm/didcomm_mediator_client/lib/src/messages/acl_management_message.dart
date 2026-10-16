@@ -3,6 +3,11 @@ import 'package:didcomm/didcomm.dart';
 /// Represents a root DIDComm ACL Management Message.
 ///
 /// This message is used as a parent to all ACL Management messages.
+@Deprecated(
+  'The acl-management protocol is not supported by Affinidi mediators 0.31 '
+  'and later. Use AccessListUpdateTask or AccountUpdateTask with '
+  'DidcommMediatorClient.sendTrustTask instead.',
+)
 abstract class AclManagementMessage extends PlainTextMessage {
   /// Constructs [AclManagementMessage].
   /// [id]: Unique message identifier.

@@ -47,15 +47,17 @@ abstract class DidcommServiceClient extends DidcommMediatorClient {
   Future<void> configureAcl() async {
     final ownDidDocument = await didManager.getDidDocument();
 
-    final accessListAddMessage = AccessListAddMessage(
+    final accessListUpdateMessage = TrustTaskMessage(
       id: const Uuid().v4(),
-      from: ownDidDocument.id,
-      to: [mediatorDidDocument.id],
-      theirDids: [serviceDidDocument.id],
+      document: AccessListUpdateTask(
+        issuer: ownDidDocument.id,
+        mediatorDid: mediatorDidDocument.id,
+        add: [serviceDidDocument.id],
+      ),
       expiresTime: DateTime.now().add(clientOptions.messageExpiration),
     );
 
-    await sendAclManagementMessage(accessListAddMessage);
+    await sendTrustTask(accessListUpdateMessage);
   }
 
   void _linkRequestsAndResponses({required DidDocument serviceDidDocument}) {

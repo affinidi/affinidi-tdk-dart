@@ -367,12 +367,14 @@ await mediatorClient.packAndSendMessage(message);
 
 // Optional: manage ACL (e.g., allow Bob to reply back)
 final ownDidDocument = await aliceDidManager.getDidDocument();
-await mediatorClient.sendAclManagementMessage(
-  AccessListAddMessage(
+await mediatorClient.sendTrustTask(
+  TrustTaskMessage(
     id: const Uuid().v4(),
-    to: [mediatorDidDocument.id],
-    from: ownDidDocument.id,
-    theirDids: [bobDidDocument.id],
+    document: AccessListUpdateTask(
+      issuer: ownDidDocument.id,
+      mediatorDid: mediatorDidDocument.id,
+      add: [bobDidDocument.id],
+    ),
   ),
 );
 ```
