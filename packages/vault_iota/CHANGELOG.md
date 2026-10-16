@@ -1,3 +1,7 @@
+## 1.0.2
+
+ - **DOCS**: describe and test issuer filters for vault_iota (#269).
+
 ## 1.0.1
 
  - **FIX**: republish for cryptography 4.0.0 compatibility (#245).
