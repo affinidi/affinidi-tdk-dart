@@ -10,6 +10,7 @@ import 'package:uuid/uuid.dart';
 // openssl ecparam -name prime256v1 -genkey -noout -out example/keys/bob_private_key.pem
 // OR
 // set environment variables TEST_MEDIATOR_DID, TEST_MEDIATOR_WITH_ACL_DID, TEST_ALICE_PRIVATE_KEY_PEM, and TEST_BOB_PRIVATE_KEY_PEM
+// TEST_TRUST_TASKS_MEDIATOR_DID, if set, takes precedence over TEST_MEDIATOR_DID.
 
 // Create and run a DIDComm mediator, for instance with https://portal.affinidi.com.
 // Copy its DID Document URL into example/mediator/mediator_did.txt.
@@ -51,7 +52,7 @@ class TestConfig {
 
     if (!skipMediator) {
       await writeEnvironmentVariableToFileIfNeeded(
-        'TEST_MEDIATOR_DID',
+        _mediatorDidEnvironmentVariableName(),
         mediatorDidPath,
       );
     }
@@ -76,6 +77,18 @@ class TestConfig {
       alicePrivateKeyPath: alicePrivateKeyPath,
       bobPrivateKeyPath: bobPrivateKeyPath,
     );
+  }
+
+  // TODO: remove once TEST_MEDIATOR_DID points to a mediator that supports
+  // Trust Tasks (0.31+). Until then CI provides the newer mediator separately,
+  // because the acl-management message used before is rejected by it.
+  static String _mediatorDidEnvironmentVariableName() {
+    const trustTasksMediatorDid = 'TEST_TRUST_TASKS_MEDIATOR_DID';
+    final value = Platform.environment[trustTasksMediatorDid];
+
+    return value == null || value.isEmpty
+        ? 'TEST_MEDIATOR_DID'
+        : trustTasksMediatorDid;
   }
 
   static String _getFilePath({
