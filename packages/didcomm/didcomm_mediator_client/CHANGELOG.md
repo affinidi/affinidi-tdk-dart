@@ -1,3 +1,7 @@
+## 2.1.0
+
+ - **FEAT**: manage mediator access lists via Trust Tasks (#268).
+
 ## 2.0.3
 
  - **FIX**: new mediator migration.
