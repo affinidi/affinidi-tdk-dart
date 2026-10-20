@@ -36,7 +36,7 @@ final AddUserToProjectInput addUserToProjectInput = ; // AddUserToProjectInput |
 
 try {
     api.addPrincipalToProject(addUserToProjectInput);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ProjectsApi->addPrincipalToProject: $e\n');
 }
 ```
@@ -81,7 +81,7 @@ final CreateProjectInput createProjectInput = ; // CreateProjectInput | CreatePr
 try {
     final response = api.createProject(createProjectInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ProjectsApi->createProject: $e\n');
 }
 ```
@@ -126,7 +126,7 @@ final String principalType = principalType_example; // String | type of principa
 
 try {
     api.deletePrincipalFromProject(principalId, principalType);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ProjectsApi->deletePrincipalFromProject: $e\n');
 }
 ```
@@ -172,7 +172,7 @@ final String projectId = projectId_example; // String | projectId
 try {
     final response = api.getProject(projectId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ProjectsApi->getProject: $e\n');
 }
 ```
@@ -218,7 +218,7 @@ final String exclusiveStartKey = exclusiveStartKey_example; // String | The base
 try {
     final response = api.listPrincipalsOfProject(limit, exclusiveStartKey);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ProjectsApi->listPrincipalsOfProject: $e\n');
 }
 ```
@@ -265,7 +265,7 @@ final String exclusiveStartKey = exclusiveStartKey_example; // String | The base
 try {
     final response = api.listProject(limit, exclusiveStartKey);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ProjectsApi->listProject: $e\n');
 }
 ```
@@ -312,7 +312,7 @@ final UpdateProjectInput updateProjectInput = ; // UpdateProjectInput | UpdatePr
 try {
     final response = api.updateProject(projectId, updateProjectInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ProjectsApi->updateProject: $e\n');
 }
 ```
