@@ -41,7 +41,7 @@ abstract class OAuth2TokenAuthorizationDetailsInner
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(OAuth2TokenAuthorizationDetailsInnerBuilder b) => b
-    ..type = const OAuth2TokenAuthorizationDetailsInnerTypeEnum._(
+    ..type = OAuth2TokenAuthorizationDetailsInnerTypeEnum.valueOf(
       'openid_credential',
     );
 
@@ -172,8 +172,8 @@ class _$OAuth2TokenAuthorizationDetailsInnerSerializer
   }
 }
 
+/// String that determines the authorization details type.
 class OAuth2TokenAuthorizationDetailsInnerTypeEnum extends EnumClass {
-  /// String that determines the authorization details type.
   @BuiltValueEnumConst(wireName: r'openid_credential')
   static const OAuth2TokenAuthorizationDetailsInnerTypeEnum openidCredential =
       _$oAuth2TokenAuthorizationDetailsInnerTypeEnum_openidCredential;
