@@ -32,7 +32,7 @@ final CreateProjectScopedTokenInput createProjectScopedTokenInput = ; // CreateP
 try {
     final response = api.createProjectScopedToken(createProjectScopedTokenInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling StsApi->createProjectScopedToken: $e\n');
 }
 ```
@@ -76,7 +76,7 @@ final api = AffinidiTdkIamClient().getStsApi();
 try {
     final response = api.whoami();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling StsApi->whoami: $e\n');
 }
 ```

@@ -99,6 +99,38 @@ part 'serializers.g.dart';
 ])
 Serializers serializers =
     (_$serializers.toBuilder()
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(PexQueryDto)]),
+            () => ListBuilder<PexQueryDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(ConsentDto)]),
+            () => ListBuilder<ConsentDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [
+              FullType(InvalidParameterErrorDetailsInner),
+            ]),
+            () => ListBuilder<InvalidParameterErrorDetailsInner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(String)]),
+            () => ListBuilder<String>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(IotaConfigurationDto)]),
+            () => ListBuilder<IotaConfigurationDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(DcqlQueryDto)]),
+            () => ListBuilder<DcqlQueryDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [
+              FullType(SavePexQueriesUpdateInputQueriesInner),
+            ]),
+            () => ListBuilder<SavePexQueriesUpdateInputQueriesInner>(),
+          )
           ..add(const OneOfSerializer())
           ..add(const AnyOfSerializer())
           ..add(const DateSerializer())
