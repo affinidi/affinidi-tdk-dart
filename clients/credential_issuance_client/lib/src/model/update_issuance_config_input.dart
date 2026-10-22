@@ -325,18 +325,14 @@ class _$UpdateIssuanceConfigInputSerializer
   }
 }
 
+/// String identifying the format of this Credential, i.e., ldp_vc. Depending on the format value, the object contains further elements defining the type
 class UpdateIssuanceConfigInputFormatEnum extends EnumClass {
-  /// String identifying the format of this Credential, i.e., ldp_vc. Depending on the format value, the object contains further elements defining the type
   @BuiltValueEnumConst(wireName: r'ldp_vc')
   static const UpdateIssuanceConfigInputFormatEnum ldpVc =
       _$updateIssuanceConfigInputFormatEnum_ldpVc;
-
-  /// String identifying the format of this Credential, i.e., ldp_vc. Depending on the format value, the object contains further elements defining the type
   @BuiltValueEnumConst(wireName: r'jwt_vc_json-ld')
   static const UpdateIssuanceConfigInputFormatEnum jwtVcJsonLd =
       _$updateIssuanceConfigInputFormatEnum_jwtVcJsonLd;
-
-  /// String identifying the format of this Credential, i.e., ldp_vc. Depending on the format value, the object contains further elements defining the type
   @BuiltValueEnumConst(wireName: r'sd_jwt_vc_json-ld')
   static const UpdateIssuanceConfigInputFormatEnum sdJwtVcJsonLd =
       _$updateIssuanceConfigInputFormatEnum_sdJwtVcJsonLd;
