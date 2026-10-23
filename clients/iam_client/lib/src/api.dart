@@ -9,6 +9,7 @@ import 'package:affinidi_tdk_iam_client/src/auth/api_key_auth.dart';
 import 'package:affinidi_tdk_iam_client/src/auth/basic_auth.dart';
 import 'package:affinidi_tdk_iam_client/src/auth/bearer_auth.dart';
 import 'package:affinidi_tdk_iam_client/src/auth/oauth.dart';
+import 'package:affinidi_tdk_iam_client/src/api/accounts_api.dart';
 import 'package:affinidi_tdk_iam_client/src/api/authz_api.dart';
 import 'package:affinidi_tdk_iam_client/src/api/consumer_auth_api.dart';
 import 'package:affinidi_tdk_iam_client/src/api/default_api.dart';
@@ -155,6 +156,12 @@ class AffinidiTdkIamClient {
               .apiKeys[name] =
           apiKey;
     }
+  }
+
+  /// Get AccountsApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  AccountsApi getAccountsApi() {
+    return AccountsApi(dio, serializers);
   }
 
   /// Get AuthzApi instance, base route and serializer can be overridden by a given but be careful,
