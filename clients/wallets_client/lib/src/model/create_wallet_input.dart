@@ -184,18 +184,14 @@ class _$CreateWalletInputSerializer
   }
 }
 
+/// Define how DID of your wallet is created and resolved
 class CreateWalletInputDidMethodEnum extends EnumClass {
-  /// Define how DID of your wallet is created and resolved
   @BuiltValueEnumConst(wireName: r'key')
   static const CreateWalletInputDidMethodEnum key =
       _$createWalletInputDidMethodEnum_key;
-
-  /// Define how DID of your wallet is created and resolved
   @BuiltValueEnumConst(wireName: r'web')
   static const CreateWalletInputDidMethodEnum web =
       _$createWalletInputDidMethodEnum_web;
-
-  /// Define how DID of your wallet is created and resolved
   @BuiltValueEnumConst(wireName: r'peer0')
   static const CreateWalletInputDidMethodEnum peer0 =
       _$createWalletInputDidMethodEnum_peer0;
