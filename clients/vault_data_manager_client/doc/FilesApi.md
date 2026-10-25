@@ -36,7 +36,7 @@ final String exclusiveStartKey = exclusiveStartKey_example; // String | The base
 try {
     final response = api.getScannedFileInfo(scannedFileJobId, exclusiveStartKey);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling FilesApi->getScannedFileInfo: $e\n');
 }
 ```
@@ -83,7 +83,7 @@ final api = AffinidiTdkVaultDataManagerClient().getFilesApi();
 try {
     final response = api.listScannedFiles();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling FilesApi->listScannedFiles: $e\n');
 }
 ```
@@ -128,7 +128,7 @@ final StartFileScanInput startFileScanInput = ; // StartFileScanInput | StartFil
 try {
     final response = api.startFileScan(nodeId, startFileScanInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling FilesApi->startFileScan: $e\n');
 }
 ```
