@@ -33,7 +33,7 @@ final AwsExchangeCredentials awsExchangeCredentials = ; // AwsExchangeCredential
 try {
     final response = api.awsExchangeCredentials(awsExchangeCredentials);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IotaApi->awsExchangeCredentials: $e\n');
 }
 ```
@@ -80,7 +80,7 @@ final AwsExchangeCredentialsProjectToken awsExchangeCredentialsProjectToken = ; 
 try {
     final response = api.awsExchangeCredentialsProjectToken(awsExchangeCredentialsProjectToken);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IotaApi->awsExchangeCredentialsProjectToken: $e\n');
 }
 ```
@@ -127,7 +127,7 @@ final FetchIOTAVPResponseInput fetchIOTAVPResponseInput = ; // FetchIOTAVPRespon
 try {
     final response = api.fetchIotaVpResponse(fetchIOTAVPResponseInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IotaApi->fetchIotaVpResponse: $e\n');
 }
 ```
@@ -174,7 +174,7 @@ final InitiateDataSharingRequestInput initiateDataSharingRequestInput = ; // Ini
 try {
     final response = api.initiateDataSharingRequest(initiateDataSharingRequestInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IotaApi->initiateDataSharingRequest: $e\n');
 }
 ```
@@ -217,7 +217,7 @@ final IotaExchangeCredentials iotaExchangeCredentials = ; // IotaExchangeCredent
 try {
     final response = api.iotaExchangeCredentials(iotaExchangeCredentials);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IotaApi->iotaExchangeCredentials: $e\n');
 }
 ```
