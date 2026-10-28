@@ -37,7 +37,7 @@ final GroupNamesInput groupNamesInput = ; // GroupNamesInput | List of group nam
 
 try {
     api.blockGroups(groupNamesInput);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DenyListApi->blockGroups: $e\n');
 }
 ```
@@ -83,7 +83,7 @@ final BlockedUsersInput blockedUsersInput = ; // BlockedUsersInput | List of blo
 
 try {
     api.blockUsers(blockedUsersInput);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DenyListApi->blockUsers: $e\n');
 }
 ```
@@ -130,7 +130,7 @@ final String pageToken = pageToken_example; // String |
 try {
     final response = api.listBlockedGroups(pageToken);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DenyListApi->listBlockedGroups: $e\n');
 }
 ```
@@ -177,7 +177,7 @@ final String pageToken = pageToken_example; // String |
 try {
     final response = api.listBlockedUsers(pageToken);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DenyListApi->listBlockedUsers: $e\n');
 }
 ```
@@ -223,7 +223,7 @@ final GroupNamesInput groupNamesInput = ; // GroupNamesInput | List of group nam
 
 try {
     api.unblockGroups(groupNamesInput);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DenyListApi->unblockGroups: $e\n');
 }
 ```
@@ -269,7 +269,7 @@ final BlockedUsersInput blockedUsersInput = ; // BlockedUsersInput | List of blo
 
 try {
     api.unblockUsers(blockedUsersInput);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DenyListApi->unblockUsers: $e\n');
 }
 ```
