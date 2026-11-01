@@ -42,7 +42,7 @@ abstract class CreateWalletV2Input
   /// algorithm to generate key for the wallet
   @BuiltValueField(wireName: r'algorithm')
   CreateWalletV2InputAlgorithmEnum? get algorithm;
-  // enum algorithmEnum {  secp256k1,  ed25519,  p256,  };
+  // enum algorithmEnum {  secp256k1,  ed25519,  p256,  mldsa44,  };
 
   /// Service endpoints to include in DID document
   @BuiltValueField(wireName: r'services')
@@ -55,8 +55,8 @@ abstract class CreateWalletV2Input
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateWalletV2InputBuilder b) => b
-    ..didMethod = const CreateWalletV2InputDidMethodEnum._('key')
-    ..algorithm = const CreateWalletV2InputAlgorithmEnum._('secp256k1');
+    ..didMethod = CreateWalletV2InputDidMethodEnum.valueOf('key')
+    ..algorithm = CreateWalletV2InputAlgorithmEnum.valueOf('secp256k1');
 
   @BuiltValueSerializer(custom: true)
   static Serializer<CreateWalletV2Input> get serializer =>
@@ -239,23 +239,17 @@ class _$CreateWalletV2InputSerializer
   }
 }
 
+/// Define how DID of your wallet is created and resolved
 class CreateWalletV2InputDidMethodEnum extends EnumClass {
-  /// Define how DID of your wallet is created and resolved
   @BuiltValueEnumConst(wireName: r'key')
   static const CreateWalletV2InputDidMethodEnum key =
       _$createWalletV2InputDidMethodEnum_key;
-
-  /// Define how DID of your wallet is created and resolved
   @BuiltValueEnumConst(wireName: r'web')
   static const CreateWalletV2InputDidMethodEnum web =
       _$createWalletV2InputDidMethodEnum_web;
-
-  /// Define how DID of your wallet is created and resolved
   @BuiltValueEnumConst(wireName: r'peer0')
   static const CreateWalletV2InputDidMethodEnum peer0 =
       _$createWalletV2InputDidMethodEnum_peer0;
-
-  /// Define how DID of your wallet is created and resolved
   @BuiltValueEnumConst(wireName: r'peer2')
   static const CreateWalletV2InputDidMethodEnum peer2 =
       _$createWalletV2InputDidMethodEnum_peer2;
@@ -271,21 +265,20 @@ class CreateWalletV2InputDidMethodEnum extends EnumClass {
       _$createWalletV2InputDidMethodEnumValueOf(name);
 }
 
+/// algorithm to generate key for the wallet
 class CreateWalletV2InputAlgorithmEnum extends EnumClass {
-  /// algorithm to generate key for the wallet
   @BuiltValueEnumConst(wireName: r'secp256k1')
   static const CreateWalletV2InputAlgorithmEnum secp256k1 =
       _$createWalletV2InputAlgorithmEnum_secp256k1;
-
-  /// algorithm to generate key for the wallet
   @BuiltValueEnumConst(wireName: r'ed25519')
   static const CreateWalletV2InputAlgorithmEnum ed25519 =
       _$createWalletV2InputAlgorithmEnum_ed25519;
-
-  /// algorithm to generate key for the wallet
   @BuiltValueEnumConst(wireName: r'p256')
   static const CreateWalletV2InputAlgorithmEnum p256 =
       _$createWalletV2InputAlgorithmEnum_p256;
+  @BuiltValueEnumConst(wireName: r'mldsa44')
+  static const CreateWalletV2InputAlgorithmEnum mldsa44 =
+      _$createWalletV2InputAlgorithmEnum_mldsa44;
 
   static Serializer<CreateWalletV2InputAlgorithmEnum> get serializer =>
       _$createWalletV2InputAlgorithmEnumSerializer;
