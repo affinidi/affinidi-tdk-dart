@@ -33,7 +33,7 @@ final String principalType = principalType_example; // String |
 try {
     final response = api.getPolicies(principalId, principalType);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling PoliciesApi->getPolicies: $e\n');
 }
 ```
@@ -81,7 +81,7 @@ final PolicyDto policyDto = ; // PolicyDto | UpdatePolicies
 try {
     final response = api.updatePolicies(principalId, principalType, policyDto);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling PoliciesApi->updatePolicies: $e\n');
 }
 ```

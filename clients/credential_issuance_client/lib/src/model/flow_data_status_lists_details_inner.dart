@@ -251,8 +251,8 @@ class _$FlowDataStatusListsDetailsInnerSerializer
   }
 }
 
+/// Purpose of status list to which credential is added
 class FlowDataStatusListsDetailsInnerStatusListPurposeEnum extends EnumClass {
-  /// Purpose of status list to which credential is added
   @BuiltValueEnumConst(wireName: r'REVOKED')
   static const FlowDataStatusListsDetailsInnerStatusListPurposeEnum REVOKED =
       _$flowDataStatusListsDetailsInnerStatusListPurposeEnum_REVOKED;
