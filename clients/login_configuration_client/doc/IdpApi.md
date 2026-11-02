@@ -34,7 +34,7 @@ final String projectId = projectId_example; // String |
 
 try {
     api.v1LoginProjectProjectIdOauth2AuthGet(projectId);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IdpApi->v1LoginProjectProjectIdOauth2AuthGet: $e\n');
 }
 ```
@@ -76,7 +76,7 @@ final String projectId = projectId_example; // String |
 
 try {
     api.v1LoginProjectProjectIdOauth2RevokePost(projectId);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IdpApi->v1LoginProjectProjectIdOauth2RevokePost: $e\n');
 }
 ```
@@ -118,7 +118,7 @@ final String projectId = projectId_example; // String |
 
 try {
     api.v1LoginProjectProjectIdOauth2SessionsLogoutGet(projectId);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IdpApi->v1LoginProjectProjectIdOauth2SessionsLogoutGet: $e\n');
 }
 ```
@@ -161,7 +161,7 @@ final String projectId = projectId_example; // String |
 try {
     final response = api.v1LoginProjectProjectIdOauth2TokenPost(projectId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IdpApi->v1LoginProjectProjectIdOauth2TokenPost: $e\n');
 }
 ```
@@ -204,7 +204,7 @@ final String projectId = projectId_example; // String |
 try {
     final response = api.v1LoginProjectProjectIdUserinfoGet(projectId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IdpApi->v1LoginProjectProjectIdUserinfoGet: $e\n');
 }
 ```
@@ -247,7 +247,7 @@ final String projectId = projectId_example; // String |
 try {
     final response = api.v1LoginProjectProjectIdWellKnownJwksJsonGet(projectId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IdpApi->v1LoginProjectProjectIdWellKnownJwksJsonGet: $e\n');
 }
 ```
@@ -290,7 +290,7 @@ final String projectId = projectId_example; // String |
 try {
     final response = api.v1LoginProjectProjectIdWellKnownOpenidConfigurationGet(projectId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IdpApi->v1LoginProjectProjectIdWellKnownOpenidConfigurationGet: $e\n');
 }
 ```

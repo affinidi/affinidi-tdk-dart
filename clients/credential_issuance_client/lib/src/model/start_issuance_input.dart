@@ -186,18 +186,14 @@ class _$StartIssuanceInputSerializer
   }
 }
 
+/// In TX_CODE claim mode, additional transaction code will be generated and the Authorization Server expects presentation of the transaction Code by the end-user. If FIXED_HOLDER claim mode is defined, holderDid must be present and service will not generate additional transaction code (NORMAL claimMode is deprecated).
 class StartIssuanceInputClaimModeEnum extends EnumClass {
-  /// In TX_CODE claim mode, additional transaction code will be generated and the Authorization Server expects presentation of the transaction Code by the end-user. If FIXED_HOLDER claim mode is defined, holderDid must be present and service will not generate additional transaction code (NORMAL claimMode is deprecated).
   @BuiltValueEnumConst(wireName: r'NORMAL')
   static const StartIssuanceInputClaimModeEnum NORMAL =
       _$startIssuanceInputClaimModeEnum_NORMAL;
-
-  /// In TX_CODE claim mode, additional transaction code will be generated and the Authorization Server expects presentation of the transaction Code by the end-user. If FIXED_HOLDER claim mode is defined, holderDid must be present and service will not generate additional transaction code (NORMAL claimMode is deprecated).
   @BuiltValueEnumConst(wireName: r'TX_CODE')
   static const StartIssuanceInputClaimModeEnum TX_CODE =
       _$startIssuanceInputClaimModeEnum_TX_CODE;
-
-  /// In TX_CODE claim mode, additional transaction code will be generated and the Authorization Server expects presentation of the transaction Code by the end-user. If FIXED_HOLDER claim mode is defined, holderDid must be present and service will not generate additional transaction code (NORMAL claimMode is deprecated).
   @BuiltValueEnumConst(wireName: r'FIXED_HOLDER')
   static const StartIssuanceInputClaimModeEnum FIXED_HOLDER =
       _$startIssuanceInputClaimModeEnum_FIXED_HOLDER;
