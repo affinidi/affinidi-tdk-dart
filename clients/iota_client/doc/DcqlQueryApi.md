@@ -38,7 +38,7 @@ final CreateDcqlQueryInput createDcqlQueryInput = ; // CreateDcqlQueryInput | Cr
 try {
     final response = api.createDcqlQuery(configurationId, createDcqlQueryInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DcqlQueryApi->createDcqlQuery: $e\n');
 }
 ```
@@ -86,7 +86,7 @@ final String queryId = queryId_example; // String | The ID of the query.
 
 try {
     api.deleteDcqlQueryById(configurationId, queryId);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DcqlQueryApi->deleteDcqlQueryById: $e\n');
 }
 ```
@@ -135,7 +135,7 @@ final String queryId = queryId_example; // String | The ID of the query.
 try {
     final response = api.getDcqlQueryById(configurationId, queryId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DcqlQueryApi->getDcqlQueryById: $e\n');
 }
 ```
@@ -185,7 +185,7 @@ final String exclusiveStartKey = exclusiveStartKey_example; // String | The base
 try {
     final response = api.listDcqlQueries(configurationId, limit, exclusiveStartKey);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DcqlQueryApi->listDcqlQueries: $e\n');
 }
 ```
@@ -236,7 +236,7 @@ final UpdateDcqlQueryInput updateDcqlQueryInput = ; // UpdateDcqlQueryInput | Up
 try {
     final response = api.updateDcqlQueryById(configurationId, queryId, updateDcqlQueryInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DcqlQueryApi->updateDcqlQueryById: $e\n');
 }
 ```

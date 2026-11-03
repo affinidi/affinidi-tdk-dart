@@ -16,7 +16,7 @@ class _$TokenDto extends TokenDto {
   @override
   final String name;
   @override
-  final TokenPrivateKeyAuthenticationMethodDto authenticationMethod;
+  final TokenAuthenticationMethodDto authenticationMethod;
   @override
   final BuiltList<String> scopes;
 
@@ -95,12 +95,11 @@ class TokenDtoBuilder implements Builder<TokenDto, TokenDtoBuilder> {
   String? get name => _$this._name;
   set name(String? name) => _$this._name = name;
 
-  TokenPrivateKeyAuthenticationMethodDtoBuilder? _authenticationMethod;
-  TokenPrivateKeyAuthenticationMethodDtoBuilder get authenticationMethod =>
-      _$this._authenticationMethod ??=
-          TokenPrivateKeyAuthenticationMethodDtoBuilder();
+  TokenAuthenticationMethodDtoBuilder? _authenticationMethod;
+  TokenAuthenticationMethodDtoBuilder get authenticationMethod =>
+      _$this._authenticationMethod ??= TokenAuthenticationMethodDtoBuilder();
   set authenticationMethod(
-    TokenPrivateKeyAuthenticationMethodDtoBuilder? authenticationMethod,
+    TokenAuthenticationMethodDtoBuilder? authenticationMethod,
   ) => _$this._authenticationMethod = authenticationMethod;
 
   ListBuilder<String>? _scopes;
