@@ -36,7 +36,7 @@ final CreateTokenInput createTokenInput = ; // CreateTokenInput | CreateToken
 try {
     final response = api.createToken(createTokenInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling TokensApi->createToken: $e\n');
 }
 ```
@@ -80,7 +80,7 @@ final String tokenId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String |
 
 try {
     api.deleteToken(tokenId);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling TokensApi->deleteToken: $e\n');
 }
 ```
@@ -125,7 +125,7 @@ final String tokenId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String |
 try {
     final response = api.getToken(tokenId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling TokensApi->getToken: $e\n');
 }
 ```
@@ -172,7 +172,7 @@ final String exclusiveStartKey = exclusiveStartKey_example; // String | The base
 try {
     final response = api.listProjectsOfToken(tokenId, limit, exclusiveStartKey);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling TokensApi->listProjectsOfToken: $e\n');
 }
 ```
@@ -220,7 +220,7 @@ final String exclusiveStartKey = exclusiveStartKey_example; // String | The base
 try {
     final response = api.listToken(limit, exclusiveStartKey);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling TokensApi->listToken: $e\n');
 }
 ```
@@ -267,7 +267,7 @@ final UpdateTokenInput updateTokenInput = ; // UpdateTokenInput | UpdateToken
 try {
     final response = api.updateToken(tokenId, updateTokenInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling TokensApi->updateToken: $e\n');
 }
 ```
