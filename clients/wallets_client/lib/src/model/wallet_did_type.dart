@@ -9,12 +9,10 @@ import 'package:built_value/serializer.dart';
 
 part 'wallet_did_type.g.dart';
 
+/// DID method type for the wallet
 class WalletDidType extends EnumClass {
-  /// DID method type for the wallet
   @BuiltValueEnumConst(wireName: r'WEB')
   static const WalletDidType WEB = _$WEB;
-
-  /// DID method type for the wallet
   @BuiltValueEnumConst(wireName: r'KEY')
   static const WalletDidType KEY = _$KEY;
 

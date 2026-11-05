@@ -97,6 +97,48 @@ part 'serializers.g.dart';
 ])
 Serializers serializers =
     (_$serializers.toBuilder()
+          ..addBuilderFactory(
+            const FullType(BuiltList, [
+              FullType(OIDCConfigCredentialsSupportedDraft00Inner),
+            ]),
+            () => ListBuilder<OIDCConfigCredentialsSupportedDraft00Inner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(IdTokenMappingItem)]),
+            () => ListBuilder<IdTokenMappingItem>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(JsonWebKeyKeysInner)]),
+            () => ListBuilder<JsonWebKeyKeysInner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(GroupUserMappingDto)]),
+            () => ListBuilder<GroupUserMappingDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(LoginConfigurationObject)]),
+            () => ListBuilder<LoginConfigurationObject>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [
+              FullType(InvalidParameterErrorDetailsInner),
+            ]),
+            () => ListBuilder<InvalidParameterErrorDetailsInner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(GroupDto)]),
+            () => ListBuilder<GroupDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(String)]),
+            () => ListBuilder<String>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [
+              FullType(OAuth2TokenAuthorizationDetailsInner),
+            ]),
+            () => ListBuilder<OAuth2TokenAuthorizationDetailsInner>(),
+          )
           ..add(const OneOfSerializer())
           ..add(const AnyOfSerializer())
           ..add(const DateSerializer())

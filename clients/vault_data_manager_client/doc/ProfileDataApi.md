@@ -36,7 +36,7 @@ final String query = query_example; // String | data query, TBD maybe encode it 
 try {
     final response = api.queryProfileData(nodeId, dek, query);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ProfileDataApi->queryProfileData: $e\n');
 }
 ```
@@ -86,7 +86,7 @@ final UpdateProfileDataInput updateProfileDataInput = ; // UpdateProfileDataInpu
 try {
     final response = api.updateProfileData(nodeId, updateProfileDataInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ProfileDataApi->updateProfileData: $e\n');
 }
 ```
