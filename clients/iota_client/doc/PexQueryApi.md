@@ -40,7 +40,7 @@ final CreatePexQueryInput createPexQueryInput = ; // CreatePexQueryInput | Creat
 try {
     final response = api.createPexQuery(configurationId, createPexQueryInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling PexQueryApi->createPexQuery: $e\n');
 }
 ```
@@ -89,7 +89,7 @@ final DeletePexQueriesInput deletePexQueriesInput = ; // DeletePexQueriesInput |
 try {
     final response = api.deletePexQueries(configurationId, deletePexQueriesInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling PexQueryApi->deletePexQueries: $e\n');
 }
 ```
@@ -137,7 +137,7 @@ final String queryId = queryId_example; // String | The ID of the query.
 
 try {
     api.deletePexQueryById(configurationId, queryId);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling PexQueryApi->deletePexQueryById: $e\n');
 }
 ```
@@ -186,7 +186,7 @@ final String queryId = queryId_example; // String | The ID of the query.
 try {
     final response = api.getPexQueryById(configurationId, queryId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling PexQueryApi->getPexQueryById: $e\n');
 }
 ```
@@ -236,7 +236,7 @@ final String exclusiveStartKey = exclusiveStartKey_example; // String | The base
 try {
     final response = api.listPexQueries(configurationId, limit, exclusiveStartKey);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling PexQueryApi->listPexQueries: $e\n');
 }
 ```
@@ -286,7 +286,7 @@ final SavePexQueriesUpdateInput savePexQueriesUpdateInput = ; // SavePexQueriesU
 try {
     final response = api.savePexQueries(configurationId, savePexQueriesUpdateInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling PexQueryApi->savePexQueries: $e\n');
 }
 ```
@@ -336,7 +336,7 @@ final UpdatePexQueryInput updatePexQueryInput = ; // UpdatePexQueryInput | Updat
 try {
     final response = api.updatePexQueryById(configurationId, queryId, updatePexQueryInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling PexQueryApi->updatePexQueryById: $e\n');
 }
 ```
