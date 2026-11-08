@@ -54,7 +54,7 @@ final ServiceEndpointInput serviceEndpointInput = ; // ServiceEndpointInput | Ad
 try {
     final response = api.createServiceEndpoint(walletId, serviceEndpointInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->createServiceEndpoint: $e\n');
 }
 ```
@@ -102,7 +102,7 @@ final CreateWalletInput createWalletInput = {"name":"AliceWallet","description":
 try {
     final response = api.createWallet(createWalletInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->createWallet: $e\n');
 }
 ```
@@ -150,7 +150,7 @@ final CreateWalletKeyInput createWalletKeyInput = ; // CreateWalletKeyInput | Cr
 try {
     final response = api.createWalletKey(walletId, createWalletKeyInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->createWalletKey: $e\n');
 }
 ```
@@ -198,7 +198,7 @@ final CreateWalletV2Input createWalletV2Input = ; // CreateWalletV2Input | Creat
 try {
     final response = api.createWalletV2(createWalletV2Input);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->createWalletV2: $e\n');
 }
 ```
@@ -244,7 +244,7 @@ final String walletId = walletId_example; // String | id of the wallet
 
 try {
     api.deleteWallet(walletId);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->deleteWallet: $e\n');
 }
 ```
@@ -291,7 +291,7 @@ final String walletId = walletId_example; // String | id of the wallet
 try {
     final response = api.getWallet(walletId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->getWallet: $e\n');
 }
 ```
@@ -338,7 +338,7 @@ final String walletId = walletId_example; // String | id of the wallet
 try {
     final response = api.listServiceEndpoints(walletId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->listServiceEndpoints: $e\n');
 }
 ```
@@ -385,7 +385,7 @@ final String walletId = walletId_example; // String | id of the wallet
 try {
     final response = api.listWalletKeys(walletId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->listWalletKeys: $e\n');
 }
 ```
@@ -432,7 +432,7 @@ final WalletDidType didType = ; // WalletDidType |
 try {
     final response = api.listWallets(didType);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->listWallets: $e\n');
 }
 ```
@@ -479,7 +479,7 @@ final String serviceId = serviceId_example; // String | id of the service endpoi
 
 try {
     api.removeServiceEndpoint(walletId, serviceId);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->removeServiceEndpoint: $e\n');
 }
 ```
@@ -527,7 +527,7 @@ final String keyId = keyId_example; // String | id of the key to remove
 
 try {
     api.removeWalletKey(walletId, keyId);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->removeWalletKey: $e\n');
 }
 ```
@@ -576,7 +576,7 @@ final SignCredentialInputDto signCredentialInputDto = ; // SignCredentialInputDt
 try {
     final response = api.signCredential(walletId, signCredentialInputDto);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->signCredential: $e\n');
 }
 ```
@@ -625,7 +625,7 @@ final SignCredentialsJwtInputDto signCredentialsJwtInputDto = ; // SignCredentia
 try {
     final response = api.signCredentialsJwt(walletId, signCredentialsJwtInputDto);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->signCredentialsJwt: $e\n');
 }
 ```
@@ -674,7 +674,7 @@ final SignCredentialsLdpInputDto signCredentialsLdpInputDto = ; // SignCredentia
 try {
     final response = api.signCredentialsLdp(walletId, signCredentialsLdpInputDto);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->signCredentialsLdp: $e\n');
 }
 ```
@@ -723,7 +723,7 @@ final SignCredentialsDm2SdJwtInputDto signCredentialsDm2SdJwtInputDto = ; // Sig
 try {
     final response = api.signCredentialsSdJwt(walletId, signCredentialsDm2SdJwtInputDto);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->signCredentialsSdJwt: $e\n');
 }
 ```
@@ -772,7 +772,7 @@ final SignJwtToken signJwtToken = ; // SignJwtToken | SignJwtToken
 try {
     final response = api.signJwtToken(walletId, signJwtToken);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->signJwtToken: $e\n');
 }
 ```
@@ -821,7 +821,7 @@ final SignJwtV2InputDto signJwtV2InputDto = ; // SignJwtV2InputDto | SignJwtV2
 try {
     final response = api.signJwtV2(walletId, signJwtV2InputDto);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->signJwtV2: $e\n');
 }
 ```
@@ -870,7 +870,7 @@ final SignPresentationLdpInputDto signPresentationLdpInputDto = ; // SignPresent
 try {
     final response = api.signPresentationsLdp(walletId, signPresentationLdpInputDto);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->signPresentationsLdp: $e\n');
 }
 ```
@@ -920,7 +920,7 @@ final UpdateServiceEndpointInput updateServiceEndpointInput = ; // UpdateService
 try {
     final response = api.updateServiceEndpoint(walletId, serviceId, updateServiceEndpointInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->updateServiceEndpoint: $e\n');
 }
 ```
@@ -970,7 +970,7 @@ final UpdateWalletInput updateWalletInput = ; // UpdateWalletInput | UpdateWalle
 try {
     final response = api.updateWallet(walletId, updateWalletInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->updateWallet: $e\n');
 }
 ```
@@ -1020,7 +1020,7 @@ final UpdateWalletKeyInput updateWalletKeyInput = ; // UpdateWalletKeyInput | Up
 try {
     final response = api.updateWalletKey(walletId, keyId, updateWalletKeyInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WalletApi->updateWalletKey: $e\n');
 }
 ```

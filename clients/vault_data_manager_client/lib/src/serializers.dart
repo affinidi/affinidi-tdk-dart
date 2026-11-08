@@ -108,6 +108,41 @@ part 'serializers.g.dart';
 ])
 Serializers serializers =
     (_$serializers.toBuilder()
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(PartialProfileNodeDto)]),
+            () => ListBuilder<PartialProfileNodeDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(JsonWebKeyDto)]),
+            () => ListBuilder<JsonWebKeyDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(AccountDto)]),
+            () => ListBuilder<AccountDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [
+              FullType(InvalidParameterErrorDetailsInner),
+            ]),
+            () => ListBuilder<InvalidParameterErrorDetailsInner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltMap, [
+              FullType(String),
+              FullType.nullable(JsonObject),
+            ]),
+            () => MapBuilder<String, JsonObject?>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(NodeDto)]),
+            () => ListBuilder<NodeDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [
+              FullType(ListScannedFilesOKScannedFilesInner),
+            ]),
+            () => ListBuilder<ListScannedFilesOKScannedFilesInner>(),
+          )
           ..add(NodeDto.serializer)
           ..add(const OneOfSerializer())
           ..add(const AnyOfSerializer())

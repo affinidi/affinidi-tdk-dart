@@ -29,24 +29,24 @@ _$updateTokenPrivateKeyAuthenticationMethodDtoTypeEnumValues =
     );
 
 const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-_$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS256 =
+_$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_RS256 =
     const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum._(
-      'rS256',
+      'RS256',
     );
 const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-_$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS512 =
+_$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_RS512 =
     const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum._(
-      'rS512',
+      'RS512',
     );
 const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-_$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS256 =
+_$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_ES256 =
     const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum._(
-      'eS256',
+      'ES256',
     );
 const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-_$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS512 =
+_$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_ES512 =
     const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum._(
-      'eS512',
+      'ES512',
     );
 
 UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
@@ -54,14 +54,14 @@ _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumValueOf(
   String name,
 ) {
   switch (name) {
-    case 'rS256':
-      return _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS256;
-    case 'rS512':
-      return _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS512;
-    case 'eS256':
-      return _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS256;
-    case 'eS512':
-      return _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS512;
+    case 'RS256':
+      return _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_RS256;
+    case 'RS512':
+      return _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_RS512;
+    case 'ES256':
+      return _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_ES256;
+    case 'ES512':
+      return _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_ES512;
     default:
       throw ArgumentError(name);
   }
@@ -72,10 +72,10 @@ _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumValues =
     BuiltSet<
       UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
     >(const <UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum>[
-      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS256,
-      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS512,
-      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS256,
-      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS512,
+      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_RS256,
+      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_RS512,
+      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_ES256,
+      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_ES512,
     ]);
 
 Serializer<UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum>
@@ -128,16 +128,16 @@ class _$UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumSerializ
           UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
         > {
   static const Map<String, Object> _toWire = const <String, Object>{
-    'rS256': 'RS256',
-    'rS512': 'RS512',
-    'eS256': 'ES256',
-    'eS512': 'ES512',
+    'RS256': 'RS256',
+    'RS512': 'RS512',
+    'ES256': 'ES256',
+    'ES512': 'ES512',
   };
   static const Map<Object, String> _fromWire = const <Object, String>{
-    'RS256': 'rS256',
-    'RS512': 'rS512',
-    'ES256': 'eS256',
-    'ES512': 'eS512',
+    'RS256': 'RS256',
+    'RS512': 'RS512',
+    'ES256': 'ES256',
+    'ES512': 'ES512',
   };
 
   @override
