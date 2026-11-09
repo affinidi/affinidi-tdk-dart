@@ -111,6 +111,45 @@ part 'serializers.g.dart';
 ])
 Serializers serializers =
     (_$serializers.toBuilder()
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(ServiceEndpointInput)]),
+            () => ListBuilder<ServiceEndpointInput>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(WalletKeyDto)]),
+            () => ListBuilder<WalletKeyDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltMap, [
+              FullType(String),
+              FullType.nullable(JsonObject),
+            ]),
+            () => MapBuilder<String, JsonObject?>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(NotFoundErrorDetailsInner)]),
+            () => ListBuilder<NotFoundErrorDetailsInner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(ServiceEndpointDto)]),
+            () => ListBuilder<ServiceEndpointDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(VerificationRelationship)]),
+            () => ListBuilder<VerificationRelationship>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(WalletDto)]),
+            () => ListBuilder<WalletDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(String)]),
+            () => ListBuilder<String>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(WalletDtoKeysInner)]),
+            () => ListBuilder<WalletDtoKeysInner>(),
+          )
           ..add(const OneOfSerializer())
           ..add(const AnyOfSerializer())
           ..add(const DateSerializer())
