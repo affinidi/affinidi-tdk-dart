@@ -26,7 +26,7 @@ final api = AffinidiTdkVaultDataManagerClient().getWellKnownApi();
 try {
     final response = api.getWellKnownJwks();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WellKnownApi->getWellKnownJwks: $e\n');
 }
 ```

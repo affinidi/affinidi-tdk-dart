@@ -29,31 +29,31 @@ _$tokenPrivateKeyAuthenticationMethodDtoTypeEnumValues =
     );
 
 const TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-_$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS256 =
-    const TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum._('rS256');
+_$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_RS256 =
+    const TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum._('RS256');
 const TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-_$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS512 =
-    const TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum._('rS512');
+_$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_RS512 =
+    const TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum._('RS512');
 const TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-_$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS256 =
-    const TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum._('eS256');
+_$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_ES256 =
+    const TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum._('ES256');
 const TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-_$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS512 =
-    const TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum._('eS512');
+_$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_ES512 =
+    const TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum._('ES512');
 
 TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
 _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumValueOf(
   String name,
 ) {
   switch (name) {
-    case 'rS256':
-      return _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS256;
-    case 'rS512':
-      return _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS512;
-    case 'eS256':
-      return _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS256;
-    case 'eS512':
-      return _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS512;
+    case 'RS256':
+      return _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_RS256;
+    case 'RS512':
+      return _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_RS512;
+    case 'ES256':
+      return _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_ES256;
+    case 'ES512':
+      return _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_ES512;
     default:
       throw ArgumentError(name);
   }
@@ -63,10 +63,10 @@ final BuiltSet<TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum>
 _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumValues =
     BuiltSet<TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum>(
       const <TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum>[
-        _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS256,
-        _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS512,
-        _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS256,
-        _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS512,
+        _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_RS256,
+        _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_RS512,
+        _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_ES256,
+        _$tokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_ES512,
       ],
     );
 
@@ -117,16 +117,16 @@ class _$TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumSerializer
           TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
         > {
   static const Map<String, Object> _toWire = const <String, Object>{
-    'rS256': 'RS256',
-    'rS512': 'RS512',
-    'eS256': 'ES256',
-    'eS512': 'ES512',
+    'RS256': 'RS256',
+    'RS512': 'RS512',
+    'ES256': 'ES256',
+    'ES512': 'ES512',
   };
   static const Map<Object, String> _fromWire = const <Object, String>{
-    'RS256': 'rS256',
-    'RS512': 'rS512',
-    'ES256': 'eS256',
-    'ES512': 'eS512',
+    'RS256': 'RS256',
+    'RS512': 'RS512',
+    'ES256': 'ES256',
+    'ES512': 'ES512',
   };
 
   @override
@@ -154,8 +154,29 @@ class _$TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnumSerializer
   );
 }
 
-class _$TokenPrivateKeyAuthenticationMethodDto
-    extends TokenPrivateKeyAuthenticationMethodDto {
+abstract mixin class TokenPrivateKeyAuthenticationMethodDtoBuilder {
+  void replace(TokenPrivateKeyAuthenticationMethodDto other);
+  void update(
+    void Function(TokenPrivateKeyAuthenticationMethodDtoBuilder) updates,
+  );
+  TokenPrivateKeyAuthenticationMethodDtoTypeEnum? get type;
+  set type(TokenPrivateKeyAuthenticationMethodDtoTypeEnum? type);
+
+  TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum?
+  get signingAlgorithm;
+  set signingAlgorithm(
+    TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum?
+    signingAlgorithm,
+  );
+
+  TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder get publicKeyInfo;
+  set publicKeyInfo(
+    TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder? publicKeyInfo,
+  );
+}
+
+class _$$TokenPrivateKeyAuthenticationMethodDto
+    extends $TokenPrivateKeyAuthenticationMethodDto {
   @override
   final TokenPrivateKeyAuthenticationMethodDtoTypeEnum type;
   @override
@@ -164,29 +185,29 @@ class _$TokenPrivateKeyAuthenticationMethodDto
   @override
   final TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo publicKeyInfo;
 
-  factory _$TokenPrivateKeyAuthenticationMethodDto([
-    void Function(TokenPrivateKeyAuthenticationMethodDtoBuilder)? updates,
-  ]) => (TokenPrivateKeyAuthenticationMethodDtoBuilder()..update(updates))
+  factory _$$TokenPrivateKeyAuthenticationMethodDto([
+    void Function($TokenPrivateKeyAuthenticationMethodDtoBuilder)? updates,
+  ]) => ($TokenPrivateKeyAuthenticationMethodDtoBuilder()..update(updates))
       ._build();
 
-  _$TokenPrivateKeyAuthenticationMethodDto._({
+  _$$TokenPrivateKeyAuthenticationMethodDto._({
     required this.type,
     required this.signingAlgorithm,
     required this.publicKeyInfo,
   }) : super._();
   @override
-  TokenPrivateKeyAuthenticationMethodDto rebuild(
-    void Function(TokenPrivateKeyAuthenticationMethodDtoBuilder) updates,
+  $TokenPrivateKeyAuthenticationMethodDto rebuild(
+    void Function($TokenPrivateKeyAuthenticationMethodDtoBuilder) updates,
   ) => (toBuilder()..update(updates)).build();
 
   @override
-  TokenPrivateKeyAuthenticationMethodDtoBuilder toBuilder() =>
-      TokenPrivateKeyAuthenticationMethodDtoBuilder()..replace(this);
+  $TokenPrivateKeyAuthenticationMethodDtoBuilder toBuilder() =>
+      $TokenPrivateKeyAuthenticationMethodDtoBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is TokenPrivateKeyAuthenticationMethodDto &&
+    return other is $TokenPrivateKeyAuthenticationMethodDto &&
         type == other.type &&
         signingAlgorithm == other.signingAlgorithm &&
         publicKeyInfo == other.publicKeyInfo;
@@ -205,7 +226,7 @@ class _$TokenPrivateKeyAuthenticationMethodDto
   @override
   String toString() {
     return (newBuiltValueToStringHelper(
-            r'TokenPrivateKeyAuthenticationMethodDto',
+            r'$TokenPrivateKeyAuthenticationMethodDto',
           )
           ..add('type', type)
           ..add('signingAlgorithm', signingAlgorithm)
@@ -214,24 +235,25 @@ class _$TokenPrivateKeyAuthenticationMethodDto
   }
 }
 
-class TokenPrivateKeyAuthenticationMethodDtoBuilder
+class $TokenPrivateKeyAuthenticationMethodDtoBuilder
     implements
         Builder<
-          TokenPrivateKeyAuthenticationMethodDto,
-          TokenPrivateKeyAuthenticationMethodDtoBuilder
-        > {
-  _$TokenPrivateKeyAuthenticationMethodDto? _$v;
+          $TokenPrivateKeyAuthenticationMethodDto,
+          $TokenPrivateKeyAuthenticationMethodDtoBuilder
+        >,
+        TokenPrivateKeyAuthenticationMethodDtoBuilder {
+  _$$TokenPrivateKeyAuthenticationMethodDto? _$v;
 
   TokenPrivateKeyAuthenticationMethodDtoTypeEnum? _type;
   TokenPrivateKeyAuthenticationMethodDtoTypeEnum? get type => _$this._type;
-  set type(TokenPrivateKeyAuthenticationMethodDtoTypeEnum? type) =>
+  set type(covariant TokenPrivateKeyAuthenticationMethodDtoTypeEnum? type) =>
       _$this._type = type;
 
   TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum? _signingAlgorithm;
   TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum?
   get signingAlgorithm => _$this._signingAlgorithm;
   set signingAlgorithm(
-    TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum?
+    covariant TokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum?
     signingAlgorithm,
   ) => _$this._signingAlgorithm = signingAlgorithm;
 
@@ -240,14 +262,15 @@ class TokenPrivateKeyAuthenticationMethodDtoBuilder
   get publicKeyInfo => _$this._publicKeyInfo ??=
       TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder();
   set publicKeyInfo(
-    TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder? publicKeyInfo,
+    covariant TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoBuilder?
+    publicKeyInfo,
   ) => _$this._publicKeyInfo = publicKeyInfo;
 
-  TokenPrivateKeyAuthenticationMethodDtoBuilder() {
-    TokenPrivateKeyAuthenticationMethodDto._defaults(this);
+  $TokenPrivateKeyAuthenticationMethodDtoBuilder() {
+    $TokenPrivateKeyAuthenticationMethodDto._defaults(this);
   }
 
-  TokenPrivateKeyAuthenticationMethodDtoBuilder get _$this {
+  $TokenPrivateKeyAuthenticationMethodDtoBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _type = $v.type;
@@ -259,34 +282,34 @@ class TokenPrivateKeyAuthenticationMethodDtoBuilder
   }
 
   @override
-  void replace(TokenPrivateKeyAuthenticationMethodDto other) {
-    _$v = other as _$TokenPrivateKeyAuthenticationMethodDto;
+  void replace(covariant $TokenPrivateKeyAuthenticationMethodDto other) {
+    _$v = other as _$$TokenPrivateKeyAuthenticationMethodDto;
   }
 
   @override
   void update(
-    void Function(TokenPrivateKeyAuthenticationMethodDtoBuilder)? updates,
+    void Function($TokenPrivateKeyAuthenticationMethodDtoBuilder)? updates,
   ) {
     if (updates != null) updates(this);
   }
 
   @override
-  TokenPrivateKeyAuthenticationMethodDto build() => _build();
+  $TokenPrivateKeyAuthenticationMethodDto build() => _build();
 
-  _$TokenPrivateKeyAuthenticationMethodDto _build() {
-    _$TokenPrivateKeyAuthenticationMethodDto _$result;
+  _$$TokenPrivateKeyAuthenticationMethodDto _build() {
+    _$$TokenPrivateKeyAuthenticationMethodDto _$result;
     try {
       _$result =
           _$v ??
-          _$TokenPrivateKeyAuthenticationMethodDto._(
+          _$$TokenPrivateKeyAuthenticationMethodDto._(
             type: BuiltValueNullFieldError.checkNotNull(
               type,
-              r'TokenPrivateKeyAuthenticationMethodDto',
+              r'$TokenPrivateKeyAuthenticationMethodDto',
               'type',
             ),
             signingAlgorithm: BuiltValueNullFieldError.checkNotNull(
               signingAlgorithm,
-              r'TokenPrivateKeyAuthenticationMethodDto',
+              r'$TokenPrivateKeyAuthenticationMethodDto',
               'signingAlgorithm',
             ),
             publicKeyInfo: publicKeyInfo.build(),
@@ -298,7 +321,7 @@ class TokenPrivateKeyAuthenticationMethodDtoBuilder
         publicKeyInfo.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'TokenPrivateKeyAuthenticationMethodDto',
+          r'$TokenPrivateKeyAuthenticationMethodDto',
           _$failedField,
           e.toString(),
         );
