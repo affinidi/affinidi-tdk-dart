@@ -38,7 +38,7 @@ final String statusId = statusId_example; // String | Description for statusId.
 try {
     final response = api.getRevocationCredentialStatus(projectId, walletId, statusId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling RevocationApi->getRevocationCredentialStatus: $e\n');
 }
 ```
@@ -88,7 +88,7 @@ final String walletId = walletId_example; // String | id of the wallet
 try {
     final response = api.getRevocationListCredential(listId, walletId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling RevocationApi->getRevocationListCredential: $e\n');
 }
 ```
@@ -136,7 +136,7 @@ final RevokeCredentialInput revokeCredentialInput = ; // RevokeCredentialInput |
 
 try {
     api.revokeCredential(walletId, revokeCredentialInput);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling RevocationApi->revokeCredential: $e\n');
 }
 ```
@@ -184,7 +184,7 @@ final RevokeCredentialsInput revokeCredentialsInput = ; // RevokeCredentialsInpu
 
 try {
     api.revokeCredentials(walletId, revokeCredentialsInput);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling RevocationApi->revokeCredentials: $e\n');
 }
 ```

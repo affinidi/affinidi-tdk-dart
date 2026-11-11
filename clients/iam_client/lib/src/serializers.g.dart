@@ -8,6 +8,7 @@ part of 'serializers.dart';
 
 Serializers _$serializers =
     (Serializers().toBuilder()
+          ..add($TokenPrivateKeyAuthenticationMethodDto.serializer)
           ..add(ActionForbiddenError.serializer)
           ..add(ActionForbiddenErrorHttpStatusCodeEnum.serializer)
           ..add(ActionForbiddenErrorMessageEnum.serializer)
@@ -25,6 +26,10 @@ Serializers _$serializers =
           ..add(CreateTokenInput.serializer)
           ..add(GrantAccessInput.serializer)
           ..add(GrantAccessOutput.serializer)
+          ..add(IdentityMappingError.serializer)
+          ..add(IdentityMappingErrorHttpStatusCodeEnum.serializer)
+          ..add(IdentityMappingErrorMessageEnum.serializer)
+          ..add(IdentityMappingErrorNameEnum.serializer)
           ..add(InvalidDIDError.serializer)
           ..add(InvalidDIDErrorHttpStatusCodeEnum.serializer)
           ..add(InvalidDIDErrorMessageEnum.serializer)
@@ -35,10 +40,16 @@ Serializers _$serializers =
           ..add(InvalidParameterErrorNameEnum.serializer)
           ..add(JsonWebKeyDto.serializer)
           ..add(JsonWebKeySetDto.serializer)
+          ..add(MalformedUpstreamResponseError.serializer)
+          ..add(MalformedUpstreamResponseErrorHttpStatusCodeEnum.serializer)
+          ..add(MalformedUpstreamResponseErrorMessageEnum.serializer)
+          ..add(MalformedUpstreamResponseErrorNameEnum.serializer)
           ..add(NotFoundError.serializer)
           ..add(NotFoundErrorHttpStatusCodeEnum.serializer)
           ..add(NotFoundErrorMessageEnum.serializer)
           ..add(NotFoundErrorNameEnum.serializer)
+          ..add(PasskeyDto.serializer)
+          ..add(PasskeyList.serializer)
           ..add(PolicyDto.serializer)
           ..add(PolicyStatementDto.serializer)
           ..add(PrincipalCannotBeDeletedError.serializer)
@@ -55,10 +66,13 @@ Serializers _$serializers =
           ..add(ProjectList.serializer)
           ..add(ProjectWithPolicyDto.serializer)
           ..add(ProjectWithPolicyList.serializer)
+          ..add(ProviderDto.serializer)
+          ..add(ProviderDtoStatusEnum.serializer)
+          ..add(ProviderList.serializer)
           ..add(RightsEnum.serializer)
+          ..add(TokenAuthenticationMethodDto.serializer)
           ..add(TokenDto.serializer)
           ..add(TokenList.serializer)
-          ..add(TokenPrivateKeyAuthenticationMethodDto.serializer)
           ..add(TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfo.serializer)
           ..add(
             TokenPrivateKeyAuthenticationMethodDtoPublicKeyInfoOneOf.serializer,
@@ -91,12 +105,20 @@ Serializers _$serializers =
                 .serializer,
           )
           ..add(UpdateTokenPrivateKeyAuthenticationMethodDtoTypeEnum.serializer)
+          ..add(UpstreamUnavailableError.serializer)
+          ..add(UpstreamUnavailableErrorHttpStatusCodeEnum.serializer)
+          ..add(UpstreamUnavailableErrorMessageEnum.serializer)
+          ..add(UpstreamUnavailableErrorNameEnum.serializer)
           ..add(UserDto.serializer)
           ..add(UserList.serializer)
           ..add(WhoamiDto.serializer)
           ..addBuilderFactory(
             const FullType(BuiltList, const [const FullType(JsonWebKeyDto)]),
             () => ListBuilder<JsonWebKeyDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, const [const FullType(PasskeyDto)]),
+            () => ListBuilder<PasskeyDto>(),
           )
           ..addBuilderFactory(
             const FullType(BuiltList, const [
@@ -113,6 +135,10 @@ Serializers _$serializers =
               const FullType(ProjectWithPolicyDto),
             ]),
             () => ListBuilder<ProjectWithPolicyDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, const [const FullType(ProviderDto)]),
+            () => ListBuilder<ProviderDto>(),
           )
           ..addBuilderFactory(
             const FullType(BuiltList, const [const FullType(RightsEnum)]),
@@ -141,6 +167,24 @@ Serializers _$serializers =
           ..addBuilderFactory(
             const FullType(BuiltList, const [const FullType(TokenDto)]),
             () => ListBuilder<TokenDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, const [
+              const FullType(UnexpectedErrorDetailsInner),
+            ]),
+            () => ListBuilder<UnexpectedErrorDetailsInner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, const [
+              const FullType(UnexpectedErrorDetailsInner),
+            ]),
+            () => ListBuilder<UnexpectedErrorDetailsInner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, const [
+              const FullType(UnexpectedErrorDetailsInner),
+            ]),
+            () => ListBuilder<UnexpectedErrorDetailsInner>(),
           )
           ..addBuilderFactory(
             const FullType(BuiltList, const [
