@@ -142,23 +142,17 @@ class _$IssuanceStateResponseSerializer
   }
 }
 
+/// String describing the status of the issuance
 class IssuanceStateResponseStatusEnum extends EnumClass {
-  /// String describing the status of the issuance
   @BuiltValueEnumConst(wireName: r'INIT')
   static const IssuanceStateResponseStatusEnum INIT =
       _$issuanceStateResponseStatusEnum_INIT;
-
-  /// String describing the status of the issuance
   @BuiltValueEnumConst(wireName: r'OFFER_DELIVERED')
   static const IssuanceStateResponseStatusEnum OFFER_DELIVERED =
       _$issuanceStateResponseStatusEnum_OFFER_DELIVERED;
-
-  /// String describing the status of the issuance
   @BuiltValueEnumConst(wireName: r'VC_CLAIMED')
   static const IssuanceStateResponseStatusEnum VC_CLAIMED =
       _$issuanceStateResponseStatusEnum_VC_CLAIMED;
-
-  /// String describing the status of the issuance
   @BuiltValueEnumConst(wireName: r'TIMEOUT')
   static const IssuanceStateResponseStatusEnum TIMEOUT =
       _$issuanceStateResponseStatusEnum_TIMEOUT;

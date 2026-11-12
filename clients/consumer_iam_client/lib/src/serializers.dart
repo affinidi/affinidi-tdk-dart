@@ -53,6 +53,28 @@ part 'serializers.g.dart';
 ])
 Serializers serializers =
     (_$serializers.toBuilder()
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(JsonWebKeyDto)]),
+            () => ListBuilder<JsonWebKeyDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [
+              FullType(InvalidJwtTokenErrorDetailsInner),
+            ]),
+            () => ListBuilder<InvalidJwtTokenErrorDetailsInner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(RightsEnum)]),
+            () => ListBuilder<RightsEnum>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(Permission)]),
+            () => ListBuilder<Permission>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(String)]),
+            () => ListBuilder<String>(),
+          )
           ..add(const OneOfSerializer())
           ..add(const AnyOfSerializer())
           ..add(const DateSerializer())

@@ -83,7 +83,7 @@ abstract class CreateIotaConfigurationInput
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(CreateIotaConfigurationInputBuilder b) =>
-      b..mode = const CreateIotaConfigurationInputModeEnum._('websocket');
+      b..mode = CreateIotaConfigurationInputModeEnum.valueOf('websocket');
 
   @BuiltValueSerializer(custom: true)
   static Serializer<CreateIotaConfigurationInput> get serializer =>
@@ -331,18 +331,14 @@ class _$CreateIotaConfigurationInputSerializer
   }
 }
 
+/// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
 class CreateIotaConfigurationInputModeEnum extends EnumClass {
-  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
   @BuiltValueEnumConst(wireName: r'redirect')
   static const CreateIotaConfigurationInputModeEnum redirect =
       _$createIotaConfigurationInputModeEnum_redirect;
-
-  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
   @BuiltValueEnumConst(wireName: r'websocket')
   static const CreateIotaConfigurationInputModeEnum websocket =
       _$createIotaConfigurationInputModeEnum_websocket;
-
-  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
   @BuiltValueEnumConst(wireName: r'didcomm')
   static const CreateIotaConfigurationInputModeEnum didcomm =
       _$createIotaConfigurationInputModeEnum_didcomm;
