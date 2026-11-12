@@ -9,16 +9,12 @@ import 'package:built_value/serializer.dart';
 
 part 'token_endpoint_auth_method.g.dart';
 
+/// Requested Client Authentication method for the Token Endpoint. The options are: `client_secret_post`: (default) Send client_id and client_secret as application/x-www-form-urlencoded in the HTTP body. `client_secret_basic`: Send client_id and client_secret as application/x-www-form-urlencoded encoded in the HTTP Authorization header. `none`: For public clients (native/mobile apps) which can not have secret.
 class TokenEndpointAuthMethod extends EnumClass {
-  /// Requested Client Authentication method for the Token Endpoint. The options are: `client_secret_post`: (default) Send client_id and client_secret as application/x-www-form-urlencoded in the HTTP body. `client_secret_basic`: Send client_id and client_secret as application/x-www-form-urlencoded encoded in the HTTP Authorization header. `none`: For public clients (native/mobile apps) which can not have secret.
   @BuiltValueEnumConst(wireName: r'client_secret_basic')
   static const TokenEndpointAuthMethod clientSecretBasic = _$clientSecretBasic;
-
-  /// Requested Client Authentication method for the Token Endpoint. The options are: `client_secret_post`: (default) Send client_id and client_secret as application/x-www-form-urlencoded in the HTTP body. `client_secret_basic`: Send client_id and client_secret as application/x-www-form-urlencoded encoded in the HTTP Authorization header. `none`: For public clients (native/mobile apps) which can not have secret.
   @BuiltValueEnumConst(wireName: r'client_secret_post')
   static const TokenEndpointAuthMethod clientSecretPost = _$clientSecretPost;
-
-  /// Requested Client Authentication method for the Token Endpoint. The options are: `client_secret_post`: (default) Send client_id and client_secret as application/x-www-form-urlencoded in the HTTP body. `client_secret_basic`: Send client_id and client_secret as application/x-www-form-urlencoded encoded in the HTTP Authorization header. `none`: For public clients (native/mobile apps) which can not have secret.
   @BuiltValueEnumConst(wireName: r'none')
   static const TokenEndpointAuthMethod none = _$none;
 

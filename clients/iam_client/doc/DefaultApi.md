@@ -35,7 +35,7 @@ final String proxy = proxy_example; // String |
 
 try {
     api.v1AuthProxyDelete(proxy);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DefaultApi->v1AuthProxyDelete: $e\n');
 }
 ```
@@ -75,7 +75,7 @@ final String proxy = proxy_example; // String |
 
 try {
     api.v1AuthProxyGet(proxy);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DefaultApi->v1AuthProxyGet: $e\n');
 }
 ```
@@ -115,7 +115,7 @@ final String proxy = proxy_example; // String |
 
 try {
     api.v1AuthProxyPatch(proxy);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DefaultApi->v1AuthProxyPatch: $e\n');
 }
 ```
@@ -155,7 +155,7 @@ final String proxy = proxy_example; // String |
 
 try {
     api.v1AuthProxyPost(proxy);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DefaultApi->v1AuthProxyPost: $e\n');
 }
 ```
@@ -195,7 +195,7 @@ final String proxy = proxy_example; // String |
 
 try {
     api.v1AuthProxyPut(proxy);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DefaultApi->v1AuthProxyPut: $e\n');
 }
 ```
@@ -235,7 +235,7 @@ final String proxy = proxy_example; // String |
 
 try {
     api.v1IdpProxyDelete(proxy);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DefaultApi->v1IdpProxyDelete: $e\n');
 }
 ```
@@ -275,7 +275,7 @@ final String proxy = proxy_example; // String |
 
 try {
     api.v1IdpProxyGet(proxy);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DefaultApi->v1IdpProxyGet: $e\n');
 }
 ```
@@ -315,7 +315,7 @@ final String proxy = proxy_example; // String |
 
 try {
     api.v1IdpProxyPatch(proxy);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DefaultApi->v1IdpProxyPatch: $e\n');
 }
 ```
@@ -355,7 +355,7 @@ final String proxy = proxy_example; // String |
 
 try {
     api.v1IdpProxyPost(proxy);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DefaultApi->v1IdpProxyPost: $e\n');
 }
 ```
@@ -395,7 +395,7 @@ final String proxy = proxy_example; // String |
 
 try {
     api.v1IdpProxyPut(proxy);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DefaultApi->v1IdpProxyPut: $e\n');
 }
 ```

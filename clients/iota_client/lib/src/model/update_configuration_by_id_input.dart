@@ -340,18 +340,14 @@ class _$UpdateConfigurationByIdInputSerializer
   }
 }
 
+/// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
 class UpdateConfigurationByIdInputModeEnum extends EnumClass {
-  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
   @BuiltValueEnumConst(wireName: r'redirect')
   static const UpdateConfigurationByIdInputModeEnum redirect =
       _$updateConfigurationByIdInputModeEnum_redirect;
-
-  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
   @BuiltValueEnumConst(wireName: r'websocket')
   static const UpdateConfigurationByIdInputModeEnum websocket =
       _$updateConfigurationByIdInputModeEnum_websocket;
-
-  /// Determines whether to handle the data-sharing request using the WebSocket, Redirect or Didcomm messaging flow.
   @BuiltValueEnumConst(wireName: r'didcomm')
   static const UpdateConfigurationByIdInputModeEnum didcomm =
       _$updateConfigurationByIdInputModeEnum_didcomm;

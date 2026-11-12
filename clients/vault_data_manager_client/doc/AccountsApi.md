@@ -39,7 +39,7 @@ final CreateAccountInput createAccountInput = ; // CreateAccountInput | CreateAc
 try {
     final response = api.createAccount(createAccountInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AccountsApi->createAccount: $e\n');
 }
 ```
@@ -86,7 +86,7 @@ final CreateAccountWithProfileInput createAccountWithProfileInput = ; // CreateA
 try {
     final response = api.createAccountWithProfile(createAccountWithProfileInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AccountsApi->createAccountWithProfile: $e\n');
 }
 ```
@@ -133,7 +133,7 @@ final int accountIndex = 56; // int |
 try {
     final response = api.deleteAccount(accountIndex);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AccountsApi->deleteAccount: $e\n');
 }
 ```
@@ -181,7 +181,7 @@ final String exclusiveStartKey = exclusiveStartKey_example; // String | The base
 try {
     final response = api.listAccounts(limit, exclusiveStartKey);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AccountsApi->listAccounts: $e\n');
 }
 ```
@@ -228,7 +228,7 @@ final api = AffinidiTdkVaultDataManagerClient().getAccountsApi();
 try {
     final response = api.listProfiles();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AccountsApi->listProfiles: $e\n');
 }
 ```
@@ -273,7 +273,7 @@ final PatchAccountInput patchAccountInput = ; // PatchAccountInput | PatchAccoun
 try {
     final response = api.patchAccount(accountIndex, patchAccountInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AccountsApi->patchAccount: $e\n');
 }
 ```
@@ -322,7 +322,7 @@ final UpdateAccountInput updateAccountInput = ; // UpdateAccountInput | UpdateAc
 try {
     final response = api.updateAccount(accountIndex, updateAccountInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AccountsApi->updateAccount: $e\n');
 }
 ```
