@@ -26,6 +26,7 @@ part 'wallet_v2_dto.g.dart';
 /// * [services] - list of service endpoints associated with this wallet
 /// * [createdAt]
 /// * [modifiedAt]
+/// * [version] - The version of the wallet
 @BuiltValue()
 abstract class WalletV2Dto implements Built<WalletV2Dto, WalletV2DtoBuilder> {
   /// id of the wallet in uuidV4 format
@@ -68,6 +69,10 @@ abstract class WalletV2Dto implements Built<WalletV2Dto, WalletV2DtoBuilder> {
 
   @BuiltValueField(wireName: r'modifiedAt')
   String? get modifiedAt;
+
+  /// The version of the wallet
+  @BuiltValueField(wireName: r'version')
+  int? get version;
 
   WalletV2Dto._();
 
@@ -171,6 +176,13 @@ class _$WalletV2DtoSerializer implements PrimitiveSerializer<WalletV2Dto> {
       yield serializers.serialize(
         object.modifiedAt,
         specifiedType: const FullType(String),
+      );
+    }
+    if (object.version != null) {
+      yield r'version';
+      yield serializers.serialize(
+        object.version,
+        specifiedType: const FullType(int),
       );
     }
   }
@@ -302,6 +314,12 @@ class _$WalletV2DtoSerializer implements PrimitiveSerializer<WalletV2Dto> {
                   )
                   as String;
           result.modifiedAt = valueDes;
+          break;
+        case r'version':
+          final valueDes =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int;
+          result.version = valueDes;
           break;
         default:
           unhandled.add(key);
