@@ -30,7 +30,7 @@ final String issuanceId = issuanceId_example; // String | issuanceId from creden
 try {
     final response = api.getCredentialOffer(projectId, issuanceId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling OfferApi->getCredentialOffer: $e\n');
 }
 ```

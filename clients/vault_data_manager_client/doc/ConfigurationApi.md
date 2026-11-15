@@ -32,7 +32,7 @@ final api = AffinidiTdkVaultDataManagerClient().getConfigurationApi();
 try {
     final response = api.getConfiguration();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConfigurationApi->getConfiguration: $e\n');
 }
 ```

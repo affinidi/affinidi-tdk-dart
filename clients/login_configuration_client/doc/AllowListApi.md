@@ -34,7 +34,7 @@ final GroupNamesInput groupNamesInput = ; // GroupNamesInput | List of group nam
 
 try {
     api.allowGroups(groupNamesInput);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AllowListApi->allowGroups: $e\n');
 }
 ```
@@ -80,7 +80,7 @@ final GroupNamesInput groupNamesInput = ; // GroupNamesInput | List of group nam
 
 try {
     api.disallowGroups(groupNamesInput);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AllowListApi->disallowGroups: $e\n');
 }
 ```
@@ -127,7 +127,7 @@ final String pageToken = pageToken_example; // String |
 try {
     final response = api.listAllowedGroups(pageToken);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AllowListApi->listAllowedGroups: $e\n');
 }
 ```
