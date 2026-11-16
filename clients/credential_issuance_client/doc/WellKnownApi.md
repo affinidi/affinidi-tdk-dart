@@ -27,7 +27,7 @@ final String projectId = projectId_example; // String | Affinidi project id
 try {
     final response = api.getWellKnownOpenIdCredentialIssuer(projectId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling WellKnownApi->getWellKnownOpenIdCredentialIssuer: $e\n');
 }
 ```

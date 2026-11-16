@@ -44,7 +44,7 @@ final CreateChildNodeInput createChildNodeInput = ; // CreateChildNodeInput | Cr
 try {
     final response = api.createChildNode(nodeId, createChildNodeInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NodesApi->createChildNode: $e\n');
 }
 ```
@@ -92,7 +92,7 @@ final CreateNodeInput createNodeInput = ; // CreateNodeInput | CreateNode
 try {
     final response = api.createNode(createNodeInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NodesApi->createNode: $e\n');
 }
 ```
@@ -139,7 +139,7 @@ final String nodeId = nodeId_example; // String |
 try {
     final response = api.deleteNode(nodeId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NodesApi->deleteNode: $e\n');
 }
 ```
@@ -187,7 +187,7 @@ final String dek = dek_example; // String | A base64url encoded data encryption 
 try {
     final response = api.getDetailedNodeInfo(nodeId, dek);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NodesApi->getDetailedNodeInfo: $e\n');
 }
 ```
@@ -234,7 +234,7 @@ final api = AffinidiTdkVaultDataManagerClient().getNodesApi();
 try {
     final response = api.initNodes();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NodesApi->initNodes: $e\n');
 }
 ```
@@ -280,7 +280,7 @@ final String exclusiveStartKey = exclusiveStartKey_example; // String | exclusiv
 try {
     final response = api.listNodeChildren(nodeId, limit, exclusiveStartKey);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NodesApi->listNodeChildren: $e\n');
 }
 ```
@@ -328,7 +328,7 @@ final api = AffinidiTdkVaultDataManagerClient().getNodesApi();
 try {
     final response = api.listRootNodeChildren();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NodesApi->listRootNodeChildren: $e\n');
 }
 ```
@@ -373,7 +373,7 @@ final MoveNodeInput moveNodeInput = ; // MoveNodeInput | MoveNode
 try {
     final response = api.moveNode(nodeId, moveNodeInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NodesApi->moveNode: $e\n');
 }
 ```
@@ -421,7 +421,7 @@ final String nodeIdToRemove = nodeIdToRemove_example; // String | nodeId of the 
 
 try {
     api.permanentlyDeleteNode(nodeId, nodeIdToRemove);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NodesApi->permanentlyDeleteNode: $e\n');
 }
 ```
@@ -471,7 +471,7 @@ final RestoreNodeFromTrashbin restoreNodeFromTrashbin = ; // RestoreNodeFromTras
 try {
     final response = api.restoreNodeFromTrashbin(nodeId, nodeIdToRestore, restoreNodeFromTrashbin);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NodesApi->restoreNodeFromTrashbin: $e\n');
 }
 ```
@@ -521,7 +521,7 @@ final UpdateNodeInput updateNodeInput = ; // UpdateNodeInput | UpdateNodeInput
 try {
     final response = api.updateNode(nodeId, updateNodeInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling NodesApi->updateNode: $e\n');
 }
 ```
