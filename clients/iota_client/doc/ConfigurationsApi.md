@@ -38,7 +38,7 @@ final CreateIotaConfigurationInput createIotaConfigurationInput = ; // CreateIot
 try {
     final response = api.createIotaConfiguration(createIotaConfigurationInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConfigurationsApi->createIotaConfiguration: $e\n');
 }
 ```
@@ -84,7 +84,7 @@ final String configurationId = configurationId_example; // String | ID of the Af
 
 try {
     api.deleteIotaConfigurationById(configurationId);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConfigurationsApi->deleteIotaConfigurationById: $e\n');
 }
 ```
@@ -131,7 +131,7 @@ final String configurationId = configurationId_example; // String | ID of the Af
 try {
     final response = api.getIotaConfigurationById(configurationId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConfigurationsApi->getIotaConfigurationById: $e\n');
 }
 ```
@@ -175,7 +175,7 @@ final String configurationId = configurationId_example; // String | ID of the Af
 try {
     final response = api.getIotaConfigurationMetaData(projectId, configurationId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConfigurationsApi->getIotaConfigurationMetaData: $e\n');
 }
 ```
@@ -222,7 +222,7 @@ final api = AffinidiTdkIotaClient().getConfigurationsApi();
 try {
     final response = api.listIotaConfigurations();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConfigurationsApi->listIotaConfigurations: $e\n');
 }
 ```
@@ -267,7 +267,7 @@ final UpdateConfigurationByIdInput updateConfigurationByIdInput = ; // UpdateCon
 try {
     final response = api.updateIotaConfigurationById(configurationId, updateConfigurationByIdInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConfigurationsApi->updateIotaConfigurationById: $e\n');
 }
 ```

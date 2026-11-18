@@ -261,8 +261,8 @@ class _$ConsentDtoSerializer implements PrimitiveSerializer<ConsentDto> {
   }
 }
 
+/// Status of the consent.
 class ConsentDtoStatusEnum extends EnumClass {
-  /// Status of the consent.
   @BuiltValueEnumConst(wireName: r'GIVEN')
   static const ConsentDtoStatusEnum GIVEN = _$consentDtoStatusEnum_GIVEN;
 
