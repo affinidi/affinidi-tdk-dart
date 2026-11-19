@@ -37,7 +37,7 @@ final String projectId = projectId_example; // String | Affinidi project id
 try {
     final response = api.issuanceState(issuanceId, projectId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IssuanceApi->issuanceState: $e\n');
 }
 ```
@@ -86,7 +86,7 @@ final StartIssuanceInput startIssuanceInput = ; // StartIssuanceInput | Request 
 try {
     final response = api.issueCredentials(projectId, startIssuanceInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IssuanceApi->issueCredentials: $e\n');
 }
 ```
@@ -134,7 +134,7 @@ final String projectId = projectId_example; // String | Affinidi project id
 try {
     final response = api.listIssuance(projectId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IssuanceApi->listIssuance: $e\n');
 }
 ```
@@ -182,7 +182,7 @@ final StartIssuanceInput startIssuanceInput = ; // StartIssuanceInput | Request 
 try {
     final response = api.startIssuance(projectId, startIssuanceInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling IssuanceApi->startIssuance: $e\n');
 }
 ```
