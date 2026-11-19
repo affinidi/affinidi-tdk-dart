@@ -19,6 +19,7 @@ Name | Type | Description | Notes
 **services** | [**BuiltList&lt;ServiceEndpointDto&gt;**](ServiceEndpointDto.md) | list of service endpoints associated with this wallet | [optional] 
 **createdAt** | **String** |  | [optional] 
 **modifiedAt** | **String** |  | [optional] 
+**version** | **int** | The version of the wallet | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

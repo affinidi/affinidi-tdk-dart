@@ -35,7 +35,7 @@ final String granteeDid = granteeDid_example; // String |
 
 try {
     api.deleteAccessVfs(granteeDid);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AuthzApi->deleteAccessVfs: $e\n');
 }
 ```
@@ -82,7 +82,7 @@ final String granteeDid = granteeDid_example; // String |
 try {
     final response = api.getAccessVfs(granteeDid);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AuthzApi->getAccessVfs: $e\n');
 }
 ```
@@ -130,7 +130,7 @@ final GrantAccessInput grantAccessInput = ; // GrantAccessInput | Grant access t
 try {
     final response = api.grantAccessVfs(granteeDid, grantAccessInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AuthzApi->grantAccessVfs: $e\n');
 }
 ```
@@ -179,7 +179,7 @@ final UpdateAccessInput updateAccessInput = ; // UpdateAccessInput | update acce
 try {
     final response = api.updateAccessVfs(granteeDid, updateAccessInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling AuthzApi->updateAccessVfs: $e\n');
 }
 ```
