@@ -9,32 +9,20 @@ import 'package:built_value/serializer.dart';
 
 part 'node_type.g.dart';
 
+/// type of the Node
 class NodeType extends EnumClass {
-  /// type of the Node
   @BuiltValueEnumConst(wireName: r'VC_ROOT')
   static const NodeType VC_ROOT = _$VC_ROOT;
-
-  /// type of the Node
   @BuiltValueEnumConst(wireName: r'VC')
   static const NodeType VC = _$VC;
-
-  /// type of the Node
   @BuiltValueEnumConst(wireName: r'FILE')
   static const NodeType FILE = _$FILE;
-
-  /// type of the Node
   @BuiltValueEnumConst(wireName: r'FOLDER')
   static const NodeType FOLDER = _$FOLDER;
-
-  /// type of the Node
   @BuiltValueEnumConst(wireName: r'PROFILE')
   static const NodeType PROFILE = _$PROFILE;
-
-  /// type of the Node
   @BuiltValueEnumConst(wireName: r'ROOT_ELEMENT')
   static const NodeType ROOT_ELEMENT = _$ROOT_ELEMENT;
-
-  /// type of the Node
   @BuiltValueEnumConst(wireName: r'TRASH_BIN')
   static const NodeType TRASH_BIN = _$TRASH_BIN;
 
