@@ -392,13 +392,11 @@ class _$CreateLoginConfigurationInputSerializer
   }
 }
 
+/// ID token claims output format. Default is array.
 class CreateLoginConfigurationInputClaimFormatEnum extends EnumClass {
-  /// ID token claims output format. Default is array.
   @BuiltValueEnumConst(wireName: r'array')
   static const CreateLoginConfigurationInputClaimFormatEnum array =
       _$createLoginConfigurationInputClaimFormatEnum_array;
-
-  /// ID token claims output format. Default is array.
   @BuiltValueEnumConst(wireName: r'map')
   static const CreateLoginConfigurationInputClaimFormatEnum map =
       _$createLoginConfigurationInputClaimFormatEnum_map;

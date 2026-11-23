@@ -37,7 +37,7 @@ final CreateIssuanceConfigInput createIssuanceConfigInput = ; // CreateIssuanceC
 try {
     final response = api.createIssuanceConfig(createIssuanceConfigInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConfigurationApi->createIssuanceConfig: $e\n');
 }
 ```
@@ -83,7 +83,7 @@ final String configurationId = configurationId_example; // String | The id of th
 
 try {
     api.deleteIssuanceConfigById(configurationId);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConfigurationApi->deleteIssuanceConfigById: $e\n');
 }
 ```
@@ -130,7 +130,7 @@ final String configurationId = configurationId_example; // String | The id of th
 try {
     final response = api.getIssuanceConfigById(configurationId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConfigurationApi->getIssuanceConfigById: $e\n');
 }
 ```
@@ -176,7 +176,7 @@ final api = AffinidiTdkCredentialIssuanceClient().getConfigurationApi();
 try {
     final response = api.getIssuanceConfigList();
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConfigurationApi->getIssuanceConfigList: $e\n');
 }
 ```
@@ -221,7 +221,7 @@ final UpdateIssuanceConfigInput updateIssuanceConfigInput = ; // UpdateIssuanceC
 try {
     final response = api.updateIssuanceConfigById(configurationId, updateIssuanceConfigInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConfigurationApi->updateIssuanceConfigById: $e\n');
 }
 ```
