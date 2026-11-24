@@ -38,7 +38,7 @@ final CreateLoginConfigurationInput createLoginConfigurationInput = ; // CreateL
 try {
     final response = api.createLoginConfigurations(createLoginConfigurationInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConfigurationApi->createLoginConfigurations: $e\n');
 }
 ```
@@ -84,7 +84,7 @@ final String configurationId = configurationId_example; // String | The id of th
 
 try {
     api.deleteLoginConfigurationsById(configurationId);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConfigurationApi->deleteLoginConfigurationsById: $e\n');
 }
 ```
@@ -127,7 +127,7 @@ final String clientId = clientId_example; // String | OAuth 2.0 Client ID
 try {
     final response = api.getClientMetadataByClientId(clientId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConfigurationApi->getClientMetadataByClientId: $e\n');
 }
 ```
@@ -174,7 +174,7 @@ final String configurationId = configurationId_example; // String | The id of th
 try {
     final response = api.getLoginConfigurationsById(configurationId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConfigurationApi->getLoginConfigurationsById: $e\n');
 }
 ```
@@ -222,7 +222,7 @@ final String exclusiveStartKey = exclusiveStartKey_example; // String | The base
 try {
     final response = api.listLoginConfigurations(limit, exclusiveStartKey);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConfigurationApi->listLoginConfigurations: $e\n');
 }
 ```
@@ -271,7 +271,7 @@ final UpdateLoginConfigurationInput updateLoginConfigurationInput = ; // UpdateL
 try {
     final response = api.updateLoginConfigurationsById(configurationId, updateLoginConfigurationInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConfigurationApi->updateLoginConfigurationsById: $e\n');
 }
 ```

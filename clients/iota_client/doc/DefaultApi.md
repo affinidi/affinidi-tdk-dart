@@ -36,7 +36,7 @@ final String exclusiveStartKey = exclusiveStartKey_example; // String | The base
 try {
     final response = api.listLoggedConsents(configurationId, userId, limit, exclusiveStartKey);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DefaultApi->listLoggedConsents: $e\n');
 }
 ```

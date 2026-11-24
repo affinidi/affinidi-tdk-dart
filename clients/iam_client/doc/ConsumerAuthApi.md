@@ -29,7 +29,7 @@ final ConsumerAuthTokenEndpointInput consumerAuthTokenEndpointInput = ; // Consu
 try {
     final response = api.consumerAuthTokenEndpoint(consumerAuthTokenEndpointInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling ConsumerAuthApi->consumerAuthTokenEndpoint: $e\n');
 }
 ```

@@ -36,7 +36,7 @@ final VerifyCredentialInput verifyCredentialInput = ; // VerifyCredentialInput |
 try {
     final response = api.verifyCredentials(verifyCredentialInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DefaultApi->verifyCredentials: $e\n');
 }
 ```
@@ -83,7 +83,7 @@ final VerifyCredentialV2Input verifyCredentialV2Input = ; // VerifyCredentialV2I
 try {
     final response = api.verifyCredentialsV2(verifyCredentialV2Input);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DefaultApi->verifyCredentialsV2: $e\n');
 }
 ```
@@ -130,7 +130,7 @@ final VerifyPresentationInput verifyPresentationInput = ; // VerifyPresentationI
 try {
     final response = api.verifyPresentation(verifyPresentationInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DefaultApi->verifyPresentation: $e\n');
 }
 ```
@@ -177,7 +177,7 @@ final VerifyPresentationV2Input verifyPresentationV2Input = ; // VerifyPresentat
 try {
     final response = api.verifyPresentationV2(verifyPresentationV2Input);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling DefaultApi->verifyPresentationV2: $e\n');
 }
 ```
