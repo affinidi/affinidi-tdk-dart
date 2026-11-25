@@ -208,20 +208,20 @@ class UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
     extends EnumClass {
   @BuiltValueEnumConst(wireName: r'RS256')
   static const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-  rS256 =
-      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS256;
+  RS256 =
+      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_RS256;
   @BuiltValueEnumConst(wireName: r'RS512')
   static const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-  rS512 =
-      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_rS512;
+  RS512 =
+      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_RS512;
   @BuiltValueEnumConst(wireName: r'ES256')
   static const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-  eS256 =
-      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS256;
+  ES256 =
+      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_ES256;
   @BuiltValueEnumConst(wireName: r'ES512')
   static const UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
-  eS512 =
-      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_eS512;
+  ES512 =
+      _$updateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum_ES512;
 
   static Serializer<
     UpdateTokenPrivateKeyAuthenticationMethodDtoSigningAlgorithmEnum
