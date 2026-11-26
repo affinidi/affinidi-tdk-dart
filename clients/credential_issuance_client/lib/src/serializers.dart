@@ -156,11 +156,98 @@ part 'serializers.g.dart';
 Serializers serializers =
     (_$serializers.toBuilder()
           ..addBuilderFactory(
+            const FullType(BuiltList, [
+              FullType(BatchCredentialInputCredentialRequestsInner),
+            ]),
+            () => ListBuilder<BatchCredentialInputCredentialRequestsInner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [
+              FullType(ListIssuanceResponseIssuancesInner),
+            ]),
+            () => ListBuilder<ListIssuanceResponseIssuancesInner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(CredentialSupportedObject)]),
+            () => ListBuilder<CredentialSupportedObject>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [
+              FullType(StartIssuanceInputDataInnerStatusListDetailsInner),
+            ]),
+            () =>
+                ListBuilder<
+                  StartIssuanceInputDataInnerStatusListDetailsInner
+                >(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(JsonObject)]),
+            () => ListBuilder<JsonObject>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [
+              FullType(BuiltMap, [FullType(String), FullType(JsonObject)]),
+            ]),
+            () => ListBuilder<BuiltMap<String, JsonObject>>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(FlowData)]),
+            () => ListBuilder<FlowData>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(StartIssuanceInputDataInner)]),
+            () => ListBuilder<StartIssuanceInputDataInner>(),
+          )
+          ..addBuilderFactory(
             const FullType(BuiltMap, [
               FullType(String),
               FullType.nullable(JsonObject),
             ]),
-            () => MapBuilder<String, JsonObject>(),
+            () => MapBuilder<String, JsonObject?>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [
+              FullType(BatchCredentialResponseCredentialResponsesInner),
+            ]),
+            () =>
+                ListBuilder<BatchCredentialResponseCredentialResponsesInner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [
+              FullType(FlowDataStatusListsDetailsInner),
+            ]),
+            () => ListBuilder<FlowDataStatusListsDetailsInner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [
+              FullType(ActionForbiddenErrorDetailsInner),
+            ]),
+            () => ListBuilder<ActionForbiddenErrorDetailsInner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(IssuanceConfigMiniDto)]),
+            () => ListBuilder<IssuanceConfigMiniDto>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [FullType(String)]),
+            () => ListBuilder<String>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [
+              FullType(SupportedCredentialMetadataDisplayInner),
+            ]),
+            () => ListBuilder<SupportedCredentialMetadataDisplayInner>(),
+          )
+          ..addBuilderFactory(
+            const FullType(BuiltList, [
+              FullType(
+                WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner,
+              ),
+            ]),
+            () =>
+                ListBuilder<
+                  WellKnownOpenIdCredentialIssuerResponseCredentialsSupportedInner
+                >(),
           )
           ..add(const OneOfSerializer())
           ..add(const AnyOfSerializer())
