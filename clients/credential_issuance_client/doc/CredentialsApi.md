@@ -33,7 +33,7 @@ final BatchCredentialInput batchCredentialInput = ; // BatchCredentialInput | Re
 try {
     final response = api.batchCredential(projectId, batchCredentialInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling CredentialsApi->batchCredential: $e\n');
 }
 ```
@@ -78,7 +78,7 @@ final CreateCredentialInput createCredentialInput = ; // CreateCredentialInput |
 try {
     final response = api.generateCredentials(projectId, createCredentialInput);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling CredentialsApi->generateCredentials: $e\n');
 }
 ```
@@ -131,7 +131,7 @@ final int limit = 56; // int |
 try {
     final response = api.getClaimedCredentials(projectId, configurationId, rangeStartTime, rangeEndTime, exclusiveStartKey, limit);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling CredentialsApi->getClaimedCredentials: $e\n');
 }
 ```
@@ -185,7 +185,7 @@ final String issuanceId = issuanceId_example; // String | issuance id
 try {
     final response = api.getIssuanceIdClaimedCredential(projectId, configurationId, issuanceId);
     print(response);
-} catch on DioException (e) {
+} on DioException catch (e) {
     print('Exception when calling CredentialsApi->getIssuanceIdClaimedCredential: $e\n');
 }
 ```

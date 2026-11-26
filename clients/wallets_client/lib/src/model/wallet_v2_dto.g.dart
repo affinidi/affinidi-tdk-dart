@@ -29,6 +29,8 @@ class _$WalletV2Dto extends WalletV2Dto {
   final String? createdAt;
   @override
   final String? modifiedAt;
+  @override
+  final int? version;
 
   factory _$WalletV2Dto([void Function(WalletV2DtoBuilder)? updates]) =>
       (WalletV2DtoBuilder()..update(updates))._build();
@@ -45,6 +47,7 @@ class _$WalletV2Dto extends WalletV2Dto {
     this.services,
     this.createdAt,
     this.modifiedAt,
+    this.version,
   }) : super._();
   @override
   WalletV2Dto rebuild(void Function(WalletV2DtoBuilder) updates) =>
@@ -67,7 +70,8 @@ class _$WalletV2Dto extends WalletV2Dto {
         keys == other.keys &&
         services == other.services &&
         createdAt == other.createdAt &&
-        modifiedAt == other.modifiedAt;
+        modifiedAt == other.modifiedAt &&
+        version == other.version;
   }
 
   @override
@@ -84,6 +88,7 @@ class _$WalletV2Dto extends WalletV2Dto {
     _$hash = $jc(_$hash, services.hashCode);
     _$hash = $jc(_$hash, createdAt.hashCode);
     _$hash = $jc(_$hash, modifiedAt.hashCode);
+    _$hash = $jc(_$hash, version.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -101,7 +106,8 @@ class _$WalletV2Dto extends WalletV2Dto {
           ..add('keys', keys)
           ..add('services', services)
           ..add('createdAt', createdAt)
-          ..add('modifiedAt', modifiedAt))
+          ..add('modifiedAt', modifiedAt)
+          ..add('version', version))
         .toString();
   }
 }
@@ -156,6 +162,10 @@ class WalletV2DtoBuilder implements Builder<WalletV2Dto, WalletV2DtoBuilder> {
   String? get modifiedAt => _$this._modifiedAt;
   set modifiedAt(String? modifiedAt) => _$this._modifiedAt = modifiedAt;
 
+  int? _version;
+  int? get version => _$this._version;
+  set version(int? version) => _$this._version = version;
+
   WalletV2DtoBuilder() {
     WalletV2Dto._defaults(this);
   }
@@ -174,6 +184,7 @@ class WalletV2DtoBuilder implements Builder<WalletV2Dto, WalletV2DtoBuilder> {
       _services = $v.services?.toBuilder();
       _createdAt = $v.createdAt;
       _modifiedAt = $v.modifiedAt;
+      _version = $v.version;
       _$v = null;
     }
     return this;
@@ -209,6 +220,7 @@ class WalletV2DtoBuilder implements Builder<WalletV2Dto, WalletV2DtoBuilder> {
             services: _services?.build(),
             createdAt: createdAt,
             modifiedAt: modifiedAt,
+            version: version,
           );
     } catch (_) {
       late String _$failedField;
